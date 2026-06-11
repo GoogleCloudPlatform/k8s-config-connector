@@ -26,6 +26,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -33,7 +35,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -78,6 +80,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -85,7 +89,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -147,6 +151,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -155,7 +161,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -212,6 +218,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -219,7 +227,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -278,6 +286,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -285,7 +295,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -344,6 +354,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -351,7 +363,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -406,6 +418,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -413,7 +427,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -461,6 +475,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -468,7 +484,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -525,6 +541,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -562,6 +580,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -610,7 +630,10 @@ spec:
 
 	result := compareEquivalence(old, new)
 
-	var expectedBlocked []string
+	expectedBlocked := []string{
+		"[v1beta1] field type changed: spec.count (integer -> int64)",
+		"[v1beta1] field type changed: spec.httpKeepAliveTimeoutSec (integer -> int32)",
+	}
 
 	if len(result.Diffs) != len(expectedBlocked) {
 		t.Fatalf("expected %d diffs, got %d: %v", len(expectedBlocked), len(result.Diffs), result.Diffs)
@@ -622,8 +645,6 @@ spec:
 	}
 
 	expectedNotes := []string{
-		"[v1beta1] field type changed: spec.count (integer -> int64) (allowed)",
-		"[v1beta1] field type changed: spec.httpKeepAliveTimeoutSec (integer -> int32) (allowed)",
 		"[v1beta1] field type changed: status.nodePort (integer -> int32) (allowed)",
 		"[v1beta1] field type changed: status.observedGeneration (integer -> int64) (allowed)",
 		"[v1beta1] field type changed: status.proxyId (integer -> int64) (allowed)",
@@ -644,6 +665,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -651,7 +674,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -683,6 +706,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -690,7 +715,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -803,6 +828,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -810,7 +837,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -848,14 +875,14 @@ spec:
 	}
 
 	result := compareEquivalence(old, new)
-	if len(result.Diffs) != 0 {
-		t.Fatalf("expected 0 diffs, got %d: %v", len(result.Diffs), result.Diffs)
+	if len(result.Diffs) != 1 {
+		t.Fatalf("expected 1 diff, got %d: %v", len(result.Diffs), result.Diffs)
 	}
-	if len(result.Notes) != 1 {
-		t.Fatalf("expected 1 note, got %d: %v", len(result.Notes), result.Notes)
+	if len(result.Notes) != 0 {
+		t.Fatalf("expected 0 notes, got %d: %v", len(result.Notes), result.Notes)
 	}
-	if !slices.ContainsFunc(result.Notes, func(note string) bool { return strings.Contains(note, " status.observedState ") }) {
-		t.Errorf("Expected note for status.observedState, but it was not found. Result notes: %v", result.Notes)
+	if !slices.ContainsFunc(result.Diffs, func(diff string) bool { return strings.Contains(diff, "status.observedState") }) {
+		t.Errorf("Expected diff for status.observedState, but it was not found. Result diffs: %v", result.Diffs)
 	}
 }
 
@@ -865,6 +892,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -872,7 +901,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -890,6 +919,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -897,7 +928,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -923,7 +954,7 @@ spec:
 	if len(result.Diffs) != 1 {
 		t.Fatalf("expected 1 diff for type change, got %d: %v", len(result.Diffs), result.Diffs)
 	}
-	if result.Diffs[0] != "[v1alpha1] field type changed: status.externalRef (string -> integer)" {
+	if result.Diffs[0] != "[v1beta1] field type changed: status.externalRef (string -> integer)" {
 		t.Errorf("unexpected diff: %q", result.Diffs[0])
 	}
 }
@@ -934,6 +965,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -942,7 +975,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -954,6 +987,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -962,7 +997,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -997,6 +1032,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -1004,7 +1041,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -1063,6 +1100,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -1070,7 +1109,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -1125,6 +1164,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -1132,7 +1173,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -1185,6 +1226,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -1220,6 +1263,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -1265,7 +1310,10 @@ spec:
 
 	result := compareBackwardCompatibility(old, new)
 
-	var expectedBlocked []string
+	expectedBlocked := []string{
+		"[v1beta1] field type changed: spec.count (integer -> int64)",
+		"[v1beta1] field type changed: spec.httpKeepAliveTimeoutSec (integer -> int32)",
+	}
 
 	if len(result.Diffs) != len(expectedBlocked) {
 		t.Fatalf("expected %d diffs, got %d: %v", len(expectedBlocked), len(result.Diffs), result.Diffs)
@@ -1277,8 +1325,6 @@ spec:
 	}
 
 	expectedNotes := []string{
-		"[v1beta1] field type changed: spec.count (integer -> int64) (allowed)",
-		"[v1beta1] field type changed: spec.httpKeepAliveTimeoutSec (integer -> int32) (allowed)",
 		"[v1beta1] field type changed: status.observedGeneration (integer -> int64) (allowed)",
 		"[v1beta1] field type changed: status.proxyId (integer -> int64) (allowed)",
 	}
@@ -1310,6 +1356,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -1317,7 +1365,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -1374,6 +1422,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -1381,7 +1431,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -1401,6 +1451,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -1408,7 +1460,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -1444,6 +1496,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -1451,7 +1505,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -1472,6 +1526,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -1479,7 +1535,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -1518,6 +1574,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -1525,7 +1583,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
@@ -1545,6 +1603,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: foos.example.com
+  labels:
+    cnrm.cloud.google.com/stability-level: stable
 spec:
   group: example.com
   names:
@@ -1552,7 +1612,7 @@ spec:
     plural: foos
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
     schema:
