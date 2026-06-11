@@ -327,11 +327,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 						forceDirect = true
 					}
 				}
-				// Exclude PrivateCA* from forceDirect, to be fixed in a separate issue.
-				if strings.HasPrefix(fixture.GVK.Kind, "PrivateCA") {
-					forceDirect = false
-				}
-
 				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
 					forceDirect = false // VCR tests don't like variable requests
 				}
