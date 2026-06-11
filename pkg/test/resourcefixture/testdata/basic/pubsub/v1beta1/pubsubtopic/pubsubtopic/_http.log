@@ -105,6 +105,12 @@ Content-Type: application/json
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "us-central1"
+    ],
+    "enforceInTransit": true
+  },
   "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
   "schemaSettings": {
     "encoding": 1,
@@ -127,6 +133,12 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
+  },
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "us-central1"
+    ],
+    "enforceInTransit": true
   },
   "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
   "schemaSettings": {
@@ -155,6 +167,12 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
+  },
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "us-central1"
+    ],
+    "enforceInTransit": true
   },
   "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
   "schemaSettings": {
@@ -177,13 +195,18 @@ Content-Type: application/json
       "newkey": "newval"
     },
     "messageRetentionDuration": "3600s",
+    "messageStoragePolicy": {
+      "allowedPersistenceRegions": [
+        "us-central1"
+      ]
+    },
     "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
     "schemaSettings": {
       "encoding": 1,
       "schema": "projects/${projectId}/schemas/pubsubschema-${uniqueId}"
     }
   },
-  "updateMask": "labels,messageRetentionDuration"
+  "updateMask": "labels,messageRetentionDuration,messageStoragePolicy"
 }
 
 200 OK
@@ -204,6 +227,11 @@ X-Xss-Protection: 0
     "newkey": "newval"
   },
   "messageRetentionDuration": "3600s",
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "us-central1"
+    ]
+  },
   "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
   "schemaSettings": {
     "encoding": 1,
@@ -234,6 +262,11 @@ X-Xss-Protection: 0
     "newkey": "newval"
   },
   "messageRetentionDuration": "3600s",
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "us-central1"
+    ]
+  },
   "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
   "schemaSettings": {
     "encoding": 1,

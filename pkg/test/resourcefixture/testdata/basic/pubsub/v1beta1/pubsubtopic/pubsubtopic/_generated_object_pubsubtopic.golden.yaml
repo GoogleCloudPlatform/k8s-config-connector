@@ -16,6 +16,10 @@ metadata:
   namespace: ${uniqueId}
 spec:
   messageRetentionDuration: 3600s
+  messageStoragePolicy:
+    allowedPersistenceRegions:
+    - us-central1
+    enforceInTransit: false
   schemaSettings:
     encoding: JSON
     schemaRef:
