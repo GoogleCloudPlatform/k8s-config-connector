@@ -23,7 +23,7 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
     - Both direct and legacy controllers are now automatically tested dynamically if a direct controller is available in `static_config.go` (under `SupportedControllers`), so there is no longer any need to manually modify `tests/e2e/unified_test.go`.
 
 3.  **Controller Structure & Patterns**:
-    - **Proto Format Desired State**: Convert the KRM Spec to its Proto representation once in `AdapterForObject` and store it as a proto struct pointer (e.g., `*pb.MyResource` or `desired`) in the adapter, rather than duplicating conversion logic in both `Create` and `Update`.
+    - **Proto Format Desired State**: Convert the KRM Spec to its Proto representation once in `AdapterForObject` and store it as a proto struct pointer (e.g., `*pb.MyResource` or `desired`) in the adapter, rather than duplicating conversion logic in both `Create` and `Update`. The adapter should avoid holding references to raw KRM objects for desired state to keep the interfaces clean, consistent with `actual` (which is also of proto type), and avoid redundant conversions.
     - **NormalizeReferences**: Always call `common.NormalizeReferences` in `AdapterForObject` to resolve any resource references:
       ```go
       if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
