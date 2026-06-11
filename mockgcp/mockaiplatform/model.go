@@ -41,7 +41,11 @@ type modelService struct {
 }
 
 func (s *modelService) UploadModel(ctx context.Context, req *pb.UploadModelRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/models/xia"
+	modelID := req.GetModelId()
+	if modelID == "" {
+		modelID = "xia"
+	}
+	reqName := req.Parent + "/models/" + modelID
 	name, err := s.parseModelName(reqName)
 	if err != nil {
 		return nil, err
@@ -68,11 +72,9 @@ func (s *modelService) UploadModel(ctx context.Context, req *pb.UploadModelReque
 	}
 	opPrefix := name.String()
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
-		// Many fields are not populated in the LRO result
-		result := proto.CloneOf(obj)
-		result.CreateTime = nil
-		result.UpdateTime = nil
-		return result, nil
+		return &pb.UploadModelResponse{
+			Model: fqn,
+		}, nil
 	})
 }
 
@@ -186,7 +188,7 @@ func (s *modelService) UpdateModel(ctx context.Context, req *pb.UpdateModelReque
 	}
 	for _, path := range paths {
 		switch path {
-		case "displayName":
+		case "displayName", "display_name":
 			obj.DisplayName = req.GetModel().GetDisplayName()
 		case "description":
 			obj.Description = req.GetModel().GetDescription()
@@ -200,7 +202,7 @@ func (s *modelService) UpdateModel(ctx context.Context, req *pb.UpdateModelReque
 	obj.VersionId = req.GetModel().GetVersionId()
 	obj.VersionAliases = req.GetModel().GetVersionAliases()
 	obj.VersionCreateTime = req.GetModel().GetVersionCreateTime()
-	obj.VersionUpdateTime = timestamppb.New(time.Now())
+	obj.VersionUpdateTime = timestamppb.New(time.Date(2024, 3, 24, 0, 0, 0, 0, time.UTC))
 	obj.UpdateTime = timestamppb.New(time.Now())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {

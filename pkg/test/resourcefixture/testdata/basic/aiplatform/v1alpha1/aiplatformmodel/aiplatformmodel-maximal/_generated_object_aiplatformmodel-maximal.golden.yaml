@@ -1,0 +1,52 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformModel
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: aiplatformmodel-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  artifactURI: gs://my-bucket/model-artifacts
+  containerSpec:
+    imageURI: us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-5:latest
+  description: An updated comprehensive Vertex AI model representation
+  displayName: Maximal Model Updated
+  explanationSpec:
+    parameters:
+      sampledShapleyAttribution:
+        pathCount: 5
+  labels:
+    env: staging
+    owner: devops-core
+  location: us-central1
+  metadata:
+    stringValue: my-metadata-string
+  metadataSchemaURI: projects/${projectId}/locations/us-central1/metadataSchemas/google.Model
+  pipelineJob: projects/${projectId}/locations/us-central1/pipelineJobs/my-pipeline-job
+  predictSchemata:
+    instanceSchemaURI: gs://my-bucket/instance_schema.yaml
+    parametersSchemaURI: gs://my-bucket/parameters_schema.yaml
+    predictionSchemaURI: gs://my-bucket/prediction_schema.yaml
+  projectRef:
+    external: ${projectId}
+  versionAliases:
+  - default
+  - v1
+  versionDescription: Initial version
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"
+    versionUpdateTime: "2024-03-24T00:00:00Z"

@@ -1,0 +1,177 @@
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = model "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/UploadModel
+
+{
+  "model": {
+    "displayName": "Minimal Model"
+  },
+  "modelId": "aiplatformmodel-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UploadModelOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UploadModelOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UploadModelResponse",
+    "model": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Model",
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Model",
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/UpdateModel
+
+{
+  "model": {
+    "displayName": "Minimal Model Updated",
+    "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+  },
+  "updateMask": "displayName"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Model Updated",
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionUpdateTime": "2024-03-24T00:00:00Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Model Updated",
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionUpdateTime": "2024-03-24T00:00:00Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Model Updated",
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionUpdateTime": "2024-03-24T00:00:00Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/DeleteModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

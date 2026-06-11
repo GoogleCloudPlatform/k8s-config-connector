@@ -6,7 +6,6 @@
 [missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.requireCorpOwned" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.requireScreenLock" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.requiredAccessLevels[]" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.baseModelSource.genieSource.baseModelURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.baseModelSource.modelGardenSource.publicModelName" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerSpec.args[]" is not set in unstructured objects
@@ -19,7 +18,6 @@
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerSpec.healthProbe.periodSeconds" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerSpec.healthProbe.timeoutSeconds" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerSpec.healthRoute" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerSpec.imageURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerSpec.ports[].containerPort" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerSpec.predictRoute" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerSpec.sharedMemorySizeMb" is not set in unstructured objects
@@ -32,8 +30,6 @@
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStats.trainingDataItemsCount" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStats.validationAnnotationsCount" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStats.validationDataItemsCount" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.featureAttributionsSchemaURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.inputs" is not set in unstructured objects
@@ -55,7 +51,6 @@
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.integratedGradientsAttribution.smoothGradConfig.noiseSigma" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.integratedGradientsAttribution.smoothGradConfig.noisySampleCount" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.integratedGradientsAttribution.stepCount" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.sampledShapleyAttribution.pathCount" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.topK" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.xraiAttribution.blurBaselineConfig.maxBlurSigma" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.xraiAttribution.smoothGradConfig.featureNoiseSigma.noiseSigma[].name" is not set in unstructured objects
@@ -63,21 +58,10 @@
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.xraiAttribution.smoothGradConfig.noiseSigma" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.xraiAttribution.smoothGradConfig.noisySampleCount" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.xraiAttribution.stepCount" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata.boolValue" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata.nullValue" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata.numberValue" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata.stringValue" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata.structValue" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataSchemaURI" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pipelineJob" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.instanceSchemaURI" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.parametersSchemaURI" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.predictionSchemaURI" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.versionAliases[]" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.versionDescription" is not set in unstructured objects
 [missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.redirectURI" is not set in unstructured objects
 [missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.regionCode" is not set in unstructured objects

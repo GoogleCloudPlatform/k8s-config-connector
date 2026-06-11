@@ -15,12 +15,20 @@
 package mockaiplatform
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "aiplatform.googleapis.com") {
+		return
+	}
+
+	replacements.ReplacePath(".versionUpdateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.versionUpdateTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

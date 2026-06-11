@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
+	v1pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
@@ -62,9 +63,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterMetadataServiceServer(grpcServer, &metadataStoreService{MockService: s})
 	pb.RegisterFeaturestoreServiceServer(grpcServer, &featurestoreService{MockService: s})
 	pb.RegisterModelServiceServer(grpcServer, &modelService{MockService: s})
+	v1pb.RegisterModelServiceServer(grpcServer, &modelServiceV1{MockService: s, v1beta1: &modelService{MockService: s}})
 	pb.RegisterNotebookServiceServer(grpcServer, &notebookService{MockService: s})
 	pb.RegisterScheduleServiceServer(grpcServer, &scheduleService{MockService: s})
-	pb.RegisterExampleStoreServiceServer(grpcServer, &exampleStoreService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -79,9 +80,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewMetadataServiceClient(conn))
 	mux.AddService(pb.NewFeaturestoreServiceClient(conn))
 	mux.AddService(pb.NewModelServiceClient(conn))
+	mux.AddService(v1pb.NewModelServiceClient(conn))
 	mux.AddService(pb.NewNotebookServiceClient(conn))
 	mux.AddService(pb.NewScheduleServiceClient(conn))
-	mux.AddService(pb.NewExampleStoreServiceClient(conn))
 
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/ui/{prefix=**}/operations/{name}", conn)

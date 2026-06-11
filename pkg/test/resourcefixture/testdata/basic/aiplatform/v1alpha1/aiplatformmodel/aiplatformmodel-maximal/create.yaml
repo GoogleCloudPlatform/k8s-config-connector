@@ -1,0 +1,32 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformModel
+metadata:
+  name: aiplatformmodel-${uniqueId}
+spec:
+  displayName: "Maximal Model"
+  description: "A comprehensive Vertex AI model representation"
+  versionDescription: "Initial version"
+  versionAliases:
+    - default
+    - v1
+  metadataSchemaURI: "projects/${projectId}/locations/us-central1/metadataSchemas/google.Model"
+  artifactURI: "gs://my-bucket/model-artifacts"
+  labels:
+    env: test
+    owner: devops
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  pipelineJob: "projects/${projectId}/locations/us-central1/pipelineJobs/my-pipeline-job"
+  metadata:
+    stringValue: "my-metadata-string"
+  predictSchemata:
+    instanceSchemaURI: "gs://my-bucket/instance_schema.yaml"
+    parametersSchemaURI: "gs://my-bucket/parameters_schema.yaml"
+    predictionSchemaURI: "gs://my-bucket/prediction_schema.yaml"
+  containerSpec:
+    imageURI: "us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-5:latest"
+  explanationSpec:
+    parameters:
+      sampledShapleyAttribution:
+        pathCount: 5
