@@ -131,6 +131,8 @@ func (r *kmsServer) UpdateCryptoKey(ctx context.Context, req *pb.UpdateCryptoKey
 		switch path {
 		case "labels":
 			obj.Labels = req.GetCryptoKey().GetLabels()
+		case "rotation_period":
+			obj.RotationSchedule = req.GetCryptoKey().GetRotationSchedule()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 		}

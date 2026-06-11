@@ -1,0 +1,172 @@
+64c64
+< GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+---
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+87c87
+< POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
+---
+> POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys?%24alt=json%3Benum-encoding%3Dint&cryptoKeyId=kmscryptokey-${uniqueId}
+96c96
+<   "purpose": "ASYMMETRIC_SIGN",
+---
+>   "purpose": 5,
+98,99c98,99
+<     "algorithm": "EC_SIGN_P384_SHA384",
+<     "protectionLevel": "SOFTWARE"
+---
+>     "algorithm": 13,
+>     "protectionLevel": 1
+123c123
+<     "algorithm": "EC_SIGN_P384_SHA384",
+---
+>     "algorithm": 13,
+127,128c127,128
+<     "protectionLevel": "SOFTWARE",
+<     "state": "ENABLED"
+---
+>     "protectionLevel": 1,
+>     "state": 1
+130c130
+<   "purpose": "ASYMMETRIC_SIGN",
+---
+>   "purpose": 5,
+132,133c132,133
+<     "algorithm": "EC_SIGN_P384_SHA384",
+<     "protectionLevel": "SOFTWARE"
+---
+>     "algorithm": 13,
+>     "protectionLevel": 1
+139c139
+< GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+---
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+162c162
+<     "algorithm": "EC_SIGN_P384_SHA384",
+---
+>     "algorithm": 13,
+166,167c166,167
+<     "protectionLevel": "SOFTWARE",
+<     "state": "ENABLED"
+---
+>     "protectionLevel": 1,
+>     "state": 1
+169c169
+<   "purpose": "ASYMMETRIC_SIGN",
+---
+>   "purpose": 5,
+171,172c171,172
+<     "algorithm": "EC_SIGN_P384_SHA384",
+<     "protectionLevel": "SOFTWARE"
+---
+>     "algorithm": 13,
+>     "protectionLevel": 1
+178c178,254
+< GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
+---
+> PATCH https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=destroyScheduledDuration%2Clabels
+> Content-Type: application/json
+> 
+> {
+>   "labels": {
+>     "cnrm-test": "true",
+>     "key-one": "value-two",
+>     "managed-by-cnrm": "true"
+>   },
+>   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+>   "purpose": 5,
+>   "versionTemplate": {
+>     "algorithm": 13,
+>     "protectionLevel": 1
+>   }
+> }
+> 
+> 500 Internal Server Error
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 500,
+>     "message": "field \"destroyScheduledDuration\" is not yet handled in mock"
+>   }
+> }
+> 
+> ---
+> 
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "destroyScheduledDuration": "2592000s",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "key-one": "value-one",
+>     "managed-by-cnrm": "true"
+>   },
+>   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+>   "primary": {
+>     "algorithm": 13,
+>     "createTime": "2024-04-01T12:34:56.123456Z",
+>     "generateTime": "2024-04-01T12:34:56.123456Z",
+>     "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+>     "protectionLevel": 1,
+>     "state": 1
+>   },
+>   "purpose": 5,
+>   "versionTemplate": {
+>     "algorithm": 13,
+>     "protectionLevel": 1
+>   }
+> }
+> 
+> ---
+> 
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+193c269
+<       "algorithm": "EC_SIGN_P384_SHA384",
+---
+>       "algorithm": 13,
+197,198c273,274
+<       "protectionLevel": "SOFTWARE",
+<       "state": "ENABLED"
+---
+>       "protectionLevel": 1,
+>       "state": 1
+206c282
+< POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
+---
+> POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?%24alt=json%3Benum-encoding%3Dint
+209c285,287
+< {}
+---
+> {
+>   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+> }
+222c300
+<   "algorithm": "EC_SIGN_P384_SHA384",
+---
+>   "algorithm": 13,
+227,228c305,306
+<   "protectionLevel": "SOFTWARE",
+<   "state": "DESTROY_SCHEDULED"
+---
+>   "protectionLevel": 1,
+>   "state": 4
