@@ -69,6 +69,7 @@ type DiscoveryEngineIdentityMappingStoreObservedState struct {
 	CmekConfig *CmekConfig `json:"cmekConfig,omitempty"`
 }
 
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/unverified-greenfield=true"
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdiscoveryengineidentitymappingstore;gcpdiscoveryengineidentitymappingstores

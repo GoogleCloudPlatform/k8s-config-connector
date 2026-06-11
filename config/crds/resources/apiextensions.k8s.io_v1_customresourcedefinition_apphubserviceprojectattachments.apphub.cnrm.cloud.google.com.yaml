@@ -9,6 +9,7 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/unverified-greenfield: "true"
   name: apphubserviceprojectattachments.apphub.cnrm.cloud.google.com
 spec:
   group: apphub.cnrm.cloud.google.com

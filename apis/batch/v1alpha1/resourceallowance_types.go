@@ -82,6 +82,7 @@ type CloudBatchResourceAllowanceObservedState struct {
 	UsageResourceAllowance *UsageResourceAllowanceObservedState `json:"usageResourceAllowance,omitempty"`
 }
 
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/unverified-greenfield=true"
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcloudbatchresourceallowance;gcpcloudbatchresourceallowances
