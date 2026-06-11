@@ -29,7 +29,10 @@ var (
 	_ identity.Resource   = &DNSResponsePolicy{}
 )
 
-var DNSResponsePolicyIdentityFormat = gcpurls.Template[DNSResponsePolicyIdentity]("dns.googleapis.com", "projects/{project}/locations/{location}/responsePolicies/{responsePolicy}")
+var (
+	DNSResponsePolicyIdentityFormat         = gcpurls.Template[DNSResponsePolicyIdentity]("dns.googleapis.com", "projects/{project}/locations/{location}/responsePolicies/{responsePolicy}")
+	DNSResponsePolicyIdentityFallbackFormat = gcpurls.Template[DNSResponsePolicyIdentity]("dns.googleapis.com", "projects/{project}/responsePolicies/{responsePolicy}")
+)
 
 // DNSResponsePolicyIdentity is the identity of a GCP DNSResponsePolicy.
 // +k8s:deepcopy-gen=false
@@ -40,24 +43,30 @@ type DNSResponsePolicyIdentity struct {
 }
 
 func (i *DNSResponsePolicyIdentity) String() string {
-	return DNSResponsePolicyIdentityFormat.ToString(*i)
+	if i.Location != "" {
+		return DNSResponsePolicyIdentityFormat.ToString(*i)
+	}
+	return DNSResponsePolicyIdentityFallbackFormat.ToString(*i)
 }
 
 func (i *DNSResponsePolicyIdentity) FromExternal(ref string) error {
-	parsed, match, err := DNSResponsePolicyIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of DNSResponsePolicy external=%q was not known (use %s): %w", ref, DNSResponsePolicyIdentityFormat.CanonicalForm(), err)
+	if parsed, match, err := DNSResponsePolicyIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	} else if err != nil {
+		return err
 	}
-	if !match {
-		return fmt.Errorf("format of DNSResponsePolicy external=%q was not known (use %s)", ref, DNSResponsePolicyIdentityFormat.CanonicalForm())
+	if parsed, match, err := DNSResponsePolicyIdentityFallbackFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	} else if err != nil {
+		return err
 	}
-
-	*i = *parsed
-	return nil
+	return fmt.Errorf("format of DNSResponsePolicy external=%q was not known (use %s or %s)", ref, DNSResponsePolicyIdentityFormat.CanonicalForm(), DNSResponsePolicyIdentityFallbackFormat.CanonicalForm())
 }
 
 func (i *DNSResponsePolicyIdentity) Host() string {
-	return "dns.googleapis.com"
+	return DNSResponsePolicyIdentityFormat.Host()
 }
 
 func getIdentityFromDNSResponsePolicySpec(ctx context.Context, reader client.Reader, obj *DNSResponsePolicy) (*DNSResponsePolicyIdentity, error) {

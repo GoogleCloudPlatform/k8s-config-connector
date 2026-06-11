@@ -37,9 +37,13 @@ func TestDNSResponsePolicyIdentity_FromExternal(t *testing.T) {
 			},
 		},
 		{
-			name:    "invalid reference format (without location)",
-			ref:     "projects/my-project/responsePolicies/my-responsepolicy",
-			wantErr: true,
+			name: "valid reference (without location)",
+			ref:  "projects/my-project/responsePolicies/my-responsepolicy",
+			want: &DNSResponsePolicyIdentity{
+				Project:        "my-project",
+				Location:       "",
+				ResponsePolicy: "my-responsepolicy",
+			},
 		},
 		{
 			name:    "invalid reference format",
