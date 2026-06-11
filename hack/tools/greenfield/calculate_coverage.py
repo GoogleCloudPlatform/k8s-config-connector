@@ -367,10 +367,9 @@ def main():
     
     # Generate Gap Analysis Table for tracking
     gap_file = os.path.join(os.path.dirname(__file__), "gap_analysis.txt")
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     analysis_lines = [
-        f"Gap Analysis Snapshot - {now}",
+        f"Gap Analysis Snapshot",
         f"GoogleAPIs SHA: {googleapis_sha}",
         f"KCC SHA:        {kcc_sha}",
         "-" * 55,
