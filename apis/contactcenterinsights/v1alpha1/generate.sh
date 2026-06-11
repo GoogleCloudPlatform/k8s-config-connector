@@ -26,7 +26,9 @@ go run . generate-types \
   --service google.cloud.contactcenterinsights.v1 \
   --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1 \
   --resource CCInsightsView:View \
-  --prune-unused-types=false
+  --resource CCInsightsPhraseMatcher:PhraseMatcher \
+  --prune-unused-types=false \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
