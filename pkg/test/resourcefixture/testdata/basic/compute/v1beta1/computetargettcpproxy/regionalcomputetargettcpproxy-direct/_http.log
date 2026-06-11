@@ -1,3 +1,32 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/targetTcpProxies/${targetTcpProxyID}
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/targetTcpProxies/${targetTcpProxyID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/targetTcpProxies/${targetTcpProxyID}' was not found"
+  }
+}
+
+---
+
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 
@@ -17,11 +46,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "healthCheck \"projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}\" not found",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "healthCheck \"projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}\" not found"
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}' was not found"
   }
 }
 
@@ -132,6 +161,35 @@ X-Xss-Protection: 0
   "timeoutSec": 5,
   "type": "TCP",
   "unhealthyThreshold": 2
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/targetTcpProxies/${targetTcpProxyID}
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/targetTcpProxies/${targetTcpProxyID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/targetTcpProxies/${targetTcpProxyID}' was not found"
+  }
 }
 
 ---
@@ -477,110 +535,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/${backendServiceID}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "affinityCookieTtlSec": 0,
-  "connectionDraining": {
-    "drainingTimeoutSec": 0
-  },
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
-  "fingerprint": "abcdef0123A=",
-  "healthChecks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}"
-  ],
-  "iap": {
-    "enabled": false,
-    "oauth2ClientId": "",
-    "oauth2ClientSecret": ""
-  },
-  "id": "000000000000000000000",
-  "kind": "compute#backendService",
-  "loadBalancingScheme": "INTERNAL_MANAGED",
-  "name": "${backendServiceID}",
-  "protocol": "TCP",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/${backendServiceID}",
-  "sessionAffinity": "NONE",
-  "timeoutSec": 30
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/${backendServiceID}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${backendServiceID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/${backendServiceID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${backendServiceID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/${backendServiceID}",
-  "user": "user@example.com"
-}
-
----
-
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 
@@ -645,6 +599,48 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/${backendServiceID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "affinityCookieTtlSec": 0,
+  "connectionDraining": {
+    "drainingTimeoutSec": 0
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "fingerprint": "abcdef0123A=",
+  "healthChecks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}"
+  ],
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "${backendServiceID}",
+  "protocol": "TCP",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
+}
+
+---
+
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
@@ -671,5 +667,67 @@ X-Xss-Protection: 0
   "status": "DONE",
   "targetId": "${healthCheckID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}",
+  "user": "user@example.com"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/${backendServiceID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }

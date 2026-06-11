@@ -1,0 +1,29 @@
+559a560,587
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}?alt=json
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "description": "Another target gRPC proxy intended for load balancing gRPC traffic, referenced by global forwarding rules. References a URL map which specifies how traffic routes to gRPC backend services.",
+>   "fingerprint": "abcdef0123A=",
+>   "id": "000000000000000000000",
+>   "kind": "compute#targetGrpcProxy",
+>   "name": "${targetGrpcProxyID}",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
+>   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
+>   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
+>   "validateForProxyless": true
+> }
+> 
+> ---
+> 

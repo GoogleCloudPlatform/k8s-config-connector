@@ -1,55 +1,356 @@
-429c429
+0a1,29
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
+> Content-Type: application/json
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found"
+>   }
+> }
+> 
+> ---
+> 
+134a164,192
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
+> Content-Type: application/json
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found"
+>   }
+> }
+> 
+> ---
+> 
+282,351d339
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found"
+<   }
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "affinityCookieTtlSec": 0,
+<   "connectionDraining": {
+<     "drainingTimeoutSec": 300
+<   },
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "",
+<   "fingerprint": "abcdef0123A=",
+<   "healthChecks": [
+<     "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}"
+<   ],
+<   "iap": {
+<     "enabled": false,
+<     "oauth2ClientId": "",
+<     "oauth2ClientSecret": ""
+<   },
+<   "id": "000000000000000000000",
+<   "kind": "compute#backendService",
+<   "loadBalancingScheme": "EXTERNAL",
+<   "name": "${backendServiceID}",
+<   "protocol": "TCP",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+<   "sessionAffinity": "NONE",
+<   "timeoutSec": 30
+< }
+< 
+< ---
+< 
+470c458
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-458c458
+499c487
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies
-464c464
+505c493
 <   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
 ---
 >   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
-494c494,495
+535c523,524
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-524c525
+565c554
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-544c545
+585c574
 <   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
 ---
 >   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
-549c550
+590c579
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}/setBackendService?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}/setBackendService
-553c554
+594c583
 <   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
 ---
 >   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
-583c584,585
+624c613,614
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-613c615
+654c644
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-633c635
+674c664
 <   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
 ---
 >   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
-638c640
+679c669
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-668c670,671
+709c699,700
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
+738a730,761
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "checkIntervalSec": 10,
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "healthyThreshold": 2,
+>   "id": "000000000000000000000",
+>   "kind": "compute#healthCheck",
+>   "name": "${healthCheckID}",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+>   "tcpHealthCheck": {
+>     "port": 443,
+>     "proxyHeader": "NONE"
+>   },
+>   "timeoutSec": 5,
+>   "type": "TCP",
+>   "unhealthyThreshold": 2
+> }
+> 
+> ---
+> 
+780c803
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
+794,796d816
+<   "checkIntervalSec": 10,
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "healthyThreshold": 2,
+798,807c818,828
+<   "kind": "compute#healthCheck",
+<   "name": "${healthCheckID}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+<   "tcpHealthCheck": {
+<     "port": 443,
+<     "proxyHeader": "NONE"
+<   },
+<   "timeoutSec": 5,
+<   "type": "TCP",
+<   "unhealthyThreshold": 2
+---
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "delete",
+>   "progress": 0,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "RUNNING",
+>   "targetId": "${healthCheckID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+>   "user": "user@example.com"
+842c863,864
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+> Content-Type: application/json
+855c877,891
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+---
+>   "affinityCookieTtlSec": 0,
+>   "connectionDraining": {
+>     "drainingTimeoutSec": 300
+>   },
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "description": "",
+>   "fingerprint": "abcdef0123A=",
+>   "healthChecks": [
+>     "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}"
+>   ],
+>   "iap": {
+>     "enabled": false,
+>     "oauth2ClientId": "",
+>     "oauth2ClientSecret": ""
+>   },
+857,867c893,899
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "delete",
+<   "progress": 100,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${backendServiceID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+<   "user": "user@example.com"
+---
+>   "kind": "compute#backendService",
+>   "loadBalancingScheme": "EXTERNAL",
+>   "name": "${backendServiceID}",
+>   "protocol": "TCP",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+>   "sessionAffinity": "NONE",
+>   "timeoutSec": 30
+872,873c904
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
+< Content-Type: application/json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+885a917
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+891c923
+<   "progress": 0,
+---
+>   "progress": 100,
+894c926
+<   "status": "RUNNING",
+---
+>   "status": "DONE",
+925,926c957,958
+<   "targetId": "${healthCheckID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+---
+>   "targetId": "${backendServiceID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+928,968d959
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "affinityCookieTtlSec": 0,
+<   "connectionDraining": {
+<     "drainingTimeoutSec": 300
+<   },
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "",
+<   "fingerprint": "abcdef0123A=",
+<   "healthChecks": [
+<     "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}"
+<   ],
+<   "iap": {
+<     "enabled": false,
+<     "oauth2ClientId": "",
+<     "oauth2ClientSecret": ""
+<   },
+<   "id": "000000000000000000000",
+<   "kind": "compute#backendService",
+<   "loadBalancingScheme": "EXTERNAL",
+<   "name": "${backendServiceID}",
+<   "protocol": "TCP",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+<   "sessionAffinity": "NONE",
+<   "timeoutSec": 30

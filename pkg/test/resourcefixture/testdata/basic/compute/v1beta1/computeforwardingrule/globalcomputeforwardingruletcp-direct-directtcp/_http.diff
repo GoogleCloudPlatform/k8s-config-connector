@@ -1,0 +1,129 @@
+1644,1673d1643
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "delete",
+<   "progress": 100,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${healthCheckID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+1715,1716c1685
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+< Content-Type: application/json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+1729,1731c1698
+<   "address": "8.8.8.8",
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "a test global address",
+---
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+1733,1740c1700,1710
+<   "kind": "compute#address",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "name": "${addressID}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
+---
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "delete",
+>   "progress": 100,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "DONE",
+>   "targetId": "${healthCheckID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+>   "user": "user@example.com"
+1775c1745
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+1788a1759,1788
+>   "address": "8.8.8.8",
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "description": "a test global address",
+>   "id": "000000000000000000000",
+>   "kind": "compute#address",
+>   "labelFingerprint": "abcdef0123A=",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "name": "${addressID}",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
+> }
+> 
+> ---
+> 
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+1794c1794
+<   "progress": 0,
+---
+>   "progress": 100,
+1797,1799c1797,1799
+<   "status": "RUNNING",
+<   "targetId": "${addressID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+---
+>   "status": "DONE",
+>   "targetId": "${backendServiceID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+1805c1805,1806
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+> Content-Type: application/json
+1818d1818
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+1824c1824
+<   "progress": 100,
+---
+>   "progress": 0,
+1827,1829c1827,1829
+<   "status": "DONE",
+<   "targetId": "${backendServiceID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>   "status": "RUNNING",
+>   "targetId": "${addressID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",

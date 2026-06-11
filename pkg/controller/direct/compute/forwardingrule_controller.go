@@ -473,7 +473,12 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	if old != nil {
 		status["conditions"] = old["conditions"]
 		status["observedGeneration"] = old["observedGeneration"]
-		status["externalRef"] = old["externalRef"]
+		if status["externalRef"] == nil && old["externalRef"] != nil {
+			status["externalRef"] = old["externalRef"]
+		}
+	}
+	if status["externalRef"] == nil {
+		delete(status, "externalRef")
 	}
 
 	u.Object["status"] = status

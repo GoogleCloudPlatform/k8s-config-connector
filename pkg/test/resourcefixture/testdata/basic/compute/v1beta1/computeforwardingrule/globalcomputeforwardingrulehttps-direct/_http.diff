@@ -1,0 +1,958 @@
+0a1,58
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
+> Content-Type: application/json
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "sslCertificate \"projects/${projectId}/global/sslCertificates/${sslCertificateID}\" not found",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "sslCertificate \"projects/${projectId}/global/sslCertificates/${sslCertificateID}\" not found"
+>   }
+> }
+> 
+> ---
+> 
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
+> Content-Type: application/json
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found"
+>   }
+> }
+> 
+> ---
+> 
+58a117,207
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates?alt=json
+> Content-Type: application/json
+> 
+> {
+>   "certificate": "-----BEGIN CERTIFICATE-----\nMIIDJTCCAg0CFHdD3ZGYMCmF3O4PvMwsP5i8d/V0MA0GCSqGSIb3DQEBCwUAME8x\nCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJXQTEhMB8GA1UECgwYSW50ZXJuZXQgV2lk\nZ2l0cyBQdHkgTHRkMRAwDgYDVQQDDAdFeGFtcGxlMB4XDTE5MDkyOTIyMjgyOVoX\nDTIwMDkyODIyMjgyOVowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMSEwHwYD\nVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxEDAOBgNVBAMMB0V4YW1wbGUw\nggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDWLvOZIail12i6NXIqOspV\ncorkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE+AF9\nuUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU+LCuHPLSN0ruqD6ZygnYDVciDmYwxe\n601xNfOOYRlm6dGRx6uTxGDZtfu8zsaNI0UxTugTp2x5cKB66SbgdlIJvc2Hb54a\n7qOsb9CIf+rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn+yFfN9MHNdcTWPXEUClE\nFxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ+Imscud\nAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAMYTQyjVlo6TCYoyK6akjPX7vRiwCCAh\njqsEu3bZqwUreOhZgRAyEXrq68dtXwTbwdisQmnhpBeBQuX4WWeas9TiycZ13TA1\nZ+h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS\nJD+uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy+goMAEVi0K3Y1wVzAF4k\nO4v8f7GXkNarsFT1QM82JboVV5uwX+uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3\n95/RDisBzcL7Ynpl34AAr5MLm7yCSsPrAmgevX4BOtcVc4rSXj5rcoE=\n-----END CERTIFICATE-----\n",
+>   "name": "${sslCertificateID}",
+>   "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7\nO5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo\n6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7\nvM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD\nMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ\nYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay\n64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY\nbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK\nh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm\nfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr\nt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ\ncR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE\nmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy\ne2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk\nKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW\nILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA\nSGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx\nMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2\nBR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+\nfPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9\n6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+\n7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4\nR3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob\nhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+\nVtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=\n-----END RSA PRIVATE KEY-----\n"
+> }
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "id": "000000000000000000000",
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "insert",
+>   "progress": 0,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "RUNNING",
+>   "targetId": "${sslCertificateID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
+>   "user": "user@example.com"
+> }
+> 
+> ---
+> 
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+>   "id": "000000000000000000000",
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "insert",
+>   "progress": 100,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "DONE",
+>   "targetId": "${sslCertificateID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
+>   "user": "user@example.com"
+> }
+> 
+> ---
+> 
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "certificate": "-----BEGIN CERTIFICATE-----\nMIIDJTCCAg0CFHdD3ZGYMCmF3O4PvMwsP5i8d/V0MA0GCSqGSIb3DQEBCwUAME8x\nCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJXQTEhMB8GA1UECgwYSW50ZXJuZXQgV2lk\nZ2l0cyBQdHkgTHRkMRAwDgYDVQQDDAdFeGFtcGxlMB4XDTE5MDkyOTIyMjgyOVoX\nDTIwMDkyODIyMjgyOVowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMSEwHwYD\nVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxEDAOBgNVBAMMB0V4YW1wbGUw\nggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDWLvOZIail12i6NXIqOspV\ncorkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE+AF9\nuUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU+LCuHPLSN0ruqD6ZygnYDVciDmYwxe\n601xNfOOYRlm6dGRx6uTxGDZtfu8zsaNI0UxTugTp2x5cKB66SbgdlIJvc2Hb54a\n7qOsb9CIf+rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn+yFfN9MHNdcTWPXEUClE\nFxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ+Imscud\nAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAMYTQyjVlo6TCYoyK6akjPX7vRiwCCAh\njqsEu3bZqwUreOhZgRAyEXrq68dtXwTbwdisQmnhpBeBQuX4WWeas9TiycZ13TA1\nZ+h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS\nJD+uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy+goMAEVi0K3Y1wVzAF4k\nO4v8f7GXkNarsFT1QM82JboVV5uwX+uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3\n95/RDisBzcL7Ynpl34AAr5MLm7yCSsPrAmgevX4BOtcVc4rSXj5rcoE=\n-----END CERTIFICATE-----\n",
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "id": "000000000000000000000",
+>   "kind": "compute#sslCertificate",
+>   "name": "${sslCertificateID}",
+>   "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7\nO5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo\n6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7\nvM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD\nMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ\nYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay\n64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY\nbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK\nh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm\nfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr\nt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ\ncR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE\nmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy\ne2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk\nKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW\nILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA\nSGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx\nMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2\nBR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+\nfPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9\n6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+\n7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4\nR3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob\nhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+\nVtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=\n-----END RSA PRIVATE KEY-----\n",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
+> }
+> 
+> ---
+> 
+158,186d306
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "sslCertificate \"projects/${projectId}/global/sslCertificates/${sslCertificateID}\" not found",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "sslCertificate \"projects/${projectId}/global/sslCertificates/${sslCertificateID}\" not found"
+<   }
+< }
+< 
+< ---
+< 
+251,279d370
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found"
+<   }
+< }
+< 
+< ---
+< 
+387c478
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
+401c492
+<   "address": "8.8.8.8",
+---
+>   "certificate": "-----BEGIN CERTIFICATE-----\nMIIDJTCCAg0CFHdD3ZGYMCmF3O4PvMwsP5i8d/V0MA0GCSqGSIb3DQEBCwUAME8x\nCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJXQTEhMB8GA1UECgwYSW50ZXJuZXQgV2lk\nZ2l0cyBQdHkgTHRkMRAwDgYDVQQDDAdFeGFtcGxlMB4XDTE5MDkyOTIyMjgyOVoX\nDTIwMDkyODIyMjgyOVowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMSEwHwYD\nVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxEDAOBgNVBAMMB0V4YW1wbGUw\nggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDWLvOZIail12i6NXIqOspV\ncorkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE+AF9\nuUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU+LCuHPLSN0ruqD6ZygnYDVciDmYwxe\n601xNfOOYRlm6dGRx6uTxGDZtfu8zsaNI0UxTugTp2x5cKB66SbgdlIJvc2Hb54a\n7qOsb9CIf+rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn+yFfN9MHNdcTWPXEUClE\nFxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ+Imscud\nAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAMYTQyjVlo6TCYoyK6akjPX7vRiwCCAh\njqsEu3bZqwUreOhZgRAyEXrq68dtXwTbwdisQmnhpBeBQuX4WWeas9TiycZ13TA1\nZ+h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS\nJD+uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy+goMAEVi0K3Y1wVzAF4k\nO4v8f7GXkNarsFT1QM82JboVV5uwX+uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3\n95/RDisBzcL7Ynpl34AAr5MLm7yCSsPrAmgevX4BOtcVc4rSXj5rcoE=\n-----END CERTIFICATE-----\n",
+403d493
+<   "description": "a test global address",
+405,421c495
+<   "kind": "compute#address",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "name": "${addressID}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
+< }
+< 
+< ---
+< 
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates?alt=json
+< Content-Type: application/json
+< 
+< {
+<   "certificate": "-----BEGIN CERTIFICATE-----\nMIIDJTCCAg0CFHdD3ZGYMCmF3O4PvMwsP5i8d/V0MA0GCSqGSIb3DQEBCwUAME8x\nCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJXQTEhMB8GA1UECgwYSW50ZXJuZXQgV2lk\nZ2l0cyBQdHkgTHRkMRAwDgYDVQQDDAdFeGFtcGxlMB4XDTE5MDkyOTIyMjgyOVoX\nDTIwMDkyODIyMjgyOVowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMSEwHwYD\nVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxEDAOBgNVBAMMB0V4YW1wbGUw\nggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDWLvOZIail12i6NXIqOspV\ncorkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE+AF9\nuUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU+LCuHPLSN0ruqD6ZygnYDVciDmYwxe\n601xNfOOYRlm6dGRx6uTxGDZtfu8zsaNI0UxTugTp2x5cKB66SbgdlIJvc2Hb54a\n7qOsb9CIf+rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn+yFfN9MHNdcTWPXEUClE\nFxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ+Imscud\nAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAMYTQyjVlo6TCYoyK6akjPX7vRiwCCAh\njqsEu3bZqwUreOhZgRAyEXrq68dtXwTbwdisQmnhpBeBQuX4WWeas9TiycZ13TA1\nZ+h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS\nJD+uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy+goMAEVi0K3Y1wVzAF4k\nO4v8f7GXkNarsFT1QM82JboVV5uwX+uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3\n95/RDisBzcL7Ynpl34AAr5MLm7yCSsPrAmgevX4BOtcVc4rSXj5rcoE=\n-----END CERTIFICATE-----\n",
+---
+>   "kind": "compute#sslCertificate",
+423,478c497,498
+<   "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7\nO5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo\n6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7\nvM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD\nMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ\nYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay\n64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY\nbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK\nh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm\nfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr\nt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ\ncR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE\nmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy\ne2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk\nKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW\nILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA\nSGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx\nMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2\nBR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+\nfPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9\n6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+\n7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4\nR3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob\nhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+\nVtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=\n-----END RSA PRIVATE KEY-----\n"
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "insert",
+<   "progress": 0,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${sslCertificateID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "insert",
+<   "progress": 100,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${sslCertificateID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
+<   "user": "user@example.com"
+---
+>   "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7\nO5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo\n6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7\nvM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD\nMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ\nYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay\n64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY\nbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK\nh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm\nfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr\nt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ\ncR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE\nmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy\ne2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk\nKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW\nILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA\nSGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx\nMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2\nBR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+\nfPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9\n6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+\n7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4\nR3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob\nhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+\nVtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=\n-----END RSA PRIVATE KEY-----\n",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
+483c503
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+497c517
+<   "certificate": "-----BEGIN CERTIFICATE-----\nMIIDJTCCAg0CFHdD3ZGYMCmF3O4PvMwsP5i8d/V0MA0GCSqGSIb3DQEBCwUAME8x\nCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJXQTEhMB8GA1UECgwYSW50ZXJuZXQgV2lk\nZ2l0cyBQdHkgTHRkMRAwDgYDVQQDDAdFeGFtcGxlMB4XDTE5MDkyOTIyMjgyOVoX\nDTIwMDkyODIyMjgyOVowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMSEwHwYD\nVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxEDAOBgNVBAMMB0V4YW1wbGUw\nggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDWLvOZIail12i6NXIqOspV\ncorkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE+AF9\nuUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU+LCuHPLSN0ruqD6ZygnYDVciDmYwxe\n601xNfOOYRlm6dGRx6uTxGDZtfu8zsaNI0UxTugTp2x5cKB66SbgdlIJvc2Hb54a\n7qOsb9CIf+rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn+yFfN9MHNdcTWPXEUClE\nFxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ+Imscud\nAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAMYTQyjVlo6TCYoyK6akjPX7vRiwCCAh\njqsEu3bZqwUreOhZgRAyEXrq68dtXwTbwdisQmnhpBeBQuX4WWeas9TiycZ13TA1\nZ+h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS\nJD+uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy+goMAEVi0K3Y1wVzAF4k\nO4v8f7GXkNarsFT1QM82JboVV5uwX+uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3\n95/RDisBzcL7Ynpl34AAr5MLm7yCSsPrAmgevX4BOtcVc4rSXj5rcoE=\n-----END CERTIFICATE-----\n",
+---
+>   "address": "8.8.8.8",
+498a519
+>   "description": "a test global address",
+500,503c521,528
+<   "kind": "compute#sslCertificate",
+<   "name": "${sslCertificateID}",
+<   "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7\nO5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo\n6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7\nvM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD\nMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ\nYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay\n64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY\nbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK\nh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm\nfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr\nt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ\ncR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE\nmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy\ne2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk\nKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW\nILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA\nSGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx\nMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2\nBR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+\nfPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9\n6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+\n7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4\nR3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob\nhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+\nVtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=\n-----END RSA PRIVATE KEY-----\n",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
+---
+>   "kind": "compute#address",
+>   "labelFingerprint": "abcdef0123A=",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "name": "${addressID}",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
+541,565d565
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "certificate": "-----BEGIN CERTIFICATE-----\nMIIDJTCCAg0CFHdD3ZGYMCmF3O4PvMwsP5i8d/V0MA0GCSqGSIb3DQEBCwUAME8x\nCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJXQTEhMB8GA1UECgwYSW50ZXJuZXQgV2lk\nZ2l0cyBQdHkgTHRkMRAwDgYDVQQDDAdFeGFtcGxlMB4XDTE5MDkyOTIyMjgyOVoX\nDTIwMDkyODIyMjgyOVowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMSEwHwYD\nVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxEDAOBgNVBAMMB0V4YW1wbGUw\nggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDWLvOZIail12i6NXIqOspV\ncorkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE+AF9\nuUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU+LCuHPLSN0ruqD6ZygnYDVciDmYwxe\n601xNfOOYRlm6dGRx6uTxGDZtfu8zsaNI0UxTugTp2x5cKB66SbgdlIJvc2Hb54a\n7qOsb9CIf+rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn+yFfN9MHNdcTWPXEUClE\nFxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ+Imscud\nAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAMYTQyjVlo6TCYoyK6akjPX7vRiwCCAh\njqsEu3bZqwUreOhZgRAyEXrq68dtXwTbwdisQmnhpBeBQuX4WWeas9TiycZ13TA1\nZ+h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS\nJD+uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy+goMAEVi0K3Y1wVzAF4k\nO4v8f7GXkNarsFT1QM82JboVV5uwX+uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3\n95/RDisBzcL7Ynpl34AAr5MLm7yCSsPrAmgevX4BOtcVc4rSXj5rcoE=\n-----END CERTIFICATE-----\n",
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "kind": "compute#sslCertificate",
+<   "name": "${sslCertificateID}",
+<   "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7\nO5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo\n6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7\nvM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD\nMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ\nYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay\n64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY\nbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK\nh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm\nfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr\nt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ\ncR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE\nmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy\ne2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk\nKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW\nILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA\nSGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx\nMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2\nBR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+\nfPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9\n6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+\n7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4\nR3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob\nhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+\nVtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=\n-----END RSA PRIVATE KEY-----\n",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
+< }
+< 
+< ---
+< 
+838,866d837
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found"
+<   }
+< }
+< 
+< ---
+< 
+977,1001c948
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+<   "id": "000000000000000000000",
+<   "kind": "compute#urlMap",
+<   "name": "computeurlmap-${uniqueId}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
+1004c951
+< 200 OK
+---
+> 404 Not Found
+1015,1020c962,972
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+<   "id": "000000000000000000000",
+<   "kind": "compute#urlMap",
+<   "name": "computeurlmap-2-${uniqueId}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
+---
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found"
+>   }
+1054c1006
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+1057c1009
+< 404 Not Found
+---
+> 200 OK
+1068,1078c1020,1025
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found"
+<   }
+---
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+>   "id": "000000000000000000000",
+>   "kind": "compute#urlMap",
+>   "name": "computeurlmap-${uniqueId}",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+1083c1030
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}?alt=json
+1086c1033
+< 404 Not Found
+---
+> 200 OK
+1097,1107c1044,1049
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "targetHttpsProxy \"projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}\" not found",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "targetHttpsProxy \"projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}\" not found"
+<   }
+---
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+>   "id": "000000000000000000000",
+>   "kind": "compute#urlMap",
+>   "name": "computeurlmap-2-${uniqueId}",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
+1116c1058
+<   "description": "test description",
+---
+>   "description": "another test description",
+1197c1139
+<   "description": "test description",
+---
+>   "description": "another test description",
+1211a1154,1211
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+> Content-Type: application/json
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "targetHttpsProxy \"projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}\" not found",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "targetHttpsProxy \"projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}\" not found"
+>   }
+> }
+> 
+> ---
+> 
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
+> Content-Type: application/json
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found"
+>   }
+> }
+> 
+> ---
+> 
+1216c1216
+<   "description": "another test description",
+---
+>   "description": "test description",
+1297,1326d1296
+<   "description": "another test description",
+<   "fingerprint": "abcdef0123A=",
+<   "id": "000000000000000000000",
+<   "kind": "compute#targetHttpsProxy",
+<   "name": "${targetHttpsProxyID}",
+<   "quicOverride": "DISABLE",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
+<   "sslCertificates": [
+<     "https://www.googleapis.com/compute/beta/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
+<   ],
+<   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+1342,1371d1311
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "another test description",
+<   "fingerprint": "abcdef0123A=",
+<   "id": "000000000000000000000",
+<   "kind": "compute#targetHttpsProxy",
+<   "name": "${targetHttpsProxyID}",
+<   "quicOverride": "DISABLE",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
+<   "sslCertificates": [
+<     "https://www.googleapis.com/compute/beta/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
+<   ],
+<   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+< }
+< 
+< ---
+< 
+1878c1818
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+1892d1831
+<   "certificate": "-----BEGIN CERTIFICATE-----\nMIIDJTCCAg0CFHdD3ZGYMCmF3O4PvMwsP5i8d/V0MA0GCSqGSIb3DQEBCwUAME8x\nCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJXQTEhMB8GA1UECgwYSW50ZXJuZXQgV2lk\nZ2l0cyBQdHkgTHRkMRAwDgYDVQQDDAdFeGFtcGxlMB4XDTE5MDkyOTIyMjgyOVoX\nDTIwMDkyODIyMjgyOVowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMSEwHwYD\nVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxEDAOBgNVBAMMB0V4YW1wbGUw\nggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDWLvOZIail12i6NXIqOspV\ncorkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE+AF9\nuUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU+LCuHPLSN0ruqD6ZygnYDVciDmYwxe\n601xNfOOYRlm6dGRx6uTxGDZtfu8zsaNI0UxTugTp2x5cKB66SbgdlIJvc2Hb54a\n7qOsb9CIf+rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn+yFfN9MHNdcTWPXEUClE\nFxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ+Imscud\nAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAMYTQyjVlo6TCYoyK6akjPX7vRiwCCAh\njqsEu3bZqwUreOhZgRAyEXrq68dtXwTbwdisQmnhpBeBQuX4WWeas9TiycZ13TA1\nZ+h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS\nJD+uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy+goMAEVi0K3Y1wVzAF4k\nO4v8f7GXkNarsFT1QM82JboVV5uwX+uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3\n95/RDisBzcL7Ynpl34AAr5MLm7yCSsPrAmgevX4BOtcVc4rSXj5rcoE=\n-----END CERTIFICATE-----\n",
+1893a1833,1834
+>   "description": "test description",
+>   "fingerprint": "abcdef0123A=",
+1895,1898c1836,1843
+<   "kind": "compute#sslCertificate",
+<   "name": "${sslCertificateID}",
+<   "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7\nO5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo\n6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7\nvM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD\nMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ\nYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay\n64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY\nbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK\nh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm\nfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr\nt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ\ncR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE\nmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy\ne2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk\nKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW\nILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA\nSGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx\nMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2\nBR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+\nfPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9\n6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+\n7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4\nR3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob\nhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+\nVtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=\n-----END RSA PRIVATE KEY-----\n",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
+---
+>   "kind": "compute#targetHttpsProxy",
+>   "name": "${targetHttpsProxyID}",
+>   "quicOverride": "DISABLE",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
+>   "sslCertificates": [
+>     "https://www.googleapis.com/compute/beta/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
+>   ],
+>   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+1903c1848
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+1926,1927c1871,1872
+<   "targetId": "${sslCertificateID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
+---
+>   "targetId": "${targetHttpsProxyID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
+1933,1934c1878
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+< Content-Type: application/json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+1947,1949c1891
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "test description",
+<   "fingerprint": "abcdef0123A=",
+---
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+1951,1958c1893,1903
+<   "kind": "compute#targetHttpsProxy",
+<   "name": "${targetHttpsProxyID}",
+<   "quicOverride": "DISABLE",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
+<   "sslCertificates": [
+<     "https://www.googleapis.com/compute/beta/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
+<   ],
+<   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+---
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "delete",
+>   "progress": 100,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "DONE",
+>   "targetId": "${targetHttpsProxyID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
+>   "user": "user@example.com"
+1963c1908,1909
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
+> Content-Type: application/json
+1976c1922,1923
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+---
+>   "certificate": "-----BEGIN CERTIFICATE-----\nMIIDJTCCAg0CFHdD3ZGYMCmF3O4PvMwsP5i8d/V0MA0GCSqGSIb3DQEBCwUAME8x\nCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJXQTEhMB8GA1UECgwYSW50ZXJuZXQgV2lk\nZ2l0cyBQdHkgTHRkMRAwDgYDVQQDDAdFeGFtcGxlMB4XDTE5MDkyOTIyMjgyOVoX\nDTIwMDkyODIyMjgyOVowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMSEwHwYD\nVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxEDAOBgNVBAMMB0V4YW1wbGUw\nggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDWLvOZIail12i6NXIqOspV\ncorkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE+AF9\nuUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU+LCuHPLSN0ruqD6ZygnYDVciDmYwxe\n601xNfOOYRlm6dGRx6uTxGDZtfu8zsaNI0UxTugTp2x5cKB66SbgdlIJvc2Hb54a\n7qOsb9CIf+rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn+yFfN9MHNdcTWPXEUClE\nFxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ+Imscud\nAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAMYTQyjVlo6TCYoyK6akjPX7vRiwCCAh\njqsEu3bZqwUreOhZgRAyEXrq68dtXwTbwdisQmnhpBeBQuX4WWeas9TiycZ13TA1\nZ+h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS\nJD+uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy+goMAEVi0K3Y1wVzAF4k\nO4v8f7GXkNarsFT1QM82JboVV5uwX+uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3\n95/RDisBzcL7Ynpl34AAr5MLm7yCSsPrAmgevX4BOtcVc4rSXj5rcoE=\n-----END CERTIFICATE-----\n",
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+1978,1988c1925,1928
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "delete",
+<   "progress": 100,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${sslCertificateID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
+<   "user": "user@example.com"
+---
+>   "kind": "compute#sslCertificate",
+>   "name": "${sslCertificateID}",
+>   "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7\nO5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo\n6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7\nvM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD\nMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ\nYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay\n64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY\nbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK\nh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm\nfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr\nt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ\ncR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE\nmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy\ne2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk\nKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW\nILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA\nSGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx\nMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2\nBR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+\nfPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9\n6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+\n7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4\nR3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob\nhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+\nVtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=\n-----END RSA PRIVATE KEY-----\n",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
+1993c1933
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
+2016,2017c1956,1957
+<   "targetId": "${targetHttpsProxyID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
+---
+>   "targetId": "${sslCertificateID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
+2046,2047c1986,1987
+<   "targetId": "${targetHttpsProxyID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
+---
+>   "targetId": "${sslCertificateID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
+2077c2017
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+2090a2031,2033
+>   "address": "8.8.8.8",
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "description": "a test global address",
+2092,2098c2035,2042
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "progress": 0,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE"
+---
+>   "kind": "compute#address",
+>   "labelFingerprint": "abcdef0123A=",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "name": "${addressID}",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
+2103c2047
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}?alt=json
+2117,2131d2060
+<   "affinityCookieTtlSec": 0,
+<   "connectionDraining": {
+<     "drainingTimeoutSec": 300
+<   },
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "",
+<   "fingerprint": "abcdef0123A=",
+<   "healthChecks": [
+<     "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}"
+<   ],
+<   "iap": {
+<     "enabled": false,
+<     "oauth2ClientId": "",
+<     "oauth2ClientSecret": ""
+<   },
+2133,2138c2062,2068
+<   "kind": "compute#backendService",
+<   "loadBalancingScheme": "EXTERNAL",
+<   "name": "${backendServiceID}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+<   "sessionAffinity": "NONE",
+<   "timeoutSec": 30
+---
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "progress": 0,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "DONE"
+2176c2106
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+2190,2191d2119
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+2193,2195c2121,2131
+<   "kind": "compute#urlMap",
+<   "name": "computeurlmap-${uniqueId}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+---
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "delete",
+>   "progress": 0,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "RUNNING",
+>   "targetId": "${addressID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+>   "user": "user@example.com"
+2200,2201c2136
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+< Content-Type: application/json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+2213a2149
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+2219c2155
+<   "progress": 0,
+---
+>   "progress": 100,
+2222,2224c2158,2160
+<   "status": "RUNNING",
+<   "targetId": "${backendServiceID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>   "status": "DONE",
+>   "targetId": "${addressID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+2290c2226,2227
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+> Content-Type: application/json
+2303c2240,2254
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+---
+>   "affinityCookieTtlSec": 0,
+>   "connectionDraining": {
+>     "drainingTimeoutSec": 300
+>   },
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "description": "",
+>   "fingerprint": "abcdef0123A=",
+>   "healthChecks": [
+>     "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}"
+>   ],
+>   "iap": {
+>     "enabled": false,
+>     "oauth2ClientId": "",
+>     "oauth2ClientSecret": ""
+>   },
+2305,2315c2256,2261
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "delete",
+<   "progress": 100,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${backendServiceID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+<   "user": "user@example.com"
+---
+>   "kind": "compute#backendService",
+>   "loadBalancingScheme": "EXTERNAL",
+>   "name": "${backendServiceID}",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+>   "sessionAffinity": "NONE",
+>   "timeoutSec": 30
+2320c2266
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+2337a2284
+>   "operationType": "delete",
+2341c2288,2291
+<   "status": "DONE"
+---
+>   "status": "RUNNING",
+>   "targetId": "${backendServiceID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+>   "user": "user@example.com"
+2346,2347c2296
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+< Content-Type: application/json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+2360,2362c2309
+<   "address": "8.8.8.8",
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "a test global address",
+---
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+2364,2371c2311,2321
+<   "kind": "compute#address",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "name": "${addressID}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
+---
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "delete",
+>   "progress": 100,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "DONE",
+>   "targetId": "${backendServiceID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+>   "user": "user@example.com"
+2376c2326
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+2389a2340,2341
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+2391,2401c2343,2345
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "delete",
+<   "progress": 0,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${addressID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+<   "user": "user@example.com"
+---
+>   "kind": "compute#urlMap",
+>   "name": "computeurlmap-${uniqueId}",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+2406c2350,2351
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+> Content-Type: application/json
+2419d2363
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+2424,2425c2368
+<   "operationType": "delete",
+<   "progress": 100,
+---
+>   "progress": 0,
+2428,2431c2371
+<   "status": "DONE",
+<   "targetId": "${addressID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+<   "user": "user@example.com"
+---
+>   "status": "DONE"
