@@ -265,17 +265,21 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 
 	op := &gcp.Operation{}
 	updated := &computepb.ForwardingRule{}
-	if !reflect.DeepEqual(forwardingRule.AllowGlobalAccess, a.actual.AllowGlobalAccess) {
-		report.AddField("allow_global_access", a.actual.AllowGlobalAccess, forwardingRule.AllowGlobalAccess)
-		// To match the request body in TF-controller log
-		// https://github.com/hashicorp/terraform-provider-google/blob/main/google/services/compute/resource_compute_forwarding_rule.go#L1151
-		reqBody := &computepb.ForwardingRule{AllowGlobalAccess: forwardingRule.AllowGlobalAccess}
-		if a.id.ParentID.Location == "global" {
-			// TF does not support allowGlobalAccess field for global forwarding rule
-			// Underlying API as well, error message: `Field allow-global-access is only supported for regional INTERNAL
-			// forwarding rules with backend service/target instance or regional INTERNAL_MANAGED forwarding rules.`
-			forwardingRule.AllowGlobalAccess = nil
-		} else {
+	desiredAllowGlobalAccess := false
+	if forwardingRule.AllowGlobalAccess != nil {
+		desiredAllowGlobalAccess = *forwardingRule.AllowGlobalAccess
+	}
+	actualAllowGlobalAccess := false
+	if a.actual.AllowGlobalAccess != nil {
+		actualAllowGlobalAccess = *a.actual.AllowGlobalAccess
+	}
+
+	if desiredAllowGlobalAccess != actualAllowGlobalAccess {
+		if a.id.ParentID.Location != "global" {
+			report.AddField("allow_global_access", a.actual.AllowGlobalAccess, forwardingRule.AllowGlobalAccess)
+			// To match the request body in TF-controller log
+			// https://github.com/hashicorp/terraform-provider-google/blob/main/google/services/compute/resource_compute_forwarding_rule.go#L1151
+			reqBody := &computepb.ForwardingRule{AllowGlobalAccess: &desiredAllowGlobalAccess}
 			patchReq := &computepb.PatchForwardingRuleRequest{
 				ForwardingRule:         a.id.ResourceID,
 				ForwardingRuleResource: reqBody,
@@ -283,21 +287,25 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 				Region:                 a.id.ParentID.Location,
 			}
 			op, err = a.forwardingRulesClient.Patch(ctx, patchReq)
+			if err != nil {
+				return fmt.Errorf("updating ComputeForwardingRule %s: %w", a.id, err)
+			}
+			err = op.Wait(ctx)
+			if err != nil {
+				return fmt.Errorf("waiting ComputeForwardingRule %s update failed: %w", a.id, err)
+			}
+			log.V(2).Info("successfully updated ComputeForwardingRule", "name", a.id)
 		}
-		if err != nil {
-			return fmt.Errorf("updating ComputeForwardingRule %s: %w", a.id, err)
-		}
-		err = op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("waiting ComputeForwardingRule %s update failed: %w", a.id, err)
-		}
-		log.V(2).Info("successfully updated ComputeForwardingRule", "name", a.id)
 	}
 
 	// Use setTarget and setLabels to update target and labels fields.
-	if !reflect.DeepEqual(forwardingRule.Labels, a.actual.Labels) {
+	if !mapsEqual(forwardingRule.Labels, a.actual.Labels) {
 		report.AddField("labels", a.actual.Labels, forwardingRule.Labels)
-		op, err := a.setLabels(ctx, a.actual.LabelFingerprint, forwardingRule.Labels)
+		labelsToSend := forwardingRule.Labels
+		if labelsToSend == nil {
+			labelsToSend = make(map[string]string)
+		}
+		op, err := a.setLabels(ctx, a.actual.LabelFingerprint, labelsToSend)
 		if err != nil {
 			return fmt.Errorf("updating ComputeForwardingRule labels %s: %w", a.id, err)
 		}
@@ -479,4 +487,11 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	u.Object["status"] = status
 
 	return nil
+}
+
+func mapsEqual(a, b map[string]string) bool {
+	if len(a) == 0 && len(b) == 0 {
+		return true
+	}
+	return reflect.DeepEqual(a, b)
 }
