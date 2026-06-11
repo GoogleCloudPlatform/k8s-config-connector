@@ -30,7 +30,7 @@ var _ refs.Ref = &DNSResponsePolicyRef{}
 
 // DNSResponsePolicyRef is a reference to a DNSResponsePolicy.
 type DNSResponsePolicyRef struct {
-	// A reference to an externally managed DNSResponsePolicy resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/responsePolicies/{{responsePolicy}}".
+	// A reference to an externally managed DNSResponsePolicy resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/responsePolicies/{{responsePolicy}}" or "projects/{{projectID}}/responsePolicies/{{responsePolicy}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DNSResponsePolicy resource.
