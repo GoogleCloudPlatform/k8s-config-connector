@@ -32,6 +32,7 @@ import (
 	apigatewayv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigateway/v1beta1"
 	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1alpha1"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1beta1"
+	apigeeregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigeeregistry/v1alpha1"
 	apihubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apihub/v1alpha1"
 	apikeysv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/appengine/v1alpha1"
@@ -222,6 +223,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	apigatewayv1beta1.AddToScheme,
 	apigeev1alpha1.AddToScheme,
 	apigeev1beta1.AddToScheme,
+	apigeeregistryv1alpha1.AddToScheme,
 	apihubv1alpha1.AddToScheme,
 	apikeysv1alpha1.AddToScheme,
 	appenginev1alpha1.AddToScheme,
