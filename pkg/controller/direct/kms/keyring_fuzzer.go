@@ -35,7 +35,6 @@ func KMSKeyRingFuzzer() fuzztesting.KRMFuzzer {
 
 	f.StatusField(".name")
 
-	f.Unimplemented_Identity(".name")
 	f.Unimplemented_NotYetTriaged(".create_time")
 
 	return f

@@ -62,10 +62,12 @@ That skill will guide you through:
 - Registering the direct package in `pkg/controller/direct/register/register.go` (CRITICAL).
 
 ### 2. Run and Debug the Fuzzer
-After following the `create-fuzzer` instructions, run the fuzz test:
+After following the `create-fuzzer` instructions, run the fuzz test centrally:
 ```bash
 go test -v -count=1 -timeout=20m ./pkg/fuzztesting/fuzztests/...
 ```
+**CRITICAL / DO NOT**: Never create any individual unit test files (such as `*_fuzzer_test.go`) for specific fuzzers inside direct controller directories. All fuzzers are executed via the central fuzz testing suite (`pkg/fuzztesting/fuzztests/...`).
+
 **If it fails with a `diff`:**
 - Analyze the diff to see which field lost data.
 - If the data loss is in a supported field, fix your mapping logic in `<kind>_mapper.go`.
