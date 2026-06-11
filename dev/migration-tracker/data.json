@@ -93,7 +93,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -143,7 +143,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -196,7 +196,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -220,7 +220,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -246,7 +246,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -301,7 +301,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -351,7 +351,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -402,7 +402,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -735,7 +735,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -789,7 +789,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -924,7 +924,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -950,7 +950,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -976,7 +976,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -1054,7 +1054,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -1210,7 +1210,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -1566,7 +1566,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 495,
+    "sortOrder": 493,
     "downstreamCount": 4
   },
   {
@@ -1883,7 +1883,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 494,
+    "sortOrder": 495,
     "downstreamCount": 4
   },
   {
@@ -2331,7 +2331,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -2355,7 +2355,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -2566,7 +2566,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 493,
+    "sortOrder": 494,
     "downstreamCount": 0
   },
   {
@@ -2688,7 +2688,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -2895,7 +2895,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -3023,7 +3023,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -3102,7 +3102,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -3422,7 +3422,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -3450,7 +3450,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -3746,7 +3746,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -3772,7 +3772,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -3856,7 +3856,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -3882,7 +3882,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -4760,7 +4760,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -4982,7 +4982,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -5058,7 +5058,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -5085,7 +5085,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -5135,7 +5135,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -5592,7 +5592,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -5695,7 +5695,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -5726,7 +5726,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -5931,7 +5931,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -6011,7 +6011,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -6090,7 +6090,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -6116,7 +6116,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -6458,7 +6458,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -6803,7 +6803,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -7219,7 +7219,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -7245,7 +7245,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -7271,7 +7271,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,

@@ -241,6 +241,7 @@ def parse_data(config_file_path, apis_dir, crds_dir):
             res['dependencies'] = sorted(valid_deps)
 
         if kind in implemented_types:
+            res['steps']['gen-types'] = True
             has_reference = False
             for filepath in implemented_types[kind]:
                 dirpath = os.path.dirname(filepath)
