@@ -67,14 +67,14 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 126,
     "downstreamCount": 0
   },
@@ -94,7 +94,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -144,7 +144,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -197,14 +197,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 131,
     "downstreamCount": 0
   },
@@ -221,14 +221,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 132,
     "downstreamCount": 0
   },
@@ -247,14 +247,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 133,
     "downstreamCount": 0
   },
@@ -302,14 +302,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 135,
     "downstreamCount": 0
   },
@@ -352,7 +352,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -403,7 +403,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -578,14 +578,14 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 151,
     "downstreamCount": 0
   },
@@ -790,14 +790,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 174,
     "downstreamCount": 0
   },
@@ -845,14 +845,14 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 81,
     "downstreamCount": 1
   },
@@ -872,14 +872,14 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 176,
     "downstreamCount": 0
   },
@@ -925,7 +925,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -951,7 +951,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -977,14 +977,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 182,
     "downstreamCount": 0
   },
@@ -1055,14 +1055,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 187,
     "downstreamCount": 0
   },
@@ -2117,7 +2117,7 @@
     "state": "In Progress",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -2332,14 +2332,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 236,
     "downstreamCount": 0
   },
@@ -2689,14 +2689,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 248,
     "downstreamCount": 0
   },
@@ -2896,7 +2896,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -3103,7 +3103,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -3451,14 +3451,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 60,
     "downstreamCount": 2
   },
@@ -3614,14 +3614,14 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 91,
     "downstreamCount": 1
   },
@@ -3747,7 +3747,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -3773,7 +3773,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -3829,14 +3829,14 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 276,
     "downstreamCount": 0
   },
@@ -3857,14 +3857,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 277,
     "downstreamCount": 0
   },
@@ -4761,7 +4761,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -5136,7 +5136,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -5593,7 +5593,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -5696,14 +5696,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 371,
     "downstreamCount": 0
   },
@@ -5727,14 +5727,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 373,
     "downstreamCount": 0
   },
@@ -5756,14 +5756,14 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 374,
     "downstreamCount": 0
   },
@@ -5932,7 +5932,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -6012,14 +6012,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 387,
     "downstreamCount": 0
   },
@@ -6091,7 +6091,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -6117,7 +6117,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -6459,7 +6459,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -6536,14 +6536,14 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 68,
     "downstreamCount": 2
   },
@@ -6646,7 +6646,7 @@
     "state": "In Progress",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -6750,14 +6750,14 @@
     "state": "In Progress",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": false,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 19,
     "downstreamCount": 8
   },
@@ -6804,7 +6804,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -7167,7 +7167,7 @@
     "state": "In Progress",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -7220,14 +7220,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 114,
     "downstreamCount": 1
   },
@@ -7246,14 +7246,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 448,
     "downstreamCount": 0
   },
@@ -7272,7 +7272,7 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -7402,14 +7402,14 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 72,
     "downstreamCount": 2
   },
@@ -7428,7 +7428,7 @@
     "state": "In Progress",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,

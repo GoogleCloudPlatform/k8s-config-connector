@@ -243,12 +243,27 @@ def parse_data(config_file_path, apis_dir, crds_dir):
         if kind in implemented_types:
             has_reference = False
             for filepath in implemented_types[kind]:
-                ref_filepath = filepath.replace("_types.go", "_reference.go")
-                if os.path.exists(ref_filepath):
-                    has_reference = True
+                dirpath = os.path.dirname(filepath)
+                filename = os.path.basename(filepath)
+                prefix = filename.replace("_types.go", "")
+                
+                possible_names = [
+                    f"{prefix}_reference.go",
+                    f"{kind.lower()}_reference.go",
+                ]
+                
+                for name in possible_names:
+                    if os.path.exists(os.path.join(dirpath, name)):
+                        has_reference = True
+                        break
+                if has_reference:
                     break
             
-            if not has_reference:
+            if has_reference:
+                res['steps']['identity-reference'] = True
+                if res.get('notes') == 'Missing _reference.go':
+                    res['notes'] = ''
+            else:
                 res['notes'] = 'Missing _reference.go'
                 res['steps']['identity-reference'] = False
 
