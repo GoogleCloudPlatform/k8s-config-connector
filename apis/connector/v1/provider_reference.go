@@ -24,8 +24,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ProviderRef{}
 
-// ProviderRef defines the resource reference to Provider, which "External" field
-// holds the GCP identifier for the KRM object.
+// ProviderRef is a reference to a Provider.
 type ProviderRef struct {
 	// A reference to an externally managed EventarcChannel resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/channels/{{channelID}}".

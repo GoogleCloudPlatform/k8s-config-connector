@@ -32,7 +32,7 @@ go run . generate-types \
 go run . generate-mapper \
   --service google.cloud.redis.cluster.v1 \
   --api-version redis.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --include-skipped-output \
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

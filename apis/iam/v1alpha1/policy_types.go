@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -24,6 +25,17 @@ var IAMDenyPolicyGVK = GroupVersion.WithKind("IAMDenyPolicy")
 // IAMDenyPolicySpec defines the desired state of IAMDenyPolicy
 // +kcc:spec:proto=google.iam.v2.Policy
 type IAMDenyPolicySpec struct {
+	// The project that this resource belongs to.
+	// +optional
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
+
+	// The folder that this resource belongs to.
+	// +optional
+	FolderRef *refs.FolderRef `json:"folderRef,omitempty"`
+
+	// The organization that this resource belongs to.
+	// +optional
+	OrganizationRef *refs.OrganizationRef `json:"organizationRef,omitempty"`
 	// The IAMDenyPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 

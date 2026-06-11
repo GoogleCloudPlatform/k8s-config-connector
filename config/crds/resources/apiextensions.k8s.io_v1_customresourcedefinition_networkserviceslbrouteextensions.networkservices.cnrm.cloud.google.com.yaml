@@ -304,9 +304,7 @@ spec:
                   rule is required. Only one LBRouteExtension resource can be associated
                   with a forwarding rule.
                 items:
-                  description: ForwardingRuleRef defines the resource reference to
-                    ComputeForwardingRule, which "External" field holds the GCP identifier
-                    for the KRM object.
+                  description: ForwardingRuleRef is a reference to a ComputeForwardingRule.
                   oneOf:
                   - not:
                       required:

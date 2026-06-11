@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -39,6 +40,10 @@ type ComputeReservationSpec struct {
 	// Immutable. When set to true, only VMs that target this reservation by name can consume this reservation. Otherwise, it can be consumed by VMs with affinity for any reservation. Defaults to false.
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.specific_reservation_required
 	SpecificReservationRequired *bool `json:"specificReservationRequired,omitempty"`
+
+	// The share setting for reservations and sole tenancy node groups.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.share_settings
+	ShareSettings *ShareSettings `json:"shareSettings,omitempty"`
 
 	// Immutable. The zone where the reservation is made.
 	// +required
@@ -188,4 +193,31 @@ type ComputeReservationList struct {
 
 func init() {
 	SchemeBuilder.Register(&ComputeReservation{}, &ComputeReservationList{})
+}
+
+// +kcc:proto=google.cloud.compute.v1.ShareSettings
+type ShareSettings struct {
+	// A map of key(i.e. project or other shared resources) and associated project config. This is only valid when shareType's value is SPECIFIC_PROJECTS.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_map
+	ProjectMap []ShareSettingsProjectMap `json:"projectMap,omitempty"`
+
+	// Immutable. Type of sharing for this shared-reservation
+	//  Check the ShareType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.share_type
+	ShareType *string `json:"shareType,omitempty"`
+}
+
+type ShareSettingsProjectMap struct {
+	// +required
+	KeyRef *refsv1beta1.ExtendedProjectRef `json:"keyRef"`
+
+	Value *ShareSettingsProjectConfig `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ShareSettingsProjectConfig
+type ShareSettingsProjectConfig struct {
+	// The project ID, should be same as the key of this project config in the
+	//  parent map.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
+	ProjectIDRef *refsv1beta1.ProjectRef `json:"projectIDRef,omitempty"`
 }

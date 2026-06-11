@@ -27,11 +27,17 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.logging.v2 \
     --api-version "logging.cnrm.cloud.google.com/v1beta1" \
-    --resource LoggingLink:Link
+    --include-skipped-output \
+    --resource LoggingLink:Link \
+    --resource LoggingLogView:LogView \
+    --resource LoggingLogBucket:LogBucket \
+    --resource LoggingLogExclusion:LogExclusion \
+    --resource LoggingLogSink:LogSink
 
 go run . generate-mapper \
     --service google.logging.v2 \
-    --api-version "logging.cnrm.cloud.google.com/v1beta1"
+    --api-version "logging.cnrm.cloud.google.com/v1beta1" \
+    --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

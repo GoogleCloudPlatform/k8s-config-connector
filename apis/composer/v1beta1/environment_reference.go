@@ -27,8 +27,7 @@ import (
 var _ refsv1beta1.Ref = &EnvironmentRef{}
 var _ refsv1beta1.ExternalRef = &EnvironmentRef{}
 
-// EnvironmentRef defines the resource reference to ComposerEnvironment, which "External" field
-// holds the GCP identifier for the KRM object.
+// EnvironmentRef is a reference to a ComposerEnvironment.
 type EnvironmentRef struct {
 	// A reference to an externally managed ComposerEnvironment resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/environments/{{environmentID}}".
@@ -58,6 +57,8 @@ func (r *EnvironmentRef) GetExternal() string {
 
 func (r *EnvironmentRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *EnvironmentRef) ValidateExternal(ref string) error {

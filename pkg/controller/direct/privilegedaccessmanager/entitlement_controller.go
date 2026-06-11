@@ -36,7 +36,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -80,50 +79,11 @@ func (m *entitlementModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Get ResourceID
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	container, err := oneOfContainer(ctx, reader, obj,
-		obj.Spec.ProjectRef,
-		obj.Spec.FolderRef,
-		obj.Spec.OrganizationRef)
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
-		return nil, fmt.Errorf("error resolving 'obj.Spec.ProjectRef', "+
-			"'obj.Spec.FolderRef' and 'obj.Spec.OrganizationRef': %w", err)
+		return nil, err
 	}
-
-	// Get location
-	location := *obj.Spec.Location
-
-	var id *PrivilegedAccessManagerEntitlementIdentity
-	externalRef := direct.ValueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id = BuildID(container, location, resourceID)
-	} else {
-		id, err = asID(externalRef)
-		if err != nil {
-			return nil, err
-		}
-
-		if id.Parent.Container != container {
-			return nil, fmt.Errorf("PrivilegedAccessManagerEntitlement %s/%s has parent container changed, expected %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Container, container)
-		}
-		if id.Parent.Location != location {
-			return nil, fmt.Errorf("PrivilegedAccessManagerEntitlement %s/%s has spec.location changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Location, location)
-		}
-		if id.Entitlement != resourceID {
-			return nil, fmt.Errorf("PrivilegedAccessManagerEntitlement %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Entitlement, resourceID)
-		}
-	}
+	id := identity.(*krm.PrivilegedAccessManagerEntitlementIdentity)
 
 	if obj.Spec.RequesterJustificationConfig.NotMandatory == nil && obj.Spec.RequesterJustificationConfig.Unstructured == nil {
 		return nil, fmt.Errorf("one and only one of 'spec.requesterJustificationConfig.notMandatory' " +
@@ -146,75 +106,13 @@ func (m *entitlementModel) AdapterForObject(ctx context.Context, op *directbase.
 	}, nil
 }
 
-func checkExactlyOneOf(values ...interface{}) (bool, interface{}) {
-	numOfNonNil := 0
-	var nonNilVal interface{}
-	for _, value := range values {
-		if value != nil && !reflect.ValueOf(value).IsNil() {
-			numOfNonNil++
-			nonNilVal = value
-		}
-	}
-	if numOfNonNil != 1 {
-		return false, nil
-	}
-	return true, nonNilVal
-}
-
-func oneOfContainer(ctx context.Context, reader client.Reader, obj *krm.PrivilegedAccessManagerEntitlement, projectRef *refs.ProjectRef, folderRef *refs.FolderRef, organizationRef *refs.OrganizationRef) (string, error) {
-	hasExactlyOneContainer, containerRef := checkExactlyOneOf(projectRef, folderRef, organizationRef)
-	if !hasExactlyOneContainer {
-		return "", fmt.Errorf("exactly one of 'projectRef', 'folderRef' "+
-			"or 'organizationRef' must be set, but got projectRef: %+v, folderRef: %+v, organizationRef: %+v",
-			projectRef, folderRef, organizationRef)
-	}
-
-	container := ""
-	switch containerRef.(type) {
-	case *refs.ProjectRef:
-		project, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), projectRef)
-		if err != nil {
-			return "", err
-		}
-		projectID := project.ProjectID
-		if projectID == "" {
-			return "", fmt.Errorf("cannot resolve project: project ID is empty")
-		}
-		container = fmt.Sprintf("projects/%s", projectID)
-	case *refs.FolderRef:
-		folder, err := refs.ResolveFolder(ctx, reader, obj, folderRef)
-		if err != nil {
-			return "", err
-		}
-		folderID := folder.FolderID
-		if folderID == "" {
-			return "", fmt.Errorf("cannot resolve folder: folder ID is empty")
-		}
-		container = fmt.Sprintf("folders/%s", folderID)
-	case *refs.OrganizationRef:
-		organization, err := refs.ResolveOrganization(ctx, reader, obj, organizationRef)
-		if err != nil {
-			return "", err
-		}
-		organizationID := organization.OrganizationID
-		if organizationID == "" {
-			return "", fmt.Errorf("cannot resolve organization: organization ID is empty")
-		}
-		container = fmt.Sprintf("organizations/%s", organizationID)
-	default:
-		return "", fmt.Errorf("unexpected ref type %T", containerRef)
-	}
-
-	return container, nil
-}
-
 func (m *entitlementModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
 	return nil, nil
 }
 
 type Adapter struct {
-	id        *PrivilegedAccessManagerEntitlementIdentity
+	id        *krm.PrivilegedAccessManagerEntitlementIdentity
 	gcpClient *gcp.Client
 	desired   *krm.PrivilegedAccessManagerEntitlement
 	actual    *privilegedaccessmanagerpb.Entitlement
@@ -267,7 +165,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resourceType, resource, err := getResourceTypeAndResourceFromContainer(a.id.Parent.Container)
+	resourceType, resource, err := getResourceTypeAndResourceFromContainer(a.id.Container())
 	if err != nil {
 		return fmt.Errorf("error getting resourceType and resource from container: %w", err)
 	}
@@ -278,7 +176,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 
 	req := &privilegedaccessmanagerpb.CreateEntitlementRequest{
-		Parent:        a.id.Parent.String(),
+		Parent:        a.id.ParentString(),
 		EntitlementId: a.id.Entitlement,
 		Entitlement:   entitlement,
 	}
@@ -375,7 +273,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	structuredreporting.ReportDiff(ctx, report)
 
 	desired := a.desired.DeepCopy()
-	resourceType, resource, err := getResourceTypeAndResourceFromContainer(a.id.Parent.Container)
+	resourceType, resource, err := getResourceTypeAndResourceFromContainer(a.id.Container())
 	if err != nil {
 		return fmt.Errorf("error getting resourceType and resource from container: %w", err)
 	}
@@ -434,15 +332,17 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	if strings.HasPrefix(a.id.Parent.Container, "projects") {
-		obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent.Container}
-	} else if strings.HasPrefix(a.id.Parent.Container, "folders") {
-		obj.Spec.FolderRef = &refs.FolderRef{External: a.id.Parent.Container}
+	if strings.HasPrefix(a.id.Container(), "projects/") {
+		obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Container()}
+	} else if strings.HasPrefix(a.id.Container(), "folders/") {
+		obj.Spec.FolderRef = &refs.FolderRef{External: a.id.Container()}
+	} else if strings.HasPrefix(a.id.Container(), "organizations/") {
+		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: a.id.Container()}
 	} else {
-		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: a.id.Parent.Container}
+		return nil, fmt.Errorf("invalid container format for %q", a.id.Container())
 	}
 
-	obj.Spec.Location = &a.id.Parent.Location
+	obj.Spec.Location = &a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

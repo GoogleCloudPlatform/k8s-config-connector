@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &EntryTypeRef{}
 
-// EntryTypeRef defines the resource reference to DataplexEntryType, which "External" field
-// holds the GCP identifier for the KRM object.
+// EntryTypeRef is a reference to a DataplexEntryType.
 type EntryTypeRef struct {
 	// A reference to an externally managed DataplexEntryType resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/entryTypes/{{entrytypeID}}".
@@ -62,6 +61,8 @@ func (r *EntryTypeRef) GetExternal() string {
 
 func (r *EntryTypeRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *EntryTypeRef) ValidateExternal(ref string) error {

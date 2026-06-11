@@ -18,5 +18,1453 @@
 // krm.version: v1beta1
 // proto.service: google.dataflow.v1beta3
 // resource: DataflowFlexTemplateJob:FlexTemplateRuntimeEnvironment
+// resource: DataflowJob:Job
 
 package v1beta1
+
+/* unreachable type AutoscalingSettings
+// +kcc:proto=google.dataflow.v1beta3.AutoscalingSettings
+type AutoscalingSettings struct {
+	// The algorithm to use for autoscaling.
+	// +kcc:proto:field=google.dataflow.v1beta3.AutoscalingSettings.algorithm
+	Algorithm *string `json:"algorithm,omitempty"`
+
+	// The maximum number of workers to cap scaling at.
+	// +kcc:proto:field=google.dataflow.v1beta3.AutoscalingSettings.max_num_workers
+	MaxNumWorkers *int32 `json:"maxNumWorkers,omitempty"`
+}
+*/
+
+/* unreachable type BigQueryIoDetails
+// +kcc:proto=google.dataflow.v1beta3.BigQueryIODetails
+type BigQueryIoDetails struct {
+	// Table accessed in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.BigQueryIODetails.table
+	Table *string `json:"table,omitempty"`
+
+	// Dataset accessed in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.BigQueryIODetails.dataset
+	Dataset *string `json:"dataset,omitempty"`
+
+	// Project accessed in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.BigQueryIODetails.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Query used to access data in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.BigQueryIODetails.query
+	Query *string `json:"query,omitempty"`
+}
+*/
+
+/* unreachable type BigTableIoDetails
+// +kcc:proto=google.dataflow.v1beta3.BigTableIODetails
+type BigTableIoDetails struct {
+	// ProjectId accessed in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.BigTableIODetails.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// InstanceId accessed in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.BigTableIODetails.instance_id
+	InstanceID *string `json:"instanceID,omitempty"`
+
+	// TableId accessed in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.BigTableIODetails.table_id
+	TableID *string `json:"tableID,omitempty"`
+}
+*/
+
+/* unreachable type DataSamplingConfig
+// +kcc:proto=google.dataflow.v1beta3.DataSamplingConfig
+type DataSamplingConfig struct {
+	// List of given sampling behaviors to enable. For example, specifying
+	//  behaviors = [ALWAYS_ON] samples in-flight elements but does not sample
+	//  exceptions. Can be used to specify multiple behaviors like,
+	//  behaviors = [ALWAYS_ON, EXCEPTIONS] for specifying periodic sampling and
+	//  exception sampling.
+	//
+	//  If DISABLED is in the list, then sampling will be disabled and ignore the
+	//  other given behaviors.
+	//
+	//  Ordering does not matter.
+	// +kcc:proto:field=google.dataflow.v1beta3.DataSamplingConfig.behaviors
+	Behaviors []string `json:"behaviors,omitempty"`
+}
+*/
+
+/* unreachable type DatastoreIoDetails
+// +kcc:proto=google.dataflow.v1beta3.DatastoreIODetails
+type DatastoreIoDetails struct {
+	// Namespace used in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.DatastoreIODetails.namespace
+	Namespace *string `json:"namespace,omitempty"`
+
+	// ProjectId accessed in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.DatastoreIODetails.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+}
+*/
+
+/* unreachable type DebugOptions
+// +kcc:proto=google.dataflow.v1beta3.DebugOptions
+type DebugOptions struct {
+	// Optional. When true, enables the logging of the literal hot key to the
+	//  user's Cloud Logging.
+	// +kcc:proto:field=google.dataflow.v1beta3.DebugOptions.enable_hot_key_logging
+	EnableHotKeyLogging *bool `json:"enableHotKeyLogging,omitempty"`
+
+	// Configuration options for sampling elements from a running pipeline.
+	// +kcc:proto:field=google.dataflow.v1beta3.DebugOptions.data_sampling
+	DataSampling *DataSamplingConfig `json:"dataSampling,omitempty"`
+}
+*/
+
+/* unreachable type Disk
+// +kcc:proto=google.dataflow.v1beta3.Disk
+type Disk struct {
+	// Size of disk in GB.  If zero or unspecified, the service will
+	//  attempt to choose a reasonable default.
+	// +kcc:proto:field=google.dataflow.v1beta3.Disk.size_gb
+	SizeGB *int32 `json:"sizeGB,omitempty"`
+
+	// Disk storage type, as defined by Google Compute Engine.  This
+	//  must be a disk type appropriate to the project and zone in which
+	//  the workers will run.  If unknown or unspecified, the service
+	//  will attempt to choose a reasonable default.
+	//
+	//  For example, the standard persistent disk type is a resource name
+	//  typically ending in "pd-standard".  If SSD persistent disks are
+	//  available, the resource name typically ends with "pd-ssd".  The
+	//  actual valid values are defined the Google Compute Engine API,
+	//  not by the Cloud Dataflow API; consult the Google Compute Engine
+	//  documentation for more information about determining the set of
+	//  available disk types for a particular project and zone.
+	//
+	//  Google Compute Engine Disk types are local to a particular
+	//  project in a particular zone, and so the resource name will
+	//  typically look something like this:
+	//
+	//  compute.googleapis.com/projects/project-id/zones/zone/diskTypes/pd-standard
+	// +kcc:proto:field=google.dataflow.v1beta3.Disk.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+
+	// Directory in a VM where disk is mounted.
+	// +kcc:proto:field=google.dataflow.v1beta3.Disk.mount_point
+	MountPoint *string `json:"mountPoint,omitempty"`
+}
+*/
+
+/* unreachable type DisplayData
+// +kcc:proto=google.dataflow.v1beta3.DisplayData
+type DisplayData struct {
+	// The key identifying the display data.
+	//  This is intended to be used as a label for the display data
+	//  when viewed in a dax monitoring system.
+	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.key
+	Key *string `json:"key,omitempty"`
+
+	// The namespace for the key. This is usually a class name or programming
+	//  language namespace (i.e. python module) which defines the display data.
+	//  This allows a dax monitoring system to specially handle the data
+	//  and perform custom rendering.
+	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.namespace
+	Namespace *string `json:"namespace,omitempty"`
+
+	// Contains value if the data is of string type.
+	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.str_value
+	StrValue *string `json:"strValue,omitempty"`
+
+	// Contains value if the data is of int64 type.
+	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.int64_value
+	Int64Value *int64 `json:"int64Value,omitempty"`
+
+	// Contains value if the data is of float type.
+	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.float_value
+	FloatValue *float32 `json:"floatValue,omitempty"`
+
+	// Contains value if the data is of java class type.
+	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.java_class_value
+	JavaClassValue *string `json:"javaClassValue,omitempty"`
+
+	// Contains value if the data is of timestamp type.
+	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.timestamp_value
+	TimestampValue *string `json:"timestampValue,omitempty"`
+
+	// Contains value if the data is of duration type.
+	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.duration_value
+	DurationValue *string `json:"durationValue,omitempty"`
+
+	// Contains value if the data is of a boolean type.
+	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.bool_value
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	// A possible additional shorter value to display.
+	//  For example a java_class_name_value of com.mypackage.MyDoFn
+	//  will be stored with MyDoFn as the short_str_value and
+	//  com.mypackage.MyDoFn as the java_class_name value.
+	//  short_str_value can be displayed and java_class_name_value
+	//  will be displayed as a tooltip.
+	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.short_str_value
+	ShortStrValue *string `json:"shortStrValue,omitempty"`
+
+	// An optional full URL.
+	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.url
+	URL *string `json:"url,omitempty"`
+
+	// An optional label to display in a dax UI for the element.
+	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.label
+	Label *string `json:"label,omitempty"`
+}
+*/
+
+/* unreachable type Environment
+// +kcc:proto=google.dataflow.v1beta3.Environment
+type Environment struct {
+	// The prefix of the resources the system should use for temporary
+	//  storage.  The system will append the suffix "/temp-{JOBNAME} to
+	//  this resource prefix, where {JOBNAME} is the value of the
+	//  job_name field.  The resulting bucket and object prefix is used
+	//  as the prefix of the resources used to store temporary data
+	//  needed during the job execution.  NOTE: This will override the
+	//  value in taskrunner_settings.
+	//  The supported resource type is:
+	//
+	//  Google Cloud Storage:
+	//
+	//    storage.googleapis.com/{bucket}/{object}
+	//    bucket.storage.googleapis.com/{object}
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.temp_storage_prefix
+	TempStoragePrefix *string `json:"tempStoragePrefix,omitempty"`
+
+	// The type of cluster manager API to use.  If unknown or
+	//  unspecified, the service will attempt to choose a reasonable
+	//  default.  This should be in the form of the API service name,
+	//  e.g. "compute.googleapis.com".
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.cluster_manager_api_service
+	ClusterManagerAPIService *string `json:"clusterManagerAPIService,omitempty"`
+
+	// The list of experiments to enable. This field should be used for SDK
+	//  related experiments and not for service related experiments. The proper
+	//  field for service related experiments is service_options.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.experiments
+	Experiments []string `json:"experiments,omitempty"`
+
+	// Optional. The list of service options to enable. This field should be used
+	//  for service related experiments only. These experiments, when graduating to
+	//  GA, should be replaced by dedicated fields or become default (i.e. always
+	//  on).
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.service_options
+	ServiceOptions []string `json:"serviceOptions,omitempty"`
+
+	// Optional. If set, contains the Cloud KMS key identifier used to encrypt
+	//  data at rest, AKA a Customer Managed Encryption Key (CMEK).
+	//
+	//  Format:
+	//    projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.service_kms_key_name
+	ServiceKMSKeyName *string `json:"serviceKMSKeyName,omitempty"`
+
+	// The worker pools. At least one "harness" worker pool must be
+	//  specified in order for the job to have workers.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.worker_pools
+	WorkerPools []WorkerPool `json:"workerPools,omitempty"`
+
+	// A description of the process that generated the request.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.user_agent
+	UserAgent apiextensionsv1.JSON `json:"userAgent,omitempty"`
+
+	// A structure describing which components and their versions of the service
+	//  are required in order to run the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.version
+	Version apiextensionsv1.JSON `json:"version,omitempty"`
+
+	// Optional. The dataset for the current project where various workflow
+	//  related tables are stored.
+	//
+	//  The supported resource type is:
+	//
+	//  Google BigQuery:
+	//    bigquery.googleapis.com/{dataset}
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.dataset
+	Dataset *string `json:"dataset,omitempty"`
+
+	// The Cloud Dataflow SDK pipeline options specified by the user. These
+	//  options are passed through the service and are used to recreate the
+	//  SDK pipeline options on the worker in a language agnostic and platform
+	//  independent way.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.sdk_pipeline_options
+	SdkPipelineOptions apiextensionsv1.JSON `json:"sdkPipelineOptions,omitempty"`
+
+	// Experimental settings.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.internal_experiments
+	InternalExperiments *Any `json:"internalExperiments,omitempty"`
+
+	// Optional. Identity to run virtual machines as. Defaults to the default
+	//  account.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.service_account_email
+	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty"`
+
+	// Optional. Which Flexible Resource Scheduling mode to run in.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.flex_resource_scheduling_goal
+	FlexResourceSchedulingGoal *string `json:"flexResourceSchedulingGoal,omitempty"`
+
+	// Optional. The Compute Engine region
+	//  (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in
+	//  which worker processing should occur, e.g. "us-west1". Mutually exclusive
+	//  with worker_zone. If neither worker_region nor worker_zone is specified,
+	//  default to the control plane's region.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.worker_region
+	WorkerRegion *string `json:"workerRegion,omitempty"`
+
+	// Optional. The Compute Engine zone
+	//  (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in
+	//  which worker processing should occur, e.g. "us-west1-a". Mutually exclusive
+	//  with worker_region. If neither worker_region nor worker_zone is specified,
+	//  a zone in the control plane's region is chosen based on available capacity.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.worker_zone
+	WorkerZone *string `json:"workerZone,omitempty"`
+
+	// Optional. Any debugging options to be supplied to the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.debug_options
+	DebugOptions *DebugOptions `json:"debugOptions,omitempty"`
+
+	// Optional. Specifies the Streaming Engine message processing guarantees.
+	//  Reduces cost and latency but might result in duplicate messages committed
+	//  to storage. Designed to run simple mapping streaming ETL jobs at the lowest
+	//  cost. For example, Change Data Capture (CDC) to BigQuery is a canonical use
+	//  case. For more information, see
+	//  [Set the pipeline streaming
+	//  mode](https://cloud.google.com/dataflow/docs/guides/streaming-modes).
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.streaming_mode
+	StreamingMode *string `json:"streamingMode,omitempty"`
+}
+*/
+
+/* unreachable type ExecutionStageState
+// +kcc:proto=google.dataflow.v1beta3.ExecutionStageState
+type ExecutionStageState struct {
+	// The name of the execution stage.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageState.execution_stage_name
+	ExecutionStageName *string `json:"executionStageName,omitempty"`
+
+	// Executions stage states allow the same set of values as JobState.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageState.execution_stage_state
+	ExecutionStageState *string `json:"executionStageState,omitempty"`
+
+	// The time at which the stage transitioned to this state.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageState.current_state_time
+	CurrentStateTime *string `json:"currentStateTime,omitempty"`
+}
+*/
+
+/* unreachable type ExecutionStageSummary
+// +kcc:proto=google.dataflow.v1beta3.ExecutionStageSummary
+type ExecutionStageSummary struct {
+	// Dataflow service generated name for this stage.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.name
+	Name *string `json:"name,omitempty"`
+
+	// Dataflow service generated id for this stage.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.id
+	ID *string `json:"id,omitempty"`
+
+	// Type of transform this stage is executing.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Input sources for this stage.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.input_source
+	InputSource []ExecutionStageSummary_StageSource `json:"inputSource,omitempty"`
+
+	// Output sources for this stage.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.output_source
+	OutputSource []ExecutionStageSummary_StageSource `json:"outputSource,omitempty"`
+
+	// Other stages that must complete before this stage can run.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.prerequisite_stage
+	PrerequisiteStage []string `json:"prerequisiteStage,omitempty"`
+
+	// Transforms that comprise this execution stage.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.component_transform
+	ComponentTransform []ExecutionStageSummary_ComponentTransform `json:"componentTransform,omitempty"`
+
+	// Collections produced and consumed by component transforms of this stage.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.component_source
+	ComponentSource []ExecutionStageSummary_ComponentSource `json:"componentSource,omitempty"`
+}
+*/
+
+/* unreachable type ExecutionStageSummary_ComponentSource
+// +kcc:proto=google.dataflow.v1beta3.ExecutionStageSummary.ComponentSource
+type ExecutionStageSummary_ComponentSource struct {
+	// Human-readable name for this transform; may be user or system generated.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.ComponentSource.user_name
+	UserName *string `json:"userName,omitempty"`
+
+	// Dataflow service generated name for this source.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.ComponentSource.name
+	Name *string `json:"name,omitempty"`
+
+	// User name for the original user transform or collection with which this
+	//  source is most closely associated.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.ComponentSource.original_transform_or_collection
+	OriginalTransformOrCollection *string `json:"originalTransformOrCollection,omitempty"`
+}
+*/
+
+/* unreachable type ExecutionStageSummary_ComponentTransform
+// +kcc:proto=google.dataflow.v1beta3.ExecutionStageSummary.ComponentTransform
+type ExecutionStageSummary_ComponentTransform struct {
+	// Human-readable name for this transform; may be user or system generated.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.ComponentTransform.user_name
+	UserName *string `json:"userName,omitempty"`
+
+	// Dataflow service generated name for this source.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.ComponentTransform.name
+	Name *string `json:"name,omitempty"`
+
+	// User name for the original user transform with which this transform is
+	//  most closely associated.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.ComponentTransform.original_transform
+	OriginalTransform *string `json:"originalTransform,omitempty"`
+}
+*/
+
+/* unreachable type ExecutionStageSummary_StageSource
+// +kcc:proto=google.dataflow.v1beta3.ExecutionStageSummary.StageSource
+type ExecutionStageSummary_StageSource struct {
+	// Human-readable name for this source; may be user or system generated.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.StageSource.user_name
+	UserName *string `json:"userName,omitempty"`
+
+	// Dataflow service generated name for this source.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.StageSource.name
+	Name *string `json:"name,omitempty"`
+
+	// User name for the original user transform or collection with which this
+	//  source is most closely associated.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.StageSource.original_transform_or_collection
+	OriginalTransformOrCollection *string `json:"originalTransformOrCollection,omitempty"`
+
+	// Size of the source, if measurable.
+	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.StageSource.size_bytes
+	SizeBytes *int64 `json:"sizeBytes,omitempty"`
+}
+*/
+
+/* unreachable type FileIoDetails
+// +kcc:proto=google.dataflow.v1beta3.FileIODetails
+type FileIoDetails struct {
+	// File Pattern used to access files by the connector.
+	// +kcc:proto:field=google.dataflow.v1beta3.FileIODetails.file_pattern
+	FilePattern *string `json:"filePattern,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment", skipping
+
+// +kcc:proto=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment
+type FlexTemplateRuntimeEnvironment struct {
+	// The initial number of Google Compute Engine instances for the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.num_workers
+	NumWorkers *int32 `json:"numWorkers,omitempty"`
+
+	// The maximum number of Google Compute Engine instances to be made
+	//  available to your pipeline during execution, from 1 to 1000.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.max_workers
+	MaxWorkers *int32 `json:"maxWorkers,omitempty"`
+
+	// The Compute Engine [availability
+	//  zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones)
+	//  for launching worker instances to run your pipeline.
+	//  In the future, worker_zone will take precedence.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.zone
+	Zone *string `json:"zone,omitempty"`
+
+	// The email address of the service account to run the job as.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.service_account_email
+	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty"`
+
+	// The Cloud Storage path to use for temporary files.
+	//  Must be a valid Cloud Storage URL, beginning with `gs://`.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.temp_location
+	TempLocation *string `json:"tempLocation,omitempty"`
+
+	// The machine type to use for the job. Defaults to the value from the
+	//  template if not specified.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Additional experiment flags for the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.additional_experiments
+	AdditionalExperiments []string `json:"additionalExperiments,omitempty"`
+
+	// Network to which VMs will be assigned.  If empty or unspecified,
+	//  the service will use the network "default".
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.network
+	Network *string `json:"network,omitempty"`
+
+	// Subnetwork to which VMs will be assigned, if desired. You can specify a
+	//  subnetwork using either a complete URL or an abbreviated path. Expected to
+	//  be of the form
+	//  "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK"
+	//  or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in
+	//  a Shared VPC network, you must use the complete URL.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+
+	// Additional user labels to be specified for the job.
+	//  Keys and values must follow the restrictions specified in the [labeling
+	//  restrictions](https://cloud.google.com/compute/docs/labeling-resources#restrictions)
+	//  page.
+	//  An object containing a list of "key": value pairs.
+	//  Example: { "name": "wrench", "mass": "1kg", "count": "3" }.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.additional_user_labels
+	AdditionalUserLabels map[string]string `json:"additionalUserLabels,omitempty"`
+
+	// Name for the Cloud KMS key for the job.
+	//  Key format is:
+	//  projects/<project>/locations/<location>/keyRings/<keyring>/cryptoKeys/<key>
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.kms_key_name
+	KMSKeyName *string `json:"kmsKeyName,omitempty"`
+
+	// Configuration for VM IPs.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.ip_configuration
+	IPConfiguration *string `json:"ipConfiguration,omitempty"`
+
+	// The Compute Engine region
+	//  (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in
+	//  which worker processing should occur, e.g. "us-west1". Mutually exclusive
+	//  with worker_zone. If neither worker_region nor worker_zone is specified,
+	//  default to the control plane's region.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.worker_region
+	WorkerRegion *string `json:"workerRegion,omitempty"`
+
+	// The Compute Engine zone
+	//  (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in
+	//  which worker processing should occur, e.g. "us-west1-a". Mutually exclusive
+	//  with worker_region. If neither worker_region nor worker_zone is specified,
+	//  a zone in the control plane's region is chosen based on available capacity.
+	//  If both `worker_zone` and `zone` are set, `worker_zone` takes precedence.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.worker_zone
+	WorkerZone *string `json:"workerZone,omitempty"`
+
+	// Whether to enable Streaming Engine for the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.enable_streaming_engine
+	EnableStreamingEngine *bool `json:"enableStreamingEngine,omitempty"`
+
+	// Set FlexRS goal for the job.
+	//  https://cloud.google.com/dataflow/docs/guides/flexrs
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.flexrs_goal
+	FlexrsGoal *string `json:"flexrsGoal,omitempty"`
+
+	// The Cloud Storage path for staging local files.
+	//  Must be a valid Cloud Storage URL, beginning with `gs://`.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.staging_location
+	StagingLocation *string `json:"stagingLocation,omitempty"`
+
+	// Docker registry location of container image to use for the 'worker harness.
+	//  Default is the container for the version of the SDK. Note this field is
+	//  only valid for portable pipelines.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.sdk_container_image
+	SdkContainerImage *string `json:"sdkContainerImage,omitempty"`
+
+	// Worker disk size, in gigabytes.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.disk_size_gb
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+
+	// The algorithm to use for autoscaling
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.autoscaling_algorithm
+	AutoscalingAlgorithm *string `json:"autoscalingAlgorithm,omitempty"`
+
+	// If true, when processing time is spent almost entirely
+	//  on garbage collection (GC), saves a heap dump before ending the thread
+	//  or process. If false, ends the thread or process without saving a heap
+	//  dump. Does not save a heap dump when the Java Virtual Machine (JVM) has an
+	//  out of memory error during processing. The location of the heap file is
+	//  either echoed back to the user, or the user is given the opportunity to
+	//  download the heap file.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.dump_heap_on_oom
+	DumpHeapOnOom *bool `json:"dumpHeapOnOom,omitempty"`
+
+	// Cloud Storage bucket (directory) to upload heap dumps to.
+	//  Enabling this field implies that `dump_heap_on_oom` is set to true.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.save_heap_dumps_to_gcs_path
+	SaveHeapDumpsToGCSPath *string `json:"saveHeapDumpsToGCSPath,omitempty"`
+
+	// The machine type to use for launching the job. The default is
+	//  n1-standard-1.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.launcher_machine_type
+	LauncherMachineType *string `json:"launcherMachineType,omitempty"`
+
+	// If true serial port logging will be enabled for the launcher VM.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.enable_launcher_vm_serial_port_logging
+	EnableLauncherVMSerialPortLogging *bool `json:"enableLauncherVMSerialPortLogging,omitempty"`
+
+	// Optional. Specifies the Streaming Engine message processing guarantees.
+	//  Reduces cost and latency but might result in duplicate messages committed
+	//  to storage. Designed to run simple mapping streaming ETL jobs at the lowest
+	//  cost. For example, Change Data Capture (CDC) to BigQuery is a canonical use
+	//  case. For more information, see
+	//  [Set the pipeline streaming
+	//  mode](https://cloud.google.com/dataflow/docs/guides/streaming-modes).
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.streaming_mode
+	StreamingMode *string `json:"streamingMode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.dataflow.v1beta3.Job", skipping
+
+// +kcc:proto=google.dataflow.v1beta3.Job
+type Job struct {
+	// The unique ID of this job.
+	//
+	//  This field is set by the Dataflow service when the job is
+	//  created, and is immutable for the life of the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.id
+	ID *string `json:"id,omitempty"`
+
+	// The ID of the Google Cloud project that the job belongs to.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Optional. The user-specified Dataflow job name.
+	//
+	//  Only one active job with a given name can exist in a project within one
+	//  region at
+	//  any given time. Jobs in different regions can have the same name.
+	//  If a caller attempts to create a job with the same
+	//  name as an active job that already exists, the attempt returns the
+	//  existing job.
+	//
+	//  The name must match the regular expression
+	//  `[a-z]([-a-z0-9]{0,1022}[a-z0-9])?`
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The type of Dataflow job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. The environment for the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.environment
+	Environment *Environment `json:"environment,omitempty"`
+
+	// Exactly one of step or steps_location should be specified.
+	//
+	//  The top-level steps that constitute the entire job. Only retrieved with
+	//  JOB_VIEW_ALL.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.steps
+	Steps []Step `json:"steps,omitempty"`
+
+	// The Cloud Storage location where the steps are stored.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.steps_location
+	StepsLocation *string `json:"stepsLocation,omitempty"`
+
+	// The current state of the job.
+	//
+	//  Jobs are created in the `JOB_STATE_STOPPED` state unless otherwise
+	//  specified.
+	//
+	//  A job in the `JOB_STATE_RUNNING` state may asynchronously enter a
+	//  terminal state. After a job has reached a terminal state, no
+	//  further state updates may be made.
+	//
+	//  This field might be mutated by the Dataflow service;
+	//  callers cannot mutate it.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.current_state
+	CurrentState *string `json:"currentState,omitempty"`
+
+	// The timestamp associated with the current state.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.current_state_time
+	CurrentStateTime *string `json:"currentStateTime,omitempty"`
+
+	// The job's requested state. Applies to `UpdateJob` requests.
+	//
+	//  Set `requested_state` with `UpdateJob` requests to switch between the
+	//  states `JOB_STATE_STOPPED` and `JOB_STATE_RUNNING`. You can also use
+	//  `UpdateJob` requests to change a job's
+	//  state from `JOB_STATE_RUNNING` to `JOB_STATE_CANCELLED`,
+	//  `JOB_STATE_DONE`,  or `JOB_STATE_DRAINED`. These states irrevocably
+	//  terminate the job if it hasn't already reached a terminal state.
+	//
+	//  This field has no effect on `CreateJob` requests.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.requested_state
+	RequestedState *string `json:"requestedState,omitempty"`
+
+	// Deprecated.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.execution_info
+	ExecutionInfo *JobExecutionInfo `json:"executionInfo,omitempty"`
+
+	// The timestamp when the job was initially created. Immutable and set by the
+	//  Cloud Dataflow service.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// If this job is an update of an existing job, this field is the job ID
+	//  of the job it replaced.
+	//
+	//  When sending a `CreateJobRequest`, you can update a job by specifying it
+	//  here. The job named here is stopped, and its intermediate state is
+	//  transferred to this job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.replace_job_id
+	ReplaceJobID *string `json:"replaceJobID,omitempty"`
+
+	// Optional. The map of transform name prefixes of the job to be replaced to
+	//  the corresponding name prefixes of the new job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.transform_name_mapping
+	TransformNameMapping map[string]string `json:"transformNameMapping,omitempty"`
+
+	// The client's unique identifier of the job, re-used across retried attempts.
+	//  If this field is set, the service will ensure its uniqueness.
+	//  The request to create a job will fail if the service has knowledge of a
+	//  previously submitted job with the same client's ID and job name.
+	//  The caller may use this field to ensure idempotence of job
+	//  creation across retried attempts to create a job.
+	//  By default, the field is empty and, in that case, the service ignores it.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.client_request_id
+	ClientRequestID *string `json:"clientRequestID,omitempty"`
+
+	// If another job is an update of this job (and thus, this job is in
+	//  `JOB_STATE_UPDATED`), this field contains the ID of that job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.replaced_by_job_id
+	ReplacedByJobID *string `json:"replacedByJobID,omitempty"`
+
+	// A set of files the system should be aware of that are used
+	//  for temporary storage. These temporary files will be
+	//  removed on job completion.
+	//  No duplicates are allowed.
+	//  No file patterns are supported.
+	//
+	//  The supported files are:
+	//
+	//  Google Cloud Storage:
+	//
+	//     storage.googleapis.com/{bucket}/{object}
+	//     bucket.storage.googleapis.com/{object}
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.temp_files
+	TempFiles []string `json:"tempFiles,omitempty"`
+
+	// User-defined labels for this job.
+	//
+	//  The labels map can contain no more than 64 entries.  Entries of the labels
+	//  map are UTF8 strings that comply with the following restrictions:
+	//
+	//  * Keys must conform to regexp:  [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
+	//  * Values must conform to regexp:  [\p{Ll}\p{Lo}\p{N}_-]{0,63}
+	//  * Both keys and values are additionally constrained to be <= 128 bytes in
+	//  size.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. The [regional endpoint]
+	//  (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+	//  contains this job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.location
+	Location *string `json:"location,omitempty"`
+
+	// Preliminary field: The format of this data may change at any time.
+	//  A description of the user pipeline and stages through which it is executed.
+	//  Created by Cloud Dataflow service.  Only retrieved with
+	//  JOB_VIEW_DESCRIPTION or JOB_VIEW_ALL.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.pipeline_description
+	PipelineDescription *PipelineDescription `json:"pipelineDescription,omitempty"`
+
+	// This field may be mutated by the Cloud Dataflow service;
+	//  callers cannot mutate it.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.stage_states
+	StageStates []ExecutionStageState `json:"stageStates,omitempty"`
+
+	// This field is populated by the Dataflow service to support filtering jobs
+	//  by the metadata values provided here. Populated for ListJobs and all GetJob
+	//  views SUMMARY and higher.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.job_metadata
+	JobMetadata *JobMetadata `json:"jobMetadata,omitempty"`
+
+	// The timestamp when the job was started (transitioned to JOB_STATE_PENDING).
+	//  Flexible resource scheduling jobs are started with some delay after job
+	//  creation, so start_time is unset before start and is updated when the
+	//  job is started by the Cloud Dataflow service. For other jobs, start_time
+	//  always equals to create_time and is immutable and set by the Cloud Dataflow
+	//  service.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// If this is specified, the job's initial state is populated from the given
+	//  snapshot.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.created_from_snapshot_id
+	CreatedFromSnapshotID *string `json:"createdFromSnapshotID,omitempty"`
+
+	// Reserved for future use. This field is set only in responses from the
+	//  server; it is ignored if it is set in any requests.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// This field may ONLY be modified at runtime using the projects.jobs.update
+	//  method to adjust job behavior. This field has no effect when specified at
+	//  job creation.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.runtime_updatable_params
+	RuntimeUpdatableParams *RuntimeUpdatableParams `json:"runtimeUpdatableParams,omitempty"`
+}
+*/
+
+/* unreachable type JobExecutionInfo
+// +kcc:proto=google.dataflow.v1beta3.JobExecutionInfo
+type JobExecutionInfo struct {
+
+	// TODO: unsupported map type with key string and value message
+
+}
+*/
+
+/* unreachable type JobExecutionStageInfo
+// +kcc:proto=google.dataflow.v1beta3.JobExecutionStageInfo
+type JobExecutionStageInfo struct {
+	// The steps associated with the execution stage.
+	//  Note that stages may have several steps, and that a given step
+	//  might be run by more than one stage.
+	// +kcc:proto:field=google.dataflow.v1beta3.JobExecutionStageInfo.step_name
+	StepName []string `json:"stepName,omitempty"`
+}
+*/
+
+/* unreachable type JobMetadata
+// +kcc:proto=google.dataflow.v1beta3.JobMetadata
+type JobMetadata struct {
+	// The SDK version used to run the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.JobMetadata.sdk_version
+	SdkVersion *SdkVersion `json:"sdkVersion,omitempty"`
+
+	// Identification of a Spanner source used in the Dataflow job.
+	// +kcc:proto:field=google.dataflow.v1beta3.JobMetadata.spanner_details
+	SpannerDetails []SpannerIoDetails `json:"spannerDetails,omitempty"`
+
+	// Identification of a BigQuery source used in the Dataflow job.
+	// +kcc:proto:field=google.dataflow.v1beta3.JobMetadata.bigquery_details
+	BigqueryDetails []BigQueryIoDetails `json:"bigqueryDetails,omitempty"`
+
+	// Identification of a Cloud Bigtable source used in the Dataflow job.
+	// +kcc:proto:field=google.dataflow.v1beta3.JobMetadata.big_table_details
+	BigTableDetails []BigTableIoDetails `json:"bigTableDetails,omitempty"`
+
+	// Identification of a Pub/Sub source used in the Dataflow job.
+	// +kcc:proto:field=google.dataflow.v1beta3.JobMetadata.pubsub_details
+	PubsubDetails []PubSubIoDetails `json:"pubsubDetails,omitempty"`
+
+	// Identification of a File source used in the Dataflow job.
+	// +kcc:proto:field=google.dataflow.v1beta3.JobMetadata.file_details
+	FileDetails []FileIoDetails `json:"fileDetails,omitempty"`
+
+	// Identification of a Datastore source used in the Dataflow job.
+	// +kcc:proto:field=google.dataflow.v1beta3.JobMetadata.datastore_details
+	DatastoreDetails []DatastoreIoDetails `json:"datastoreDetails,omitempty"`
+
+	// List of display properties to help UI filter jobs.
+	// +kcc:proto:field=google.dataflow.v1beta3.JobMetadata.user_display_properties
+	UserDisplayProperties map[string]string `json:"userDisplayProperties,omitempty"`
+}
+*/
+
+/* unreachable type Package
+// +kcc:proto=google.dataflow.v1beta3.Package
+type Package struct {
+	// The name of the package.
+	// +kcc:proto:field=google.dataflow.v1beta3.Package.name
+	Name *string `json:"name,omitempty"`
+
+	// The resource to read the package from. The supported resource type is:
+	//
+	//  Google Cloud Storage:
+	//
+	//    storage.googleapis.com/{bucket}
+	//    bucket.storage.googleapis.com/
+	// +kcc:proto:field=google.dataflow.v1beta3.Package.location
+	Location *string `json:"location,omitempty"`
+}
+*/
+
+/* unreachable type PipelineDescription
+// +kcc:proto=google.dataflow.v1beta3.PipelineDescription
+type PipelineDescription struct {
+	// Description of each transform in the pipeline and collections between them.
+	// +kcc:proto:field=google.dataflow.v1beta3.PipelineDescription.original_pipeline_transform
+	OriginalPipelineTransform []TransformSummary `json:"originalPipelineTransform,omitempty"`
+
+	// Description of each stage of execution of the pipeline.
+	// +kcc:proto:field=google.dataflow.v1beta3.PipelineDescription.execution_pipeline_stage
+	ExecutionPipelineStage []ExecutionStageSummary `json:"executionPipelineStage,omitempty"`
+
+	// Pipeline level display data.
+	// +kcc:proto:field=google.dataflow.v1beta3.PipelineDescription.display_data
+	DisplayData []DisplayData `json:"displayData,omitempty"`
+
+	// A hash value of the submitted pipeline portable graph step names if exists.
+	// +kcc:proto:field=google.dataflow.v1beta3.PipelineDescription.step_names_hash
+	StepNamesHash *string `json:"stepNamesHash,omitempty"`
+}
+*/
+
+/* unreachable type PubSubIoDetails
+// +kcc:proto=google.dataflow.v1beta3.PubSubIODetails
+type PubSubIoDetails struct {
+	// Topic accessed in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.PubSubIODetails.topic
+	Topic *string `json:"topic,omitempty"`
+
+	// Subscription used in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.PubSubIODetails.subscription
+	Subscription *string `json:"subscription,omitempty"`
+}
+*/
+
+/* unreachable type RuntimeUpdatableParams
+// +kcc:proto=google.dataflow.v1beta3.RuntimeUpdatableParams
+type RuntimeUpdatableParams struct {
+	// The maximum number of workers to cap autoscaling at. This field is
+	//  currently only supported for Streaming Engine jobs.
+	// +kcc:proto:field=google.dataflow.v1beta3.RuntimeUpdatableParams.max_num_workers
+	MaxNumWorkers *int32 `json:"maxNumWorkers,omitempty"`
+
+	// The minimum number of workers to scale down to. This field is currently
+	//  only supported for Streaming Engine jobs.
+	// +kcc:proto:field=google.dataflow.v1beta3.RuntimeUpdatableParams.min_num_workers
+	MinNumWorkers *int32 `json:"minNumWorkers,omitempty"`
+
+	// Target worker utilization, compared against the aggregate utilization of
+	//  the worker pool by autoscaler, to determine upscaling and downscaling when
+	//  absent other constraints such as backlog.
+	//  For more information, see
+	//  [Update an existing
+	//  pipeline](https://cloud.google.com/dataflow/docs/guides/updating-a-pipeline).
+	// +kcc:proto:field=google.dataflow.v1beta3.RuntimeUpdatableParams.worker_utilization_hint
+	WorkerUtilizationHint *float64 `json:"workerUtilizationHint,omitempty"`
+}
+*/
+
+/* unreachable type SdkBug
+// +kcc:proto=google.dataflow.v1beta3.SdkBug
+type SdkBug struct {
+}
+*/
+
+/* unreachable type SdkHarnessContainerImage
+// +kcc:proto=google.dataflow.v1beta3.SdkHarnessContainerImage
+type SdkHarnessContainerImage struct {
+	// A docker container image that resides in Google Container Registry.
+	// +kcc:proto:field=google.dataflow.v1beta3.SdkHarnessContainerImage.container_image
+	ContainerImage *string `json:"containerImage,omitempty"`
+
+	// If true, recommends the Dataflow service to use only one core per SDK
+	//  container instance with this image. If false (or unset) recommends using
+	//  more than one core per SDK container instance with this image for
+	//  efficiency. Note that Dataflow service may choose to override this property
+	//  if needed.
+	// +kcc:proto:field=google.dataflow.v1beta3.SdkHarnessContainerImage.use_single_core_per_container
+	UseSingleCorePerContainer *bool `json:"useSingleCorePerContainer,omitempty"`
+
+	// Environment ID for the Beam runner API proto Environment that corresponds
+	//  to the current SDK Harness.
+	// +kcc:proto:field=google.dataflow.v1beta3.SdkHarnessContainerImage.environment_id
+	EnvironmentID *string `json:"environmentID,omitempty"`
+
+	// The set of capabilities enumerated in the above Environment proto. See also
+	//  [beam_runner_api.proto](https://github.com/apache/beam/blob/master/model/pipeline/src/main/proto/org/apache/beam/model/pipeline/v1/beam_runner_api.proto)
+	// +kcc:proto:field=google.dataflow.v1beta3.SdkHarnessContainerImage.capabilities
+	Capabilities []string `json:"capabilities,omitempty"`
+}
+*/
+
+/* unreachable type SdkVersion
+// +kcc:proto=google.dataflow.v1beta3.SdkVersion
+type SdkVersion struct {
+	// The version of the SDK used to run the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.SdkVersion.version
+	Version *string `json:"version,omitempty"`
+
+	// A readable string describing the version of the SDK.
+	// +kcc:proto:field=google.dataflow.v1beta3.SdkVersion.version_display_name
+	VersionDisplayName *string `json:"versionDisplayName,omitempty"`
+
+	// The support status for this SDK version.
+	// +kcc:proto:field=google.dataflow.v1beta3.SdkVersion.sdk_support_status
+	SdkSupportStatus *string `json:"sdkSupportStatus,omitempty"`
+}
+*/
+
+/* unreachable type ServiceResources
+// +kcc:proto=google.dataflow.v1beta3.ServiceResources
+type ServiceResources struct {
+}
+*/
+
+/* unreachable type SpannerIoDetails
+// +kcc:proto=google.dataflow.v1beta3.SpannerIODetails
+type SpannerIoDetails struct {
+	// ProjectId accessed in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.SpannerIODetails.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// InstanceId accessed in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.SpannerIODetails.instance_id
+	InstanceID *string `json:"instanceID,omitempty"`
+
+	// DatabaseId accessed in the connection.
+	// +kcc:proto:field=google.dataflow.v1beta3.SpannerIODetails.database_id
+	DatabaseID *string `json:"databaseID,omitempty"`
+}
+*/
+
+/* unreachable type Step
+// +kcc:proto=google.dataflow.v1beta3.Step
+type Step struct {
+	// The kind of step in the Cloud Dataflow job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Step.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The name that identifies the step. This must be unique for each
+	//  step with respect to all other steps in the Cloud Dataflow job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Step.name
+	Name *string `json:"name,omitempty"`
+
+	// Named properties associated with the step. Each kind of
+	//  predefined step has its own required set of properties.
+	//  Must be provided on Create.  Only retrieved with JOB_VIEW_ALL.
+	// +kcc:proto:field=google.dataflow.v1beta3.Step.properties
+	Properties apiextensionsv1.JSON `json:"properties,omitempty"`
+}
+*/
+
+/* unreachable type TaskRunnerSettings
+// +kcc:proto=google.dataflow.v1beta3.TaskRunnerSettings
+type TaskRunnerSettings struct {
+	// The UNIX user ID on the worker VM to use for tasks launched by
+	//  taskrunner; e.g. "root".
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.task_user
+	TaskUser *string `json:"taskUser,omitempty"`
+
+	// The UNIX group ID on the worker VM to use for tasks launched by
+	//  taskrunner; e.g. "wheel".
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.task_group
+	TaskGroup *string `json:"taskGroup,omitempty"`
+
+	// The OAuth2 scopes to be requested by the taskrunner in order to
+	//  access the Cloud Dataflow API.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.oauth_scopes
+	OauthScopes []string `json:"oauthScopes,omitempty"`
+
+	// The base URL for the taskrunner to use when accessing Google Cloud APIs.
+	//
+	//  When workers access Google Cloud APIs, they logically do so via
+	//  relative URLs.  If this field is specified, it supplies the base
+	//  URL to use for resolving these relative URLs.  The normative
+	//  algorithm used is defined by RFC 1808, "Relative Uniform Resource
+	//  Locators".
+	//
+	//  If not specified, the default value is "http://www.googleapis.com/"
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.base_url
+	BaseURL *string `json:"baseURL,omitempty"`
+
+	// The API version of endpoint, e.g. "v1b3"
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.dataflow_api_version
+	DataflowAPIVersion *string `json:"dataflowAPIVersion,omitempty"`
+
+	// The settings to pass to the parallel worker harness.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.parallel_worker_settings
+	ParallelWorkerSettings *WorkerSettings `json:"parallelWorkerSettings,omitempty"`
+
+	// The location on the worker for task-specific subdirectories.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.base_task_dir
+	BaseTaskDir *string `json:"baseTaskDir,omitempty"`
+
+	// Whether to continue taskrunner if an exception is hit.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.continue_on_exception
+	ContinueOnException *bool `json:"continueOnException,omitempty"`
+
+	// Whether to send taskrunner log info to Google Compute Engine VM serial
+	//  console.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.log_to_serialconsole
+	LogToSerialconsole *bool `json:"logToSerialconsole,omitempty"`
+
+	// Whether to also send taskrunner log info to stderr.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.alsologtostderr
+	Alsologtostderr *bool `json:"alsologtostderr,omitempty"`
+
+	// Indicates where to put logs.  If this is not specified, the logs
+	//  will not be uploaded.
+	//
+	//  The supported resource type is:
+	//
+	//  Google Cloud Storage:
+	//    storage.googleapis.com/{bucket}/{object}
+	//    bucket.storage.googleapis.com/{object}
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.log_upload_location
+	LogUploadLocation *string `json:"logUploadLocation,omitempty"`
+
+	// The directory on the VM to store logs.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.log_dir
+	LogDir *string `json:"logDir,omitempty"`
+
+	// The prefix of the resources the taskrunner should use for
+	//  temporary storage.
+	//
+	//  The supported resource type is:
+	//
+	//  Google Cloud Storage:
+	//    storage.googleapis.com/{bucket}/{object}
+	//    bucket.storage.googleapis.com/{object}
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.temp_storage_prefix
+	TempStoragePrefix *string `json:"tempStoragePrefix,omitempty"`
+
+	// The command to launch the worker harness.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.harness_command
+	HarnessCommand *string `json:"harnessCommand,omitempty"`
+
+	// The file to store the workflow in.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.workflow_file_name
+	WorkflowFileName *string `json:"workflowFileName,omitempty"`
+
+	// The file to store preprocessing commands in.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.commandlines_file_name
+	CommandlinesFileName *string `json:"commandlinesFileName,omitempty"`
+
+	// The ID string of the VM.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.vm_id
+	VMID *string `json:"vmID,omitempty"`
+
+	// The suggested backend language.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.language_hint
+	LanguageHint *string `json:"languageHint,omitempty"`
+
+	// The streaming worker main class name.
+	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.streaming_worker_main_class
+	StreamingWorkerMainClass *string `json:"streamingWorkerMainClass,omitempty"`
+}
+*/
+
+/* unreachable type TransformSummary
+// +kcc:proto=google.dataflow.v1beta3.TransformSummary
+type TransformSummary struct {
+	// Type of transform.
+	// +kcc:proto:field=google.dataflow.v1beta3.TransformSummary.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// SDK generated id of this transform instance.
+	// +kcc:proto:field=google.dataflow.v1beta3.TransformSummary.id
+	ID *string `json:"id,omitempty"`
+
+	// User provided name for this transform instance.
+	// +kcc:proto:field=google.dataflow.v1beta3.TransformSummary.name
+	Name *string `json:"name,omitempty"`
+
+	// Transform-specific display data.
+	// +kcc:proto:field=google.dataflow.v1beta3.TransformSummary.display_data
+	DisplayData []DisplayData `json:"displayData,omitempty"`
+
+	// User  names for all collection outputs to this transform.
+	// +kcc:proto:field=google.dataflow.v1beta3.TransformSummary.output_collection_name
+	OutputCollectionName []string `json:"outputCollectionName,omitempty"`
+
+	// User names for all collection inputs to this transform.
+	// +kcc:proto:field=google.dataflow.v1beta3.TransformSummary.input_collection_name
+	InputCollectionName []string `json:"inputCollectionName,omitempty"`
+}
+*/
+
+/* unreachable type WorkerPool
+// +kcc:proto=google.dataflow.v1beta3.WorkerPool
+type WorkerPool struct {
+	// The kind of the worker pool; currently only `harness` and `shuffle`
+	//  are supported.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Number of Google Compute Engine workers in this pool needed to
+	//  execute the job.  If zero or unspecified, the service will
+	//  attempt to choose a reasonable default.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.num_workers
+	NumWorkers *int32 `json:"numWorkers,omitempty"`
+
+	// Packages to be installed on workers.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.packages
+	Packages []Package `json:"packages,omitempty"`
+
+	// The default package set to install.  This allows the service to
+	//  select a default set of packages which are useful to worker
+	//  harnesses written in a particular language.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.default_package_set
+	DefaultPackageSet *string `json:"defaultPackageSet,omitempty"`
+
+	// Machine type (e.g. "n1-standard-1").  If empty or unspecified, the
+	//  service will attempt to choose a reasonable default.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Sets the policy for determining when to turndown worker pool.
+	//  Allowed values are: `TEARDOWN_ALWAYS`, `TEARDOWN_ON_SUCCESS`, and
+	//  `TEARDOWN_NEVER`.
+	//  `TEARDOWN_ALWAYS` means workers are always torn down regardless of whether
+	//  the job succeeds. `TEARDOWN_ON_SUCCESS` means workers are torn down
+	//  if the job succeeds. `TEARDOWN_NEVER` means the workers are never torn
+	//  down.
+	//
+	//  If the workers are not torn down by the service, they will
+	//  continue to run and use Google Compute Engine VM resources in the
+	//  user's project until they are explicitly terminated by the user.
+	//  Because of this, Google recommends using the `TEARDOWN_ALWAYS`
+	//  policy except for small, manually supervised test jobs.
+	//
+	//  If unknown or unspecified, the service will attempt to choose a reasonable
+	//  default.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.teardown_policy
+	TeardownPolicy *string `json:"teardownPolicy,omitempty"`
+
+	// Size of root disk for VMs, in GB.  If zero or unspecified, the service will
+	//  attempt to choose a reasonable default.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.disk_size_gb
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+
+	// Type of root disk for VMs.  If empty or unspecified, the service will
+	//  attempt to choose a reasonable default.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+
+	// Fully qualified source image for disks.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.disk_source_image
+	DiskSourceImage *string `json:"diskSourceImage,omitempty"`
+
+	// Zone to run the worker pools in.  If empty or unspecified, the service
+	//  will attempt to choose a reasonable default.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.zone
+	Zone *string `json:"zone,omitempty"`
+
+	// Settings passed through to Google Compute Engine workers when
+	//  using the standard Dataflow task runner.  Users should ignore
+	//  this field.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.taskrunner_settings
+	TaskrunnerSettings *TaskRunnerSettings `json:"taskrunnerSettings,omitempty"`
+
+	// The action to take on host maintenance, as defined by the Google
+	//  Compute Engine API.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.on_host_maintenance
+	OnHostMaintenance *string `json:"onHostMaintenance,omitempty"`
+
+	// Data disks that are used by a VM in this workflow.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.data_disks
+	DataDisks []Disk `json:"dataDisks,omitempty"`
+
+	// Metadata to set on the Google Compute Engine VMs.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.metadata
+	Metadata map[string]string `json:"metadata,omitempty"`
+
+	// Settings for autoscaling of this WorkerPool.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.autoscaling_settings
+	AutoscalingSettings *AutoscalingSettings `json:"autoscalingSettings,omitempty"`
+
+	// Extra arguments for this worker pool.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.pool_args
+	PoolArgs *Any `json:"poolArgs,omitempty"`
+
+	// Network to which VMs will be assigned.  If empty or unspecified,
+	//  the service will use the network "default".
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.network
+	Network *string `json:"network,omitempty"`
+
+	// Subnetwork to which VMs will be assigned, if desired.  Expected to be of
+	//  the form "regions/REGION/subnetworks/SUBNETWORK".
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+
+	// Required. Docker container image that executes the Cloud Dataflow worker
+	//  harness, residing in Google Container Registry.
+	//
+	//  Deprecated for the Fn API path. Use sdk_harness_container_images instead.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.worker_harness_container_image
+	WorkerHarnessContainerImage *string `json:"workerHarnessContainerImage,omitempty"`
+
+	// The number of threads per worker harness. If empty or unspecified, the
+	//  service will choose a number of threads (according to the number of cores
+	//  on the selected machine type for batch, or 1 by convention for streaming).
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.num_threads_per_worker
+	NumThreadsPerWorker *int32 `json:"numThreadsPerWorker,omitempty"`
+
+	// Configuration for VM IPs.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.ip_configuration
+	IPConfiguration *string `json:"ipConfiguration,omitempty"`
+
+	// Set of SDK harness containers needed to execute this pipeline. This will
+	//  only be set in the Fn API path. For non-cross-language pipelines this
+	//  should have only one entry. Cross-language pipelines will have two or more
+	//  entries.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.sdk_harness_container_images
+	SdkHarnessContainerImages []SdkHarnessContainerImage `json:"sdkHarnessContainerImages,omitempty"`
+}
+*/
+
+/* unreachable type WorkerSettings
+// +kcc:proto=google.dataflow.v1beta3.WorkerSettings
+type WorkerSettings struct {
+	// The base URL for accessing Google Cloud APIs.
+	//
+	//  When workers access Google Cloud APIs, they logically do so via
+	//  relative URLs.  If this field is specified, it supplies the base
+	//  URL to use for resolving these relative URLs.  The normative
+	//  algorithm used is defined by RFC 1808, "Relative Uniform Resource
+	//  Locators".
+	//
+	//  If not specified, the default value is "http://www.googleapis.com/"
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerSettings.base_url
+	BaseURL *string `json:"baseURL,omitempty"`
+
+	// Whether to send work progress updates to the service.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerSettings.reporting_enabled
+	ReportingEnabled *bool `json:"reportingEnabled,omitempty"`
+
+	// The Cloud Dataflow service path relative to the root URL, for example,
+	//  "dataflow/v1b3/projects".
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerSettings.service_path
+	ServicePath *string `json:"servicePath,omitempty"`
+
+	// The Shuffle service path relative to the root URL, for example,
+	//  "shuffle/v1beta1".
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerSettings.shuffle_service_path
+	ShuffleServicePath *string `json:"shuffleServicePath,omitempty"`
+
+	// The ID of the worker running this pipeline.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerSettings.worker_id
+	WorkerID *string `json:"workerID,omitempty"`
+
+	// The prefix of the resources the system should use for temporary
+	//  storage.
+	//
+	//  The supported resource type is:
+	//
+	//  Google Cloud Storage:
+	//
+	//    storage.googleapis.com/{bucket}/{object}
+	//    bucket.storage.googleapis.com/{object}
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerSettings.temp_storage_prefix
+	TempStoragePrefix *string `json:"tempStoragePrefix,omitempty"`
+}
+*/
+
+/* unreachable type Any
+// +kcc:proto=google.protobuf.Any
+type Any struct {
+	// A URL/resource name that uniquely identifies the type of the serialized
+	//  protocol buffer message. This string must contain at least
+	//  one "/" character. The last segment of the URL's path must represent
+	//  the fully qualified name of the type (as in
+	//  `path/google.protobuf.Duration`). The name should be in a canonical form
+	//  (e.g., leading "." is not accepted).
+	//
+	//  In practice, teams usually precompile into the binary all types that they
+	//  expect it to use in the context of Any. However, for URLs which use the
+	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
+	//  server that maps type URLs to message definitions as follows:
+	//
+	//  * If no scheme is provided, `https` is assumed.
+	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+	//    value in binary format, or produce an error.
+	//  * Applications are allowed to cache lookup results based on the
+	//    URL, or have them precompiled into a binary to avoid any
+	//    lookup. Therefore, binary compatibility needs to be preserved
+	//    on changes to types. (Use versioned type names to manage
+	//    breaking changes.)
+	//
+	//  Note: this functionality is not currently available in the official
+	//  protobuf release, and it is not used for type URLs beginning with
+	//  type.googleapis.com.
+	//
+	//  Schemes other than `http`, `https` (or the empty scheme) might be
+	//  used with implementation specific semantics.
+	// +kcc:proto:field=google.protobuf.Any.type_url
+	TypeURL *string `json:"typeURL,omitempty"`
+
+	// Must be a valid serialized protocol buffer of the above specified type.
+	// +kcc:proto:field=google.protobuf.Any.value
+	Value []byte `json:"value,omitempty"`
+}
+*/
+
+/* unreachable type EnvironmentObservedState
+// +kcc:observedstate:proto=google.dataflow.v1beta3.Environment
+type EnvironmentObservedState struct {
+	// Output only. The shuffle mode used for the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.shuffle_mode
+	ShuffleMode *string `json:"shuffleMode,omitempty"`
+
+	// Output only. Whether the job uses the Streaming Engine resource-based
+	//  billing model.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.use_streaming_engine_resource_based_billing
+	UseStreamingEngineResourceBasedBilling *bool `json:"useStreamingEngineResourceBasedBilling,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.dataflow.v1beta3.Job", skipping
+
+// +kcc:observedstate:proto=google.dataflow.v1beta3.Job
+type JobObservedState struct {
+	// Optional. The environment for the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.environment
+	Environment *EnvironmentObservedState `json:"environment,omitempty"`
+
+	// This field is populated by the Dataflow service to support filtering jobs
+	//  by the metadata values provided here. Populated for ListJobs and all GetJob
+	//  views SUMMARY and higher.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.job_metadata
+	JobMetadata *JobMetadataObservedState `json:"jobMetadata,omitempty"`
+
+	// Output only. Reserved for future use. This field is set only in responses
+	//  from the server; it is ignored if it is set in any requests.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	// Output only. Resources used by the Dataflow Service to run the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.service_resources
+	ServiceResources *ServiceResourcesObservedState `json:"serviceResources,omitempty"`
+}
+*/
+
+/* unreachable type JobMetadataObservedState
+// +kcc:observedstate:proto=google.dataflow.v1beta3.JobMetadata
+type JobMetadataObservedState struct {
+	// The SDK version used to run the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.JobMetadata.sdk_version
+	SdkVersion *SdkVersionObservedState `json:"sdkVersion,omitempty"`
+}
+*/
+
+/* unreachable type SdkBugObservedState
+// +kcc:observedstate:proto=google.dataflow.v1beta3.SdkBug
+type SdkBugObservedState struct {
+	// Output only. Describes the impact of this SDK bug.
+	// +kcc:proto:field=google.dataflow.v1beta3.SdkBug.type
+	Type *string `json:"type,omitempty"`
+
+	// Output only. How severe the SDK bug is.
+	// +kcc:proto:field=google.dataflow.v1beta3.SdkBug.severity
+	Severity *string `json:"severity,omitempty"`
+
+	// Output only. Link to more information on the bug.
+	// +kcc:proto:field=google.dataflow.v1beta3.SdkBug.uri
+	URI *string `json:"uri,omitempty"`
+}
+*/
+
+/* unreachable type SdkVersionObservedState
+// +kcc:observedstate:proto=google.dataflow.v1beta3.SdkVersion
+type SdkVersionObservedState struct {
+	// Output only. Known bugs found in this SDK version.
+	// +kcc:proto:field=google.dataflow.v1beta3.SdkVersion.bugs
+	Bugs []SdkBugObservedState `json:"bugs,omitempty"`
+}
+*/
+
+/* unreachable type ServiceResourcesObservedState
+// +kcc:observedstate:proto=google.dataflow.v1beta3.ServiceResources
+type ServiceResourcesObservedState struct {
+	// Output only. List of Cloud Zones being used by the Dataflow Service for
+	//  this job. Example: us-central1-c
+	// +kcc:proto:field=google.dataflow.v1beta3.ServiceResources.zones
+	Zones []string `json:"zones,omitempty"`
+}
+*/

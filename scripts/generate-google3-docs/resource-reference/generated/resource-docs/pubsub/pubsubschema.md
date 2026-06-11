@@ -79,9 +79,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The definition of the schema.
-This should contain a string representing the full definition of the schema
-that is a valid schema definition of the type specified in type.</p>
+            <p>The definition of the schema. This should contain a string representing the full definition of the schema that is a valid schema definition of the type specified in `type`.</p>
         </td>
     </tr>
     <tr>
@@ -101,7 +99,7 @@ that is a valid schema definition of the type specified in type.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -111,7 +109,7 @@ that is a valid schema definition of the type specified in type.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -121,7 +119,7 @@ that is a valid schema definition of the type specified in type.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -131,7 +129,7 @@ that is a valid schema definition of the type specified in type.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+            <p>The PubSubSchema name. If not given, the metadata.name will be used.</p>
         </td>
     </tr>
     <tr>
@@ -141,7 +139,7 @@ that is a valid schema definition of the type specified in type.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The type of the schema definition Default value: "TYPE_UNSPECIFIED" Possible values: ["TYPE_UNSPECIFIED", "PROTOCOL_BUFFER", "AVRO"].</p>
+            <p>The type of the schema definition.</p>
         </td>
     </tr>
 </tbody>
@@ -170,7 +168,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>

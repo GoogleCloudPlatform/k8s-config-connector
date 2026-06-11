@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &AssignmentRef{}
 
-// AssignmentRef defines the resource reference to BigqueryReservationAssignment,
-// which "External" field holds the GCP identifier for the KRM object.
+// AssignmentRef is a reference to a BigqueryReservationAssignment.
 type AssignmentRef struct {
 	// A reference to an externally managed BigqueryReservationAssignment resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/assignments/{{assignmentID}}".

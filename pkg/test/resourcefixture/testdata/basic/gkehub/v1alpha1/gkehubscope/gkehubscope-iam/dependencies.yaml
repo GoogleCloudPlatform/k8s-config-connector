@@ -1,0 +1,15 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubScope
+metadata:
+  name: gkehubscope-iam-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: global
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: sa-${uniqueId}
+spec:
+  displayName: SA for GKEHubScope IAM test

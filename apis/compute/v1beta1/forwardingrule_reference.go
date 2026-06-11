@@ -18,8 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	reference "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
-
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -31,8 +30,7 @@ import (
 
 var _ refsv1beta1.Ref = &ForwardingRuleRef{}
 
-// ForwardingRuleRef defines the resource reference to ComputeForwardingRule, which "External" field
-// holds the GCP identifier for the KRM object.
+// ForwardingRuleRef is a reference to a ComputeForwardingRule.
 type ForwardingRuleRef struct {
 	// A reference to an externally managed ComputeForwardingRule resource.
 	// Should be in the format "projects/{{projectID}}/global/forwardingRules/{{forwardingRuleID}}"
@@ -63,11 +61,13 @@ func (r *ForwardingRuleRef) GetExternal() string {
 
 func (r *ForwardingRuleRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ForwardingRuleRef) ValidateExternal(ref string) error {
 	id := &ForwardingRuleIdentity{}
-	external := reference.FixStaleComputeExternalFormat(r.GetExternal())
+	external := refs.TrimComputeURIPrefix(r.GetExternal())
 	if err := id.FromExternal(external); err != nil {
 		return err
 	}
@@ -97,7 +97,7 @@ func (r *ForwardingRuleRef) Normalize(ctx context.Context, reader client.Reader,
 		if selfLink == "" {
 			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 		}
-		r.SetExternal(reference.FixStaleComputeExternalFormat(selfLink))
+		r.SetExternal(refs.TrimComputeURIPrefix(selfLink))
 		return nil
 	}
 	return r.ValidateExternal(r.GetExternal())

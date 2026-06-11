@@ -156,7 +156,7 @@ Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.</p>
+            <p>A reference to an externally managed AlloyDBCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".</p>
         </td>
     </tr>
     <tr>
@@ -166,7 +166,7 @@ Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.name` field of a `AlloyDBCluster` resource.</p>
+            <p>The name of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -176,7 +176,7 @@ Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `AlloyDBCluster` resource.</p>
+            <p>The namespace of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>

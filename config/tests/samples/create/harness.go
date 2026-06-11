@@ -22,6 +22,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"reflect"
+	"sort"
 	"strings"
 	"sync"
 	"testing"
@@ -37,6 +39,7 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
+	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -58,9 +61,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	directregistry "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -114,6 +119,12 @@ type Harness struct {
 	// GCPTarget is the GCP mode to use (real, mock, vcr)
 	// If not set, will use the E2E_GCP_TARGET env var
 	GCPTarget GCPTargetMode
+
+	// Manager is the controller-runtime manager used by this harness
+	Manager manager.Manager
+
+	// installedGVKs is the list of GVKs of the CRDs installed by this harness
+	installedGVKs []schema.GroupVersionKind
 }
 
 type httpRoundTripperKeyType int
@@ -125,9 +136,10 @@ var httpRoundTripperKey httpRoundTripperKeyType
 // deprecated: Prefer NewHarness, which can construct a manager and mock gcp etc.
 func NewHarnessWithManager(ctx context.Context, t *testing.T, mgr manager.Manager) *Harness {
 	h := &Harness{
-		T:      t,
-		Ctx:    ctx,
-		client: mgr.GetClient(),
+		T:       t,
+		Ctx:     ctx,
+		client:  mgr.GetClient(),
+		Manager: mgr,
 	}
 	return h
 }
@@ -412,10 +424,12 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		if err != nil {
 			h.Fatalf("error loading crds: %v", err)
 		}
-		{
+		if len(crds) > 0 {
+			start := time.Now()
 			var wg sync.WaitGroup
 			var errsMutex sync.Mutex
 			var errs []error
+			var installedCount int
 
 			for i := range crds {
 				crd := &crds[i]
@@ -425,6 +439,12 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 						continue
 					}
 				}
+				h.installedGVKs = append(h.installedGVKs, schema.GroupVersionKind{
+					Group:   crd.Spec.Group,
+					Version: crd.Spec.Versions[0].Name,
+					Kind:    crd.Spec.Names.Kind,
+				})
+				installedCount++
 				wg.Add(1)
 				log.V(2).Info("loading crd", "name", crd.GetName())
 
@@ -434,6 +454,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 						errsMutex.Lock()
 						defer errsMutex.Unlock()
 						errs = append(errs, fmt.Errorf("error creating crd %v: %w", crd.GroupVersionKind(), err))
+						return
 					}
 					h.waitForCRDReady(crd)
 				}()
@@ -442,6 +463,10 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			if len(errs) != 0 {
 				h.Fatalf("error creating crds: %v", errors.Join(errs...))
 			}
+
+			duration := time.Since(start)
+			h.Logf("Installed %d CRDs in %v", installedCount, duration.Round(time.Millisecond))
+			log.Info("Installed CRDs", "count", installedCount, "duration", duration)
 		}
 	}
 
@@ -744,6 +769,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	if err != nil {
 		t.Fatalf("error creating new manager: %v", err)
 	}
+	h.Manager = mgr
 	if len(webhooks) > 0 {
 		server := mgr.GetWebhookServer()
 		for _, cfg := range webhooks {
@@ -784,6 +810,15 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		time.Sleep(100 * time.Millisecond)
 	}
 
+	// Wait for all controllers to register and their caches to sync before proceeding to avoid CPU starvation or starting tasks prematurely
+	t.Log("waiting for controllers to register and cache to sync")
+	cacheSyncCtx, cacheSyncCancel := context.WithTimeout(mgrContext, 2*time.Minute)
+	defer cacheSyncCancel()
+	if err := WaitUntilControllersAreRegistered(cacheSyncCtx, t, mgr, h.installedGVKs); err != nil {
+		t.Fatalf("FAIL: error waiting for controllers to register and cache to sync: %v", err)
+	}
+	t.Log("controllers are registered and cache is synced")
+
 	// The port is now successfully bound by the manager. We can safely release
 	// the lock so other parallel tests can provision their own environments.
 	if envtestLocked {
@@ -808,6 +843,39 @@ func (h *Harness) ExportParams() exportparameters.Parameters {
 	exportParams.GCPAccessToken = h.gcpAccessToken
 	exportParams.HTTPClient = h.kccConfig.HTTPClient
 	return exportParams
+}
+
+func (h *Harness) CreateMockProject(ctx context.Context, projectID string) testgcp.GCPProject {
+	crm := h.getCloudResourceManagerClient(h.kccConfig.HTTPClient)
+	req := &cloudresourcemanagerv1.Project{
+		ProjectId: projectID,
+	}
+	op, err := crm.Projects.Create(req).Context(ctx).Do()
+	if err != nil {
+		h.Fatalf("error creating project: %v", err)
+	}
+	for i := 0; i < 100; i++ {
+		if op.Done {
+			break
+		}
+		time.Sleep(100 * time.Millisecond)
+		latest, err := crm.Operations.Get(op.Name).Context(ctx).Do()
+		if err != nil {
+			h.Fatalf("error getting operation %q: %v", op.Name, err)
+		}
+		op = latest
+	}
+	if !op.Done {
+		h.Fatalf("FAIL: expected mock create project operation to be done; operation state was %+v", op)
+	}
+	found, err := crm.Projects.Get(req.ProjectId).Context(ctx).Do()
+	if err != nil {
+		h.Fatalf("FAIL: error reading created project: %v", err)
+	}
+	return testgcp.GCPProject{
+		ProjectID:     found.ProjectId,
+		ProjectNumber: found.ProjectNumber,
+	}
 }
 
 func (h *Harness) getCloudResourceManagerClient(httpClient *http.Client) *cloudresourcemanagerv1.Service {
@@ -909,6 +977,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "bigqueryanalyticshub.cnrm.cloud.google.com", Kind: "BigQueryAnalyticsHubListing"}:
 
 			case schema.GroupKind{Group: "bigquerybiglake.cnrm.cloud.google.com", Kind: "BigLakeTable"}:
+			case schema.GroupKind{Group: "bigquerybiglake.cnrm.cloud.google.com", Kind: "BigLakeDatabase"}:
 
 			case schema.GroupKind{Group: "bigqueryconnection.cnrm.cloud.google.com", Kind: "BigQueryConnectionConnection"}:
 
@@ -927,13 +996,19 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "clouddeploy.cnrm.cloud.google.com", Kind: "CloudDeployDeliveryPipeline"}:
 			case schema.GroupKind{Group: "clouddeploy.cnrm.cloud.google.com", Kind: "CloudDeployTarget"}:
+			case schema.GroupKind{Group: "clouddeploy.cnrm.cloud.google.com", Kind: "CloudDeployDeployPolicy"}:
 
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableAppProfile"}:
+			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableAuthorizedView"}:
+			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableBackup"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableInstance"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableTable"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableLogicalView"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableMaterializedView"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableGCPolicy"}:
+
+			case schema.GroupKind{Group: "billing.cnrm.cloud.google.com", Kind: "BillingAccount"}:
+			case schema.GroupKind{Group: "billingbudgets.cnrm.cloud.google.com", Kind: "BillingBudgetsBudget"}:
 
 			case schema.GroupKind{Group: "cloudfunctions.cnrm.cloud.google.com", Kind: "CloudFunctionsFunction"}:
 			case schema.GroupKind{Group: "cloudids.cnrm.cloud.google.com", Kind: "CloudIDSEndpoint"}:
@@ -1012,6 +1087,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 
 			case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSManagedZone"}:
+			case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSPolicy"}:
 
 			case schema.GroupKind{Group: "essentialcontacts.cnrm.cloud.google.com", Kind: "EssentialContactsContact"}:
 
@@ -1020,6 +1096,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicyMember"}:
 			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccount"}:
 			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccountKey"}:
+			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMDenyPolicy"}:
 
 			case schema.GroupKind{Group: "orgpolicy.cnrm.cloud.google.com", Kind: "OrgPolicyCustomConstraint"}:
 			case schema.GroupKind{Group: "orgpolicy.cnrm.cloud.google.com", Kind: "OrgPolicyPolicy"}:
@@ -1076,6 +1153,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "NetworkConnectivityServiceConnectionPolicy"}:
 			case schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "NetworkConnectivityInternalRange"}:
+			case schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "NetworkConnectivityRegionalEndpoint"}:
 
 			case schema.GroupKind{Group: "networkmanagement.cnrm.cloud.google.com", Kind: "NetworkManagementConnectivityTest"}:
 
@@ -1085,6 +1163,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesLBRouteExtension"}:
 
 			case schema.GroupKind{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityAuthorizationPolicy"}:
+			case schema.GroupKind{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityMirroringEndpointGroup"}:
 
 			case schema.GroupKind{Group: "notebooks.cnrm.cloud.google.com", Kind: "NotebooksEnvironment"}:
 			case schema.GroupKind{Group: "notebooks.cnrm.cloud.google.com", Kind: "NotebookInstance"}:
@@ -1165,6 +1244,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIEndpoint"}:
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIMetadataStore"}:
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIFeaturestore"}:
+			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIExampleStore"}:
 
 			case schema.GroupKind{Group: "vmwareengine.cnrm.cloud.google.com", Kind: "VMwareEngineExternalAddress"}:
 			case schema.GroupKind{Group: "vmwareengine.cnrm.cloud.google.com", Kind: "VMwareEngineNetwork"}:
@@ -1236,14 +1316,17 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 }
 
 func (h *Harness) waitForCRDReady(obj client.Object) {
+	start := time.Now()
 	logger := log.FromContext(h.Ctx)
 
 	apiVersion, kind := obj.GetObjectKind().GroupVersionKind().ToAPIVersionAndKind()
 	name := obj.GetName()
 	namespace := obj.GetNamespace()
 
+	var lastStatus *teststatus.ObjectStatus
+
 	id := types.NamespacedName{Name: name, Namespace: namespace}
-	if err := wait.PollImmediate(2*time.Second, 1*time.Minute, func() (bool, error) {
+	if err := wait.PollImmediate(2*time.Second, 2*time.Minute, func() (bool, error) {
 		u := &unstructured.Unstructured{}
 		u.SetAPIVersion(apiVersion)
 		u.SetKind(kind)
@@ -1253,10 +1336,12 @@ func (h *Harness) waitForCRDReady(obj client.Object) {
 			return false, err
 		}
 		objectStatus := teststatus.GetObjectStatus(h.T, u)
+		lastStatus = &objectStatus
 		// CRDs do not have observedGeneration
 		for _, condition := range objectStatus.Conditions {
 			if condition.Type == "Established" && condition.Status == "True" {
 				logger.V(2).Info("crd is ready", "kind", kind, "id", id)
+				h.Logf("CRD %s ready in %v", name, time.Since(start).Round(time.Millisecond))
 				return true, nil
 			}
 		}
@@ -1264,7 +1349,20 @@ func (h *Harness) waitForCRDReady(obj client.Object) {
 		logger.V(2).Info("CRD is not ready", "kind", kind, "id", id, "conditions", objectStatus.Conditions)
 		return false, nil
 	}); err != nil {
-		h.Errorf("error while polling for ready on %v %v: %v", kind, id, err)
+		u := &unstructured.Unstructured{}
+		u.SetAPIVersion(apiVersion)
+		u.SetKind(kind)
+		if getErr := h.GetClient().Get(h.Ctx, id, u); getErr == nil {
+			logger.Info("CRD status on timeout", "kind", kind, "id", id, "status", u.Object["status"])
+		} else {
+			logger.Info("Error retrieving CRD status on timeout", "kind", kind, "id", id, "error", getErr)
+		}
+
+		if lastStatus != nil {
+			h.Fatalf("error while polling for ready on %v %v: %v (last status conditions: %v)", kind, id, err, lastStatus.Conditions)
+		} else {
+			h.Fatalf("error while polling for ready on %v %v: %v", kind, id, err)
+		}
 		return
 	}
 }
@@ -1380,4 +1478,172 @@ func (s *filterSink) WithName(name string) logr.LogSink {
 // Error implements logr.LogSink
 func (s *filterSink) Error(err error, msg string, args ...any) {
 	s.sink.Error(err, msg, args...)
+}
+
+func isGVKSupported(t *testing.T, gvk schema.GroupVersionKind) bool {
+	if gvk.Kind == "IAMPolicy" || gvk.Kind == "IAMPolicyMember" || gvk.Kind == "IAMAuditConfig" {
+		return true
+	}
+	config, err := resourceconfig.LoadConfig().GetControllersForGVK(gvk)
+	if err != nil {
+		t.Logf("warning: skipping GVK %v because error getting controller from static config: %v", gvk, err)
+		return false
+	}
+	if config.DefaultController == k8s.ReconcilerTypeDirect {
+		_, err := directregistry.GetModel(gvk.GroupKind())
+		if err != nil {
+			t.Logf("warning: skipping GVK %v because direct model has not been registered in directregistry (it might not be imported in register.go)", gvk)
+			return false
+		}
+	}
+	return true
+}
+
+type runnableGetter interface {
+	GetRunnables() []manager.Runnable
+	GetClient() client.Client
+}
+
+func WaitUntilControllersAreRegistered(ctx context.Context, t *testing.T, mgr manager.Manager, gvks []schema.GroupVersionKind) error {
+	getter, ok := mgr.(runnableGetter)
+	if !ok {
+		t.Fatalf("FAIL: manager does not support retrieving runnables; cannot inspect runnables")
+		return nil
+	}
+
+	if len(gvks) == 0 {
+		// 1. Get all CRDs registered in the API server
+		var crdList apiextensions.CustomResourceDefinitionList
+		if err := getter.GetClient().List(ctx, &crdList); err != nil {
+			return fmt.Errorf("failed to list CRDs: %w", err)
+		}
+
+		for _, crd := range crdList.Items {
+			// Only check CRDs managed by KCC
+			if crd.Labels != nil && crd.Labels["cnrm.cloud.google.com/managed-by-kcc"] == "true" {
+				kind := crd.Spec.Names.Kind
+				if kind == "ConfigConnector" || kind == "ConfigConnectorContext" {
+					continue
+				}
+				gvks = append(gvks, schema.GroupVersionKind{
+					Group:   crd.Spec.Group,
+					Version: crd.Spec.Versions[0].Name,
+					Kind:    kind,
+				})
+			} else {
+				t.Logf("skipping CRD %s because it is not managed by KCC", crd.Name)
+			}
+		}
+	}
+
+	var expectedControllerNames []string
+	for _, gvk := range gvks {
+		kind := gvk.Kind
+		if kind == "ConfigConnector" || kind == "ConfigConnectorContext" {
+			continue
+		}
+		if !isGVKSupported(t, gvk) {
+			continue
+		}
+		if kind == "IAMPolicy" {
+			expectedControllerNames = append(expectedControllerNames, "iampolicy-controller")
+		} else if kind == "IAMPolicyMember" {
+			expectedControllerNames = append(expectedControllerNames, "iampolicymember-controller")
+		} else if kind == "IAMAuditConfig" {
+			expectedControllerNames = append(expectedControllerNames, "iamauditconfig-controller")
+		} else {
+			expectedControllerNames = append(expectedControllerNames, fmt.Sprintf("%s-parent-controller", strings.ToLower(kind)))
+		}
+	}
+
+	// 2. Poll until we see all expected controllers in the manager's Runnables
+	ticker := time.NewTicker(50 * time.Millisecond)
+	defer ticker.Stop()
+
+	unnamedLogged := make(map[reflect.Type]bool)
+	var registeredNames map[string]bool
+
+	for {
+		runnables := getter.GetRunnables()
+		registeredNames = make(map[string]bool)
+		for _, r := range runnables {
+			name := getRunnableName(r)
+			if name != "" {
+				registeredNames[name] = true
+			} else {
+				rt := reflect.TypeOf(r)
+				if !unnamedLogged[rt] {
+					unnamedLogged[rt] = true
+					t.Logf("unable to get runnable name for runnable of type %T", r)
+				}
+			}
+		}
+
+		allRegistered := true
+		var missing []string
+		for _, expected := range expectedControllerNames {
+			if !registeredNames[expected] {
+				allRegistered = false
+				missing = append(missing, expected)
+			}
+		}
+
+		if allRegistered {
+			break
+		}
+
+		select {
+		case <-ctx.Done():
+			var found []string
+			for k := range registeredNames {
+				found = append(found, k)
+			}
+			sort.Strings(found)
+			return fmt.Errorf("timed out waiting for controllers to register. Missing: %v, Found: %v", missing, found)
+		case <-ticker.C:
+		}
+	}
+
+	// Log ready controllers on success
+	var found []string
+	for k := range registeredNames {
+		found = append(found, k)
+	}
+	sort.Strings(found)
+	t.Logf("all expected controllers registered: %v", found)
+
+	// 3. Once all expected controllers are registered, wait for the cache/informer to sync
+	if !mgr.GetCache().WaitForCacheSync(ctx) {
+		return fmt.Errorf("timed out waiting for cache sync after controller registration")
+	}
+
+	return nil
+}
+
+func getRunnableName(r manager.Runnable) string {
+	val := reflect.ValueOf(r)
+	if val.Kind() == reflect.Ptr {
+		val = val.Elem()
+	}
+	if val.Kind() != reflect.Struct {
+		return ""
+	}
+	// Look for field named "Name" or "name"
+	f := val.FieldByName("Name")
+	if !f.IsValid() {
+		f = val.FieldByName("name")
+	}
+	if f.IsValid() && f.Kind() == reflect.String {
+		return f.String()
+	}
+	for i := 0; i < val.NumField(); i++ {
+		field := val.Type().Field(i)
+		if strings.ToLower(field.Name) == "name" {
+			fv := val.Field(i)
+			if fv.Kind() == reflect.String {
+				return fv.String()
+			}
+		}
+	}
+	return ""
 }

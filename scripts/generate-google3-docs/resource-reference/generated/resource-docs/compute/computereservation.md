@@ -72,6 +72,21 @@ title: "ComputeReservation"
 ```yaml
 description: string
 resourceID: string
+shareSettings:
+  projectMap:
+  - keyRef:
+      apiVersion: string
+      external: string
+      kind: string
+      name: string
+      namespace: string
+    value:
+      projectIDRef:
+        external: string
+        kind: string
+        name: string
+        namespace: string
+  shareType: string
 specificReservation:
   count: integer
   inUseCount: integer
@@ -113,6 +128,166 @@ zone: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The share setting for reservations and sole tenancy node groups.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>A map of key(i.e. project or other shared resources) and associated project config. This is only valid when shareType's value is SPECIFIC_PROJECTS.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[].keyRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The resource reference that defaults to Project if Kind is not specified.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[].keyRef.apiVersion</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>APIVersion of the referenced resource</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[].keyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The external name of the referenced resource</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[].keyRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Kind of the referenced resource</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[].keyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[].keyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[].value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[].value.projectIDRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The project ID, should be same as the key of this project config in the parent map.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[].value.projectIDRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[].value.projectIDRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[].value.projectIDRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.projectMap[].value.projectIDRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>shareSettings.shareType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. Type of sharing for this shared-reservation Check the ShareType enum for the list of possible values.</p>
         </td>
     </tr>
     <tr>

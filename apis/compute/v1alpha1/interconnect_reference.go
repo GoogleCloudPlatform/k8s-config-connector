@@ -16,23 +16,22 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &InterconnectRef{}
+var _ refs.Ref = &ComputeInterconnectRef{}
 
-// InterconnectRef defines the resource reference to ComputeInterconnect, which "External" field
-// holds the GCP identifier for the KRM object.
-type InterconnectRef struct {
+// ComputeInterconnectRef is a reference to a ComputeInterconnect.
+type ComputeInterconnectRef struct {
 	// A reference to an externally managed ComputeInterconnect resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/interconnects/{{interconnectID}}".
+	// Should be in the format "projects/{{projectID}}/global/interconnects/{{interconnectID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeInterconnect resource.
@@ -42,42 +41,58 @@ type InterconnectRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on ComputeInterconnect.
-// If the "External" is given in the other resource's spec.ComputeInterconnectRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual ComputeInterconnect object from the cluster.
-func (r *InterconnectRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", ComputeInterconnectGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseInterconnectExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func init() {
+	refs.Register(&ComputeInterconnectRef{})
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *ComputeInterconnectRef) GetGVK() schema.GroupVersionKind {
+	return ComputeInterconnectGVK
+}
+
+func (r *ComputeInterconnectRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(ComputeInterconnectGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+}
+
+func (r *ComputeInterconnectRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ComputeInterconnectRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *ComputeInterconnectRef) ValidateExternal(ref string) error {
+	id := &ComputeInterconnectIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ComputeInterconnectRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ComputeInterconnectIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *ComputeInterconnectRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*ComputeInterconnect](u)
+		if err != nil {
+			return ""
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", ComputeInterconnectGVK, key, err)
+		identity, err := getIdentityFromComputeInterconnectSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

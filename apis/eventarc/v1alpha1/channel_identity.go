@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ChannelIdentity defines the resource reference to EventarcChannel, which "External" field
-// holds the GCP identifier for the KRM object.
+// ChannelIdentity is the identity of an EventarcChannel.
 type ChannelIdentity struct {
 	parent *ChannelParent
 	id     string

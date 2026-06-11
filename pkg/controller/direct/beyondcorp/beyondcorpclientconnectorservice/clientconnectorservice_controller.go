@@ -170,7 +170,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		status := &krm.BeyondCorpClientConnectorServiceStatus{}
+		if err := a.updateStatus(ctx, status, a.actual); err != nil {
+			return err
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
 	req := &pb.UpdateClientConnectorServiceRequest{
@@ -236,7 +240,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	// Re-inject project/location back to spec because mapper doesn't know about it
 	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
-	obj.Spec.Location = a.id.Location
+	obj.Spec.Location = &a.id.Location
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

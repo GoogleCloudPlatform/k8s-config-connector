@@ -25,8 +25,7 @@ import (
 var _ refsv1beta1.ExternalNormalizer = &ServiceRef{}
 var DataprocServiceGVK = GroupVersion.WithKind("DataprocService")
 
-// ServiceRef defines the resource reference to DataprocService, which "External" field
-// holds the GCP identifier for the KRM object.
+// ServiceRef is a reference to a DataprocService.
 type ServiceRef struct {
 	// A reference to an externally managed DataprocJob resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".

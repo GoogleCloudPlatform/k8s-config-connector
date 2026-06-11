@@ -27,7 +27,6 @@ import (
 	"k8s.io/klog/v2"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -54,8 +53,7 @@ type logMetricModel struct {
 var _ directbase.Model = &logMetricModel{}
 
 type logMetricAdapter struct {
-	resourceID string
-	projectID  string
+	id *krm.LoggingLogMetricIdentity
 
 	desired         *krm.LoggingLogMetric
 	actual          *api.LogMetric
@@ -83,21 +81,9 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), &obj.Spec.ProjectRef)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
 	}
 
 	// resolve LoggingLogBucketRef
@@ -108,46 +94,41 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 	}
 
 	return &logMetricAdapter{
-		resourceID:      resourceID,
-		projectID:       projectID,
+		id:              id.(*krm.LoggingLogMetricIdentity),
 		desired:         obj,
 		logMetricClient: projectMetricsService,
 	}, nil
 }
 
 func (m *logMetricModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// Format: //logging.googleapis.com/projects/<project>/metrics/<id>
 	if !strings.HasPrefix(url, "//logging.googleapis.com/") {
 		return nil, nil
 	}
 
-	tokens := strings.Split(strings.TrimPrefix(url, "//logging.googleapis.com/"), "/")
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "metrics" {
-		gcpClient, err := newGCPClient(ctx, m.config)
-		if err != nil {
-			return nil, err
-		}
+	url = strings.TrimPrefix(url, "//logging.googleapis.com/")
 
-		projectMetricsService, err := gcpClient.newProjectMetricsService(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		return &logMetricAdapter{
-			projectID:       tokens[1],
-			resourceID:      tokens[3],
-			logMetricClient: projectMetricsService,
-		}, nil
+	id := &krm.LoggingLogMetricIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
 	}
 
-	return nil, nil
+	gcpClient, err := newGCPClient(ctx, m.config)
+	if err != nil {
+		return nil, err
+	}
+
+	projectMetricsService, err := gcpClient.newProjectMetricsService(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &logMetricAdapter{
+		id:              id,
+		logMetricClient: projectMetricsService,
+	}, nil
 }
 
 func (a *logMetricAdapter) Find(ctx context.Context) (bool, error) {
-	if a.resourceID == "" {
-		return false, nil
-	}
-
 	logMetric, err := a.logMetricClient.Get(a.fullyQualifiedName()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -164,7 +145,7 @@ func (a *logMetricAdapter) Find(ctx context.Context) (bool, error) {
 // Delete implements the Adapter interface.
 func (a *logMetricAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	// Already deleted
-	if a.resourceID == "" {
+	if a.id.Metric == "" {
 		return false, nil
 	}
 
@@ -185,11 +166,11 @@ func (a *logMetricAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating object", "u", u)
 
-	projectID := a.projectID
+	projectID := a.id.Project
 	if projectID == "" {
 		return fmt.Errorf("project is empty")
 	}
-	if a.resourceID == "" {
+	if a.id.Metric == "" {
 		return fmt.Errorf("resourceID is empty")
 	}
 	filter := a.desired.Spec.Filter
@@ -203,13 +184,13 @@ func (a *logMetricAdapter) Create(ctx context.Context, createOp *directbase.Crea
 		}
 
 		// validate that the bucket is in the same project
-		if bucket.ProjectID() != a.projectID {
-			return fmt.Errorf("LoggingLogBucket %q is not in the same project %q", bucket.FQN(), a.projectID)
+		if bucket.ProjectID() != a.id.Project {
+			return fmt.Errorf("LoggingLogBucket %q is not in the same project %q", bucket.FQN(), a.id.Project)
 		}
 	}
 
 	logMetric := convertKCCtoAPI(&a.desired.Spec)
-	logMetric.Name = a.resourceID
+	logMetric.Name = a.id.Metric
 
 	createRequest := a.logMetricClient.Create("projects/"+projectID, logMetric)
 	log.V(2).Info("creating logMetric", "request", &createRequest, "name", logMetric.Name)
@@ -226,14 +207,14 @@ func (a *logMetricAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	}
 
 	status := &krm.LoggingLogMetricStatus{}
-	if err := logMetricStatusToKRM(created, status); err != nil {
+	if err := logMetricStatusToKRM(a.id, created, status); err != nil {
 		return err
 	}
 
 	return setStatus(u, status)
 }
 
-func logMetricStatusToKRM(in *api.LogMetric, out *krm.LoggingLogMetricStatus) error {
+func logMetricStatusToKRM(id *krm.LoggingLogMetricIdentity, in *api.LogMetric, out *krm.LoggingLogMetricStatus) error {
 	out.CreateTime = direct.LazyPtr(in.CreateTime)
 	out.UpdateTime = direct.LazyPtr(in.UpdateTime)
 
@@ -319,7 +300,7 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	}
 
 	status := &krm.LoggingLogMetricStatus{}
-	if err := logMetricStatusToKRM(latest, status); err != nil {
+	if err := logMetricStatusToKRM(a.id, latest, status); err != nil {
 		return err
 	}
 
@@ -390,7 +371,7 @@ func (a *logMetricAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 		return nil, fmt.Errorf("logMetric %q not found", a.fullyQualifiedName())
 	}
 
-	un, err := convertAPItoKRM_LoggingLogMetric(a.projectID, a.actual)
+	un, err := convertAPItoKRM_LoggingLogMetric(a.id.Project, a.actual)
 	if err != nil {
 		return nil, fmt.Errorf("error converting logMetric to unstructured %w", err)
 	}
@@ -429,12 +410,5 @@ func (a *logMetricAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 }
 
 func (a *logMetricAdapter) fullyQualifiedName() string {
-	return MakeFQN(a.projectID, a.resourceID)
-}
-
-// MakeFQN constructions a fully qualified name for a LogMetric resources
-// to be used in API calls. The format expected is: "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
-// Func assumes values are well formed and validated.
-func MakeFQN(projectID, metricID string) string {
-	return fmt.Sprintf("projects/%s/metrics/%s", projectID, metricID)
+	return a.id.String()
 }

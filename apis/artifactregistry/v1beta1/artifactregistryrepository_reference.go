@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -33,17 +34,16 @@ var ArtifactRegistryRepositoryGVK = schema.GroupVersionKind{
 
 var _ refs.Ref = &ArtifactRegistryRepositoryRef{}
 
-// ArtifactRegistryRepositoryRef defines the resource reference to ArtifactRegistryRepository, which "External" field
-// holds the GCP identifier for the KRM object.
+// ArtifactRegistryRepositoryRef is a reference to an ArtifactRegistryRepository.
 type ArtifactRegistryRepositoryRef struct {
 	// A reference to an externally managed ArtifactRegistryRepository resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ArtifactRegistryRepository resource.
+	// The name of an ArtifactRegistryRepository resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ArtifactRegistryRepository resource.
+	// The namespace of an ArtifactRegistryRepository resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -68,6 +68,8 @@ func (r *ArtifactRegistryRepositoryRef) GetExternal() string {
 
 func (r *ArtifactRegistryRepositoryRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ArtifactRegistryRepositoryRef) ValidateExternal(ref string) error {
@@ -88,7 +90,11 @@ func (r *ArtifactRegistryRepositoryRef) ParseExternalToIdentity() (identity.Iden
 
 func (r *ArtifactRegistryRepositoryRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromArtifactRegistryRepositorySpec(ctx, reader, u)
+		obj, err := common.ToStructuredType[*ArtifactRegistryRepository](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromArtifactRegistryRepositorySpec(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}

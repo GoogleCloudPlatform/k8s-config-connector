@@ -32,6 +32,7 @@ import (
 type OrgpolicyV1beta1Interface interface {
 	RESTClient() rest.Interface
 	OrgPolicyCustomConstraintsGetter
+	OrgPolicyPoliciesGetter
 }
 
 // OrgpolicyV1beta1Client is used to interact with features provided by the orgpolicy.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type OrgpolicyV1beta1Client struct {
 
 func (c *OrgpolicyV1beta1Client) OrgPolicyCustomConstraints(namespace string) OrgPolicyCustomConstraintInterface {
 	return newOrgPolicyCustomConstraints(c, namespace)
+}
+
+func (c *OrgpolicyV1beta1Client) OrgPolicyPolicies(namespace string) OrgPolicyPolicyInterface {
+	return newOrgPolicyPolicies(c, namespace)
 }
 
 // NewForConfig creates a new OrgpolicyV1beta1Client for the given config.

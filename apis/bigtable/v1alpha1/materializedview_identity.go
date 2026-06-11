@@ -25,8 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// MaterializedViewIdentity defines the resource reference to BigtableMaterializedView, which "External" field
-// holds the GCP identifier for the KRM object.
+// MaterializedViewIdentity is the identity of a BigtableMaterializedView.
 type MaterializedViewIdentity struct {
 	parent *v1beta1.InstanceIdentity
 	id     string

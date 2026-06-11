@@ -1,62 +1,54 @@
-152c152
+144c144
 < POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?alt=json
 ---
 > POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?%24alt=json%3Benum-encoding%3Dint
-154a155
-> X-Goog-Request-Params: parent=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fsample-collection-${uniqueId}
-160c161
+151c151
 <       "order": "ASCENDING"
 ---
 >       "order": 1
-164c165
+155c155
 <       "order": "DESCENDING"
 ---
 >       "order": 2
-167c168
+158c158
 <   "queryScope": "COLLECTION"
 ---
 >   "queryScope": 1
-185c186
+176c176
 <     "state": "INITIALIZING"
 ---
 >     "state": 1
-192c193
+183c183
 < GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}?alt=json
 ---
 > GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
-194a196
-> X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2Foperations%2F${operationID}
-242c244
+232c232
 < GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
 ---
 > GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
-244a247
-> X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fsample-collection-${uniqueId}%2Findexes%2F${indexID}
-257c260
+246c246
 <   "density": "SPARSE_ALL",
 ---
 >   "density": 1,
-261c264
+250c250
 <       "order": "ASCENDING"
 ---
 >       "order": 1
-265c268
+254c254
 <       "order": "DESCENDING"
 ---
 >       "order": 2
-269c272
+258c258
 <       "order": "DESCENDING"
 ---
 >       "order": 2
-273,274c276,277
+262,263c262,263
 <   "queryScope": "COLLECTION",
 <   "state": "READY"
 ---
 >   "queryScope": 1,
 >   "state": 2
-279c282
+268c268
 < DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
 ---
 > DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
-281a285
-> X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fsample-collection-${uniqueId}%2Findexes%2F${indexID}

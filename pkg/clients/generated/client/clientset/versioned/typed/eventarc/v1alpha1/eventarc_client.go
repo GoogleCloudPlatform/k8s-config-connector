@@ -32,6 +32,8 @@ import (
 type EventarcV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	EventarcChannelsGetter
+	EventarcChannelConnectionsGetter
+	EventarcEnrollmentsGetter
 	EventarcGoogleChannelConfigsGetter
 }
 
@@ -42,6 +44,14 @@ type EventarcV1alpha1Client struct {
 
 func (c *EventarcV1alpha1Client) EventarcChannels(namespace string) EventarcChannelInterface {
 	return newEventarcChannels(c, namespace)
+}
+
+func (c *EventarcV1alpha1Client) EventarcChannelConnections(namespace string) EventarcChannelConnectionInterface {
+	return newEventarcChannelConnections(c, namespace)
+}
+
+func (c *EventarcV1alpha1Client) EventarcEnrollments(namespace string) EventarcEnrollmentInterface {
+	return newEventarcEnrollments(c, namespace)
 }
 
 func (c *EventarcV1alpha1Client) EventarcGoogleChannelConfigs(namespace string) EventarcGoogleChannelConfigInterface {

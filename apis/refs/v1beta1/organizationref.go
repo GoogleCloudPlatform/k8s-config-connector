@@ -88,7 +88,7 @@ func (r *OrganizationRef) Normalize(ctx context.Context, reader client.Reader, d
 	return r.ValidateExternal(r.External)
 }
 
-// AsOrganizationRef converts a generic ResourceRef into a OrganizationRef.
+// AsOrganizationRef converts a generic ResourceRef into an OrganizationRef.
 func AsOrganizationRef(in *deprecatedrefs.ResourceRef) *OrganizationRef {
 	if in == nil {
 		return nil

@@ -703,8 +703,9 @@ spec:
                                     - external
                                   properties:
                                     external:
-                                      description: A reference to an externally-managed
-                                        StorageBucket resource.
+                                      description: A reference to an externally managed
+                                        StorageBucket resource. Should be in the format
+                                        "projects/{{projectID}}/buckets/{{bucketID}}".
                                       type: string
                                     name:
                                       description: The name of a StorageBucket resource.
@@ -944,10 +945,9 @@ spec:
                                     - external
                                   properties:
                                     external:
-                                      description: The value of an externally managed
+                                      description: A reference to an externally managed
                                         ComputeNetwork resource. Should be in the
-                                        format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                                        or "projects/{{projectId}}/global/networks/{{networkId}}"
+                                        format "projects/{{projectID}}/global/networks/{{networkID}}".
                                       type: string
                                     name:
                                       description: The name of a ComputeNetwork resource.

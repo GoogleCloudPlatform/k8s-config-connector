@@ -26,8 +26,7 @@ import (
 
 var _ identity.Identity = &LinkIdentity{}
 
-// LinkIdentity defines the resource reference to LoggingLink, which "External" field
-// holds the GCP identifier for the KRM object.
+// LinkIdentity is the identity of a LoggingLink.
 type LinkIdentity struct {
 	parent *LogBucketIdentity
 	id     string

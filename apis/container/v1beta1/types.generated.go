@@ -21,6 +21,55 @@
 
 package v1beta1
 
+/* found existing non-generated go type "AcceleratorConfig", skipping
+
+// +kcc:proto=google.container.v1.AcceleratorConfig
+type AcceleratorConfig struct {
+	// The number of the accelerator cards exposed to an instance.
+	// +kcc:proto:field=google.container.v1.AcceleratorConfig.accelerator_count
+	AcceleratorCount *int64 `json:"acceleratorCount,omitempty"`
+
+	// The accelerator type resource name. List of supported accelerators
+	//  [here](https://cloud.google.com/compute/docs/gpus)
+	// +kcc:proto:field=google.container.v1.AcceleratorConfig.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+
+	// Size of partitions to create on the GPU. Valid values are described in the
+	//  NVIDIA [mig user
+	//  guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).
+	// +kcc:proto:field=google.container.v1.AcceleratorConfig.gpu_partition_size
+	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+
+	// The configuration for GPU sharing options.
+	// +kcc:proto:field=google.container.v1.AcceleratorConfig.gpu_sharing_config
+	GpuSharingConfig *GpuSharingConfig `json:"gpuSharingConfig,omitempty"`
+
+	// The configuration for auto installation of GPU driver.
+	// +kcc:proto:field=google.container.v1.AcceleratorConfig.gpu_driver_installation_config
+	GpuDriverInstallationConfig *GpuDriverInstallationConfig `json:"gpuDriverInstallationConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "AdditionalIPRangesConfig", skipping
+
+// +kcc:proto=google.container.v1.AdditionalIPRangesConfig
+type AdditionalIPRangesConfig struct {
+	// Name of the subnetwork. This can be the full path of the subnetwork or
+	//  just the name.
+	//  Example1: my-subnet
+	//  Example2: projects/gke-project/regions/us-central1/subnetworks/my-subnet
+	// +kcc:proto:field=google.container.v1.AdditionalIPRangesConfig.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+
+	// List of secondary ranges names within this subnetwork that can be used for
+	//  pod IPs.
+	//  Example1: gke-pod-range1
+	//  Example2: gke-pod-range1,gke-pod-range2
+	// +kcc:proto:field=google.container.v1.AdditionalIPRangesConfig.pod_ipv4_range_names
+	PodIPV4RangeNames []string `json:"podIPV4RangeNames,omitempty"`
+}
+*/
+
 /* unreachable type AdditionalNodeNetworkConfig
 // +kcc:proto=google.container.v1.AdditionalNodeNetworkConfig
 type AdditionalNodeNetworkConfig struct {
@@ -49,6 +98,115 @@ type AdditionalPodNetworkConfig struct {
 	// The maximum number of pods per node which use this pod network.
 	// +kcc:proto:field=google.container.v1.AdditionalPodNetworkConfig.max_pods_per_node
 	MaxPodsPerNode *MaxPodsConstraint `json:"maxPodsPerNode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "AdditionalPodRangesConfig", skipping
+
+// +kcc:proto=google.container.v1.AdditionalPodRangesConfig
+type AdditionalPodRangesConfig struct {
+	// Name for pod secondary ipv4 range which has the actual range defined ahead.
+	// +kcc:proto:field=google.container.v1.AdditionalPodRangesConfig.pod_range_names
+	PodRangeNames []string `json:"podRangeNames,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "AddonsConfig", skipping
+
+// +kcc:proto=google.container.v1.AddonsConfig
+type AddonsConfig struct {
+	// Configuration for the HTTP (L7) load balancing controller addon, which
+	//  makes it easy to set up HTTP load balancers for services in a cluster.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.http_load_balancing
+	HTTPLoadBalancing *HTTPLoadBalancing `json:"httpLoadBalancing,omitempty"`
+
+	// Configuration for the horizontal pod autoscaling feature, which
+	//  increases or decreases the number of replica pods a replication controller
+	//  has based on the resource usage of the existing pods.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.horizontal_pod_autoscaling
+	HorizontalPodAutoscaling *HorizontalPodAutoscaling `json:"horizontalPodAutoscaling,omitempty"`
+
+	// Configuration for the Kubernetes Dashboard.
+	//  This addon is deprecated, and will be disabled in 1.15. It is recommended
+	//  to use the Cloud Console to manage and monitor your Kubernetes clusters,
+	//  workloads and applications. For more information, see:
+	//  https://cloud.google.com/kubernetes-engine/docs/concepts/dashboards
+	// +kcc:proto:field=google.container.v1.AddonsConfig.kubernetes_dashboard
+	KubernetesDashboard *KubernetesDashboard `json:"kubernetesDashboard,omitempty"`
+
+	// Configuration for NetworkPolicy. This only tracks whether the addon
+	//  is enabled or not on the Master, it does not track whether network policy
+	//  is enabled for the nodes.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.network_policy_config
+	NetworkPolicyConfig *NetworkPolicyConfig `json:"networkPolicyConfig,omitempty"`
+
+	// Configuration for the Cloud Run addon, which allows the user to use a
+	//  managed Knative service.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.cloud_run_config
+	CloudRunConfig *CloudRunConfig `json:"cloudRunConfig,omitempty"`
+
+	// Configuration for NodeLocalDNS, a dns cache running on cluster nodes
+	// +kcc:proto:field=google.container.v1.AddonsConfig.dns_cache_config
+	DNSCacheConfig *DNSCacheConfig `json:"dnsCacheConfig,omitempty"`
+
+	// Configuration for the ConfigConnector add-on, a Kubernetes
+	//  extension to manage hosted GCP services through the Kubernetes API
+	// +kcc:proto:field=google.container.v1.AddonsConfig.config_connector_config
+	ConfigConnectorConfig *ConfigConnectorConfig `json:"configConnectorConfig,omitempty"`
+
+	// Configuration for the Compute Engine Persistent Disk CSI driver.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.gce_persistent_disk_csi_driver_config
+	GCEPersistentDiskCsiDriverConfig *GCEPersistentDiskCsiDriverConfig `json:"gcePersistentDiskCsiDriverConfig,omitempty"`
+
+	// Configuration for the GCP Filestore CSI driver.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.gcp_filestore_csi_driver_config
+	GcpFilestoreCsiDriverConfig *GcpFilestoreCsiDriverConfig `json:"gcpFilestoreCsiDriverConfig,omitempty"`
+
+	// Configuration for the Backup for GKE agent addon.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.gke_backup_agent_config
+	GKEBackupAgentConfig *GKEBackupAgentConfig `json:"gkeBackupAgentConfig,omitempty"`
+
+	// Configuration for the Cloud Storage Fuse CSI driver.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.gcs_fuse_csi_driver_config
+	GCSFuseCsiDriverConfig *GCSFuseCsiDriverConfig `json:"gcsFuseCsiDriverConfig,omitempty"`
+
+	// Optional. Configuration for the StatefulHA add-on.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.stateful_ha_config
+	StatefulHaConfig *StatefulHaConfig `json:"statefulHaConfig,omitempty"`
+
+	// Configuration for the Cloud Storage Parallelstore CSI driver.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.parallelstore_csi_driver_config
+	ParallelstoreCsiDriverConfig *ParallelstoreCsiDriverConfig `json:"parallelstoreCsiDriverConfig,omitempty"`
+
+	// Optional. Configuration for Ray Operator addon.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.ray_operator_config
+	RayOperatorConfig *RayOperatorConfig `json:"rayOperatorConfig,omitempty"`
+
+	// Configuration for the High Scale Checkpointing add-on.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.high_scale_checkpointing_config
+	HighScaleCheckpointingConfig *HighScaleCheckpointingConfig `json:"highScaleCheckpointingConfig,omitempty"`
+
+	// Configuration for the Lustre CSI driver.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.lustre_csi_driver_config
+	LustreCsiDriverConfig *LustreCsiDriverConfig `json:"lustreCsiDriverConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "AdvancedDatapathObservabilityConfig", skipping
+
+// +kcc:proto=google.container.v1.AdvancedDatapathObservabilityConfig
+type AdvancedDatapathObservabilityConfig struct {
+	// Expose flow metrics on nodes
+	// +kcc:proto:field=google.container.v1.AdvancedDatapathObservabilityConfig.enable_metrics
+	EnableMetrics *bool `json:"enableMetrics,omitempty"`
+
+	// Method used to make Relay available
+	// +kcc:proto:field=google.container.v1.AdvancedDatapathObservabilityConfig.relay_mode
+	RelayMode *string `json:"relayMode,omitempty"`
+
+	// Enable Relay component
+	// +kcc:proto:field=google.container.v1.AdvancedDatapathObservabilityConfig.enable_relay
+	EnableRelay *bool `json:"enableRelay,omitempty"`
 }
 */
 
@@ -81,6 +239,22 @@ type AnonymousAuthenticationConfig struct {
 }
 */
 
+/* found existing non-generated go type "AuthenticatorGroupsConfig", skipping
+
+// +kcc:proto=google.container.v1.AuthenticatorGroupsConfig
+type AuthenticatorGroupsConfig struct {
+	// Whether this cluster should return group membership lookups
+	//  during authentication using a group of security groups.
+	// +kcc:proto:field=google.container.v1.AuthenticatorGroupsConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// The name of the security group-of-groups to be used. Only relevant
+	//  if enabled = true.
+	// +kcc:proto:field=google.container.v1.AuthenticatorGroupsConfig.security_group
+	SecurityGroup *string `json:"securityGroup,omitempty"`
+}
+*/
+
 /* unreachable type AutoIpamConfig
 // +kcc:proto=google.container.v1.AutoIpamConfig
 type AutoIpamConfig struct {
@@ -96,6 +270,13 @@ type AutoMonitoringConfig struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.container.v1.AutoUpgradeOptions", skipping
+
+// +kcc:proto=google.container.v1.AutoUpgradeOptions
+type AutoUpgradeOptions struct {
+}
+*/
+
 /* unreachable type Autopilot
 // +kcc:proto=google.container.v1.Autopilot
 type Autopilot struct {
@@ -106,6 +287,79 @@ type Autopilot struct {
 	// WorkloadPolicyConfig is the configuration related to GCW workload policy
 	// +kcc:proto:field=google.container.v1.Autopilot.workload_policy_config
 	WorkloadPolicyConfig *WorkloadPolicyConfig `json:"workloadPolicyConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.AutoprovisioningNodePoolDefaults", skipping
+
+// +kcc:proto=google.container.v1.AutoprovisioningNodePoolDefaults
+type AutoprovisioningNodePoolDefaults struct {
+	// Scopes that are used by NAP when creating node pools.
+	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.oauth_scopes
+	OauthScopes []string `json:"oauthScopes,omitempty"`
+
+	// The Google Cloud Platform Service Account to be used by the node VMs.
+	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Specifies the upgrade settings for NAP created node pools
+	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.upgrade_settings
+	UpgradeSettings *NodePool_UpgradeSettings `json:"upgradeSettings,omitempty"`
+
+	// Specifies the node management options for NAP created node-pools.
+	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.management
+	Management *NodeManagement `json:"management,omitempty"`
+
+	// Deprecated. Minimum CPU platform to be used for NAP created node pools.
+	//  The instance may be scheduled on the specified or newer CPU platform.
+	//  Applicable values are the friendly names of CPU platforms, such as
+	//  minCpuPlatform: Intel Haswell or
+	//  minCpuPlatform: Intel Sandy Bridge. For more
+	//  information, read [how to specify min CPU
+	//  platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform).
+	//  This field is deprecated, min_cpu_platform should be specified using
+	//  `cloud.google.com/requested-min-cpu-platform` label selector on the pod.
+	//  To unset the min cpu platform field pass "automatic"
+	//  as field value.
+	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.min_cpu_platform
+	MinCPUPlatform *string `json:"minCPUPlatform,omitempty"`
+
+	// Size of the disk attached to each node, specified in GB.
+	//  The smallest allowed disk size is 10GB.
+	//
+	//  If unspecified, the default disk size is 100GB.
+	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.disk_size_gb
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+
+	// Type of the disk attached to each node (e.g. 'pd-standard', 'pd-ssd' or
+	//  'pd-balanced')
+	//
+	//  If unspecified, the default disk type is 'pd-standard'
+	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+
+	// Shielded Instance options.
+	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.shielded_instance_config
+	ShieldedInstanceConfig *ShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+
+	// The Customer Managed Encryption Key used to encrypt the boot disk attached
+	//  to each node in the node pool. This should be of the form
+	//  projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME].
+	//  For more information about protecting resources with Cloud KMS Keys please
+	//  see:
+	//  https://cloud.google.com/compute/docs/disks/customer-managed-encryption
+	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.boot_disk_kms_key
+	BootDiskKMSKey *string `json:"bootDiskKMSKey,omitempty"`
+
+	// The image type to use for NAP created node. Please see
+	//  https://cloud.google.com/kubernetes-engine/docs/concepts/node-images
+	//  for available image types.
+	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.image_type
+	ImageType *string `json:"imageType,omitempty"`
+
+	// DEPRECATED. Use NodePoolAutoConfig.NodeKubeletConfig instead.
+	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.insecure_kubelet_readonly_port_enabled
+	InsecureKubeletReadonlyPortEnabled *bool `json:"insecureKubeletReadonlyPortEnabled,omitempty"`
 }
 */
 
@@ -123,6 +377,23 @@ type BestEffortProvisioning struct {
 	//  stockout issue has been resolved.
 	// +kcc:proto:field=google.container.v1.BestEffortProvisioning.min_provision_nodes
 	MinProvisionNodes *int32 `json:"minProvisionNodes,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "BinaryAuthorization", skipping
+
+// +kcc:proto=google.container.v1.BinaryAuthorization
+type BinaryAuthorization struct {
+	// This field is deprecated. Leave this unset and instead configure
+	//  BinaryAuthorization using evaluation_mode. If evaluation_mode is set to
+	//  anything other than EVALUATION_MODE_UNSPECIFIED, this field is ignored.
+	// +kcc:proto:field=google.container.v1.BinaryAuthorization.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Mode of operation for binauthz policy evaluation. If unspecified, defaults
+	//  to DISABLED.
+	// +kcc:proto:field=google.container.v1.BinaryAuthorization.evaluation_mode
+	EvaluationMode *string `json:"evaluationMode,omitempty"`
 }
 */
 
@@ -189,6 +460,413 @@ type ClientCertificateConfig struct {
 }
 */
 
+/* found existing non-generated go type "CloudRunConfig", skipping
+
+// +kcc:proto=google.container.v1.CloudRunConfig
+type CloudRunConfig struct {
+	// Whether Cloud Run addon is enabled for this cluster.
+	// +kcc:proto:field=google.container.v1.CloudRunConfig.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+
+	// Which load balancer type is installed for Cloud Run.
+	// +kcc:proto:field=google.container.v1.CloudRunConfig.load_balancer_type
+	LoadBalancerType *string `json:"loadBalancerType,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.Cluster", skipping
+
+// +kcc:proto=google.container.v1.Cluster
+type Cluster struct {
+	// The name of this cluster. The name must be unique within this project
+	//  and location (e.g. zone or region), and can be up to 40 characters with
+	//  the following restrictions:
+	//
+	//  * Lowercase letters, numbers, and hyphens only.
+	//  * Must start with a letter.
+	//  * Must end with a number or a letter.
+	// +kcc:proto:field=google.container.v1.Cluster.name
+	Name *string `json:"name,omitempty"`
+
+	// An optional description of this cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.description
+	Description *string `json:"description,omitempty"`
+
+	// The number of nodes to create in this cluster. You must ensure that your
+	//  Compute Engine [resource
+	//  quota](https://cloud.google.com/compute/quotas)
+	//  is sufficient for this number of instances. You must also have available
+	//  firewall and routes quota.
+	//  For requests, this field should only be used in lieu of a
+	//  "node_pool" object, since this configuration (along with the
+	//  "node_config") will be used to create a "NodePool" object with an
+	//  auto-generated name. Do not use this and a node_pool at the same time.
+	//
+	//  This field is deprecated, use node_pool.initial_node_count instead.
+	// +kcc:proto:field=google.container.v1.Cluster.initial_node_count
+	InitialNodeCount *int32 `json:"initialNodeCount,omitempty"`
+
+	// Parameters used in creating the cluster's nodes.
+	//  For requests, this field should only be used in lieu of a
+	//  "node_pool" object, since this configuration (along with the
+	//  "initial_node_count") will be used to create a "NodePool" object with an
+	//  auto-generated name. Do not use this and a node_pool at the same time.
+	//  For responses, this field will be populated with the node configuration of
+	//  the first node pool. (For configuration of each node pool, see
+	//  `node_pool.config`)
+	//
+	//  If unspecified, the defaults are used.
+	//  This field is deprecated, use node_pool.config instead.
+	// +kcc:proto:field=google.container.v1.Cluster.node_config
+	NodeConfig *NodeConfig `json:"nodeConfig,omitempty"`
+
+	// The authentication information for accessing the master endpoint.
+	//  If unspecified, the defaults are used:
+	//  For clusters before v1.12, if master_auth is unspecified, `username` will
+	//  be set to "admin", a random password will be generated, and a client
+	//  certificate will be issued.
+	// +kcc:proto:field=google.container.v1.Cluster.master_auth
+	MasterAuth *MasterAuth `json:"masterAuth,omitempty"`
+
+	// The logging service the cluster should use to write logs.
+	//  Currently available options:
+	//
+	//  * `logging.googleapis.com/kubernetes` - The Cloud Logging
+	//  service with a Kubernetes-native resource model
+	//  * `logging.googleapis.com` - The legacy Cloud Logging service (no longer
+	//    available as of GKE 1.15).
+	//  * `none` - no logs will be exported from the cluster.
+	//
+	//  If left as an empty string,`logging.googleapis.com/kubernetes` will be
+	//  used for GKE 1.14+ or `logging.googleapis.com` for earlier versions.
+	// +kcc:proto:field=google.container.v1.Cluster.logging_service
+	LoggingService *string `json:"loggingService,omitempty"`
+
+	// The monitoring service the cluster should use to write metrics.
+	//  Currently available options:
+	//
+	//  * `monitoring.googleapis.com/kubernetes` - The Cloud Monitoring
+	//  service with a Kubernetes-native resource model
+	//  * `monitoring.googleapis.com` - The legacy Cloud Monitoring service (no
+	//    longer available as of GKE 1.15).
+	//  * `none` - No metrics will be exported from the cluster.
+	//
+	//  If left as an empty string,`monitoring.googleapis.com/kubernetes` will be
+	//  used for GKE 1.14+ or `monitoring.googleapis.com` for earlier versions.
+	// +kcc:proto:field=google.container.v1.Cluster.monitoring_service
+	MonitoringService *string `json:"monitoringService,omitempty"`
+
+	// The name of the Google Compute Engine
+	//  [network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks)
+	//  to which the cluster is connected. If left unspecified, the `default`
+	//  network will be used.
+	// +kcc:proto:field=google.container.v1.Cluster.network
+	Network *string `json:"network,omitempty"`
+
+	// The IP address range of the container pods in this cluster, in
+	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  notation (e.g. `10.96.0.0/14`). Leave blank to have
+	//  one automatically chosen or specify a `/14` block in `10.0.0.0/8`.
+	// +kcc:proto:field=google.container.v1.Cluster.cluster_ipv4_cidr
+	ClusterIPV4CIDR *string `json:"clusterIPV4CIDR,omitempty"`
+
+	// Configurations for the various addons available to run in the cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.addons_config
+	AddonsConfig *AddonsConfig `json:"addonsConfig,omitempty"`
+
+	// The name of the Google Compute Engine
+	//  [subnetwork](https://cloud.google.com/compute/docs/subnetworks)
+	//  to which the cluster is connected.
+	// +kcc:proto:field=google.container.v1.Cluster.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+
+	// The node pools associated with this cluster.
+	//  This field should not be set if "node_config" or "initial_node_count" are
+	//  specified.
+	// +kcc:proto:field=google.container.v1.Cluster.node_pools
+	NodePools []NodePool `json:"nodePools,omitempty"`
+
+	// The list of Google Compute Engine
+	//  [zones](https://cloud.google.com/compute/docs/zones#available)
+	//  in which the cluster's nodes should be located.
+	//
+	//  This field provides a default value if
+	//  [NodePool.Locations](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools#NodePool.FIELDS.locations)
+	//  are not specified during node pool creation.
+	//
+	//  Warning: changing cluster locations will update the
+	//  [NodePool.Locations](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools#NodePool.FIELDS.locations)
+	//  of all node pools and will result in nodes being added and/or removed.
+	// +kcc:proto:field=google.container.v1.Cluster.locations
+	Locations []string `json:"locations,omitempty"`
+
+	// Kubernetes alpha features are enabled on this cluster. This includes alpha
+	//  API groups (e.g. v1alpha1) and features that may not be production ready in
+	//  the kubernetes version of the master and nodes.
+	//  The cluster has no SLA for uptime and master/node upgrades are disabled.
+	//  Alpha enabled clusters are automatically deleted thirty days after
+	//  creation.
+	// +kcc:proto:field=google.container.v1.Cluster.enable_kubernetes_alpha
+	EnableKubernetesAlpha *bool `json:"enableKubernetesAlpha,omitempty"`
+
+	// The list of user specified Kubernetes feature gates.
+	//  Each string represents the activation status of a feature gate (e.g.
+	//  "featureX=true" or "featureX=false")
+	// +kcc:proto:field=google.container.v1.Cluster.alpha_cluster_feature_gates
+	AlphaClusterFeatureGates []string `json:"alphaClusterFeatureGates,omitempty"`
+
+	// The resource labels for the cluster to use to annotate any related
+	//  Google Compute Engine resources.
+	// +kcc:proto:field=google.container.v1.Cluster.resource_labels
+	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
+
+	// The fingerprint of the set of labels for this cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.label_fingerprint
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
+	// Configuration for the legacy ABAC authorization mode.
+	// +kcc:proto:field=google.container.v1.Cluster.legacy_abac
+	LegacyAbac *LegacyAbac `json:"legacyAbac,omitempty"`
+
+	// Configuration options for the NetworkPolicy feature.
+	// +kcc:proto:field=google.container.v1.Cluster.network_policy
+	NetworkPolicy *NetworkPolicy `json:"networkPolicy,omitempty"`
+
+	// Configuration for cluster IP allocation.
+	// +kcc:proto:field=google.container.v1.Cluster.ip_allocation_policy
+	IPAllocationPolicy *IPAllocationPolicy `json:"ipAllocationPolicy,omitempty"`
+
+	// The configuration options for master authorized networks feature.
+	//
+	//  Deprecated: Use
+	//  [ControlPlaneEndpointsConfig.IPEndpointsConfig.authorized_networks_config][google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.authorized_networks_config]
+	//  instead.
+	// +kcc:proto:field=google.container.v1.Cluster.master_authorized_networks_config
+	MasterAuthorizedNetworksConfig *MasterAuthorizedNetworksConfig `json:"masterAuthorizedNetworksConfig,omitempty"`
+
+	// Configure the maintenance policy for this cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.maintenance_policy
+	MaintenancePolicy *MaintenancePolicy `json:"maintenancePolicy,omitempty"`
+
+	// Configuration for Binary Authorization.
+	// +kcc:proto:field=google.container.v1.Cluster.binary_authorization
+	BinaryAuthorization *BinaryAuthorization `json:"binaryAuthorization,omitempty"`
+
+	// Cluster-level autoscaling configuration.
+	// +kcc:proto:field=google.container.v1.Cluster.autoscaling
+	Autoscaling *ClusterAutoscaling `json:"autoscaling,omitempty"`
+
+	// Configuration for cluster networking.
+	// +kcc:proto:field=google.container.v1.Cluster.network_config
+	NetworkConfig *NetworkConfig `json:"networkConfig,omitempty"`
+
+	// The default constraint on the maximum number of pods that can be run
+	//  simultaneously on a node in the node pool of this cluster. Only honored
+	//  if cluster created with IP Alias support.
+	// +kcc:proto:field=google.container.v1.Cluster.default_max_pods_constraint
+	DefaultMaxPodsConstraint *MaxPodsConstraint `json:"defaultMaxPodsConstraint,omitempty"`
+
+	// Configuration for exporting resource usages. Resource usage export is
+	//  disabled when this config is unspecified.
+	// +kcc:proto:field=google.container.v1.Cluster.resource_usage_export_config
+	ResourceUsageExportConfig *ResourceUsageExportConfig `json:"resourceUsageExportConfig,omitempty"`
+
+	// Configuration controlling RBAC group membership information.
+	// +kcc:proto:field=google.container.v1.Cluster.authenticator_groups_config
+	AuthenticatorGroupsConfig *AuthenticatorGroupsConfig `json:"authenticatorGroupsConfig,omitempty"`
+
+	// Configuration for private cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.private_cluster_config
+	PrivateClusterConfig *PrivateClusterConfig `json:"privateClusterConfig,omitempty"`
+
+	// Configuration of etcd encryption.
+	// +kcc:proto:field=google.container.v1.Cluster.database_encryption
+	DatabaseEncryption *DatabaseEncryption `json:"databaseEncryption,omitempty"`
+
+	// Cluster-level Vertical Pod Autoscaling configuration.
+	// +kcc:proto:field=google.container.v1.Cluster.vertical_pod_autoscaling
+	VerticalPodAutoscaling *VerticalPodAutoscaling `json:"verticalPodAutoscaling,omitempty"`
+
+	// Shielded Nodes configuration.
+	// +kcc:proto:field=google.container.v1.Cluster.shielded_nodes
+	ShieldedNodes *ShieldedNodes `json:"shieldedNodes,omitempty"`
+
+	// Release channel configuration. If left unspecified on cluster creation and
+	//  a version is specified, the cluster is enrolled in the most mature release
+	//  channel where the version is available (first checking STABLE, then
+	//  REGULAR, and finally RAPID). Otherwise, if no release channel
+	//  configuration and no version is specified, the cluster is enrolled in the
+	//  REGULAR channel with its default version.
+	// +kcc:proto:field=google.container.v1.Cluster.release_channel
+	ReleaseChannel *ReleaseChannel `json:"releaseChannel,omitempty"`
+
+	// Configuration for the use of Kubernetes Service Accounts in GCP IAM
+	//  policies.
+	// +kcc:proto:field=google.container.v1.Cluster.workload_identity_config
+	WorkloadIdentityConfig *WorkloadIdentityConfig `json:"workloadIdentityConfig,omitempty"`
+
+	// Configuration for issuance of mTLS keys and certificates to Kubernetes
+	//  pods.
+	// +kcc:proto:field=google.container.v1.Cluster.mesh_certificates
+	MeshCertificates *MeshCertificates `json:"meshCertificates,omitempty"`
+
+	// Configuration for the fine-grained cost management feature.
+	// +kcc:proto:field=google.container.v1.Cluster.cost_management_config
+	CostManagementConfig *CostManagementConfig `json:"costManagementConfig,omitempty"`
+
+	// Notification configuration of the cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.notification_config
+	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
+
+	// Configuration of Confidential Nodes.
+	//  All the nodes in the cluster will be Confidential VM once enabled.
+	// +kcc:proto:field=google.container.v1.Cluster.confidential_nodes
+	ConfidentialNodes *ConfidentialNodes `json:"confidentialNodes,omitempty"`
+
+	// Configuration for Identity Service component.
+	// +kcc:proto:field=google.container.v1.Cluster.identity_service_config
+	IdentityServiceConfig *IdentityServiceConfig `json:"identityServiceConfig,omitempty"`
+
+	// The initial Kubernetes version for this cluster.  Valid versions are those
+	//  found in validMasterVersions returned by getServerConfig.  The version can
+	//  be upgraded over time; such upgrades are reflected in
+	//  currentMasterVersion and currentNodeVersion.
+	//
+	//  Users may specify either explicit versions offered by
+	//  Kubernetes Engine or version aliases, which have the following behavior:
+	//
+	//  - "latest": picks the highest valid Kubernetes version
+	//  - "1.X": picks the highest valid patch+gke.N patch in the 1.X version
+	//  - "1.X.Y": picks the highest valid gke.N patch in the 1.X.Y version
+	//  - "1.X.Y-gke.N": picks an explicit Kubernetes version
+	//  - "","-": picks the default Kubernetes version
+	// +kcc:proto:field=google.container.v1.Cluster.initial_cluster_version
+	InitialClusterVersion *string `json:"initialClusterVersion,omitempty"`
+
+	// Enable the ability to use Cloud TPUs in this cluster.
+	//  This field is deprecated due to the deprecation of 2VM TPU. The end of life
+	//  date for 2VM TPU is 2025-04-25.
+	// +kcc:proto:field=google.container.v1.Cluster.enable_tpu
+	EnableTpu *bool `json:"enableTpu,omitempty"`
+
+	// Which conditions caused the current cluster state.
+	// +kcc:proto:field=google.container.v1.Cluster.conditions
+	Conditions []StatusCondition `json:"conditions,omitempty"`
+
+	// Autopilot configuration for the cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.autopilot
+	Autopilot *Autopilot `json:"autopilot,omitempty"`
+
+	// Default NodePool settings for the entire cluster. These settings are
+	//  overridden if specified on the specific NodePool object.
+	// +kcc:proto:field=google.container.v1.Cluster.node_pool_defaults
+	NodePoolDefaults *NodePoolDefaults `json:"nodePoolDefaults,omitempty"`
+
+	// Logging configuration for the cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.logging_config
+	LoggingConfig *LoggingConfig `json:"loggingConfig,omitempty"`
+
+	// Monitoring configuration for the cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.monitoring_config
+	MonitoringConfig *MonitoringConfig `json:"monitoringConfig,omitempty"`
+
+	// Node pool configs that apply to all auto-provisioned node pools
+	//  in autopilot clusters and node auto-provisioning enabled clusters.
+	// +kcc:proto:field=google.container.v1.Cluster.node_pool_auto_config
+	NodePoolAutoConfig *NodePoolAutoConfig `json:"nodePoolAutoConfig,omitempty"`
+
+	// The config for pod autoscaling.
+	// +kcc:proto:field=google.container.v1.Cluster.pod_autoscaling
+	PodAutoscaling *PodAutoscaling `json:"podAutoscaling,omitempty"`
+
+	// This checksum is computed by the server based on the value of cluster
+	//  fields, and may be sent on update requests to ensure the client has an
+	//  up-to-date value before proceeding.
+	// +kcc:proto:field=google.container.v1.Cluster.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Fleet information for the cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.fleet
+	Fleet *Fleet `json:"fleet,omitempty"`
+
+	// Enable/Disable Security Posture API features for the cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.security_posture_config
+	SecurityPostureConfig *SecurityPostureConfig `json:"securityPostureConfig,omitempty"`
+
+	// Configuration for all cluster's control plane endpoints.
+	// +kcc:proto:field=google.container.v1.Cluster.control_plane_endpoints_config
+	ControlPlaneEndpointsConfig *ControlPlaneEndpointsConfig `json:"controlPlaneEndpointsConfig,omitempty"`
+
+	// Beta APIs Config
+	// +kcc:proto:field=google.container.v1.Cluster.enable_k8s_beta_apis
+	EnableK8sBetaApis *K8sBetaAPIConfig `json:"enableK8sBetaApis,omitempty"`
+
+	// GKE Enterprise Configuration.
+	// +kcc:proto:field=google.container.v1.Cluster.enterprise_config
+	EnterpriseConfig *EnterpriseConfig `json:"enterpriseConfig,omitempty"`
+
+	// Secret CSI driver configuration.
+	// +kcc:proto:field=google.container.v1.Cluster.secret_manager_config
+	SecretManagerConfig *SecretManagerConfig `json:"secretManagerConfig,omitempty"`
+
+	// Enable/Disable Compliance Posture features for the cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.compliance_posture_config
+	CompliancePostureConfig *CompliancePostureConfig `json:"compliancePostureConfig,omitempty"`
+
+	// The Custom keys configuration for the cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.user_managed_keys_config
+	UserManagedKeysConfig *UserManagedKeysConfig `json:"userManagedKeysConfig,omitempty"`
+
+	// RBACBindingConfig allows user to restrict ClusterRoleBindings an
+	//  RoleBindings that can be created.
+	// +kcc:proto:field=google.container.v1.Cluster.rbac_binding_config
+	RbacBindingConfig *RbacBindingConfig `json:"rbacBindingConfig,omitempty"`
+
+	// Configuration for GKE auto upgrades.
+	// +kcc:proto:field=google.container.v1.Cluster.gke_auto_upgrade_config
+	GKEAutoUpgradeConfig *GKEAutoUpgradeConfig `json:"gkeAutoUpgradeConfig,omitempty"`
+
+	// Configuration for limiting anonymous access to all endpoints except the
+	//  health checks.
+	// +kcc:proto:field=google.container.v1.Cluster.anonymous_authentication_config
+	AnonymousAuthenticationConfig *AnonymousAuthenticationConfig `json:"anonymousAuthenticationConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ClusterAutoscaling", skipping
+
+// +kcc:proto=google.container.v1.ClusterAutoscaling
+type ClusterAutoscaling struct {
+	// Enables automatic node pool creation and deletion.
+	// +kcc:proto:field=google.container.v1.ClusterAutoscaling.enable_node_autoprovisioning
+	EnableNodeAutoprovisioning *bool `json:"enableNodeAutoprovisioning,omitempty"`
+
+	// Contains global constraints regarding minimum and maximum
+	//  amount of resources in the cluster.
+	// +kcc:proto:field=google.container.v1.ClusterAutoscaling.resource_limits
+	ResourceLimits []ResourceLimit `json:"resourceLimits,omitempty"`
+
+	// Defines autoscaling behaviour.
+	// +kcc:proto:field=google.container.v1.ClusterAutoscaling.autoscaling_profile
+	AutoscalingProfile *string `json:"autoscalingProfile,omitempty"`
+
+	// AutoprovisioningNodePoolDefaults contains defaults for a node pool
+	//  created by NAP.
+	// +kcc:proto:field=google.container.v1.ClusterAutoscaling.autoprovisioning_node_pool_defaults
+	AutoprovisioningNodePoolDefaults *AutoprovisioningNodePoolDefaults `json:"autoprovisioningNodePoolDefaults,omitempty"`
+
+	// The list of Google Compute Engine
+	//  [zones](https://cloud.google.com/compute/docs/zones#available)
+	//  in which the NodePool's nodes can be created by NAP.
+	// +kcc:proto:field=google.container.v1.ClusterAutoscaling.autoprovisioning_locations
+	AutoprovisioningLocations []string `json:"autoprovisioningLocations,omitempty"`
+
+	// Default compute class is a configuration for default compute class.
+	// +kcc:proto:field=google.container.v1.ClusterAutoscaling.default_compute_class_config
+	DefaultComputeClassConfig *DefaultComputeClassConfig `json:"defaultComputeClassConfig,omitempty"`
+}
+*/
+
 /* unreachable type CompliancePostureConfig
 // +kcc:proto=google.container.v1.CompliancePostureConfig
 type CompliancePostureConfig struct {
@@ -208,6 +886,30 @@ type CompliancePostureConfig_ComplianceStandard struct {
 	// Name of the compliance standard.
 	// +kcc:proto:field=google.container.v1.CompliancePostureConfig.ComplianceStandard.standard
 	Standard *string `json:"standard,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ConfidentialNodes", skipping
+
+// +kcc:proto=google.container.v1.ConfidentialNodes
+type ConfidentialNodes struct {
+	// Whether Confidential Nodes feature is enabled.
+	// +kcc:proto:field=google.container.v1.ConfidentialNodes.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Defines the type of technology used by the confidential node.
+	// +kcc:proto:field=google.container.v1.ConfidentialNodes.confidential_instance_type
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ConfigConnectorConfig", skipping
+
+// +kcc:proto=google.container.v1.ConfigConnectorConfig
+type ConfigConnectorConfig struct {
+	// Whether Cloud Connector is enabled for this cluster.
+	// +kcc:proto:field=google.container.v1.ConfigConnectorConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
 }
 */
 
@@ -263,6 +965,132 @@ type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConf
 }
 */
 
+/* found existing non-generated go type "ControlPlaneEndpointsConfig", skipping
+
+// +kcc:proto=google.container.v1.ControlPlaneEndpointsConfig
+type ControlPlaneEndpointsConfig struct {
+	// DNS endpoint configuration.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.dns_endpoint_config
+	DNSEndpointConfig *ControlPlaneEndpointsConfig_DNSEndpointConfig `json:"dnsEndpointConfig,omitempty"`
+
+	// IP endpoints configuration.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.ip_endpoints_config
+	IPEndpointsConfig *ControlPlaneEndpointsConfig_IPEndpointsConfig `json:"ipEndpointsConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ControlPlaneEndpointsConfig_DNSEndpointConfig", skipping
+
+// +kcc:proto=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig
+type ControlPlaneEndpointsConfig_DNSEndpointConfig struct {
+
+	// Controls whether user traffic is allowed over this endpoint. Note that
+	//  GCP-managed services may still use the endpoint even if this is false.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig.allow_external_traffic
+	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ControlPlaneEndpointsConfig_IPEndpointsConfig", skipping
+
+// +kcc:proto=google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig
+type ControlPlaneEndpointsConfig_IPEndpointsConfig struct {
+	// Controls whether to allow direct IP access.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Controls whether the control plane allows access through a public IP.
+	//  It is invalid to specify both
+	//  [PrivateClusterConfig.enablePrivateEndpoint][] and this field at the same
+	//  time.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.enable_public_endpoint
+	EnablePublicEndpoint *bool `json:"enablePublicEndpoint,omitempty"`
+
+	// Controls whether the control plane's private endpoint is accessible from
+	//  sources in other regions.
+	//  It is invalid to specify both
+	//  [PrivateClusterMasterGlobalAccessConfig.enabled][google.container.v1.PrivateClusterMasterGlobalAccessConfig.enabled]
+	//  and this field at the same time.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.global_access
+	GlobalAccess *bool `json:"globalAccess,omitempty"`
+
+	// Configuration of authorized networks. If enabled, restricts access to the
+	//  control plane based on source IP.
+	//  It is invalid to specify both
+	//  [Cluster.masterAuthorizedNetworksConfig][] and this field at the same
+	//  time.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.authorized_networks_config
+	AuthorizedNetworksConfig *MasterAuthorizedNetworksConfig `json:"authorizedNetworksConfig,omitempty"`
+
+	// Subnet to provision the master's private endpoint during cluster
+	//  creation. Specified in projects/* /regions/* /subnetworks/* format. It is
+	//  invalid to specify both
+	//  [PrivateClusterConfig.privateEndpointSubnetwork][] and this field at the
+	//  same time.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint_subnetwork
+	PrivateEndpointSubnetwork *string `json:"privateEndpointSubnetwork,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "CostManagementConfig", skipping
+
+// +kcc:proto=google.container.v1.CostManagementConfig
+type CostManagementConfig struct {
+	// Whether the feature is enabled or not.
+	// +kcc:proto:field=google.container.v1.CostManagementConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "DNSConfig", skipping
+
+// +kcc:proto=google.container.v1.DNSConfig
+type DNSConfig struct {
+	// cluster_dns indicates which in-cluster DNS provider should be used.
+	// +kcc:proto:field=google.container.v1.DNSConfig.cluster_dns
+	ClusterDNS *string `json:"clusterDNS,omitempty"`
+
+	// cluster_dns_scope indicates the scope of access to cluster DNS records.
+	// +kcc:proto:field=google.container.v1.DNSConfig.cluster_dns_scope
+	ClusterDNSScope *string `json:"clusterDNSScope,omitempty"`
+
+	// cluster_dns_domain is the suffix used for all cluster service records.
+	// +kcc:proto:field=google.container.v1.DNSConfig.cluster_dns_domain
+	ClusterDNSDomain *string `json:"clusterDNSDomain,omitempty"`
+
+	// Optional. The domain used in Additive VPC scope.
+	// +kcc:proto:field=google.container.v1.DNSConfig.additive_vpc_scope_dns_domain
+	AdditiveVPCScopeDNSDomain *string `json:"additiveVPCScopeDNSDomain,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "DailyMaintenanceWindow", skipping
+
+// +kcc:proto=google.container.v1.DailyMaintenanceWindow
+type DailyMaintenanceWindow struct {
+	// Time within the maintenance window to start the maintenance operations.
+	//  Time format should be in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt)
+	//  format "HH:MM", where HH : [00-23] and MM : [00-59] GMT.
+	// +kcc:proto:field=google.container.v1.DailyMaintenanceWindow.start_time
+	StartTime *string `json:"startTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "DatabaseEncryption", skipping
+
+// +kcc:proto=google.container.v1.DatabaseEncryption
+type DatabaseEncryption struct {
+	// Name of CloudKMS key to use for the encryption of secrets in etcd.
+	//  Ex. projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key
+	// +kcc:proto:field=google.container.v1.DatabaseEncryption.key_name
+	KeyName *string `json:"keyName,omitempty"`
+
+	// The desired state of etcd encryption.
+	// +kcc:proto:field=google.container.v1.DatabaseEncryption.state
+	State *string `json:"state,omitempty"`
+}
+*/
+
 /* unreachable type DatabaseEncryption_OperationError
 // +kcc:proto=google.container.v1.DatabaseEncryption.OperationError
 type DatabaseEncryption_OperationError struct {
@@ -289,6 +1117,26 @@ type DefaultComputeClassConfig struct {
 }
 */
 
+/* found existing non-generated go type "DefaultSnatStatus", skipping
+
+// +kcc:proto=google.container.v1.DefaultSnatStatus
+type DefaultSnatStatus struct {
+	// Disables cluster default sNAT rules.
+	// +kcc:proto:field=google.container.v1.DefaultSnatStatus.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "DNSCacheConfig", skipping
+
+// +kcc:proto=google.container.v1.DnsCacheConfig
+type DNSCacheConfig struct {
+	// Whether NodeLocal DNSCache is enabled for this cluster.
+	// +kcc:proto:field=google.container.v1.DnsCacheConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
 /* unreachable type EnterpriseConfig
 // +kcc:proto=google.container.v1.EnterpriseConfig
 type EnterpriseConfig struct {
@@ -296,6 +1144,37 @@ type EnterpriseConfig struct {
 	// desired_tier specifies the desired tier of the cluster.
 	// +kcc:proto:field=google.container.v1.EnterpriseConfig.desired_tier
 	DesiredTier *string `json:"desiredTier,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "EphemeralStorageLocalSsdConfig", skipping
+
+// +kcc:proto=google.container.v1.EphemeralStorageLocalSsdConfig
+type EphemeralStorageLocalSsdConfig struct {
+	// Number of local SSDs to use to back ephemeral storage. Uses NVMe
+	//  interfaces.
+	//
+	//  A zero (or unset) value has different meanings depending on machine type
+	//  being used:
+	//  1. For pre-Gen3 machines, which support flexible numbers of local ssds,
+	//  zero (or unset) means to disable using local SSDs as ephemeral storage. The
+	//  limit for this value is dependent upon the maximum number of disk
+	//  available on a machine per zone. See:
+	//  https://cloud.google.com/compute/docs/disks/local-ssd
+	//  for more information.
+	//  2. For Gen3 machines which dictate a specific number of local ssds, zero
+	//  (or unset) means to use the default number of local ssds that goes with
+	//  that machine type. For example, for a c3-standard-8-lssd machine, 2 local
+	//  ssds would be provisioned. For c3-standard-8 (which doesn't support local
+	//  ssds), 0 will be provisioned. See
+	//  https://cloud.google.com/compute/docs/disks/local-ssd#choose_number_local_ssds
+	//  for more info.
+	// +kcc:proto:field=google.container.v1.EphemeralStorageLocalSsdConfig.local_ssd_count
+	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
+
+	// Number of local SSDs to use for GKE Data Cache.
+	// +kcc:proto:field=google.container.v1.EphemeralStorageLocalSsdConfig.data_cache_count
+	DataCacheCount *int32 `json:"dataCacheCount,omitempty"`
 }
 */
 
@@ -444,6 +1323,16 @@ type EvictionSignals struct {
 }
 */
 
+/* found existing non-generated go type "FastSocket", skipping
+
+// +kcc:proto=google.container.v1.FastSocket
+type FastSocket struct {
+	// Whether Fast Socket features are enabled in the node pool.
+	// +kcc:proto:field=google.container.v1.FastSocket.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
 /* unreachable type Fleet
 // +kcc:proto=google.container.v1.Fleet
 type Fleet struct {
@@ -455,11 +1344,55 @@ type Fleet struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.container.v1.GPUDriverInstallationConfig", skipping
+
+// +kcc:proto=google.container.v1.GPUDriverInstallationConfig
+type GpuDriverInstallationConfig struct {
+	// Mode for how the GPU driver is installed.
+	// +kcc:proto:field=google.container.v1.GPUDriverInstallationConfig.gpu_driver_version
+	GpuDriverVersion *string `json:"gpuDriverVersion,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.GPUSharingConfig", skipping
+
+// +kcc:proto=google.container.v1.GPUSharingConfig
+type GpuSharingConfig struct {
+	// The max number of containers that can share a physical GPU.
+	// +kcc:proto:field=google.container.v1.GPUSharingConfig.max_shared_clients_per_gpu
+	MaxSharedClientsPerGpu *int64 `json:"maxSharedClientsPerGpu,omitempty"`
+
+	// The type of GPU sharing strategy to enable on the GPU node.
+	// +kcc:proto:field=google.container.v1.GPUSharingConfig.gpu_sharing_strategy
+	GpuSharingStrategy *string `json:"gpuSharingStrategy,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "GatewayAPIConfig", skipping
+
+// +kcc:proto=google.container.v1.GatewayAPIConfig
+type GatewayAPIConfig struct {
+	// The Gateway API release channel to use for Gateway API.
+	// +kcc:proto:field=google.container.v1.GatewayAPIConfig.channel
+	Channel *string `json:"channel,omitempty"`
+}
+*/
+
 /* unreachable type GCEPersistentDiskCsiDriverConfig
 // +kcc:proto=google.container.v1.GcePersistentDiskCsiDriverConfig
 type GCEPersistentDiskCsiDriverConfig struct {
 	// Whether the Compute Engine PD CSI driver is enabled for this cluster.
 	// +kcc:proto:field=google.container.v1.GcePersistentDiskCsiDriverConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "GcfsConfig", skipping
+
+// +kcc:proto=google.container.v1.GcfsConfig
+type GcfsConfig struct {
+	// Whether to use GCFS.
+	// +kcc:proto:field=google.container.v1.GcfsConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
 */
@@ -492,6 +1425,16 @@ type GKEAutoUpgradeConfig struct {
 }
 */
 
+/* found existing non-generated go type "GKEBackupAgentConfig", skipping
+
+// +kcc:proto=google.container.v1.GkeBackupAgentConfig
+type GKEBackupAgentConfig struct {
+	// Whether the Backup for GKE agent is enabled for this cluster.
+	// +kcc:proto:field=google.container.v1.GkeBackupAgentConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
 /* unreachable type HighScaleCheckpointingConfig
 // +kcc:proto=google.container.v1.HighScaleCheckpointingConfig
 type HighScaleCheckpointingConfig struct {
@@ -499,6 +1442,215 @@ type HighScaleCheckpointingConfig struct {
 	//  cluster.
 	// +kcc:proto:field=google.container.v1.HighScaleCheckpointingConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "HorizontalPodAutoscaling", skipping
+
+// +kcc:proto=google.container.v1.HorizontalPodAutoscaling
+type HorizontalPodAutoscaling struct {
+	// Whether the Horizontal Pod Autoscaling feature is enabled in the cluster.
+	//  When enabled, it ensures that metrics are collected into Stackdriver
+	//  Monitoring.
+	// +kcc:proto:field=google.container.v1.HorizontalPodAutoscaling.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "HTTPLoadBalancing", skipping
+
+// +kcc:proto=google.container.v1.HttpLoadBalancing
+type HTTPLoadBalancing struct {
+	// Whether the HTTP Load Balancing controller is enabled in the cluster.
+	//  When enabled, it runs a small pod in the cluster that manages the load
+	//  balancers.
+	// +kcc:proto:field=google.container.v1.HttpLoadBalancing.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "IPAllocationPolicy", skipping
+
+// +kcc:proto=google.container.v1.IPAllocationPolicy
+type IPAllocationPolicy struct {
+	// Whether alias IPs will be used for pod IPs in the cluster.
+	//  This is used in conjunction with use_routes. It cannot
+	//  be true if use_routes is true. If both use_ip_aliases and use_routes are
+	//  false, then the server picks the default IP allocation mode
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.use_ip_aliases
+	UseIPAliases *bool `json:"useIPAliases,omitempty"`
+
+	// Whether a new subnetwork will be created automatically for the cluster.
+	//
+	//  This field is only applicable when `use_ip_aliases` is true.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.create_subnetwork
+	CreateSubnetwork *bool `json:"createSubnetwork,omitempty"`
+
+	// A custom subnetwork name to be used if `create_subnetwork` is true.  If
+	//  this field is empty, then an automatic name will be chosen for the new
+	//  subnetwork.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.subnetwork_name
+	SubnetworkName *string `json:"subnetworkName,omitempty"`
+
+	// This field is deprecated, use cluster_ipv4_cidr_block.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.cluster_ipv4_cidr
+	ClusterIPV4CIDR *string `json:"clusterIPV4CIDR,omitempty"`
+
+	// This field is deprecated, use node_ipv4_cidr_block.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.node_ipv4_cidr
+	NodeIPV4CIDR *string `json:"nodeIPV4CIDR,omitempty"`
+
+	// This field is deprecated, use services_ipv4_cidr_block.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.services_ipv4_cidr
+	ServicesIPV4CIDR *string `json:"servicesIPV4CIDR,omitempty"`
+
+	// The name of the secondary range to be used for the cluster CIDR
+	//  block.  The secondary range will be used for pod IP
+	//  addresses. This must be an existing secondary range associated
+	//  with the cluster subnetwork.
+	//
+	//  This field is only applicable with use_ip_aliases is true and
+	//  create_subnetwork is false.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.cluster_secondary_range_name
+	ClusterSecondaryRangeName *string `json:"clusterSecondaryRangeName,omitempty"`
+
+	// The name of the secondary range to be used as for the services
+	//  CIDR block.  The secondary range will be used for service
+	//  ClusterIPs. This must be an existing secondary range associated
+	//  with the cluster subnetwork.
+	//
+	//  This field is only applicable with use_ip_aliases is true and
+	//  create_subnetwork is false.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.services_secondary_range_name
+	ServicesSecondaryRangeName *string `json:"servicesSecondaryRangeName,omitempty"`
+
+	// The IP address range for the cluster pod IPs. If this field is set, then
+	//  `cluster.cluster_ipv4_cidr` must be left blank.
+	//
+	//  This field is only applicable when `use_ip_aliases` is true.
+	//
+	//  Set to blank to have a range chosen with the default size.
+	//
+	//  Set to /netmask (e.g. `/14`) to have a range chosen with a specific
+	//  netmask.
+	//
+	//  Set to a
+	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
+	//  `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
+	//  to use.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.cluster_ipv4_cidr_block
+	ClusterIPV4CIDRBlock *string `json:"clusterIPV4CIDRBlock,omitempty"`
+
+	// The IP address range of the instance IPs in this cluster.
+	//
+	//  This is applicable only if `create_subnetwork` is true.
+	//
+	//  Set to blank to have a range chosen with the default size.
+	//
+	//  Set to /netmask (e.g. `/14`) to have a range chosen with a specific
+	//  netmask.
+	//
+	//  Set to a
+	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
+	//  `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
+	//  to use.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.node_ipv4_cidr_block
+	NodeIPV4CIDRBlock *string `json:"nodeIPV4CIDRBlock,omitempty"`
+
+	// The IP address range of the services IPs in this cluster. If blank, a range
+	//  will be automatically chosen with the default size.
+	//
+	//  This field is only applicable when `use_ip_aliases` is true.
+	//
+	//  Set to blank to have a range chosen with the default size.
+	//
+	//  Set to /netmask (e.g. `/14`) to have a range chosen with a specific
+	//  netmask.
+	//
+	//  Set to a
+	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
+	//  `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
+	//  to use.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.services_ipv4_cidr_block
+	ServicesIPV4CIDRBlock *string `json:"servicesIPV4CIDRBlock,omitempty"`
+
+	// The IP address range of the Cloud TPUs in this cluster. If unspecified, a
+	//  range will be automatically chosen with the default size.
+	//
+	//  This field is only applicable when `use_ip_aliases` is true.
+	//
+	//  If unspecified, the range will use the default size.
+	//
+	//  Set to /netmask (e.g. `/14`) to have a range chosen with a specific
+	//  netmask.
+	//
+	//  Set to a
+	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
+	//  `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
+	//  to use.
+	//
+	//  This field is deprecated due to the deprecation of 2VM TPU. The end of life
+	//  date for 2VM TPU is 2025-04-25.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.tpu_ipv4_cidr_block
+	TpuIPV4CIDRBlock *string `json:"tpuIPV4CIDRBlock,omitempty"`
+
+	// Whether routes will be used for pod IPs in the cluster.
+	//  This is used in conjunction with use_ip_aliases. It cannot be true if
+	//  use_ip_aliases is true. If both use_ip_aliases and use_routes are false,
+	//  then the server picks the default IP allocation mode
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.use_routes
+	UseRoutes *bool `json:"useRoutes,omitempty"`
+
+	// The IP stack type of the cluster
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.stack_type
+	StackType *string `json:"stackType,omitempty"`
+
+	// The ipv6 access type (internal or external) when create_subnetwork is true
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.ipv6_access_type
+	IPV6AccessType *string `json:"ipv6AccessType,omitempty"`
+
+	// [PRIVATE FIELD]
+	//  Pod CIDR size overprovisioning config for the cluster.
+	//
+	//  Pod CIDR size per node depends on max_pods_per_node. By default, the value
+	//  of max_pods_per_node is doubled and then rounded off to next power of 2 to
+	//  get the size of pod CIDR block per node.
+	//  Example: max_pods_per_node of 30 would result in 64 IPs (/26).
+	//
+	//  This config can disable the doubling of IPs (we still round off to next
+	//  power of 2)
+	//  Example: max_pods_per_node of 30 will result in 32 IPs (/27) when
+	//  overprovisioning is disabled.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.pod_cidr_overprovision_config
+	PodCIDROverprovisionConfig *PodCIDROverprovisionConfig `json:"podCIDROverprovisionConfig,omitempty"`
+
+	// Optional. AutoIpamConfig contains all information related to Auto IPAM
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.auto_ipam_config
+	AutoIpamConfig *AutoIpamConfig `json:"autoIpamConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "IdentityServiceConfig", skipping
+
+// +kcc:proto=google.container.v1.IdentityServiceConfig
+type IdentityServiceConfig struct {
+	// Whether to enable the Identity Service component
+	// +kcc:proto:field=google.container.v1.IdentityServiceConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.K8sBetaAPIConfig", skipping
+
+// +kcc:proto=google.container.v1.K8sBetaAPIConfig
+type K8sBetaAPIConfig struct {
+	// Enabled k8s beta APIs.
+	// +kcc:proto:field=google.container.v1.K8sBetaAPIConfig.enabled_apis
+	EnabledApis []string `json:"enabledApis,omitempty"`
 }
 */
 
@@ -520,6 +1672,86 @@ type LegacyAbac struct {
 	//  provided by the RBAC configuration or IAM.
 	// +kcc:proto:field=google.container.v1.LegacyAbac.enabled
 	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "LinuxNodeConfig", skipping
+
+// +kcc:proto=google.container.v1.LinuxNodeConfig
+type LinuxNodeConfig struct {
+	// The Linux kernel parameters to be applied to the nodes and all pods running
+	//  on the nodes.
+	//
+	//  The following parameters are supported.
+	//
+	//  net.core.busy_poll
+	//  net.core.busy_read
+	//  net.core.netdev_max_backlog
+	//  net.core.rmem_max
+	//  net.core.rmem_default
+	//  net.core.wmem_default
+	//  net.core.wmem_max
+	//  net.core.optmem_max
+	//  net.core.somaxconn
+	//  net.ipv4.tcp_rmem
+	//  net.ipv4.tcp_wmem
+	//  net.ipv4.tcp_tw_reuse
+	//  net.ipv4.tcp_max_orphans
+	//  net.netfilter.nf_conntrack_max
+	//  net.netfilter.nf_conntrack_buckets
+	//  net.netfilter.nf_conntrack_tcp_timeout_close_wait
+	//  net.netfilter.nf_conntrack_tcp_timeout_time_wait
+	//  net.netfilter.nf_conntrack_tcp_timeout_established
+	//  net.netfilter.nf_conntrack_acct
+	//  kernel.shmmni
+	//  kernel.shmmax
+	//  kernel.shmall
+	//  fs.aio-max-nr
+	//  fs.file-max
+	//  fs.inotify.max_user_instances
+	//  fs.inotify.max_user_watches
+	//  fs.nr_open
+	//  vm.dirty_background_ratio
+	//  vm.dirty_expire_centisecs
+	//  vm.dirty_ratio
+	//  vm.dirty_writeback_centisecs
+	//  vm.max_map_count
+	//  vm.overcommit_memory
+	//  vm.overcommit_ratio
+	//  vm.vfs_cache_pressure
+	//  vm.swappiness
+	//  vm.watermark_scale_factor
+	//  vm.min_free_kbytes
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.sysctls
+	Sysctls map[string]string `json:"sysctls,omitempty"`
+
+	// cgroup_mode specifies the cgroup mode to be used on the node.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.cgroup_mode
+	CgroupMode *string `json:"cgroupMode,omitempty"`
+
+	// Optional. Amounts for 2M and 1G hugepages
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.hugepages
+	Hugepages *LinuxNodeConfig_HugepagesConfig `json:"hugepages,omitempty"`
+
+	// Optional. Transparent hugepage support for anonymous memory can be entirely
+	//  disabled (mostly for debugging purposes) or only enabled inside
+	//  MADV_HUGEPAGE regions (to avoid the risk of consuming more memory
+	//  resources) or enabled system wide.
+	//
+	//  See https://docs.kernel.org/admin-guide/mm/transhuge.html
+	//  for more details.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.transparent_hugepage_enabled
+	TransparentHugepageEnabled *string `json:"transparentHugepageEnabled,omitempty"`
+
+	// Optional. Defines the transparent hugepage defrag configuration on the
+	//  node. VM hugepage allocation can be managed by either limiting
+	//  defragmentation for delayed allocation or skipping it entirely for
+	//  immediate allocation only.
+	//
+	//  See https://docs.kernel.org/admin-guide/mm/transhuge.html
+	//  for more details.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.transparent_hugepage_defrag
+	TransparentHugepageDefrag *string `json:"transparentHugepageDefrag,omitempty"`
 }
 */
 
@@ -569,6 +1801,16 @@ type LoggingComponentConfig struct {
 }
 */
 
+/* found existing non-generated go type "LoggingConfig", skipping
+
+// +kcc:proto=google.container.v1.LoggingConfig
+type LoggingConfig struct {
+	// Logging components configuration
+	// +kcc:proto:field=google.container.v1.LoggingConfig.component_config
+	ComponentConfig *LoggingComponentConfig `json:"componentConfig,omitempty"`
+}
+*/
+
 /* unreachable type LoggingVariantConfig
 // +kcc:proto=google.container.v1.LoggingVariantConfig
 type LoggingVariantConfig struct {
@@ -589,6 +1831,140 @@ type LustreCsiDriverConfig struct {
 	//  using port 6988.
 	// +kcc:proto:field=google.container.v1.LustreCsiDriverConfig.enable_legacy_lustre_port
 	EnableLegacyLustrePort *bool `json:"enableLegacyLustrePort,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MaintenanceExclusionOptions", skipping
+
+// +kcc:proto=google.container.v1.MaintenanceExclusionOptions
+type MaintenanceExclusionOptions struct {
+	// Scope specifies the upgrade scope which upgrades are blocked by the
+	//  exclusion.
+	// +kcc:proto:field=google.container.v1.MaintenanceExclusionOptions.scope
+	Scope *string `json:"scope,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MaintenancePolicy", skipping
+
+// +kcc:proto=google.container.v1.MaintenancePolicy
+type MaintenancePolicy struct {
+	// Specifies the maintenance window in which maintenance may be performed.
+	// +kcc:proto:field=google.container.v1.MaintenancePolicy.window
+	Window *MaintenanceWindow `json:"window,omitempty"`
+
+	// A hash identifying the version of this policy, so that updates to fields of
+	//  the policy won't accidentally undo intermediate changes (and so that users
+	//  of the API unaware of some fields won't accidentally remove other fields).
+	//  Make a `get()` request to the cluster to get the current
+	//  resource version and include it with requests to set the policy.
+	// +kcc:proto:field=google.container.v1.MaintenancePolicy.resource_version
+	ResourceVersion *string `json:"resourceVersion,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.MaintenanceWindow", skipping
+
+// +kcc:proto=google.container.v1.MaintenanceWindow
+type MaintenanceWindow struct {
+	// DailyMaintenanceWindow specifies a daily maintenance operation window.
+	// +kcc:proto:field=google.container.v1.MaintenanceWindow.daily_maintenance_window
+	DailyMaintenanceWindow *DailyMaintenanceWindow `json:"dailyMaintenanceWindow,omitempty"`
+
+	// RecurringWindow specifies some number of recurring time periods for
+	//  maintenance to occur. The time windows may be overlapping. If no
+	//  maintenance windows are set, maintenance can occur at any time.
+	// +kcc:proto:field=google.container.v1.MaintenanceWindow.recurring_window
+	RecurringWindow *RecurringTimeWindow `json:"recurringWindow,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.ManagedPrometheusConfig", skipping
+
+// +kcc:proto=google.container.v1.ManagedPrometheusConfig
+type ManagedPrometheusConfig struct {
+	// Enable Managed Collection.
+	// +kcc:proto:field=google.container.v1.ManagedPrometheusConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// GKE Workload Auto-Monitoring Configuration.
+	// +kcc:proto:field=google.container.v1.ManagedPrometheusConfig.auto_monitoring_config
+	AutoMonitoringConfig *AutoMonitoringConfig `json:"autoMonitoringConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MasterAuth", skipping
+
+// +kcc:proto=google.container.v1.MasterAuth
+type MasterAuth struct {
+	// The username to use for HTTP basic authentication to the master endpoint.
+	//  For clusters v1.6.0 and later, basic authentication can be disabled by
+	//  leaving username unspecified (or setting it to the empty string).
+	//
+	//  Warning: basic authentication is deprecated, and will be removed in GKE
+	//  control plane versions 1.19 and newer. For a list of recommended
+	//  authentication methods, see:
+	//  https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication
+	// +kcc:proto:field=google.container.v1.MasterAuth.username
+	Username *string `json:"username,omitempty"`
+
+	// The password to use for HTTP basic authentication to the master endpoint.
+	//  Because the master endpoint is open to the Internet, you should create a
+	//  strong password.  If a password is provided for cluster creation, username
+	//  must be non-empty.
+	//
+	//  Warning: basic authentication is deprecated, and will be removed in GKE
+	//  control plane versions 1.19 and newer. For a list of recommended
+	//  authentication methods, see:
+	//  https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication
+	// +kcc:proto:field=google.container.v1.MasterAuth.password
+	Password *string `json:"password,omitempty"`
+
+	// Configuration for client certificate authentication on the cluster. For
+	//  clusters before v1.12, if no configuration is specified, a client
+	//  certificate is issued.
+	// +kcc:proto:field=google.container.v1.MasterAuth.client_certificate_config
+	ClientCertificateConfig *ClientCertificateConfig `json:"clientCertificateConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MasterAuthorizedNetworksConfig", skipping
+
+// +kcc:proto=google.container.v1.MasterAuthorizedNetworksConfig
+type MasterAuthorizedNetworksConfig struct {
+	// Whether or not master authorized networks is enabled.
+	// +kcc:proto:field=google.container.v1.MasterAuthorizedNetworksConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// cidr_blocks define up to 50 external networks that could access
+	//  Kubernetes master through HTTPS.
+	// +kcc:proto:field=google.container.v1.MasterAuthorizedNetworksConfig.cidr_blocks
+	CIDRBlocks []MasterAuthorizedNetworksConfig_CIDRBlock `json:"cidrBlocks,omitempty"`
+
+	// Whether master is accessible via Google Compute Engine Public IP addresses.
+	// +kcc:proto:field=google.container.v1.MasterAuthorizedNetworksConfig.gcp_public_cidrs_access_enabled
+	GcpPublicCidrsAccessEnabled *bool `json:"gcpPublicCidrsAccessEnabled,omitempty"`
+
+	// Whether master authorized networks is enforced on private endpoint or not.
+	// +kcc:proto:field=google.container.v1.MasterAuthorizedNetworksConfig.private_endpoint_enforcement_enabled
+	PrivateEndpointEnforcementEnabled *bool `json:"privateEndpointEnforcementEnabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MasterAuthorizedNetworksConfig_CIDRBlock", skipping
+
+// +kcc:proto=google.container.v1.MasterAuthorizedNetworksConfig.CidrBlock
+type MasterAuthorizedNetworksConfig_CIDRBlock struct {
+	// display_name is an optional field for users to identify CIDR blocks.
+	// +kcc:proto:field=google.container.v1.MasterAuthorizedNetworksConfig.CidrBlock.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// cidr_block must be specified in CIDR notation.
+	// +kcc:proto:field=google.container.v1.MasterAuthorizedNetworksConfig.CidrBlock.cidr_block
+	CIDRBlock *string `json:"cidrBlock,omitempty"`
 }
 */
 
@@ -617,6 +1993,24 @@ type MemoryManager struct {
 }
 */
 
+/* found existing non-generated go type "MeshCertificates", skipping
+
+// +kcc:proto=google.container.v1.MeshCertificates
+type MeshCertificates struct {
+	// enable_certificates controls issuance of workload mTLS certificates.
+	//
+	//  If set, the GKE Workload Identity Certificates controller and node agent
+	//  will be deployed in the cluster, which can then be configured by creating a
+	//  WorkloadCertificateConfig Custom Resource.
+	//
+	//  Requires Workload Identity
+	//  ([workload_pool][google.container.v1.WorkloadIdentityConfig.workload_pool]
+	//  must be non-empty).
+	// +kcc:proto:field=google.container.v1.MeshCertificates.enable_certificates
+	EnableCertificates *bool `json:"enableCertificates,omitempty"`
+}
+*/
+
 /* unreachable type MonitoringComponentConfig
 // +kcc:proto=google.container.v1.MonitoringComponentConfig
 type MonitoringComponentConfig struct {
@@ -624,6 +2018,25 @@ type MonitoringComponentConfig struct {
 	//  monitoring.
 	// +kcc:proto:field=google.container.v1.MonitoringComponentConfig.enable_components
 	EnableComponents []string `json:"enableComponents,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MonitoringConfig", skipping
+
+// +kcc:proto=google.container.v1.MonitoringConfig
+type MonitoringConfig struct {
+	// Monitoring components configuration
+	// +kcc:proto:field=google.container.v1.MonitoringConfig.component_config
+	ComponentConfig *MonitoringComponentConfig `json:"componentConfig,omitempty"`
+
+	// Enable Google Cloud Managed Service for Prometheus
+	//  in the cluster.
+	// +kcc:proto:field=google.container.v1.MonitoringConfig.managed_prometheus_config
+	ManagedPrometheusConfig *ManagedPrometheusConfig `json:"managedPrometheusConfig,omitempty"`
+
+	// Configuration of Advanced Datapath Observability features.
+	// +kcc:proto:field=google.container.v1.MonitoringConfig.advanced_datapath_observability_config
+	AdvancedDatapathObservabilityConfig *AdvancedDatapathObservabilityConfig `json:"advancedDatapathObservabilityConfig,omitempty"`
 }
 */
 
@@ -713,6 +2126,574 @@ type NetworkConfig_ClusterNetworkPerformanceConfig struct {
 	// Specifies the total network bandwidth tier for NodePools in the cluster.
 	// +kcc:proto:field=google.container.v1.NetworkConfig.ClusterNetworkPerformanceConfig.total_egress_bandwidth_tier
 	TotalEgressBandwidthTier *string `json:"totalEgressBandwidthTier,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NetworkPolicy", skipping
+
+// +kcc:proto=google.container.v1.NetworkPolicy
+type NetworkPolicy struct {
+	// The selected network policy provider.
+	// +kcc:proto:field=google.container.v1.NetworkPolicy.provider
+	Provider *string `json:"provider,omitempty"`
+
+	// Whether network policy is enabled on the cluster.
+	// +kcc:proto:field=google.container.v1.NetworkPolicy.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NetworkPolicyConfig", skipping
+
+// +kcc:proto=google.container.v1.NetworkPolicyConfig
+type NetworkPolicyConfig struct {
+	// Whether NetworkPolicy is enabled for this cluster.
+	// +kcc:proto:field=google.container.v1.NetworkPolicyConfig.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NetworkTags", skipping
+
+// +kcc:proto=google.container.v1.NetworkTags
+type NetworkTags struct {
+	// List of network tags.
+	// +kcc:proto:field=google.container.v1.NetworkTags.tags
+	Tags []string `json:"tags,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodeConfig", skipping
+
+// +kcc:proto=google.container.v1.NodeConfig
+type NodeConfig struct {
+	// The name of a Google Compute Engine [machine
+	//  type](https://cloud.google.com/compute/docs/machine-types)
+	//
+	//  If unspecified, the default machine type is `e2-medium`.
+	// +kcc:proto:field=google.container.v1.NodeConfig.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Size of the disk attached to each node, specified in GB.
+	//  The smallest allowed disk size is 10GB.
+	//
+	//  If unspecified, the default disk size is 100GB.
+	// +kcc:proto:field=google.container.v1.NodeConfig.disk_size_gb
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+
+	// The set of Google API scopes to be made available on all of the
+	//  node VMs under the "default" service account.
+	//
+	//  The following scopes are recommended, but not required, and by default are
+	//  not included:
+	//
+	//  * `https://www.googleapis.com/auth/compute` is required for mounting
+	//  persistent storage on your nodes.
+	//  * `https://www.googleapis.com/auth/devstorage.read_only` is required for
+	//  communicating with **gcr.io**
+	//  (the [Google Container
+	//  Registry](https://cloud.google.com/container-registry/)).
+	//
+	//  If unspecified, no scopes are added, unless Cloud Logging or Cloud
+	//  Monitoring are enabled, in which case their required scopes will be added.
+	// +kcc:proto:field=google.container.v1.NodeConfig.oauth_scopes
+	OauthScopes []string `json:"oauthScopes,omitempty"`
+
+	// The Google Cloud Platform Service Account to be used by the node VMs.
+	//  Specify the email address of the Service Account; otherwise, if no Service
+	//  Account is specified, the "default" service account is used.
+	// +kcc:proto:field=google.container.v1.NodeConfig.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// The metadata key/value pairs assigned to instances in the cluster.
+	//
+	//  Keys must conform to the regexp `[a-zA-Z0-9-_]+` and be less than 128 bytes
+	//  in length. These are reflected as part of a URL in the metadata server.
+	//  Additionally, to avoid ambiguity, keys must not conflict with any other
+	//  metadata keys for the project or be one of the reserved keys:
+	//
+	//   - "cluster-location"
+	//   - "cluster-name"
+	//   - "cluster-uid"
+	//   - "configure-sh"
+	//   - "containerd-configure-sh"
+	//   - "enable-os-login"
+	//   - "gci-ensure-gke-docker"
+	//   - "gci-metrics-enabled"
+	//   - "gci-update-strategy"
+	//   - "instance-template"
+	//   - "kube-env"
+	//   - "startup-script"
+	//   - "user-data"
+	//   - "disable-address-manager"
+	//   - "windows-startup-script-ps1"
+	//   - "common-psm1"
+	//   - "k8s-node-setup-psm1"
+	//   - "install-ssh-psm1"
+	//   - "user-profile-psm1"
+	//
+	//  Values are free-form strings, and only have meaning as interpreted by
+	//  the image running in the instance. The only restriction placed on them is
+	//  that each value's size must be less than or equal to 32 KB.
+	//
+	//  The total size of all keys and values must be less than 512 KB.
+	// +kcc:proto:field=google.container.v1.NodeConfig.metadata
+	Metadata map[string]string `json:"metadata,omitempty"`
+
+	// The image type to use for this node. Note that for a given image type,
+	//  the latest version of it will be used. Please see
+	//  https://cloud.google.com/kubernetes-engine/docs/concepts/node-images
+	//  for available image types.
+	// +kcc:proto:field=google.container.v1.NodeConfig.image_type
+	ImageType *string `json:"imageType,omitempty"`
+
+	// The map of Kubernetes labels (key/value pairs) to be applied to each node.
+	//  These will added in addition to any default label(s) that
+	//  Kubernetes may apply to the node.
+	//  In case of conflict in label keys, the applied set may differ depending on
+	//  the Kubernetes version -- it's best to assume the behavior is undefined
+	//  and conflicts should be avoided.
+	//  For more information, including usage and the valid values, see:
+	//  https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+	// +kcc:proto:field=google.container.v1.NodeConfig.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// The number of local SSD disks to be attached to the node.
+	//
+	//  The limit for this value is dependent upon the maximum number of
+	//  disks available on a machine per zone. See:
+	//  https://cloud.google.com/compute/docs/disks/local-ssd
+	//  for more information.
+	// +kcc:proto:field=google.container.v1.NodeConfig.local_ssd_count
+	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
+
+	// The list of instance tags applied to all nodes. Tags are used to identify
+	//  valid sources or targets for network firewalls and are specified by
+	//  the client during cluster or node pool creation. Each tag within the list
+	//  must comply with RFC1035.
+	// +kcc:proto:field=google.container.v1.NodeConfig.tags
+	Tags []string `json:"tags,omitempty"`
+
+	// Whether the nodes are created as preemptible VM instances. See:
+	//  https://cloud.google.com/compute/docs/instances/preemptible
+	//  for more information about preemptible VM instances.
+	// +kcc:proto:field=google.container.v1.NodeConfig.preemptible
+	Preemptible *bool `json:"preemptible,omitempty"`
+
+	// A list of hardware accelerators to be attached to each node.
+	//  See
+	//  https://cloud.google.com/compute/docs/gpus
+	//  for more information about support for GPUs.
+	// +kcc:proto:field=google.container.v1.NodeConfig.accelerators
+	Accelerators []AcceleratorConfig `json:"accelerators,omitempty"`
+
+	// Type of the disk attached to each node (e.g. 'pd-standard', 'pd-ssd' or
+	//  'pd-balanced')
+	//
+	//  If unspecified, the default disk type is 'pd-standard'
+	// +kcc:proto:field=google.container.v1.NodeConfig.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+
+	// Minimum CPU platform to be used by this instance. The instance may be
+	//  scheduled on the specified or newer CPU platform. Applicable values are the
+	//  friendly names of CPU platforms, such as
+	//  `minCpuPlatform: "Intel Haswell"` or
+	//  `minCpuPlatform: "Intel Sandy Bridge"`. For more
+	//  information, read [how to specify min CPU
+	//  platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform)
+	// +kcc:proto:field=google.container.v1.NodeConfig.min_cpu_platform
+	MinCPUPlatform *string `json:"minCPUPlatform,omitempty"`
+
+	// The workload metadata configuration for this node.
+	// +kcc:proto:field=google.container.v1.NodeConfig.workload_metadata_config
+	WorkloadMetadataConfig *WorkloadMetadataConfig `json:"workloadMetadataConfig,omitempty"`
+
+	// List of kubernetes taints to be applied to each node.
+	//
+	//  For more information, including usage and the valid values, see:
+	//  https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+	// +kcc:proto:field=google.container.v1.NodeConfig.taints
+	Taints []NodeTaint `json:"taints,omitempty"`
+
+	// Sandbox configuration for this node.
+	// +kcc:proto:field=google.container.v1.NodeConfig.sandbox_config
+	SandboxConfig *SandboxConfig `json:"sandboxConfig,omitempty"`
+
+	// Setting this field will assign instances of this
+	//  pool to run on the specified node group. This is useful for running
+	//  workloads on [sole tenant
+	//  nodes](https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes).
+	// +kcc:proto:field=google.container.v1.NodeConfig.node_group
+	NodeGroup *string `json:"nodeGroup,omitempty"`
+
+	// The optional reservation affinity. Setting this field will apply
+	//  the specified [Zonal Compute
+	//  Reservation](https://cloud.google.com/compute/docs/instances/reserving-zonal-resources)
+	//  to this node pool.
+	// +kcc:proto:field=google.container.v1.NodeConfig.reservation_affinity
+	ReservationAffinity *ReservationAffinity `json:"reservationAffinity,omitempty"`
+
+	// Shielded Instance options.
+	// +kcc:proto:field=google.container.v1.NodeConfig.shielded_instance_config
+	ShieldedInstanceConfig *ShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+
+	// Parameters that can be configured on Linux nodes.
+	// +kcc:proto:field=google.container.v1.NodeConfig.linux_node_config
+	LinuxNodeConfig *LinuxNodeConfig `json:"linuxNodeConfig,omitempty"`
+
+	// Node kubelet configs.
+	// +kcc:proto:field=google.container.v1.NodeConfig.kubelet_config
+	KubeletConfig *NodeKubeletConfig `json:"kubeletConfig,omitempty"`
+
+	// The Customer Managed Encryption Key used to encrypt the boot disk attached
+	//  to each node in the node pool. This should be of the form
+	//  projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME].
+	//  For more information about protecting resources with Cloud KMS Keys please
+	//  see:
+	//  https://cloud.google.com/compute/docs/disks/customer-managed-encryption
+	// +kcc:proto:field=google.container.v1.NodeConfig.boot_disk_kms_key
+	BootDiskKMSKey *string `json:"bootDiskKMSKey,omitempty"`
+
+	// Google Container File System (image streaming) configs.
+	// +kcc:proto:field=google.container.v1.NodeConfig.gcfs_config
+	GcfsConfig *GcfsConfig `json:"gcfsConfig,omitempty"`
+
+	// Advanced features for the Compute Engine VM.
+	// +kcc:proto:field=google.container.v1.NodeConfig.advanced_machine_features
+	AdvancedMachineFeatures *AdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
+
+	// Enable or disable gvnic in the node pool.
+	// +kcc:proto:field=google.container.v1.NodeConfig.gvnic
+	Gvnic *VirtualNic `json:"gvnic,omitempty"`
+
+	// Spot flag for enabling Spot VM, which is a rebrand of
+	//  the existing preemptible flag.
+	// +kcc:proto:field=google.container.v1.NodeConfig.spot
+	Spot *bool `json:"spot,omitempty"`
+
+	// Confidential nodes config.
+	//  All the nodes in the node pool will be Confidential VM once enabled.
+	// +kcc:proto:field=google.container.v1.NodeConfig.confidential_nodes
+	ConfidentialNodes *ConfidentialNodes `json:"confidentialNodes,omitempty"`
+
+	// Enable or disable NCCL fast socket for the node pool.
+	// +kcc:proto:field=google.container.v1.NodeConfig.fast_socket
+	FastSocket *FastSocket `json:"fastSocket,omitempty"`
+
+	// The resource labels for the node pool to use to annotate any related
+	//  Google Compute Engine resources.
+	// +kcc:proto:field=google.container.v1.NodeConfig.resource_labels
+	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
+
+	// Logging configuration.
+	// +kcc:proto:field=google.container.v1.NodeConfig.logging_config
+	LoggingConfig *NodePoolLoggingConfig `json:"loggingConfig,omitempty"`
+
+	// Parameters that can be configured on Windows nodes.
+	// +kcc:proto:field=google.container.v1.NodeConfig.windows_node_config
+	WindowsNodeConfig *WindowsNodeConfig `json:"windowsNodeConfig,omitempty"`
+
+	// Parameters for using raw-block Local NVMe SSDs.
+	// +kcc:proto:field=google.container.v1.NodeConfig.local_nvme_ssd_block_config
+	LocalNvmeSsdBlockConfig *LocalNvmeSsdBlockConfig `json:"localNvmeSsdBlockConfig,omitempty"`
+
+	// Parameters for the node ephemeral storage using Local SSDs.
+	//  If unspecified, ephemeral storage is backed by the boot disk.
+	// +kcc:proto:field=google.container.v1.NodeConfig.ephemeral_storage_local_ssd_config
+	EphemeralStorageLocalSsdConfig *EphemeralStorageLocalSsdConfig `json:"ephemeralStorageLocalSsdConfig,omitempty"`
+
+	// Parameters for node pools to be backed by shared sole tenant node groups.
+	// +kcc:proto:field=google.container.v1.NodeConfig.sole_tenant_config
+	SoleTenantConfig *SoleTenantConfig `json:"soleTenantConfig,omitempty"`
+
+	// Parameters for containerd customization.
+	// +kcc:proto:field=google.container.v1.NodeConfig.containerd_config
+	ContainerdConfig *ContainerdConfig `json:"containerdConfig,omitempty"`
+
+	// A map of resource manager tag keys and values to be attached to the nodes.
+	// +kcc:proto:field=google.container.v1.NodeConfig.resource_manager_tags
+	ResourceManagerTags *ResourceManagerTags `json:"resourceManagerTags,omitempty"`
+
+	// Optional. Reserved for future use.
+	// +kcc:proto:field=google.container.v1.NodeConfig.enable_confidential_storage
+	EnableConfidentialStorage *bool `json:"enableConfidentialStorage,omitempty"`
+
+	// List of secondary boot disks attached to the nodes.
+	// +kcc:proto:field=google.container.v1.NodeConfig.secondary_boot_disks
+	SecondaryBootDisks []SecondaryBootDisk `json:"secondaryBootDisks,omitempty"`
+
+	// List of Storage Pools where boot disks are provisioned.
+	// +kcc:proto:field=google.container.v1.NodeConfig.storage_pools
+	StoragePools []string `json:"storagePools,omitempty"`
+
+	// Secondary boot disk update strategy.
+	// +kcc:proto:field=google.container.v1.NodeConfig.secondary_boot_disk_update_strategy
+	SecondaryBootDiskUpdateStrategy *SecondaryBootDiskUpdateStrategy `json:"secondaryBootDiskUpdateStrategy,omitempty"`
+
+	// The maximum duration for the nodes to exist.
+	//  If unspecified, the nodes can exist indefinitely.
+	// +kcc:proto:field=google.container.v1.NodeConfig.max_run_duration
+	MaxRunDuration *string `json:"maxRunDuration,omitempty"`
+
+	// Specifies which method should be used for encrypting the
+	//  Local SSDs attached to the node.
+	// +kcc:proto:field=google.container.v1.NodeConfig.local_ssd_encryption_mode
+	LocalSsdEncryptionMode *string `json:"localSsdEncryptionMode,omitempty"`
+
+	// Flex Start flag for enabling Flex Start VM.
+	// +kcc:proto:field=google.container.v1.NodeConfig.flex_start
+	FlexStart *bool `json:"flexStart,omitempty"`
+
+	// The boot disk configuration for the node pool.
+	// +kcc:proto:field=google.container.v1.NodeConfig.boot_disk
+	BootDisk *BootDisk `json:"bootDisk,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodeConfigDefaults", skipping
+
+// +kcc:proto=google.container.v1.NodeConfigDefaults
+type NodeConfigDefaults struct {
+	// GCFS (Google Container File System, also known as Riptide) options.
+	// +kcc:proto:field=google.container.v1.NodeConfigDefaults.gcfs_config
+	GcfsConfig *GcfsConfig `json:"gcfsConfig,omitempty"`
+
+	// Logging configuration for node pools.
+	// +kcc:proto:field=google.container.v1.NodeConfigDefaults.logging_config
+	LoggingConfig *NodePoolLoggingConfig `json:"loggingConfig,omitempty"`
+
+	// Parameters for containerd customization.
+	// +kcc:proto:field=google.container.v1.NodeConfigDefaults.containerd_config
+	ContainerdConfig *ContainerdConfig `json:"containerdConfig,omitempty"`
+
+	// NodeKubeletConfig controls the defaults for new node-pools.
+	//
+	//  Currently only `insecure_kubelet_readonly_port_enabled` can be set here.
+	// +kcc:proto:field=google.container.v1.NodeConfigDefaults.node_kubelet_config
+	NodeKubeletConfig *NodeKubeletConfig `json:"nodeKubeletConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.NodeKubeletConfig", skipping
+
+// +kcc:proto=google.container.v1.NodeKubeletConfig
+type NodeKubeletConfig struct {
+	// Control the CPU management policy on the node.
+	//  See
+	//  https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/
+	//
+	//  The following values are allowed.
+	//  * "none": the default, which represents the existing scheduling behavior.
+	//  * "static": allows pods with certain resource characteristics to be granted
+	//  increased CPU affinity and exclusivity on the node.
+	//  The default value is 'none' if unspecified.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.cpu_manager_policy
+	CPUManagerPolicy *string `json:"cpuManagerPolicy,omitempty"`
+
+	// Optional. Controls Topology Manager configuration on the node.
+	//  For more information, see:
+	//  https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.topology_manager
+	TopologyManager *TopologyManager `json:"topologyManager,omitempty"`
+
+	// Optional. Controls NUMA-aware Memory Manager configuration on the
+	//  node. For more information, see:
+	//  https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.memory_manager
+	MemoryManager *MemoryManager `json:"memoryManager,omitempty"`
+
+	// Enable CPU CFS quota enforcement for containers that specify CPU limits.
+	//
+	//  This option is enabled by default which makes kubelet use CFS quota
+	//  (https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt) to
+	//  enforce container CPU limits. Otherwise, CPU limits will not be enforced at
+	//  all.
+	//
+	//  Disable this option to mitigate CPU throttling problems while still having
+	//  your pods to be in Guaranteed QoS class by specifying the CPU limits.
+	//
+	//  The default value is 'true' if unspecified.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.cpu_cfs_quota
+	CPUCfsQuota *bool `json:"cpuCfsQuota,omitempty"`
+
+	// Set the CPU CFS quota period value 'cpu.cfs_period_us'.
+	//
+	//  The string must be a sequence of decimal numbers, each with optional
+	//  fraction and a unit suffix, such as "300ms".
+	//  Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+	//  The value must be a positive duration.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.cpu_cfs_quota_period
+	CPUCfsQuotaPeriod *string `json:"cpuCfsQuotaPeriod,omitempty"`
+
+	// Set the Pod PID limits. See
+	//  https://kubernetes.io/docs/concepts/policy/pid-limiting/#pod-pid-limits
+	//
+	//  Controls the maximum number of processes allowed to run in a pod. The value
+	//  must be greater than or equal to 1024 and less than 4194304.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.pod_pids_limit
+	PodPidsLimit *int64 `json:"podPidsLimit,omitempty"`
+
+	// Enable or disable Kubelet read only port.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.insecure_kubelet_readonly_port_enabled
+	InsecureKubeletReadonlyPortEnabled *bool `json:"insecureKubeletReadonlyPortEnabled,omitempty"`
+
+	// Optional. Defines the percent of disk usage before which image garbage
+	//  collection is never run. Lowest disk usage to garbage collect to. The
+	//  percent is calculated as this field value out of 100.
+	//
+	//  The value must be between 10 and 85, inclusive and smaller than
+	//  image_gc_high_threshold_percent.
+	//
+	//  The default value is 80 if unspecified.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_gc_low_threshold_percent
+	ImageGcLowThresholdPercent *int32 `json:"imageGcLowThresholdPercent,omitempty"`
+
+	// Optional. Defines the percent of disk usage after which image garbage
+	//  collection is always run. The percent is calculated as this field value out
+	//  of 100.
+	//
+	//  The value must be between 10 and 85, inclusive and greater than
+	//  image_gc_low_threshold_percent.
+	//
+	//  The default value is 85 if unspecified.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_gc_high_threshold_percent
+	ImageGcHighThresholdPercent *int32 `json:"imageGcHighThresholdPercent,omitempty"`
+
+	// Optional. Defines the minimum age for an unused image before it is garbage
+	//  collected.
+	//
+	//  The string must be a sequence of decimal numbers, each with optional
+	//  fraction and a unit suffix, such as "300s", "1.5h", and "2h45m". Valid time
+	//  units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+	//
+	//  The value must be a positive duration less than or equal to 2 minutes.
+	//
+	//  The default value is "2m0s" if unspecified.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_minimum_gc_age
+	ImageMinimumGcAge *string `json:"imageMinimumGcAge,omitempty"`
+
+	// Optional. Defines the maximum age an image can be unused before it is
+	//  garbage collected. The string must be a sequence of decimal numbers, each
+	//  with optional fraction and a unit suffix, such as "300s", "1.5h", and
+	//  "2h45m". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+	//
+	//  The value must be a positive duration greater than image_minimum_gc_age
+	//  or "0s".
+	//
+	//  The default value is "0s" if unspecified, which disables this field,
+	//  meaning images won't be garbage collected based on being unused for too
+	//  long.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_maximum_gc_age
+	ImageMaximumGcAge *string `json:"imageMaximumGcAge,omitempty"`
+
+	// Optional. Defines the maximum size of the container log file before it is
+	//  rotated. See
+	//  https://kubernetes.io/docs/concepts/cluster-administration/logging/#log-rotation
+	//
+	//  Valid format is positive number + unit, e.g. 100Ki, 10Mi. Valid units are
+	//  Ki, Mi, Gi.
+	//  The value must be between 10Mi and 500Mi, inclusive.
+	//
+	//  Note that the total container log size (container_log_max_size *
+	//  container_log_max_files) cannot exceed 1% of the total
+	//  storage of the node, to avoid disk pressure caused by log files.
+	//
+	//  The default value is 10Mi if unspecified.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.container_log_max_size
+	ContainerLogMaxSize *string `json:"containerLogMaxSize,omitempty"`
+
+	// Optional. Defines the maximum number of container log files that can be
+	//  present for a container. See
+	//  https://kubernetes.io/docs/concepts/cluster-administration/logging/#log-rotation
+	//
+	//  The value must be an integer between 2 and 10, inclusive.
+	//  The default value is 5 if unspecified.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.container_log_max_files
+	ContainerLogMaxFiles *int32 `json:"containerLogMaxFiles,omitempty"`
+
+	// Optional. Defines a comma-separated allowlist of unsafe sysctls or sysctl
+	//  patterns (ending in `*`).
+	//
+	//  The unsafe namespaced sysctl groups are `kernel.shm*`, `kernel.msg*`,
+	//  `kernel.sem`, `fs.mqueue.*`, and `net.*`. Leaving this allowlist empty
+	//  means they cannot be set on Pods.
+	//
+	//  To allow certain sysctls or sysctl patterns to be set on Pods, list them
+	//  separated by commas.
+	//  For example: `kernel.msg*,net.ipv4.route.min_pmtu`.
+	//
+	//  See https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/
+	//  for more details.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.allowed_unsafe_sysctls
+	AllowedUnsafeSysctls []string `json:"allowedUnsafeSysctls,omitempty"`
+
+	// Optional. eviction_soft is a map of signal names to quantities that defines
+	//  soft eviction thresholds. Each signal is compared to its corresponding
+	//  threshold to determine if a pod eviction should occur.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.eviction_soft
+	EvictionSoft *EvictionSignals `json:"evictionSoft,omitempty"`
+
+	// Optional. eviction_soft_grace_period is a map of signal names to quantities
+	//  that defines grace periods for each soft eviction signal. The grace period
+	//  is the amount of time that a pod must be under pressure before an eviction
+	//  occurs.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.eviction_soft_grace_period
+	EvictionSoftGracePeriod *EvictionGracePeriod `json:"evictionSoftGracePeriod,omitempty"`
+
+	// Optional. eviction_minimum_reclaim is a map of signal names to quantities
+	//  that defines minimum reclaims, which describe the minimum amount of a given
+	//  resource the kubelet will reclaim when performing a pod eviction while that
+	//  resource is under pressure.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.eviction_minimum_reclaim
+	EvictionMinimumReclaim *EvictionMinimumReclaim `json:"evictionMinimumReclaim,omitempty"`
+
+	// Optional. eviction_max_pod_grace_period_seconds is the maximum allowed
+	//  grace period (in seconds) to use when terminating pods in response to a
+	//  soft eviction threshold being met. This value effectively caps the Pod's
+	//  terminationGracePeriodSeconds value during soft evictions. Default: 0.
+	//  Range: [0, 300].
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.eviction_max_pod_grace_period_seconds
+	EvictionMaxPodGracePeriodSeconds *int32 `json:"evictionMaxPodGracePeriodSeconds,omitempty"`
+
+	// Optional. Defines the maximum number of image pulls in parallel.
+	//  The range is 2 to 5, inclusive.
+	//  The default value is 2 or 3 depending on the disk type.
+	//
+	//  See
+	//  https://kubernetes.io/docs/concepts/containers/images/#maximum-parallel-image-pulls
+	//  for more details.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.max_parallel_image_pulls
+	MaxParallelImagePulls *int32 `json:"maxParallelImagePulls,omitempty"`
+
+	// Optional. Defines whether to enable single process OOM killer.
+	//  If true, will prevent the memory.oom.group flag from being set for
+	//  container cgroups in cgroups v2. This causes processes in the container to
+	//  be OOM killed individually instead of as a group.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.single_process_oom_kill
+	SingleProcessOomKill *bool `json:"singleProcessOomKill,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodeManagement", skipping
+
+// +kcc:proto=google.container.v1.NodeManagement
+type NodeManagement struct {
+	// A flag that specifies whether node auto-upgrade is enabled for the node
+	//  pool. If enabled, node auto-upgrade helps keep the nodes in your node pool
+	//  up to date with the latest release version of Kubernetes.
+	// +kcc:proto:field=google.container.v1.NodeManagement.auto_upgrade
+	AutoUpgrade *bool `json:"autoUpgrade,omitempty"`
+
+	// A flag that specifies whether the node auto-repair is enabled for the node
+	//  pool. If enabled, the nodes in this node pool will be monitored and, if
+	//  they fail health checks too many times, an automatic repair action will be
+	//  triggered.
+	// +kcc:proto:field=google.container.v1.NodeManagement.auto_repair
+	AutoRepair *bool `json:"autoRepair,omitempty"`
+
+	// Specifies the Auto Upgrade knobs for the node pool.
+	// +kcc:proto:field=google.container.v1.NodeManagement.upgrade_options
+	UpgradeOptions *AutoUpgradeOptions `json:"upgradeOptions,omitempty"`
 }
 */
 
@@ -964,6 +2945,55 @@ type NodePool_UpdateInfo_BlueGreenInfo struct {
 }
 */
 
+/* found existing non-generated go type "NodePool_UpgradeSettings", skipping
+
+// +kcc:proto=google.container.v1.NodePool.UpgradeSettings
+type NodePool_UpgradeSettings struct {
+	// The maximum number of nodes that can be created beyond the current size
+	//  of the node pool during the upgrade process.
+	// +kcc:proto:field=google.container.v1.NodePool.UpgradeSettings.max_surge
+	MaxSurge *int32 `json:"maxSurge,omitempty"`
+
+	// The maximum number of nodes that can be simultaneously unavailable during
+	//  the upgrade process. A node is considered available if its status is
+	//  Ready.
+	// +kcc:proto:field=google.container.v1.NodePool.UpgradeSettings.max_unavailable
+	MaxUnavailable *int32 `json:"maxUnavailable,omitempty"`
+
+	// Update strategy of the node pool.
+	// +kcc:proto:field=google.container.v1.NodePool.UpgradeSettings.strategy
+	Strategy *string `json:"strategy,omitempty"`
+
+	// Settings for blue-green upgrade strategy.
+	// +kcc:proto:field=google.container.v1.NodePool.UpgradeSettings.blue_green_settings
+	BlueGreenSettings *BlueGreenSettings `json:"blueGreenSettings,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodePoolAutoConfig", skipping
+
+// +kcc:proto=google.container.v1.NodePoolAutoConfig
+type NodePoolAutoConfig struct {
+	// The list of instance tags applied to all nodes. Tags are used to identify
+	//  valid sources or targets for network firewalls and are specified by
+	//  the client during cluster creation. Each tag within the list
+	//  must comply with RFC1035.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.network_tags
+	NetworkTags *NetworkTags `json:"networkTags,omitempty"`
+
+	// Resource manager tag keys and values to be attached to the nodes
+	//  for managing Compute Engine firewalls using Network Firewall Policies.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.resource_manager_tags
+	ResourceManagerTags *ResourceManagerTags `json:"resourceManagerTags,omitempty"`
+
+	// NodeKubeletConfig controls the defaults for autoprovisioned node-pools.
+	//
+	//  Currently only `insecure_kubelet_readonly_port_enabled` can be set here.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.node_kubelet_config
+	NodeKubeletConfig *NodeKubeletConfig `json:"nodeKubeletConfig,omitempty"`
+}
+*/
+
 /* unreachable type NodePoolAutoscaling
 // +kcc:proto=google.container.v1.NodePoolAutoscaling
 type NodePoolAutoscaling struct {
@@ -1005,12 +3035,81 @@ type NodePoolAutoscaling struct {
 }
 */
 
+/* found existing non-generated go type "NodePoolDefaults", skipping
+
+// +kcc:proto=google.container.v1.NodePoolDefaults
+type NodePoolDefaults struct {
+	// Subset of NodeConfig message that has defaults.
+	// +kcc:proto:field=google.container.v1.NodePoolDefaults.node_config_defaults
+	NodeConfigDefaults *NodeConfigDefaults `json:"nodeConfigDefaults,omitempty"`
+}
+*/
+
 /* unreachable type NodePoolLoggingConfig
 // +kcc:proto=google.container.v1.NodePoolLoggingConfig
 type NodePoolLoggingConfig struct {
 	// Logging variant configuration.
 	// +kcc:proto:field=google.container.v1.NodePoolLoggingConfig.variant_config
 	VariantConfig *LoggingVariantConfig `json:"variantConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodeTaint", skipping
+
+// +kcc:proto=google.container.v1.NodeTaint
+type NodeTaint struct {
+	// Key for taint.
+	// +kcc:proto:field=google.container.v1.NodeTaint.key
+	Key *string `json:"key,omitempty"`
+
+	// Value for taint.
+	// +kcc:proto:field=google.container.v1.NodeTaint.value
+	Value *string `json:"value,omitempty"`
+
+	// Effect for taint.
+	// +kcc:proto:field=google.container.v1.NodeTaint.effect
+	Effect *string `json:"effect,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NotificationConfig", skipping
+
+// +kcc:proto=google.container.v1.NotificationConfig
+type NotificationConfig struct {
+	// Notification config for Pub/Sub.
+	// +kcc:proto:field=google.container.v1.NotificationConfig.pubsub
+	Pubsub *NotificationConfig_PubSub `json:"pubsub,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NotificationConfig_Filter", skipping
+
+// +kcc:proto=google.container.v1.NotificationConfig.Filter
+type NotificationConfig_Filter struct {
+	// Event types to allowlist.
+	// +kcc:proto:field=google.container.v1.NotificationConfig.Filter.event_type
+	EventType []string `json:"eventType,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NotificationConfig_PubSub", skipping
+
+// +kcc:proto=google.container.v1.NotificationConfig.PubSub
+type NotificationConfig_PubSub struct {
+	// Enable notifications for Pub/Sub.
+	// +kcc:proto:field=google.container.v1.NotificationConfig.PubSub.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// The desired Pub/Sub topic to which notifications will be
+	//  sent by GKE. Format is `projects/{project}/topics/{topic}`.
+	// +kcc:proto:field=google.container.v1.NotificationConfig.PubSub.topic
+	Topic *string `json:"topic,omitempty"`
+
+	// Allows filtering to one or more specific event types. If no filter is
+	//  specified, or if a filter is specified with no event types, all event
+	//  types will be sent
+	// +kcc:proto:field=google.container.v1.NotificationConfig.PubSub.filter
+	Filter *NotificationConfig_Filter `json:"filter,omitempty"`
 }
 */
 
@@ -1033,6 +3132,76 @@ type PodAutoscaling struct {
 }
 */
 
+/* found existing non-generated go type "PodCIDROverprovisionConfig", skipping
+
+// +kcc:proto=google.container.v1.PodCIDROverprovisionConfig
+type PodCIDROverprovisionConfig struct {
+	// Whether Pod CIDR overprovisioning is disabled.
+	//  Note: Pod CIDR overprovisioning is enabled by default.
+	// +kcc:proto:field=google.container.v1.PodCIDROverprovisionConfig.disable
+	Disable *bool `json:"disable,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "PrivateClusterConfig", skipping
+
+// +kcc:proto=google.container.v1.PrivateClusterConfig
+type PrivateClusterConfig struct {
+	// Whether nodes have internal IP addresses only. If enabled, all nodes are
+	//  given only RFC 1918 private addresses and communicate with the master via
+	//  private networking.
+	//
+	//  Deprecated: Use
+	//  [NetworkConfig.default_enable_private_nodes][google.container.v1.NetworkConfig.default_enable_private_nodes]
+	//  instead.
+	// +kcc:proto:field=google.container.v1.PrivateClusterConfig.enable_private_nodes
+	EnablePrivateNodes *bool `json:"enablePrivateNodes,omitempty"`
+
+	// Whether the master's internal IP address is used as the cluster endpoint.
+	//
+	//  Deprecated: Use
+	//  [ControlPlaneEndpointsConfig.IPEndpointsConfig.enable_public_endpoint][google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.enable_public_endpoint]
+	//  instead. Note that the value of enable_public_endpoint is reversed: if
+	//  enable_private_endpoint is false, then enable_public_endpoint will be true.
+	// +kcc:proto:field=google.container.v1.PrivateClusterConfig.enable_private_endpoint
+	EnablePrivateEndpoint *bool `json:"enablePrivateEndpoint,omitempty"`
+
+	// The IP range in CIDR notation to use for the hosted master network. This
+	//  range will be used for assigning internal IP addresses to the master or
+	//  set of masters, as well as the ILB VIP. This range must not overlap with
+	//  any other ranges in use within the cluster's network.
+	// +kcc:proto:field=google.container.v1.PrivateClusterConfig.master_ipv4_cidr_block
+	MasterIPV4CIDRBlock *string `json:"masterIPV4CIDRBlock,omitempty"`
+
+	// Controls master global access settings.
+	//
+	//  Deprecated: Use
+	//  [ControlPlaneEndpointsConfig.IPEndpointsConfig.enable_global_access][]
+	//  instead.
+	// +kcc:proto:field=google.container.v1.PrivateClusterConfig.master_global_access_config
+	MasterGlobalAccessConfig *PrivateClusterMasterGlobalAccessConfig `json:"masterGlobalAccessConfig,omitempty"`
+
+	// Subnet to provision the master's private endpoint during cluster creation.
+	//  Specified in projects/* /regions/* /subnetworks/* format.
+	//
+	//  Deprecated: Use
+	//  [ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint_subnetwork][google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint_subnetwork]
+	//  instead.
+	// +kcc:proto:field=google.container.v1.PrivateClusterConfig.private_endpoint_subnetwork
+	PrivateEndpointSubnetwork *string `json:"privateEndpointSubnetwork,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "PrivateClusterMasterGlobalAccessConfig", skipping
+
+// +kcc:proto=google.container.v1.PrivateClusterMasterGlobalAccessConfig
+type PrivateClusterMasterGlobalAccessConfig struct {
+	// Whenever master is accessible globally or not.
+	// +kcc:proto:field=google.container.v1.PrivateClusterMasterGlobalAccessConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
 /* unreachable type RbacBindingConfig
 // +kcc:proto=google.container.v1.RBACBindingConfig
 type RbacBindingConfig struct {
@@ -1045,6 +3214,13 @@ type RbacBindingConfig struct {
 	//  with subjects system:authenticated.
 	// +kcc:proto:field=google.container.v1.RBACBindingConfig.enable_insecure_binding_system_authenticated
 	EnableInsecureBindingSystemAuthenticated *bool `json:"enableInsecureBindingSystemAuthenticated,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "RangeInfo", skipping
+
+// +kcc:proto=google.container.v1.RangeInfo
+type RangeInfo struct {
 }
 */
 
@@ -1127,6 +3303,55 @@ type RecurringTimeWindow struct {
 }
 */
 
+/* found existing non-generated go type "ReleaseChannel", skipping
+
+// +kcc:proto=google.container.v1.ReleaseChannel
+type ReleaseChannel struct {
+	// channel specifies which release channel the cluster is subscribed to.
+	// +kcc:proto:field=google.container.v1.ReleaseChannel.channel
+	Channel *string `json:"channel,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ReservationAffinity", skipping
+
+// +kcc:proto=google.container.v1.ReservationAffinity
+type ReservationAffinity struct {
+	// Corresponds to the type of reservation consumption.
+	// +kcc:proto:field=google.container.v1.ReservationAffinity.consume_reservation_type
+	ConsumeReservationType *string `json:"consumeReservationType,omitempty"`
+
+	// Corresponds to the label key of a reservation resource. To target a
+	//  SPECIFIC_RESERVATION by name, specify
+	//  "compute.googleapis.com/reservation-name" as the key and specify the name
+	//  of your reservation as its value.
+	// +kcc:proto:field=google.container.v1.ReservationAffinity.key
+	Key *string `json:"key,omitempty"`
+
+	// Corresponds to the label value(s) of reservation resource(s).
+	// +kcc:proto:field=google.container.v1.ReservationAffinity.values
+	Values []string `json:"values,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.ResourceLimit", skipping
+
+// +kcc:proto=google.container.v1.ResourceLimit
+type ResourceLimit struct {
+	// Resource name "cpu", "memory" or gpu-specific string.
+	// +kcc:proto:field=google.container.v1.ResourceLimit.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// Minimum amount of the resource in the cluster.
+	// +kcc:proto:field=google.container.v1.ResourceLimit.minimum
+	Minimum *int64 `json:"minimum,omitempty"`
+
+	// Maximum amount of the resource in the cluster.
+	// +kcc:proto:field=google.container.v1.ResourceLimit.maximum
+	Maximum *int64 `json:"maximum,omitempty"`
+}
+*/
+
 /* unreachable type ResourceManagerTags
 // +kcc:proto=google.container.v1.ResourceManagerTags
 type ResourceManagerTags struct {
@@ -1139,6 +3364,35 @@ type ResourceManagerTags struct {
 }
 */
 
+/* found existing non-generated go type "ResourceUsageExportConfig", skipping
+
+// +kcc:proto=google.container.v1.ResourceUsageExportConfig
+type ResourceUsageExportConfig struct {
+	// Configuration to use BigQuery as usage export destination.
+	// +kcc:proto:field=google.container.v1.ResourceUsageExportConfig.bigquery_destination
+	BigqueryDestination *ResourceUsageExportConfig_BigQueryDestination `json:"bigqueryDestination,omitempty"`
+
+	// Whether to enable network egress metering for this cluster. If enabled, a
+	//  daemonset will be created in the cluster to meter network egress traffic.
+	// +kcc:proto:field=google.container.v1.ResourceUsageExportConfig.enable_network_egress_metering
+	EnableNetworkEgressMetering *bool `json:"enableNetworkEgressMetering,omitempty"`
+
+	// Configuration to enable resource consumption metering.
+	// +kcc:proto:field=google.container.v1.ResourceUsageExportConfig.consumption_metering_config
+	ConsumptionMeteringConfig *ResourceUsageExportConfig_ConsumptionMeteringConfig `json:"consumptionMeteringConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ResourceUsageExportConfig_BigQueryDestination", skipping
+
+// +kcc:proto=google.container.v1.ResourceUsageExportConfig.BigQueryDestination
+type ResourceUsageExportConfig_BigQueryDestination struct {
+	// The ID of a BigQuery Dataset.
+	// +kcc:proto:field=google.container.v1.ResourceUsageExportConfig.BigQueryDestination.dataset_id
+	DatasetID *string `json:"datasetID,omitempty"`
+}
+*/
+
 /* unreachable type ResourceUsageExportConfig_ConsumptionMeteringConfig
 // +kcc:proto=google.container.v1.ResourceUsageExportConfig.ConsumptionMeteringConfig
 type ResourceUsageExportConfig_ConsumptionMeteringConfig struct {
@@ -1147,6 +3401,16 @@ type ResourceUsageExportConfig_ConsumptionMeteringConfig struct {
 	//  records.
 	// +kcc:proto:field=google.container.v1.ResourceUsageExportConfig.ConsumptionMeteringConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SandboxConfig", skipping
+
+// +kcc:proto=google.container.v1.SandboxConfig
+type SandboxConfig struct {
+	// Type of the sandbox to use for the node.
+	// +kcc:proto:field=google.container.v1.SandboxConfig.type
+	Type *string `json:"type,omitempty"`
 }
 */
 
@@ -1175,6 +3439,53 @@ type SecretManagerConfig struct {
 	// Enable/Disable Secret Manager Config.
 	// +kcc:proto:field=google.container.v1.SecretManagerConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPostureConfig", skipping
+
+// +kcc:proto=google.container.v1.SecurityPostureConfig
+type SecurityPostureConfig struct {
+	// Sets which mode to use for Security Posture features.
+	// +kcc:proto:field=google.container.v1.SecurityPostureConfig.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Sets which mode to use for vulnerability scanning.
+	// +kcc:proto:field=google.container.v1.SecurityPostureConfig.vulnerability_mode
+	VulnerabilityMode *string `json:"vulnerabilityMode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ServiceExternalIPsConfig", skipping
+
+// +kcc:proto=google.container.v1.ServiceExternalIPsConfig
+type ServiceExternalIPsConfig struct {
+	// Whether Services with ExternalIPs field are allowed or not.
+	// +kcc:proto:field=google.container.v1.ServiceExternalIPsConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ShieldedInstanceConfig", skipping
+
+// +kcc:proto=google.container.v1.ShieldedInstanceConfig
+type ShieldedInstanceConfig struct {
+	// Defines whether the instance has Secure Boot enabled.
+	//
+	//  Secure Boot helps ensure that the system only runs authentic software by
+	//  verifying the digital signature of all boot components, and halting the
+	//  boot process if signature verification fails.
+	// +kcc:proto:field=google.container.v1.ShieldedInstanceConfig.enable_secure_boot
+	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
+
+	// Defines whether the instance has integrity monitoring enabled.
+	//
+	//  Enables monitoring and attestation of the boot integrity of the instance.
+	//  The attestation is performed against the integrity policy baseline. This
+	//  baseline is initially derived from the implicitly trusted boot image when
+	//  the instance is created.
+	// +kcc:proto:field=google.container.v1.ShieldedInstanceConfig.enable_integrity_monitoring
+	EnableIntegrityMonitoring *bool `json:"enableIntegrityMonitoring,omitempty"`
 }
 */
 
@@ -1355,12 +3666,42 @@ type UserManagedKeysConfig struct {
 }
 */
 
+/* found existing non-generated go type "VerticalPodAutoscaling", skipping
+
+// +kcc:proto=google.container.v1.VerticalPodAutoscaling
+type VerticalPodAutoscaling struct {
+	// Enables vertical pod autoscaling.
+	// +kcc:proto:field=google.container.v1.VerticalPodAutoscaling.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "VirtualNic", skipping
+
+// +kcc:proto=google.container.v1.VirtualNIC
+type VirtualNic struct {
+	// Whether gVNIC features are enabled in the node pool.
+	// +kcc:proto:field=google.container.v1.VirtualNIC.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
 /* unreachable type WindowsNodeConfig
 // +kcc:proto=google.container.v1.WindowsNodeConfig
 type WindowsNodeConfig struct {
 	// OSVersion specifies the Windows node config to be used on the node.
 	// +kcc:proto:field=google.container.v1.WindowsNodeConfig.os_version
 	OSVersion *string `json:"osVersion,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "WorkloadIdentityConfig", skipping
+
+// +kcc:proto=google.container.v1.WorkloadIdentityConfig
+type WorkloadIdentityConfig struct {
+	// The workload pool to attach all Kubernetes service accounts to.
+	// +kcc:proto:field=google.container.v1.WorkloadIdentityConfig.workload_pool
+	WorkloadPool *string `json:"workloadPool,omitempty"`
 }
 */
 
@@ -1385,6 +3726,316 @@ type WorkloadPolicyConfig struct {
 	//  standard clusters.
 	// +kcc:proto:field=google.container.v1.WorkloadPolicyConfig.autopilot_compatibility_auditing_enabled
 	AutopilotCompatibilityAuditingEnabled *bool `json:"autopilotCompatibilityAuditingEnabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "AdditionalPodRangesConfigObservedState", skipping
+
+// +kcc:observedstate:proto=google.container.v1.AdditionalPodRangesConfig
+type AdditionalPodRangesConfigObservedState struct {
+	// Name for pod secondary ipv4 range which has the actual range defined ahead.
+	// +kcc:proto:field=google.container.v1.AdditionalPodRangesConfig.pod_range_names
+	PodRangeNames []string `json:"podRangeNames,omitempty"`
+
+	// Output only. Information for additional pod range.
+	// +kcc:proto:field=google.container.v1.AdditionalPodRangesConfig.pod_range_info
+	PodRangeInfo []RangeInfoObservedState `json:"podRangeInfo,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "AutoUpgradeOptionsObservedState", skipping
+
+// +kcc:observedstate:proto=google.container.v1.AutoUpgradeOptions
+type AutoUpgradeOptionsObservedState struct {
+	// Output only. This field is set when upgrades are about to commence
+	//  with the approximate start time for the upgrades, in
+	//  [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+	// +kcc:proto:field=google.container.v1.AutoUpgradeOptions.auto_upgrade_start_time
+	AutoUpgradeStartTime *string `json:"autoUpgradeStartTime,omitempty"`
+
+	// Output only. This field is set when upgrades are about to commence
+	//  with the description of the upgrade.
+	// +kcc:proto:field=google.container.v1.AutoUpgradeOptions.description
+	Description *string `json:"description,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.AutoprovisioningNodePoolDefaults", skipping
+
+// +kcc:observedstate:proto=google.container.v1.AutoprovisioningNodePoolDefaults
+type AutoprovisioningNodePoolDefaultsObservedState struct {
+	// Specifies the node management options for NAP created node-pools.
+	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.management
+	Management *NodeManagementObservedState `json:"management,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ClusterObservedState", skipping
+
+// +kcc:observedstate:proto=google.container.v1.Cluster
+type ClusterObservedState struct {
+	// Parameters used in creating the cluster's nodes.
+	//  For requests, this field should only be used in lieu of a
+	//  "node_pool" object, since this configuration (along with the
+	//  "initial_node_count") will be used to create a "NodePool" object with an
+	//  auto-generated name. Do not use this and a node_pool at the same time.
+	//  For responses, this field will be populated with the node configuration of
+	//  the first node pool. (For configuration of each node pool, see
+	//  `node_pool.config`)
+	//
+	//  If unspecified, the defaults are used.
+	//  This field is deprecated, use node_pool.config instead.
+	// +kcc:proto:field=google.container.v1.Cluster.node_config
+	NodeConfig *NodeConfigObservedState `json:"nodeConfig,omitempty"`
+
+	// The authentication information for accessing the master endpoint.
+	//  If unspecified, the defaults are used:
+	//  For clusters before v1.12, if master_auth is unspecified, `username` will
+	//  be set to "admin", a random password will be generated, and a client
+	//  certificate will be issued.
+	// +kcc:proto:field=google.container.v1.Cluster.master_auth
+	MasterAuth *MasterAuthObservedState `json:"masterAuth,omitempty"`
+
+	// The node pools associated with this cluster.
+	//  This field should not be set if "node_config" or "initial_node_count" are
+	//  specified.
+	// +kcc:proto:field=google.container.v1.Cluster.node_pools
+	NodePools []NodePoolObservedState `json:"nodePools,omitempty"`
+
+	// Configuration for cluster IP allocation.
+	// +kcc:proto:field=google.container.v1.Cluster.ip_allocation_policy
+	IPAllocationPolicy *IPAllocationPolicyObservedState `json:"ipAllocationPolicy,omitempty"`
+
+	// Configure the maintenance policy for this cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.maintenance_policy
+	MaintenancePolicy *MaintenancePolicyObservedState `json:"maintenancePolicy,omitempty"`
+
+	// Cluster-level autoscaling configuration.
+	// +kcc:proto:field=google.container.v1.Cluster.autoscaling
+	Autoscaling *ClusterAutoscalingObservedState `json:"autoscaling,omitempty"`
+
+	// Configuration for cluster networking.
+	// +kcc:proto:field=google.container.v1.Cluster.network_config
+	NetworkConfig *NetworkConfigObservedState `json:"networkConfig,omitempty"`
+
+	// Configuration for private cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.private_cluster_config
+	PrivateClusterConfig *PrivateClusterConfigObservedState `json:"privateClusterConfig,omitempty"`
+
+	// Configuration of etcd encryption.
+	// +kcc:proto:field=google.container.v1.Cluster.database_encryption
+	DatabaseEncryption *DatabaseEncryptionObservedState `json:"databaseEncryption,omitempty"`
+
+	// Output only. Server-defined URL for the resource.
+	// +kcc:proto:field=google.container.v1.Cluster.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Output only. The name of the Google Compute Engine
+	//  [zone](https://cloud.google.com/compute/docs/zones#available)
+	//  in which the cluster resides. This field is deprecated, use location
+	//  instead.
+	// +kcc:proto:field=google.container.v1.Cluster.zone
+	Zone *string `json:"zone,omitempty"`
+
+	// Output only. The IP address of this cluster's master endpoint.
+	//  The endpoint can be accessed from the internet at
+	//  `https://username:password@endpoint/`.
+	//
+	//  See the `masterAuth` property of this resource for username and
+	//  password information.
+	// +kcc:proto:field=google.container.v1.Cluster.endpoint
+	Endpoint *string `json:"endpoint,omitempty"`
+
+	// Output only. The current software version of the master endpoint.
+	// +kcc:proto:field=google.container.v1.Cluster.current_master_version
+	CurrentMasterVersion *string `json:"currentMasterVersion,omitempty"`
+
+	// Output only. Deprecated, use
+	//  [NodePools.version](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools)
+	//  instead. The current version of the node software components. If they are
+	//  currently at multiple versions because they're in the process of being
+	//  upgraded, this reflects the minimum version of all nodes.
+	// +kcc:proto:field=google.container.v1.Cluster.current_node_version
+	CurrentNodeVersion *string `json:"currentNodeVersion,omitempty"`
+
+	// Output only. The time the cluster was created, in
+	//  [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+	// +kcc:proto:field=google.container.v1.Cluster.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The current status of this cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.status
+	Status *string `json:"status,omitempty"`
+
+	// Output only. Deprecated. Use conditions instead.
+	//  Additional information about the current status of this
+	//  cluster, if available.
+	// +kcc:proto:field=google.container.v1.Cluster.status_message
+	StatusMessage *string `json:"statusMessage,omitempty"`
+
+	// Output only. The size of the address space on each node for hosting
+	//  containers. This is provisioned from within the `container_ipv4_cidr`
+	//  range. This field will only be set when cluster is in route-based network
+	//  mode.
+	// +kcc:proto:field=google.container.v1.Cluster.node_ipv4_cidr_size
+	NodeIPV4CIDRSize *int32 `json:"nodeIPV4CIDRSize,omitempty"`
+
+	// Output only. The IP address range of the Kubernetes services in
+	//  this cluster, in
+	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  notation (e.g. `1.2.3.4/29`). Service addresses are
+	//  typically put in the last `/16` from the container CIDR.
+	// +kcc:proto:field=google.container.v1.Cluster.services_ipv4_cidr
+	ServicesIPV4CIDR *string `json:"servicesIPV4CIDR,omitempty"`
+
+	// Output only. Deprecated. Use node_pools.instance_group_urls.
+	// +kcc:proto:field=google.container.v1.Cluster.instance_group_urls
+	InstanceGroupUrls []string `json:"instanceGroupUrls,omitempty"`
+
+	// Output only. The number of nodes currently in the cluster. Deprecated.
+	//  Call Kubernetes API directly to retrieve node information.
+	// +kcc:proto:field=google.container.v1.Cluster.current_node_count
+	CurrentNodeCount *int32 `json:"currentNodeCount,omitempty"`
+
+	// Output only. The time the cluster will be automatically
+	//  deleted in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+	// +kcc:proto:field=google.container.v1.Cluster.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Output only. The name of the Google Compute Engine
+	//  [zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available)
+	//  or
+	//  [region](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available)
+	//  in which the cluster resides.
+	// +kcc:proto:field=google.container.v1.Cluster.location
+	Location *string `json:"location,omitempty"`
+
+	// Output only. The IP address range of the Cloud TPUs in this cluster, in
+	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  notation (e.g. `1.2.3.4/29`).
+	//  This field is deprecated due to the deprecation of 2VM TPU. The end of life
+	//  date for 2VM TPU is 2025-04-25.
+	// +kcc:proto:field=google.container.v1.Cluster.tpu_ipv4_cidr_block
+	TpuIPV4CIDRBlock *string `json:"tpuIPV4CIDRBlock,omitempty"`
+
+	// Output only. Unique id for the cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.id
+	ID *string `json:"id,omitempty"`
+
+	// Node pool configs that apply to all auto-provisioned node pools
+	//  in autopilot clusters and node auto-provisioning enabled clusters.
+	// +kcc:proto:field=google.container.v1.Cluster.node_pool_auto_config
+	NodePoolAutoConfig *NodePoolAutoConfigObservedState `json:"nodePoolAutoConfig,omitempty"`
+
+	// Fleet information for the cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.fleet
+	Fleet *FleetObservedState `json:"fleet,omitempty"`
+
+	// Configuration for all cluster's control plane endpoints.
+	// +kcc:proto:field=google.container.v1.Cluster.control_plane_endpoints_config
+	ControlPlaneEndpointsConfig *ControlPlaneEndpointsConfigObservedState `json:"controlPlaneEndpointsConfig,omitempty"`
+
+	// GKE Enterprise Configuration.
+	// +kcc:proto:field=google.container.v1.Cluster.enterprise_config
+	EnterpriseConfig *EnterpriseConfigObservedState `json:"enterpriseConfig,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.container.v1.Cluster.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.container.v1.Cluster.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.ClusterAutoscaling", skipping
+
+// +kcc:observedstate:proto=google.container.v1.ClusterAutoscaling
+type ClusterAutoscalingObservedState struct {
+	// AutoprovisioningNodePoolDefaults contains defaults for a node pool
+	//  created by NAP.
+	// +kcc:proto:field=google.container.v1.ClusterAutoscaling.autoprovisioning_node_pool_defaults
+	AutoprovisioningNodePoolDefaults *AutoprovisioningNodePoolDefaultsObservedState `json:"autoprovisioningNodePoolDefaults,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.ControlPlaneEndpointsConfig", skipping
+
+// +kcc:observedstate:proto=google.container.v1.ControlPlaneEndpointsConfig
+type ControlPlaneEndpointsConfigObservedState struct {
+	// DNS endpoint configuration.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.dns_endpoint_config
+	DNSEndpointConfig *ControlPlaneEndpointsConfig_DNSEndpointConfigObservedState `json:"dnsEndpointConfig,omitempty"`
+
+	// IP endpoints configuration.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.ip_endpoints_config
+	IPEndpointsConfig *ControlPlaneEndpointsConfig_IPEndpointsConfigObservedState `json:"ipEndpointsConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig", skipping
+
+// +kcc:observedstate:proto=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig
+type ControlPlaneEndpointsConfig_DNSEndpointConfigObservedState struct {
+	// Output only. The cluster's DNS endpoint configuration.
+	//  A DNS format address. This is accessible from the public internet.
+	//  Ex: uid.us-central1.gke.goog.
+	//  Always present, but the behavior may change according to the value of
+	//  [DNSEndpointConfig.allow_external_traffic][google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig.allow_external_traffic].
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig.endpoint
+	Endpoint *string `json:"endpoint,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig", skipping
+
+// +kcc:observedstate:proto=google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig
+type ControlPlaneEndpointsConfig_IPEndpointsConfigObservedState struct {
+	// Output only. The external IP address of this cluster's control plane.
+	//  Only populated if enabled.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.public_endpoint
+	PublicEndpoint *string `json:"publicEndpoint,omitempty"`
+
+	// Output only. The internal IP address of this cluster's control plane.
+	//  Only populated if enabled.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint
+	PrivateEndpoint *string `json:"privateEndpoint,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "DailyMaintenanceWindowObservedState", skipping
+
+// +kcc:observedstate:proto=google.container.v1.DailyMaintenanceWindow
+type DailyMaintenanceWindowObservedState struct {
+	// Output only. Duration of the time window, automatically chosen to be
+	//  smallest possible in the given scenario.
+	//  Duration will be in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt)
+	//  format "PTnHnMnS".
+	// +kcc:proto:field=google.container.v1.DailyMaintenanceWindow.duration
+	Duration *string `json:"duration,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.DatabaseEncryption", skipping
+
+// +kcc:observedstate:proto=google.container.v1.DatabaseEncryption
+type DatabaseEncryptionObservedState struct {
+	// Output only. The current state of etcd encryption.
+	// +kcc:proto:field=google.container.v1.DatabaseEncryption.current_state
+	CurrentState *string `json:"currentState,omitempty"`
+
+	// Output only. Keys in use by the cluster for decrypting
+	//  existing objects, in addition to the key in `key_name`.
+	//
+	//  Each item is a CloudKMS key resource.
+	// +kcc:proto:field=google.container.v1.DatabaseEncryption.decryption_keys
+	DecryptionKeys []string `json:"decryptionKeys,omitempty"`
+
+	// Output only. Records errors seen during DatabaseEncryption update
+	//  operations.
+	// +kcc:proto:field=google.container.v1.DatabaseEncryption.last_operation_errors
+	LastOperationErrors []DatabaseEncryption_OperationError `json:"lastOperationErrors,omitempty"`
 }
 */
 
@@ -1413,6 +4064,83 @@ type FleetObservedState struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.container.v1.IPAllocationPolicy", skipping
+
+// +kcc:observedstate:proto=google.container.v1.IPAllocationPolicy
+type IPAllocationPolicyObservedState struct {
+	// Output only. The subnet's IPv6 CIDR block used by nodes and pods.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.subnet_ipv6_cidr_block
+	SubnetIPV6CIDRBlock *string `json:"subnetIPV6CIDRBlock,omitempty"`
+
+	// Output only. The services IPv6 CIDR block for the cluster.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.services_ipv6_cidr_block
+	ServicesIPV6CIDRBlock *string `json:"servicesIPV6CIDRBlock,omitempty"`
+
+	// Output only. The additional pod ranges that are added to the cluster.
+	//  These pod ranges can be used by new node pools to allocate pod IPs
+	//  automatically. Once the range is removed it will not show up in
+	//  IPAllocationPolicy.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.additional_pod_ranges_config
+	AdditionalPodRangesConfig *AdditionalPodRangesConfigObservedState `json:"additionalPodRangesConfig,omitempty"`
+
+	// Output only. The utilization of the cluster default IPv4 range for the
+	//  pod. The ratio is Usage/[Total number of IPs in the secondary range],
+	//  Usage=numNodes*numZones*podIPsPerNode.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.default_pod_ipv4_range_utilization
+	DefaultPodIPV4RangeUtilization *float64 `json:"defaultPodIPV4RangeUtilization,omitempty"`
+
+	// Output only. The additional IP ranges that are added to the cluster.
+	//  These IP ranges can be used by new node pools to allocate node and pod IPs
+	//  automatically.
+	//  Each AdditionalIPRangesConfig corresponds to a single subnetwork.
+	//  Once a range is removed it will not show up in IPAllocationPolicy.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.additional_ip_ranges_configs
+	AdditionalIPRangesConfigs []AdditionalIPRangesConfig `json:"additionalIPRangesConfigs,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MaintenancePolicyObservedState", skipping
+
+// +kcc:observedstate:proto=google.container.v1.MaintenancePolicy
+type MaintenancePolicyObservedState struct {
+	// Specifies the maintenance window in which maintenance may be performed.
+	// +kcc:proto:field=google.container.v1.MaintenancePolicy.window
+	Window *MaintenanceWindowObservedState `json:"window,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MaintenanceWindowObservedState", skipping
+
+// +kcc:observedstate:proto=google.container.v1.MaintenanceWindow
+type MaintenanceWindowObservedState struct {
+	// DailyMaintenanceWindow specifies a daily maintenance operation window.
+	// +kcc:proto:field=google.container.v1.MaintenanceWindow.daily_maintenance_window
+	DailyMaintenanceWindow *DailyMaintenanceWindowObservedState `json:"dailyMaintenanceWindow,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.MasterAuth", skipping
+
+// +kcc:observedstate:proto=google.container.v1.MasterAuth
+type MasterAuthObservedState struct {
+	// Output only. Base64-encoded public certificate that is the root of
+	//  trust for the cluster.
+	// +kcc:proto:field=google.container.v1.MasterAuth.cluster_ca_certificate
+	ClusterCACertificate *string `json:"clusterCACertificate,omitempty"`
+
+	// Output only. Base64-encoded public certificate used by clients to
+	//  authenticate to the cluster endpoint. Issued only if
+	//  client_certificate_config is set.
+	// +kcc:proto:field=google.container.v1.MasterAuth.client_certificate
+	ClientCertificate *string `json:"clientCertificate,omitempty"`
+
+	// Output only. Base64-encoded private key used by clients to authenticate
+	//  to the cluster endpoint.
+	// +kcc:proto:field=google.container.v1.MasterAuth.client_key
+	ClientKey *string `json:"clientKey,omitempty"`
+}
+*/
+
 /* unreachable type NetworkConfigObservedState
 // +kcc:observedstate:proto=google.container.v1.NetworkConfig
 type NetworkConfigObservedState struct {
@@ -1429,6 +4157,29 @@ type NetworkConfigObservedState struct {
 	//  projects/my-project/regions/us-central1/subnetworks/my-subnet
 	// +kcc:proto:field=google.container.v1.NetworkConfig.subnetwork
 	Subnetwork *string `json:"subnetwork,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.NodeConfig", skipping
+
+// +kcc:observedstate:proto=google.container.v1.NodeConfig
+type NodeConfigObservedState struct {
+	// Output only. effective_cgroup_mode is the cgroup mode actually used by the
+	//  node pool. It is determined by the cgroup mode specified in the
+	//  LinuxNodeConfig or the default cgroup mode based on the cluster creation
+	//  version.
+	// +kcc:proto:field=google.container.v1.NodeConfig.effective_cgroup_mode
+	EffectiveCgroupMode *string `json:"effectiveCgroupMode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodeManagementObservedState", skipping
+
+// +kcc:observedstate:proto=google.container.v1.NodeManagement
+type NodeManagementObservedState struct {
+	// Specifies the Auto Upgrade knobs for the node pool.
+	// +kcc:proto:field=google.container.v1.NodeManagement.upgrade_options
+	UpgradeOptions *AutoUpgradeOptionsObservedState `json:"upgradeOptions,omitempty"`
 }
 */
 
@@ -1454,6 +4205,10 @@ type NodeNetworkConfigObservedState struct {
 /* unreachable type NodePoolObservedState
 // +kcc:observedstate:proto=google.container.v1.NodePool
 type NodePoolObservedState struct {
+	// The node configuration of the pool.
+	// +kcc:proto:field=google.container.v1.NodePool.config
+	Config *NodeConfigObservedState `json:"config,omitempty"`
+
 	// Networking configuration for this NodePool. If specified, it overrides the
 	//  cluster-level defaults.
 	// +kcc:proto:field=google.container.v1.NodePool.network_config
@@ -1493,5 +4248,55 @@ type NodePoolObservedState struct {
 	//  pool update.
 	// +kcc:proto:field=google.container.v1.NodePool.update_info
 	UpdateInfo *NodePool_UpdateInfo `json:"updateInfo,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.NodePoolAutoConfig", skipping
+
+// +kcc:observedstate:proto=google.container.v1.NodePoolAutoConfig
+type NodePoolAutoConfigObservedState struct {
+	// Output only. Configuration options for Linux nodes.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.linux_node_config
+	LinuxNodeConfig *LinuxNodeConfig `json:"linuxNodeConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.PrivateClusterConfig", skipping
+
+// +kcc:observedstate:proto=google.container.v1.PrivateClusterConfig
+type PrivateClusterConfigObservedState struct {
+	// Output only. The internal IP address of this cluster's master endpoint.
+	//
+	//  Deprecated: Use
+	//  [ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint][google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint]
+	//  instead.
+	// +kcc:proto:field=google.container.v1.PrivateClusterConfig.private_endpoint
+	PrivateEndpoint *string `json:"privateEndpoint,omitempty"`
+
+	// Output only. The external IP address of this cluster's master endpoint.
+	//
+	//  Deprecated:Use
+	//  [ControlPlaneEndpointsConfig.IPEndpointsConfig.public_endpoint][google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.public_endpoint]
+	//  instead.
+	// +kcc:proto:field=google.container.v1.PrivateClusterConfig.public_endpoint
+	PublicEndpoint *string `json:"publicEndpoint,omitempty"`
+
+	// Output only. The peering name in the customer VPC used by this cluster.
+	// +kcc:proto:field=google.container.v1.PrivateClusterConfig.peering_name
+	PeeringName *string `json:"peeringName,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.RangeInfo", skipping
+
+// +kcc:observedstate:proto=google.container.v1.RangeInfo
+type RangeInfoObservedState struct {
+	// Output only. Name of a range.
+	// +kcc:proto:field=google.container.v1.RangeInfo.range_name
+	RangeName *string `json:"rangeName,omitempty"`
+
+	// Output only. The utilization of the range.
+	// +kcc:proto:field=google.container.v1.RangeInfo.utilization
+	Utilization *float64 `json:"utilization,omitempty"`
 }
 */

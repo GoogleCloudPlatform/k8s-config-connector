@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &DeliveryPipelineRef{}
 
-// DeliveryPipelineRef defines the resource reference to DeployDeliveryPipeline, which "External" field
-// holds the GCP identifier for the KRM object.
+// DeliveryPipelineRef is a reference to a DeployDeliveryPipeline.
 type DeliveryPipelineRef struct {
 	// A reference to an externally managed DeployDeliveryPipeline resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/deliverypipelines/{{deliverypipelineID}}".

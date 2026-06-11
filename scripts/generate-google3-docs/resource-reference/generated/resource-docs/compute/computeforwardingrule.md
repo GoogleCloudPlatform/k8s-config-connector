@@ -535,7 +535,7 @@ provided metadata. Possible values: ["MATCH_ANY", "MATCH_ALL"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1180,6 +1180,7 @@ pscConnectionId: string
 pscConnectionStatus: string
 selfLink: string
 serviceName: string
+target: string
 ```
 
 <table class="properties responsive">
@@ -1299,6 +1300,13 @@ serviceName: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>The internal fully qualified service name for this Forwarding Rule. This field is only used for INTERNAL load balancing.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>target</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The target resource to receive the matched traffic.</p>
         </td>
     </tr>
 </tbody>

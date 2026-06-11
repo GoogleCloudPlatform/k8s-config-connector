@@ -25,6 +25,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.container.v1 \
     --api-version container.cnrm.cloud.google.com/v1beta1 \
+    --include-skipped-output \
     --resource ContainerCluster:Cluster
 
 go run . generate-mapper \

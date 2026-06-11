@@ -30,8 +30,7 @@ func init() {
 	refsv1beta1.Register(&JobRef{})
 }
 
-// JobRef defines the resource reference to RunJob, which "External" field
-// holds the GCP identifier for the KRM object.
+// JobRef is a reference to a RunJob.
 type JobRef struct {
 	// A reference to an externally managed RunJob resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}}".
@@ -61,6 +60,8 @@ func (r *JobRef) GetExternal() string {
 
 func (r *JobRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *JobRef) ValidateExternal(ref string) error {

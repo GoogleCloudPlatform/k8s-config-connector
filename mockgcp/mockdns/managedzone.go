@@ -71,7 +71,7 @@ func (s *managedZonesService) CreateManagedZone(ctx context.Context, req *pb.Cre
 		obj.CloudLoggingConfig = &pb.ManagedZoneCloudLoggingConfig{}
 	}
 	obj.CloudLoggingConfig.Kind = PtrTo("dns#managedZoneCloudLoggingConfig")
-	obj.Id = PtrTo[uint64](1234567890)
+	obj.Id = PtrTo[uint64](uint64(time.Now().UnixNano()))
 	obj.Kind = PtrTo("dns#managedZone")
 	obj.NameServers = []string{
 		"ns-cloud-c1.googledomains.com.",

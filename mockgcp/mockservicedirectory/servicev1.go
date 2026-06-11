@@ -77,12 +77,22 @@ func (s *RegistrationServiceV1) UpdateService(ctx context.Context, req *pb.Updat
 		return nil, err
 	}
 
+	// Apply field mask updates
+	paths := req.GetUpdateMask().GetPaths()
+	for _, path := range paths {
+		switch path {
+		case "metadata":
+			obj.Metadata = req.GetService().GetMetadata()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported", path)
+		}
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
-
 }
 
 func (s *RegistrationServiceV1) DeleteService(ctx context.Context, req *pb.DeleteServiceRequest) (*empty.Empty, error) {

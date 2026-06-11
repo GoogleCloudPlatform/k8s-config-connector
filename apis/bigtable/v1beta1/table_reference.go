@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &TableRef{}
 
-// TableRef defines the resource reference to BigtableTable, which "External" field
-// holds the GCP identifier for the KRM object.
+// TableRef is a reference to a BigtableTable.
 type TableRef struct {
 	// A reference to an externally managed BigtableTable resource.
 	External string `json:"external,omitempty"`

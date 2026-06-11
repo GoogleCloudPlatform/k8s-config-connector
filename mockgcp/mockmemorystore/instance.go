@@ -118,9 +118,17 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 		obj.AvailableMaintenanceVersions = []string{"MEMORYSTORE_20260313_01_02", "MEMORYSTORE_20260313_01_03"}
 	}
 
-	if obj.EncryptionInfo == nil {
+	if obj.KmsKey != nil && *obj.KmsKey != "" {
 		obj.EncryptionInfo = &pb.EncryptionInfo{
-			EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+			EncryptionType:     pb.EncryptionInfo_CUSTOMER_MANAGED_ENCRYPTION,
+			KmsKeyVersions:     []string{*obj.KmsKey + "/cryptoKeyVersions/1"},
+			KmsKeyPrimaryState: pb.EncryptionInfo_ENABLED,
+		}
+	} else {
+		if obj.EncryptionInfo == nil {
+			obj.EncryptionInfo = &pb.EncryptionInfo{
+				EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+			}
 		}
 	}
 
@@ -265,10 +273,6 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
 		obj.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
 	}
-	if obj.MaintenancePolicy != nil && obj.MaintenancePolicy.CreateTime == nil {
-		obj.MaintenancePolicy.CreateTime = timestamppb.New(time.Now())
-		obj.MaintenancePolicy.UpdateTime = obj.MaintenancePolicy.CreateTime
-	}
 	if crr := obj.CrossInstanceReplicationConfig; crr != nil {
 		switch crr.InstanceRole {
 		case pb.CrossInstanceReplicationConfig_PRIMARY:
@@ -387,7 +391,6 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		case "maintenancePolicy":
 			if req.Instance.MaintenancePolicy != nil {
 				obj.MaintenancePolicy = req.Instance.MaintenancePolicy
-				obj.MaintenancePolicy.UpdateTime = timestamppb.New(now)
 			}
 		case "automatedBackupConfig":
 			obj.AutomatedBackupConfig = req.Instance.AutomatedBackupConfig

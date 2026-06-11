@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// NetworkPolicyIdentity defines the resource reference to VMwareEngineNetworkPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkPolicyIdentity is the identity of a VMwareEngineNetworkPolicy.
 type NetworkPolicyIdentity struct {
 	parent *NetworkPolicyParent
 	id     string

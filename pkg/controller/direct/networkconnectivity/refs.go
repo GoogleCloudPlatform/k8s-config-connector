@@ -68,6 +68,14 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		*subnetworkRef = *resolved
 	}
 
+	if addressRef, ok := v.(*refs.ComputeAddressRef); ok {
+		resolved, err := refs.ResolveComputeAddress(r.ctx, r.kube, r.src, addressRef)
+		if err != nil {
+			return err
+		}
+		*addressRef = *resolved
+	}
+
 	if subnetworkRefs, ok := v.([]refs.ComputeSubnetworkRef); ok {
 		for i := range subnetworkRefs {
 			subnetworkRef := &subnetworkRefs[i]

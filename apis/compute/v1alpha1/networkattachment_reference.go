@@ -30,8 +30,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ComputeNetworkAttachmentRef{}
 
-// ComputeNetworkAttachmentRef defines the resource reference to ComputeNetworkAttachment, which "External" field
-// holds the GCP identifier for the KRM object.
+// ComputeNetworkAttachmentRef is a reference to a ComputeNetworkAttachment.
 type ComputeNetworkAttachmentRef struct {
 
 	// The value of an externally managed ComputeNetworkAttachment resource in
@@ -57,7 +56,7 @@ func (r *ComputeNetworkAttachmentRef) NormalizedExternal(ctx context.Context, re
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseInterconnectExternal(r.External); err != nil {
+		if _, _, err := ParseNetworkAttachmentExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil

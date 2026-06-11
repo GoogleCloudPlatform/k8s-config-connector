@@ -1,0 +1,5 @@
+When implementing VertexAIDataset, I found:
+1. `VertexAIDataset` is managed by a Terraform controller, but other direct resources (such as `VertexAIDataLabelingJob` in `v1alpha1`) reference it.
+2. In the modern pattern, we define the `VertexAIDatasetRef` inside `apis/vertexai/v1beta1/vertexaidataset_reference.go` as part of package `v1beta1` of `vertexai` rather than the global `apis/refs/v1beta1` package.
+3. Because the reference type `VertexAIDatasetRef` was previously defined under the global `apis/refs/v1beta1` package, any referencing types (e.g. `VertexAIDataLabelingJob` in `apis/vertexai/v1alpha1/datalabelingjob_types.go` and its mappers) must be updated to import `apis/vertexai/v1beta1` and use `v1beta1.VertexAIDatasetRef` instead of `refsv1beta1.VertexAIDatasetRef`.
+4. The GCP location/region for `VertexAIDataset` is defined in KRM under `spec.region` rather than `spec.location`. Consequently, our `getIdentityFromVertexAIDatasetSpec` function extracts the region specifically using `obj.Spec.Region` rather than the generic `refs.GetLocation` helper.

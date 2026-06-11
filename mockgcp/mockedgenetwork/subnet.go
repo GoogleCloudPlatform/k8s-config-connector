@@ -22,7 +22,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgenetwork/v1"
+	pb "cloud.google.com/go/edgenetwork/apiv1/edgenetworkpb"
 )
 
 func (s *EdgenetworkV1) GetSubnet(ctx context.Context, req *pb.GetSubnetRequest) (*pb.Subnet, error) {

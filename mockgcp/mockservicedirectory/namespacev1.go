@@ -83,12 +83,22 @@ func (s *RegistrationServiceV1) UpdateNamespace(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
+	// Apply field mask updates
+	paths := req.GetUpdateMask().GetPaths()
+	for _, path := range paths {
+		switch path {
+		case "labels":
+			obj.Labels = req.GetNamespace().GetLabels()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported", path)
+		}
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
-
 }
 
 func (s *RegistrationServiceV1) DeleteNamespace(ctx context.Context, req *pb.DeleteNamespaceRequest) (*empty.Empty, error) {

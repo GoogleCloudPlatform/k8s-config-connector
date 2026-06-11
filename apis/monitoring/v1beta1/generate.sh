@@ -26,11 +26,14 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.monitoring.v3 \
   --api-version monitoring.cnrm.cloud.google.com/v1beta1  \
-  --resource MonitoringNotificationChannel:NotificationChannel
+  --include-skipped-output \
+  --resource MonitoringNotificationChannel:NotificationChannel \
+  --resource MonitoringUptimeCheckConfig:UptimeCheckConfig
 
 go run . generate-mapper \
-  --service google.monitoring.v3 \
-  --api-version monitoring.cnrm.cloud.google.com/v1beta1
+  --service google.monitoring.v3,google.api \
+  --api-version monitoring.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

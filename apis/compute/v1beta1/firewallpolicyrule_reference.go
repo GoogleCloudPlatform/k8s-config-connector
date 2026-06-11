@@ -30,8 +30,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &FirewallPolicyRuleRef{}
 
-// FirewallPolicyRuleRef defines the resource reference to ComputeFirewallPolicyRule, which "External" field
-// holds the GCP identifier for the KRM object.
+// FirewallPolicyRuleRef is a reference to a ComputeFirewallPolicyRule.
 type FirewallPolicyRuleRef struct {
 	// A reference to an externally managed ComputeFirewallPolicyRule resource.
 	// Should be in the format "locations/global/firewallPolicies/{{firewallPolicy}}/rules/{{priority}}".

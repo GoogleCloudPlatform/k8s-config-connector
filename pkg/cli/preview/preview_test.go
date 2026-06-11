@@ -194,10 +194,10 @@ spec:
 				t.Logf("  diff %+v", event.diff)
 
 			case EventTypeReconcileStart:
-				t.Logf("  reconcileStart %+v", event.object)
+				t.Logf("  reconcileStart type=%s", event.reconcilerType)
 
 			case EventTypeReconcileEnd:
-				t.Logf("  reconcileEnd %+v", event.object)
+				t.Logf("  reconcileEnd type=%s", event.reconcilerType)
 
 			case EventTypeKubeAction:
 				t.Logf("  kubeAction %+v", event.kubeAction)

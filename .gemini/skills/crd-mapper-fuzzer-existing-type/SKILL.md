@@ -1,0 +1,66 @@
+---
+name: crd-mapper-fuzzer-existing-type
+description: Standards and workflows for creating direct KRM Go types for an existing CRD while maintaining strict schema compatibility.
+---
+
+# CRD Mapper Fuzzer Existing Type
+
+## Overview
+This skill outlines standard practices when transitioning an existing KCC resource (e.g., from Terraform or DCL) to a direct controller by generating the initial KRM types (`_types.go`), ensuring **strict schema compatibility** with the baseline CRD. You must NOT change the schema at all (other than descriptions). Do not add any new fields, including `spec.projectRef`, unless it was already part of the baseline CRD. You MUST run `dev/tasks/diff-crds` to check for any schema changes.
+
+## Workflow
+
+### 1. Configure generate.sh
+Configure `apis/<service>/<version>/generate.sh` to include the resource and pass the `--include-skipped-output` flag. Passing `--include-skipped-output` to both `generate-types` and `generate-mapper` ensures that any output otherwise skipped is still generated but commented out. This provides an invaluable reference when manual modifications/hand-coding of types are needed.
+
+```bash
+go run . generate-types \
+    --service <proto.package> \
+    --api-version "<service>.cnrm.cloud.google.com/<version>" \
+    --include-skipped-output \
+    --resource <Kind>:<ProtoMessage>
+
+go run . generate-mapper \
+    --service <proto.package> \
+    --api-version "<service>.cnrm.cloud.google.com/<version>" \
+    --include-skipped-output
+```
+
+### 2. Standards for Strict Schema Compatibility
+When defining the KRM Go type in `<kind>_types.go`, you must ensure it matches the original CRD schema exactly. You must not add, remove, or modify any fields (including `spec.projectRef`) in a way that alters the KRM schema:
+
+- **Do Not Change the Schema**: You must **not change the schema** when the type already exists. Description changes are OK, but adding/removing/renaming fields (such as adding `projectRef` if the baseline CRD did not have it) is strictly forbidden.
+- **Run diff-crds**: You MUST run `dev/tasks/diff-crds` frequently (and definitely before opening/updating a PR) to identify any schema changes or deviations between the baseline CRD and the generated one. The diff-crds output must be absolutely empty (or contain only minor description reflows if expected).
+- **No spec.projectRef addition**: If the baseline CRD did not contain `spec.projectRef`, do not add it to the Spec struct in `<kind>_types.go`.
+- **Reference Hand-coding & Manual Edits**: If there are schema mismatches, you must manually copy, edit, or hand-code types (e.g. to change or remove fields) until the schemas match perfectly.
+- **Hand-code custom reference types**: If a resource reference structure in the baseline CRD (like `FolderRef`, `OrganizationRef`, or `BillingAccountRef`) lacks a `kind` field or retains specific fields (like `name`/`namespace` in `OrganizationRef`), you **must hand-code custom reference types** locally in `<kind>_types.go`. For a project reference without a `kind` field, you MUST import and use `refs.ProjectRef` from `github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs` instead of defining a local structure.
+- **Match Signatures for automatic validation**: The schema builder `scripts/add-validation-to-crds` automatically adds OpenAPI `oneOf` blocks depending on field signatures.
+  - If a custom reference type has fields `external`, `name`, and `namespace`, its signature is `"external,name,namespace"`, which triggers the generator to automatically append the `oneOf` reference constraint block.
+- **Spec-level validations**: If the baseline CRD contains spec-level validations (such as requiring exactly one of different parent reference fields), ensure those constraints are registered/hardcoded in `scripts/add-validation-to-crds/parse-crds.go` so they are successfully preserved in the generated CRD.
+- **Handling Type Mismatches in generated mappers**: If a KRM field type (such as `int64`) does not match the proto's field type (such as `int32`), the generated assignment code will fail compilation. Solve this by writing handcoded mapping functions (e.g., `KindSpec_FromProto` / `ToProto`) in a handcoded `mapper.go` file within the direct controller package. The generator will automatically detect these and skip generating the conflicting versions.
+- **Document Handcoded Deviations**: For all handcoded mapping functions, you MUST include clear comments above the function explaining exactly why it deviates from the default behavior and why it cannot be automatically generated (e.g., secret reference fields, body string-to-byte-slice mapping, or custom reference type logic).
+- **Ensure correct +kcc:proto annotation**: Always make sure all KRM types have the correct `// +kcc:proto=<proto_message>` annotation on the struct definition. Even if you think you have to hand-code the mapper, check that the annotation is present. Running the generator produces a commented-out generated mapper inside `mapper.generated.go` if the type is annotated. Review that commented-out mapper first before deciding to hand-code; you might be able to fully automate the mapper simply by renaming the Go struct field to match the proto field name exactly (without changing the json tag).
+- **Match Field Formats**: Ensure date/time strings have `// +kubebuilder:validation:Format=date-time` to match original formats.
+- **Keep Legacy Reconciler Labels**: You must retain existing labels such as `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true"` (or `tf2crd=true` for Terraform-based resources) on the struct definition in `<kind>_types.go`. Removing these labels will prevent the corresponding legacy controllers from being registered correctly for the resource during the transition phase.
+- **Validation**: No new fields should be introduced under status (e.g. do not add `observedState` or `externalRef` yet if they weren't in the original CRD).
+- **Matching Go struct field names to Proto field names**: The mapping generator automatically matches KRM Go struct fields to Proto fields by mapping Go camel-case names to proto snake_case/camel-case field names. If a KRM field is named differently in the CRD (e.g., `filterLabels`), we can rename the Go struct field to match the proto name exactly (e.g., renaming the Go field name to `Labels` while preserving the JSON tag `json:"filterLabels,omitempty"` so that there is absolutely no schema change). This allows us to fully leverage automatic mapper generation and completely avoid writing hand-coded mappers. If the mapped type is defined in a different package (like `google.api.MonitoredResource`), we can also specify multiple services to the `--service` flag of `generate-mapper` (e.g. `--service google.monitoring.v3,google.api`) to enable automatic traversal and generation for that shared type.
+
+### 3. Fuzzer Best Practices
+When writing a KRM round-trip fuzzer, or if a fuzzer already exists:
+- **File Naming**: Ensure the fuzzer is named `<kind>_fuzzer.go` (e.g., `entitlement_fuzzer.go`) in lowercase. Do not use generic names like `fuzzers.go`.
+- **Use Type-Safe Helpers**: Do not call `f.SpecFields.Insert`, `f.StatusFields.Insert`, or `f.UnimplementedFields.Insert` directly on sets. Instead, use the type-safe helper methods defined on the `KRMTypedFuzzer` struct:
+  - Use `f.SpecField(fieldPath)` to mark a field as round-tripping to/from the Spec.
+  - Use `f.StatusField(fieldPath)` to mark a field as round-tripping to/from the Status.
+  - Use `f.Unimplemented_Identity(fieldPath)` for identity/URL fields like `.name`.
+  - Use `f.Unimplemented_Internal(fieldPath)` for internal service-only/hidden implementation details (e.g., resource fields that are duplicates of KRM metadata or parent references).
+  - Use `f.Unimplemented_NotYetTriaged(fieldPath)` for fields that are not implemented or under development.
+  - Use `f.Unimplemented_LabelsAnnotations(fieldPath)` for labels or annotations.
+- **Move Hand-Coded Mappers**: Ensure all hand-coded mapper functions reside in a file called `mappers.go` within the direct controller package to distinguish them from the generated mapper file `mapper.generated.go`.
+
+**No Dedicated Unit Test Needed**: There is no need to add a dedicated/standalone `_fuzzer_test.go` file for the resource. Simply registering the fuzzer using `fuzztesting.RegisterKRMFuzzer()` in your fuzzer implementation file (e.g. `backupvault_fuzzer.go`) is fully sufficient. The existing shared testing framework (such as `pkg/fuzztesting/fuzztests/fuzz_test.go`) will automatically discover and run it.
+
+### 4. Verification & Acceptance Criteria
+- Run `dev/tasks/diff-crds` to verify there are absolutely no unintended schema changes.
+- Since we are transitioning an existing type, the primary acceptance criterion is "does it generate the same CRD schema".
+- Once the schema is identical, run `make ready-pr` to regenerate Go clients (and compile-check the changes, run custom linters, format the files, and regenerate static configs).
+- Finally, run `dev/tasks/generate-resource-report` to update the resource reports `docs/reports/crd_report.csv` and `docs/reports/crd_report.md` to reflect the transition.

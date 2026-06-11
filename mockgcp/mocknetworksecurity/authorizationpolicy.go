@@ -96,16 +96,31 @@ func (s *NetworkSecurityServer) UpdateAuthorizationPolicy(ctx context.Context, r
 		return nil, err
 	}
 
-	updated := proto.CloneOf(req.GetAuthorizationPolicy())
-	updated.CreateTime = obj.CreateTime
+	updated := proto.CloneOf(obj)
 	updated.UpdateTime = timestamppb.New(time.Now())
-	switch req.GetUpdateMask().GetPaths()[0] {
-	case "rules":
-		updated.Rules = req.GetAuthorizationPolicy().GetRules()
-	case "action":
-		updated.Action = req.GetAuthorizationPolicy().GetAction()
-	default:
-		return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled	 in mock", req.GetUpdateMask().GetPaths()[0])
+
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		// If update_mask is not provided, all fields should be overwritten.
+		updated = proto.CloneOf(req.GetAuthorizationPolicy())
+		updated.CreateTime = obj.CreateTime
+		updated.UpdateTime = timestamppb.New(time.Now())
+		updated.Name = obj.Name
+	} else {
+		for _, path := range paths {
+			switch path {
+			case "rules":
+				updated.Rules = req.GetAuthorizationPolicy().GetRules()
+			case "action":
+				updated.Action = req.GetAuthorizationPolicy().GetAction()
+			case "description":
+				updated.Description = req.GetAuthorizationPolicy().GetDescription()
+			case "labels":
+				updated.Labels = req.GetAuthorizationPolicy().GetLabels()
+			default:
+				return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
+			}
+		}
 	}
 
 	if err := s.storage.Update(ctx, name.String(), updated); err != nil {

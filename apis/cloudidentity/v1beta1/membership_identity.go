@@ -28,8 +28,7 @@ import (
 // parent_type: "cloudidentity.googleapis.com/Group"
 // parent_name_extractor: "groups/{group_id}"
 
-// MembershipIdentity defines the resource reference to CloudIdentityMembership, which "External" field
-// holds the GCP identifier for the KRM object.
+// MembershipIdentity is the identity of a CloudIdentityMembership.
 type MembershipIdentity struct {
 	parent *GroupIdentity
 	id     string

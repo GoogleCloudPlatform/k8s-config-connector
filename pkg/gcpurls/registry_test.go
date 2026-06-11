@@ -65,23 +65,46 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 	// Exceptions for templates that are known not to match CAI or are not in CAI.
 	// We use the normalized format for the key.
+	//
+	// NOTE ON "WRONG" PATTERNS / MISMATCHES:
+	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
 	ignoredTemplates := map[string]bool{
 		// Add known exceptions here.
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
-		"//storage.googleapis.com/projects/{}/buckets/{}":                                         true,
-		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                       true,
-		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}":                  true,
-		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
-		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":                     true,
-		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                       true,
-		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                        true,
-		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":      true,
-		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                 true,
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/deploymentResourcePools/{}":         true,
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                   true,
-		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":      true,
+		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":                         true,
+		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}":                              true,
+		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}":             true,
+		"//storage.googleapis.com/projects/{}/buckets/{}":                                           true,
+		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                         true,
+		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}":   true,
+		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":                       true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                         true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                          true,
+		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}":                    true,
+		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":        true,
+		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                   true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                     true,
+		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}":                           true,
+		"//batch.googleapis.com/projects/{}/locations/{}/resourceAllowances/{}":                     true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":        true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":  true,
+		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}":                    true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
+		"//iam.googleapis.com/policies/{}/denypolicies/{}":                                          true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/sacRealms/{}":                    true,
+		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":                    true,
+		"//logging.googleapis.com/projects/{}/exclusions/{}":                                        true,
+		"//logging.googleapis.com/folders/{}/exclusions/{}":                                         true,
+		"//logging.googleapis.com/organizations/{}/exclusions/{}":                                   true,
+		"//logging.googleapis.com/billingAccounts/{}/exclusions/{}":                                 true,
+		"//billingbudgets.googleapis.com/billingAccounts/{}/budgets/{}":                             true,
+		"//bigqueryconnection.googleapis.com/projects/{}/locations/{}/connections/{}":               true,
+		"//privilegedaccessmanager.googleapis.com/projects/{}/locations/{}/entitlements/{}":         true,
+		"//privilegedaccessmanager.googleapis.com/folders/{}/locations/{}/entitlements/{}":          true,
+		"//privilegedaccessmanager.googleapis.com/organizations/{}/locations/{}/entitlements/{}":    true,
+		"//biglake.googleapis.com/projects/{}/locations/{}/catalogs/{}":                             true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":                        true,
 	}
-
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
 		normalized := normalizeTemplateFormat(fullURL)

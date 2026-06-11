@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	gcp "cloud.google.com/go/kms/apiv1"
@@ -124,6 +125,14 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	req := &kmspb.GetAutokeyConfigRequest{Name: a.id.String()}
 	autokeyconfigpb, err := a.gcpClient.GetAutokeyConfig(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			log.V(2).Info("KMSAutokeyConfig not found/uninitialized, treating as UNINITIALIZED actual state", "name", a.id)
+			a.actual = &kmspb.AutokeyConfig{
+				Name:  a.id.String(),
+				State: kmspb.AutokeyConfig_UNINITIALIZED,
+			}
+			return true, nil
+		}
 		return false, fmt.Errorf("getting KMSAutokeyConfig %q: %w", a.id, err)
 	}
 
@@ -143,7 +152,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating AutokeyConfig", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	resource := KMSAutokeyConfig_FromFields(mapCtx, a.id, a.desiredKeyProject)
+	resource := KMSAutokeyConfig_FromFields(mapCtx, a.id, a.desiredKeyProject, a.desired.Spec.KeyProjectResolutionMode)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -154,7 +163,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	status := &krm.KMSAutokeyConfigStatus{}
-	status.ObservedState = KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = kms.KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -165,17 +175,15 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.AutokeyConfig) (*kmspb.AutokeyConfig, error) {
 	log := klog.FromContext(ctx)
-	// To populate a.actual calling a.Find()
-	isExist, err := a.Find(ctx)
-	if !isExist {
-		return nil, fmt.Errorf("updateAutokeyConfig failed as AutokeyConfig does not exist, name: %s", a.id)
-	}
-	if err != nil {
-		return nil, err
+	if a.actual == nil {
+		return nil, fmt.Errorf("updateAutokeyConfig failed: Find() was not called or returned false")
 	}
 	updateMask := &fieldmaskpb.FieldMask{}
-	if resource.KeyProject != "" && !reflect.DeepEqual(resource.KeyProject, a.actual.KeyProject) {
+	if !reflect.DeepEqual(resource.KeyProject, a.actual.KeyProject) {
 		updateMask.Paths = append(updateMask.Paths, "key_project")
+	}
+	if resource.KeyProjectResolutionMode != a.actual.KeyProjectResolutionMode {
+		updateMask.Paths = append(updateMask.Paths, "key_project_resolution_mode")
 	}
 
 	if len(updateMask.Paths) == 0 {
@@ -202,12 +210,20 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	obj := &krm.KMSAutokeyConfig{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(KMSAutokeyConfigSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(kms.KMSAutokeyConfigSpec_FromProto(mapCtx, a.actual))
+
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
 	parent := a.id.Parent()
-	obj.Spec.FolderRef = &refs.FolderRef{External: parent.FolderID}
+	if parent.FolderID != "" {
+		obj.Spec.FolderRef = &refs.FolderRef{External: parent.FolderID}
+		obj.Spec.ProjectRef = nil
+	}
+	if parent.ProjectID != "" {
+		obj.Spec.ProjectRef = &refs.ProjectRef{External: parent.ProjectID}
+		obj.Spec.FolderRef = nil
+	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -224,13 +240,16 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting AutokeyConfig", "name", a.id)
-	_, err := a.Find(ctx)
-	if err != nil {
-		return false, err
+	if a.actual == nil {
+		return false, fmt.Errorf("delete AutokeyConfig failed: Find() was not called or returned false")
 	}
 	mapCtx := &direct.MapContext{}
-	// make a copy of the a.actual i.e. from krm.AutokeyConfig to kmspb.AutokeyConfig
+	// Keep only spec fields, by round-tripping through KRM.
+	// Make a copy of the a.actual, disable AutokeyConfig, and clear the project reference.
 	tempKrmAutokeyResource := AutokeyConfig_FromProto(mapCtx, a.actual)
+	tempKrmAutokeyResource.KeyProject = nil
+	disabledMode := "DISABLED"
+	tempKrmAutokeyResource.KeyProjectResolutionMode = &disabledMode
 	resource := AutokeyConfig_ToProto(mapCtx, tempKrmAutokeyResource)
 	updated, err := a.updateAutokeyConfig(ctx, resource)
 	if err != nil {
@@ -239,7 +258,8 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("successfully deleted AutokeyConfig in KCC by resetting the key_project", "name", a.id)
 	status := &krm.KMSAutokeyConfigStatus{}
 	// The state in ObservedState is expected to be UNINITIALIZED as we have set the key_project to empty
-	status.ObservedState = KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = kms.KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+
 	if mapCtx.Err() != nil {
 		return false, mapCtx.Err()
 	}

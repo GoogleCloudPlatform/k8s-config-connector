@@ -59,7 +59,7 @@ type ArtifactRegistryRepositorySpec struct {
 	//  `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
 	//  This value may not be changed after the Repository has been created.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.kms_key_name
-	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyNameRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	// Maven repository config contains repository level configuration
 	//  for the repositories of maven type.
@@ -79,6 +79,7 @@ type ArtifactRegistryRepositorySpec struct {
 	VirtualRepositoryConfig *ArtifactRegistryRepositoryVirtualRepositoryConfig `json:"virtualRepositoryConfig,omitempty"`
 }
 
+// +kcc:status:proto=google.devtools.artifactregistry.v1.Repository
 // ArtifactRegistryRepositoryStatus defines the config connector machine state of ArtifactRegistryRepository
 type ArtifactRegistryRepositoryStatus struct {
 	/* Conditions represent the latest available observations of the

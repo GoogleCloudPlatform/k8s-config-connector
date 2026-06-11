@@ -30,8 +30,7 @@ var meshURL = gcpurls.Template[NetworkServicesMeshIdentity](
 	"projects/{projectID}/locations/{location}/meshes/{meshID}",
 )
 
-// NetworkServicesMeshIdentity defines the resource reference to NetworkServicesMesh, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkServicesMeshIdentity is the identity of a NetworkServicesMesh.
 // +k8s:deepcopy-gen=false
 type NetworkServicesMeshIdentity struct {
 	ProjectID string

@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ConsumerGroupRef{}
 
-// ConsumerGroupRef defines the resource reference to ManagedKafkaConsumerGroup, which "External" field
-// holds the GCP identifier for the KRM object.
+// ConsumerGroupRef is a reference to a ManagedKafkaConsumerGroup.
 type ConsumerGroupRef struct {
 	// A reference to an externally managed ManagedKafkaConsumerGroup resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/consumergroups/{{consumergroupID}}".

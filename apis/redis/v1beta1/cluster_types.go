@@ -72,6 +72,16 @@ type RedisClusterSpec struct {
 
 	// Optional. The delete operation will fail when the value is set to true.
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
+
+	// Optional. The automated backup config for the cluster.
+	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
+	// Optional. ClusterMaintenancePolicy determines when to allow or deny updates.
+	MaintenancePolicy *ClusterMaintenancePolicy `json:"maintenancePolicy,omitempty"`
+
+	// Optional. The KMS key name to encrypt data at rest.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.kms_key
+	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 type PscConfigSpec struct {
@@ -132,6 +142,19 @@ type RedisClusterObservedState struct {
 	// Output only. Precise value of redis memory size in GB for the entire
 	//  cluster.
 	PreciseSizeGB *float64 `json:"preciseSizeGb,omitempty"`
+
+	// Optional. ClusterMaintenancePolicy determines when to allow or deny updates.
+	MaintenancePolicy *ClusterMaintenancePolicyObservedState `json:"maintenancePolicy,omitempty"`
+
+	// Output only. ClusterMaintenanceSchedule Output only Published maintenance schedule.
+	MaintenanceSchedule *ClusterMaintenanceScheduleObservedState `json:"maintenanceSchedule,omitempty"`
+
+	// Output only. Service attachment details to configure Psc connections.
+	// +optional
+	PSCServiceAttachments []PSCServiceAttachmentObservedState `json:"pscServiceAttachments,omitempty"`
+
+	// Output only. Encryption information for the client to retrieve.
+	EncryptionInfo *EncryptionInfoObservedState `json:"encryptionInfo,omitempty"`
 }
 
 // +genclient

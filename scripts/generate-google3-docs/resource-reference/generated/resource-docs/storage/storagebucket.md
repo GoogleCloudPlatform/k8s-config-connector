@@ -190,8 +190,7 @@ website:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
-Enables Bucket PolicyOnly access to a bucket.</p>
+            <p>DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field. Enables Bucket PolicyOnly access to a bucket.</p>
         </td>
     </tr>
     <tr>
@@ -341,7 +340,7 @@ Enables Bucket PolicyOnly access to a bucket.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>A reference to the KMS Crypto Key that will be used to encrypt objects inserted into this bucket.</p>
         </td>
     </tr>
     <tr>
@@ -351,7 +350,7 @@ Enables Bucket PolicyOnly access to a bucket.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -361,7 +360,7 @@ Enables Bucket PolicyOnly access to a bucket.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -371,7 +370,7 @@ Enables Bucket PolicyOnly access to a bucket.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -481,8 +480,7 @@ Enables Bucket PolicyOnly access to a bucket.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Number of days elapsed since the noncurrent timestamp of an object. This
-										condition is relevant only for versioned objects.</p>
+            <p>Number of days elapsed since the noncurrent timestamp of an object. This condition is relevant only for versioned objects.</p>
         </td>
     </tr>
     <tr>
@@ -799,7 +797,7 @@ url: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -855,7 +853,7 @@ url: string
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The observed state of the underlying GCP resource.</p>
+            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
         </td>
     </tr>
     <tr>

@@ -43,7 +43,7 @@ type BigtableBackupSpec struct {
 	// +optional
 	BackupType *string `json:"backupType,omitempty"`
 
-	/* ClusterRef defines the resource reference to BigtableCluster, which "External" field holds the GCP identifier for the KRM object. */
+	/* ClusterRef is a reference to a BigtableCluster. */
 	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Required. The expiration time of the backup.
@@ -188,6 +188,7 @@ type BigtableBackupStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtablebackup;gcpbigtablebackups
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

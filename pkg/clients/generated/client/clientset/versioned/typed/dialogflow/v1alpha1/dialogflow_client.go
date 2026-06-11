@@ -34,7 +34,9 @@ type DialogflowV1alpha1Interface interface {
 	DialogflowAgentsGetter
 	DialogflowEntityTypesGetter
 	DialogflowFulfillmentsGetter
+	DialogflowGeneratorsGetter
 	DialogflowIntentsGetter
+	DialogflowKnowledgeBasesGetter
 }
 
 // DialogflowV1alpha1Client is used to interact with features provided by the dialogflow.cnrm.cloud.google.com group.
@@ -54,8 +56,16 @@ func (c *DialogflowV1alpha1Client) DialogflowFulfillments(namespace string) Dial
 	return newDialogflowFulfillments(c, namespace)
 }
 
+func (c *DialogflowV1alpha1Client) DialogflowGenerators(namespace string) DialogflowGeneratorInterface {
+	return newDialogflowGenerators(c, namespace)
+}
+
 func (c *DialogflowV1alpha1Client) DialogflowIntents(namespace string) DialogflowIntentInterface {
 	return newDialogflowIntents(c, namespace)
+}
+
+func (c *DialogflowV1alpha1Client) DialogflowKnowledgeBases(namespace string) DialogflowKnowledgeBaseInterface {
+	return newDialogflowKnowledgeBases(c, namespace)
 }
 
 // NewForConfig creates a new DialogflowV1alpha1Client for the given config.

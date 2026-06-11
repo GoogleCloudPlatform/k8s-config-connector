@@ -560,7 +560,7 @@ func (r *JobTrigger) getURL(userBasePath string) (string, error) {
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 		"name":     dcl.ValueOrEmptyString(nr.Name),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/jobTriggers/{{name}}", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -573,7 +573,7 @@ func (r *JobTrigger) listURL(userBasePath string) (string, error) {
 		"location": dcl.ValueOrEmptyString(nr.Location),
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/jobTriggers", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -587,7 +587,7 @@ func (r *JobTrigger) createURL(userBasePath string) (string, error) {
 		"location": dcl.ValueOrEmptyString(nr.Location),
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/jobTriggers", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -602,7 +602,7 @@ func (r *JobTrigger) deleteURL(userBasePath string) (string, error) {
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 		"name":     dcl.ValueOrEmptyString(nr.Name),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/jobTriggers/{{name}}", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -11859,7 +11859,7 @@ func (r *JobTrigger) updateURL(userBasePath, updateName string) (string, error) 
 			"parent":   dcl.ValueOrEmptyString(nr.Parent),
 			"name":     dcl.ValueOrEmptyString(nr.Name),
 		}
-		if dcl.IsRegion(nr.Location) {
+		if isRegion(nr.Location) {
 			return dcl.URL("{{parent}}/locations/{{location}}/jobTriggers/{{name}}", nr.basePath(), userBasePath, fields), nil
 		}
 

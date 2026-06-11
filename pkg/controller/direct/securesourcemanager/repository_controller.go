@@ -133,12 +133,9 @@ func (a *SecureSourceManagerRepositoryAdapter) Create(ctx context.Context, creat
 	desired := a.desired.DeepCopy()
 
 	// Resolve SecureSourceManagerInstanceRef
-	instanceRef := a.desired.Spec.InstanceRef
-	normalizedExternal, err := instanceRef.NormalizedExternal(ctx, a.reader, desired.Namespace)
-	if err != nil {
+	if err := desired.Spec.InstanceRef.Normalize(ctx, a.reader, desired.Namespace); err != nil {
 		return err
 	}
-	desired.Spec.InstanceRef.External = normalizedExternal
 	if err := desired.Spec.InstanceRef.ConvertToProjectNumber(ctx, a.projectMapper); err != nil {
 		return err
 	}

@@ -67,7 +67,7 @@ spec:
                   type: string
                 type: array
               organizationRef:
-                description: ApigeeOrganizationRef is a reference to a ApigeeOrganization
+                description: ApigeeOrganizationRef is a reference to an ApigeeOrganization
                   resource.
                 oneOf:
                 - not:
@@ -89,10 +89,10 @@ spec:
                       resource. Should be in the format "organizations/{{organizationID}}".
                     type: string
                   name:
-                    description: The name of a ApigeeOrganization resource.
+                    description: The name of an ApigeeOrganization resource.
                     type: string
                   namespace:
-                    description: The namespace of a ApigeeOrganization resource.
+                    description: The namespace of an ApigeeOrganization resource.
                     type: string
                 type: object
               resourceID:
@@ -216,7 +216,7 @@ spec:
                   type: string
                 type: array
               organizationRef:
-                description: ApigeeOrganizationRef is a reference to a ApigeeOrganization
+                description: ApigeeOrganizationRef is a reference to an ApigeeOrganization
                   resource.
                 oneOf:
                 - not:
@@ -238,10 +238,10 @@ spec:
                       resource. Should be in the format "organizations/{{organizationID}}".
                     type: string
                   name:
-                    description: The name of a ApigeeOrganization resource.
+                    description: The name of an ApigeeOrganization resource.
                     type: string
                   namespace:
-                    description: The namespace of a ApigeeOrganization resource.
+                    description: The namespace of an ApigeeOrganization resource.
                     type: string
                 type: object
               resourceID:

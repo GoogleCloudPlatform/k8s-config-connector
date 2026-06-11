@@ -21,8 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
 
-// InstanceIdentity defines the resource reference to BigtableInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// InstanceIdentity is the identity of a BigtableInstance.
 type InstanceIdentity struct {
 	Parent *parent.ProjectParent
 	Id     string

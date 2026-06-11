@@ -123,6 +123,7 @@ nodeConfig:
     name: string
     namespace: string
   confidentialNodes:
+    confidentialInstanceType: string
     enabled: boolean
   diskSizeGb: integer
   diskType: string
@@ -204,6 +205,8 @@ nodeConfig:
   - effect: string
     key: string
     value: string
+  windowsNodeConfig:
+    osVersion: string
   workloadMetadataConfig:
     mode: string
     nodeMetadata: string
@@ -786,6 +789,16 @@ version: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.confidentialNodes.confidentialInstanceType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. Defines the type of technology used by the confidential node.</p>
         </td>
     </tr>
     <tr>
@@ -1588,6 +1601,26 @@ for running workloads on sole tenant nodes.</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>Value for taint.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.windowsNodeConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Parameters that can be configured on Windows nodes.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.windowsNodeConfig.osVersion</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>os_version specifies the Windows Server release version to be used on the node.</p>
         </td>
     </tr>
     <tr>

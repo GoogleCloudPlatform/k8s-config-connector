@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ExternalAddressRef{}
 
-// ExternalAddressRef defines the resource reference to VMwareEngineExternalAddress, which "External" field
-// holds the GCP identifier for the KRM object.
+// ExternalAddressRef is a reference to a VMwareEngineExternalAddress.
 type ExternalAddressRef struct {
 	// A reference to an externally managed VMwareEngineExternalAddress resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/privateClouds/{{privatecloudID}}/externalAddresses/{{externaladdressID}}".

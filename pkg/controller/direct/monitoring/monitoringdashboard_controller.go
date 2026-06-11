@@ -25,6 +25,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
+	monitoringprojects "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -50,13 +51,13 @@ type dashboardModel struct {
 var _ directbase.Model = &dashboardModel{}
 
 type dashboardAdapter struct {
-	projectID  string
-	resourceID string
+	id *krm.MonitoringDashboardIdentity
 
 	desired *pb.Dashboard
 	actual  *pb.Dashboard
 
 	dashboardsClient *api.DashboardsClient
+	projectMapper    *monitoringprojects.ProjectMapper
 }
 
 // adapter implements the Adapter interface.
@@ -81,21 +82,14 @@ func (m *dashboardModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+	id, err := obj.GetIdentity(ctx, kube)
+	if err != nil {
+		return nil, err
 	}
 
 	projectRef, err := refs.ResolveProject(ctx, kube, obj.GetNamespace(), &obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
 	}
 
 	if err := common.NormalizeReferences(ctx, kube, obj, projectRef); err != nil {
@@ -108,11 +102,16 @@ func (m *dashboardModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, mapCtx.Err()
 	}
 
+	dashboardProject := projectRef.ProjectID
+	if err := normalizeDashboardProto(ctx, m.config.ProjectMapper, desiredProto, dashboardProject); err != nil {
+		return nil, err
+	}
+
 	return &dashboardAdapter{
-		projectID:        projectID,
-		resourceID:       resourceID,
+		id:               id.(*krm.MonitoringDashboardIdentity),
 		desired:          desiredProto,
 		dashboardsClient: dashboardsClient,
+		projectMapper:    m.config.ProjectMapper,
 	}, nil
 }
 
@@ -122,31 +121,31 @@ func (m *dashboardModel) AdapterForURL(ctx context.Context, url string) (directb
 		return nil, nil
 	}
 
-	tokens := strings.Split(strings.TrimPrefix(url, "//monitoring.googleapis.com/"), "/")
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "dashboards" {
-		gcpClient, err := newGCPClient(m.config)
-		if err != nil {
-			return nil, fmt.Errorf("building gcp client: %w", err)
-		}
-
-		dashboardsClient, err := gcpClient.newDashboardsClient(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		return &dashboardAdapter{
-			projectID:        tokens[1],
-			resourceID:       tokens[3],
-			dashboardsClient: dashboardsClient,
-		}, nil
+	id := &krm.MonitoringDashboardIdentity{}
+	if err := id.FromExternal(strings.TrimPrefix(url, "//monitoring.googleapis.com/")); err != nil {
+		return nil, nil
 	}
 
-	return nil, nil
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
+	}
+
+	dashboardsClient, err := gcpClient.newDashboardsClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dashboardAdapter{
+		id:               id,
+		dashboardsClient: dashboardsClient,
+		projectMapper:    m.config.ProjectMapper,
+	}, nil
 }
 
 // Find implements the Adapter interface.
 func (a *dashboardAdapter) Find(ctx context.Context) (bool, error) {
-	if a.resourceID == "" {
+	if a.id.Dashboard == "" {
 		return false, nil
 	}
 
@@ -158,6 +157,10 @@ func (a *dashboardAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
+		return false, err
+	}
+
+	if err := normalizeDashboardProto(ctx, a.projectMapper, dashboard, a.id.Project); err != nil {
 		return false, err
 	}
 
@@ -200,7 +203,7 @@ func (a *dashboardAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating object", "u", u)
 
-	parent := "projects/" + a.projectID
+	parent := "projects/" + a.id.Project
 
 	req := &pb.CreateDashboardRequest{
 		Parent:    parent,
@@ -272,7 +275,7 @@ func (a *dashboardAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 		return nil, fmt.Errorf("error converting dashboard from API %w", err)
 	}
 
-	spec.ProjectRef.External = a.projectID
+	spec.ProjectRef.External = a.id.Project
 
 	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
 	if err != nil {
@@ -282,7 +285,7 @@ func (a *dashboardAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	u := &unstructured.Unstructured{
 		Object: make(map[string]interface{}),
 	}
-	u.SetName(a.resourceID)
+	u.SetName(a.id.Dashboard)
 	u.SetGroupVersionKind(krm.MonitoringDashboardGVK)
 	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
 		return nil, fmt.Errorf("setting spec: %w", err)
@@ -292,5 +295,5 @@ func (a *dashboardAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 }
 
 func (a *dashboardAdapter) fullyQualifiedName() string {
-	return fmt.Sprintf("projects/%s/dashboards/%s", a.projectID, a.resourceID)
+	return a.id.String()
 }

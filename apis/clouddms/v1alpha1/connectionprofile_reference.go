@@ -57,6 +57,8 @@ func (r *CloudDMSConnectionProfileRef) GetExternal() string {
 
 func (r *CloudDMSConnectionProfileRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CloudDMSConnectionProfileRef) ValidateExternal(ref string) error {

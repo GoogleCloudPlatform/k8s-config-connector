@@ -31,6 +31,10 @@ type FakeConfigdeliveryV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeConfigdeliveryV1alpha1) ConfigDeliveryFleetPackages(namespace string) v1alpha1.ConfigDeliveryFleetPackageInterface {
+	return newFakeConfigDeliveryFleetPackages(c, namespace)
+}
+
 func (c *FakeConfigdeliveryV1alpha1) ConfigDeliveryResourceBundles(namespace string) v1alpha1.ConfigDeliveryResourceBundleInterface {
 	return newFakeConfigDeliveryResourceBundles(c, namespace)
 }

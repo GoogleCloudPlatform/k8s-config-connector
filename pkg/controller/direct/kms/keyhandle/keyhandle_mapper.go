@@ -45,3 +45,14 @@ func KMSKeyHandleStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	}
 	return out
 }
+
+func KMSKeyHandleStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyHandleObservedState) *pb.KeyHandle {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyHandle{}
+	if in.KMSKey != nil {
+		out.KmsKey = *in.KMSKey
+	}
+	return out
+}

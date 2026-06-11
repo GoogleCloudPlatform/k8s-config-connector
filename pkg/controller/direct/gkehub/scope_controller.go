@@ -20,7 +20,9 @@ import (
 	"reflect"
 	"time"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	gkehubapi "google.golang.org/api/gkehub/v1beta"
+	exprpb "google.golang.org/genproto/googleapis/type/expr"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -55,6 +57,7 @@ type gkeHubScopeAdapter struct {
 }
 
 var _ directbase.Adapter = &gkeHubScopeAdapter{}
+var _ direct.IAMAdapter = &gkeHubScopeAdapter{}
 
 // AdapterForObject implements the Model interface.
 func (m *gkeHubScopeModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -207,6 +210,109 @@ func (a *gkeHubScopeAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 		return nil, err
 	}
 	return &unstructured.Unstructured{Object: uObj}, nil
+}
+
+func (a *gkeHubScopeAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+	policy, err := a.hubClient.scopeClientV1beta.GetIamPolicy(a.id.String()).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return convertPolicyAPIToIAMPB(policy), nil
+}
+
+func (a *gkeHubScopeAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+	req := &gkehubapi.SetIamPolicyRequest{
+		Policy: convertPolicyIAMPBToAPI(policy),
+	}
+	newPolicy, err := a.hubClient.scopeClientV1beta.SetIamPolicy(a.id.String(), req).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return convertPolicyAPIToIAMPB(newPolicy), nil
+}
+
+func convertPolicyAPIToIAMPB(in *gkehubapi.Policy) *iampb.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &iampb.Policy{
+		Version: int32(in.Version),
+		Etag:    []byte(in.Etag),
+	}
+	for _, b := range in.Bindings {
+		pbBinding := &iampb.Binding{
+			Role:    b.Role,
+			Members: b.Members,
+		}
+		if b.Condition != nil {
+			pbBinding.Condition = &exprpb.Expr{
+				Expression:  b.Condition.Expression,
+				Title:       b.Condition.Title,
+				Description: b.Condition.Description,
+				Location:    b.Condition.Location,
+			}
+		}
+		out.Bindings = append(out.Bindings, pbBinding)
+	}
+	for _, ac := range in.AuditConfigs {
+		pbAuditConfig := &iampb.AuditConfig{
+			Service: ac.Service,
+		}
+		for _, alc := range ac.AuditLogConfigs {
+			pbAuditConfig.AuditLogConfigs = append(pbAuditConfig.AuditLogConfigs, &iampb.AuditLogConfig{
+				LogType:         iampb.AuditLogConfig_LogType(iampb.AuditLogConfig_LogType_value[alc.LogType]),
+				ExemptedMembers: alc.ExemptedMembers,
+			})
+		}
+		out.AuditConfigs = append(out.AuditConfigs, pbAuditConfig)
+	}
+	return out
+}
+
+func convertPolicyIAMPBToAPI(in *iampb.Policy) *gkehubapi.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &gkehubapi.Policy{
+		Version: int64(in.Version),
+		Etag:    string(in.Etag),
+	}
+	for _, b := range in.Bindings {
+		apiBinding := &gkehubapi.Binding{
+			Role:    b.Role,
+			Members: b.Members,
+		}
+		if b.Condition != nil {
+			apiBinding.Condition = &gkehubapi.Expr{
+				Expression:  b.Condition.Expression,
+				Title:       b.Condition.Title,
+				Description: b.Condition.Description,
+				Location:    b.Condition.Location,
+			}
+		}
+		out.Bindings = append(out.Bindings, apiBinding)
+	}
+	for _, ac := range in.AuditConfigs {
+		apiAuditConfig := &gkehubapi.AuditConfig{
+			Service: ac.Service,
+		}
+		for _, alc := range ac.AuditLogConfigs {
+			apiAuditConfig.AuditLogConfigs = append(apiAuditConfig.AuditLogConfigs, &gkehubapi.AuditLogConfig{
+				LogType:         alc.LogType.String(),
+				ExemptedMembers: alc.ExemptedMembers,
+			})
+		}
+		out.AuditConfigs = append(out.AuditConfigs, apiAuditConfig)
+	}
+	return out
 }
 
 func (a *gkeHubScopeAdapter) waitForOp(ctx context.Context, op *gkehubapi.Operation) error {

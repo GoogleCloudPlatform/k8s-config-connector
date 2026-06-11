@@ -23,8 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AnywhereCacheIdentity defines the resource reference to StorageAnywhereCache, which "External" field
-// holds the GCP identifier for the KRM object.
+// AnywhereCacheIdentity is the identity of a StorageAnywhereCache.
 type AnywhereCacheIdentity struct {
 	parent *AnywhereCacheParent
 	id     string
@@ -58,7 +57,7 @@ func (p *AnywhereCacheParent) String() string {
 	return "projects/_/buckets/" + p.BucketName
 }
 
-// New builds a AnywhereCacheIdentity from parent, and resourceID
+// New builds an AnywhereCacheIdentity from parent, and resourceID
 func GetAnywhereCacheIdentity(parent *AnywhereCacheParent, id string) *AnywhereCacheIdentity {
 	return &AnywhereCacheIdentity{
 		parent: parent,
@@ -66,7 +65,7 @@ func GetAnywhereCacheIdentity(parent *AnywhereCacheParent, id string) *AnywhereC
 	}
 }
 
-// New builds a AnywhereCacheIdentity from the Config Connector AnywhereCache object.
+// New builds an AnywhereCacheIdentity from the Config Connector AnywhereCache object.
 func NewAnywhereCacheIdentity(ctx context.Context, reader client.Reader, obj *StorageAnywhereCache) (*AnywhereCacheIdentity, error) {
 
 	// Get Parent

@@ -63,6 +63,8 @@ func (r *ContainerClusterRef) GetExternal() string {
 
 func (r *ContainerClusterRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ContainerClusterRef) ValidateExternal(ref string) error {

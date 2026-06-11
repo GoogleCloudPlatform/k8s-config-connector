@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// NotebookRuntimeTemplateIdentity defines the resource reference to ColabRuntimeTemplate, which "External" field
-// holds the GCP identifier for the KRM object.
+// NotebookRuntimeTemplateIdentity is the identity of a ColabRuntimeTemplate.
 type NotebookRuntimeTemplateIdentity struct {
 	parent *NotebookRuntimeTemplateParent
 	id     string

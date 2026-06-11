@@ -34,8 +34,7 @@ var CloudBuildWorkerPoolGVK = schema.GroupVersionKind{
 
 var _ refs.Ref = &CloudBuildWorkerPoolRef{}
 
-// CloudBuildWorkerPoolRef defines the resource reference to CloudBuildWorkerPool, which "External" field
-// holds the GCP identifier for the KRM object.
+// CloudBuildWorkerPoolRef is a reference to a CloudBuildWorkerPool.
 type CloudBuildWorkerPoolRef struct {
 	// A reference to an externally managed CloudBuildWorkerPool resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/workerPools/{{workerPoolID}}".
@@ -69,6 +68,8 @@ func (r *CloudBuildWorkerPoolRef) GetExternal() string {
 
 func (r *CloudBuildWorkerPoolRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CloudBuildWorkerPoolRef) ValidateExternal(ref string) error {

@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ServiceBindingRef{}
 
-// ServiceBindingRef defines the resource reference to NetworkServicesServiceBinding, which "External" field
-// holds the GCP identifier for the KRM object.
+// ServiceBindingRef is a reference to a NetworkServicesServiceBinding.
 type ServiceBindingRef struct {
 	// A reference to an externally managed NetworkServicesServiceBinding resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/servicebindings/{{servicebindingID}}".

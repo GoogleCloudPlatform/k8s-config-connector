@@ -140,7 +140,7 @@ func (a *LBRouteExtensionAdapter) normalizeActual(obj *networkservicespb.LbRoute
 	if obj == nil {
 		return
 	}
-	projectID := a.id.Parent().ProjectID
+	projectID := a.id.Project
 	// GCP often returns project numbers in URLs. We normalize them to project IDs to match the desired state.
 	for i, rule := range obj.ForwardingRules {
 		obj.ForwardingRules[i] = a.normalizeURL(rule, projectID)
@@ -173,7 +173,7 @@ func (a *LBRouteExtensionAdapter) normalizeURL(url string, projectID string) str
 func (a *LBRouteExtensionAdapter) resolve(ctx context.Context) (*networkservicespb.LbRouteExtension, error) {
 	reader := a.reader
 	desired := a.desired
-	projectID := a.id.Parent().ProjectID
+	projectID := a.id.Project
 
 	// Resolve references
 	for _, ref := range desired.Spec.ForwardingRuleRefs {
@@ -248,8 +248,8 @@ func (a *LBRouteExtensionAdapter) Create(ctx context.Context, createOp *directba
 	resource.Name = a.id.String()
 
 	req := &networkservicespb.CreateLbRouteExtensionRequest{
-		Parent:             a.id.Parent().String(),
-		LbRouteExtensionId: a.id.ID(),
+		Parent:             fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
+		LbRouteExtensionId: a.id.LbRouteExtension,
 		LbRouteExtension:   resource,
 	}
 	op, err := a.gcpClient.CreateLbRouteExtension(ctx, req)
@@ -339,7 +339,7 @@ func (a *LBRouteExtensionAdapter) Export(ctx context.Context) (*unstructured.Uns
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.LbRouteExtension)
 	u.SetGroupVersionKind(krm.NetworkServicesLBRouteExtensionGVK)
 
 	u.Object = uObj

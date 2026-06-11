@@ -22,25 +22,31 @@ import (
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
-	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	resourcemanagerpb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &ComputeNetworkRef{}
-var ComputeNetworkGVK = GroupVersion.WithKind("ComputeNetwork")
+var ComputeNetworkGVK = schema.GroupVersionKind{
+	Group:   "compute.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "ComputeNetwork",
+}
 
+var _ refs.Ref = &ComputeNetworkRef{}
+
+// ComputeNetworkRef is a reference to a GCP ComputeNetwork.
 type ComputeNetworkRef struct {
-	// The value of an externally managed ComputeNetwork resource.
-	// Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"
+	// A reference to an externally managed ComputeNetwork resource.
+	// Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeNetwork resource.
@@ -48,6 +54,10 @@ type ComputeNetworkRef struct {
 
 	// The namespace of a ComputeNetwork resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&ComputeNetworkRef{})
 }
 
 func (r *ComputeNetworkRef) GetGVK() schema.GroupVersionKind {
@@ -67,63 +77,50 @@ func (r *ComputeNetworkRef) GetExternal() string {
 
 func (r *ComputeNetworkRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeNetworkRef) ValidateExternal(ref string) error {
+	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
 	id := &NetworkIdentity{}
-	if err := id.FromExternal(r.GetExternal()); err != nil {
+	if err := id.FromExternal(trimmedRef); err != nil {
 		return err
 	}
 	return nil
 }
 
+func (r *ComputeNetworkRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &NetworkIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
 func (r *ComputeNetworkRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	if r.External != "" {
-		_, err := ParseComputeNetworkExternal(r.External)
+		r.External = apirefs.TrimComputeURIPrefix(r.External)
+	}
+
+	fallback := func(u *unstructured.Unstructured) string {
+		// Get external from status.selfLink. This ensures backward compatibility for TF/DCL-based resources that lack status.externalRef.
+		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		if selfLink != "" {
+			return apirefs.TrimComputeURIPrefix(selfLink)
+		}
+
+		obj, err := common.ToStructuredType[*ComputeNetwork](u)
 		if err != nil {
-			return err
+			return ""
 		}
-		external := common.FixStaleComputeExternalFormat(r.External)
-		r.External = external
-		return nil
-	}
-
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = defaultNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(ComputeNetworkGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		identity, err := getIdentityFromComputeNetworkSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
 		}
-		return fmt.Errorf("reading referenced %s %s: %w", ComputeNetworkGVK, key, err)
+		return identity.String()
 	}
-
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef != "" {
-		r.External = actualExternalRef
-		return nil
-	}
-
-	// Get external from status.selfLink. This ensures backward compatibility for TF/DCL-based resources that lack status.externalRef.
-	selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
-	if err != nil {
-		return fmt.Errorf("reading status.selfLink: %w", err)
-	}
-	if selfLink == "" {
-		return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-	}
-
-	external := common.FixStaleComputeExternalFormat(selfLink)
-	r.External = external
-	return nil
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
 
 func (id *NetworkIdentity) ConvertToProjectNumber(ctx context.Context, projectMapper *projects.ProjectMapper) error {
@@ -131,12 +128,12 @@ func (id *NetworkIdentity) ConvertToProjectNumber(ctx context.Context, projectMa
 		return nil
 	}
 
-	projectNumber, err := projectMapper.LookupProjectNumber(ctx, id.Parent().ProjectID)
+	projectNumber, err := projectMapper.LookupProjectNumber(ctx, id.Project)
 	if err != nil {
-		return fmt.Errorf("error looking up project number for project %q: %w", id.Parent().ProjectID, err)
+		return fmt.Errorf("error looking up project number for project %q: %w", id.Project, err)
 	}
 
-	id.parent.ProjectID = strconv.FormatInt(projectNumber, 10)
+	id.Project = strconv.FormatInt(projectNumber, 10)
 	return nil
 }
 
@@ -172,10 +169,10 @@ func (ref *ComputeNetworkRef) ConvertClientToProjectNumber(ctx context.Context, 
 
 	// Check if the project number is already a valid integer
 	// If not, we need to look it up
-	projectNumber, err := strconv.ParseInt(id.parent.ProjectID, 10, 64)
+	projectNumber, err := strconv.ParseInt(id.Project, 10, 64)
 	if err != nil {
 		req := &resourcemanagerpb.GetProjectRequest{
-			Name: "projects/" + id.parent.ProjectID,
+			Name: "projects/" + id.Project,
 		}
 		project, err := projectsClient.GetProject(ctx, req)
 		if err != nil {
@@ -187,7 +184,7 @@ func (ref *ComputeNetworkRef) ConvertClientToProjectNumber(ctx context.Context, 
 		}
 		projectNumber = n
 	}
-	id.parent.ProjectID = strconv.FormatInt(projectNumber, 10)
+	id.Project = strconv.FormatInt(projectNumber, 10)
 	ref.External = id.String()
 	return nil
 }

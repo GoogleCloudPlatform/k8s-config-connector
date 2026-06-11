@@ -168,7 +168,7 @@ Resources in this list must be created in the order the list is in:
 - ComputeTargetInstance
 - ContainerCluster
 - ContainerNodePool
-- DataflowFlexTemplateJob (missing _reference.go only)
+- DataflowFlexTemplateJob
 - DataflowJob
 - KMSCryptoKeyVersion
 - KMSKeyRingImportJob

@@ -23,8 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// RouteIdentity defines the resource reference to DatastreamRoute, which "External" field
-// holds the GCP identifier for the KRM object.
+// RouteIdentity is the identity of a DatastreamRoute.
 type RouteIdentity struct {
 	parent *RouteParent
 	id     string

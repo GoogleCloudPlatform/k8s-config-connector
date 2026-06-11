@@ -33,14 +33,14 @@ func billingBillingAccountFuzzer() fuzztesting.KRMFuzzer {
 		BillingAccountObservedState_FromProto, BillingAccountObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".currency_code")
-	f.SpecFields.Insert(".parent")
+	f.SpecField(".display_name")
+	f.SpecField(".currency_code")
+	f.SpecField(".parent")
 
-	f.StatusFields.Insert(".name")
-	f.StatusFields.Insert(".open")
-	f.StatusFields.Insert(".master_billing_account")
-	f.StatusFields.Insert(".currency_code")
+	f.StatusField(".name")
+	f.StatusField(".open")
+	f.StatusField(".master_billing_account")
+	f.StatusField(".currency_code")
 
 	return f
 }

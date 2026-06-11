@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// SavedQueryIdentity defines the resource reference to AssetSavedQuery, which "External" field
-// holds the GCP identifier for the KRM object.
+// SavedQueryIdentity is the identity of an AssetSavedQuery.
 type SavedQueryIdentity struct {
 	parent *SavedQueryParent
 	id     string

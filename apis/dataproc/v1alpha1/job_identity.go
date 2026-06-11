@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// JobIdentity defines the resource reference to DataprocJob, which "External" field
-// holds the GCP identifier for the KRM object.
+// JobIdentity is the identity of a DataprocJob.
 type JobIdentity struct {
 	parent *JobParent
 	id     string

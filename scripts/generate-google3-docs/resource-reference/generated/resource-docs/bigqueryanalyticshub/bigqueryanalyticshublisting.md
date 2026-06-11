@@ -132,7 +132,7 @@ source:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>BigQueryAnalyticsHubDataExchangeRef defines the resource reference to BigQueryAnalyticsHubDataExchange, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>BigQueryAnalyticsHubDataExchangeRef is a reference to a BigQueryAnalyticsHubDataExchange.</p>
         </td>
     </tr>
     <tr>

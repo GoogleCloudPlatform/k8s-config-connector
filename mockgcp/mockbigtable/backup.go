@@ -132,6 +132,8 @@ func (s *tableAdminServer) UpdateBackup(ctx context.Context, req *pb.UpdateBacku
 		switch path {
 		case "expire_time":
 			obj.ExpireTime = req.Backup.ExpireTime
+		case "hot_to_standard_time":
+			obj.HotToStandardTime = req.Backup.HotToStandardTime
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

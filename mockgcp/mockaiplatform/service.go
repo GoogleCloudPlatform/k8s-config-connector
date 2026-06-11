@@ -19,12 +19,12 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
+	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -64,29 +64,27 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterModelServiceServer(grpcServer, &modelService{MockService: s})
 	pb.RegisterNotebookServiceServer(grpcServer, &notebookService{MockService: s})
 	pb.RegisterScheduleServiceServer(grpcServer, &scheduleService{MockService: s})
+	pb.RegisterExampleStoreServiceServer(grpcServer, &exampleStoreService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterTensorboardServiceHandler,
-		pb.RegisterDatasetServiceHandler,
-		pb.RegisterEndpointServiceHandler,
-		pb.RegisterMetadataServiceHandler,
-		pb.RegisterFeaturestoreServiceHandler,
-		pb.RegisterModelServiceHandler,
-		pb.RegisterNotebookServiceHandler,
-		pb.RegisterScheduleServiceHandler,
-		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"),
-		s.operations.RegisterOperationsPath("/ui/{prefix=**}/operations/{name}"))
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
 
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	mux.AddService(pb.NewTensorboardServiceClient(conn))
+	mux.AddService(pb.NewDatasetServiceClient(conn))
+	mux.AddService(pb.NewEndpointServiceClient(conn))
+	mux.AddService(pb.NewMetadataServiceClient(conn))
+	mux.AddService(pb.NewFeaturestoreServiceClient(conn))
+	mux.AddService(pb.NewModelServiceClient(conn))
+	mux.AddService(pb.NewNotebookServiceClient(conn))
+	mux.AddService(pb.NewScheduleServiceClient(conn))
+	mux.AddService(pb.NewExampleStoreServiceClient(conn))
+
+	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
+	mux.AddOperationsPath("/ui/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
 }

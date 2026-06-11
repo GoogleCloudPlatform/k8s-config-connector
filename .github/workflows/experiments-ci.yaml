@@ -36,8 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
         with:
           go-version: '1.26'
       - name: "Run dev/ci/experiments-ci.sh"

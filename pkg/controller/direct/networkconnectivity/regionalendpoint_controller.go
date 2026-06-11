@@ -35,6 +35,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -66,6 +67,19 @@ func (m *regionalEndpointModel) AdapterForObject(ctx context.Context, op *direct
 		return nil, err
 	}
 	id := idIdentity.(*krm.NetworkConnectivityRegionalEndpointIdentity)
+
+	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
+	}
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve projectID")
+	}
+
+	if err := common.VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: reader}); err != nil {
+		return nil, err
+	}
 
 	// Get networkconnectivity GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)

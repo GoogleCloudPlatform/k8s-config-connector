@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &LakeRef{}
 
-// LakeRef defines the resource reference to DataplexLake, which "External" field
-// holds the GCP identifier for the KRM object.
+// LakeRef is a reference to a DataplexLake.
 type LakeRef struct {
 	// A reference to an externally managed DataplexLake resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}".
@@ -62,6 +61,8 @@ func (r *LakeRef) GetExternal() string {
 
 func (r *LakeRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *LakeRef) ValidateExternal(ref string) error {

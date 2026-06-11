@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// MetadataStoreIdentity defines the resource reference to VertexAIMetadataStore, which "External" field
-// holds the GCP identifier for the KRM object.
+// MetadataStoreIdentity is the identity of a VertexAIMetadataStore.
 type MetadataStoreIdentity struct {
 	parent *MetadataStoreParent
 	id     string

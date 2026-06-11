@@ -46,5 +46,13 @@ func orgPolicyPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Etag()
 	f.UnimplementedFields.Insert(".spec.etag")
 
+	// PolicyRule.parameters is a typed KRM struct that only models the
+	// 23 known managed-constraint parameter keys; random structpb.Struct
+	// values produced by the fuzzer will lose unknown keys on the
+	// FromProto -> ToProto round-trip. Skip it here. The "[]" suffix
+	// matches the repeated rules field; see pkg/test/fuzz/generate.go.
+	f.UnimplementedFields.Insert(".spec.rules[].parameters")
+	f.UnimplementedFields.Insert(".dry_run_spec.rules[].parameters")
+
 	return f
 }

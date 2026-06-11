@@ -19,14 +19,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ImportJobIdentity defines the resource reference to KMSImportJob, which "External" field
-// holds the GCP identifier for the KRM object.
+// ImportJobIdentity is the identity of a KMSImportJob.
 type ImportJobIdentity struct {
 	parent *KMSKeyRingIdentity
 	id     string
@@ -44,7 +41,7 @@ func (i *ImportJobIdentity) Parent() *KMSKeyRingIdentity {
 	return i.parent
 }
 
-// New builds a ImportJobIdentity from the Config Connector ImportJob object.
+// New builds an ImportJobIdentity from the Config Connector ImportJob object.
 func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImportJob) (*ImportJobIdentity, error) {
 
 	// Get Parent
@@ -94,9 +91,9 @@ func ParseImportJobExternal(external string) (*KMSKeyRingIdentity, string, error
 		return nil, "", fmt.Errorf("format of KMSImportJob external=%q was not known (use projects/{{projectID}}/locations/{{location}}/keyRings/{{keyRingID}}/importJobs/{{importJobID}})", external)
 	}
 	p := &KMSKeyRingIdentity{
-		Parent: &parent.ProjectAndLocationParent{
-			ProjectID: tokens[1], Location: tokens[3],
-		}, ID: tokens[5],
+		Project:  tokens[1],
+		Location: tokens[3],
+		Keyring:  tokens[5],
 	}
 	resourceID := tokens[7]
 	return p, resourceID, nil

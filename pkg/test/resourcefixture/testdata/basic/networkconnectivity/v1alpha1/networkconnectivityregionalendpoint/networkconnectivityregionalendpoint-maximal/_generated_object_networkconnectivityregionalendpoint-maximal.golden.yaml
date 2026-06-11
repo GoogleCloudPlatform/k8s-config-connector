@@ -1,0 +1,33 @@
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityRegionalEndpoint
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: regionalendpoint-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  accessType: GLOBAL
+  addressRef:
+    name: ${addressID}
+  description: Maximal Test description
+  location: us-central1
+  networkRef:
+    name: ${networkID}
+  projectRef:
+    external: projects/${projectId}
+  subnetworkRef:
+    name: ${subnetworkID}
+  targetGoogleAPI: cloudkms.us-central1.p.rep.googleapis.com
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 1
+  observedState: {}

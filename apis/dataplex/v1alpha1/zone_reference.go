@@ -28,8 +28,7 @@ import (
 
 var _ refs.Ref = &ZoneRef{}
 
-// ZoneRef defines the resource reference to DataplexZone, which "External" field
-// holds the GCP identifier for the KRM object.
+// ZoneRef is a reference to a DataplexZone.
 type ZoneRef struct {
 	// A reference to an externally managed DataplexZone resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/lakes/{{lake}}/zones/{{zone}}".
@@ -63,6 +62,8 @@ func (r *ZoneRef) GetExternal() string {
 
 func (r *ZoneRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ZoneRef) ValidateExternal(ref string) error {

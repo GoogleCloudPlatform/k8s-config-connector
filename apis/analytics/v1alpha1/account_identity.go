@@ -23,8 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AccountIdentity defines the resource reference to AnalyticsAccount, which "External" field
-// holds the GCP identifier for the KRM object.
+// AccountIdentity is the identity of an AnalyticsAccount.
 type AccountIdentity struct {
 	id string
 }
@@ -42,7 +41,7 @@ func (i *AccountIdentity) SetID(id string) {
 	return
 }
 
-// New builds a AccountIdentity from the Config Connector Account object.
+// New builds an AccountIdentity from the Config Connector Account object.
 func NewAccountIdentity(ctx context.Context, reader client.Reader, obj *AnalyticsAccount) (*AccountIdentity, error) {
 	// Attempt to get the service-generated resource ID.
 	resourceID := common.ValueOf(obj.Spec.ResourceID)

@@ -25,8 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// TaskIdentity defines the resource reference to BatchTask, which "External" field
-// holds the GCP identifier for the KRM object.
+// TaskIdentity is the identity of a BatchTask.
 type TaskIdentity struct {
 	parent *TaskParent
 	id     string

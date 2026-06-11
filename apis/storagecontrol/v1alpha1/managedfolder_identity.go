@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ManagedFolderIdentity defines the resource reference to StorageManagedFolder, which "External" field
-// holds the GCP identifier for the KRM object.
+// ManagedFolderIdentity is the identity of a StorageManagedFolder.
 type ManagedFolderIdentity struct {
 	parent *ManagedFolderParent
 	id     string

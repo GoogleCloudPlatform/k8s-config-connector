@@ -27,15 +27,18 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.backupdr.v1 \
     --api-version backupdr.cnrm.cloud.google.com/v1beta1 \
+    --include-skipped-output \
     --resource BackupDRBackupPlanAssociation:BackupPlanAssociation \
     --resource BackupDRBackupPlan:BackupPlan \
     --resource BackupDRBackupVault:BackupVault \
 
+sed -i 's/\*common.Status/\*common.DeprecatedStatusWithDetails/g' ${REPO_ROOT}/apis/backupdr/v1beta1/types.generated.go
 
 go run . generate-mapper \
     --multiversion \
     --service google.cloud.backupdr.v1 \
-    --api-version backupdr.cnrm.cloud.google.com/v1beta1
+    --api-version backupdr.cnrm.cloud.google.com/v1beta1 \
+    --include-skipped-output
 
 
 cd ${REPO_ROOT}

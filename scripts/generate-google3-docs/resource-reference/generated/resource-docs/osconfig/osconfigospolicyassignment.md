@@ -255,7 +255,10 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>List of label sets used for VM exclusion. If the list has more than one label set, the VM is excluded if any of the label sets are applicable for the VM.</p>
+            <p>List of label sets used for VM exclusion.
+
+ If the list has more than one label set, the VM is excluded if any
+ of the label sets are applicable for the VM.</p>
         </td>
     </tr>
     <tr>
@@ -285,7 +288,10 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>List of label sets used for VM inclusion. If the list has more than one `LabelSet`, the VM is included if any of the label sets are applicable for the VM.</p>
+            <p>List of label sets used for VM inclusion.
+
+ If the list has more than one `LabelSet`, the VM is included if any
+ of the label sets are applicable for the VM.</p>
         </td>
     </tr>
     <tr>
@@ -315,7 +321,10 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>List of inventories to select VMs. A VM is selected if its inventory data matches at least one of the following inventories.</p>
+            <p>List of inventories to select VMs.
+
+ A VM is selected if its inventory data matches at least one of the
+ following inventories.</p>
         </td>
     </tr>
     <tr>
@@ -345,7 +354,13 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The OS version Prefix matches are supported if asterisk(*) is provided as the last character. For example, to match all versions with a major version of `7`, specify the following value for this field `7.*` An empty string matches all OS versions.</p>
+            <p>The OS version
+
+ Prefix matches are supported if asterisk(*) is provided as the
+ last character. For example, to match all versions with a major
+ version of `7`, specify the following value for this field `7.*`
+
+ An empty string matches all OS versions.</p>
         </td>
     </tr>
     <tr>
@@ -405,7 +420,13 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The id of the OS policy with the following restrictions: * Must contain only lowercase letters, numbers, and hyphens. * Must start with a letter. * Must be between 1-63 characters. * Must end with a number or a letter. * Must be unique within the assignment.</p>
+            <p>Required. The id of the OS policy with the following restrictions:
+
+ * Must contain only lowercase letters, numbers, and hyphens.
+ * Must start with a letter.
+ * Must be between 1-63 characters.
+ * Must end with a number or a letter.
+ * Must be unique within the assignment.</p>
         </td>
     </tr>
     <tr>
@@ -425,7 +446,14 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Required. List of resource groups for the policy. For a particular VM, resource groups are evaluated in the order specified and the first resource group that is applicable is selected and the rest are ignored. If none of the resource groups are applicable for a VM, the VM is considered to be non-compliant w.r.t this policy. This behavior can be toggled by the flag `allow_no_resource_group_match`</p>
+            <p>Required. List of resource groups for the policy.
+ For a particular VM, resource groups are evaluated in the order specified
+ and the first resource group that is applicable is selected and the rest
+ are ignored.
+
+ If none of the resource groups are applicable for a VM, the VM is
+ considered to be non-compliant w.r.t this policy. This behavior can be
+ toggled by the flag `allow_no_resource_group_match`</p>
         </td>
     </tr>
     <tr>
@@ -445,7 +473,19 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>List of inventory filters for the resource group. The resources in this resource group are applied to the target VM if it satisfies at least one of the following inventory filters. For example, to apply this resource group to VMs running either `RHEL` or `CentOS` operating systems, specify 2 items for the list with following values: inventory_filters[0].os_short_name='rhel' and inventory_filters[1].os_short_name='centos' If the list is empty, this resource group will be applied to the target VM unconditionally.</p>
+            <p>List of inventory filters for the resource group.
+
+ The resources in this resource group are applied to the target VM if it
+ satisfies at least one of the following inventory filters.
+
+ For example, to apply this resource group to VMs running either `RHEL` or
+ `CentOS` operating systems, specify 2 items for the list with following
+ values:
+ inventory_filters[0].os_short_name='rhel' and
+ inventory_filters[1].os_short_name='centos'
+
+ If the list is empty, this resource group will be applied to the target
+ VM unconditionally.</p>
         </td>
     </tr>
     <tr>
@@ -475,7 +515,13 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The OS version Prefix matches are supported if asterisk(*) is provided as the last character. For example, to match all versions with a major version of `7`, specify the following value for this field `7.*` An empty string matches all OS versions.</p>
+            <p>The OS version
+
+ Prefix matches are supported if asterisk(*) is provided as the
+ last character. For example, to match all versions with a major
+ version of `7`, specify the following value for this field `7.*`
+
+ An empty string matches all OS versions.</p>
         </td>
     </tr>
     <tr>
@@ -555,7 +601,11 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Defaults to false. When false, files are subject to validations based on the file type: Remote: A checksum must be specified. Cloud Storage: An object generation number must be specified.</p>
+            <p>Defaults to false. When false, files are subject to validations
+ based on the file type:
+
+ Remote: A checksum must be specified.
+ Cloud Storage: An object generation number must be specified.</p>
         </td>
     </tr>
     <tr>
@@ -715,7 +765,11 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Defaults to false. When false, files are subject to validations based on the file type: Remote: A checksum must be specified. Cloud Storage: An object generation number must be specified.</p>
+            <p>Defaults to false. When false, files are subject to validations
+ based on the file type:
+
+ Remote: A checksum must be specified.
+ Cloud Storage: An object generation number must be specified.</p>
         </td>
     </tr>
     <tr>
@@ -865,7 +919,11 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Defaults to false. When false, files are subject to validations based on the file type: Remote: A checksum must be specified. Cloud Storage: An object generation number must be specified.</p>
+            <p>Defaults to false. When false, files are subject to validations
+ based on the file type:
+
+ Remote: A checksum must be specified.
+ Cloud Storage: An object generation number must be specified.</p>
         </td>
     </tr>
     <tr>
@@ -965,7 +1023,19 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Consists of three octal digits which represent, in order, the permissions of the owner, group, and other users for the file (similarly to the numeric mode used in the linux chmod utility). Each digit represents a three bit number with the 4 bit corresponding to the read permissions, the 2 bit corresponds to the write bit, and the one bit corresponds to the execute permission. Default behavior is 755. Below are some examples of permissions and their associated values: read, write, and execute: 7 read and execute: 5 read and write: 6 read only: 4</p>
+            <p>Consists of three octal digits which represent, in
+ order, the permissions of the owner, group, and other users for the
+ file (similarly to the numeric mode used in the linux chmod
+ utility). Each digit represents a three bit number with the 4 bit
+ corresponding to the read permissions, the 2 bit corresponds to the
+ write bit, and the one bit corresponds to the execute permission.
+ Default behavior is 755.
+
+ Below are some examples of permissions and their associated values:
+ read, write, and execute: 7
+ read and execute: 5
+ read and write: 6
+ read only: 4</p>
         </td>
     </tr>
     <tr>
@@ -985,7 +1055,13 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The id of the resource with the following restrictions: * Must contain only lowercase letters, numbers, and hyphens. * Must start with a letter. * Must be between 1-63 characters. * Must end with a number or a letter. * Must be unique within the OS policy.</p>
+            <p>Required. The id of the resource with the following restrictions:
+
+ * Must contain only lowercase letters, numbers, and hyphens.
+ * Must start with a letter.
+ * Must be between 1-63 characters.
+ * Must end with a number or a letter.
+ * Must be unique within the OS policy.</p>
         </td>
     </tr>
     <tr>
@@ -1055,7 +1131,11 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Defaults to false. When false, files are subject to validations based on the file type: Remote: A checksum must be specified. Cloud Storage: An object generation number must be specified.</p>
+            <p>Defaults to false. When false, files are subject to validations
+ based on the file type:
+
+ Remote: A checksum must be specified.
+ Cloud Storage: An object generation number must be specified.</p>
         </td>
     </tr>
     <tr>
@@ -1215,7 +1295,11 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Defaults to false. When false, files are subject to validations based on the file type: Remote: A checksum must be specified. Cloud Storage: An object generation number must be specified.</p>
+            <p>Defaults to false. When false, files are subject to validations
+ based on the file type:
+
+ Remote: A checksum must be specified.
+ Cloud Storage: An object generation number must be specified.</p>
         </td>
     </tr>
     <tr>
@@ -1335,7 +1419,11 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Defaults to false. When false, files are subject to validations based on the file type: Remote: A checksum must be specified. Cloud Storage: An object generation number must be specified.</p>
+            <p>Defaults to false. When false, files are subject to validations
+ based on the file type:
+
+ Remote: A checksum must be specified.
+ Cloud Storage: An object generation number must be specified.</p>
         </td>
     </tr>
     <tr>
@@ -1625,7 +1713,7 @@ skipAwaitRollout: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. A one word, unique name for this repository. This is the `repo id` in the yum config file and also the `display_name` if `display_name` is omitted. This id is also used as the unique identifier when checking for resource conflicts.</p>
+            <p>Required. A one word, unique name for this repository. This is  the `repo id` in the yum config file and also the `display_name` if `display_name` is omitted. This id is also used as the unique identifier when checking for resource conflicts.</p>
         </td>
     </tr>
     <tr>
@@ -1843,7 +1931,7 @@ uid: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -1927,7 +2015,7 @@ uid: string
         <td><code>revisionId</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The assignment revision ID A new revision is committed whenever a rollout is triggered for a OS policy assignment</p>
+            <p>Output only. The assignment revision ID A new revision is committed whenever a rollout is triggered for an OS policy assignment</p>
         </td>
     </tr>
     <tr>

@@ -55,6 +55,8 @@ func (r *BigQueryBigLakeTableRef) GetExternal() string {
 
 func (r *BigQueryBigLakeTableRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *BigQueryBigLakeTableRef) ValidateExternal(ref string) error {

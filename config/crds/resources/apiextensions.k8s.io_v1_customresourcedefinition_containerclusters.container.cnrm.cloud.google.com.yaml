@@ -470,6 +470,10 @@ spec:
                   configuration can''t be changed (or added/removed) after cluster
                   creation without deleting and recreating the entire cluster.'
                 properties:
+                  confidentialInstanceType:
+                    description: Immutable. Defines the type of technology used by
+                      the confidential node.
+                    type: string
                   enabled:
                     description: Immutable. Whether Confidential Nodes feature is
                       enabled for all nodes in this pool.
@@ -1041,6 +1045,7 @@ spec:
                 - enabled
                 type: object
               networkRef:
+                description: ComputeNetworkRef is a reference to a GCP ComputeNetwork.
                 oneOf:
                 - not:
                     required:
@@ -1057,9 +1062,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The value of an externally managed ComputeNetwork
-                      resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                      or "projects/{{projectId}}/global/networks/{{networkId}}"
+                    description: A reference to an externally managed ComputeNetwork
+                      resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
                     type: string
                   name:
                     description: The name of a ComputeNetwork resource.
@@ -1123,6 +1127,10 @@ spec:
                       This configuration can''t be changed (or added/removed) after
                       pool creation without deleting and recreating the entire pool.'
                     properties:
+                      confidentialInstanceType:
+                        description: Immutable. Defines the type of technology used
+                          by the confidential node.
+                        type: string
                       enabled:
                         description: Immutable. Whether Confidential Nodes feature
                           is enabled for all nodes in this pool.

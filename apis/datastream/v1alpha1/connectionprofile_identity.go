@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ConnectionProfileIdentity defines the resource reference to DatastreamConnectionProfile, which "External" field
-// holds the GCP identifier for the KRM object.
+// ConnectionProfileIdentity is the identity of a DatastreamConnectionProfile.
 type ConnectionProfileIdentity struct {
 	parent *ConnectionProfileParent
 	id     string
