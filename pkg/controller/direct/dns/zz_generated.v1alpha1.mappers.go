@@ -86,7 +86,7 @@ func ResponsepolicyGkeClusters_FromAPI(mapCtx *direct.MapContext, in *api.Respon
 		return nil
 	}
 	out := &krm.ResponsepolicyGkeClusters{}
-	out.GkeClusterName = in.GkeClusterName
+	out.GkeClusterName = direct.LazyPtr(in.GkeClusterName)
 	return out
 }
 
@@ -95,7 +95,7 @@ func ResponsepolicyGkeClusters_ToAPI(mapCtx *direct.MapContext, in *krm.Response
 		return nil
 	}
 	out := &api.ResponsePolicyGKECluster{}
-	out.GkeClusterName = in.GkeClusterName
+	out.GkeClusterName = direct.ValueOf(in.GkeClusterName)
 	return out
 }
 
@@ -104,7 +104,7 @@ func ResponsepolicyNetworks_FromAPI(mapCtx *direct.MapContext, in *api.ResponseP
 		return nil
 	}
 	out := &krm.ResponsepolicyNetworks{}
-	out.NetworkUrl = in.NetworkUrl
+	out.NetworkUrl = direct.LazyPtr(in.NetworkUrl)
 	return out
 }
 
@@ -113,6 +113,6 @@ func ResponsepolicyNetworks_ToAPI(mapCtx *direct.MapContext, in *krm.Responsepol
 		return nil
 	}
 	out := &api.ResponsePolicyNetwork{}
-	out.NetworkUrl = in.NetworkUrl
+	out.NetworkUrl = direct.ValueOf(in.NetworkUrl)
 	return out
 }

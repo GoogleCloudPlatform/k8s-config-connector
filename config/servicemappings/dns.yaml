@@ -249,3 +249,75 @@ spec:
       containers:
         - type: project
           tfField: project
+    - name: google_dns_response_policy
+      kind: DNSResponsePolicy
+      version: v1alpha1
+      idTemplate: "projects/{{project}}/responsePolicies/{{response_policy_name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      metadataMapping:
+        name: response_policy_name
+      resourceID:
+        targetField: response_policy_name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: networks.network_url
+          description: |-
+            VPC network to bind to.
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: gke_clusters.gke_cluster_name
+          description: |-
+            The resource name of the cluster to bind this ManagedZone to.
+            This should be specified in the format like
+            'projects/*/locations/*/clusters/*'.
+          key: gkeClusterNameRef
+          gvk:
+            kind: ContainerCluster
+            version: v1beta1
+            group: container.cnrm.cloud.google.com
+          targetField: self_link
+    - name: google_dns_response_policy_rule
+      kind: DNSResponsePolicyRule
+      version: v1alpha1
+      idTemplate: "projects/{{project}}/responsePolicies/{{response_policy}}/rules/{{rule_name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      metadataMapping:
+        name: rule_name
+      resourceID:
+        targetField: rule_name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - key: responsePolicyRef
+          tfField: response_policy
+          gvk:
+            kind: DNSResponsePolicy
+            version: v1alpha1
+            group: dns.cnrm.cloud.google.com
+          targetField: response_policy_name
+          parent: true

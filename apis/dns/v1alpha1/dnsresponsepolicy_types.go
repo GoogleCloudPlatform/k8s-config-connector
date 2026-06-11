@@ -15,6 +15,8 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -27,7 +29,11 @@ type ResponsepolicyGkeClusters struct {
 	/* The resource name of the cluster to bind this ManagedZone to.
 	This should be specified in the format like
 	'projects/* /locations/* /clusters/*'. */
-	GkeClusterName string `json:"gkeClusterName"`
+	// +optional
+	GkeClusterName *string `json:"gkeClusterName,omitempty"`
+
+	// +optional
+	GkeClusterNameRef *containerv1beta1.ContainerClusterRef `json:"gkeClusterNameRef,omitempty"`
 }
 
 // +openapi:ResponsePolicyNetwork
@@ -35,7 +41,11 @@ type ResponsepolicyNetworks struct {
 	/* The fully qualified URL of the VPC network to bind to.
 	This should be formatted like
 	'https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}'. */
-	NetworkUrl string `json:"networkUrl"`
+	// +optional
+	NetworkUrl *string `json:"networkUrl,omitempty"`
+
+	// +optional
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 }
 
 // +openapi:ResponsePolicy

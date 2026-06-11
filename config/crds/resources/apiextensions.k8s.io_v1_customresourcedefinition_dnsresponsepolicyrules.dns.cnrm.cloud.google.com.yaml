@@ -136,13 +136,37 @@ spec:
                   for creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
-              responsePolicy:
-                description: Identifies the response policy addressed by this request.
-                type: string
+              responsePolicyRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `responsePolicyName` field of
+                      a `DNSResponsePolicy` resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
             required:
             - dnsName
             - projectRef
-            - responsePolicy
+            - responsePolicyRef
             type: object
           status:
             properties:

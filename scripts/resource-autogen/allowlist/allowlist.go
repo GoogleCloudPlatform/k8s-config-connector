@@ -103,8 +103,6 @@ var (
 		"dialogflow_cx/google_dialogflow_cx_intent",
 		"dialogflow_cx/google_dialogflow_cx_page",
 		"dialogflow_cx/google_dialogflow_cx_webhook",
-		"dns/google_dns_response_policy",
-		"dns/google_dns_response_policy_rule",
 		"document_ai/google_document_ai_processor",
 		"document_ai/google_document_ai_processor_default_version",
 		"essential_contacts/google_essential_contacts_contact",

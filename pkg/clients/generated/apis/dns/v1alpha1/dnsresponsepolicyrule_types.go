@@ -80,8 +80,7 @@ type DNSResponsePolicyRuleSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Identifies the response policy addressed by this request. */
-	ResponsePolicy string `json:"responsePolicy"`
+	ResponsePolicyRef v1alpha1.ResourceRef `json:"responsePolicyRef"`
 }
 
 type DNSResponsePolicyRuleStatus struct {

@@ -76,8 +76,36 @@ spec:
                         to. This should be specified in the format like 'projects/*
                         /locations/* /clusters/*'.
                       type: string
-                  required:
-                  - gkeClusterName
+                    gkeClusterNameRef:
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: 'The GKE cluster. Valid formats: `projects/{projectID}/locations/{location}/clusters/{clusterID}`
+                            `projects/{projectID}/zones/{zone}/clusters/{clusterID}`'
+                          type: string
+                        name:
+                          description: 'Name of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                            */'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the project resource. More info:
+                            https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+                            */'
+                          type: string
+                      type: object
                   type: object
                 type: array
               networks:
@@ -85,12 +113,38 @@ spec:
                   this policy is applied.
                 items:
                   properties:
+                    networkRef:
+                      description: ComputeNetworkRef is a reference to a GCP ComputeNetwork.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed ComputeNetwork
+                            resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                          type: string
+                        name:
+                          description: The name of a ComputeNetwork resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a ComputeNetwork resource.
+                          type: string
+                      type: object
                     networkUrl:
                       description: The fully qualified URL of the VPC network to bind
                         to. This should be formatted like 'https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}'.
                       type: string
-                  required:
-                  - networkUrl
                   type: object
                 type: array
               projectRef:
