@@ -260,6 +260,8 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	forwardingRule.Labels = sanitizedLabels
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	// Use defer to ensure the diff is always reported, even if we return early due to errors (crucial for preview mode)
+	defer structuredreporting.ReportDiff(ctx, report)
 
 	op := &gcp.Operation{}
 	updated := &computepb.ForwardingRule{}
@@ -343,8 +345,6 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 		}
 		log.V(2).Info("successfully updated ComputeForwardingRule target", "name", a.id)
 	}
-
-	structuredreporting.ReportDiff(ctx, report)
 
 	// Get the updated resource
 	updated, err = a.get(ctx)
