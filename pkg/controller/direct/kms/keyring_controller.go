@@ -96,10 +96,16 @@ func (m *keyRingModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, err
 	}
 
+	mapCtx := &direct.MapContext{}
+	desired := KMSKeyRingSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	return &keyRingAdapter{
 		gcpClient: gcpClient,
 		id:        id,
-		desired:   obj,
+		desired:   desired,
 		reader:    reader,
 	}, nil
 }
@@ -111,7 +117,7 @@ func (m *keyRingModel) AdapterForURL(ctx context.Context, url string) (directbas
 type keyRingAdapter struct {
 	gcpClient *kms.KeyManagementClient
 	id        *krm.KMSKeyRingIdentity
-	desired   *krm.KMSKeyRing
+	desired   *kmspb.KeyRing
 	actual    *kmspb.KeyRing
 	reader    client.Reader
 }
@@ -143,17 +149,11 @@ func (a *keyRingAdapter) Find(ctx context.Context) (bool, error) {
 func (a *keyRingAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating kms keyring", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desired := KMSKeyRingSpec_ToProto(mapCtx, &a.desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 
 	req := &kmspb.CreateKeyRingRequest{
 		Parent:    a.id.ParentString(),
 		KeyRingId: a.id.Keyring,
-		KeyRing:   desired,
+		KeyRing:   a.desired,
 	}
 	created, err := a.gcpClient.CreateKeyRing(ctx, req)
 	if err != nil {
