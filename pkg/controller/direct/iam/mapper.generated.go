@@ -18,7 +18,7 @@
 
 // +generated:mapper
 // krm.group: iam.cnrm.cloud.google.com
-// krm.version: v1beta1
-// proto.service: google.iam.admin.v1
+// krm.version: v1alpha1
+// proto.service: google.iam.v2
 
 package iam

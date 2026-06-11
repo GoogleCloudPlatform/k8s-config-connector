@@ -31,7 +31,7 @@ import (
 var _ refsv1beta1.ExternalNormalizer = &{{.ProtoMessageName}}Ref{}
 
 // {{.ProtoMessageName}}Ref defines the resource reference to {{.Kind}}, which "External" field
-// holds the GCP identifier for the KRM object.
+// holds the Google Cloud identifier for the KRM object.
 type {{.ProtoMessageName}}Ref struct {
 	// A reference to an externally managed {{.Kind}} resource.
 	// Should be in the format "projects/{{"{{"}}projectID{{"}}"}}/locations/{{"{{"}}location{{"}}"}}/{{.ProtoMessageName | ToLower }}s/{{"{{"}}{{.ProtoMessageName | ToLower }}ID{{"}}"}}".

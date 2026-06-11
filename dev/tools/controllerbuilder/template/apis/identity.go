@@ -27,7 +27,7 @@ import (
 )
 
 // {{.ProtoMessageName}}Identity defines the resource reference to {{.Kind}}, which "External" field
-// holds the GCP identifier for the KRM object.
+// holds the Google Cloud identifier for the KRM object.
 type {{.ProtoMessageName}}Identity struct {
 	parent *{{.ProtoMessageName}}Parent
 	id string
