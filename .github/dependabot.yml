@@ -18,6 +18,10 @@ updates:
     directory: /
     schedule:
       interval: daily
+  - package-ecosystem: github-actions
+    directory: /dev/actions/cache-go
+    schedule:
+      interval: daily
   - package-ecosystem: gomod
     directories:
       - /
