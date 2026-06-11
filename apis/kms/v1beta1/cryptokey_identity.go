@@ -61,6 +61,10 @@ func (i *KMSCryptoKeyIdentity) Host() string {
 	return KMSCryptoKeyIdentityFormat.Host()
 }
 
+func (i *KMSCryptoKeyIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s/keyRings/%s", i.Project, i.Location, i.KeyRing)
+}
+
 func getIdentityFromKMSCryptoKeySpec(ctx context.Context, reader client.Reader, obj *KMSCryptoKey) (*KMSCryptoKeyIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {

@@ -22,6 +22,7 @@ package kms
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	kms "cloud.google.com/go/kms/apiv1"
@@ -90,11 +91,24 @@ func (m *kmsCryptoKeyModel) AdapterForObject(ctx context.Context, op *directbase
 		return nil, err
 	}
 
+	mapCtx := &direct.MapContext{}
+	desired := KMSCryptoKeySpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
+
+	skipInitialVersionCreation := false
+	if obj.Spec.SkipInitialVersionCreation != nil {
+		skipInitialVersionCreation = *obj.Spec.SkipInitialVersionCreation
+	}
+
 	return &kmsCryptoKeyAdapter{
-		gcpClient: gcpClient,
-		id:        id,
-		desired:   obj,
-		reader:    reader,
+		gcpClient:                         gcpClient,
+		id:                                id,
+		desired:                           desired,
+		desiredSkipInitialVersionCreation: skipInitialVersionCreation,
+		reader:                            reader,
 	}, nil
 }
 
@@ -103,11 +117,12 @@ func (m *kmsCryptoKeyModel) AdapterForURL(ctx context.Context, url string) (dire
 }
 
 type kmsCryptoKeyAdapter struct {
-	gcpClient *kms.KeyManagementClient
-	id        *krm.KMSCryptoKeyIdentity
-	desired   *krm.KMSCryptoKey
-	actual    *kmspb.CryptoKey
-	reader    client.Reader
+	gcpClient                         *kms.KeyManagementClient
+	id                                *krm.KMSCryptoKeyIdentity
+	desired                           *kmspb.CryptoKey
+	desiredSkipInitialVersionCreation bool
+	actual                            *kmspb.CryptoKey
+	reader                            client.Reader
 }
 
 var _ directbase.Adapter = &kmsCryptoKeyAdapter{}
@@ -132,30 +147,12 @@ func (a *kmsCryptoKeyAdapter) Find(ctx context.Context) (bool, error) {
 func (a *kmsCryptoKeyAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating kms cryptokey", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desired := KMSCryptoKeySpec_ToProto(mapCtx, &a.desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	desired.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
-
-	skipInitialVersionCreation := false
-	if a.desired.Spec.SkipInitialVersionCreation != nil {
-		skipInitialVersionCreation = *a.desired.Spec.SkipInitialVersionCreation
-	}
-
-	parent := &krm.KMSKeyRingIdentity{
-		Project:  a.id.Project,
-		Location: a.id.Location,
-		Keyring:  a.id.KeyRing,
-	}
 
 	req := &kmspb.CreateCryptoKeyRequest{
-		Parent:                     parent.String(),
+		Parent:                     a.id.ParentString(),
 		CryptoKeyId:                a.id.CryptoKey,
-		CryptoKey:                  desired,
-		SkipInitialVersionCreation: skipInitialVersionCreation,
+		CryptoKey:                  a.desired,
+		SkipInitialVersionCreation: a.desiredSkipInitialVersionCreation,
 	}
 	created, err := a.gcpClient.CreateCryptoKey(ctx, req)
 	if err != nil {
@@ -169,16 +166,10 @@ func (a *kmsCryptoKeyAdapter) Create(ctx context.Context, createOp *directbase.C
 func (a *kmsCryptoKeyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating KMSCryptoKey", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := KMSCryptoKeySpec_ToProto(mapCtx, &a.desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	desiredPb.Name = a.id.String()
-	desiredPb.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
+	a.desired.Name = a.id.String()
 
-	diffs, updateMask, err := compareCryptoKey(ctx, a.actual, desiredPb)
+	diffs, updateMask, err := compareCryptoKey(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
@@ -191,7 +182,7 @@ func (a *kmsCryptoKeyAdapter) Update(ctx context.Context, updateOp *directbase.U
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &kmspb.UpdateCryptoKeyRequest{
-		CryptoKey:  desiredPb,
+		CryptoKey:  a.desired,
 		UpdateMask: updateMask,
 	}
 
@@ -244,7 +235,7 @@ func (a *kmsCryptoKeyAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 	it := a.gcpClient.ListCryptoKeyVersions(ctx, &kmspb.ListCryptoKeyVersionsRequest{Parent: a.id.String()})
 	for {
 		version, err := it.Next()
-		if err == iterator.Done {
+		if errors.Is(err, iterator.Done) {
 			break
 		}
 		if err != nil {
