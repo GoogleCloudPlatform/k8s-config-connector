@@ -322,7 +322,7 @@ func ComputeForwardingRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: SourceIPRanges
 	// (near miss): "SourceIPRanges" vs "SourceIpRanges"
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &krm.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.Target = in.Target
 	return out
@@ -722,7 +722,7 @@ func ComputeNetworkAttachmentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 
 						if v := in.GetSubnetworks(); len(v) != 0 {
 							for i := range v {
-								out.SubnetworkRefs = append(out.SubnetworkRefs, &refsv1beta1.ComputeSubnetworkRef{External: v[i]})
+								out.SubnetworkRefs = append(out.SubnetworkRefs, &krm.ComputeSubnetworkRef{External: v[i]})
 							}
 						}
 

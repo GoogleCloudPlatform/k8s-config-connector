@@ -71,7 +71,7 @@ func WorkstationClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstat
 		NetworkRef: computev1beta1.ComputeNetworkRef{
 			External: in.GetNetwork(),
 		},
-		SubnetworkRef: refs.ComputeSubnetworkRef{
+		SubnetworkRef: computev1beta1.ComputeSubnetworkRef{
 			External: in.GetSubnetwork(),
 		},
 		PrivateClusterConfig: WorkstationCluster_PrivateClusterConfig_FromProto(mapCtx, in.GetPrivateClusterConfig()),
