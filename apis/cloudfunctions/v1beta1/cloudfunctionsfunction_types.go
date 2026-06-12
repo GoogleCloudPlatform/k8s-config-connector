@@ -93,7 +93,8 @@ type EventTriggerResourceRef struct {
 	External string `json:"external,omitempty"`
 
 	/* Kind of the referent. Allowed values: StorageBucket,PubSubTopic */
-	Kind string `json:"kind"`
+	// +optional
+	Kind string `json:"kind,omitempty"`
 
 	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
 	// +optional

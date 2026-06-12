@@ -116,15 +116,12 @@ spec:
                         - external
                       required:
                       - name
-                      - kind
                     - not:
                         anyOf:
                         - required:
                           - name
                         - required:
                           - namespace
-                        - required:
-                          - kind
                       required:
                       - external
                     properties:
@@ -163,8 +160,6 @@ spec:
                       namespace:
                         description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
-                    required:
-                    - kind
                     type: object
                   service:
                     description: |-
