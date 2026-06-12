@@ -206,12 +206,20 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
        ```bash
        WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha
        ```
-6. **Run CI/CD Group Presubmit Tests Locally**:
+6. **Verify Acronym Casing Compliance**:
+   - KCC enforces strict naming rules for acronyms in field names (e.g. using `IP` instead of `Ip`, `VPC` instead of `Vpc`). If the generated fields use non-standard casing (e.g. they were generated directly from Terraform's snake_case schema which maps `allow_cross_org_vpcs` -> `allowCrossOrgVpcs`), the API checks test `TestCRDsAcronyms` will fail.
+   - Run this test locally before submitting:
+     ```bash
+     go test ./tests/apichecks/... -run TestCRDsAcronyms
+     ```
+   - If the test fails, you **MUST** add the reported non-standard casing exceptions in alphabetical order to the exceptions file:
+     `tests/apichecks/testdata/exceptions/acronyms.txt`
+7. **Run CI/CD Group Presubmit Tests Locally**:
    - Locate and run the presubmit script under `dev/ci/presubmits/tests-e2e-fixtures-<service_name>` matching the resource's service name (e.g., `dev/ci/presubmits/tests-e2e-fixtures-container`) to ensure everything reconciles cleanly:
      ```bash
      dev/ci/presubmits/tests-e2e-fixtures-<service_name>
      ```
-7. **Commit All Updated Artifacts and Generated Changes**:
+8. **Commit All Updated Artifacts and Generated Changes**:
    - Verify if any generated files (such as `mapper.generated.go`, GitHub Actions YAMLs, CRDs, Go clients, or exceptions) are modified using `git status` or `git diff`. Stage and commit them:
      ```bash
      git add -A
