@@ -27,18 +27,21 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.aiplatform.v1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+    --resource AIPlatformModel:Model \
+    --resource VertexAIFeatureOnlineStore:FeatureOnlineStore \
+    --resource VertexAIPipelineJob:PipelineJob \
     --resource VertexAISpecialistPool:SpecialistPool
-
-# Revert types.generated.go to avoid deleting types of other resources in the same package
-git checkout HEAD -- "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
 
 go run . generate-mapper \
     --service google.cloud.aiplatform.v1 \
-    --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+    --api-version "aiplatform.cnrm.cloud.google.com/v1alpha1" \
+    --api-dir "${REPO_ROOT}/apis/aiplatform/v1alpha1" \
+    --api-go-package-path "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1" \
     --include-skipped-output
 
 cd ${REPO_ROOT}
 
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/aiplatform/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w apis/aiplatform/v1alpha1/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/aiplatform/
