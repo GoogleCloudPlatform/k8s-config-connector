@@ -25,6 +25,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/googleapis/gax-go/v2/apierror"
+	"google.golang.org/api/googleapi"
 	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 	grpcCode "google.golang.org/grpc/codes"
 	grpcStatus "google.golang.org/grpc/status"
@@ -305,6 +306,10 @@ func HasHTTPCode(err error, code int) bool {
 
 	if err == nil {
 		return false
+	}
+	var apiErr *googleapi.Error
+	if errors.As(err, &apiErr) {
+		return apiErr.Code == code
 	}
 	apiError := &apierror.APIError{}
 	if errors.As(err, &apiError) {

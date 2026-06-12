@@ -61,6 +61,13 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterBucketsServerServer(grpcServer, &buckets{MockService: s})
+
+	// Expose the BucketsServer handlers under the canonical "google.storage.v1.Storage" service name
+	// so that standard GCS gRPC clients can communicate with it.
+	bucketsDesc := pb.BucketsServer_ServiceDesc
+	bucketsDesc.ServiceName = "google.storage.v1.Storage"
+	grpcServer.RegisterService(&bucketsDesc, &buckets{MockService: s})
+
 	pb.RegisterObjectsServerServer(grpcServer, &objects{MockService: s})
 	pb.RegisterFoldersServerServer(grpcServer, &folder{MockService: s})
 	pb.RegisterNotificationsServerServer(grpcServer, &notifications{MockService: s})
