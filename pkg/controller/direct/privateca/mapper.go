@@ -15,10 +15,13 @@
 package privateca
 
 import (
+	"time"
+
 	pb "cloud.google.com/go/security/privateca/apiv1/privatecapb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	exprpb "google.golang.org/genproto/googleapis/type/expr"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func Expr_FromProto(mapCtx *direct.MapContext, in *exprpb.Expr) *krm.Expr {
@@ -64,5 +67,39 @@ func X509Extension_ToProto(mapCtx *direct.MapContext, in *krm.X509Extension) *pb
 	out.ObjectId = ObjectID_ToProto(mapCtx, in.ObjectID)
 	out.Critical = direct.ValueOf(in.Critical)
 	out.Value = in.Value
+	return out
+}
+
+func PrivateCACertificateTemplateStatus_FromProto(mapCtx *direct.MapContext, in *pb.CertificateTemplate) *krm.PrivateCACertificateTemplateStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateCACertificateTemplateStatus{}
+	if in.GetCreateTime() != nil {
+		out.CreateTime = direct.LazyPtr(in.GetCreateTime().AsTime().Format(time.RFC3339Nano))
+	}
+	if in.GetUpdateTime() != nil {
+		out.UpdateTime = direct.LazyPtr(in.GetUpdateTime().AsTime().Format(time.RFC3339Nano))
+	}
+	return out
+}
+
+func PrivateCACertificateTemplateStatus_ToProto(mapCtx *direct.MapContext, in *krm.PrivateCACertificateTemplateStatus) *pb.CertificateTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateTemplate{}
+	if in.CreateTime != nil {
+		t, err := time.Parse(time.RFC3339Nano, *in.CreateTime)
+		if err == nil {
+			out.CreateTime = timestamppb.New(t)
+		}
+	}
+	if in.UpdateTime != nil {
+		t, err := time.Parse(time.RFC3339Nano, *in.UpdateTime)
+		if err == nil {
+			out.UpdateTime = timestamppb.New(t)
+		}
+	}
 	return out
 }

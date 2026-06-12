@@ -18,8 +18,128 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.security.privateca.v1
 // resource: PrivateCACAPool:CaPool
+// resource: PrivateCACertificateTemplate:CertificateTemplate
 
 package v1beta1
+
+/* found existing non-generated go type with proto tag "google.cloud.security.privateca.v1.CaPool", skipping
+
+// +kcc:proto=google.cloud.security.privateca.v1.CaPool
+type CAPool struct {
+	// Identifier. The resource name for this
+	//  [CaPool][google.cloud.security.privateca.v1.CaPool] in the format
+	//  `projects/* /locations/* /caPools/*`.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Immutable. The
+	//  [Tier][google.cloud.security.privateca.v1.CaPool.Tier] of this
+	//  [CaPool][google.cloud.security.privateca.v1.CaPool].
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.tier
+	Tier *string `json:"tier,omitempty"`
+
+	// Optional. The
+	//  [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy]
+	//  to control how
+	//  [Certificates][google.cloud.security.privateca.v1.Certificate] will be
+	//  issued from this [CaPool][google.cloud.security.privateca.v1.CaPool].
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.issuance_policy
+	IssuancePolicy *CAPool_IssuancePolicy `json:"issuancePolicy,omitempty"`
+
+	// Optional. The
+	//  [PublishingOptions][google.cloud.security.privateca.v1.CaPool.PublishingOptions]
+	//  to follow when issuing
+	//  [Certificates][google.cloud.security.privateca.v1.Certificate] from any
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  in this [CaPool][google.cloud.security.privateca.v1.CaPool].
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.publishing_options
+	PublishingOptions *CAPool_PublishingOptions `json:"publishingOptions,omitempty"`
+
+	// Optional. Labels with user-defined metadata.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "CAPool_IssuancePolicy", skipping
+
+// +kcc:proto=google.cloud.security.privateca.v1.CaPool.IssuancePolicy
+type CAPool_IssuancePolicy struct {
+	// Optional. If any
+	//  [AllowedKeyType][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.AllowedKeyType]
+	//  is specified, then the certificate request's public key must match one of
+	//  the key types listed here. Otherwise, any key may be used.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.allowed_key_types
+	AllowedKeyTypes []CAPool_IssuancePolicy_AllowedKeyType `json:"allowedKeyTypes,omitempty"`
+
+	// Optional. The duration to backdate all certificates issued from this
+	//  [CaPool][google.cloud.security.privateca.v1.CaPool]. If not set, the
+	//  certificates will be issued with a not_before_time of the issuance time
+	//  (i.e. the current time). If set, the certificates will be issued with a
+	//  not_before_time of the issuance time minus the backdate_duration. The
+	//  not_after_time will be adjusted to preserve the requested lifetime. The
+	//  backdate_duration must be less than or equal to 48 hours.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.backdate_duration
+	BackdateDuration *string `json:"backdateDuration,omitempty"`
+
+	// Optional. The maximum lifetime allowed for issued
+	//  [Certificates][google.cloud.security.privateca.v1.Certificate]. Note that
+	//  if the issuing
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  expires before a
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] resource's
+	//  requested maximum_lifetime, the effective lifetime will be explicitly
+	//  truncated to match it.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.maximum_lifetime
+	MaximumLifetime *string `json:"maximumLifetime,omitempty"`
+
+	// Optional. If specified, then only methods allowed in the
+	//  [IssuanceModes][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.IssuanceModes]
+	//  may be used to issue
+	//  [Certificates][google.cloud.security.privateca.v1.Certificate].
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.allowed_issuance_modes
+	AllowedIssuanceModes *CAPool_IssuancePolicy_IssuanceModes `json:"allowedIssuanceModes,omitempty"`
+
+	// Optional. A set of X.509 values that will be applied to all certificates
+	//  issued through this [CaPool][google.cloud.security.privateca.v1.CaPool].
+	//  If a certificate request includes conflicting values for the same
+	//  properties, they will be overwritten by the values defined here. If a
+	//  certificate request uses a
+	//  [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
+	//  that defines conflicting
+	//  [predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values]
+	//  for the same properties, the certificate issuance request will fail.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values
+	BaselineValues *X509Parameters `json:"baselineValues,omitempty"`
+
+	// Optional. Describes constraints on identities that may appear in
+	//  [Certificates][google.cloud.security.privateca.v1.Certificate] issued
+	//  through this [CaPool][google.cloud.security.privateca.v1.CaPool]. If this
+	//  is omitted, then this [CaPool][google.cloud.security.privateca.v1.CaPool]
+	//  will not add restrictions on a certificate's identity.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.identity_constraints
+	IdentityConstraints *CertificateIdentityConstraints `json:"identityConstraints,omitempty"`
+
+	// Optional. Describes the set of X.509 extensions that may appear in a
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] issued
+	//  through this [CaPool][google.cloud.security.privateca.v1.CaPool]. If a
+	//  certificate request sets extensions that don't appear in the
+	//  [passthrough_extensions][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.passthrough_extensions],
+	//  those extensions will be dropped. If a certificate request uses a
+	//  [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
+	//  with
+	//  [predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values]
+	//  that don't appear here, the certificate issuance request will fail. If
+	//  this is omitted, then this
+	//  [CaPool][google.cloud.security.privateca.v1.CaPool] will not add
+	//  restrictions on a certificate's X.509 extensions. These constraints do
+	//  not apply to X.509 extensions set in this
+	//  [CaPool][google.cloud.security.privateca.v1.CaPool]'s
+	//  [baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values].
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.passthrough_extensions
+	PassthroughExtensions *CertificateExtensionConstraints `json:"passthroughExtensions,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.AllowedKeyType
 type CAPool_IssuancePolicy_AllowedKeyType struct {
@@ -71,6 +191,41 @@ type CAPool_IssuancePolicy_IssuanceModes struct {
 	AllowConfigBasedIssuance *bool `json:"allowConfigBasedIssuance,omitempty"`
 }
 
+/* found existing non-generated go type "CAPool_PublishingOptions", skipping
+
+// +kcc:proto=google.cloud.security.privateca.v1.CaPool.PublishingOptions
+type CAPool_PublishingOptions struct {
+	// Optional. When true, publishes each
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
+	//  CA certificate and includes its URL in the "Authority Information Access"
+	//  X.509 extension in all issued
+	//  [Certificates][google.cloud.security.privateca.v1.Certificate]. If this
+	//  is false, the CA certificate will not be published and the corresponding
+	//  X.509 extension will not be written in issued certificates.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.PublishingOptions.publish_ca_cert
+	PublishCACert *bool `json:"publishCACert,omitempty"`
+
+	// Optional. When true, publishes each
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
+	//  CRL and includes its URL in the "CRL Distribution Points" X.509 extension
+	//  in all issued
+	//  [Certificates][google.cloud.security.privateca.v1.Certificate]. If this
+	//  is false, CRLs will not be published and the corresponding X.509
+	//  extension will not be written in issued certificates. CRLs will expire 7
+	//  days from their creation. However, we will rebuild daily. CRLs are also
+	//  rebuilt shortly after a certificate is revoked.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.PublishingOptions.publish_crl
+	PublishCrl *bool `json:"publishCrl,omitempty"`
+
+	// Optional. Specifies the encoding format of each
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  resource's CA certificate and CRLs. If this is omitted, CA certificates
+	//  and CRLs will be published in PEM.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.PublishingOptions.encoding_format
+	EncodingFormat *string `json:"encodingFormat,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.security.privateca.v1.CertificateExtensionConstraints
 type CertificateExtensionConstraints struct {
 	// Optional. A set of named X.509 extensions. Will be combined with
@@ -86,6 +241,8 @@ type CertificateExtensionConstraints struct {
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateExtensionConstraints.additional_extensions
 	AdditionalExtensions []ObjectID `json:"additionalExtensions,omitempty"`
 }
+
+/* found existing non-generated go type "CertificateIdentityConstraints", skipping
 
 // +kcc:proto=google.cloud.security.privateca.v1.CertificateIdentityConstraints
 type CertificateIdentityConstraints struct {
@@ -113,6 +270,85 @@ type CertificateIdentityConstraints struct {
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateIdentityConstraints.allow_subject_alt_names_passthrough
 	AllowSubjectAltNamesPassthrough *bool `json:"allowSubjectAltNamesPassthrough,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.security.privateca.v1.CertificateTemplate", skipping
+
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateTemplate
+type CertificateTemplate struct {
+	// Identifier. The resource name for this
+	//  [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
+	//  in the format `projects/* /locations/* /certificateTemplates/*`.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateTemplate.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The maximum lifetime allowed for issued
+	//  [Certificates][google.cloud.security.privateca.v1.Certificate] that use
+	//  this template. If the issuing
+	//  [CaPool][google.cloud.security.privateca.v1.CaPool] resource's
+	//  [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy]
+	//  specifies a
+	//  [maximum_lifetime][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.maximum_lifetime]
+	//  the minimum of the two durations will be the maximum lifetime for issued
+	//  [Certificates][google.cloud.security.privateca.v1.Certificate]. Note that
+	//  if the issuing
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  expires before a
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate]'s requested
+	//  maximum_lifetime, the effective lifetime will be explicitly truncated
+	//   to match it.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateTemplate.maximum_lifetime
+	MaximumLifetime *string `json:"maximumLifetime,omitempty"`
+
+	// Optional. A set of X.509 values that will be applied to all issued
+	//  certificates that use this template. If the certificate request includes
+	//  conflicting values for the same properties, they will be overwritten by the
+	//  values defined here. If the issuing
+	//  [CaPool][google.cloud.security.privateca.v1.CaPool]'s
+	//  [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy]
+	//  defines conflicting
+	//  [baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values]
+	//  for the same properties, the certificate issuance request will fail.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateTemplate.predefined_values
+	PredefinedValues *X509Parameters `json:"predefinedValues,omitempty"`
+
+	// Optional. Describes constraints on identities that may be appear in
+	//  [Certificates][google.cloud.security.privateca.v1.Certificate] issued using
+	//  this template. If this is omitted, then this template will not add
+	//  restrictions on a certificate's identity.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateTemplate.identity_constraints
+	IdentityConstraints *CertificateIdentityConstraints `json:"identityConstraints,omitempty"`
+
+	// Optional. Describes the set of X.509 extensions that may appear in a
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] issued using
+	//  this
+	//  [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate].
+	//  If a certificate request sets extensions that don't appear in the
+	//  [passthrough_extensions][google.cloud.security.privateca.v1.CertificateTemplate.passthrough_extensions],
+	//  those extensions will be dropped. If the issuing
+	//  [CaPool][google.cloud.security.privateca.v1.CaPool]'s
+	//  [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy]
+	//  defines
+	//  [baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values]
+	//  that don't appear here, the certificate issuance request will fail. If this
+	//  is omitted, then this template will not add restrictions on a certificate's
+	//  X.509 extensions. These constraints do not apply to X.509 extensions set in
+	//  this
+	//  [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]'s
+	//  [predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values].
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateTemplate.passthrough_extensions
+	PassthroughExtensions *CertificateExtensionConstraints `json:"passthroughExtensions,omitempty"`
+
+	// Optional. A human-readable description of scenarios this template is
+	//  intended for.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateTemplate.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Labels with user-defined metadata.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateTemplate.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.security.privateca.v1.KeyUsage
 type KeyUsage struct {
@@ -204,6 +440,95 @@ type KeyUsage_KeyUsageOptions struct {
 	DecipherOnly *bool `json:"decipherOnly,omitempty"`
 }
 
+/* found existing non-generated go type "ObjectID", skipping
+
+// +kcc:proto=google.cloud.security.privateca.v1.ObjectId
+type ObjectID struct {
+	// Required. The parts of an OID path. The most significant parts of the path
+	//  come first.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.ObjectId.object_id_path
+	ObjectIDPath []int32 `json:"objectIDPath,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "X509Extension", skipping
+
+// +kcc:proto=google.cloud.security.privateca.v1.X509Extension
+type X509Extension struct {
+	// Required. The OID for this X.509 extension.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.object_id
+	ObjectID *ObjectID `json:"objectID,omitempty"`
+
+	// Optional. Indicates whether or not this extension is critical (i.e., if the
+	//  client does not know how to handle this extension, the client should
+	//  consider this to be an error).
+	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.critical
+	Critical *bool `json:"critical,omitempty"`
+
+	// Required. The value of this X.509 extension.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.value
+	Value []byte `json:"value,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "X509Parameters", skipping
+
+// +kcc:proto=google.cloud.security.privateca.v1.X509Parameters
+type X509Parameters struct {
+	// Optional. Indicates the intended use for keys that correspond to a
+	//  certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.key_usage
+	KeyUsage *KeyUsage `json:"keyUsage,omitempty"`
+
+	// Optional. Describes options in this
+	//  [X509Parameters][google.cloud.security.privateca.v1.X509Parameters] that
+	//  are relevant in a CA certificate. If not specified, a default basic
+	//  constraints extension with `is_ca=false` will be added for leaf
+	//  certificates.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.ca_options
+	CAOptions *X509Parameters_CAOptions `json:"caOptions,omitempty"`
+
+	// Optional. Describes the X.509 certificate policy object identifiers, per
+	//  https://tools.ietf.org/html/rfc5280#section-4.2.1.4.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.policy_ids
+	PolicyIds []ObjectID `json:"policyIds,omitempty"`
+
+	// Optional. Describes Online Certificate Status Protocol (OCSP) endpoint
+	//  addresses that appear in the "Authority Information Access" extension in
+	//  the certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.aia_ocsp_servers
+	AiaOcspServers []string `json:"aiaOcspServers,omitempty"`
+
+	// Optional. Describes the X.509 name constraints extension.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.name_constraints
+	NameConstraints *X509Parameters_NameConstraints `json:"nameConstraints,omitempty"`
+
+	// Optional. Describes custom X.509 extensions.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.additional_extensions
+	AdditionalExtensions []X509Extension `json:"additionalExtensions,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "X509Parameters_CAOptions", skipping
+
+// +kcc:proto=google.cloud.security.privateca.v1.X509Parameters.CaOptions
+type X509Parameters_CAOptions struct {
+	// Optional. Refers to the "CA" boolean field in the X.509 extension.
+	//  When this value is missing, the basic constraints extension will be
+	//  omitted from the certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.CaOptions.is_ca
+	IsCA *bool `json:"isCA,omitempty"`
+
+	// Optional. Refers to the path length constraint field in the X.509
+	//  extension. For a CA certificate, this value describes the depth of
+	//  subordinate CA certificates that are allowed. If this value is less than
+	//  0, the request will fail. If this value is missing, the max path length
+	//  will be omitted from the certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.CaOptions.max_issuer_path_length
+	MaxIssuerPathLength *int32 `json:"maxIssuerPathLength,omitempty"`
+}
+*/
+
 /* unreachable type X509Parameters_NameConstraints
 // +kcc:proto=google.cloud.security.privateca.v1.X509Parameters.NameConstraints
 type X509Parameters_NameConstraints struct {
@@ -292,3 +617,21 @@ type Expr struct {
 	// +kcc:proto:field=google.type.Expr.location
 	Location *string `json:"location,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.security.privateca.v1.CertificateTemplate", skipping
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.CertificateTemplate
+type CertificateTemplateObservedState struct {
+	// Output only. The time at which this
+	//  [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
+	//  was created.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateTemplate.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time at which this
+	//  [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
+	//  was updated.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateTemplate.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/

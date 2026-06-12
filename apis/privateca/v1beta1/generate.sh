@@ -27,11 +27,14 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.security.privateca.v1 \
   --api-version privateca.cnrm.cloud.google.com/v1beta1  \
-  --resource PrivateCACAPool:CaPool
+  --include-skipped-output \
+  --resource PrivateCACAPool:CaPool \
+  --resource PrivateCACertificateTemplate:CertificateTemplate
 
 go run . generate-mapper \
   --service google.cloud.security.privateca.v1 \
-  --api-version privateca.cnrm.cloud.google.com/v1beta1
+  --api-version privateca.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 

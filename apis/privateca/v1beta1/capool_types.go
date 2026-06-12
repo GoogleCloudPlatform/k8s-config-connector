@@ -218,7 +218,8 @@ type CAPool_PublishingOptions struct {
 type X509Extension struct {
 	// Required. The OID for this X.509 extension.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.object_id
-	ObjectID *ObjectID `json:"objectId,omitempty"`
+	// +required
+	ObjectID *ObjectID `json:"objectId"`
 
 	// Optional. Indicates whether or not this extension is critical (i.e., if the
 	//  client does not know how to handle this extension, the client should
@@ -228,7 +229,8 @@ type X509Extension struct {
 
 	// Required. The value of this X.509 extension.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.value
-	Value []byte `json:"value,omitempty"`
+	// +required
+	Value []byte `json:"value"`
 }
 
 // +kcc:proto=google.cloud.security.privateca.v1.ObjectId
@@ -236,7 +238,8 @@ type ObjectID struct {
 	// Required. The parts of an OID path. The most significant parts of the path
 	//  come first.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.ObjectId.object_id_path
-	ObjectIDPath []int32 `json:"objectIdPath,omitempty"`
+	// +required
+	ObjectIDPath []int32 `json:"objectIdPath"`
 }
 
 // +kcc:proto=google.cloud.security.privateca.v1.X509Parameters
