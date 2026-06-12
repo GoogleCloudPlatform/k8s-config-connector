@@ -712,7 +712,7 @@ func findLatestVersion(t *testing.T, crd apiextensions.CustomResourceDefinition)
 		versions[version.Name] = true
 	}
 	latest := ""
-	for _, version := range []string{"v1", "v1beta1", "v1alpha1"} {
+	for _, version := range []string{"v1", "v1beta1", "v1alpha2", "v1alpha1"} {
 		if versions[version] {
 			latest = version
 			break

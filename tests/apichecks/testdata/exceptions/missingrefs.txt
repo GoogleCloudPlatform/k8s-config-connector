@@ -84,3 +84,7 @@
 [refs] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.featurestore" should be a reference
 [refs] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.network" should be a reference
 [refs] crd=vertexaitensorboards.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" should be a reference
+[refs] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.bootDisk.kmsKey" should be a reference
+[refs] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.dataDisks[].kmsKey" should be a reference
+[refs] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.networkInterfaces[].network" should be a reference
+[refs] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.networkInterfaces[].subnet" should be a reference
