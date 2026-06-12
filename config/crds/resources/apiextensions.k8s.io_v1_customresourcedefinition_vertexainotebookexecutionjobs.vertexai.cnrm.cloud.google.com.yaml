@@ -10,19 +10,19 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com
+  name: vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com
 spec:
   group: vertexai.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: VertexAIDeploymentResourcePool
-    listKind: VertexAIDeploymentResourcePoolList
-    plural: vertexaideploymentresourcepools
+    kind: VertexAINotebookExecutionJob
+    listKind: VertexAINotebookExecutionJobList
+    plural: vertexainotebookexecutionjobs
     shortNames:
-    - gcpvertexaideploymentresourcepool
-    - gcpvertexaideploymentresourcepools
-    singular: vertexaideploymentresourcepool
+    - gcpvertexainotebookexecutionjob
+    - gcpvertexainotebookexecutionjobs
+    singular: vertexainotebookexecutionjob
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -45,7 +45,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: VertexAIDeploymentResourcePool is the Schema for the VertexAIDeploymentResourcePool
+        description: VertexAINotebookExecutionJob is the Schema for the VertexAINotebookExecutionJob
           API
         properties:
           apiVersion:
@@ -61,80 +61,15 @@ spec:
           metadata:
             type: object
           spec:
-            description: VertexAIDeploymentResourcePoolSpec defines the desired state
-              of VertexAIDeploymentResourcePool
+            description: VertexAINotebookExecutionJobSpec defines the desired state
+              of VertexAINotebookExecutionJob
             properties:
-              dedicatedResources:
-                description: Required. The underlying DedicatedResources that the
-                  DeploymentResourcePool uses.
+              customEnvironmentSpec:
+                description: The custom compute configuration for an execution job.
                 properties:
-                  autoscalingMetricSpecs:
-                    description: |-
-                      Immutable. The metric specifications that overrides a resource
-                       utilization metric (CPU utilization, accelerator's duty cycle, and so on)
-                       target value (default to 60 if not set). At most one entry is allowed per
-                       metric.
-
-                       If
-                       [machine_spec.accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count]
-                       is above 0, the autoscaling will be based on both CPU utilization and
-                       accelerator's duty cycle metrics and scale up when either metrics exceeds
-                       its target value while scale down if both metrics are under their target
-                       value. The default target value is 60 for both metrics.
-
-                       If
-                       [machine_spec.accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count]
-                       is 0, the autoscaling will be based on CPU utilization metric only with
-                       default target value 60 if not explicitly set.
-
-                       For example, in the case of Online Prediction, if you want to override
-                       target CPU utilization to 80, you should set
-                       [autoscaling_metric_specs.metric_name][google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.metric_name]
-                       to `aiplatform.googleapis.com/prediction/online/cpu/utilization` and
-                       [autoscaling_metric_specs.target][google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.target]
-                       to `80`.
-                    items:
-                      properties:
-                        metricName:
-                          description: |-
-                            Required. The resource metric name.
-                             Supported metrics:
-
-                             * For Online Prediction:
-                             * `aiplatform.googleapis.com/prediction/online/accelerator/duty_cycle`
-                             * `aiplatform.googleapis.com/prediction/online/cpu/utilization`
-                             * `aiplatform.googleapis.com/prediction/online/request_count`
-                          type: string
-                        monitoredResourceLabels:
-                          additionalProperties:
-                            type: string
-                          description: Optional. The Cloud Monitoring monitored resource
-                            labels as key value pairs used for metrics filtering.
-                            See Cloud Monitoring Labels https://cloud.google.com/monitoring/api/v3/metric-model#generic-label-info
-                          type: object
-                        target:
-                          description: The target resource utilization in percentage
-                            (1% - 100%) for the given metric; once the real usage
-                            deviates from the target by a certain percentage, the
-                            machine replicas change. The default value is 60 (representing
-                            60%) if not provided.
-                          format: int32
-                          type: integer
-                      type: object
-                    type: array
-                  flexStart:
-                    description: 'Optional. Immutable. If set, use DWS resource to
-                      schedule the deployment workload. reference: (https://cloud.google.com/blog/products/compute/introducing-dynamic-workload-scheduler)'
-                    properties:
-                      maxRuntimeDuration:
-                        description: The max duration of the deployment is max_runtime_duration.
-                          The deployment will be terminated after the duration. The
-                          max_runtime_duration can be set up to 7 days.
-                        type: string
-                    type: object
                   machineSpec:
-                    description: Required. Immutable. The specification of a single
-                      machine being used.
+                    description: The specification of a single machine for the execution
+                      job.
                     properties:
                       acceleratorCount:
                         description: The number of accelerators to attach to the machine.
@@ -211,56 +146,69 @@ spec:
                           "2x2x1").'
                         type: string
                     type: object
-                  maxReplicaCount:
-                    description: |-
-                      Immutable. The maximum number of replicas that may be deployed on when the
-                       traffic against it increases. If the requested value is too large, the
-                       deployment will error, but if deployment succeeds then the ability to scale
-                       to that many replicas is guaranteed (barring service outages). If traffic
-                       increases beyond what its replicas at maximum may handle, a portion of the
-                       traffic will be dropped. If this value is not provided, will use
-                       [min_replica_count][google.cloud.aiplatform.v1beta1.DedicatedResources.min_replica_count]
-                       as the default value.
-
-                       The value of this field impacts the charge against Vertex CPU and GPU
-                       quotas. Specifically, you will be charged for (max_replica_count *
-                       number of cores in the selected machine type) and (max_replica_count *
-                       number of GPUs per replica in the selected machine type).
-                    format: int32
-                    type: integer
-                  minReplicaCount:
-                    description: |-
-                      Required. Immutable. The minimum number of machine replicas that will be
-                       always deployed on. This value must be greater than or equal to 1.
-
-                       If traffic increases, it may dynamically be deployed onto more replicas,
-                       and as traffic decreases, some of these extra replicas may be freed.
-                    format: int32
-                    type: integer
-                  requiredReplicaCount:
-                    description: Optional. Number of required available replicas for
-                      the deployment to succeed. This field is only needed when partial
-                      deployment/mutation is desired. If set, the deploy/mutate operation
-                      will succeed once available_replica_count reaches required_replica_count,
-                      and the rest of the replicas will be retried. If not set, the
-                      default required_replica_count will be min_replica_count.
-                    format: int32
-                    type: integer
-                  spot:
-                    description: Optional. If true, schedule the deployment workload
-                      on [spot VMs](https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms).
-                    type: boolean
+                  networkSpec:
+                    description: The network configuration to use for the execution
+                      job.
+                    properties:
+                      enableInternetAccess:
+                        description: Whether to enable public internet access. Default
+                          false.
+                        type: boolean
+                      network:
+                        description: The full name of the Google Compute Engine [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks)
+                        type: string
+                      subnetwork:
+                        description: 'The name of the subnet that this instance is
+                          in. Format: `projects/{project_id_or_number}/regions/{region}/subnetworks/{subnetwork_id}`'
+                        type: string
+                    type: object
+                  persistentDiskSpec:
+                    description: The specification of a persistent disk to attach
+                      for the execution job.
+                    properties:
+                      diskSizeGB:
+                        description: Size in GB of the disk (default is 100GB).
+                        format: int64
+                        type: integer
+                      diskType:
+                        description: 'Type of the disk (default is "pd-standard").
+                          Valid values: "pd-ssd" (Persistent Disk Solid State Drive)
+                          "pd-standard" (Persistent Disk Hard Disk Drive) "pd-balanced"
+                          (Balanced Persistent Disk) "pd-extreme" (Extreme Persistent
+                          Disk)'
+                        type: string
+                    type: object
                 type: object
-              disableContainerLogging:
-                description: If the DeploymentResourcePool is deployed with custom-trained
-                  Models or AutoML Tabular Models, the container(s) of the DeploymentResourcePool
-                  will send `stderr` and `stdout` streams to Cloud Logging by default.
-                type: boolean
+              dataformRepositorySource:
+                description: The Dataform Repository pointing to a single file notebook
+                  repository.
+                properties:
+                  commitSha:
+                    description: The commit SHA to read repository with. If unset,
+                      the file will be read at HEAD.
+                    type: string
+                  dataformRepositoryResourceName:
+                    description: 'The resource name of the Dataform Repository. Format:
+                      `projects/{project_id}/locations/{location}/repositories/{repository_id}`'
+                    type: string
+                type: object
+              directNotebookSource:
+                description: The contents of an input notebook file.
+                properties:
+                  content:
+                    description: The base64-encoded contents of the input notebook
+                      file.
+                    format: byte
+                    type: string
+                type: object
+              displayName:
+                description: The display name of the NotebookExecutionJob. The name
+                  can be up to 128 characters long and can consist of any UTF-8 characters.
+                type: string
               encryptionSpec:
-                description: Customer-managed encryption key spec for a DeploymentResourcePool.
-                  If set, this DeploymentResourcePool will be secured by this key.
-                  Endpoints and the DeploymentResourcePool they deploy in need to
-                  have the same EncryptionSpec.
+                description: Customer-managed encryption key spec for the notebook
+                  execution job. This field is auto-populated if the [NotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookRuntimeTemplate]
+                  has an encryption spec.
                 properties:
                   kmsKeyRef:
                     description: Required. The Cloud KMS resource identifier of the
@@ -296,8 +244,55 @@ spec:
                 required:
                 - kmsKeyRef
                 type: object
+              executionTimeout:
+                description: Max running time of the execution job in seconds (default
+                  86400s / 24 hrs).
+                type: string
+              executionUser:
+                description: The user email to run the execution as. Only supported
+                  by Colab runtimes.
+                type: string
+              gcsNotebookSource:
+                description: 'The Cloud Storage url pointing to the ipynb file. Format:
+                  `gs://bucket/notebook_file.ipynb`'
+                properties:
+                  generation:
+                    description: The version of the Cloud Storage object to read.
+                      If unset, the current version of the object is read. See https://cloud.google.com/storage/docs/metadata#generation-number.
+                    type: string
+                  uri:
+                    description: 'The Cloud Storage uri pointing to the ipynb file.
+                      Format: `gs://bucket/notebook_file.ipynb`'
+                    type: string
+                type: object
+              gcsOutputURI:
+                description: 'The Cloud Storage location to upload the result to.
+                  Format: `gs://bucket-name`'
+                type: string
+              kernelName:
+                description: The name of the kernel to use during notebook execution.
+                  If unset, the default kernel is used.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  The labels with user-defined metadata to organize NotebookExecutionJobs.
+
+                   Label keys and values can be no longer than 64 characters
+                   (Unicode codepoints), can only contain lowercase letters, numeric
+                   characters, underscores and dashes. International characters are allowed.
+
+                   See https://goo.gl/xmQnxf for more information and examples of labels.
+                   System reserved label keys are prefixed with "aiplatform.googleapis.com/"
+                   and are immutable.
+                type: object
               location:
                 description: The location of this resource.
+                type: string
+              notebookRuntimeTemplateResourceName:
+                description: The NotebookRuntimeTemplate to source compute configuration
+                  from.
                 type: string
               projectRef:
                 description: The project that this resource belongs to.
@@ -332,44 +327,28 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The VertexAIDeploymentResourcePool name. If not given,
+                description: The VertexAINotebookExecutionJob name. If not given,
                   the metadata.name will be used.
                 type: string
-              serviceAccountRef:
-                description: The service account that the DeploymentResourcePool's
-                  container(s) run as.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `email` field of an `IAMServiceAccount` resource.
-                    type: string
-                  name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
+              scheduleResourceName:
+                description: 'The Schedule resource name if this job is triggered
+                  by one. Format: `projects/{project_id}/locations/{location}/schedules/{schedule_id}`'
+                type: string
+              serviceAccount:
+                description: The service account to run the execution as.
+                type: string
+              workbenchRuntime:
+                description: The Workbench runtime configuration to use for the notebook
+                  execution.
                 type: object
+                x-kubernetes-preserve-unknown-fields: true
             required:
             - location
             - projectRef
             type: object
           status:
-            description: VertexAIDeploymentResourcePoolStatus defines the config connector
-              machine state of VertexAIDeploymentResourcePool
+            description: VertexAINotebookExecutionJobStatus defines the config connector
+              machine state of VertexAINotebookExecutionJob
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -398,7 +377,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the VertexAIDeploymentResourcePool
+                description: A unique specifier for the VertexAINotebookExecutionJob
                   resource in GCP.
                 type: string
               observedGeneration:
@@ -414,15 +393,37 @@ spec:
                   observed in GCP.
                 properties:
                   createTime:
-                    description: Output only. Timestamp when this DeploymentResourcePool
+                    description: Output only. Timestamp when this NotebookExecutionJob
                       was created.
                     type: string
-                  satisfiesPzi:
-                    description: Output only. Reserved for future use.
-                    type: boolean
-                  satisfiesPzs:
-                    description: Output only. Reserved for future use.
-                    type: boolean
+                  jobState:
+                    description: Output only. The state of the NotebookExecutionJob.
+                    type: string
+                  name:
+                    description: 'Output only. The resource name of this NotebookExecutionJob.
+                      Format: `projects/{project_id}/locations/{location}/notebookExecutionJobs/{job_id}`'
+                    type: string
+                  status:
+                    description: Output only. Populated when the NotebookExecutionJob
+                      is completed. When there is an error during notebook execution,
+                      the error details are populated.
+                    properties:
+                      code:
+                        description: The status code, which should be an enum value
+                          of [google.rpc.Code][google.rpc.Code].
+                        format: int32
+                        type: integer
+                      message:
+                        description: A developer-facing error message, which should
+                          be in English. Any user-facing error message should be localized
+                          and sent in the [google.rpc.Status.details][google.rpc.Status.details]
+                          field, or localized by the client.
+                        type: string
+                    type: object
+                  updateTime:
+                    description: Output only. Timestamp when this NotebookExecutionJob
+                      was most recently updated.
+                    type: string
                 type: object
             type: object
         required:

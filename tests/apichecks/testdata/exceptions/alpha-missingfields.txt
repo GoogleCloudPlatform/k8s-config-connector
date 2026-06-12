@@ -3008,6 +3008,38 @@
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicEndpointEnabled" is not set in unstructured objects
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.machineSpec.acceleratorCount" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.machineSpec.acceleratorType" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.machineSpec.gpuPartitionSize" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.machineSpec.machineType" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.machineSpec.multihostGpuNodeCount" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.machineSpec.reservationAffinity.key" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.machineSpec.reservationAffinity.reservationAffinityType" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.machineSpec.reservationAffinity.values[]" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.machineSpec.tpuTopology" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.networkSpec.enableInternetAccess" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.networkSpec.network" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.networkSpec.subnetwork" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.persistentDiskSpec.diskSizeGB" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customEnvironmentSpec.persistentDiskSpec.diskType" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataformRepositorySource.commitSha" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataformRepositorySource.dataformRepositoryResourceName" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.directNotebookSource.content" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionTimeout" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionUser" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsNotebookSource.generation" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsNotebookSource.uri" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsOutputURI" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.kernelName" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.notebookRuntimeTemplateResourceName" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.scheduleResourceName" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" is not set in unstructured objects
+[missing_field] crd=vertexainotebookexecutionjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.workbenchRuntime" is not set in unstructured objects
 [missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set

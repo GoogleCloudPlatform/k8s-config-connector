@@ -101,6 +101,12 @@ var (
 		Kind:    reflect.TypeOf(VertexAIIndexEndpoint{}).Name(),
 	}
 
+	VertexAINotebookExecutionJobGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAINotebookExecutionJob{}).Name(),
+	}
+
 	VertexAITensorboardGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

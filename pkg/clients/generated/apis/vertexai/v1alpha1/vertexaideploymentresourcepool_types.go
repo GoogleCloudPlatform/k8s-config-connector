@@ -142,7 +142,7 @@ type DeploymentresourcepoolMachineSpec struct {
 	// +optional
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 
-	/* Immutable. The type of accelerator(s) that may be attached to the machine as per [accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count]. */
+	/* Immutable. The type of accelerator(s) that may be attached to the machine as per [accelerator_count][google.cloud.aiplatform.v1.MachineSpec.accelerator_count]. */
 	// +optional
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 
@@ -171,11 +171,11 @@ type DeploymentresourcepoolMachineSpec struct {
 	See the [list of machine types supported for custom
 	training](https://cloud.google.com/vertex-ai/docs/training/configure-compute#machine-types).
 
-	For [DeployedModel][google.cloud.aiplatform.v1beta1.DeployedModel] this
-	field is optional, and the default value is `n1-standard-2`. For
-	[BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob] or
-	as part of [WorkerPoolSpec][google.cloud.aiplatform.v1beta1.WorkerPoolSpec]
-	this field is required. */
+	For [DeployedModel][google.cloud.aiplatform.v1.DeployedModel] this field is
+	optional, and the default value is `n1-standard-2`. For
+	[BatchPredictionJob][google.cloud.aiplatform.v1.BatchPredictionJob] or as
+	part of [WorkerPoolSpec][google.cloud.aiplatform.v1.WorkerPoolSpec] this
+	field is required. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 

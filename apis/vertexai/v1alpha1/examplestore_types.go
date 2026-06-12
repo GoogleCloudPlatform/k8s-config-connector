@@ -113,3 +113,16 @@ type VertexAIExampleStoreList struct {
 func init() {
 	SchemeBuilder.Register(&VertexAIExampleStore{}, &VertexAIExampleStoreList{})
 }
+
+// Dummy structs to satisfy the generated mapper package dependencies which expect ExampleStore of v1alpha1.
+type ExampleStore struct {
+	Name               *string             `json:"name,omitempty"`
+	DisplayName        *string             `json:"displayName,omitempty"`
+	Description        *string             `json:"description,omitempty"`
+	ExampleStoreConfig *ExampleStoreConfig `json:"exampleStoreConfig,omitempty"`
+}
+
+type ExampleStoreObservedState struct {
+	CreateTime *string `json:"createTime,omitempty"`
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
