@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -47,6 +48,10 @@ type StorageBucketSpec struct {
 	/* The bucket's encryption configuration. */
 	// +kcc:proto:field=google.storage.v1.Bucket.encryption
 	Encryption *StorageBucketEncryption `json:"encryption,omitempty"`
+
+	/* The bucket IP filtering configuration. */
+	// +optional
+	IpFilter *StorageBucketIpFilter `json:"ipFilter,omitempty"`
 
 	/* The bucket's Lifecycle Rules configuration. */
 	// +kcc:proto:field=google.storage.v1.Bucket.lifecycle.rule
@@ -286,4 +291,38 @@ type StorageBucketList struct {
 
 func init() {
 	SchemeBuilder.Register(&StorageBucket{}, &StorageBucketList{})
+}
+
+type StorageBucketIpFilter struct {
+	/* The mode of the IP filter. Valid values are 'Enabled' and 'Disabled'. */
+	Mode string `json:"mode"`
+
+	/* The public network IP address ranges that can access the bucket and its data. */
+	// +optional
+	PublicNetworkSource *StorageBucketIpFilterPublicNetworkSource `json:"publicNetworkSource,omitempty"`
+
+	/* The list of VPC networks that can access the bucket. */
+	// +optional
+	VpcNetworkSources []StorageBucketIpFilterVpcNetworkSources `json:"vpcNetworkSources,omitempty"`
+
+	/* Whether to allow cross-org VPCs in the bucket's IP filter configuration. */
+	// +optional
+	AllowCrossOrgVpcs *bool `json:"allowCrossOrgVpcs,omitempty"`
+
+	/* Whether to allow all service agents to access the bucket regardless of the IP filter configuration. */
+	// +optional
+	AllowAllServiceAgentAccess *bool `json:"allowAllServiceAgentAccess,omitempty"`
+}
+
+type StorageBucketIpFilterPublicNetworkSource struct {
+	/* The list of public IPv4, IPv6 cidr ranges that are allowed to access the bucket. */
+	AllowedIpCidrRanges []string `json:"allowedIpCidrRanges"`
+}
+
+type StorageBucketIpFilterVpcNetworkSources struct {
+	/* The list of public or private IPv4 and IPv6 CIDR ranges that can access the bucket. */
+	AllowedIpCidrRanges []string `json:"allowedIpCidrRanges"`
+
+	/* The VPC network that can access the bucket. */
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef"`
 }

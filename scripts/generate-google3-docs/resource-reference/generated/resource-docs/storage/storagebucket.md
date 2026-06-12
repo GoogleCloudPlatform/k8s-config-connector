@@ -116,6 +116,20 @@ encryption:
     external: string
     name: string
     namespace: string
+ipFilter:
+  allowAllServiceAgentAccess: boolean
+  allowCrossOrgVpcs: boolean
+  mode: string
+  publicNetworkSource:
+    allowedIpCidrRanges:
+    - string
+  vpcNetworkSources:
+  - allowedIpCidrRanges:
+    - string
+    networkRef:
+      external: string
+      name: string
+      namespace: string
 lifecycleRule:
 - action:
     storageClass: string
@@ -371,6 +385,156 @@ website:
         <td>
             <p><code class="apitype">string</code></p>
             <p>The `namespace` of a `KMSCryptoKey` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The bucket IP filtering configuration.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.allowAllServiceAgentAccess</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Whether to allow all service agents to access the bucket regardless of the IP filter configuration.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.allowCrossOrgVpcs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Whether to allow cross-org VPCs in the bucket's IP filter configuration.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.mode</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The mode of the IP filter. Valid values are 'Enabled' and 'Disabled'.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.publicNetworkSource</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The public network IP address ranges that can access the bucket and its data.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.publicNetworkSource.allowedIpCidrRanges</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>The list of public IPv4, IPv6 cidr ranges that are allowed to access the bucket.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.publicNetworkSource.allowedIpCidrRanges[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>The list of VPC networks that can access the bucket.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].allowedIpCidrRanges</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>The list of public or private IPv4 and IPv6 CIDR ranges that can access the bucket.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].allowedIpCidrRanges[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].networkRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The VPC network that can access the bucket.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].networkRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].networkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputeNetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].networkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
