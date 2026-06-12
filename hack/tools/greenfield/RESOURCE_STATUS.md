@@ -68,7 +68,7 @@ This file tracks the progress of new "Direct" resource implementations.
 | ContentWarehouseSynonymSet | contentwarehouse | [#9295](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9295) | - | - | 1 | OPEN |
 | DatabaseMigrationConnectionProfile | datamigration | [#9330](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9330) | - | - | 1 | OPEN |
 | DatabaseMigrationConversionWorkspace | datamigration | [#9299](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9299) | - | - | 1 | MERGED |
-| DatabaseMigrationJob | datamigration | [#8690](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8690) | - | - | 1 | OPEN |
+| DatabaseMigrationJob | datamigration | [#8690](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8690) | - | - | 1 | CLOSED |
 | DatabaseMigrationMigrationJob | datamigration | [#9345](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9345) | - | - | 1 | MERGED |
 | DatabaseMigrationPrivateConnection | datamigration | [#9324](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9324) | - | - | 1 | OPEN |
 | DataformFolder | dataform | [#9051](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9051) | - | - | 1 | OPEN |

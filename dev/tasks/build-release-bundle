@@ -135,7 +135,6 @@ BLOCKED_KINDS=(
     "CloudTasksQueue"
     "InfraManagerDeploymentGroup"
     "DataformFolder"
-    "DatabaseMigrationJob"
     "DataplexDataScan"
     "DataprocSession"
     "DialogflowConversationDataset"
