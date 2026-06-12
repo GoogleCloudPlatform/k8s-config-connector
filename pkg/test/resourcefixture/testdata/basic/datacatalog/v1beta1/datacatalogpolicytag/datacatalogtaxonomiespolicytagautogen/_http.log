@@ -1,0 +1,165 @@
+POST https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "activatedPolicyTypes": [
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "A collection of policy tags",
+  "displayName": "taxonomy_display_name"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activatedPolicyTypes": [
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "A collection of policy tags",
+  "displayName": "taxonomy_display_name",
+  "name": "projects/${projectId}/locations/us/taxonomies/mock-taxonomy-id"
+}
+
+---
+
+GET https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/mock-taxonomy-id?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activatedPolicyTypes": [
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "A collection of policy tags",
+  "displayName": "taxonomy_display_name",
+  "name": "projects/${projectId}/locations/us/taxonomies/mock-taxonomy-id"
+}
+
+---
+
+POST https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/mock-taxonomy-id/policyTags?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "A policy tag normally associated with low security items",
+  "displayName": "Low security"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "A policy tag normally associated with low security items",
+  "displayName": "Low security",
+  "name": "projects/${projectId}/locations/us/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id"
+}
+
+---
+
+GET https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "A policy tag normally associated with low security items",
+  "displayName": "Low security",
+  "name": "projects/${projectId}/locations/us/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id"
+}
+
+---
+
+DELETE https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/mock-taxonomy-id?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activatedPolicyTypes": [
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "A collection of policy tags",
+  "displayName": "taxonomy_display_name",
+  "name": "projects/${projectId}/locations/us/taxonomies/mock-taxonomy-id"
+}
+
+---
+
+DELETE https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/mock-taxonomy-id?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

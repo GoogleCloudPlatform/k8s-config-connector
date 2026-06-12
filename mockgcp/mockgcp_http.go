@@ -288,6 +288,13 @@ func (m *mockRoundTripper) roundTripIAMPolicy(req *http.Request) (*http.Response
 }
 
 func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	if req.Host == "datacatalog.googleapis.com" {
+		req.URL.Path = strings.Replace(req.URL.Path, "/v1beta1/", "/v1/", 1)
+	}
+	if req.Host == "bigquerydatapolicy.googleapis.com" {
+		req.URL.Path = strings.ReplaceAll(req.URL.Path, "/datapolicies/", "/dataPolicies/")
+	}
+
 	klog.Infof("mockgcp request: %v %v", req.Method, req.URL)
 
 	requestPath := req.URL.Path

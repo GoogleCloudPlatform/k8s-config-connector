@@ -36,6 +36,7 @@ import (
 type DataCatalogV1 struct {
 	*MockService
 	pb.UnimplementedDataCatalogServer
+	pb.UnimplementedPolicyTagManagerServer
 }
 
 func (s *DataCatalogV1) GetEntry(ctx context.Context, req *pb.GetEntryRequest) (*pb.Entry, error) {

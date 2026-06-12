@@ -1264,6 +1264,10 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "speech.cnrm.cloud.google.com", Kind: "SpeechPhraseSet"}:
 			case schema.GroupKind{Group: "speech.cnrm.cloud.google.com", Kind: "SpeechRecognizer"}:
 
+			case schema.GroupKind{Group: "datacatalog.cnrm.cloud.google.com", Kind: "DataCatalogTaxonomy"}:
+			case schema.GroupKind{Group: "datacatalog.cnrm.cloud.google.com", Kind: "DataCatalogPolicyTag"}:
+			case schema.GroupKind{Group: "bigquerydatapolicy.cnrm.cloud.google.com", Kind: "BigQueryDataPolicy"}:
+
 			default:
 				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), testKey)
 			}

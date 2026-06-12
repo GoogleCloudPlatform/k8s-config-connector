@@ -75,6 +75,9 @@ func (r *PolicyTagRef) NormalizedExternal(ctx context.Context, reader client.Rea
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
 	if actualExternalRef == "" {
+		actualExternalRef, _, _ = unstructured.NestedString(u.Object, "status", "name")
+	}
+	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
 	r.External = actualExternalRef

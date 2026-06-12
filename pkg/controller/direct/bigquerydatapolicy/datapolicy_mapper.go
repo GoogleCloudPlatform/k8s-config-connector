@@ -73,7 +73,9 @@ func DataMaskingPolicy_FromProto(mapCtx *direct.MapContext, in *pb.DataMaskingPo
 		return nil
 	}
 	out := &krmv1alpha1.DataMaskingPolicy{}
-	out.PredefinedExpression = direct.Enum_FromProto(mapCtx, in.GetPredefinedExpression())
+	if _, ok := in.GetMaskingExpression().(*pb.DataMaskingPolicy_PredefinedExpression_); ok {
+		out.PredefinedExpression = direct.ZeroBasedEnum_FromProto(mapCtx, in.GetPredefinedExpression())
+	}
 	return out
 }
 func DataMaskingPolicy_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataMaskingPolicy) *pb.DataMaskingPolicy {
@@ -81,12 +83,13 @@ func DataMaskingPolicy_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataMa
 		return nil
 	}
 	out := &pb.DataMaskingPolicy{}
-	if oneof := DataMaskingPolicy_PredefinedExpression_ToProto(mapCtx, in.PredefinedExpression); oneof != nil {
-		out.MaskingExpression = oneof
+	if in.PredefinedExpression != nil {
+		out.MaskingExpression = &pb.DataMaskingPolicy_PredefinedExpression_{
+			PredefinedExpression: direct.Enum_ToProto[pb.DataMaskingPolicy_PredefinedExpression](mapCtx, in.PredefinedExpression),
+		}
 	}
 	return out
 }
-
 func DataMaskingPolicy_PredefinedExpression_ToProto(mapCtx *direct.MapContext, in *string) *pb.DataMaskingPolicy_PredefinedExpression_ {
 	if in == nil {
 		return nil

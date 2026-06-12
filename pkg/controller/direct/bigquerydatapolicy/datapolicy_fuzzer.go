@@ -36,6 +36,7 @@ func bigQueryDataPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".data_policy_type")
 	f.SpecFields.Insert(".data_policy_id") // KRM resourceID
 	f.SpecFields.Insert(".policy_tag")
+	f.SpecFields.Insert(".data_masking_policy")
 	f.SpecFields.Insert(".data_masking_policy.predefined_expression")
 
 	f.StatusFields.Insert(".name")
