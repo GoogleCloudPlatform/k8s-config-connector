@@ -51,9 +51,12 @@ Content-Type: application/json
   },
   "location": "US",
   "name": "storagebucket-sample-${uniqueId}",
+  "softDeletePolicy": {
+    "retentionDurationSeconds": "604800"
+  },
   "storageClass": "STANDARD",
   "versioning": {
-    "enabled": false
+    "enabled": true
   }
 }
 
@@ -110,7 +113,7 @@ Vary: X-Origin
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
   "versioning": {
-    "enabled": false
+    "enabled": true
   }
 }
 
@@ -170,7 +173,7 @@ Vary: X-Origin
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
   "versioning": {
-    "enabled": false
+    "enabled": true
   }
 }
 
@@ -190,7 +193,7 @@ Content-Type: application/json
     "rule": []
   },
   "versioning": {
-    "enabled": true
+    "enabled": false
   }
 }
 
@@ -312,7 +315,7 @@ Vary: X-Origin
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
   "versioning": {
-    "enabled": true
+    "enabled": false
   }
 }
 
@@ -361,7 +364,7 @@ Vary: X-Origin
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
   "versioning": {
-    "enabled": true
+    "enabled": false
   }
 }
 

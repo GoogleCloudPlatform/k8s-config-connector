@@ -51,9 +51,12 @@ Content-Type: application/json
   },
   "location": "US",
   "name": "storagebucket-sample-${uniqueId}",
+  "softDeletePolicy": {
+    "retentionDurationSeconds": "604800"
+  },
   "storageClass": "STANDARD",
   "versioning": {
-    "enabled": false
+    "enabled": true
   }
 }
 
@@ -110,7 +113,7 @@ Vary: X-Origin
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
   "versioning": {
-    "enabled": false
+    "enabled": true
   }
 }
 
@@ -170,7 +173,7 @@ Vary: X-Origin
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
   "versioning": {
-    "enabled": false
+    "enabled": true
   }
 }
 
@@ -186,11 +189,8 @@ Content-Type: application/json
     "managed-by-cnrm": "true",
     "newkey": "newval"
   },
-  "lifecycle": {
-    "rule": []
-  },
   "versioning": {
-    "enabled": true
+    "enabled": false
   }
 }
 
@@ -294,6 +294,18 @@ Vary: X-Origin
     "managed-by-cnrm": "true",
     "newkey": "newval"
   },
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {
+          "type": "Delete"
+        },
+        "condition": {
+          "age": 7
+        }
+      }
+    ]
+  },
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "2",
@@ -312,7 +324,7 @@ Vary: X-Origin
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
   "versioning": {
-    "enabled": true
+    "enabled": false
   }
 }
 
@@ -346,6 +358,18 @@ Vary: X-Origin
     "managed-by-cnrm": "true",
     "newkey": "newval"
   },
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {
+          "type": "Delete"
+        },
+        "condition": {
+          "age": 7
+        }
+      }
+    ]
+  },
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "2",
@@ -361,7 +385,7 @@ Vary: X-Origin
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
   "versioning": {
-    "enabled": true
+    "enabled": false
   }
 }
 
