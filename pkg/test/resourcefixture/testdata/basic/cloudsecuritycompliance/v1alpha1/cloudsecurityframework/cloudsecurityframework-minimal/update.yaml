@@ -1,0 +1,10 @@
+apiVersion: cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1
+kind: CloudSecurityFramework
+metadata:
+  name: cloudsecurityframework-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${PROJECT_ID}
+  location: global
+  displayName: "Minimal Framework Updated"
+  description: "A minimal framework for E2E testing updated"

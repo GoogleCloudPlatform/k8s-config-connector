@@ -1,0 +1,16 @@
+apiVersion: cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1
+kind: CloudSecurityFramework
+metadata:
+  name: cloudsecurityframework-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${PROJECT_ID}
+  location: global
+  displayName: "Maximal Framework"
+  description: "A maximal framework for E2E testing"
+  category:
+    - "CIS"
+    - "NIST"
+  labels:
+    env: "test"
+    team: "sec"
