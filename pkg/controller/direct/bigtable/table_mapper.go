@@ -42,8 +42,8 @@ func BigtableTableSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table
 	}
 
 	// Note: KRM-based ChangeStreamRetention is a single field, but the proto-based ChangeStreamConfig is a struct.
-	if changeStreamConfig := ChangeStreamConfig_v1beta1_FromProto(mapCtx, in.GetChangeStreamConfig()); changeStreamConfig != nil {
-		out.ChangeStreamRetention = changeStreamConfig.RetentionPeriod
+	if in.GetChangeStreamConfig() != nil {
+		out.ChangeStreamRetention = direct.Duration_FromProto(mapCtx, in.GetChangeStreamConfig().GetRetentionPeriod())
 	}
 
 	// Note: KRM-based DeletionProtection is a string, but the proto-based DeletionProtection is a bool.

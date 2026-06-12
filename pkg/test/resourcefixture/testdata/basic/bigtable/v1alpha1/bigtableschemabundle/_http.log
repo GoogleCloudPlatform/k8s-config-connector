@@ -1,0 +1,500 @@
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
+
+{
+  "clusters": {
+    "cluster-1": {
+      "defaultStorageType": "SSD",
+      "encryptionConfig": {},
+      "location": "projects/${projectId}/locations/us-central1-b",
+      "serveNodes": 1
+    }
+  },
+  "instance": {
+    "displayName": "Bigtable Instance Dep",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "type": "PRODUCTION"
+  },
+  "instanceId": "bigtable-dep-${uniqueId}",
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "originalRequest": {
+      "clusters": {
+        "cluster-1": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-central1-b",
+          "serveNodes": 1
+        }
+      },
+      "instance": {
+        "displayName": "Bigtable Instance Dep",
+        "labels": {
+          "cnrm-test": "true",
+          "managed-by-cnrm": "true"
+        },
+        "type": "PRODUCTION"
+      },
+      "instanceId": "bigtable-dep-${uniqueId}",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "clusters": {
+        "cluster-1": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-central1-b",
+          "serveNodes": 1
+        }
+      },
+      "instance": {
+        "displayName": "Bigtable Instance Dep",
+        "labels": {
+          "cnrm-test": "true",
+          "managed-by-cnrm": "true"
+        },
+        "type": "PRODUCTION"
+      },
+      "instanceId": "bigtable-dep-${uniqueId}",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-central1-b/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
+    "displayName": "Bigtable Instance Dep",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}",
+    "state": "READY",
+    "type": "PRODUCTION"
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "Bigtable Instance Dep",
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}",
+      "state": "READY",
+      "type": "PRODUCTION"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/bigtable-dep-${uniqueId}"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-b",
+      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster-1",
+      "serveNodes": 1,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "Bigtable Instance Dep",
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}",
+      "state": "READY",
+      "type": "PRODUCTION"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/bigtable-dep-${uniqueId}"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-b",
+      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster-1",
+      "serveNodes": 1,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+error: rpc error: code = NotFound desc = Not found: projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/CreateTable
+
+{
+  "parent": "projects/${projectId}/instances/bigtable-dep-${uniqueId}",
+  "table": {
+    "columnFamilies": {
+      "family1": {
+        "gcRule": {}
+      }
+    }
+  },
+  "tableId": "bigtabletable-dep-${uniqueId}"
+}
+
+OK
+
+{
+  "columnFamilies": {
+    "family1": {
+      "gcRule": {},
+      "valueType": {}
+    }
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "columnFamilies": {
+    "family1": {}
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "columnFamilies": {
+    "family1": {}
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetSchemaBundle
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}/schemaBundles/bigtableschemabundle-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = schemaBundle "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}/schemaBundles/bigtableschemabundle-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/CreateSchemaBundle
+
+{
+  "parent": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
+  "schemaBundle": {
+    "protoSchema": {
+      "protoDescriptors": "dGVzdCBkZXNjcmlwdG9ycw=="
+    }
+  },
+  "schemaBundleId": "bigtableschemabundle-${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.SchemaBundle",
+    "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}/schemaBundles/bigtableschemabundle-${uniqueId}",
+    "protoSchema": {
+      "protoDescriptors": "dGVzdCBkZXNjcmlwdG9ycw=="
+    }
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetSchemaBundle
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}/schemaBundles/bigtableschemabundle-${uniqueId}"
+}
+
+OK
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}/schemaBundles/bigtableschemabundle-${uniqueId}",
+  "protoSchema": {
+    "protoDescriptors": "dGVzdCBkZXNjcmlwdG9ycw=="
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetSchemaBundle
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}/schemaBundles/bigtableschemabundle-${uniqueId}"
+}
+
+OK
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}/schemaBundles/bigtableschemabundle-${uniqueId}",
+  "protoSchema": {
+    "protoDescriptors": "dGVzdCBkZXNjcmlwdG9ycw=="
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetSchemaBundle
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}/schemaBundles/bigtableschemabundle-${uniqueId}"
+}
+
+OK
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}/schemaBundles/bigtableschemabundle-${uniqueId}",
+  "protoSchema": {
+    "protoDescriptors": "dGVzdCBkZXNjcmlwdG9ycw=="
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetSchemaBundle
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}/schemaBundles/bigtableschemabundle-${uniqueId}"
+}
+
+OK
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}/schemaBundles/bigtableschemabundle-${uniqueId}",
+  "protoSchema": {
+    "protoDescriptors": "dGVzdCBkZXNjcmlwdG9ycw=="
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteSchemaBundle
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}/schemaBundles/bigtableschemabundle-${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "columnFamilies": {
+    "family1": {}
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "Bigtable Instance Dep",
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}",
+      "state": "READY",
+      "type": "PRODUCTION"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/bigtable-dep-${uniqueId}"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-b",
+      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster-1",
+      "serveNodes": 1,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteInstance
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}"
+}
+
+OK
+
+{}
