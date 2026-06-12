@@ -31,6 +31,7 @@ import (
 
 type DataplexV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	DataplexDataTaxonomiesGetter
 	DataplexEntryGroupsGetter
 	DataplexEntryTypesGetter
 	DataplexLakesGetter
@@ -41,6 +42,10 @@ type DataplexV1alpha1Interface interface {
 // DataplexV1alpha1Client is used to interact with features provided by the dataplex.cnrm.cloud.google.com group.
 type DataplexV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *DataplexV1alpha1Client) DataplexDataTaxonomies(namespace string) DataplexDataTaxonomyInterface {
+	return newDataplexDataTaxonomies(c, namespace)
 }
 
 func (c *DataplexV1alpha1Client) DataplexEntryGroups(namespace string) DataplexEntryGroupInterface {

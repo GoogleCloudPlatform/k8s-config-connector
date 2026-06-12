@@ -78,6 +78,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                         true,
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}":   true,
 		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":                       true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/dataTaxonomies/{}":                      true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                         true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                          true,
 		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}":                    true,

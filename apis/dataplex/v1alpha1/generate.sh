@@ -31,7 +31,8 @@ go run . generate-types \
     --resource DataplexZone:Zone \
     --resource DataplexTask:Task \
     --resource DataplexEntryGroup:EntryGroup \
-    --resource DataplexEntryType:EntryType
+    --resource DataplexEntryType:EntryType \
+    --resource DataplexDataTaxonomy:DataTaxonomy
 
 go run . generate-mapper \
     --service google.cloud.dataplex.v1 \

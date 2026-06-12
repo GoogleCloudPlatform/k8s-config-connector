@@ -22,6 +22,7 @@
 // resource: DataplexTask:Task
 // resource: DataplexEntryGroup:EntryGroup
 // resource: DataplexEntryType:EntryType
+// resource: DataplexDataTaxonomy:DataTaxonomy
 
 package v1alpha1
 
