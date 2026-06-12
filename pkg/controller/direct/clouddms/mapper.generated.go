@@ -27,10 +27,215 @@ import (
 	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddms/v1alpha1"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	krmdatamigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datamigration/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AlloyDbConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbConnectionProfile) *krmdatamigrationv1alpha1.AlloyDbConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.AlloyDbConnectionProfile{}
+	out.ClusterID = direct.LazyPtr(in.GetClusterId())
+	out.Settings = AlloyDbSettings_FromProto(mapCtx, in.GetSettings())
+	return out
+}
+func AlloyDbConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.AlloyDbConnectionProfile) *pb.AlloyDbConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbConnectionProfile{}
+	out.ClusterId = direct.ValueOf(in.ClusterID)
+	out.Settings = AlloyDbSettings_ToProto(mapCtx, in.Settings)
+	return out
+}
+func AlloyDbConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbConnectionProfile) *krmdatamigrationv1alpha1.AlloyDbConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.AlloyDbConnectionProfileObservedState{}
+	// MISSING: ClusterID
+	out.Settings = AlloyDbSettingsObservedState_FromProto(mapCtx, in.GetSettings())
+	return out
+}
+func AlloyDbConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.AlloyDbConnectionProfileObservedState) *pb.AlloyDbConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbConnectionProfile{}
+	// MISSING: ClusterID
+	out.Settings = AlloyDbSettingsObservedState_ToProto(mapCtx, in.Settings)
+	return out
+}
+func AlloyDbSettings_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings) *krmdatamigrationv1alpha1.AlloyDbSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.AlloyDbSettings{}
+	out.InitialUser = AlloyDbSettings_UserPassword_FromProto(mapCtx, in.GetInitialUser())
+	out.VPCNetwork = direct.LazyPtr(in.GetVpcNetwork())
+	out.Labels = in.Labels
+	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettings_FromProto(mapCtx, in.GetPrimaryInstanceSettings())
+	out.EncryptionConfig = AlloyDbSettings_EncryptionConfig_FromProto(mapCtx, in.GetEncryptionConfig())
+	return out
+}
+func AlloyDbSettings_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.AlloyDbSettings) *pb.AlloyDbSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings{}
+	out.InitialUser = AlloyDbSettings_UserPassword_ToProto(mapCtx, in.InitialUser)
+	out.VpcNetwork = direct.ValueOf(in.VPCNetwork)
+	out.Labels = in.Labels
+	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettings_ToProto(mapCtx, in.PrimaryInstanceSettings)
+	out.EncryptionConfig = AlloyDbSettings_EncryptionConfig_ToProto(mapCtx, in.EncryptionConfig)
+	return out
+}
+func AlloyDbSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings) *krmdatamigrationv1alpha1.AlloyDbSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.AlloyDbSettingsObservedState{}
+	out.InitialUser = AlloyDbSettings_UserPasswordObservedState_FromProto(mapCtx, in.GetInitialUser())
+	// MISSING: VPCNetwork
+	// MISSING: Labels
+	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettingsObservedState_FromProto(mapCtx, in.GetPrimaryInstanceSettings())
+	// MISSING: EncryptionConfig
+	return out
+}
+func AlloyDbSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.AlloyDbSettingsObservedState) *pb.AlloyDbSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings{}
+	out.InitialUser = AlloyDbSettings_UserPasswordObservedState_ToProto(mapCtx, in.InitialUser)
+	// MISSING: VPCNetwork
+	// MISSING: Labels
+	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettingsObservedState_ToProto(mapCtx, in.PrimaryInstanceSettings)
+	// MISSING: EncryptionConfig
+	return out
+}
+func AlloyDbSettings_EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_EncryptionConfig) *krmdatamigrationv1alpha1.AlloyDbSettings_EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.AlloyDbSettings_EncryptionConfig{}
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	return out
+}
+func AlloyDbSettings_EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.AlloyDbSettings_EncryptionConfig) *pb.AlloyDbSettings_EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_EncryptionConfig{}
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettings_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_PrimaryInstanceSettings) *krmdatamigrationv1alpha1.AlloyDbSettings_PrimaryInstanceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.AlloyDbSettings_PrimaryInstanceSettings{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.MachineConfig = AlloyDbSettings_PrimaryInstanceSettings_MachineConfig_FromProto(mapCtx, in.GetMachineConfig())
+	out.DatabaseFlags = in.DatabaseFlags
+	out.Labels = in.Labels
+	// MISSING: PrivateIP
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettings_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.AlloyDbSettings_PrimaryInstanceSettings) *pb.AlloyDbSettings_PrimaryInstanceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_PrimaryInstanceSettings{}
+	out.Id = direct.ValueOf(in.ID)
+	out.MachineConfig = AlloyDbSettings_PrimaryInstanceSettings_MachineConfig_ToProto(mapCtx, in.MachineConfig)
+	out.DatabaseFlags = in.DatabaseFlags
+	out.Labels = in.Labels
+	// MISSING: PrivateIP
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_PrimaryInstanceSettings) *krmdatamigrationv1alpha1.AlloyDbSettings_PrimaryInstanceSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.AlloyDbSettings_PrimaryInstanceSettingsObservedState{}
+	// MISSING: ID
+	// MISSING: MachineConfig
+	// MISSING: DatabaseFlags
+	// MISSING: Labels
+	out.PrivateIP = direct.LazyPtr(in.GetPrivateIp())
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.AlloyDbSettings_PrimaryInstanceSettingsObservedState) *pb.AlloyDbSettings_PrimaryInstanceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_PrimaryInstanceSettings{}
+	// MISSING: ID
+	// MISSING: MachineConfig
+	// MISSING: DatabaseFlags
+	// MISSING: Labels
+	out.PrivateIp = direct.ValueOf(in.PrivateIP)
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettings_MachineConfig_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig) *krmdatamigrationv1alpha1.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig{}
+	out.CPUCount = direct.LazyPtr(in.GetCpuCount())
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettings_MachineConfig_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig) *pb.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig{}
+	out.CpuCount = direct.ValueOf(in.CPUCount)
+	return out
+}
+func AlloyDbSettings_UserPassword_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_UserPassword) *krmdatamigrationv1alpha1.AlloyDbSettings_UserPassword {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.AlloyDbSettings_UserPassword{}
+	out.User = direct.LazyPtr(in.GetUser())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	// MISSING: PasswordSet
+	return out
+}
+func AlloyDbSettings_UserPassword_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.AlloyDbSettings_UserPassword) *pb.AlloyDbSettings_UserPassword {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_UserPassword{}
+	out.User = direct.ValueOf(in.User)
+	out.Password = direct.ValueOf(in.Password)
+	// MISSING: PasswordSet
+	return out
+}
+func AlloyDbSettings_UserPasswordObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_UserPassword) *krmdatamigrationv1alpha1.AlloyDbSettings_UserPasswordObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.AlloyDbSettings_UserPasswordObservedState{}
+	// MISSING: User
+	// MISSING: Password
+	out.PasswordSet = direct.LazyPtr(in.GetPasswordSet())
+	return out
+}
+func AlloyDbSettings_UserPasswordObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.AlloyDbSettings_UserPasswordObservedState) *pb.AlloyDbSettings_UserPassword {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_UserPassword{}
+	// MISSING: User
+	// MISSING: Password
+	out.PasswordSet = direct.ValueOf(in.PasswordSet)
+	return out
+}
 func CloudDMSConversionWorkspaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversionWorkspace) *krm.CloudDMSConversionWorkspaceObservedState {
 	if in == nil {
 		return nil
@@ -193,6 +398,158 @@ func CloudDMSMigrationJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudDM
 	out.PerformanceConfig = MigrationJob_PerformanceConfig_ToProto(mapCtx, in.PerformanceConfig)
 	return out
 }
+func CloudSQLConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlConnectionProfile) *krmdatamigrationv1alpha1.CloudSQLConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.CloudSQLConnectionProfile{}
+	// MISSING: CloudSQLID
+	out.Settings = CloudSQLSettings_FromProto(mapCtx, in.GetSettings())
+	// MISSING: PrivateIP
+	// MISSING: PublicIP
+	// MISSING: AdditionalPublicIP
+	return out
+}
+func CloudSQLConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.CloudSQLConnectionProfile) *pb.CloudSqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlConnectionProfile{}
+	// MISSING: CloudSQLID
+	out.Settings = CloudSQLSettings_ToProto(mapCtx, in.Settings)
+	// MISSING: PrivateIP
+	// MISSING: PublicIP
+	// MISSING: AdditionalPublicIP
+	return out
+}
+func CloudSQLConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlConnectionProfile) *krmdatamigrationv1alpha1.CloudSQLConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.CloudSQLConnectionProfileObservedState{}
+	out.CloudSQLID = direct.LazyPtr(in.GetCloudSqlId())
+	out.Settings = CloudSQLSettingsObservedState_FromProto(mapCtx, in.GetSettings())
+	out.PrivateIP = direct.LazyPtr(in.GetPrivateIp())
+	out.PublicIP = direct.LazyPtr(in.GetPublicIp())
+	out.AdditionalPublicIP = direct.LazyPtr(in.GetAdditionalPublicIp())
+	return out
+}
+func CloudSQLConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.CloudSQLConnectionProfileObservedState) *pb.CloudSqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlConnectionProfile{}
+	out.CloudSqlId = direct.ValueOf(in.CloudSQLID)
+	out.Settings = CloudSQLSettingsObservedState_ToProto(mapCtx, in.Settings)
+	out.PrivateIp = direct.ValueOf(in.PrivateIP)
+	out.PublicIp = direct.ValueOf(in.PublicIP)
+	out.AdditionalPublicIp = direct.ValueOf(in.AdditionalPublicIP)
+	return out
+}
+func CloudSQLSettings_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlSettings) *krmdatamigrationv1alpha1.CloudSQLSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.CloudSQLSettings{}
+	out.DatabaseVersion = direct.Enum_FromProto(mapCtx, in.GetDatabaseVersion())
+	out.UserLabels = in.UserLabels
+	out.Tier = direct.LazyPtr(in.GetTier())
+	out.StorageAutoResizeLimit = direct.Int64Value_FromProto(mapCtx, in.GetStorageAutoResizeLimit())
+	out.ActivationPolicy = direct.Enum_FromProto(mapCtx, in.GetActivationPolicy())
+	out.IPConfig = SQLIPConfig_FromProto(mapCtx, in.GetIpConfig())
+	out.AutoStorageIncrease = direct.BoolValue_FromProto(mapCtx, in.GetAutoStorageIncrease())
+	out.DatabaseFlags = in.DatabaseFlags
+	out.DataDiskType = direct.Enum_FromProto(mapCtx, in.GetDataDiskType())
+	out.DataDiskSizeGB = direct.Int64Value_FromProto(mapCtx, in.GetDataDiskSizeGb())
+	out.Zone = direct.LazyPtr(in.GetZone())
+	out.SecondaryZone = direct.LazyPtr(in.GetSecondaryZone())
+	out.SourceID = direct.LazyPtr(in.GetSourceId())
+	out.RootPassword = direct.LazyPtr(in.GetRootPassword())
+	// MISSING: RootPasswordSet
+	out.Collation = direct.LazyPtr(in.GetCollation())
+	out.CmekKeyName = direct.LazyPtr(in.GetCmekKeyName())
+	out.AvailabilityType = direct.Enum_FromProto(mapCtx, in.GetAvailabilityType())
+	out.Edition = direct.Enum_FromProto(mapCtx, in.GetEdition())
+	return out
+}
+func CloudSQLSettings_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.CloudSQLSettings) *pb.CloudSqlSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlSettings{}
+	out.DatabaseVersion = direct.Enum_ToProto[pb.CloudSqlSettings_SqlDatabaseVersion](mapCtx, in.DatabaseVersion)
+	out.UserLabels = in.UserLabels
+	out.Tier = direct.ValueOf(in.Tier)
+	out.StorageAutoResizeLimit = direct.Int64Value_ToProto(mapCtx, in.StorageAutoResizeLimit)
+	out.ActivationPolicy = direct.Enum_ToProto[pb.CloudSqlSettings_SqlActivationPolicy](mapCtx, in.ActivationPolicy)
+	out.IpConfig = SQLIPConfig_ToProto(mapCtx, in.IPConfig)
+	out.AutoStorageIncrease = direct.BoolValue_ToProto(mapCtx, in.AutoStorageIncrease)
+	out.DatabaseFlags = in.DatabaseFlags
+	out.DataDiskType = direct.Enum_ToProto[pb.CloudSqlSettings_SqlDataDiskType](mapCtx, in.DataDiskType)
+	out.DataDiskSizeGb = direct.Int64Value_ToProto(mapCtx, in.DataDiskSizeGB)
+	out.Zone = direct.ValueOf(in.Zone)
+	out.SecondaryZone = direct.ValueOf(in.SecondaryZone)
+	out.SourceId = direct.ValueOf(in.SourceID)
+	out.RootPassword = direct.ValueOf(in.RootPassword)
+	// MISSING: RootPasswordSet
+	out.Collation = direct.ValueOf(in.Collation)
+	out.CmekKeyName = direct.ValueOf(in.CmekKeyName)
+	out.AvailabilityType = direct.Enum_ToProto[pb.CloudSqlSettings_SqlAvailabilityType](mapCtx, in.AvailabilityType)
+	out.Edition = direct.Enum_ToProto[pb.CloudSqlSettings_Edition](mapCtx, in.Edition)
+	return out
+}
+func CloudSQLSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlSettings) *krmdatamigrationv1alpha1.CloudSQLSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.CloudSQLSettingsObservedState{}
+	// MISSING: DatabaseVersion
+	// MISSING: UserLabels
+	// MISSING: Tier
+	// MISSING: StorageAutoResizeLimit
+	// MISSING: ActivationPolicy
+	// MISSING: IPConfig
+	// MISSING: AutoStorageIncrease
+	// MISSING: DatabaseFlags
+	// MISSING: DataDiskType
+	// MISSING: DataDiskSizeGB
+	// MISSING: Zone
+	// MISSING: SecondaryZone
+	// MISSING: SourceID
+	// MISSING: RootPassword
+	out.RootPasswordSet = direct.LazyPtr(in.GetRootPasswordSet())
+	// MISSING: Collation
+	// MISSING: CmekKeyName
+	// MISSING: AvailabilityType
+	// MISSING: Edition
+	return out
+}
+func CloudSQLSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.CloudSQLSettingsObservedState) *pb.CloudSqlSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlSettings{}
+	// MISSING: DatabaseVersion
+	// MISSING: UserLabels
+	// MISSING: Tier
+	// MISSING: StorageAutoResizeLimit
+	// MISSING: ActivationPolicy
+	// MISSING: IPConfig
+	// MISSING: AutoStorageIncrease
+	// MISSING: DatabaseFlags
+	// MISSING: DataDiskType
+	// MISSING: DataDiskSizeGB
+	// MISSING: Zone
+	// MISSING: SecondaryZone
+	// MISSING: SourceID
+	// MISSING: RootPassword
+	out.RootPasswordSet = direct.ValueOf(in.RootPasswordSet)
+	// MISSING: Collation
+	// MISSING: CmekKeyName
+	// MISSING: AvailabilityType
+	// MISSING: Edition
+	return out
+}
 func ConversionWorkspaceInfo_FromProto(mapCtx *direct.MapContext, in *pb.ConversionWorkspaceInfo) *krm.ConversionWorkspaceInfo {
 	if in == nil {
 		return nil
@@ -229,6 +586,92 @@ func DatabaseEngineInfo_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseEngin
 	out.Version = direct.ValueOf(in.Version)
 	return out
 }
+func DatabaseMigrationConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionProfile) *krmdatamigrationv1alpha1.DatabaseMigrationConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.DatabaseMigrationConnectionProfileObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Mysql = MySQLConnectionProfileObservedState_FromProto(mapCtx, in.GetMysql())
+	out.Postgresql = PostgreSQLConnectionProfileObservedState_FromProto(mapCtx, in.GetPostgresql())
+	out.Oracle = OracleConnectionProfileObservedState_FromProto(mapCtx, in.GetOracle())
+	out.Cloudsql = CloudSQLConnectionProfileObservedState_FromProto(mapCtx, in.GetCloudsql())
+	out.Alloydb = AlloyDbConnectionProfileObservedState_FromProto(mapCtx, in.GetAlloydb())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	return out
+}
+func DatabaseMigrationConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.DatabaseMigrationConnectionProfileObservedState) *pb.ConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectionProfile{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.ConnectionProfile_State](mapCtx, in.State)
+	if oneof := MySQLConnectionProfileObservedState_ToProto(mapCtx, in.Mysql); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Mysql{Mysql: oneof}
+	}
+	if oneof := PostgreSQLConnectionProfileObservedState_ToProto(mapCtx, in.Postgresql); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Postgresql{Postgresql: oneof}
+	}
+	if oneof := OracleConnectionProfileObservedState_ToProto(mapCtx, in.Oracle); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Oracle{Oracle: oneof}
+	}
+	if oneof := CloudSQLConnectionProfileObservedState_ToProto(mapCtx, in.Cloudsql); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Cloudsql{Cloudsql: oneof}
+	}
+	if oneof := AlloyDbConnectionProfileObservedState_ToProto(mapCtx, in.Alloydb); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Alloydb{Alloydb: oneof}
+	}
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	return out
+}
+func DatabaseMigrationConnectionProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionProfile) *krmdatamigrationv1alpha1.DatabaseMigrationConnectionProfileSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.DatabaseMigrationConnectionProfileSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Mysql = MySQLConnectionProfile_FromProto(mapCtx, in.GetMysql())
+	out.Postgresql = PostgreSQLConnectionProfile_FromProto(mapCtx, in.GetPostgresql())
+	out.Oracle = OracleConnectionProfile_FromProto(mapCtx, in.GetOracle())
+	out.Cloudsql = CloudSQLConnectionProfile_FromProto(mapCtx, in.GetCloudsql())
+	out.Alloydb = AlloyDbConnectionProfile_FromProto(mapCtx, in.GetAlloydb())
+	out.Provider = direct.Enum_FromProto(mapCtx, in.GetProvider())
+	return out
+}
+func DatabaseMigrationConnectionProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.DatabaseMigrationConnectionProfileSpec) *pb.ConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectionProfile{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if oneof := MySQLConnectionProfile_ToProto(mapCtx, in.Mysql); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Mysql{Mysql: oneof}
+	}
+	if oneof := PostgreSQLConnectionProfile_ToProto(mapCtx, in.Postgresql); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Postgresql{Postgresql: oneof}
+	}
+	if oneof := OracleConnectionProfile_ToProto(mapCtx, in.Oracle); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Oracle{Oracle: oneof}
+	}
+	if oneof := CloudSQLConnectionProfile_ToProto(mapCtx, in.Cloudsql); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Cloudsql{Cloudsql: oneof}
+	}
+	if oneof := AlloyDbConnectionProfile_ToProto(mapCtx, in.Alloydb); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Alloydb{Alloydb: oneof}
+	}
+	out.Provider = direct.Enum_ToProto[pb.DatabaseProvider](mapCtx, in.Provider)
+	return out
+}
 func DatabaseType_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseType) *krm.DatabaseType {
 	if in == nil {
 		return nil
@@ -246,6 +689,46 @@ func DatabaseType_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseType) *pb.D
 	out.Provider = direct.Enum_ToProto[pb.DatabaseProvider](mapCtx, in.Provider)
 	out.Engine = direct.Enum_ToProto[pb.DatabaseEngine](mapCtx, in.Engine)
 	return out
+}
+func ForwardSSHTunnelConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.ForwardSshTunnelConnectivity) *krmdatamigrationv1alpha1.ForwardSSHTunnelConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.ForwardSSHTunnelConnectivity{}
+	out.Hostname = direct.LazyPtr(in.GetHostname())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	out.PrivateKey = direct.LazyPtr(in.GetPrivateKey())
+	return out
+}
+func ForwardSSHTunnelConnectivity_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.ForwardSSHTunnelConnectivity) *pb.ForwardSshTunnelConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ForwardSshTunnelConnectivity{}
+	out.Hostname = direct.ValueOf(in.Hostname)
+	out.Username = direct.ValueOf(in.Username)
+	out.Port = direct.ValueOf(in.Port)
+	if oneof := ForwardSSHTunnelConnectivity_Password_ToProto(mapCtx, in.Password); oneof != nil {
+		out.AuthenticationMethod = oneof
+	}
+	if oneof := ForwardSSHTunnelConnectivity_PrivateKey_ToProto(mapCtx, in.PrivateKey); oneof != nil {
+		out.AuthenticationMethod = oneof
+	}
+	return out
+}
+func ForwardSSHTunnelConnectivity_Password_ToProto(mapCtx *direct.MapContext, in *string) *pb.ForwardSshTunnelConnectivity_Password {
+	if in == nil {
+		return nil
+	}
+	return &pb.ForwardSshTunnelConnectivity_Password{Password: *in}
+}
+func ForwardSSHTunnelConnectivity_PrivateKey_ToProto(mapCtx *direct.MapContext, in *string) *pb.ForwardSshTunnelConnectivity_PrivateKey {
+	if in == nil {
+		return nil
+	}
+	return &pb.ForwardSshTunnelConnectivity_PrivateKey{PrivateKey: *in}
 }
 func MigrationJob_DumpFlag_FromProto(mapCtx *direct.MapContext, in *pb.MigrationJob_DumpFlag) *krm.MigrationJob_DumpFlag {
 	if in == nil {
@@ -297,6 +780,240 @@ func MigrationJob_PerformanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.M
 	out.DumpParallelLevel = direct.Enum_ToProto[pb.MigrationJob_PerformanceConfig_DumpParallelLevel](mapCtx, in.DumpParallelLevel)
 	return out
 }
+func MySQLConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.MySqlConnectionProfile) *krmdatamigrationv1alpha1.MySQLConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.MySQLConnectionProfile{}
+	out.Host = direct.LazyPtr(in.GetHost())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	// MISSING: PasswordSet
+	out.SSL = SSLConfig_FromProto(mapCtx, in.GetSsl())
+	out.CloudSQLID = direct.LazyPtr(in.GetCloudSqlId())
+	return out
+}
+func MySQLConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.MySQLConnectionProfile) *pb.MySqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MySqlConnectionProfile{}
+	out.Host = direct.ValueOf(in.Host)
+	out.Port = direct.ValueOf(in.Port)
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = direct.ValueOf(in.Password)
+	// MISSING: PasswordSet
+	out.Ssl = SSLConfig_ToProto(mapCtx, in.SSL)
+	out.CloudSqlId = direct.ValueOf(in.CloudSQLID)
+	return out
+}
+func MySQLConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MySqlConnectionProfile) *krmdatamigrationv1alpha1.MySQLConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.MySQLConnectionProfileObservedState{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.LazyPtr(in.GetPasswordSet())
+	out.SSL = SSLConfigObservedState_FromProto(mapCtx, in.GetSsl())
+	// MISSING: CloudSQLID
+	return out
+}
+func MySQLConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.MySQLConnectionProfileObservedState) *pb.MySqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MySqlConnectionProfile{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.ValueOf(in.PasswordSet)
+	out.Ssl = SSLConfigObservedState_ToProto(mapCtx, in.SSL)
+	// MISSING: CloudSQLID
+	return out
+}
+func OracleConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.OracleConnectionProfile) *krmdatamigrationv1alpha1.OracleConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.OracleConnectionProfile{}
+	out.Host = direct.LazyPtr(in.GetHost())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	// MISSING: PasswordSet
+	out.DatabaseService = direct.LazyPtr(in.GetDatabaseService())
+	out.SSL = SSLConfig_FromProto(mapCtx, in.GetSsl())
+	out.StaticServiceIPConnectivity = StaticServiceIPConnectivity_FromProto(mapCtx, in.GetStaticServiceIpConnectivity())
+	out.ForwardSSHConnectivity = ForwardSSHTunnelConnectivity_FromProto(mapCtx, in.GetForwardSshConnectivity())
+	out.PrivateConnectivity = PrivateConnectivity_FromProto(mapCtx, in.GetPrivateConnectivity())
+	return out
+}
+func OracleConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.OracleConnectionProfile) *pb.OracleConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OracleConnectionProfile{}
+	out.Host = direct.ValueOf(in.Host)
+	out.Port = direct.ValueOf(in.Port)
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = direct.ValueOf(in.Password)
+	// MISSING: PasswordSet
+	out.DatabaseService = direct.ValueOf(in.DatabaseService)
+	out.Ssl = SSLConfig_ToProto(mapCtx, in.SSL)
+	if oneof := StaticServiceIPConnectivity_ToProto(mapCtx, in.StaticServiceIPConnectivity); oneof != nil {
+		out.Connectivity = &pb.OracleConnectionProfile_StaticServiceIpConnectivity{StaticServiceIpConnectivity: oneof}
+	}
+	if oneof := ForwardSSHTunnelConnectivity_ToProto(mapCtx, in.ForwardSSHConnectivity); oneof != nil {
+		out.Connectivity = &pb.OracleConnectionProfile_ForwardSshConnectivity{ForwardSshConnectivity: oneof}
+	}
+	if oneof := PrivateConnectivity_ToProto(mapCtx, in.PrivateConnectivity); oneof != nil {
+		out.Connectivity = &pb.OracleConnectionProfile_PrivateConnectivity{PrivateConnectivity: oneof}
+	}
+	return out
+}
+func OracleConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OracleConnectionProfile) *krmdatamigrationv1alpha1.OracleConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.OracleConnectionProfileObservedState{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.LazyPtr(in.GetPasswordSet())
+	// MISSING: DatabaseService
+	out.SSL = SSLConfigObservedState_FromProto(mapCtx, in.GetSsl())
+	// MISSING: StaticServiceIPConnectivity
+	// MISSING: ForwardSSHConnectivity
+	// MISSING: PrivateConnectivity
+	return out
+}
+func OracleConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.OracleConnectionProfileObservedState) *pb.OracleConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OracleConnectionProfile{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.ValueOf(in.PasswordSet)
+	// MISSING: DatabaseService
+	out.Ssl = SSLConfigObservedState_ToProto(mapCtx, in.SSL)
+	// MISSING: StaticServiceIPConnectivity
+	// MISSING: ForwardSSHConnectivity
+	// MISSING: PrivateConnectivity
+	return out
+}
+func PostgreSQLConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.PostgreSqlConnectionProfile) *krmdatamigrationv1alpha1.PostgreSQLConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.PostgreSQLConnectionProfile{}
+	out.Host = direct.LazyPtr(in.GetHost())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	// MISSING: PasswordSet
+	out.SSL = SSLConfig_FromProto(mapCtx, in.GetSsl())
+	out.CloudSQLID = direct.LazyPtr(in.GetCloudSqlId())
+	// MISSING: NetworkArchitecture
+	out.StaticIPConnectivity = StaticIPConnectivity_FromProto(mapCtx, in.GetStaticIpConnectivity())
+	out.PrivateServiceConnectConnectivity = PrivateServiceConnectConnectivity_FromProto(mapCtx, in.GetPrivateServiceConnectConnectivity())
+	return out
+}
+func PostgreSQLConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.PostgreSQLConnectionProfile) *pb.PostgreSqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PostgreSqlConnectionProfile{}
+	out.Host = direct.ValueOf(in.Host)
+	out.Port = direct.ValueOf(in.Port)
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = direct.ValueOf(in.Password)
+	// MISSING: PasswordSet
+	out.Ssl = SSLConfig_ToProto(mapCtx, in.SSL)
+	out.CloudSqlId = direct.ValueOf(in.CloudSQLID)
+	// MISSING: NetworkArchitecture
+	if oneof := StaticIPConnectivity_ToProto(mapCtx, in.StaticIPConnectivity); oneof != nil {
+		out.Connectivity = &pb.PostgreSqlConnectionProfile_StaticIpConnectivity{StaticIpConnectivity: oneof}
+	}
+	if oneof := PrivateServiceConnectConnectivity_ToProto(mapCtx, in.PrivateServiceConnectConnectivity); oneof != nil {
+		out.Connectivity = &pb.PostgreSqlConnectionProfile_PrivateServiceConnectConnectivity{PrivateServiceConnectConnectivity: oneof}
+	}
+	return out
+}
+func PostgreSQLConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PostgreSqlConnectionProfile) *krmdatamigrationv1alpha1.PostgreSQLConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.PostgreSQLConnectionProfileObservedState{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.LazyPtr(in.GetPasswordSet())
+	out.SSL = SSLConfigObservedState_FromProto(mapCtx, in.GetSsl())
+	// MISSING: CloudSQLID
+	out.NetworkArchitecture = direct.Enum_FromProto(mapCtx, in.GetNetworkArchitecture())
+	// MISSING: StaticIPConnectivity
+	// MISSING: PrivateServiceConnectConnectivity
+	return out
+}
+func PostgreSQLConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.PostgreSQLConnectionProfileObservedState) *pb.PostgreSqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PostgreSqlConnectionProfile{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.ValueOf(in.PasswordSet)
+	out.Ssl = SSLConfigObservedState_ToProto(mapCtx, in.SSL)
+	// MISSING: CloudSQLID
+	out.NetworkArchitecture = direct.Enum_ToProto[pb.NetworkArchitecture](mapCtx, in.NetworkArchitecture)
+	// MISSING: StaticIPConnectivity
+	// MISSING: PrivateServiceConnectConnectivity
+	return out
+}
+func PrivateConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnectivity) *krmdatamigrationv1alpha1.PrivateConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.PrivateConnectivity{}
+	out.PrivateConnection = direct.LazyPtr(in.GetPrivateConnection())
+	return out
+}
+func PrivateConnectivity_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.PrivateConnectivity) *pb.PrivateConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateConnectivity{}
+	out.PrivateConnection = direct.ValueOf(in.PrivateConnection)
+	return out
+}
+func PrivateServiceConnectConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.PrivateServiceConnectConnectivity) *krmdatamigrationv1alpha1.PrivateServiceConnectConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.PrivateServiceConnectConnectivity{}
+	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	return out
+}
+func PrivateServiceConnectConnectivity_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.PrivateServiceConnectConnectivity) *pb.PrivateServiceConnectConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateServiceConnectConnectivity{}
+	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
+	return out
+}
 func ReverseSSHConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.ReverseSshConnectivity) *krm.ReverseSSHConnectivity {
 	if in == nil {
 		return nil
@@ -327,6 +1044,100 @@ func ReverseSSHConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.ReverseSS
 	}
 	return out
 }
+func SQLAclEntry_FromProto(mapCtx *direct.MapContext, in *pb.SqlAclEntry) *krmdatamigrationv1alpha1.SQLAclEntry {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.SQLAclEntry{}
+	out.Value = direct.LazyPtr(in.GetValue())
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.TTL = direct.StringDuration_FromProto(mapCtx, in.GetTtl())
+	out.Label = direct.LazyPtr(in.GetLabel())
+	return out
+}
+func SQLAclEntry_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.SQLAclEntry) *pb.SqlAclEntry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SqlAclEntry{}
+	out.Value = direct.ValueOf(in.Value)
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime); oneof != nil {
+		out.Expiration = &pb.SqlAclEntry_ExpireTime{ExpireTime: oneof}
+	}
+	if oneof := direct.StringDuration_ToProto(mapCtx, in.TTL); oneof != nil {
+		out.Expiration = &pb.SqlAclEntry_Ttl{Ttl: oneof}
+	}
+	out.Label = direct.ValueOf(in.Label)
+	return out
+}
+func SQLIPConfig_FromProto(mapCtx *direct.MapContext, in *pb.SqlIpConfig) *krmdatamigrationv1alpha1.SQLIPConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.SQLIPConfig{}
+	out.EnableIPV4 = direct.BoolValue_FromProto(mapCtx, in.GetEnableIpv4())
+	out.PrivateNetwork = direct.LazyPtr(in.GetPrivateNetwork())
+	out.AllocatedIPRange = direct.LazyPtr(in.GetAllocatedIpRange())
+	out.RequireSSL = direct.BoolValue_FromProto(mapCtx, in.GetRequireSsl())
+	out.AuthorizedNetworks = direct.Slice_FromProto(mapCtx, in.AuthorizedNetworks, SQLAclEntry_FromProto)
+	return out
+}
+func SQLIPConfig_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.SQLIPConfig) *pb.SqlIpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SqlIpConfig{}
+	out.EnableIpv4 = direct.BoolValue_ToProto(mapCtx, in.EnableIPV4)
+	out.PrivateNetwork = direct.ValueOf(in.PrivateNetwork)
+	out.AllocatedIpRange = direct.ValueOf(in.AllocatedIPRange)
+	out.RequireSsl = direct.BoolValue_ToProto(mapCtx, in.RequireSSL)
+	out.AuthorizedNetworks = direct.Slice_ToProto(mapCtx, in.AuthorizedNetworks, SQLAclEntry_ToProto)
+	return out
+}
+func SSLConfig_FromProto(mapCtx *direct.MapContext, in *pb.SslConfig) *krmdatamigrationv1alpha1.SSLConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.SSLConfig{}
+	// MISSING: Type
+	out.ClientKey = direct.LazyPtr(in.GetClientKey())
+	out.ClientCertificate = direct.LazyPtr(in.GetClientCertificate())
+	out.CACertificate = direct.LazyPtr(in.GetCaCertificate())
+	return out
+}
+func SSLConfig_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.SSLConfig) *pb.SslConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslConfig{}
+	// MISSING: Type
+	out.ClientKey = direct.ValueOf(in.ClientKey)
+	out.ClientCertificate = direct.ValueOf(in.ClientCertificate)
+	out.CaCertificate = direct.ValueOf(in.CACertificate)
+	return out
+}
+func SSLConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SslConfig) *krmdatamigrationv1alpha1.SSLConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.SSLConfigObservedState{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	// MISSING: ClientKey
+	// MISSING: ClientCertificate
+	// MISSING: CACertificate
+	return out
+}
+func SSLConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.SSLConfigObservedState) *pb.SslConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslConfig{}
+	out.Type = direct.Enum_ToProto[pb.SslConfig_SslType](mapCtx, in.Type)
+	// MISSING: ClientKey
+	// MISSING: ClientCertificate
+	// MISSING: CACertificate
+	return out
+}
 func StaticIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticIpConnectivity) *krm.StaticIPConnectivity {
 	if in == nil {
 		return nil
@@ -339,6 +1150,34 @@ func StaticIPConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.StaticIPCon
 		return nil
 	}
 	out := &pb.StaticIpConnectivity{}
+	return out
+}
+func StaticIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticIpConnectivity) *krmdatamigrationv1alpha1.StaticIPConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.StaticIPConnectivity{}
+	return out
+}
+func StaticIPConnectivity_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.StaticIPConnectivity) *pb.StaticIpConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StaticIpConnectivity{}
+	return out
+}
+func StaticServiceIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticServiceIpConnectivity) *krmdatamigrationv1alpha1.StaticServiceIPConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.StaticServiceIPConnectivity{}
+	return out
+}
+func StaticServiceIPConnectivity_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.StaticServiceIPConnectivity) *pb.StaticServiceIpConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StaticServiceIpConnectivity{}
 	return out
 }
 func VPCPeeringConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeringConnectivity) *krm.VPCPeeringConnectivity {
