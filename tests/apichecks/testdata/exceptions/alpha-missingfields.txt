@@ -2555,23 +2555,7 @@
 [missing_field] crd=tpuvirtualmachines.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=tpuvirtualmachines.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.shieldedInstanceConfig.enableSecureBoot" is not set in unstructured objects
 [missing_field] crd=tpuvirtualmachines.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tags[]" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.activeLearningConfig.maxDataItemCount" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.activeLearningConfig.maxDataItemPercentage" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.activeLearningConfig.sampleConfig.followingBatchSamplePercentage" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.activeLearningConfig.sampleConfig.initialBatchSamplePercentage" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.activeLearningConfig.sampleConfig.sampleStrategy" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.activeLearningConfig.trainingConfig.timeoutTrainingMilliHours" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotationLabels" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.datasetRefs[]" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputs" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputsSchemaURI" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.instructionURI" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.labelerCount" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.specialistPools[]" is not set in unstructured objects
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.autoscalingMetricSpecs[].metricName" is not set in unstructured objects
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.autoscalingMetricSpecs[].monitoredResourceLabels" is not set in unstructured objects

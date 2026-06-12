@@ -52,6 +52,9 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		val, ok := body["name"]
 		if ok {
 			s := val.(string)
+			if strings.HasPrefix(s, "projects/") {
+				r.ExtractIDsFromLinks(s)
+			}
 			tokens := strings.Split(s, "/")
 			// operation name format: operations/{operationId}
 			if len(tokens) == 2 && tokens[0] == "operations" {

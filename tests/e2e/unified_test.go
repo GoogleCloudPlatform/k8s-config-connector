@@ -707,6 +707,15 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 								isReadOnly = true
 							}
 						}
+						if event.Request.Method == "GRPC" {
+							tokens := strings.Split(event.Request.URL, "/")
+							if len(tokens) > 0 {
+								methodName := tokens[len(tokens)-1]
+								if strings.HasPrefix(methodName, "Get") || strings.HasPrefix(methodName, "List") {
+									isReadOnly = true
+								}
+							}
+						}
 						if !isReadOnly {
 							t.Errorf("FAIL: unexpected event during re-reconciliation: %v", event)
 						}

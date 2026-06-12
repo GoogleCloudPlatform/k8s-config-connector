@@ -1,0 +1,409 @@
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "displayName": "a basic vertex AI dataset",
+  "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateDatasetOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateDatasetOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Dataset",
+    "displayName": "a basic vertex AI dataset",
+    "labels": {
+      "aiplatform.googleapis.com/dataset_metadata_schema": "IMAGE"
+    },
+    "metadata": {
+      "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml"
+    },
+    "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+    "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}"
+  }
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "a basic vertex AI dataset",
+  "etag": "abcdef0123A=",
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-${bucketId}"
+  },
+  "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+  "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "a basic vertex AI dataset",
+  "etag": "abcdef0123A=",
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-${bucketId}"
+  },
+  "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+  "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetDataLabelingJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/dataLabelingJobs/vertexaidatalabelingjob-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = dataLabelingJob "projects/${projectNumber}/locations/us-central1/dataLabelingJobs/vertexaidatalabelingjob-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CreateDataLabelingJob
+
+{
+  "dataLabelingJob": {
+    "activeLearningConfig": {
+      "maxDataItemPercentage": 50,
+      "sampleConfig": {
+        "followingBatchSamplePercentage": 5,
+        "initialBatchSamplePercentage": 10,
+        "sampleStrategy": "UNCERTAINTY"
+      },
+      "trainingConfig": {
+        "timeoutTrainingMilliHours": "1000"
+      }
+    },
+    "annotationLabels": {
+      "foo": "bar"
+    },
+    "datasets": [
+      ""
+    ],
+    "displayName": "maximal-datalabelingjob-${uniqueId}",
+    "inputs": {
+      "annotationSpecColorMap": {
+        "color": "#ff0000",
+        "displayName": "red"
+      }
+    },
+    "inputsSchemaUri": "gs://google-cloud-aiplatform/schema/datalabelingjob/inputs/image_classification_1.0.0.yaml",
+    "instructionUri": "gs://my-bucket/instructions.pdf",
+    "labelerCount": 1,
+    "labels": {
+      "baz": "qux"
+    }
+  },
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "activeLearningConfig": {
+    "maxDataItemPercentage": 50,
+    "sampleConfig": {
+      "followingBatchSamplePercentage": 5,
+      "initialBatchSamplePercentage": 10,
+      "sampleStrategy": "UNCERTAINTY"
+    },
+    "trainingConfig": {
+      "timeoutTrainingMilliHours": "1000"
+    }
+  },
+  "annotationLabels": {
+    "foo": "bar"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "datasets": [
+    ""
+  ],
+  "displayName": "maximal-datalabelingjob-${uniqueId}",
+  "inputs": {
+    "annotationSpecColorMap": {
+      "color": "#ff0000",
+      "displayName": "red"
+    }
+  },
+  "inputsSchemaUri": "gs://google-cloud-aiplatform/schema/datalabelingjob/inputs/image_classification_1.0.0.yaml",
+  "instructionUri": "gs://my-bucket/instructions.pdf",
+  "labelerCount": 1,
+  "labels": {
+    "baz": "qux"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/dataLabelingJobs/${dataLabelingJobID}",
+  "state": "JOB_STATE_SUCCEEDED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetDataLabelingJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/dataLabelingJobs/${dataLabelingJobID}"
+}
+
+OK
+
+{
+  "activeLearningConfig": {
+    "maxDataItemPercentage": 50,
+    "sampleConfig": {
+      "followingBatchSamplePercentage": 5,
+      "initialBatchSamplePercentage": 10,
+      "sampleStrategy": "UNCERTAINTY"
+    },
+    "trainingConfig": {
+      "timeoutTrainingMilliHours": "1000"
+    }
+  },
+  "annotationLabels": {
+    "foo": "bar"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "datasets": [
+    ""
+  ],
+  "displayName": "maximal-datalabelingjob-${uniqueId}",
+  "inputs": {
+    "annotationSpecColorMap": {
+      "color": "#ff0000",
+      "displayName": "red"
+    }
+  },
+  "inputsSchemaUri": "gs://google-cloud-aiplatform/schema/datalabelingjob/inputs/image_classification_1.0.0.yaml",
+  "instructionUri": "gs://my-bucket/instructions.pdf",
+  "labelerCount": 1,
+  "labels": {
+    "baz": "qux"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/dataLabelingJobs/${dataLabelingJobID}",
+  "state": "JOB_STATE_SUCCEEDED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetDataLabelingJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/dataLabelingJobs/${dataLabelingJobID}"
+}
+
+OK
+
+{
+  "activeLearningConfig": {
+    "maxDataItemPercentage": 50,
+    "sampleConfig": {
+      "followingBatchSamplePercentage": 5,
+      "initialBatchSamplePercentage": 10,
+      "sampleStrategy": "UNCERTAINTY"
+    },
+    "trainingConfig": {
+      "timeoutTrainingMilliHours": "1000"
+    }
+  },
+  "annotationLabels": {
+    "foo": "bar"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "datasets": [
+    ""
+  ],
+  "displayName": "maximal-datalabelingjob-${uniqueId}",
+  "inputs": {
+    "annotationSpecColorMap": {
+      "color": "#ff0000",
+      "displayName": "red"
+    }
+  },
+  "inputsSchemaUri": "gs://google-cloud-aiplatform/schema/datalabelingjob/inputs/image_classification_1.0.0.yaml",
+  "instructionUri": "gs://my-bucket/instructions.pdf",
+  "labelerCount": 1,
+  "labels": {
+    "baz": "qux"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/dataLabelingJobs/${dataLabelingJobID}",
+  "state": "JOB_STATE_SUCCEEDED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/DeleteDataLabelingJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/dataLabelingJobs/${dataLabelingJobID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetDataLabelingJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/dataLabelingJobs/${dataLabelingJobID}"
+}
+
+error: rpc error: code = NotFound desc = dataLabelingJob "projects/${projectNumber}/locations/us-central1/dataLabelingJobs/${dataLabelingJobID}" not found
+
+{}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "a basic vertex AI dataset",
+  "etag": "abcdef0123A=",
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-${bucketId}"
+  },
+  "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+  "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
