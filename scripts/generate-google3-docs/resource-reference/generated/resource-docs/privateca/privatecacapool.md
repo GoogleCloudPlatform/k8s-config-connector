@@ -295,7 +295,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.additionalExtensions[].objectId</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -305,7 +305,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.additionalExtensions[].objectId.objectIdPath</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
@@ -315,7 +315,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.additionalExtensions[].objectId.objectIdPath[]</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -325,7 +325,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.additionalExtensions[].value</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -595,7 +595,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.keyUsage.unknownExtendedKeyUsages[].objectIdPath</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
@@ -605,7 +605,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.keyUsage.unknownExtendedKeyUsages[].objectIdPath[]</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -635,7 +635,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.policyIds[].objectIdPath</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
@@ -645,7 +645,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.policyIds[].objectIdPath[]</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -665,7 +665,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.identityConstraints.allowSubjectAltNamesPassthrough</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
@@ -675,7 +675,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.identityConstraints.allowSubjectPassthrough</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
@@ -775,7 +775,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.passthroughExtensions.additionalExtensions[].objectIdPath</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
@@ -785,7 +785,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.passthroughExtensions.additionalExtensions[].objectIdPath[]</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -924,6 +924,8 @@ tier: string
     </tr>
 </tbody>
 </table>
+
+<p>* Field is required when parent field is specified</p>
 
 ### Status
 #### Schema

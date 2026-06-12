@@ -89,13 +89,17 @@ type CertificatetemplateBaseKeyUsage struct {
 }
 
 type CertificatetemplateCaOptions struct {
-	/* Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate. */
+	/* Optional. Refers to the "CA" boolean field in the X.509 extension. When this value is missing, the basic constraints extension will be omitted from the certificate. */
 	// +optional
 	IsCa *bool `json:"isCa,omitempty"`
 
-	/* Optional. Refers to the path length restriction X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the CA certificate. */
+	/* Optional. Refers to the path length constraint field in the X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the certificate. */
 	// +optional
-	MaxIssuerPathLength *int64 `json:"maxIssuerPathLength,omitempty"`
+	MaxIssuerPathLength *int32 `json:"maxIssuerPathLength,omitempty"`
+
+	/* Optional. When true, the "path length constraint" in Basic Constraints extension will be set to 0. if both max_issuer_path_length and zero_max_issuer_path_length are unset, the max path length will be omitted from the CA certificate. */
+	// +optional
+	ZeroMaxIssuerPathLength *bool `json:"zeroMaxIssuerPathLength,omitempty"`
 }
 
 type CertificatetemplateCelExpression struct {
@@ -143,10 +147,10 @@ type CertificatetemplateExtendedKeyUsage struct {
 }
 
 type CertificatetemplateIdentityConstraints struct {
-	/* Required. If this is true, the SubjectAltNames extension may be copied from a certificate request into the signed certificate. Otherwise, the requested SubjectAltNames will be discarded. */
+	/* Required. If this is true, the [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] extension may be copied from a certificate request into the signed certificate. Otherwise, the requested [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] will be discarded. */
 	AllowSubjectAltNamesPassthrough bool `json:"allowSubjectAltNamesPassthrough"`
 
-	/* Required. If this is true, the Subject field may be copied from a certificate request into the signed certificate. Otherwise, the requested Subject will be discarded. */
+	/* Required. If this is true, the [Subject][google.cloud.security.privateca.v1.Subject] field may be copied from a certificate request into the signed certificate. Otherwise, the requested [Subject][google.cloud.security.privateca.v1.Subject] will be discarded. */
 	AllowSubjectPassthrough bool `json:"allowSubjectPassthrough"`
 
 	/* Optional. A CEL expression that may be used to validate the resolved X.509 Subject and/or Subject Alternative Name before a certificate is signed. To see the full allowed syntax and some examples, see https://cloud.google.com/certificate-authority-service/docs/using-cel */
@@ -163,7 +167,7 @@ type CertificatetemplateKeyUsage struct {
 	// +optional
 	ExtendedKeyUsage *CertificatetemplateExtendedKeyUsage `json:"extendedKeyUsage,omitempty"`
 
-	/* Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message. */
+	/* Used to describe extended key usages that are not listed in the [KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1.KeyUsage.ExtendedKeyUsageOptions] message. */
 	// +optional
 	UnknownExtendedKeyUsages []CertificatetemplateUnknownExtendedKeyUsages `json:"unknownExtendedKeyUsages,omitempty"`
 }
@@ -174,11 +178,11 @@ type CertificatetemplateObjectId struct {
 }
 
 type CertificatetemplatePassthroughExtensions struct {
-	/* Optional. A set of ObjectIds identifying custom X.509 extensions. Will be combined with known_extensions to determine the full set of X.509 extensions. */
+	/* Optional. A set of [ObjectIds][google.cloud.security.privateca.v1.ObjectId] identifying custom X.509 extensions. Will be combined with [known_extensions][google.cloud.security.privateca.v1.CertificateExtensionConstraints.known_extensions] to determine the full set of X.509 extensions. */
 	// +optional
 	AdditionalExtensions []CertificatetemplateAdditionalExtensions `json:"additionalExtensions,omitempty"`
 
-	/* Optional. A set of named X.509 extensions. Will be combined with additional_extensions to determine the full set of X.509 extensions. */
+	/* Optional. A set of named X.509 extensions. Will be combined with [additional_extensions][google.cloud.security.privateca.v1.CertificateExtensionConstraints.additional_extensions] to determine the full set of X.509 extensions. */
 	// +optional
 	KnownExtensions []string `json:"knownExtensions,omitempty"`
 }
@@ -197,7 +201,7 @@ type CertificatetemplatePredefinedValues struct {
 	// +optional
 	AiaOcspServers []string `json:"aiaOcspServers,omitempty"`
 
-	/* Optional. Describes options in this X509Parameters that are relevant in a CA certificate. */
+	/* Optional. Describes options in this [X509Parameters][google.cloud.security.privateca.v1.X509Parameters] that are relevant in a CA certificate. If not specified, a default basic constraints extension with `is_ca=false` will be added for leaf certificates. */
 	// +optional
 	CaOptions *CertificatetemplateCaOptions `json:"caOptions,omitempty"`
 
@@ -220,25 +224,25 @@ type PrivateCACertificateTemplateSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Optional. Describes constraints on identities that may be appear in Certificates issued using this template. If this is omitted, then this template will not add restrictions on a certificate's identity. */
+	/* Optional. Describes constraints on identities that may be appear in [Certificates][google.cloud.security.privateca.v1.Certificate] issued using this template. If this is omitted, then this template will not add restrictions on a certificate's identity. */
 	// +optional
 	IdentityConstraints *CertificatetemplateIdentityConstraints `json:"identityConstraints,omitempty"`
 
-	/* Immutable. The location for the resource */
+	/* The location of this resource. */
 	Location string `json:"location"`
 
-	/* Optional. Describes the set of X.509 extensions that may appear in a Certificate issued using this CertificateTemplate. If a certificate request sets extensions that don't appear in the passthrough_extensions, those extensions will be dropped. If the issuing CaPool's IssuancePolicy defines baseline_values that don't appear here, the certificate issuance request will fail. If this is omitted, then this template will not add restrictions on a certificate's X.509 extensions. These constraints do not apply to X.509 extensions set in this CertificateTemplate's predefined_values. */
+	/* Optional. Describes the set of X.509 extensions that may appear in a [Certificate][google.cloud.security.privateca.v1.Certificate] issued using this [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]. If a certificate request sets extensions that don't appear in the [passthrough_extensions][google.cloud.security.privateca.v1.CertificateTemplate.passthrough_extensions], those extensions will be dropped. If the issuing [CaPool][google.cloud.security.privateca.v1.CaPool]'s [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy] defines [baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values] that don't appear here, the certificate issuance request will fail. If this is omitted, then this template will not add restrictions on a certificate's X.509 extensions. These constraints do not apply to X.509 extensions set in this [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]'s [predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values]. */
 	// +optional
 	PassthroughExtensions *CertificatetemplatePassthroughExtensions `json:"passthroughExtensions,omitempty"`
 
-	/* Optional. A set of X.509 values that will be applied to all issued certificates that use this template. If the certificate request includes conflicting values for the same properties, they will be overwritten by the values defined here. If the issuing CaPool's IssuancePolicy defines conflicting baseline_values for the same properties, the certificate issuance request will fail. */
+	/* Optional. A set of X.509 values that will be applied to all issued certificates that use this template. If the certificate request includes conflicting values for the same properties, they will be overwritten by the values defined here. If the issuing [CaPool][google.cloud.security.privateca.v1.CaPool]'s [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy] defines conflicting [baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values] for the same properties, the certificate issuance request will fail. */
 	// +optional
 	PredefinedValues *CertificatetemplatePredefinedValues `json:"predefinedValues,omitempty"`
 
-	/* Immutable. The Project that this resource belongs to. */
+	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The PrivateCACertificateTemplate name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }

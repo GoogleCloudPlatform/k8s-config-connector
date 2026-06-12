@@ -427,7 +427,7 @@ parametermanager.cnrm.cloud.google.com,ParameterManagerParameterVersion,True,Fal
 privateca.cnrm.cloud.google.com,PrivateCACAPool,False,True,False,DCL,True
 privateca.cnrm.cloud.google.com,PrivateCACertificateAuthority,False,True,False,DCL,False
 privateca.cnrm.cloud.google.com,PrivateCACertificate,False,True,False,DCL,False
-privateca.cnrm.cloud.google.com,PrivateCACertificateTemplate,False,True,False,DCL,False
+privateca.cnrm.cloud.google.com,PrivateCACertificateTemplate,False,True,False,DCL,True
 privilegedaccessmanager.cnrm.cloud.google.com,PrivilegedAccessManagerEntitlement,True,True,False,Direct,True
 resourcemanager.cnrm.cloud.google.com,Project,False,True,False,Terraform,True
 pubsublite.cnrm.cloud.google.com,PubSubLiteReservation,False,True,False,Terraform,False

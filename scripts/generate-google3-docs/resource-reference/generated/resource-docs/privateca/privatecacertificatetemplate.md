@@ -88,6 +88,7 @@ predefinedValues:
   caOptions:
     isCa: boolean
     maxIssuerPathLength: integer
+    zeroMaxIssuerPathLength: boolean
   keyUsage:
     baseKeyUsage:
       certSign: boolean
@@ -114,6 +115,7 @@ predefinedValues:
     - integer
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -143,7 +145,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Optional. Describes constraints on identities that may be appear in Certificates issued using this template. If this is omitted, then this template will not add restrictions on a certificate's identity.</p>
+            <p>Optional. Describes constraints on identities that may be appear in [Certificates][google.cloud.security.privateca.v1.Certificate] issued using this template. If this is omitted, then this template will not add restrictions on a certificate's identity.</p>
         </td>
     </tr>
     <tr>
@@ -153,7 +155,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Required. If this is true, the SubjectAltNames extension may be copied from a certificate request into the signed certificate. Otherwise, the requested SubjectAltNames will be discarded.</p>
+            <p>Required. If this is true, the [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] extension may be copied from a certificate request into the signed certificate. Otherwise, the requested [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] will be discarded.</p>
         </td>
     </tr>
     <tr>
@@ -163,7 +165,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Required. If this is true, the Subject field may be copied from a certificate request into the signed certificate. Otherwise, the requested Subject will be discarded.</p>
+            <p>Required. If this is true, the [Subject][google.cloud.security.privateca.v1.Subject] field may be copied from a certificate request into the signed certificate. Otherwise, the requested [Subject][google.cloud.security.privateca.v1.Subject] will be discarded.</p>
         </td>
     </tr>
     <tr>
@@ -223,7 +225,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The location for the resource</p>
+            <p>The location of this resource.</p>
         </td>
     </tr>
     <tr>
@@ -233,7 +235,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Optional. Describes the set of X.509 extensions that may appear in a Certificate issued using this CertificateTemplate. If a certificate request sets extensions that don't appear in the passthrough_extensions, those extensions will be dropped. If the issuing CaPool's IssuancePolicy defines baseline_values that don't appear here, the certificate issuance request will fail. If this is omitted, then this template will not add restrictions on a certificate's X.509 extensions. These constraints do not apply to X.509 extensions set in this CertificateTemplate's predefined_values.</p>
+            <p>Optional. Describes the set of X.509 extensions that may appear in a [Certificate][google.cloud.security.privateca.v1.Certificate] issued using this [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]. If a certificate request sets extensions that don't appear in the [passthrough_extensions][google.cloud.security.privateca.v1.CertificateTemplate.passthrough_extensions], those extensions will be dropped. If the issuing [CaPool][google.cloud.security.privateca.v1.CaPool]'s [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy] defines [baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values] that don't appear here, the certificate issuance request will fail. If this is omitted, then this template will not add restrictions on a certificate's X.509 extensions. These constraints do not apply to X.509 extensions set in this [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]'s [predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values].</p>
         </td>
     </tr>
     <tr>
@@ -243,7 +245,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Optional. A set of ObjectIds identifying custom X.509 extensions. Will be combined with known_extensions to determine the full set of X.509 extensions.</p>
+            <p>Optional. A set of [ObjectIds][google.cloud.security.privateca.v1.ObjectId] identifying custom X.509 extensions. Will be combined with [known_extensions][google.cloud.security.privateca.v1.CertificateExtensionConstraints.known_extensions] to determine the full set of X.509 extensions.</p>
         </td>
     </tr>
     <tr>
@@ -283,7 +285,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Optional. A set of named X.509 extensions. Will be combined with additional_extensions to determine the full set of X.509 extensions.</p>
+            <p>Optional. A set of named X.509 extensions. Will be combined with [additional_extensions][google.cloud.security.privateca.v1.CertificateExtensionConstraints.additional_extensions] to determine the full set of X.509 extensions.</p>
         </td>
     </tr>
     <tr>
@@ -303,7 +305,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Optional. A set of X.509 values that will be applied to all issued certificates that use this template. If the certificate request includes conflicting values for the same properties, they will be overwritten by the values defined here. If the issuing CaPool's IssuancePolicy defines conflicting baseline_values for the same properties, the certificate issuance request will fail.</p>
+            <p>Optional. A set of X.509 values that will be applied to all issued certificates that use this template. If the certificate request includes conflicting values for the same properties, they will be overwritten by the values defined here. If the issuing [CaPool][google.cloud.security.privateca.v1.CaPool]'s [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy] defines conflicting [baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values] for the same properties, the certificate issuance request will fail.</p>
         </td>
     </tr>
     <tr>
@@ -323,7 +325,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>X509Extension</p>
         </td>
     </tr>
     <tr>
@@ -403,7 +405,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Optional. Describes options in this X509Parameters that are relevant in a CA certificate.</p>
+            <p>Optional. Describes options in this [X509Parameters][google.cloud.security.privateca.v1.X509Parameters] that are relevant in a CA certificate. If not specified, a default basic constraints extension with `is_ca=false` will be added for leaf certificates.</p>
         </td>
     </tr>
     <tr>
@@ -413,7 +415,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.</p>
+            <p>Optional. Refers to the "CA" boolean field in the X.509 extension. When this value is missing, the basic constraints extension will be omitted from the certificate.</p>
         </td>
     </tr>
     <tr>
@@ -423,7 +425,17 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Optional. Refers to the path length restriction X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the CA certificate.</p>
+            <p>Optional. Refers to the path length constraint field in the X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the certificate.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>predefinedValues.caOptions.zeroMaxIssuerPathLength</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Optional. When true, the "path length constraint" in Basic Constraints extension will be set to 0. if both max_issuer_path_length and zero_max_issuer_path_length are unset, the max path length will be omitted from the CA certificate.</p>
         </td>
     </tr>
     <tr>
@@ -613,7 +625,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message.</p>
+            <p>Used to describe extended key usages that are not listed in the [KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1.KeyUsage.ExtendedKeyUsageOptions] message.</p>
         </td>
     </tr>
     <tr>
@@ -693,7 +705,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The Project that this resource belongs to.</p>
+            <p>The project that this resource belongs to.</p>
         </td>
     </tr>
     <tr>
@@ -703,9 +715,17 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
         </td>
     </tr>
     <tr>
@@ -715,7 +735,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -725,7 +745,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -735,7 +755,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+            <p>The PrivateCACertificateTemplate name. If not given, the metadata.name will be used.</p>
         </td>
     </tr>
 </tbody>
@@ -768,7 +788,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>

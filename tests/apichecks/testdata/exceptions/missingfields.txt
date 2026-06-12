@@ -3183,6 +3183,7 @@
 [missing_field] crd=privatecacertificates.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.config.x509Config.caOptions.nonCa" is not set in unstructured objects
 [missing_field] crd=privatecacertificates.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.config.x509Config.caOptions.zeroMaxIssuerPathLength" is not set in unstructured objects
 [missing_field] crd=privatecacertificates.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.pemCsr" is not set in unstructured objects
+[missing_field] crd=privatecacertificatetemplates.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.predefinedValues.caOptions.zeroMaxIssuerPathLength" is not set in unstructured objects
 [missing_field] crd=privatecacertificatetemplates.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=projects.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.billingAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
