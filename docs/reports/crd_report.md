@@ -95,7 +95,7 @@
 | contactcenterinsights.cnrm.cloud.google.com   | CCInsightsPhraseMatcher                         | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com   | CCInsightsView                                  | True         | False       | False  | Direct     | True        |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateIssuanceConfig     | True         | False       | False  | Direct     | True        |
-| certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateMapEntry           | True         | True        | False  | Terraform  | False       |
+| certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateMapEntry           | True         | True        | False  | Terraform  | True        |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateMap                | True         | True        | False  | Terraform  | True        |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificate                   | True         | True        | False  | Terraform  | True        |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerDNSAuthorization              | True         | True        | False  | Direct     | True        |
