@@ -65,5 +65,11 @@ var (
 		Kind:    reflect.TypeOf(DatabaseMigrationMigrationJob{}).Name(),
 	}
 
+	DatabaseMigrationPrivateConnectionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DatabaseMigrationPrivateConnection{}).Name(),
+	}
+
 	datamigrationAPIVersion = SchemeGroupVersion.String()
 )

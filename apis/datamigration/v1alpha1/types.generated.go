@@ -19,6 +19,7 @@
 // proto.service: google.cloud.clouddms.v1
 // resource: DatabaseMigrationConversionWorkspace:ConversionWorkspace
 // resource: DatabaseMigrationMigrationJob:MigrationJob
+// resource: DatabaseMigrationPrivateConnection:PrivateConnection
 
 package v1alpha1
 
@@ -213,6 +214,32 @@ type MigrationJob_PerformanceConfig struct {
 	DumpParallelLevel *string `json:"dumpParallelLevel,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.PrivateConnection", skipping
+
+// +kcc:proto=google.cloud.clouddms.v1.PrivateConnection
+type PrivateConnection struct {
+	// The name of the resource.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.name
+	Name *string `json:"name,omitempty"`
+
+	// The resource labels for private connections to use to annotate any related
+	//  underlying resources such as Compute Engine VMs. An object containing a
+	//  list of "key": "value" pairs.
+	//
+	//  Example: `{ "name": "wrench", "mass": "1.3kg", "count": "3" }`.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// The private connection display name.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// VPC peering configuration.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.vpc_peering_config
+	VPCPeeringConfig *VPCPeeringConfig `json:"vpcPeeringConfig,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "ReverseSSHConnectivity", skipping
 
 // +kcc:proto=google.cloud.clouddms.v1.ReverseSshConnectivity
@@ -242,6 +269,21 @@ type ReverseSSHConnectivity struct {
 
 // +kcc:proto=google.cloud.clouddms.v1.StaticIpConnectivity
 type StaticIPConnectivity struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.VpcPeeringConfig", skipping
+
+// +kcc:proto=google.cloud.clouddms.v1.VpcPeeringConfig
+type VPCPeeringConfig struct {
+	// Required. Fully qualified name of the VPC that Database Migration Service
+	//  will peer to.
+	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConfig.vpc_name
+	VPCName *string `json:"vpcName,omitempty"`
+
+	// Required. A free subnet for peering. (CIDR of /29)
+	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConfig.subnet
+	Subnet *string `json:"subnet,omitempty"`
 }
 */
 
@@ -316,5 +358,27 @@ type MigrationJobObservedState struct {
 	//  completed.
 	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.end_time
 	EndTime *string `json:"endTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.PrivateConnection", skipping
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.PrivateConnection
+type PrivateConnectionObservedState struct {
+	// Output only. The create time of the resource.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last update time of the resource.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The state of the private connection.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The error details in case of state FAILED.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.error
+	Error *common.Status `json:"error,omitempty"`
 }
 */
