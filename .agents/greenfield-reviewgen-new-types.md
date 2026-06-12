@@ -70,7 +70,8 @@ You are strictly responsible for reviewing the following files generated or modi
 ## 2. Copyright Year
 *   All new `.go` and `.sh` files must contain a copyright header.
 <!-- TODO: Dynamically determine year -->
-*   The copyright year **must be 2026**. 
+*   The copyright year **must be 2026**.
+*   **Do not modify the copyright year on existing files.**
 
 ## 3. Pointers (Go Types)
 *   For `${resource_name}_types.go`, review the field comments (e.g., Kubebuilder tags indicating `required` or `optional`).

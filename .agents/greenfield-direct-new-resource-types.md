@@ -76,6 +76,7 @@ To ensure stability and reproducibility, this task is pinned to the following re
 2. **Implement Identity**: Use skill `.gemini/skills/kcc-direct-identity-implementer/SKILL.md` with:
    - resource_kind: <Kind>
    - template: <GCP_URL_Template> (e.g. projects/{project}/locations/{location}/<plural>/{<resource>})
+   - **Crucial**: Ensure you also create the corresponding `_identity_test.go` file.
 
 3. **Run local validations**:
    - run `scripts/validate-prereqs.sh`, if the script fails the output will contain agent hints for fixing the errors.
