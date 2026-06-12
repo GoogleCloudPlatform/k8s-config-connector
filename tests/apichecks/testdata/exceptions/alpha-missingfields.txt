@@ -884,23 +884,14 @@
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.port" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.zone" is not set in unstructured objects
-[missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.adminEnabled" is not set in unstructured objects
-[missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerName" is not set in unstructured objects
-[missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.interconnectType" is not set in unstructured objects
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.labelFingerprint" is not set in unstructured objects
-[missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.linkType" is not set in unstructured objects
-[missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.macsec.failOpen" is not set in unstructured objects
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.macsec.preSharedKeys[].name" is not set in unstructured objects
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.macsec.preSharedKeys[].startTime" is not set in unstructured objects
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.macsecEnabled" is not set in unstructured objects
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.nocContactEmail" is not set in unstructured objects
-[missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.remoteLocation" is not set in unstructured objects
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.requestedFeatures[]" is not set in unstructured objects
-[missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.requestedLinkCount" is not set in unstructured objects
 [missing_field] crd=computemachineimages.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computemachineimages.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.guestFlush" is not set in unstructured objects
 [missing_field] crd=computemachineimages.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.machineImageEncryptionKey.kmsKeyName" is not set in unstructured objects

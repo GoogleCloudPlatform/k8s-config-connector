@@ -1,0 +1,17 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeInterconnect
+metadata:
+  name: computeinterconnect-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  customerName: "KCC Test Customer"
+  interconnectType: "DEDICATED"
+  linkType: "LINK_TYPE_ETHERNET_10G_LR"
+  location: "iad-zone1-1"
+  requestedLinkCount: 1
+  adminEnabled: true
+  description: "Test Compute Interconnect"
+  labels:
+    env: test
+    owner: kcc
