@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ package networksecurity
 
 import (
 	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
+	krmnetworksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -247,6 +248,48 @@ func NetworkSecurityClientTLSPolicySpec_ToProto(mapCtx *direct.MapContext, in *k
 	out.ClientCertificate = CertificateProvider_ToProto(mapCtx, in.ClientCertificate)
 	// MISSING: ServerValidationCA
 	// (near miss): "ServerValidationCA" vs "ServerValidationCa"
+	return out
+}
+func NetworkSecurityDnsThreatDetectorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DnsThreatDetector) *krmnetworksecurityv1alpha1.NetworkSecurityDnsThreatDetectorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityDnsThreatDetectorObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func NetworkSecurityDnsThreatDetectorObservedState_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityDnsThreatDetectorObservedState) *pb.DnsThreatDetector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DnsThreatDetector{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func NetworkSecurityDnsThreatDetectorSpec_FromProto(mapCtx *direct.MapContext, in *pb.DnsThreatDetector) *krmnetworksecurityv1alpha1.NetworkSecurityDnsThreatDetectorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityDnsThreatDetectorSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.ExcludedNetworks = NetworkSecurityDnsThreatDetectorSpec_ExcludedNetworks_FromProto(mapCtx, in.ExcludedNetworks)
+	out.Provider = direct.Enum_FromProto(mapCtx, in.GetProvider())
+	return out
+}
+func NetworkSecurityDnsThreatDetectorSpec_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityDnsThreatDetectorSpec) *pb.DnsThreatDetector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DnsThreatDetector{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.ExcludedNetworks = NetworkSecurityDnsThreatDetectorSpec_ExcludedNetworks_ToProto(mapCtx, in.ExcludedNetworks)
+	out.Provider = direct.Enum_ToProto[pb.DnsThreatDetector_Provider](mapCtx, in.Provider)
 	return out
 }
 func ValidationCA_FromProto(mapCtx *direct.MapContext, in *pb.ValidationCA) *krm.ValidationCA {
