@@ -38,10 +38,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
-	registry.RegisterModel(krm.KMSKeyRingGVK, NewKeyRingModel)
+	registry.RegisterModel(krm.KMSKeyRingGVK, NewKeyRingModel, registry.CannotBeDeleted())
 }
 
 func NewKeyRingModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -169,8 +172,28 @@ func (a *keyRingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating KMSKeyRing", "name", a.id)
 
-	// KeyRing is immutable in GCP, no fields can be updated.
+	diffs, err := compareKeyRing(ctx, a.actual, a.desired)
+	if err != nil {
+		return err
+	}
+
+	if diffs.HasDiff() {
+		return fmt.Errorf("KMSKeyRing is immutable and cannot be updated. Detected changes: %v", diffs.Fields)
+	}
+
 	return a.updateStatus(ctx, updateOp, a.actual)
+}
+
+func compareKeyRing(ctx context.Context, actual, desired *kmspb.KeyRing) (*structuredreporting.Diff, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, KMSKeyRingSpec_FromProto, KMSKeyRingSpec_ToProto)
+	if err != nil {
+		return nil, err
+	}
+	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, err
+	}
+	return diffs, nil
 }
 
 // Export implements the Adapter interface.
