@@ -251,6 +251,7 @@ developerconnect.cnrm.cloud.google.com,DevConnectAccountConnector,True,False,Fal
 developerconnect.cnrm.cloud.google.com,DevConnectInsightsConfig,True,False,False,Direct,True
 devicestreaming.cnrm.cloud.google.com,DeviceStreamingSession,True,False,False,Direct,True
 dialogflow.cnrm.cloud.google.com,DialogflowAgent,True,False,False,Terraform,False
+dialogflow.cnrm.cloud.google.com,DialogflowConversationDataset,True,False,False,Direct,True
 dialogflowcx.cnrm.cloud.google.com,DialogflowCXAgent,True,False,False,Terraform,False
 dialogflowcx.cnrm.cloud.google.com,DialogflowCXEntityType,True,False,False,Terraform,False
 dialogflowcx.cnrm.cloud.google.com,DialogflowCXFlow,True,False,False,Terraform,False
