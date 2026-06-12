@@ -3108,7 +3108,7 @@ func (in *ContainerNodePoolSpec) DeepCopyInto(out *ContainerNodePoolSpec) {
 	out.ClusterRef = in.ClusterRef
 	if in.InitialNodeCount != nil {
 		in, out := &in.InitialNodeCount, &out.InitialNodeCount
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Management != nil {
@@ -3138,7 +3138,7 @@ func (in *ContainerNodePoolSpec) DeepCopyInto(out *ContainerNodePoolSpec) {
 	}
 	if in.NodeCount != nil {
 		in, out := &in.NodeCount, &out.NodeCount
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.NodeLocations != nil {
@@ -3318,22 +3318,22 @@ func (in *NodepoolAutoscaling) DeepCopyInto(out *NodepoolAutoscaling) {
 	}
 	if in.MaxNodeCount != nil {
 		in, out := &in.MaxNodeCount, &out.MaxNodeCount
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MinNodeCount != nil {
 		in, out := &in.MinNodeCount, &out.MinNodeCount
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.TotalMaxNodeCount != nil {
 		in, out := &in.TotalMaxNodeCount, &out.TotalMaxNodeCount
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.TotalMinNodeCount != nil {
 		in, out := &in.TotalMinNodeCount, &out.TotalMinNodeCount
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -3758,7 +3758,7 @@ func (in *NodepoolNodeConfig) DeepCopyInto(out *NodepoolNodeConfig) {
 	}
 	if in.DiskSizeGb != nil {
 		in, out := &in.DiskSizeGb, &out.DiskSizeGb
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.DiskType != nil {
@@ -3832,7 +3832,7 @@ func (in *NodepoolNodeConfig) DeepCopyInto(out *NodepoolNodeConfig) {
 	}
 	if in.LocalSsdCount != nil {
 		in, out := &in.LocalSsdCount, &out.LocalSsdCount
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.LoggingVariant != nil {
@@ -4153,12 +4153,12 @@ func (in *NodepoolUpgradeSettings) DeepCopyInto(out *NodepoolUpgradeSettings) {
 	}
 	if in.MaxSurge != nil {
 		in, out := &in.MaxSurge, &out.MaxSurge
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MaxUnavailable != nil {
 		in, out := &in.MaxUnavailable, &out.MaxUnavailable
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Strategy != nil {

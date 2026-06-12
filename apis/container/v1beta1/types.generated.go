@@ -18,6 +18,7 @@
 // krm.version: v1beta1
 // proto.service: google.container.v1
 // resource: ContainerCluster:Cluster
+// resource: ContainerNodePool:NodePool
 
 package v1beta1
 
@@ -70,7 +71,8 @@ type AdditionalIPRangesConfig struct {
 }
 */
 
-/* unreachable type AdditionalNodeNetworkConfig
+/* found existing non-generated go type "AdditionalNodeNetworkConfig", skipping
+
 // +kcc:proto=google.container.v1.AdditionalNodeNetworkConfig
 type AdditionalNodeNetworkConfig struct {
 	// Name of the VPC where the additional interface belongs
@@ -83,7 +85,8 @@ type AdditionalNodeNetworkConfig struct {
 }
 */
 
-/* unreachable type AdditionalPodNetworkConfig
+/* found existing non-generated go type "AdditionalPodNetworkConfig", skipping
+
 // +kcc:proto=google.container.v1.AdditionalPodNetworkConfig
 type AdditionalPodNetworkConfig struct {
 	// Name of the subnetwork where the additional pod network belongs.
@@ -2697,7 +2700,8 @@ type NodeManagement struct {
 }
 */
 
-/* unreachable type NodeNetworkConfig
+/* found existing non-generated go type "NodeNetworkConfig", skipping
+
 // +kcc:proto=google.container.v1.NodeNetworkConfig
 type NodeNetworkConfig struct {
 	// Input only. Whether to create a new range for pod IPs in this node pool.
@@ -2790,7 +2794,8 @@ type NodeNetworkConfig_NetworkPerformanceConfig struct {
 }
 */
 
-/* unreachable type NodePool
+/* found existing non-generated go type with proto tag "google.container.v1.NodePool", skipping
+
 // +kcc:proto=google.container.v1.NodePool
 type NodePool struct {
 	// The name of the node pool.
@@ -2875,7 +2880,8 @@ type NodePool struct {
 }
 */
 
-/* unreachable type NodePool_PlacementPolicy
+/* found existing non-generated go type "NodePool_PlacementPolicy", skipping
+
 // +kcc:proto=google.container.v1.NodePool.PlacementPolicy
 type NodePool_PlacementPolicy struct {
 	// The type of placement.
@@ -2994,7 +3000,8 @@ type NodePoolAutoConfig struct {
 }
 */
 
-/* unreachable type NodePoolAutoscaling
+/* found existing non-generated go type "NodePoolAutoscaling", skipping
+
 // +kcc:proto=google.container.v1.NodePoolAutoscaling
 type NodePoolAutoscaling struct {
 	// Is autoscaling enabled for this node pool.
@@ -3686,7 +3693,8 @@ type VirtualNic struct {
 }
 */
 
-/* unreachable type WindowsNodeConfig
+/* found existing non-generated go type "WindowsNodeConfig", skipping
+
 // +kcc:proto=google.container.v1.WindowsNodeConfig
 type WindowsNodeConfig struct {
 	// OSVersion specifies the Windows node config to be used on the node.
@@ -4183,7 +4191,8 @@ type NodeManagementObservedState struct {
 }
 */
 
-/* unreachable type NodeNetworkConfigObservedState
+/* found existing non-generated go type with proto tag "google.container.v1.NodeNetworkConfig", skipping
+
 // +kcc:observedstate:proto=google.container.v1.NodeNetworkConfig
 type NodeNetworkConfigObservedState struct {
 	// Output only. The utilization of the IPv4 range for the pod.
@@ -4202,7 +4211,8 @@ type NodeNetworkConfigObservedState struct {
 }
 */
 
-/* unreachable type NodePoolObservedState
+/* found existing non-generated go type with proto tag "google.container.v1.NodePool", skipping
+
 // +kcc:observedstate:proto=google.container.v1.NodePool
 type NodePoolObservedState struct {
 	// The node configuration of the pool.

@@ -39,25 +39,25 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type NodepoolAdditionalNodeNetworkConfigs struct {
-	/* Immutable. Name of the VPC where the additional interface belongs. */
+	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Immutable. Name of the subnetwork where the additional interface belongs. */
+	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type NodepoolAdditionalPodNetworkConfigs struct {
-	/* Immutable. The maximum number of pods per node which use this pod network. */
+	/* The maximum number of pods per node which use this pod network. */
 	// +optional
 	MaxPodsPerNode *int64 `json:"maxPodsPerNode,omitempty"`
 
-	/* Immutable. The name of the secondary range on the subnet which provides IP address for this pod range. */
+	/* The name of the secondary range on the subnet which provides IP address for this pod range. */
 	// +optional
 	SecondaryPodRange *string `json:"secondaryPodRange,omitempty"`
 
-	/* Immutable. Name of the subnetwork where the additional pod network belongs. */
+	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
@@ -73,25 +73,25 @@ type NodepoolAdvancedMachineFeatures struct {
 }
 
 type NodepoolAutoscaling struct {
-	/* Location policy specifies the algorithm used when scaling-up the node pool. "BALANCED" - Is a best effort policy that aims to balance the sizes of available zones. "ANY" - Instructs the cluster autoscaler to prioritize utilization of unused reservations, and reduces preemption risk for Spot VMs. */
+	/* Location policy used when scaling up a nodepool. */
 	// +optional
 	LocationPolicy *string `json:"locationPolicy,omitempty"`
 
-	/* Maximum number of nodes per zone in the node pool. Must be >= min_node_count. Cannot be used with total limits. */
+	/* Maximum number of nodes for one location in the node pool. Must be >= min_node_count. There has to be enough quota to scale up the cluster. */
 	// +optional
-	MaxNodeCount *int64 `json:"maxNodeCount,omitempty"`
+	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
 
-	/* Minimum number of nodes per zone in the node pool. Must be >=0 and <= max_node_count. Cannot be used with total limits. */
+	/* Minimum number of nodes for one location in the node pool. Must be greater than or equal to 0 and less than or equal to max_node_count. */
 	// +optional
-	MinNodeCount *int64 `json:"minNodeCount,omitempty"`
+	MinNodeCount *int32 `json:"minNodeCount,omitempty"`
 
-	/* Maximum number of all nodes in the node pool. Must be >= total_min_node_count. Cannot be used with per zone limits. */
+	/* Maximum number of nodes in the node pool. Must be greater than or equal to total_min_node_count. There has to be enough quota to scale up the cluster. The total_*_node_count fields are mutually exclusive with the *_node_count fields. */
 	// +optional
-	TotalMaxNodeCount *int64 `json:"totalMaxNodeCount,omitempty"`
+	TotalMaxNodeCount *int32 `json:"totalMaxNodeCount,omitempty"`
 
-	/* Minimum number of all nodes in the node pool. Must be >=0 and <= total_max_node_count. Cannot be used with per zone limits. */
+	/* Minimum number of nodes in the node pool. Must be greater than or equal to 0 and less than or equal to total_max_node_count. The total_*_node_count fields are mutually exclusive with the *_node_count fields. */
 	// +optional
-	TotalMinNodeCount *int64 `json:"totalMinNodeCount,omitempty"`
+	TotalMinNodeCount *int32 `json:"totalMinNodeCount,omitempty"`
 }
 
 type NodepoolBlueGreenSettings struct {
@@ -99,7 +99,7 @@ type NodepoolBlueGreenSettings struct {
 	// +optional
 	NodePoolSoakDuration *string `json:"nodePoolSoakDuration,omitempty"`
 
-	/* Standard rollout policy is the default policy for blue-green. */
+	/* Standard policy for the blue-green upgrade. */
 	StandardRolloutPolicy NodepoolStandardRolloutPolicy `json:"standardRolloutPolicy"`
 }
 
@@ -132,7 +132,7 @@ type NodepoolFastSocket struct {
 }
 
 type NodepoolGcfsConfig struct {
-	/* Immutable. Whether or not GCFS is enabled. */
+	/* Whether or not GCFS is enabled. */
 	Enabled bool `json:"enabled"`
 }
 
@@ -212,45 +212,45 @@ type NodepoolLocalNvmeSsdBlockConfig struct {
 }
 
 type NodepoolManagement struct {
-	/* Whether the nodes will be automatically repaired. */
+	/* A flag that specifies whether the node auto-repair is enabled for the node pool. If enabled, the nodes in this node pool will be monitored and, if they fail health checks too many times, an automatic repair action will be triggered. */
 	// +optional
 	AutoRepair *bool `json:"autoRepair,omitempty"`
 
-	/* Whether the nodes will be automatically upgraded. */
+	/* A flag that specifies whether node auto-upgrade is enabled for the node pool. If enabled, node auto-upgrade helps keep the nodes in your node pool up to date with the latest release version of Kubernetes. */
 	// +optional
 	AutoUpgrade *bool `json:"autoUpgrade,omitempty"`
 }
 
 type NodepoolNetworkConfig struct {
-	/* Immutable. We specify the additional node networks for this node pool using this list. Each node network corresponds to an additional interface. */
+	/* We specify the additional node networks for this node pool using this list. Each node network corresponds to an additional interface. */
 	// +optional
 	AdditionalNodeNetworkConfigs []NodepoolAdditionalNodeNetworkConfigs `json:"additionalNodeNetworkConfigs,omitempty"`
 
-	/* Immutable. We specify the additional pod networks for this node pool using this list. Each pod network corresponds to an additional alias IP range for the node. */
+	/* We specify the additional pod networks for this node pool using this list. Each pod network corresponds to an additional alias IP range for the node. */
 	// +optional
 	AdditionalPodNetworkConfigs []NodepoolAdditionalPodNetworkConfigs `json:"additionalPodNetworkConfigs,omitempty"`
 
-	/* Immutable. Whether to create a new range for pod IPs in this node pool. Defaults are provided for pod_range and pod_ipv4_cidr_block if they are not specified. */
+	/* Input only. Whether to create a new range for pod IPs in this node pool. Defaults are provided for `pod_range` and `pod_ipv4_cidr_block` if they are not specified. If neither `create_pod_range` or `pod_range` are specified, the cluster-level default (`ip_allocation_policy.cluster_ipv4_cidr_block`) is used. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created. */
 	// +optional
 	CreatePodRange *bool `json:"createPodRange,omitempty"`
 
-	/* Whether nodes have internal IP addresses only. */
+	/* Whether nodes have internal IP addresses only. If enable_private_nodes is not specified, then the value is derived from [Cluster.NetworkConfig.default_enable_private_nodes]. */
 	// +optional
 	EnablePrivateNodes *bool `json:"enablePrivateNodes,omitempty"`
 
-	/* Immutable. Configuration for node-pool level pod cidr overprovision. If not set, the cluster level setting will be inherited. */
+	/* [PRIVATE FIELD] Pod CIDR size overprovisioning config for the nodepool. Pod CIDR size per node depends on max_pods_per_node. By default, the value of max_pods_per_node is rounded off to next power of 2 and we then double that to get the size of pod CIDR block per node. Example: max_pods_per_node of 30 would result in 64 IPs (/26). This config can disable the doubling of IPs (we still round off to next power of 2) Example: max_pods_per_node of 30 will result in 32 IPs (/27) when overprovisioning is disabled. */
 	// +optional
 	PodCidrOverprovisionConfig *NodepoolPodCidrOverprovisionConfig `json:"podCidrOverprovisionConfig,omitempty"`
 
-	/* Immutable. The IP address range for pod IPs in this node pool. Only applicable if create_pod_range is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) to pick a specific range to use. */
+	/* The IP address range for pod IPs in this node pool. Only applicable if `create_pod_range` is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. `/14`) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. `10.96.0.0/14`) to pick a specific range to use. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created. */
 	// +optional
 	PodIpv4CidrBlock *string `json:"podIpv4CidrBlock,omitempty"`
 
-	/* Immutable. The ID of the secondary range for pod IPs. If create_pod_range is true, this ID is used for the new range. If create_pod_range is false, uses an existing secondary range with this ID. */
+	/* The ID of the secondary range for pod IPs. If `create_pod_range` is true, this ID is used for the new range. If `create_pod_range` is false, uses an existing secondary range with this ID. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created. */
 	// +optional
 	PodRange *string `json:"podRange,omitempty"`
 
-	/* Immutable. The subnetwork path for the node pool. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}. If not set, the provider/API will choose the subnetwork (e.g. based on IP utilization) and report it here. */
+	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
@@ -271,6 +271,7 @@ type NodepoolNodeConfig struct {
 	// +optional
 	AdvancedMachineFeatures *NodepoolAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
 
+	/* Immutable. Cryptographic key used to encrypt the boot disk. */
 	// +optional
 	BootDiskKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
 
@@ -280,7 +281,7 @@ type NodepoolNodeConfig struct {
 
 	/* Immutable. Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. */
 	// +optional
-	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
+	DiskSizeGb *int32 `json:"diskSizeGb,omitempty"`
 
 	/* Immutable. Type of the disk attached to each node. Such as pd-standard, pd-balanced or pd-ssd. */
 	// +optional
@@ -322,7 +323,7 @@ type NodepoolNodeConfig struct {
 	// +optional
 	KubeletConfig *NodepoolKubeletConfig `json:"kubeletConfig,omitempty"`
 
-	/* The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node. */
+	/* Immutable. The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
@@ -336,7 +337,7 @@ type NodepoolNodeConfig struct {
 
 	/* Immutable. The number of local SSD disks to be attached to the node. */
 	// +optional
-	LocalSsdCount *int64 `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
 
 	/* Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT. */
 	// +optional
@@ -354,9 +355,7 @@ type NodepoolNodeConfig struct {
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Immutable. Setting this field will assign instances
-	of this pool to run on the specified node group. This is useful
-	for running workloads on sole tenant nodes. */
+	/* Immutable. Setting this field will assign instances of this pool to run on the specified node group. This is useful for running workloads on sole tenant nodes. */
 	// +optional
 	NodeGroupRef *v1alpha1.ResourceRef `json:"nodeGroupRef,omitempty"`
 
@@ -413,15 +412,15 @@ type NodepoolNodeConfig struct {
 }
 
 type NodepoolPlacementPolicy struct {
-	/* Immutable. If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. If not found, InvalidArgument error is returned. */
+	/* If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. If not found, InvalidArgument error is returned. */
 	// +optional
 	PolicyNameRef *v1alpha1.ResourceRef `json:"policyNameRef,omitempty"`
 
-	/* TPU placement topology for pod slice node pool. https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies. */
+	/* Optional. TPU placement topology for pod slice node pool. */
 	// +optional
 	TpuTopology *string `json:"tpuTopology,omitempty"`
 
-	/* Type defines the type of placement policy. */
+	/* The type of placement. */
 	Type string `json:"type"`
 }
 
@@ -467,11 +466,11 @@ type NodepoolStandardRolloutPolicy struct {
 	// +optional
 	BatchNodeCount *int64 `json:"batchNodeCount,omitempty"`
 
-	/* Percentage of the blue pool nodes to drain in a batch. */
+	/* Percentage of the bool pool nodes to drain in a batch. The range of this field should be (0.0, 1.0]. */
 	// +optional
 	BatchPercentage *float64 `json:"batchPercentage,omitempty"`
 
-	/* Soak time after each batch gets drained. */
+	/* Soak time after each batch gets drained. A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s". */
 	// +optional
 	BatchSoakDuration *string `json:"batchSoakDuration,omitempty"`
 }
@@ -488,25 +487,25 @@ type NodepoolTaint struct {
 }
 
 type NodepoolUpgradeSettings struct {
-	/* Settings for BlueGreen node pool upgrade. */
+	/* Settings for blue-green upgrade strategy. */
 	// +optional
 	BlueGreenSettings *NodepoolBlueGreenSettings `json:"blueGreenSettings,omitempty"`
 
-	/* The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. */
+	/* The maximum number of nodes that can be created beyond the current size of the node pool during the upgrade process. */
 	// +optional
-	MaxSurge *int64 `json:"maxSurge,omitempty"`
+	MaxSurge *int32 `json:"maxSurge,omitempty"`
 
-	/* The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater. */
+	/* The maximum number of nodes that can be simultaneously unavailable during the upgrade process. A node is considered available if its status is Ready. */
 	// +optional
-	MaxUnavailable *int64 `json:"maxUnavailable,omitempty"`
+	MaxUnavailable *int32 `json:"maxUnavailable,omitempty"`
 
-	/* Update strategy for the given nodepool. */
+	/* Update strategy of the node pool. */
 	// +optional
 	Strategy *string `json:"strategy,omitempty"`
 }
 
 type NodepoolWindowsNodeConfig struct {
-	/* os_version specifies the Windows Server release version to be used on the node. */
+	/* Operating system version of the Windows nodes. */
 	// +optional
 	OsVersion *string `json:"osVersion,omitempty"`
 }
@@ -522,24 +521,25 @@ type NodepoolWorkloadMetadataConfig struct {
 }
 
 type ContainerNodePoolSpec struct {
-	/* Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage. To disable autoscaling, set minNodeCount and maxNodeCount to 0. */
+	/* Autoscaler configuration for this NodePool. Autoscaler is enabled only if a valid configuration is present. */
 	// +optional
 	Autoscaling *NodepoolAutoscaling `json:"autoscaling,omitempty"`
 
+	/* The GKE cluster this node pool belongs to. */
 	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
-	/* Immutable. The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. */
+	/* The initial node count for the pool. You must ensure that your Compute Engine resource quota is sufficient for this number of instances. You must also have available firewall and routes quota. */
 	// +optional
-	InitialNodeCount *int64 `json:"initialNodeCount,omitempty"`
+	InitialNodeCount *int32 `json:"initialNodeCount,omitempty"`
 
 	/* Immutable. The location (region or zone) of the cluster. */
 	Location string `json:"location"`
 
-	/* Node management configuration, wherein auto-repair and auto-upgrade is configured. */
+	/* NodeManagement configuration for this NodePool. */
 	// +optional
 	Management *NodepoolManagement `json:"management,omitempty"`
 
-	/* Immutable. The maximum number of pods per node in this node pool. Note that this does not work on node pools which are "route-based" - that is, node pools belonging to clusters that do not have IP Aliasing enabled. */
+	/* The constraint on the maximum number of pods that can be run simultaneously on a node in the node pool. */
 	// +optional
 	MaxPodsPerNode *int64 `json:"maxPodsPerNode,omitempty"`
 
@@ -551,19 +551,19 @@ type ContainerNodePoolSpec struct {
 	// +optional
 	NetworkConfig *NodepoolNetworkConfig `json:"networkConfig,omitempty"`
 
-	/* Immutable. The configuration of the nodepool. */
+	/* The node configuration of the pool. */
 	// +optional
 	NodeConfig *NodepoolNodeConfig `json:"nodeConfig,omitempty"`
 
-	/* The number of nodes per instance group. This field can be used to update the number of nodes per instance group but should not be used alongside autoscaling. */
+	/* The node count of the pool. */
 	// +optional
-	NodeCount *int64 `json:"nodeCount,omitempty"`
+	NodeCount *int32 `json:"nodeCount,omitempty"`
 
-	/* The list of zones in which the node pool's nodes should be located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If unspecified, the cluster-level node_locations will be used. */
+	/* The list of Google Compute Engine zones in which the NodePool's nodes should be located. */
 	// +optional
 	NodeLocations []string `json:"nodeLocations,omitempty"`
 
-	/* Immutable. Specifies the node placement policy. */
+	/* Specifies the node placement policy. */
 	// +optional
 	PlacementPolicy *NodepoolPlacementPolicy `json:"placementPolicy,omitempty"`
 
@@ -571,10 +571,11 @@ type ContainerNodePoolSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Specify node upgrade settings to change how many nodes GKE attempts to upgrade at once. The number of nodes upgraded simultaneously is the sum of max_surge and max_unavailable. The maximum number of nodes upgraded simultaneously is limited to 20. */
+	/* Upgrade settings control disruption and speed of the upgrade. */
 	// +optional
 	UpgradeSettings *NodepoolUpgradeSettings `json:"upgradeSettings,omitempty"`
 
+	/* The version of Kubernetes running on this NodePool's nodes. */
 	// +optional
 	Version *string `json:"version,omitempty"`
 }
