@@ -45,6 +45,8 @@ func KMSCryptoKeyFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_NotYetTriaged(".primary")
 	f.Unimplemented_NotYetTriaged(".create_time")
+	// For KRM, we want to treat next_rotation_time as an output-only/status field,
+	// because rotation_period is the preferred declarative input field in gitops.
 	f.Unimplemented_NotYetTriaged(".next_rotation_time")
 	f.Unimplemented_NotYetTriaged(".labels")
 	f.Unimplemented_NotYetTriaged(".crypto_key_backend")
