@@ -61,6 +61,7 @@ func (r *ProjectRef) SetExternal(ref string) {
 	r.Namespace = ""
 }
 
+// Deprecated: ProjectRef should be normalized using identity pattern instead.
 func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	v1beta1Ref := &refsv1beta1.ProjectRef{
 		External:  r.External,
@@ -71,6 +72,8 @@ func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaul
 		return err
 	}
 	r.External = v1beta1Ref.External
+	r.Name = ""
+	r.Namespace = ""
 	return nil
 }
 
