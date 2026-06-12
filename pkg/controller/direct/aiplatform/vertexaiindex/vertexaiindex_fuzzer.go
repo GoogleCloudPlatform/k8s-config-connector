@@ -32,7 +32,6 @@ func vertexAIIndexFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".display_name")
 	f.SpecField(".description")
 	f.SpecField(".metadata_schema_uri")
-	f.SpecField(".metadata")
 	f.SpecField(".index_update_method")
 	f.SpecField(".encryption_spec")
 
@@ -45,6 +44,11 @@ func vertexAIIndexFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".satisfies_pzi")
 
 	f.Unimplemented_LabelsAnnotations(".labels")
+
+	f.Unimplemented_NotYetTriaged(".etag")
+	f.Unimplemented_NotYetTriaged(".deployed_indexes[].deployed_index_id")
+	f.Unimplemented_NotYetTriaged(".deployed_indexes[].index_endpoint")
+	f.Unimplemented_NotYetTriaged(".metadata")
 
 	return f
 }

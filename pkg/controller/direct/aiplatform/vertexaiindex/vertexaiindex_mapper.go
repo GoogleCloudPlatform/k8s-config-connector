@@ -23,7 +23,7 @@ import (
 )
 
 func JSON_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *apiextensionsv1.JSON {
-	if in == nil {
+	if in == nil || in.Kind == nil {
 		return nil
 	}
 	b, err := in.MarshalJSON()
