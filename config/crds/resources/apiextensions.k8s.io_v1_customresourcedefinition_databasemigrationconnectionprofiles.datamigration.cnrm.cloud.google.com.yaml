@@ -444,6 +444,7 @@ spec:
                   staticServiceIPConnectivity:
                     description: Static Service IP connectivity.
                     type: object
+                    x-kubernetes-preserve-unknown-fields: true
                   username:
                     description: Required. The username that Database Migration Service
                       will use to connect to the database. The value is encrypted

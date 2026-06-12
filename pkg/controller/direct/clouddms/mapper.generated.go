@@ -1166,6 +1166,34 @@ func StaticIPConnectivity_ToProto(mapCtx *direct.MapContext, in *krmdatamigratio
 	out := &pb.StaticIpConnectivity{}
 	return out
 }
+func StaticIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticIpConnectivity) *krmdatamigrationv1alpha1.StaticIPConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.StaticIPConnectivity{}
+	return out
+}
+func StaticIPConnectivity_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.StaticIPConnectivity) *pb.StaticIpConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StaticIpConnectivity{}
+	return out
+}
+func StaticServiceIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticServiceIpConnectivity) *krmdatamigrationv1alpha1.StaticServiceIPConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatamigrationv1alpha1.StaticServiceIPConnectivity{}
+	return out
+}
+func StaticServiceIPConnectivity_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.StaticServiceIPConnectivity) *pb.StaticServiceIpConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StaticServiceIpConnectivity{}
+	return out
+}
 func StaticServiceIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticServiceIpConnectivity) *krmdatamigrationv1alpha1.StaticServiceIPConnectivity {
 	if in == nil {
 		return nil
