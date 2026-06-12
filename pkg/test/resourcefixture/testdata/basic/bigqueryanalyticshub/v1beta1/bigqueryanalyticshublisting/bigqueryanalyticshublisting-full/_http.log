@@ -180,7 +180,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2FUS
 
 {
-  "discoveryType": 0,
   "displayName": "my_data_exchange"
 }
 
