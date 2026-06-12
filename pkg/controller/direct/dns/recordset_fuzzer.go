@@ -54,35 +54,13 @@ func dnsRecordSetFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".RoutingPolicy.PrimaryBackup.BackupGeoTargets.Items[].HealthCheckedTargets.ExternalEndpoints")
 	f.Unimplemented_NotYetTriaged(".RoutingPolicy.Wrr.Items[].HealthCheckedTargets.ExternalEndpoints")
 
-	// Filter out nested slice fields (Rrdatas and SignatureRrdatas) since they are not mapped
-	// in Geo/Wrr item mappers (which use RrdatasRefs in KRM), but cannot be easily matched via
-	// fieldOverrides because they reset to ".Rrdatas" and conflict with the top-level spec field ".Rrdatas".
-	filter := func(in *api.ResourceRecordSet) {
-		if in.RoutingPolicy != nil {
-			if in.RoutingPolicy.Geo != nil {
-				for _, item := range in.RoutingPolicy.Geo.Items {
-					item.Rrdatas = nil
-					item.SignatureRrdatas = nil
-				}
-			}
-			if in.RoutingPolicy.Wrr != nil {
-				for _, item := range in.RoutingPolicy.Wrr.Items {
-					item.Rrdatas = nil
-					item.SignatureRrdatas = nil
-				}
-			}
-			if in.RoutingPolicy.PrimaryBackup != nil {
-				if in.RoutingPolicy.PrimaryBackup.BackupGeoTargets != nil {
-					for _, item := range in.RoutingPolicy.PrimaryBackup.BackupGeoTargets.Items {
-						item.Rrdatas = nil
-						item.SignatureRrdatas = nil
-					}
-				}
-			}
-		}
-	}
-	f.FilterSpec = filter
-	f.FilterStatus = filter
+	// Nested fields inside slices (Rrdatas and SignatureRrdatas are unmapped in routing policies)
+	f.Unimplemented_NotYetTriaged(".RoutingPolicy.Geo.Items[].Rrdatas")
+	f.Unimplemented_NotYetTriaged(".RoutingPolicy.Geo.Items[].SignatureRrdatas")
+	f.Unimplemented_NotYetTriaged(".RoutingPolicy.Wrr.Items[].Rrdatas")
+	f.Unimplemented_NotYetTriaged(".RoutingPolicy.Wrr.Items[].SignatureRrdatas")
+	f.Unimplemented_NotYetTriaged(".RoutingPolicy.PrimaryBackup.BackupGeoTargets.Items[].Rrdatas")
+	f.Unimplemented_NotYetTriaged(".RoutingPolicy.PrimaryBackup.BackupGeoTargets.Items[].SignatureRrdatas")
 
 	return f
 }
