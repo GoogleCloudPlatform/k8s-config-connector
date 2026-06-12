@@ -13,3 +13,6 @@
 
 4. **Fuzzer Customization**:
    Since Pub/Sub includes several advanced GCP features (such as tags, detached status, and analytical hub integrations) that are not currently exposed in KRM, we utilized `f.Unimplemented_NotYetTriaged` on these proto paths to successfully round-trip and bypass fuzzer mismatches.
+
+5. **Using Canonical Reference Types Over Local Redefinitions**:
+   Always use the canonical, real reference structures (such as `StorageBucketRef` from `github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1` and `BigQueryTableRef` from `github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1`) instead of redefining them locally. This ensures that they implement the expected `refs.Ref` interface and resolve properly within common controller reconciliation loops. The KCC code generator automatically detects cross-package reference types and handles their package prefixes in the generated mapper.

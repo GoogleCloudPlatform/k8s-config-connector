@@ -25,7 +25,9 @@ package pubsub
 
 import (
 	pb "cloud.google.com/go/pubsub/v2/apiv1/pubsubpb"
+	krmbigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
+	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -35,7 +37,7 @@ func BigQueryConfig_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryConfig) 
 	}
 	out := &krm.BigQueryConfig{}
 	if in.GetTable() != "" {
-		out.TableRef = &krm.BigQueryTableRef{External: in.GetTable()}
+		out.TableRef = &krmbigqueryv1beta1.BigQueryTableRef{External: in.GetTable()}
 	}
 	out.UseTopicSchema = direct.LazyPtr(in.GetUseTopicSchema())
 	out.WriteMetadata = direct.LazyPtr(in.GetWriteMetadata())
@@ -67,7 +69,7 @@ func CloudStorageConfig_FromProto(mapCtx *direct.MapContext, in *pb.CloudStorage
 	}
 	out := &krm.CloudStorageConfig{}
 	if in.GetBucket() != "" {
-		out.BucketRef = &krm.StorageBucketRef{External: in.GetBucket()}
+		out.BucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetBucket()}
 	}
 	out.FilenamePrefix = direct.LazyPtr(in.GetFilenamePrefix())
 	out.FilenameSuffix = direct.LazyPtr(in.GetFilenameSuffix())

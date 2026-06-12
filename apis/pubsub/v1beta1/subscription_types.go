@@ -15,31 +15,11 @@
 package v1beta1
 
 import (
+	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
-
-type BigQueryTableRef struct {
-	// Allowed value: string of the format `{{project}}.{{dataset_id}}.{{value}}`, where {{value}} is the `name` field of a `BigQueryTable` resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type StorageBucketRef struct {
-	// Allowed value: The `name` field of a `StorageBucket` resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
 
 // +kcc:proto=google.pubsub.v1.BigQueryConfig
 type BigQueryConfig struct {
@@ -50,7 +30,7 @@ type BigQueryConfig struct {
 
 	// The name of the table to which to write data.
 	// +required
-	TableRef *BigQueryTableRef `json:"tableRef"`
+	TableRef *bigqueryv1beta1.BigQueryTableRef `json:"tableRef"`
 
 	// When true, use the topic's schema as the columns to write to in BigQuery, if it exists.
 	// +kcc:proto:field=google.pubsub.v1.BigQueryConfig.use_topic_schema
@@ -77,7 +57,7 @@ type CloudStorageConfig struct {
 
 	// User-provided name for the Cloud Storage bucket. The bucket must be created by the user. The bucket name must be without any prefix like "gs://".
 	// +required
-	BucketRef *StorageBucketRef `json:"bucketRef"`
+	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef"`
 
 	// User-provided prefix for Cloud Storage filename.
 	// +kcc:proto:field=google.pubsub.v1.CloudStorageConfig.filename_prefix

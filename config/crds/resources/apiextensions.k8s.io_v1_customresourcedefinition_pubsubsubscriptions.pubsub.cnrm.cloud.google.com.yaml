@@ -101,15 +101,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: string of the format `{{project}}.{{dataset_id}}.{{value}}`,
-                          where {{value}} is the `name` field of a `BigQueryTable`
-                          resource.'
+                        description: A reference to an externally-managed BigQueryTable
+                          resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}}".
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The name of a BigQueryTable resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The namespace of a BigQueryTable resource.
                         type: string
                     type: object
                   useTopicSchema:
@@ -164,14 +163,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `name` field of a `StorageBucket`
-                          resource.'
+                        description: A reference to an externally managed StorageBucket
+                          resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The name of a StorageBucket resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The namespace of a StorageBucket resource.
                         type: string
                     type: object
                   filenamePrefix:
