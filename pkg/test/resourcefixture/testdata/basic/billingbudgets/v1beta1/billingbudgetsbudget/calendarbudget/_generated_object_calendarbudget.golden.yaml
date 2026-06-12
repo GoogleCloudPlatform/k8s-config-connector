@@ -3,11 +3,10 @@ kind: BillingBudgetsBudget
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: billingbudgetsbudget-${uniqueId}
@@ -44,7 +43,6 @@ spec:
     - services/0245-C3C9-3864
     subaccounts: []
   displayName: updated-sample-budget
-  resourceID: billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}
   thresholdRules:
   - spendBasis: FORECASTED_SPEND
     thresholdPercent: 0.6
@@ -56,4 +54,4 @@ status:
     status: "True"
     type: Ready
   etag: abcdef123456
-  observedGeneration: 3
+  observedGeneration: 2

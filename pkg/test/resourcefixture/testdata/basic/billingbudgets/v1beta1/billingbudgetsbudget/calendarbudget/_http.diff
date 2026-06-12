@@ -574,10 +574,6 @@
 <     "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
 ---
 >     "creditTypesTreatment": 3,
-1456c914
-<       "projects/project-1-${uniqueId}"
----
->       ""
 1463,1520c921,922
 <   "etag": "abcdef0123A=",
 <   "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
@@ -640,13 +636,7 @@
 ---
 >   "name": "billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}",
 >   "notificationsRule": {
-1522c924
-<       "projects/${projectId}/notificationChannels/${notificationChannelID}"
----
->       ""
-1524d925
-<     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-1527,1553d927
+1527,1553d928
 <   "amount": {
 <     "specifiedAmount": {
 <       "currencyCode": "USD",
@@ -674,11 +664,11 @@
 <   "displayName": "sample-budget",
 <   "etag": "abcdef0123A=",
 <   "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-1556c930
+1556c931
 <       "spendBasis": "CURRENT_SPEND",
 ---
 >       "spendBasis": 1,
-1562,1597d935
+1562,1597d936
 < ---
 < 
 < GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
@@ -715,7 +705,7 @@
 < GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
 < Content-Type: application/json
 < 
-1609,1615d946
+1609,1615d947
 <   "allUpdatesRule": {
 <     "monitoringNotificationChannels": [
 <       "projects/${projectId}/notificationChannels/${notificationChannelID}"
@@ -723,19 +713,15 @@
 <     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
 <     "schemaVersion": "1.0"
 <   },
-1623c954
+1623c955
 <     "calendarPeriod": "MONTH",
 ---
 >     "calendarPeriod": 1,
-1627c958
+1627c959
 <     "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
 ---
 >     "creditTypesTreatment": 3,
-1634c965
-<       "projects/project-1-${uniqueId}"
----
->       ""
-1643,1698c974
+1643,1698c975
 <   "thresholdRules": [
 <     {
 <       "spendBasis": "CURRENT_SPEND",
@@ -794,13 +780,7 @@
 <   "allUpdatesRule": {
 ---
 >   "notificationsRule": {
-1700c976
-<       "projects/${projectId}/notificationChannels/${notificationChannelID}"
----
->       ""
-1702d977
-<     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-1705,1731d979
+1705,1731d981
 <   "amount": {
 <     "specifiedAmount": {
 <       "currencyCode": "USD",
@@ -828,19 +808,19 @@
 <   "displayName": "sample-budget",
 <   "etag": "abcdef0123A=",
 <   "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-1734c982
+1734c984
 <       "spendBasis": "CURRENT_SPEND",
 ---
 >       "spendBasis": 1,
-1742c990
+1742c992
 < GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
 ---
 > GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/billingbudgetsbudget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1745c993
+1745c995
 < 200 OK
 ---
 > 404 Not Found
-1756,1768c1004,1008
+1756,1768c1006,1010
 <   "createTime": "2024-04-01T12:34:56.123456Z",
 <   "labels": {
 <     "cnrm-test": "true",
@@ -860,11 +840,11 @@
 >     "message": "budget \"billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}\" not found",
 >     "status": "NOT_FOUND"
 >   }
-1773c1013
+1773c1015
 < PATCH https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json&updateMask=allUpdatesRule.disableDefaultIamRecipients%2CallUpdatesRule.monitoringNotificationChannels%2CallUpdatesRule.pubsubTopic%2Camount.specifiedAmount.nanos%2Camount.specifiedAmount.units%2CbudgetFilter.calendarPeriod%2CbudgetFilter.creditTypesTreatment%2CbudgetFilter.labels%2CbudgetFilter.projects%2CdisplayName%2CthresholdRules
 ---
 > POST https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets?%24alt=json%3Benum-encoding%3Dint
-1777,1840d1016
+1777,1840d1018
 <   "budget": {
 <     "allUpdatesRule": {
 <       "disableDefaultIamRecipients": true,
@@ -929,17 +909,13 @@
 <     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
 <     "schemaVersion": "1.0"
 <   },
-1848,1849c1024,1025
+1848,1849c1026,1027
 <     "calendarPeriod": "YEAR",
 <     "creditTypesTreatment": "EXCLUDE_ALL_CREDITS",
 ---
 >     "calendarPeriod": 3,
 >     "creditTypesTreatment": 2,
-1859c1035
-<       "projects/project-2-${uniqueId}"
----
->       ""
-1866,1892c1042,1043
+1866,1892c1044,1045
 <   "etag": "abcdef0123A=",
 <   "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
 <   "thresholdRules": [
@@ -970,13 +946,7 @@
 ---
 >   "name": "billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}",
 >   "notificationsRule": {
-1895c1046
-<       "projects/${projectId}/notificationChannels/${notificationChannelID}"
----
->       ""
-1897d1047
-<     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
-1900,1926d1049
+1900,1926d1052
 <   "amount": {
 <     "specifiedAmount": {
 <       "currencyCode": "USD",
@@ -1004,11 +974,11 @@
 <   "displayName": "updated-sample-budget",
 <   "etag": "abcdef0123A=",
 <   "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-1929c1052
+1929c1055
 <       "spendBasis": "FORECASTED_SPEND",
 ---
 >       "spendBasis": 2,
-1935,1970d1057
+1935,1970d1060
 < ---
 < 
 < GET https://cloudresourcemanager.googleapis.com/v1/projects/project-2-${uniqueId}?alt=json
@@ -1045,7 +1015,7 @@
 < GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
 < Content-Type: application/json
 < 
-1982,1989d1068
+1982,1989d1071
 <   "allUpdatesRule": {
 <     "disableDefaultIamRecipients": true,
 <     "monitoringNotificationChannels": [
@@ -1054,17 +1024,13 @@
 <     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
 <     "schemaVersion": "1.0"
 <   },
-1997,1998c1076,1077
+1997,1998c1079,1080
 <     "calendarPeriod": "YEAR",
 <     "creditTypesTreatment": "EXCLUDE_ALL_CREDITS",
 ---
 >     "calendarPeriod": 3,
 >     "creditTypesTreatment": 2,
-2008c1087
-<       "projects/project-2-${uniqueId}"
----
->       ""
-2017,2072c1096
+2017,2072c1099
 <   "thresholdRules": [
 <     {
 <       "spendBasis": "FORECASTED_SPEND",
@@ -1123,13 +1089,7 @@
 <   "allUpdatesRule": {
 ---
 >   "notificationsRule": {
-2075c1099
-<       "projects/${projectId}/notificationChannels/${notificationChannelID}"
----
->       ""
-2077d1100
-<     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
-2080,2106d1102
+2080,2106d1106
 <   "amount": {
 <     "specifiedAmount": {
 <       "currencyCode": "USD",
@@ -1157,11 +1117,11 @@
 <   "displayName": "updated-sample-budget",
 <   "etag": "abcdef0123A=",
 <   "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-2109c1105
+2109c1109
 <       "spendBasis": "FORECASTED_SPEND",
 ---
 >       "spendBasis": 2,
-2117,2165c1113
+2117,2165c1117
 < GET https://cloudresourcemanager.googleapis.com/v1/projects/project-2-${uniqueId}?alt=json
 < Content-Type: application/json
 < 
@@ -1213,7 +1173,7 @@
 < GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
 ---
 > GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/billingbudgetsbudget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-2181c1129
+2181c1133
 <     "message": "budget \"billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}\" not found",
 ---
 >     "message": "budget \"billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}\" not found",
