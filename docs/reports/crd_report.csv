@@ -146,7 +146,7 @@ compute.cnrm.cloud.google.com,ComputeHTTPSHealthCheck,False,True,False,Terraform
 compute.cnrm.cloud.google.com,ComputeImage,False,True,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeInstanceGroupManager,False,True,False,DCL,False
 compute.cnrm.cloud.google.com,ComputeInstanceGroupNamedPort,True,False,False,Terraform,False
-compute.cnrm.cloud.google.com,ComputeInstanceGroup,False,True,False,Terraform,False
+compute.cnrm.cloud.google.com,ComputeInstanceGroup,False,True,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeInstance,False,True,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeInstanceTemplate,False,True,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeInterconnectAttachment,False,True,False,Terraform,False

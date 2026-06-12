@@ -553,6 +553,102 @@ func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 }
 */
 
+/* found existing non-generated mapping function "ComputeInstanceGroupSpec_v1beta1_FromProto", skipping
+func ComputeInstanceGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroup) *krm.ComputeInstanceGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInstanceGroupSpec{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NamedPorts
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Size
+	// MISSING: Subnetwork
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupSpec_v1beta1_ToProto", skipping
+func ComputeInstanceGroupSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupSpec) *pb.InstanceGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroup{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NamedPorts
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Size
+	// MISSING: Subnetwork
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupStatus_v1beta1_FromProto", skipping
+func ComputeInstanceGroupStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroup) *krm.ComputeInstanceGroupStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInstanceGroupStatus{}
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NamedPorts
+	// MISSING: Network
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	out.Size = in.Size
+	// MISSING: Subnetwork
+	// MISSING: Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupStatus_v1beta1_ToProto", skipping
+func ComputeInstanceGroupStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupStatus) *pb.InstanceGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroup{}
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NamedPorts
+	// MISSING: Network
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	out.Size = in.Size
+	// MISSING: Subnetwork
+	// MISSING: Zone
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeInterconnectObservedState_v1alpha1_FromProto", skipping
 func ComputeInterconnectObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Interconnect) *krmcomputev1alpha1.ComputeInterconnectObservedState {
 	if in == nil {
@@ -1907,20 +2003,44 @@ func HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/*
-found existing non-generated mapping function "HealthCheckTCPHealthCheck_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "HealthCheckTCPHealthCheck_v1beta1_ToProto", skipping
+func HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HealthCheckTCPHealthCheck) *pb.TCPHealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TCPHealthCheck{}
+	out.Port = in.Port
+	out.PortName = in.PortName
+	out.PortSpecification = in.PortSpecification
+	out.ProxyHeader = in.ProxyHeader
+	out.Request = in.Request
+	out.Response = in.Response
+	return out
+}
+*/
 
-	func HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HealthCheckTCPHealthCheck) *pb.TCPHealthCheck {
+/* found existing non-generated mapping function "InstancegroupNamedPort_v1beta1_FromProto", skipping
+func InstancegroupNamedPort_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NamedPort) *krm.InstancegroupNamedPort {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstancegroupNamedPort{}
+	out.Name = in.Name
+	out.Port = in.Port
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "InstancegroupNamedPort_v1beta1_ToProto", skipping
+
+	func InstancegroupNamedPort_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstancegroupNamedPort) *pb.NamedPort {
 		if in == nil {
 			return nil
 		}
-		out := &pb.TCPHealthCheck{}
+		out := &pb.NamedPort{}
+		out.Name = in.Name
 		out.Port = in.Port
-		out.PortName = in.PortName
-		out.PortSpecification = in.PortSpecification
-		out.ProxyHeader = in.ProxyHeader
-		out.Request = in.Request
-		out.Response = in.Response
 		return out
 	}
 */
