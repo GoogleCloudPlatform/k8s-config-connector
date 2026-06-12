@@ -13,6 +13,8 @@ This skill outlines standard practices when transitioning an existing KCC resour
 ### 1. Configure generate.sh
 Configure `apis/<service>/<version>/generate.sh` to include the resource and pass the `--include-skipped-output` flag. Passing `--include-skipped-output` to both `generate-types` and `generate-mapper` ensures that any output otherwise skipped is still generated but commented out. This provides an invaluable reference when manual modifications/hand-coding of types are needed.
 
+- **Keep Type File Names Matching Lowercase Proto Message**: If the KRM Kind name differs from the underlying Proto message name (e.g. Kind `NotebookInstance` but Proto `Instance`), do NOT rename the types file to follow the lowercase KRM Kind name (e.g. `notebookinstance_types.go`). The `generate-types` tool expects the file to be named `<lowercase_proto_message_name>_types.go` (e.g. `instance_types.go`). Renaming it will cause generator panics and duplicate/untracked file generation.
+
 ```bash
 go run . generate-types \
     --service <proto.package> \
