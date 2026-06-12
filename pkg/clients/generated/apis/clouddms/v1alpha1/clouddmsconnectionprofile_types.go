@@ -518,6 +518,13 @@ type ConnectionprofileOracleStatus struct {
 	/* Output only. Indicates whether a new password is included in the request. */
 	// +optional
 	PasswordSet *bool `json:"passwordSet,omitempty"`
+
+	/* SSL configuration for the connection to the source Oracle database.
+
+	* Only `SERVER_ONLY` configuration is supported for Oracle SSL.
+	* SSL is supported for Oracle versions 12 and above. */
+	// +optional
+	Ssl *ConnectionprofileSslStatus `json:"ssl,omitempty"`
 }
 
 type ConnectionprofilePostgresqlStatus struct {
@@ -528,6 +535,10 @@ type ConnectionprofilePostgresqlStatus struct {
 	/* Output only. Indicates If this connection profile password is stored. */
 	// +optional
 	PasswordSet *bool `json:"passwordSet,omitempty"`
+
+	/* SSL configuration for the destination to connect to the source database. */
+	// +optional
+	Ssl *ConnectionprofileSslStatus `json:"ssl,omitempty"`
 }
 
 type ConnectionprofilePrimaryInstanceSettingsStatus struct {

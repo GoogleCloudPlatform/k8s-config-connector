@@ -1216,6 +1216,11 @@ func (in *ConnectionprofileOracleStatus) DeepCopyInto(out *ConnectionprofileOrac
 		*out = new(bool)
 		**out = **in
 	}
+	if in.Ssl != nil {
+		in, out := &in.Ssl, &out.Ssl
+		*out = new(ConnectionprofileSslStatus)
+		(*in).DeepCopyInto(*out)
+	}
 	return
 }
 
@@ -1297,6 +1302,11 @@ func (in *ConnectionprofilePostgresqlStatus) DeepCopyInto(out *Connectionprofile
 		in, out := &in.PasswordSet, &out.PasswordSet
 		*out = new(bool)
 		**out = **in
+	}
+	if in.Ssl != nil {
+		in, out := &in.Ssl, &out.Ssl
+		*out = new(ConnectionprofileSslStatus)
+		(*in).DeepCopyInto(*out)
 	}
 	return
 }
