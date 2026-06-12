@@ -23,7 +23,7 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
     - Both direct and legacy controllers are now automatically tested dynamically if a direct controller is available in `static_config.go` (under `SupportedControllers`), so there is no longer any need to manually modify `tests/e2e/unified_test.go`.
 
 3.  **Controller Structure & Patterns**:
-    - **Proto Format Desired State**: Convert the KRM Spec to its Proto representation once in `AdapterForObject` and store it as a proto struct pointer (e.g., `*pb.MyResource` or `desired`) in the adapter, rather than duplicating conversion logic in both `Create` and `Update`.
+    - **Proto Format Desired State**: Convert the KRM Spec to its Proto representation once in `AdapterForObject` and store it as a proto struct pointer (e.g., `*pb.MyResource` or `desired`) in the adapter, rather than duplicating conversion logic in both `Create` and `Update`. The adapter should avoid holding references to raw KRM objects for desired state to keep the interfaces clean, consistent with `actual` (which is also of proto type), and avoid redundant conversions.
     - **NormalizeReferences**: Always call `common.NormalizeReferences` in `AdapterForObject` to resolve any resource references:
       ```go
       if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
@@ -65,6 +65,7 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
           return op.UpdateStatus(ctx, status, nil)
       }
       ```
+    - **Immutable Resources**: If a direct resource is completely immutable in GCP (meaning no fields can be updated once created), the `Update` method must STILL perform the `compare<Resource>` comparison check on spec fields. If a diff is detected, return a descriptive error (e.g. `fmt.Errorf("<Kind> is immutable and cannot be updated")`) so that the error/diff is surfaced on the resource status rather than silently doing nothing. Also, register the model using `registry.CannotBeDeleted()` if deletion is not supported.
 
 4.  **Mappers**:
     Verify `mapper.generated.go` and manual mappers. Ensure all references use the standard `Ref` pattern.
