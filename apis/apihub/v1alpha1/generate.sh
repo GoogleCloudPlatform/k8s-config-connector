@@ -30,6 +30,7 @@ go run . generate-types \
   --resource APIHubRuntimeProjectAttachment:RuntimeProjectAttachment \
   --resource APIHubPlugin:Plugin \
   --resource APIHubExternalAPI:ExternalApi \
+  --resource APIHubInstance:ApiHubInstance \
   --prune-unused-types=false
 
 go run . generate-mapper --service google.cloud.apihub.v1 --api-version apihub.cnrm.cloud.google.com/v1alpha1
@@ -39,3 +40,4 @@ dev/tasks/generate-crds
 
 # Format generated code
 go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w apis/apihub/v1alpha1/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/apihub/
