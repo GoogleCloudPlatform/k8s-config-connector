@@ -26,6 +26,8 @@ go run . generate-types \
   --service google.cloud.datalabeling.v1beta1 \
   --api-version datalabeling.cnrm.cloud.google.com/v1alpha1 \
   --resource DataLabelingAnnotationSpecSet:AnnotationSpecSet \
+  --resource DataLabelingDataset:Dataset \
+  --resource DataLabelingInstruction:Instruction \
   --prune-unused-types=false
 
 cd ${REPO_ROOT}
