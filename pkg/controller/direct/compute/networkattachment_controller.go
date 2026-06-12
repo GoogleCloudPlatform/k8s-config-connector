@@ -65,7 +65,7 @@ func (m *networkAttachmentModel) AdapterForObject(ctx context.Context, op *direc
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewNetworkAttachmentIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +81,7 @@ func (m *networkAttachmentModel) AdapterForObject(ctx context.Context, op *direc
 
 	return &NetworkAttachmentAdapter{
 		gcpClient: networkAttachmentClient,
-		id:        id,
+		id:        id.(*v1alpha1.ComputeNetworkAttachmentIdentity),
 		desired:   obj,
 		reader:    reader,
 	}, nil
@@ -94,7 +94,7 @@ func (m *networkAttachmentModel) AdapterForURL(ctx context.Context, url string) 
 
 type NetworkAttachmentAdapter struct {
 	gcpClient *compute.NetworkAttachmentsClient
-	id        *v1alpha1.NetworkAttachmentIdentity
+	id        *v1alpha1.ComputeNetworkAttachmentIdentity
 	desired   *krm.ComputeNetworkAttachment
 	actual    *computepb.NetworkAttachment
 	reader    client.Reader
@@ -111,9 +111,9 @@ func (a *NetworkAttachmentAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting NetworkAttachment", "name", a.id)
 
 	req := &computepb.GetNetworkAttachmentRequest{
-		Project:           a.id.Parent().ProjectID,
-		Region:            a.id.Parent().Location,
-		NetworkAttachment: a.id.ID(),
+		Project:           a.id.Project,
+		Region:            a.id.Region,
+		NetworkAttachment: a.id.NetworkAttachment,
 	}
 	actual, err := a.gcpClient.Get(ctx, req)
 	if err != nil {
@@ -143,11 +143,11 @@ func (a *NetworkAttachmentAdapter) Create(ctx context.Context, createOp *directb
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = direct.LazyPtr(a.id.ID())
+	resource.Name = direct.LazyPtr(a.id.NetworkAttachment)
 
 	req := &computepb.InsertNetworkAttachmentRequest{
-		Project:                   a.id.Parent().ProjectID,
-		Region:                    a.id.Parent().Location,
+		Project:                   a.id.Project,
+		Region:                    a.id.Region,
 		NetworkAttachmentResource: resource,
 	}
 	op, err := a.gcpClient.Insert(ctx, req)
@@ -189,7 +189,7 @@ func (a *NetworkAttachmentAdapter) Update(ctx context.Context, updateOp *directb
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = direct.LazyPtr(a.id.ID())
+	resource.Name = direct.LazyPtr(a.id.NetworkAttachment)
 	// An up-to-date fingerprint must be provided in order to patch
 	resource.Fingerprint = a.actual.Fingerprint
 
@@ -211,9 +211,9 @@ func (a *NetworkAttachmentAdapter) Update(ctx context.Context, updateOp *directb
 		structuredreporting.ReportDiff(ctx, report)
 
 		req := &computepb.PatchNetworkAttachmentRequest{
-			Project:                   a.id.Parent().ProjectID,
-			Region:                    a.id.Parent().Location,
-			NetworkAttachment:         a.id.ID(),
+			Project:                   a.id.Project,
+			Region:                    a.id.Region,
+			NetworkAttachment:         a.id.NetworkAttachment,
 			NetworkAttachmentResource: resource,
 		}
 		op, err := a.gcpClient.Patch(ctx, req)
@@ -256,8 +256,8 @@ func (a *NetworkAttachmentAdapter) Export(ctx context.Context) (*unstructured.Un
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Region
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -276,9 +276,9 @@ func (a *NetworkAttachmentAdapter) Delete(ctx context.Context, deleteOp *directb
 	log.V(2).Info("deleting NetworkAttachment", "name", a.id)
 
 	req := &computepb.DeleteNetworkAttachmentRequest{
-		Project:           a.id.Parent().ProjectID,
-		Region:            a.id.Parent().Location,
-		NetworkAttachment: a.id.ID(),
+		Project:           a.id.Project,
+		Region:            a.id.Region,
+		NetworkAttachment: a.id.NetworkAttachment,
 	}
 	op, err := a.gcpClient.Delete(ctx, req)
 	if err != nil {
@@ -298,9 +298,9 @@ func (a *NetworkAttachmentAdapter) Delete(ctx context.Context, deleteOp *directb
 
 func (a *NetworkAttachmentAdapter) get(ctx context.Context) (*computepb.NetworkAttachment, error) {
 	getReq := &computepb.GetNetworkAttachmentRequest{
-		Project:           a.id.Parent().ProjectID,
-		Region:            a.id.Parent().Location,
-		NetworkAttachment: a.id.ID(),
+		Project:           a.id.Project,
+		Region:            a.id.Region,
+		NetworkAttachment: a.id.NetworkAttachment,
 	}
 	resource, err := a.gcpClient.Get(ctx, getReq)
 	if err != nil {
