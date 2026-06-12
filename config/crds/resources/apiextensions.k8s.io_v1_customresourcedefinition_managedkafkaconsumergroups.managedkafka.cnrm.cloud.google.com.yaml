@@ -64,7 +64,8 @@ spec:
               ManagedKafkaConsumerGroup
             properties:
               clusterRef:
-                description: ClusterRef is a reference to a ManagedKafkaCluster.
+                description: Required. Reference to the Kafka cluster to which the
+                  consumer group belongs.
                 oneOf:
                 - not:
                     required:
@@ -92,9 +93,10 @@ spec:
                     type: string
                 type: object
               location:
+                description: Required. The location of the Kafka resource.
                 type: string
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Optional. The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -129,6 +131,38 @@ spec:
                 description: The ManagedKafkaConsumerGroup name. If not given, the
                   metadata.name will be used.
                 type: string
+              topics:
+                additionalProperties:
+                  properties:
+                    partitions:
+                      description: Optional. Metadata for this consumer group and
+                        topic for all partition indexes it has metadata for.
+                      items:
+                        properties:
+                          key:
+                            description: Required. Key of the partition index for
+                              topic metadata in this consumer group.
+                            format: int32
+                            type: integer
+                          metadata:
+                            description: Optional. The associated metadata for this
+                              partition, or empty if it does not exist.
+                            type: string
+                          offset:
+                            description: Required. The current offset for this partition,
+                              or 0 if no offset has been committed.
+                            format: int64
+                            type: integer
+                        required:
+                        - key
+                        - offset
+                        type: object
+                      type: array
+                  type: object
+                description: 'Optional. Metadata for this consumer group for all topics
+                  it has metadata for. The key of the map is a topic name, structured
+                  like: projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}'
+                type: object
             required:
             - clusterRef
             - location
@@ -175,43 +209,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                properties:
-                  topics:
-                    additionalProperties:
-                      properties:
-                        partitions:
-                          description: Optional. Metadata for this consumer group
-                            and topic for all partition indexes it has metadata for.
-                          items:
-                            properties:
-                              key:
-                                description: Required. Key of the partition index
-                                  for topic metadata in this consumer group.
-                                format: int32
-                                type: integer
-                              metadata:
-                                description: Optional. The associated metadata for
-                                  this partition, or empty if it does not exist.
-                                type: string
-                              offset:
-                                description: Required. The current offset for this
-                                  partition, or 0 if no offset has been committed.
-                                format: int64
-                                type: integer
-                            required:
-                            - key
-                            - offset
-                            type: object
-                          type: array
-                      type: object
-                    description: 'Optional. Metadata for this consumer group for all
-                      topics it has metadata for. The key of the map is a topic name,
-                      structured like: projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}'
-                    type: object
-                type: object
             type: object
         required:
         - spec

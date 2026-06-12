@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package managedkafka
+package managedkafkaconsumergroup
 
 import (
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
@@ -20,31 +20,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-// Placeholder functions until the real ones are generated or implemented
-// Based on the KRM struct definitions and proto, there are no fields to map between Spec/Status and the Proto.
 func ManagedKafkaConsumerGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krm.ManagedKafkaConsumerGroupSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ManagedKafkaConsumerGroupSpec{}
-	// No fields in KRM Spec map directly from the proto message. 'topics' is effectively read-only/status.
-	return out
-}
-
-func ManagedKafkaConsumerGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaConsumerGroupSpec) *pb.ConsumerGroup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ConsumerGroup{}
-	// No fields in KRM Spec map directly to the proto message.
-	return out
-}
-
-func ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krm.ManagedKafkaConsumerGroupObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ManagedKafkaConsumerGroupObservedState{}
 	out.Topics = make(map[string]*krm.ConsumerTopicMetadata)
 	for k, v := range in.GetTopics() {
 		out.Topics[k] = ConsumerTopicMetadata_v1alpha1_FromProto(mapCtx, v)
@@ -52,7 +32,7 @@ func ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto(mapCtx *direct.Ma
 	return out
 }
 
-func ManagedKafkaConsumerGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaConsumerGroupObservedState) *pb.ConsumerGroup {
+func ManagedKafkaConsumerGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaConsumerGroupSpec) *pb.ConsumerGroup {
 	if in == nil {
 		return nil
 	}

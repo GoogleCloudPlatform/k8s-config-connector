@@ -1,0 +1,10 @@
+apiVersion: managedkafka.cnrm.cloud.google.com/v1alpha1
+kind: ManagedKafkaConsumerGroup
+metadata:
+  name: managedkafkaconsumergroup-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  clusterRef:
+    name: managedkafkacluster-${uniqueId}

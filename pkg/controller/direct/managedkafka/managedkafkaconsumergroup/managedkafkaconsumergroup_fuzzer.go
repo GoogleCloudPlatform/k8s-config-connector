@@ -16,7 +16,7 @@
 // proto.message: google.cloud.managedkafka.v1.ConsumerGroup
 // api.group: managedkafka.cnrm.cloud.google.com
 
-package managedkafka
+package managedkafkaconsumergroup
 
 import (
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
@@ -24,18 +24,14 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(managedKafkaConsumerGroupFuzzer())
+	fuzztesting.RegisterKRMSpecFuzzer(managedKafkaConsumerGroupFuzzer())
 }
-
 func managedKafkaConsumerGroupFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.ConsumerGroup{},
+	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.ConsumerGroup{},
 		ManagedKafkaConsumerGroupSpec_v1alpha1_FromProto, ManagedKafkaConsumerGroupSpec_v1alpha1_ToProto,
-		ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto, ManagedKafkaConsumerGroupObservedState_v1alpha1_ToProto,
 	)
-
 	f.UnimplementedFields.Insert(".name") // special field, managed by KCC infrastructure
-
-	f.StatusFields.Insert(".topics")
+	f.SpecFields.Insert(".topics")
 
 	return f
 }

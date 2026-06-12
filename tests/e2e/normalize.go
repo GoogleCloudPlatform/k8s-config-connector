@@ -68,6 +68,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	u.SetAnnotations(annotations)
 
 	visitor := newObjectWalker(t)
+	if u.GetAPIVersion() != "" {
+		visitor.normalizeMapKeys = true
+	}
 
 	// Apply replacements
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -656,6 +659,7 @@ func setStringAtPath(m map[string]any, atPath string, newValue string) error {
 type objectWalker struct {
 	t *testing.T
 
+	normalizeMapKeys         bool
 	removePaths              sets.Set[string]
 	sortSlices               sets.Set[string]
 	sortSlicesBy             []sortSliceBy
@@ -805,6 +809,26 @@ func (o *objectWalker) visitMap(m map[string]any, path string) error {
 		}
 		m[k] = v2
 		v = v2
+	}
+
+	if o.normalizeMapKeys {
+		var newKeys map[string]string // oldKey -> newKey
+		for k := range m {
+			k2, err := o.visitString(k, path)
+			if err != nil {
+				return err
+			}
+			if k2 != k {
+				if newKeys == nil {
+					newKeys = make(map[string]string)
+				}
+				newKeys[k] = k2
+			}
+		}
+		for oldK, newK := range newKeys {
+			m[newK] = m[oldK]
+			delete(m, oldK)
+		}
 	}
 
 	return nil
