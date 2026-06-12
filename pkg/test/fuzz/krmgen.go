@@ -18,6 +18,7 @@ import (
 	"math/rand"
 	"reflect"
 	"testing"
+	"time"
 )
 
 type Filler interface {
@@ -66,6 +67,12 @@ func (rf *RandomFiller) fillWithRandom(t *testing.T, fieldName string, field ref
 		}
 	}
 
+	if field.Type().String() == "time.Time" {
+		randomTime := time.Unix(rf.randStream.Int63n(10000000000), 0)
+		field.Set(reflect.ValueOf(randomTime))
+		return
+	}
+
 	switch field.Kind() {
 	case reflect.Bool:
 		field.SetBool(rf.randStream.Intn(2) == 1)
@@ -106,7 +113,11 @@ func (rf *RandomFiller) fillWithRandom(t *testing.T, fieldName string, field ref
 
 	case reflect.Struct:
 		for i := 0; i < field.NumField(); i++ {
-			structFieldName := field.Type().Field(i).Name
+			structField := field.Type().Field(i)
+			if structField.PkgPath != "" {
+				continue
+			}
+			structFieldName := structField.Name
 			nestedStructFieldname := fieldName + "." + structFieldName
 
 			rf.fillWithRandom(t, nestedStructFieldname, field.Field(i))
@@ -146,6 +157,10 @@ func (rf *ClearNonProtoFields) fillWithClear(t *testing.T, fieldName string, fie
 		return
 	}
 
+	if field.Type().String() == "time.Time" {
+		return
+	}
+
 	switch field.Kind() {
 	case reflect.Bool, reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
 		reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
@@ -164,7 +179,11 @@ func (rf *ClearNonProtoFields) fillWithClear(t *testing.T, fieldName string, fie
 
 	case reflect.Struct:
 		for i := 0; i < field.NumField(); i++ {
-			structFieldName := field.Type().Field(i).Name
+			structField := field.Type().Field(i)
+			if structField.PkgPath != "" {
+				continue
+			}
+			structFieldName := structField.Name
 			nestedStructFieldname := fieldName + "." + structFieldName
 
 			rf.fillWithClear(t, nestedStructFieldname, field.Field(i))
