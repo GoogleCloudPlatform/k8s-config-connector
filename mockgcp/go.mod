@@ -12,7 +12,7 @@ require (
 	cloud.google.com/go/accesscontextmanager v1.9.7
 	cloud.google.com/go/aiplatform v1.123.0
 	cloud.google.com/go/alloydb v1.20.0
-	cloud.google.com/go/analytics v0.30.1
+	cloud.google.com/go/analytics v0.35.0
 	cloud.google.com/go/apigateway v1.7.7
 	cloud.google.com/go/apikeys v1.2.7
 	cloud.google.com/go/apphub v0.4.0
