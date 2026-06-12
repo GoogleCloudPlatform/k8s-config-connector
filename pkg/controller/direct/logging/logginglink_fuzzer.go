@@ -33,13 +33,13 @@ func loggingLinkFuzzer() fuzztesting.KRMFuzzer {
 		LoggingLinkObservedState_FromProto, LoggingLinkObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".description")
+	f.SpecField(".description")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".lifecycle_state")
-	f.StatusFields.Insert(".bigquery_dataset")
+	f.StatusField(".create_time")
+	f.StatusField(".lifecycle_state")
+	f.StatusField(".bigquery_dataset")
 
-	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_Identity(".name")
 
 	return f
 }
