@@ -75,6 +75,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 }
 ```
 
+**Note on Operations:** If your service uses `AddOperationsPath`, just add the operations path to the mux. Do NOT call `s.operations.RegisterGRPCServices(grpcServer)` in the `Register` method, as this causes duplicate gRPC service registration panics when multiple mock services are loaded.
+
 ## Step 5: Fix type mismatches
 
 The official client library proto types might differ slightly from the old grpc-gateway types:
