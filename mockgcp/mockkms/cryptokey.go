@@ -131,8 +131,10 @@ func (r *kmsServer) UpdateCryptoKey(ctx context.Context, req *pb.UpdateCryptoKey
 		switch path {
 		case "labels":
 			obj.Labels = req.GetCryptoKey().GetLabels()
-		case "rotation_period":
+		case "rotation_period", "rotationPeriod":
 			obj.RotationSchedule = req.GetCryptoKey().GetRotationSchedule()
+		case "next_rotation_time", "nextRotationTime":
+			obj.NextRotationTime = req.GetCryptoKey().GetNextRotationTime()
 		case "destroy_scheduled_duration", "destroyScheduledDuration":
 			obj.DestroyScheduledDuration = req.GetCryptoKey().GetDestroyScheduledDuration()
 		default:

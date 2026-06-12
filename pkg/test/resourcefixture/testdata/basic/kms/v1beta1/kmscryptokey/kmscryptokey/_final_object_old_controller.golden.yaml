@@ -8,7 +8,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
     key-one: value-two
@@ -18,10 +18,11 @@ spec:
   importOnly: false
   keyRingRef:
     name: kmscryptokey-${uniqueId}
-  purpose: ASYMMETRIC_SIGN
+  purpose: ENCRYPT_DECRYPT
   resourceID: kmscryptokey-${uniqueId}
+  rotationPeriod: 259200s
   versionTemplate:
-    algorithm: EC_SIGN_P384_SHA384
+    algorithm: GOOGLE_SYMMETRIC_ENCRYPTION
     protectionLevel: SOFTWARE
 status:
   conditions:
@@ -30,5 +31,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 2
+  observedGeneration: 3
   selfLink: projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}

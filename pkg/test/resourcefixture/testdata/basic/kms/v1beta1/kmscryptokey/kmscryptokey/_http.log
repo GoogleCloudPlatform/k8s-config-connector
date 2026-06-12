@@ -93,9 +93,10 @@ Content-Type: application/json
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "purpose": 5,
+  "purpose": 1,
+  "rotationPeriod": "172800s",
   "versionTemplate": {
-    "algorithm": 13,
+    "algorithm": 1,
     "protectionLevel": 1
   }
 }
@@ -120,16 +121,17 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "primary": {
-    "algorithm": 13,
+    "algorithm": 1,
     "createTime": "2024-04-01T12:34:56.123456Z",
     "generateTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
     "protectionLevel": 1,
     "state": 1
   },
-  "purpose": 5,
+  "purpose": 1,
+  "rotationPeriod": "172800s",
   "versionTemplate": {
-    "algorithm": 13,
+    "algorithm": 1,
     "protectionLevel": 1
   }
 }
@@ -159,36 +161,37 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "primary": {
-    "algorithm": 13,
+    "algorithm": 1,
     "createTime": "2024-04-01T12:34:56.123456Z",
     "generateTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
     "protectionLevel": 1,
     "state": 1
   },
-  "purpose": 5,
+  "purpose": 1,
+  "rotationPeriod": "172800s",
   "versionTemplate": {
-    "algorithm": 13,
+    "algorithm": 1,
     "protectionLevel": 1
   }
 }
 
 ---
 
-PATCH https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+PATCH https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels%2CrotationPeriod
 Content-Type: application/json
 
 {
-  "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
     "key-one": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
-  "purpose": 5,
+  "purpose": 1,
+  "rotationPeriod": "259200s",
   "versionTemplate": {
-    "algorithm": 13,
+    "algorithm": 1,
     "protectionLevel": 1
   }
 }
@@ -213,16 +216,17 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "primary": {
-    "algorithm": 13,
+    "algorithm": 1,
     "createTime": "2024-04-01T12:34:56.123456Z",
     "generateTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
     "protectionLevel": 1,
     "state": 1
   },
-  "purpose": 5,
+  "purpose": 1,
+  "rotationPeriod": "259200s",
   "versionTemplate": {
-    "algorithm": 13,
+    "algorithm": 1,
     "protectionLevel": 1
   }
 }
@@ -252,16 +256,17 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "primary": {
-    "algorithm": 13,
+    "algorithm": 1,
     "createTime": "2024-04-01T12:34:56.123456Z",
     "generateTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
     "protectionLevel": 1,
     "state": 1
   },
-  "purpose": 5,
+  "purpose": 1,
+  "rotationPeriod": "259200s",
   "versionTemplate": {
-    "algorithm": 13,
+    "algorithm": 1,
     "protectionLevel": 1
   }
 }
@@ -284,7 +289,7 @@ X-Xss-Protection: 0
 {
   "cryptoKeyVersions": [
     {
-      "algorithm": 13,
+      "algorithm": 1,
       "createTime": "2024-04-01T12:34:56.123456Z",
       "generateTime": "2024-04-01T12:34:56.123456Z",
       "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
@@ -315,13 +320,58 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "algorithm": 13,
+  "algorithm": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "destroyTime": "2024-04-01T12:34:56.123456Z",
   "generateTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
   "protectionLevel": 1,
   "state": 4
+}
+
+---
+
+PATCH https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=rotationPeriod
+Content-Type: application/json
+
+{
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "rotationPeriod": "0s"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": 1,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": 1,
+    "state": 1
+  },
+  "purpose": 1,
+  "rotationPeriod": "0s",
+  "versionTemplate": {
+    "algorithm": 1,
+    "protectionLevel": 1
+  }
 }
 
 ---
