@@ -26,10 +26,17 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.aiplatform.v1beta1 \
   --api-version colab.cnrm.cloud.google.com/v1alpha1 \
+  --skip-scaffold-files \
   --include-skipped-output \
   --resource ColabRuntime:NotebookRuntime \
-  --resource ColabRuntimeTemplate:NotebookRuntimeTemplate \
-  --skip-scaffold-files
+  --resource ColabRuntimeTemplate:NotebookRuntimeTemplate
+
+go run . generate-mapper \
+  --api-dir ${REPO_ROOT}/apis/colab \
+  --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis/colab \
+  --service google.cloud.aiplatform.v1beta1 \
+  --api-version colab.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

@@ -56,6 +56,7 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     go run . generate-types \
       --service <PROTO_SERVICE> \
       --api-version <GROUP>/<VERSION> \
+      --skip-scaffold-files \
       --include-skipped-output \
       --resource <KIND1>:<PROTO_MESSAGE1> \
       [--resource <KIND2>:<PROTO_MESSAGE2> ...]
