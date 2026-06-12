@@ -61,32 +61,8 @@ func (i *BackupPlanIdentity) Host() string {
 	return BackupPlanIdentityFormat.Host()
 }
 
-// Parent is kept for backward compatibility of existing callers.
-func (i *BackupPlanIdentity) Parent() *BackupPlanParent {
-	return &BackupPlanParent{
-		ProjectID: i.Project,
-		Location:  i.Location,
-	}
-}
-
-// ID is kept for backward compatibility of existing callers.
-func (i *BackupPlanIdentity) ID() string {
-	return i.BackupPlan
-}
-
-// BackupPlanParent represents the parent of a BackupPlan.
-// Kept for backward compatibility of existing callers.
-type BackupPlanParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *BackupPlanParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-func NewBackupPlanIdentity(ctx context.Context, reader client.Reader, obj *BackupDRBackupPlan) (*BackupPlanIdentity, error) {
-	return getIdentityFromBackupPlanSpec(ctx, reader, obj)
+func (i *BackupPlanIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
 func getIdentityFromBackupPlanSpec(ctx context.Context, reader client.Reader, obj *BackupDRBackupPlan) (*BackupPlanIdentity, error) {
@@ -134,12 +110,4 @@ func (obj *BackupDRBackupPlan) GetIdentity(ctx context.Context, reader client.Re
 	}
 
 	return specIdentity, nil
-}
-
-func ParseBackupPlanExternal(external string) (parent *BackupPlanParent, resourceID string, err error) {
-	id := &BackupPlanIdentity{}
-	if err := id.FromExternal(external); err != nil {
-		return nil, "", err
-	}
-	return id.Parent(), id.BackupPlan, nil
 }
