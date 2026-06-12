@@ -53,12 +53,14 @@ func GetProtoMessageFromAnnotation(commentLine string) (string, bool) {
 
 // special-case proto messages that are currently not mapped to KRM Go structs
 var protoMessagesNotMappedToGoStruct = map[string]string{
-	"google.protobuf.Timestamp":   "string",
-	"google.protobuf.Duration":    "string",
-	"google.protobuf.Int64Value":  "int64",
+	"google.protobuf.Timestamp": "string",
+	"google.protobuf.Duration":  "string",
+	"google.protobuf.Int64Value": "int64",
 	"google.protobuf.StringValue": "string",
 	"google.protobuf.BoolValue":   "bool",
 	"google.protobuf.Struct":      "apiextensionsv1.JSON",
+	"google.protobuf.Value":       "apiextensionsv1.JSON",
+	"google.protobuf.ListValue":   "apiextensionsv1.JSON",
 	"google.rpc.Status":           "common.Status",
 }
 

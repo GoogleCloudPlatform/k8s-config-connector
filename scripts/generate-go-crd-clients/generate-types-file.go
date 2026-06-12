@@ -525,7 +525,7 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 		if strings.HasPrefix(desc.Type, "list (") {
 			listType := strings.TrimSuffix(strings.TrimPrefix(desc.Type, "list ("), ")")
 			switch listType {
-			case "boolean", "string", "number", "integer":
+			case "boolean", "string", "number", "integer", "schemaless", "":
 				return fmt.Sprintf("[]%v", formatToGoLiteral(listType))
 			default:
 				if isRef {
