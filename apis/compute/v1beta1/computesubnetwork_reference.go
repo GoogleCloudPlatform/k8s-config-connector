@@ -93,7 +93,11 @@ func (r *ComputeSubnetworkRef) Normalize(ctx context.Context, reader client.Read
 		// Get external from status.selfLink. This ensures backward compatibility for TF/DCL-based resources that lack status.externalRef.
 		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
 		if selfLink != "" {
-			return apirefs.TrimComputeURIPrefix(selfLink)
+			trimmed := apirefs.TrimComputeURIPrefix(selfLink)
+			id := &ComputeSubnetworkIdentity{}
+			if err := id.FromExternal(trimmed); err == nil {
+				return trimmed
+			}
 		}
 
 		obj, err := common.ToStructuredType[*ComputeSubnetwork](u)
