@@ -72,6 +72,11 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	id, err := krm.NewInstanceIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
@@ -82,10 +87,17 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	desired := NotebookInstanceSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	return &InstanceAdapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desired,
 	}, nil
 }
 
@@ -97,7 +109,7 @@ func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directba
 type InstanceAdapter struct {
 	id        *krm.InstanceIdentity
 	gcpClient *gcp.NotebookClient
-	desired   *krm.NotebookInstance
+	desired   *notebookspb.Instance
 	actual    *notebookspb.Instance
 }
 
@@ -130,16 +142,10 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log.V(2).Info("creating Instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := NotebookInstanceSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	req := &notebookspb.CreateInstanceRequest{
 		Parent:     a.id.Parent().String(),
 		InstanceId: a.id.ID(),
-		Instance:   resource,
+		Instance:   a.desired,
 	}
 	op, err := a.gcpClient.CreateInstance(ctx, req)
 	if err != nil {
@@ -166,12 +172,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	log.V(2).Info("updating Instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := NotebookInstanceSpec_v1beta1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(a.desired, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -190,7 +191,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if paths.Has("metadata") {
 		req := &notebookspb.UpdateInstanceMetadataItemsRequest{
 			Name:  a.id.String(),
-			Items: desiredPb.Metadata,
+			Items: a.desired.Metadata,
 		}
 		_, err = a.gcpClient.UpdateInstanceMetadataItems(ctx, req)
 		if err != nil {
@@ -213,7 +214,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		// updates the shielded instance config
 		req := &notebookspb.UpdateShieldedInstanceConfigRequest{
 			Name:                   a.id.String(),
-			ShieldedInstanceConfig: desiredPb.ShieldedInstanceConfig,
+			ShieldedInstanceConfig: a.desired.ShieldedInstanceConfig,
 		}
 		op, err := a.gcpClient.UpdateShieldedInstanceConfig(ctx, req)
 		if err != nil {
