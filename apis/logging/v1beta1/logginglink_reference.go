@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,18 +17,26 @@ package v1beta1
 import (
 	"context"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &LoggingLinkRef{}
+var LoggingLinkGVK = schema.GroupVersionKind{
+	Group:   "logging.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "LoggingLink",
+}
+
+var _ refs.Ref = &LoggingLinkRef{}
 
 // LoggingLinkRef is a reference to a LoggingLink.
 type LoggingLinkRef struct {
-	// A reference to an externally managed LoggingLink resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}/links/{{linkID}}".
+	// A reference to an externally managed LoggingLink resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}/links/{{linkID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a LoggingLink resource.
@@ -36,6 +44,10 @@ type LoggingLinkRef struct {
 
 	// The namespace of a LoggingLink resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&LoggingLinkRef{})
 }
 
 func (r *LoggingLinkRef) GetGVK() schema.GroupVersionKind {
@@ -60,13 +72,32 @@ func (r *LoggingLinkRef) SetExternal(ref string) {
 }
 
 func (r *LoggingLinkRef) ValidateExternal(ref string) error {
-	id := &LinkIdentity{}
-	if err := id.FromExternal(r.GetExternal()); err != nil {
+	id := &LoggingLinkIdentity{}
+	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
+func (r *LoggingLinkRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &LoggingLinkIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
 func (r *LoggingLinkRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		typed, err := common.ToStructuredType[*LoggingLink](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromLoggingLinkSpec(ctx, reader, typed)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
