@@ -99,7 +99,7 @@ resourceType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed BackupDRBackupPlan resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backupplans/{{backupplanID}}".</p>
+            <p>A reference to an externally managed BackupDRBackupPlan resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backupPlans/{{backupplanID}}".</p>
         </td>
     </tr>
     <tr>
