@@ -24,22 +24,25 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(certificateMapFuzzer())
+	fuzztesting.RegisterKRMFuzzer(certificateMapFuzzer())
 }
 
 func certificateMapFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.CertificateMap{},
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.CertificateMap{},
 		CertificateManagerCertificateMapSpec_v1beta1_FromProto,
 		CertificateManagerCertificateMapSpec_v1beta1_ToProto,
+		CertificateManagerCertificateMapStatus_v1beta1_FromProto,
+		CertificateManagerCertificateMapStatus_v1beta1_ToProto,
 	)
 
 	f.SpecField(".description")
 
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
+	f.StatusField(".gclb_targets")
+
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_LabelsAnnotations(".labels")
-	f.Unimplemented_Internal(".create_time")
-	f.Unimplemented_Internal(".update_time")
-	f.Unimplemented_Internal(".gclb_targets")
 
 	return f
 }
