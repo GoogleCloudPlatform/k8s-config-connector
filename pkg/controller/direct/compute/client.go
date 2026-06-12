@@ -142,3 +142,27 @@ func (m *gcpClient) newReservationsClient(ctx context.Context) (*compute.Reserva
 	}
 	return client, err
 }
+
+func (m *gcpClient) newAddressesClient(ctx context.Context) (*compute.AddressesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewAddressesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute regional addresses client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newGlobalAddressesClient(ctx context.Context) (*compute.GlobalAddressesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewGlobalAddressesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute global addresses client: %w", err)
+	}
+	return client, err
+}

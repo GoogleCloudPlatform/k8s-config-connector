@@ -169,6 +169,78 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	return out
 }
 
+/* found existing non-generated mapping function "ComputeAddressSpec_v1beta1_FromProto", skipping
+func ComputeAddressSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeAddressSpec{}
+	out.Address = in.Address
+	out.AddressType = in.AddressType
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: IPVersion
+	// (near miss): "IPVersion" vs "IpVersion"
+	// MISSING: IPV6EndpointType
+	// (near miss): "IPV6EndpointType" vs "Ipv6EndpointType"
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.NetworkTier = in.NetworkTier
+	out.PrefixLength = in.PrefixLength
+	out.Purpose = in.Purpose
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	// MISSING: Users
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeAddressSpec_v1beta1_ToProto", skipping
+func ComputeAddressSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressSpec) *pb.Address {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Address{}
+	out.Address = in.Address
+	out.AddressType = in.AddressType
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: IPVersion
+	// (near miss): "IPVersion" vs "IpVersion"
+	// MISSING: IPV6EndpointType
+	// (near miss): "IPV6EndpointType" vs "Ipv6EndpointType"
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.NetworkTier = in.NetworkTier
+	out.PrefixLength = in.PrefixLength
+	out.Purpose = in.Purpose
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = &in.SubnetworkRef.External
+	}
+	// MISSING: Users
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
 	if in == nil {
