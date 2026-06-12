@@ -79,6 +79,10 @@ For standard E2E fixture tests under `pkg/test/resourcefixture/testdata/basic/`,
      hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/dnsrecordset
      ```
 2. The script executes the tests with `E2E_GCP_TARGET=real`, `WRITE_GOLDEN_OUTPUT=1`, and records the traffic to `_http.log`.
+3. **If the script fails** (e.g. due to permissions or an invalid default project ID like `foobar`), DO NOT skip this step. Ask the user for a valid GCP project ID to test against, and then run:
+   ```bash
+   GCP_PROJECT_ID=<project-id> hack/record-gcp <test_name>
+   ```
 
 ### D. Running MockGCP Script Test Recordings
 For MockGCP-specific script tests (located under `mockgcp/mockgcptests/`), use the python recording task:
