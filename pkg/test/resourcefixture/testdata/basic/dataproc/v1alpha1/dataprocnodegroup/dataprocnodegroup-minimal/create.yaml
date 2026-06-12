@@ -1,0 +1,14 @@
+apiVersion: dataproc.cnrm.cloud.google.com/v1alpha1
+kind: DataprocNodeGroup
+metadata:
+  name: dataprocnodegroup-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: "us-central1"
+  clusterRef:
+    name: dataproccluster-${uniqueId}
+  roles:
+    - DRIVER
+  nodeGroupConfig:
+    numInstances: 1

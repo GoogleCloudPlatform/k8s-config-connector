@@ -143,12 +143,10 @@ type JobLoggingConfig struct {
 
 type JobParent struct {
 	/* Required. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location"`
 
 	/* Required. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 
 type JobPigJob struct {

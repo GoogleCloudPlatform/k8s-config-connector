@@ -36,4 +36,19 @@ cd operator
 
 make manifests
 
-go test -test.count=1 -v ./pkg/... ./scripts/...
+if [ -z ${GITHUB_ACTION+x} ]; then
+    go test -timeout 20m -test.count=1 -v ./pkg/... ./scripts/...
+else
+    # Output a keep-alive message every minute to prevent GitHub Actions from timing out
+    # due to no output during long compilation phases.
+    while true; do echo "Still compiling/running tests..."; sleep 60; done >&2 &
+    KEEPALIVE_PID=$!
+    set +e
+    go test -timeout 20m -test.count=1 -v ./pkg/... ./scripts/...
+    TEST_EXIT_CODE=$?
+    set -e
+    kill $KEEPALIVE_PID || true
+    if [ $TEST_EXIT_CODE -ne 0 ]; then
+        exit $TEST_EXIT_CODE
+    fi
+fi

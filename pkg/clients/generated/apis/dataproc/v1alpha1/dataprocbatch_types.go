@@ -245,12 +245,10 @@ type DataprocBatchSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/* Required. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location"`
 
 	/* Required. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Optional. PySpark batch config. */
 	// +optional

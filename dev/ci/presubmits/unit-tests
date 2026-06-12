@@ -38,4 +38,19 @@ unset VALIDATE_URLS
 # Get all unit test packages excluding the operator, E2E tests, and preview CLI tests
 UNIT_TEST_PACKAGES=$(go list ./... | grep -v "/operator" | grep -v "tests/e2e" | grep -v "pkg/cli/preview")
 
-go test -test.count=1 -v ${UNIT_TEST_PACKAGES}
+if [ -z ${GITHUB_ACTION+x} ]; then
+    go test -timeout 20m -test.count=1 -v ${UNIT_TEST_PACKAGES}
+else
+    # Output a keep-alive message every minute to prevent GitHub Actions from timing out
+    # due to no output during long compilation phases.
+    while true; do echo "Still compiling/running tests..."; sleep 60; done >&2 &
+    KEEPALIVE_PID=$!
+    set +e
+    go test -timeout 20m -test.count=1 -v ${UNIT_TEST_PACKAGES}
+    TEST_EXIT_CODE=$?
+    set -e
+    kill $KEEPALIVE_PID || true
+    if [ $TEST_EXIT_CODE -ne 0 ]; then
+        exit $TEST_EXIT_CODE
+    fi
+fi

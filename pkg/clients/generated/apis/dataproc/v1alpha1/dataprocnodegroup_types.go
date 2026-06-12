@@ -43,24 +43,9 @@ type NodegroupAccelerators struct {
 	// +optional
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 
-	/* Full URL, partial URI, or short name of the accelerator type resource to
-	expose to this instance. See
-	[Compute Engine
-	AcceleratorTypes](https://cloud.google.com/compute/docs/reference/v1/acceleratorTypes).
-
-	Examples:
-
-	* `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
-	* `projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
-	* `nvidia-tesla-t4`
-
-	**Auto Zone Exception**: If you are using the Dataproc
-	[Auto Zone
-	Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
-	feature, you must use the short name of the accelerator type
-	resource, for example, `nvidia-tesla-t4`. */
+	/* Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. */
 	// +optional
-	AcceleratorTypeURI *string `json:"acceleratorTypeURI,omitempty"`
+	AcceleratorTypeRef *v1alpha1.ResourceRef `json:"acceleratorTypeRef,omitempty"`
 }
 
 type NodegroupDiskConfig struct {
@@ -126,79 +111,31 @@ type NodegroupNodeGroupConfig struct {
 	// +optional
 	DiskConfig *NodegroupDiskConfig `json:"diskConfig,omitempty"`
 
-	/* Optional. The Compute Engine image resource used for cluster instances.
-
-	The URI can represent an image or image family.
-
-	Image examples:
-
-	* `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/[image-id]`
-	* `projects/[project_id]/global/images/[image-id]`
-	* `image-id`
-
-	Image family examples. Dataproc will use the most recent
-	image from the family:
-
-	* `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/family/[custom-image-family-name]`
-	* `projects/[project_id]/global/images/family/[custom-image-family-name]`
-
-	If the URI is unspecified, it will be inferred from
-	`SoftwareConfig.image_version` or the system default. */
+	/* Optional. The Compute Engine image resource used for cluster instances. */
 	// +optional
-	ImageURI *string `json:"imageURI,omitempty"`
+	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
 	/* Optional. Instance flexibility Policy allowing a mixture of VM shapes and provisioning models. */
 	// +optional
 	InstanceFlexibilityPolicy *NodegroupInstanceFlexibilityPolicy `json:"instanceFlexibilityPolicy,omitempty"`
 
-	/* Optional. The Compute Engine machine type used for cluster instances.
-
-	A full URL, partial URI, or short name are valid. Examples:
-
-	* `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
-	* `projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
-	* `n1-standard-2`
-
-	**Auto Zone Exception**: If you are using the Dataproc
-	[Auto Zone
-	Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
-	feature, you must use the short name of the machine type
-	resource, for example, `n1-standard-2`. */
+	/* Optional. The Compute Engine machine type used for cluster instances. */
 	// +optional
-	MachineTypeURI *string `json:"machineTypeURI,omitempty"`
+	MachineTypeRef *v1alpha1.ResourceRef `json:"machineTypeRef,omitempty"`
 
-	/* Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
+	/* Optional. Specifies the minimum cpu platform for the Instance Group. */
 	// +optional
 	MinCPUPlatform *string `json:"minCPUPlatform,omitempty"`
 
-	/* Optional. The minimum number of primary worker instances to create.
-	If `min_num_instances` is set, cluster creation will succeed if
-	the number of primary workers created is at least equal to the
-	`min_num_instances` number.
-
-	Example: Cluster creation request with `num_instances` = `5` and
-	`min_num_instances` = `3`:
-
-	*  If 4 VMs are created and 1 instance fails,
-	the failed VM is deleted. The cluster is
-	resized to 4 instances and placed in a `RUNNING` state.
-	*  If 2 instances are created and 3 instances fail,
-	the cluster in placed in an `ERROR` state. The failed VMs
-	are not deleted. */
+	/* Optional. The minimum number of primary worker instances to create. */
 	// +optional
 	MinNumInstances *int32 `json:"minNumInstances,omitempty"`
 
-	/* Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
+	/* Optional. The number of VM instances in the instance group. */
 	// +optional
 	NumInstances *int32 `json:"numInstances,omitempty"`
 
-	/* Optional. Specifies the preemptibility of the instance group.
-
-	The default value for master and worker groups is
-	`NON_PREEMPTIBLE`. This default cannot be changed.
-
-	The default value for secondary instances is
-	`PREEMPTIBLE`. */
+	/* Optional. Specifies the preemptibility of the instance group. */
 	// +optional
 	Preemptibility *string `json:"preemptibility,omitempty"`
 
@@ -212,18 +149,21 @@ type NodegroupProvisioningModelMix struct {
 	// +optional
 	StandardCapacityBase *int32 `json:"standardCapacityBase,omitempty"`
 
-	/* Optional. The percentage of target capacity that should use Standard VM. The remaining percentage will use Spot VMs. The percentage applies only to the capacity above standard_capacity_base. eg. If 15 instances are requested and standard_capacity_base is 5 and standard_capacity_percent_above_base is 30, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances. The mix will be 30% standard and 70% spot. */
+	/* Optional. The percentage of target capacity that should use Standard VM. The remaining percentage will use Spot VMs. The percentage applies only to the capacity above standard_capacity_base. eg. If 15 instances are requested and standard_capacity_base is 5 and standard_capacity_percent_above_base is 30, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances. The mix will be 30% standard and 70% spot, which means 3 standard VMs and 7 spot VMs will be created. The total number of standard VMs created will be 8 and spot VMs will be 7. */
 	// +optional
 	StandardCapacityPercentAboveBase *int32 `json:"standardCapacityPercentAboveBase,omitempty"`
 }
 
 type NodegroupStartupConfig struct {
-	/* Optional. The config setting to enable cluster creation/ updation to be successful only after required_registration_fraction of instances are up and running. This configuration is applicable to only secondary workers for now. The cluster will fail if required_registration_fraction of instances are not available. This will include instance creation, agent registration, and service registration (if enabled). */
+	/* Optional. The longest duration that directory required by older OS release will be present. */
 	// +optional
 	RequiredRegistrationFraction *float64 `json:"requiredRegistrationFraction,omitempty"`
 }
 
 type DataprocNodeGroupSpec struct {
+	/* Required. The cluster that this node group belongs to. */
+	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+
 	/* Optional. Node group labels.
 
 	* Label **keys** must consist of from 1 to 63 characters and conform to
@@ -236,24 +176,21 @@ type DataprocNodeGroupSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/* Required. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location"`
 
 	/* Optional. The node group instance group configuration. */
 	// +optional
 	NodeGroupConfig *NodegroupNodeGroupConfig `json:"nodeGroupConfig,omitempty"`
 
 	/* Required. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The DataprocNodeGroup name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Required. Node group roles. */
-	// +optional
-	Roles []string `json:"roles,omitempty"`
+	Roles []string `json:"roles"`
 }
 
 type NodegroupInstanceFlexibilityPolicyStatus struct {
@@ -265,17 +202,13 @@ type NodegroupInstanceFlexibilityPolicyStatus struct {
 type NodegroupInstanceReferencesStatus struct {
 	/* The unique identifier of the Compute Engine instance. */
 	// +optional
-	InstanceID *string `json:"instanceID,omitempty"`
+	InstanceId *string `json:"instanceId,omitempty"`
 
 	/* The user-friendly name of the Compute Engine instance. */
 	// +optional
 	InstanceName *string `json:"instanceName,omitempty"`
 
-	/* The public ECIES key used for sharing data with this instance. */
-	// +optional
-	PublicEciesKey *string `json:"publicEciesKey,omitempty"`
-
-	/* The public RSA key used for sharing data with this instance. */
+	/* The public key used for sharing data with this instance. */
 	// +optional
 	PublicKey *string `json:"publicKey,omitempty"`
 }
@@ -294,10 +227,6 @@ type NodegroupManagedGroupConfigStatus struct {
 	/* Output only. The name of the Instance Group Manager for this group. */
 	// +optional
 	InstanceGroupManagerName *string `json:"instanceGroupManagerName,omitempty"`
-
-	/* Output only. The partial URI to the instance group manager for this group. E.g. projects/my-project/regions/us-central1/instanceGroupManagers/my-igm. */
-	// +optional
-	InstanceGroupManagerURI *string `json:"instanceGroupManagerURI,omitempty"`
 
 	/* Output only. The name of the Instance Template used for the Managed Instance Group. */
 	// +optional
@@ -354,6 +283,7 @@ type DataprocNodeGroupStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataprocnodegroup;gcpdataprocnodegroups
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

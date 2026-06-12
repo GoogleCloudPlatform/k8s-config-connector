@@ -1,0 +1,19 @@
+apiVersion: dataproc.cnrm.cloud.google.com/v1alpha1
+kind: DataprocNodeGroup
+metadata:
+  name: dataprocnodegroup-${uniqueId}
+  labels:
+    foo: bar
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: "us-central1"
+  clusterRef:
+    name: dataproccluster-${uniqueId}
+  roles:
+    - DRIVER
+  nodeGroupConfig:
+    numInstances: 1
+    diskConfig:
+      bootDiskType: pd-standard
+      bootDiskSizeGB: 500

@@ -15,6 +15,8 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -25,6 +27,7 @@ var DataprocNodeGroupGVK = GroupVersion.WithKind("DataprocNodeGroup")
 // +kcc:spec:proto=google.cloud.dataproc.v1.NodeGroup
 type DataprocNodeGroupSpec struct {
 	// Required. Node group roles.
+	// +required
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.roles
 	Roles []string `json:"roles,omitempty"`
 
@@ -42,6 +45,10 @@ type DataprocNodeGroupSpec struct {
 	//  * The node group must have no more than 32 labels.
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.labels
 	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. The cluster that this node group belongs to.
+	// +required
+	ClusterRef *refsv1beta1.DataprocClusterRef `json:"clusterRef,omitempty"`
 
 	*Parent `json:",inline"`
 
@@ -135,6 +142,7 @@ type DataprocNodeGroupObservedState struct {
 
 // DataprocNodeGroup is the Schema for the DataprocNodeGroup API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 type DataprocNodeGroup struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -154,4 +162,200 @@ type DataprocNodeGroupList struct {
 
 func init() {
 	SchemeBuilder.Register(&DataprocNodeGroup{}, &DataprocNodeGroupList{})
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
+type InstanceFlexibilityPolicyObservedState struct {
+	// Output only. A list of instance selection results in the group.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_results
+	InstanceSelectionResults []InstanceFlexibilityPolicy_InstanceSelectionResultObservedState `json:"instanceSelectionResults,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
+type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
+	// Output only. Full machine-type names, e.g. "n1-standard-16".
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Output only. Number of VM provisioned with the machine_type.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult.vm_count
+	VMCount *int32 `json:"vmCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
+type InstanceFlexibilityPolicy struct {
+	// Optional. Defines how the Group selects the provisioning model to ensure
+	//  required reliability.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.provisioning_model_mix
+	ProvisioningModelMix *InstanceFlexibilityPolicy_ProvisioningModelMix `json:"provisioningModelMix,omitempty"`
+
+	// Optional. List of instance selection options that the group will use when
+	//  creating new VMs.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_list
+	InstanceSelectionList []InstanceFlexibilityPolicy_InstanceSelection `json:"instanceSelectionList,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection
+type InstanceFlexibilityPolicy_InstanceSelection struct {
+	// Optional. Full machine-type names, e.g. "n1-standard-16".
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection.machine_types
+	MachineTypes []string `json:"machineTypes,omitempty"`
+
+	// Optional. Preference of this instance selection. Lower number means
+	//  higher preference. Dataproc will first try to create a VM based on the
+	//  machine-type with priority rank and fallback to next rank based on
+	//  availability. Machine types and instance selections with the same
+	//  priority have the same preference.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection.rank
+	Rank *int32 `json:"rank,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
+type InstanceFlexibilityPolicy_InstanceSelectionResult struct {
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix
+type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
+	// Optional. The base capacity that will always use Standard VMs to avoid
+	//  risk of more preemption than the minimum capacity you need. Dataproc will
+	//  create only standard VMs until it reaches standard_capacity_base, then it
+	//  will start using standard_capacity_percent_above_base to mix Spot with
+	//  Standard VMs. eg. If 15 instances are requested and
+	//  standard_capacity_base is 5, Dataproc will create 5 standard VMs and then
+	//  start mixing spot and standard VMs for remaining 10 instances.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix.standard_capacity_base
+	StandardCapacityBase *int32 `json:"standardCapacityBase,omitempty"`
+
+	// Optional. The percentage of target capacity that should use Standard VM.
+	//  The remaining percentage will use Spot VMs. The percentage applies only to
+	//  the capacity above standard_capacity_base. eg. If 15 instances are
+	//  requested and standard_capacity_base is 5 and
+	//  standard_capacity_percent_above_base is 30, Dataproc will create 5
+	//  standard VMs and then start mixing spot and standard VMs for remaining 10
+	//  instances. The mix will be 30% standard and 70% spot, which means 3
+	//  standard VMs and 7 spot VMs will be created. The total number of standard
+	//  VMs created will be 8 and spot VMs will be 7.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix.standard_capacity_percent_above_base
+	StandardCapacityPercentAboveBase *int32 `json:"standardCapacityPercentAboveBase,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.InstanceGroupConfig
+type InstanceGroupConfig struct {
+	// Optional. The number of VM instances in the instance group.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.num_instances
+	NumInstances *int32 `json:"numInstances,omitempty"`
+
+	// Optional. The Compute Engine image resource used for cluster instances.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.image_uri
+	ImageRef *computev1beta1.ComputeImageRef `json:"imageRef,omitempty"`
+
+	// Optional. The Compute Engine machine type used for cluster instances.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.machine_type_uri
+	MachineTypeRef *computev1beta1.ComputeMachineTypeRef `json:"machineTypeRef,omitempty"`
+
+	// Optional. Disk option config settings.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.disk_config
+	DiskConfig *DiskConfig `json:"diskConfig,omitempty"`
+
+	// Optional. Specifies the preemptibility of the instance group.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.preemptibility
+	Preemptibility *string `json:"preemptibility,omitempty"`
+
+	// Optional. The Compute Engine accelerator configuration for these
+	//  instances.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.accelerators
+	Accelerators []AcceleratorConfig `json:"accelerators,omitempty"`
+
+	// Optional. Specifies the minimum cpu platform for the Instance Group.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.min_cpu_platform
+	MinCPUPlatform *string `json:"minCPUPlatform,omitempty"`
+
+	// Optional. The minimum number of primary worker instances to create.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.min_num_instances
+	MinNumInstances *int32 `json:"minNumInstances,omitempty"`
+
+	// Optional. Instance flexibility Policy allowing a mixture of VM shapes and
+	//  provisioning models.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.instance_flexibility_policy
+	InstanceFlexibilityPolicy *InstanceFlexibilityPolicy `json:"instanceFlexibilityPolicy,omitempty"`
+
+	// Optional. Configuration to handle the startup of instances during cluster
+	//  create and update process.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.startup_config
+	StartupConfig *StartupConfig `json:"startupConfig,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceGroupConfig
+type InstanceGroupConfigObservedState struct {
+	// Output only. The list of instance names. Dataproc derives the names
+	//  from `cluster_name`, `num_instances`, and the instance group.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.instance_names
+	InstanceNames []string `json:"instanceNames,omitempty"`
+
+	// Output only. List of references to Compute Engine instances.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.instance_references
+	InstanceReferences []InstanceReference `json:"instanceReferences,omitempty"`
+
+	// Output only. Specifies that this instance group contains preemptible
+	//  instances.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.is_preemptible
+	IsPreemptible *bool `json:"isPreemptible,omitempty"`
+
+	// Output only. The config for Compute Engine Instance Group
+	//  Manager that manages this group.
+	//  This is only used for preemptible instance groups.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.managed_group_config
+	ManagedGroupConfig *ManagedGroupConfig `json:"managedGroupConfig,omitempty"`
+
+	// Optional. Instance flexibility Policy allowing a mixture of VM shapes and
+	//  provisioning models.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.instance_flexibility_policy
+	InstanceFlexibilityPolicy *InstanceFlexibilityPolicyObservedState `json:"instanceFlexibilityPolicy,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.AcceleratorConfig
+type AcceleratorConfig struct {
+	// Full URL, partial URI, or short name of the accelerator type resource to
+	//  expose to this instance.
+	// +kcc:proto:field=google.cloud.dataproc.v1.AcceleratorConfig.accelerator_type_uri
+	AcceleratorTypeRef *computev1beta1.ComputeAcceleratorTypeRef `json:"acceleratorTypeRef,omitempty"`
+
+	// The number of the accelerator cards of this type exposed to this instance.
+	// +kcc:proto:field=google.cloud.dataproc.v1.AcceleratorConfig.accelerator_count
+	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.StartupConfig
+type StartupConfig struct {
+	// Optional. The longest duration that directory required by older OS release
+	//  will be present.
+	// +kcc:proto:field=google.cloud.dataproc.v1.StartupConfig.required_registration_fraction
+	RequiredRegistrationFraction *float64 `json:"requiredRegistrationFraction,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.InstanceReference
+type InstanceReference struct {
+	// The user-friendly name of the Compute Engine instance.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.instance_name
+	InstanceName *string `json:"instanceName,omitempty"`
+
+	// The unique identifier of the Compute Engine instance.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.instance_id
+	InstanceID *string `json:"instanceId,omitempty"`
+
+	// The public key used for sharing data with this instance.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.public_key
+	PublicKey *string `json:"publicKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.ManagedGroupConfig
+type ManagedGroupConfig struct {
+	// Output only. The name of the Instance Template used for the Managed
+	//  Instance Group.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ManagedGroupConfig.instance_template_name
+	InstanceTemplateName *string `json:"instanceTemplateName,omitempty"`
+
+	// Output only. The name of the Instance Group Manager for this group.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ManagedGroupConfig.instance_group_manager_name
+	InstanceGroupManagerName *string `json:"instanceGroupManagerName,omitempty"`
 }

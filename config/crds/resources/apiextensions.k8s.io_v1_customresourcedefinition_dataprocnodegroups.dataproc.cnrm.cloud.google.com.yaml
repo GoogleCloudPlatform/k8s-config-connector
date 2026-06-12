@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: dataprocnodegroups.dataproc.cnrm.cloud.google.com
 spec:
@@ -61,6 +62,34 @@ spec:
           spec:
             description: DataprocNodeGroupSpec defines the desired state of DataprocNodeGroup
             properties:
+              clusterRef:
+                description: Required. The cluster that this node group belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DataprocCluster
+                      resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".
+                    type: string
+                  name:
+                    description: The name of a DataprocCluster resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DataprocCluster resource.
+                    type: string
+                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -90,25 +119,36 @@ spec:
                             type exposed to this instance.
                           format: int32
                           type: integer
-                        acceleratorTypeURI:
-                          description: |-
-                            Full URL, partial URI, or short name of the accelerator type resource to
-                             expose to this instance. See
-                             [Compute Engine
-                             AcceleratorTypes](https://cloud.google.com/compute/docs/reference/v1/acceleratorTypes).
-
-                             Examples:
-
-                             * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
-                             * `projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
-                             * `nvidia-tesla-t4`
-
-                             **Auto Zone Exception**: If you are using the Dataproc
-                             [Auto Zone
-                             Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
-                             feature, you must use the short name of the accelerator type
-                             resource, for example, `nvidia-tesla-t4`.
-                          type: string
+                        acceleratorTypeRef:
+                          description: Full URL, partial URI, or short name of the
+                            accelerator type resource to expose to this instance.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed ComputeAcceleratorType
+                                resource. Should be in the format "projects/{{project}}/zones/{{zone}}/acceleratorTypes/{{name}}".
+                              type: string
+                            name:
+                              description: The name of a ComputeAcceleratorType resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a ComputeAcceleratorType
+                                resource.
+                              type: string
+                          type: object
                       type: object
                     type: array
                   diskConfig:
@@ -161,27 +201,35 @@ spec:
                         format: int32
                         type: integer
                     type: object
-                  imageURI:
-                    description: |-
-                      Optional. The Compute Engine image resource used for cluster instances.
-
-                       The URI can represent an image or image family.
-
-                       Image examples:
-
-                       * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/[image-id]`
-                       * `projects/[project_id]/global/images/[image-id]`
-                       * `image-id`
-
-                       Image family examples. Dataproc will use the most recent
-                       image from the family:
-
-                       * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/family/[custom-image-family-name]`
-                       * `projects/[project_id]/global/images/family/[custom-image-family-name]`
-
-                       If the URI is unspecified, it will be inferred from
-                       `SoftwareConfig.image_version` or the system default.
-                    type: string
+                  imageRef:
+                    description: Optional. The Compute Engine image resource used
+                      for cluster instances.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ComputeImage
+                          resource. Should be in the format "projects/{{project}}/global/images/{{name}}".
+                        type: string
+                      name:
+                        description: The name of a ComputeImage resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeImage resource.
+                        type: string
+                    type: object
                   instanceFlexibilityPolicy:
                     description: Optional. Instance flexibility Policy allowing a
                       mixture of VM shapes and provisioning models.
@@ -232,79 +280,68 @@ spec:
                               are requested and standard_capacity_base is 5 and standard_capacity_percent_above_base
                               is 30, Dataproc will create 5 standard VMs and then
                               start mixing spot and standard VMs for remaining 10
-                              instances. The mix will be 30% standard and 70% spot.
+                              instances. The mix will be 30% standard and 70% spot,
+                              which means 3 standard VMs and 7 spot VMs will be created.
+                              The total number of standard VMs created will be 8 and
+                              spot VMs will be 7.
                             format: int32
                             type: integer
                         type: object
                     type: object
-                  machineTypeURI:
-                    description: |-
-                      Optional. The Compute Engine machine type used for cluster instances.
-
-                       A full URL, partial URI, or short name are valid. Examples:
-
-                       * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
-                       * `projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
-                       * `n1-standard-2`
-
-                       **Auto Zone Exception**: If you are using the Dataproc
-                       [Auto Zone
-                       Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
-                       feature, you must use the short name of the machine type
-                       resource, for example, `n1-standard-2`.
-                    type: string
+                  machineTypeRef:
+                    description: Optional. The Compute Engine machine type used for
+                      cluster instances.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ComputeMachineType
+                          resource. Should be in the format "projects/{{project}}/zones/{{zone}}/machineTypes/{{name}}".
+                        type: string
+                      name:
+                        description: The name of a ComputeMachineType resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeMachineType resource.
+                        type: string
+                    type: object
                   minCPUPlatform:
                     description: Optional. Specifies the minimum cpu platform for
-                      the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
+                      the Instance Group.
                     type: string
                   minNumInstances:
-                    description: |-
-                      Optional. The minimum number of primary worker instances to create.
-                       If `min_num_instances` is set, cluster creation will succeed if
-                       the number of primary workers created is at least equal to the
-                       `min_num_instances` number.
-
-                       Example: Cluster creation request with `num_instances` = `5` and
-                       `min_num_instances` = `3`:
-
-                       *  If 4 VMs are created and 1 instance fails,
-                          the failed VM is deleted. The cluster is
-                          resized to 4 instances and placed in a `RUNNING` state.
-                       *  If 2 instances are created and 3 instances fail,
-                          the cluster in placed in an `ERROR` state. The failed VMs
-                          are not deleted.
+                    description: Optional. The minimum number of primary worker instances
+                      to create.
                     format: int32
                     type: integer
                   numInstances:
                     description: Optional. The number of VM instances in the instance
-                      group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability)
-                      [master_config](#FIELDS.master_config) groups, **must be set
-                      to 3**. For standard cluster [master_config](#FIELDS.master_config)
-                      groups, **must be set to 1**.
+                      group.
                     format: int32
                     type: integer
                   preemptibility:
-                    description: |-
-                      Optional. Specifies the preemptibility of the instance group.
-
-                       The default value for master and worker groups is
-                       `NON_PREEMPTIBLE`. This default cannot be changed.
-
-                       The default value for secondary instances is
-                       `PREEMPTIBLE`.
+                    description: Optional. Specifies the preemptibility of the instance
+                      group.
                     type: string
                   startupConfig:
                     description: Optional. Configuration to handle the startup of
                       instances during cluster create and update process.
                     properties:
                       requiredRegistrationFraction:
-                        description: Optional. The config setting to enable cluster
-                          creation/ updation to be successful only after required_registration_fraction
-                          of instances are up and running. This configuration is applicable
-                          to only secondary workers for now. The cluster will fail
-                          if required_registration_fraction of instances are not available.
-                          This will include instance creation, agent registration,
-                          and service registration (if enabled).
+                        description: Optional. The longest duration that directory
+                          required by older OS release will be present.
                         type: number
                     type: object
                 type: object
@@ -349,6 +386,11 @@ spec:
                 items:
                   type: string
                 type: array
+            required:
+            - clusterRef
+            - location
+            - projectRef
+            - roles
             type: object
           status:
             description: DataprocNodeGroupStatus defines the config connector machine
@@ -432,7 +474,7 @@ spec:
                           instances.
                         items:
                           properties:
-                            instanceID:
+                            instanceId:
                               description: The unique identifier of the Compute Engine
                                 instance.
                               type: string
@@ -440,13 +482,9 @@ spec:
                               description: The user-friendly name of the Compute Engine
                                 instance.
                               type: string
-                            publicEciesKey:
-                              description: The public ECIES key used for sharing data
-                                with this instance.
-                              type: string
                             publicKey:
-                              description: The public RSA key used for sharing data
-                                with this instance.
+                              description: The public key used for sharing data with
+                                this instance.
                               type: string
                           type: object
                         type: array
@@ -462,10 +500,6 @@ spec:
                           instanceGroupManagerName:
                             description: Output only. The name of the Instance Group
                               Manager for this group.
-                            type: string
-                          instanceGroupManagerURI:
-                            description: Output only. The partial URI to the instance
-                              group manager for this group. E.g. projects/my-project/regions/us-central1/instanceGroupManagers/my-igm.
                             type: string
                           instanceTemplateName:
                             description: Output only. The name of the Instance Template

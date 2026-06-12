@@ -1362,28 +1362,22 @@
 [missing_field] crd=dataprocjobs.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.trinoJob.queryFileURI" is not set in unstructured objects
 [missing_field] crd=dataprocjobs.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.trinoJob.queryList.queries[]" is not set in unstructured objects
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.accelerators[].acceleratorCount" is not set in unstructured objects
-[missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.accelerators[].acceleratorTypeURI" is not set in unstructured objects
+[missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.accelerators[].acceleratorTypeRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.diskConfig.bootDiskProvisionedIOPs" is not set in unstructured objects
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.diskConfig.bootDiskProvisionedThroughput" is not set in unstructured objects
-[missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.diskConfig.bootDiskSizeGB" is not set in unstructured objects
-[missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.diskConfig.bootDiskType" is not set in unstructured objects
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.diskConfig.localSSDInterface" is not set in unstructured objects
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.diskConfig.numLocalSSDs" is not set in unstructured objects
-[missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.imageURI" is not set in unstructured objects
+[missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.imageRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.instanceFlexibilityPolicy.instanceSelectionList[].machineTypes[]" is not set in unstructured objects
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.instanceFlexibilityPolicy.instanceSelectionList[].rank" is not set in unstructured objects
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityBase" is not set in unstructured objects
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityPercentAboveBase" is not set in unstructured objects
-[missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.machineTypeURI" is not set in unstructured objects
+[missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.machineTypeRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.minCPUPlatform" is not set in unstructured objects
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.minNumInstances" is not set in unstructured objects
-[missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.numInstances" is not set in unstructured objects
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.preemptibility" is not set in unstructured objects
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.startupConfig.requiredRegistrationFraction" is not set in unstructured objects
-[missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.roles[]" is not set in unstructured objects
 [missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.executionConfig.idleTTL" is not set in unstructured objects
 [missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.executionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.executionConfig.networkTags[]" is not set in unstructured objects
