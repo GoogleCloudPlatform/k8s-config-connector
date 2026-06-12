@@ -28,6 +28,7 @@ go run . generate-types \
     --api-version datamigration.cnrm.cloud.google.com/v1alpha1 \
     --include-skipped-output \
     --resource DatabaseMigrationConversionWorkspace:ConversionWorkspace \
+    --resource DatabaseMigrationConnectionProfile:ConnectionProfile \
     --resource DatabaseMigrationMigrationJob:MigrationJob
 
 go run . generate-mapper \
