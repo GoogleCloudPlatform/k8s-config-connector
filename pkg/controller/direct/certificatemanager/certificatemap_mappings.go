@@ -53,3 +53,25 @@ func CertificateMap_GclbTarget_IPConfigObservedState_v1beta1_ToProto(mapCtx *dir
 	}
 	return out
 }
+
+func CertificateManagerCertificateMapStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CertificateMap) *v1beta1.CertificateManagerCertificateMapStatus {
+	if in == nil {
+		return nil
+	}
+	out := &v1beta1.CertificateManagerCertificateMapStatus{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.GclbTargets = direct.Slice_FromProto(mapCtx, in.GetGclbTargets(), CertificateMap_GclbTargetObservedState_v1beta1_FromProto)
+	return out
+}
+
+func CertificateManagerCertificateMapStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *v1beta1.CertificateManagerCertificateMapStatus) *pb.CertificateMap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateMap{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.GclbTargets = direct.Slice_ToProto(mapCtx, in.GclbTargets, CertificateMap_GclbTargetObservedState_v1beta1_ToProto)
+	return out
+}
