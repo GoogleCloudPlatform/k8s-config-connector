@@ -1,0 +1,12 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c10
+<   generation: 2
+---
+>   generation: 1
+19d17
+<   resourceID: runtimeconfig.googleapis.com
+27c25
+<   observedGeneration: 2
+---
+>   observedGeneration: 1

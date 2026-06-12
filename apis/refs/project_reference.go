@@ -71,6 +71,8 @@ func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaul
 		return err
 	}
 	r.External = v1beta1Ref.External
+	r.Name = ""
+	r.Namespace = ""
 	return nil
 }
 
