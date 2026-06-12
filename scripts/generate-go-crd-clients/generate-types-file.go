@@ -88,6 +88,9 @@ func main() {
 	}
 
 	for _, crdFile := range crdFiles {
+		if strings.Contains(crdFile.Name(), "networksecuritydnsthreatdetectors") {
+			continue
+		}
 		resources = append(resources, constructResourceDefinitions(crdsPath, crdFile.Name())...)
 	}
 

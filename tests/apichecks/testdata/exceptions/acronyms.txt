@@ -565,6 +565,7 @@
 [acronyms] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.clientCertificate.grpcEndpoint.targetUri" should be ".spec.clientCertificate.grpcEndpoint.targetURI"
 [acronyms] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.serverValidationCa" should be ".spec.serverValidationCA"
 [acronyms] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.serverValidationCa[].grpcEndpoint.targetUri" should be ".spec.serverValidationCa[].grpcEndpoint.targetURI"
+[acronyms] crd=networksecuritydnsthreatdetectors.networksecurity.cnrm.cloud.google.com: kind "NetworkSecurityDnsThreatDetector" should be "NetworkSecurityDNSThreatDetector"
 [acronyms] crd=networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.mtlsPolicy.clientValidationCa" should be ".spec.mtlsPolicy.clientValidationCA"
 [acronyms] crd=networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.mtlsPolicy.clientValidationCa[].grpcEndpoint.targetUri" should be ".spec.mtlsPolicy.clientValidationCa[].grpcEndpoint.targetURI"
 [acronyms] crd=networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.serverCertificate.grpcEndpoint.targetUri" should be ".spec.serverCertificate.grpcEndpoint.targetURI"

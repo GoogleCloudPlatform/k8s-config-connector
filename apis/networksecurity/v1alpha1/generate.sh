@@ -49,6 +49,14 @@ go run . generate-types \
   --resource NetworkSecuritySecurityProfile:SecurityProfile \
   --proto-source-path ${PROTO_OUT}
 
+mv ${REPO_ROOT}/apis/networksecurity/v1alpha1/types.generated.go ${REPO_ROOT}/apis/networksecurity/v1alpha1/networksecurity_v1_types.generated.go
+
+go run . generate-types \
+  --service google.cloud.networksecurity.v1beta1 \
+  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetworkSecurityDnsThreatDetector:DnsThreatDetector \
+  --proto-source-path ${PROTO_OUT}
+
 # Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)
 go run . generate-types \
   --service google.cloud.networksecurity.v1alpha1 \
