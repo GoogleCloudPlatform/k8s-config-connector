@@ -131,12 +131,14 @@ type Entitlement_RequesterJustificationConfig struct {
 
 /* unreachable type Entitlement_RequesterJustificationConfig_NotMandatory
 // +kcc:proto=google.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.NotMandatory
+// +kubebuilder:validation:XPreserveUnknownFields
 type Entitlement_RequesterJustificationConfig_NotMandatory struct {
 }
 */
 
 /* unreachable type Entitlement_RequesterJustificationConfig_Unstructured
 // +kcc:proto=google.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.Unstructured
+// +kubebuilder:validation:XPreserveUnknownFields
 type Entitlement_RequesterJustificationConfig_Unstructured struct {
 }
 */

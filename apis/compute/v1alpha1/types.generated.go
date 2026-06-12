@@ -212,6 +212,7 @@ type InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy struct {
 
 /* unreachable type InterconnectApplicationAwareInterconnectStrictPriorityPolicy
 // +kcc:proto=google.cloud.compute.v1.InterconnectApplicationAwareInterconnectStrictPriorityPolicy
+// +kubebuilder:validation:XPreserveUnknownFields
 type InterconnectApplicationAwareInterconnectStrictPriorityPolicy struct {
 }
 */
