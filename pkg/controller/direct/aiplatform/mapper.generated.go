@@ -26,6 +26,7 @@ package aiplatform
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -243,6 +244,76 @@ func FeatureNoiseSigma_NoiseSigmaForFeature_ToProto(mapCtx *direct.MapContext, i
 	out := &pb.FeatureNoiseSigma_NoiseSigmaForFeature{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Sigma = direct.ValueOf(in.Sigma)
+	return out
+}
+func FeatureOnlineStore_Bigtable_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore_Bigtable) *krm.FeatureOnlineStore_Bigtable {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureOnlineStore_Bigtable{}
+	out.AutoScaling = FeatureOnlineStore_Bigtable_AutoScaling_FromProto(mapCtx, in.GetAutoScaling())
+	return out
+}
+func FeatureOnlineStore_Bigtable_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStore_Bigtable) *pb.FeatureOnlineStore_Bigtable {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureOnlineStore_Bigtable{}
+	out.AutoScaling = FeatureOnlineStore_Bigtable_AutoScaling_ToProto(mapCtx, in.AutoScaling)
+	return out
+}
+func FeatureOnlineStore_Bigtable_AutoScaling_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore_Bigtable_AutoScaling) *krm.FeatureOnlineStore_Bigtable_AutoScaling {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureOnlineStore_Bigtable_AutoScaling{}
+	out.MinNodeCount = direct.LazyPtr(in.GetMinNodeCount())
+	out.MaxNodeCount = direct.LazyPtr(in.GetMaxNodeCount())
+	out.CPUUtilizationTarget = direct.LazyPtr(in.GetCpuUtilizationTarget())
+	return out
+}
+func FeatureOnlineStore_Bigtable_AutoScaling_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStore_Bigtable_AutoScaling) *pb.FeatureOnlineStore_Bigtable_AutoScaling {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureOnlineStore_Bigtable_AutoScaling{}
+	out.MinNodeCount = direct.ValueOf(in.MinNodeCount)
+	out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
+	out.CpuUtilizationTarget = direct.ValueOf(in.CPUUtilizationTarget)
+	return out
+}
+func FeatureOnlineStore_DedicatedServingEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore_DedicatedServingEndpoint) *krm.FeatureOnlineStore_DedicatedServingEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureOnlineStore_DedicatedServingEndpoint{}
+	// MISSING: PublicEndpointDomainName
+	out.PrivateServiceConnectConfig = PrivateServiceConnectConfig_FromProto(mapCtx, in.GetPrivateServiceConnectConfig())
+	// MISSING: ServiceAttachment
+	return out
+}
+func FeatureOnlineStore_DedicatedServingEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStore_DedicatedServingEndpoint) *pb.FeatureOnlineStore_DedicatedServingEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureOnlineStore_DedicatedServingEndpoint{}
+	// MISSING: PublicEndpointDomainName
+	out.PrivateServiceConnectConfig = PrivateServiceConnectConfig_ToProto(mapCtx, in.PrivateServiceConnectConfig)
+	// MISSING: ServiceAttachment
+	return out
+}
+func FeatureOnlineStore_Optimized_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore_Optimized) *krm.FeatureOnlineStore_Optimized {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureOnlineStore_Optimized{}
+	return out
+}
+func FeatureOnlineStore_Optimized_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStore_Optimized) *pb.FeatureOnlineStore_Optimized {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureOnlineStore_Optimized{}
 	return out
 }
 func FilterSplit_FromProto(mapCtx *direct.MapContext, in *pb.FilterSplit) *krm.FilterSplit {
@@ -567,6 +638,36 @@ func Model_OriginalModelInfoObservedState_ToProto(mapCtx *direct.MapContext, in 
 	out.Model = direct.ValueOf(in.Model)
 	return out
 }
+func PSCAutomationConfig_FromProto(mapCtx *direct.MapContext, in *pb.PSCAutomationConfig) *krm.PSCAutomationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCAutomationConfig{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: IPAddress
+	// MISSING: ForwardingRule
+	// MISSING: State
+	// MISSING: ErrorMessage
+	return out
+}
+func PSCAutomationConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCAutomationConfig) *pb.PSCAutomationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PSCAutomationConfig{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	// MISSING: IPAddress
+	// MISSING: ForwardingRule
+	// MISSING: State
+	// MISSING: ErrorMessage
+	return out
+}
 func Port_FromProto(mapCtx *direct.MapContext, in *pb.Port) *krm.Port {
 	if in == nil {
 		return nil
@@ -637,6 +738,28 @@ func Presets_ToProto(mapCtx *direct.MapContext, in *krm.Presets) *pb.Presets {
 		out.Query = oneof
 	}
 	out.Modality = direct.Enum_ToProto[pb.Presets_Modality](mapCtx, in.Modality)
+	return out
+}
+func PrivateServiceConnectConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrivateServiceConnectConfig) *krm.PrivateServiceConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateServiceConnectConfig{}
+	out.EnablePrivateServiceConnect = direct.LazyPtr(in.GetEnablePrivateServiceConnect())
+	out.ProjectAllowlist = in.ProjectAllowlist
+	out.PSCAutomationConfigs = direct.Slice_FromProto(mapCtx, in.PscAutomationConfigs, PSCAutomationConfig_FromProto)
+	// MISSING: ServiceAttachment
+	return out
+}
+func PrivateServiceConnectConfig_ToProto(mapCtx *direct.MapContext, in *krm.PrivateServiceConnectConfig) *pb.PrivateServiceConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateServiceConnectConfig{}
+	out.EnablePrivateServiceConnect = direct.ValueOf(in.EnablePrivateServiceConnect)
+	out.ProjectAllowlist = in.ProjectAllowlist
+	out.PscAutomationConfigs = direct.Slice_ToProto(mapCtx, in.PSCAutomationConfigs, PSCAutomationConfig_ToProto)
+	// MISSING: ServiceAttachment
 	return out
 }
 func Probe_FromProto(mapCtx *direct.MapContext, in *pb.Probe) *krm.Probe {
@@ -855,6 +978,64 @@ func TimestampSplit_ToProto(mapCtx *direct.MapContext, in *krm.TimestampSplit) *
 	out.ValidationFraction = direct.ValueOf(in.ValidationFraction)
 	out.TestFraction = direct.ValueOf(in.TestFraction)
 	out.Key = direct.ValueOf(in.Key)
+	return out
+}
+func VertexAIFeatureOnlineStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore) *krm.VertexAIFeatureOnlineStoreObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIFeatureOnlineStoreObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+func VertexAIFeatureOnlineStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIFeatureOnlineStoreObservedState) *pb.FeatureOnlineStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureOnlineStore{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.State = direct.Enum_ToProto[pb.FeatureOnlineStore_State](mapCtx, in.State)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+func VertexAIFeatureOnlineStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore) *krm.VertexAIFeatureOnlineStoreSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIFeatureOnlineStoreSpec{}
+	out.Bigtable = FeatureOnlineStore_Bigtable_FromProto(mapCtx, in.GetBigtable())
+	out.Optimized = FeatureOnlineStore_Optimized_FromProto(mapCtx, in.GetOptimized())
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.DedicatedServingEndpoint = FeatureOnlineStore_DedicatedServingEndpoint_FromProto(mapCtx, in.GetDedicatedServingEndpoint())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	return out
+}
+func VertexAIFeatureOnlineStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIFeatureOnlineStoreSpec) *pb.FeatureOnlineStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureOnlineStore{}
+	if oneof := FeatureOnlineStore_Bigtable_ToProto(mapCtx, in.Bigtable); oneof != nil {
+		out.StorageType = &pb.FeatureOnlineStore_Bigtable_{Bigtable: oneof}
+	}
+	if oneof := FeatureOnlineStore_Optimized_ToProto(mapCtx, in.Optimized); oneof != nil {
+		out.StorageType = &pb.FeatureOnlineStore_Optimized_{Optimized: oneof}
+	}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.DedicatedServingEndpoint = FeatureOnlineStore_DedicatedServingEndpoint_ToProto(mapCtx, in.DedicatedServingEndpoint)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
 func VertexAITrainingPipelineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TrainingPipeline) *krm.VertexAITrainingPipelineObservedState {
