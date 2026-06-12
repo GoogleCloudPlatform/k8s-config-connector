@@ -130,11 +130,13 @@ func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBu
 		return nil, err
 	}
 
-	for _, path := range req.GetUpdateMask().GetPaths() {
-		switch path {
-		default:
-			return nil, fmt.Errorf("unhandled path in mockgcp UpdateBudget: %w", err)
-		}
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
+	}
+
+	if err := fields.UpdateByFieldMask(obj, req.GetBudget(), paths); err != nil {
+		return nil, fmt.Errorf("update field_mask.paths: %w", err)
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {

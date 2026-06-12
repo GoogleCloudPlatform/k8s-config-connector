@@ -295,6 +295,8 @@ import (
 	fakenetworkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1beta1/fake"
 	notebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha1"
 	fakenotebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha1/fake"
+	notebooksv1alpha2 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha2"
+	fakenotebooksv1alpha2 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha2/fake"
 	notebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1"
 	fakenotebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1/fake"
 	orgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1beta1"
@@ -1132,6 +1134,11 @@ func (c *Clientset) NetworkservicesV1beta1() networkservicesv1beta1.Networkservi
 // NotebooksV1alpha1 retrieves the NotebooksV1alpha1Client
 func (c *Clientset) NotebooksV1alpha1() notebooksv1alpha1.NotebooksV1alpha1Interface {
 	return &fakenotebooksv1alpha1.FakeNotebooksV1alpha1{Fake: &c.Fake}
+}
+
+// NotebooksV1alpha2 retrieves the NotebooksV1alpha2Client
+func (c *Clientset) NotebooksV1alpha2() notebooksv1alpha2.NotebooksV1alpha2Interface {
+	return &fakenotebooksv1alpha2.FakeNotebooksV1alpha2{Fake: &c.Fake}
 }
 
 // NotebooksV1beta1 retrieves the NotebooksV1beta1Client

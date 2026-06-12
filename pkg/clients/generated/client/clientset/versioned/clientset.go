@@ -161,6 +161,7 @@ import (
 	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1alpha1"
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1beta1"
 	notebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha1"
+	notebooksv1alpha2 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha2"
 	notebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1"
 	orgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1beta1"
 	osconfigv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1alpha1"
@@ -347,6 +348,7 @@ type Interface interface {
 	NetworkservicesV1alpha1() networkservicesv1alpha1.NetworkservicesV1alpha1Interface
 	NetworkservicesV1beta1() networkservicesv1beta1.NetworkservicesV1beta1Interface
 	NotebooksV1alpha1() notebooksv1alpha1.NotebooksV1alpha1Interface
+	NotebooksV1alpha2() notebooksv1alpha2.NotebooksV1alpha2Interface
 	NotebooksV1beta1() notebooksv1beta1.NotebooksV1beta1Interface
 	OrgpolicyV1beta1() orgpolicyv1beta1.OrgpolicyV1beta1Interface
 	OsconfigV1alpha1() osconfigv1alpha1.OsconfigV1alpha1Interface
@@ -531,6 +533,7 @@ type Clientset struct {
 	networkservicesV1alpha1         *networkservicesv1alpha1.NetworkservicesV1alpha1Client
 	networkservicesV1beta1          *networkservicesv1beta1.NetworkservicesV1beta1Client
 	notebooksV1alpha1               *notebooksv1alpha1.NotebooksV1alpha1Client
+	notebooksV1alpha2               *notebooksv1alpha2.NotebooksV1alpha2Client
 	notebooksV1beta1                *notebooksv1beta1.NotebooksV1beta1Client
 	orgpolicyV1beta1                *orgpolicyv1beta1.OrgpolicyV1beta1Client
 	osconfigV1alpha1                *osconfigv1alpha1.OsconfigV1alpha1Client
@@ -1254,6 +1257,11 @@ func (c *Clientset) NetworkservicesV1beta1() networkservicesv1beta1.Networkservi
 // NotebooksV1alpha1 retrieves the NotebooksV1alpha1Client
 func (c *Clientset) NotebooksV1alpha1() notebooksv1alpha1.NotebooksV1alpha1Interface {
 	return c.notebooksV1alpha1
+}
+
+// NotebooksV1alpha2 retrieves the NotebooksV1alpha2Client
+func (c *Clientset) NotebooksV1alpha2() notebooksv1alpha2.NotebooksV1alpha2Interface {
+	return c.notebooksV1alpha2
 }
 
 // NotebooksV1beta1 retrieves the NotebooksV1beta1Client
@@ -2059,6 +2067,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.notebooksV1alpha2, err = notebooksv1alpha2.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.notebooksV1beta1, err = notebooksv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2388,6 +2400,7 @@ func New(c rest.Interface) *Clientset {
 	cs.networkservicesV1alpha1 = networkservicesv1alpha1.New(c)
 	cs.networkservicesV1beta1 = networkservicesv1beta1.New(c)
 	cs.notebooksV1alpha1 = notebooksv1alpha1.New(c)
+	cs.notebooksV1alpha2 = notebooksv1alpha2.New(c)
 	cs.notebooksV1beta1 = notebooksv1beta1.New(c)
 	cs.orgpolicyV1beta1 = orgpolicyv1beta1.New(c)
 	cs.osconfigV1alpha1 = osconfigv1alpha1.New(c)
