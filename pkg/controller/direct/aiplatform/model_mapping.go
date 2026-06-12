@@ -126,9 +126,16 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 		}
 	}
 	if in.NullValue != nil {
-		value, err := strconv.Atoi(direct.ValueOf(in.NullValue))
-		if err != nil {
-			mapCtx.Errorf("error converting value %s from string to int", direct.ValueOf(in.NullValue))
+		strVal := direct.ValueOf(in.NullValue)
+		var value int
+		if val, ok := structpb.NullValue_value[strVal]; ok {
+			value = int(val)
+		} else {
+			var err error
+			value, err = strconv.Atoi(strVal)
+			if err != nil {
+				mapCtx.Errorf("error converting value %s from string to int", strVal)
+			}
 		}
 		out.Kind = &structpb.Value_NullValue{
 			NullValue: structpb.NullValue(value),
