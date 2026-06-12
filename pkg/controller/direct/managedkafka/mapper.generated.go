@@ -271,21 +271,16 @@ func ManagedKafkaClusterSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: TLSConfig
 	return out
 }
-
-/* found existing non-generated mapping function "ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto", skipping
-func ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupObservedState {
+func ManagedKafkaConsumerGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupObservedState{}
+	out := &krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupSpec{}
 	// MISSING: Name
 	out.Topics = Topics_FromProto(mapCtx, in.Topics)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ManagedKafkaConsumerGroupObservedState_v1alpha1_ToProto", skipping
-func ManagedKafkaConsumerGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupObservedState) *pb.ConsumerGroup {
+func ManagedKafkaConsumerGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupSpec) *pb.ConsumerGroup {
 	if in == nil {
 		return nil
 	}
@@ -294,31 +289,6 @@ func ManagedKafkaConsumerGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapC
 	out.Topics = Topics_ToProto(mapCtx, in.Topics)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ManagedKafkaConsumerGroupSpec_v1alpha1_FromProto", skipping
-func ManagedKafkaConsumerGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupSpec{}
-	// MISSING: Name
-	return out
-}
-*/
-
-/*
-found existing non-generated mapping function "ManagedKafkaConsumerGroupSpec_v1alpha1_ToProto", skipping
-
-	func ManagedKafkaConsumerGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupSpec) *pb.ConsumerGroup {
-		if in == nil {
-			return nil
-		}
-		out := &pb.ConsumerGroup{}
-		// MISSING: Name
-		return out
-	}
-*/
 func ManagedKafkaTopicSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krmmanagedkafkav1alpha1.ManagedKafkaTopicSpec {
 	if in == nil {
 		return nil

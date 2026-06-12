@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,22 +16,24 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &TopicRef{}
+var _ refs.Ref = &TopicRef{}
+
+func init() {
+	refs.Register(&TopicRef{})
+}
 
 // TopicRef is a reference to a ManagedKafkaTopic.
 type TopicRef struct {
 	// A reference to an externally managed ManagedKafkaTopic resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}/topics/{{topicID}}".
+	// Should be in the format "projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ManagedKafkaTopic resource.
@@ -41,42 +43,40 @@ type TopicRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on ManagedKafkaTopic.
-// If the "External" is given in the other resource's spec.ManagedKafkaTopicRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual ManagedKafkaTopic object from the cluster.
-func (r *TopicRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", ManagedKafkaTopicGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseTopicExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func (r *TopicRef) GetGVK() schema.GroupVersionKind {
+	return ManagedKafkaTopicGVK
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *TopicRef) GetNamespacedName() client.ObjectKey {
+	return client.ObjectKey{Name: r.Name, Namespace: r.Namespace}
+}
+
+func (r *TopicRef) GetExternal() string {
+	return r.External
+}
+
+func (r *TopicRef) SetExternal(external string) {
+	r.External = external
+}
+
+func (r *TopicRef) ValidateExternal(external string) error {
+	return (&TopicIdentity{}).FromExternal(external)
+}
+
+func (r *TopicRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &TopicIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(ManagedKafkaTopicGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+	return id, nil
+}
+
+func (r *TopicRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
+	return refs.NormalizeWithFallback(ctx, reader, r, otherNamespace, func(u *unstructured.Unstructured) string {
+		id, err := getIdentityFromManagedKafkaTopicSpec(ctx, reader, u)
+		if err != nil {
+			return ""
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", ManagedKafkaTopicGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+		return id.String()
+	})
 }

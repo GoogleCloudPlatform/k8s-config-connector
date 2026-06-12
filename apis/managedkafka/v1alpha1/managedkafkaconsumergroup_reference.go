@@ -24,55 +24,57 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.Ref = &ClusterRef{}
+var _ refs.Ref = &ConsumerGroupRef{}
 
 func init() {
-	refs.Register(&ClusterRef{})
+	refs.Register(&ConsumerGroupRef{})
 }
 
-// ClusterRef is a reference to a ManagedKafkaCluster.
-type ClusterRef struct {
-	// A reference to an externally managed ManagedKafkaCluster resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+// ConsumerGroupRef defines the resource reference to ManagedKafkaConsumerGroup, which "External" field
+// holds the GCP identifier for the KRM object.
+type ConsumerGroupRef struct {
+	// A reference to an externally managed ManagedKafkaConsumerGroup resource.
+	// Should be in the format "projects/{project}/locations/{location}/clusters/{cluster}/consumerGroups/{consumerGroup}".
 	External string `json:"external,omitempty"`
-	// The name of a ManagedKafkaCluster resource.
+
+	// The name of a ManagedKafkaConsumerGroup resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ManagedKafkaCluster resource.
+	// The namespace of a ManagedKafkaConsumerGroup resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-func (r *ClusterRef) GetGVK() schema.GroupVersionKind {
-	return ManagedKafkaClusterGVK
+func (r *ConsumerGroupRef) GetGVK() schema.GroupVersionKind {
+	return ManagedKafkaConsumerGroupGVK
 }
 
-func (r *ClusterRef) GetNamespacedName() client.ObjectKey {
+func (r *ConsumerGroupRef) GetNamespacedName() client.ObjectKey {
 	return client.ObjectKey{Name: r.Name, Namespace: r.Namespace}
 }
 
-func (r *ClusterRef) GetExternal() string {
+func (r *ConsumerGroupRef) GetExternal() string {
 	return r.External
 }
 
-func (r *ClusterRef) SetExternal(external string) {
+func (r *ConsumerGroupRef) SetExternal(external string) {
 	r.External = external
 }
 
-func (r *ClusterRef) ValidateExternal(external string) error {
-	return (&ClusterIdentity{}).FromExternal(external)
+func (r *ConsumerGroupRef) ValidateExternal(external string) error {
+	return (&ManagedKafkaConsumerGroupIdentity{}).FromExternal(external)
 }
 
-func (r *ClusterRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &ClusterIdentity{}
+func (r *ConsumerGroupRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ManagedKafkaConsumerGroupIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}
 	return id, nil
 }
 
-func (r *ClusterRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
+func (r *ConsumerGroupRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
 	return refs.NormalizeWithFallback(ctx, reader, r, otherNamespace, func(u *unstructured.Unstructured) string {
-		id, err := getIdentityFromManagedKafkaClusterSpec(ctx, reader, u)
+		id, err := GetManagedKafkaConsumerGroupSpecIdentity(ctx, reader, u)
 		if err != nil {
 			return ""
 		}

@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,112 +17,112 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// TopicIdentity is the identity of a ManagedKafkaTopic.
+var (
+	_ identity.IdentityV2 = &TopicIdentity{}
+	_ identity.Resource   = &ManagedKafkaTopic{}
+)
+
+var TopicIdentityFormat = gcpurls.Template[TopicIdentity]("managedkafka.googleapis.com", "projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}")
+
+// +k8s:deepcopy-gen=false
 type TopicIdentity struct {
-	parent *TopicParent
-	id     string
+	Project  string
+	Location string
+	Cluster  string
+	Topic    string
 }
 
 func (i *TopicIdentity) String() string {
-	return i.parent.String() + "/topics/" + i.id
+	return TopicIdentityFormat.ToString(*i)
 }
 
-func (i *TopicIdentity) ID() string {
-	return i.id
+func (i *TopicIdentity) FromExternal(ref string) error {
+	parsed, match, err := TopicIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of ManagedKafkaTopic external=%q was not known (use %s): %w", ref, TopicIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of ManagedKafkaTopic external=%q was not known (use %s)", ref, TopicIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
 }
 
-func (i *TopicIdentity) Parent() *TopicParent {
-	return i.parent
+func (i *TopicIdentity) Host() string {
+	return TopicIdentityFormat.Host()
 }
 
-type TopicParent struct {
-	ProjectID string
-	Location  string
-	Cluster   string
-}
-
-func (p *TopicParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/clusters/" + p.Cluster
-}
-
-// New builds a TopicIdentity from the Config Connector Topic object.
-func NewTopicIdentity(ctx context.Context, reader client.Reader, obj *ManagedKafkaTopic) (*TopicIdentity, error) {
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func getIdentityFromManagedKafkaTopicSpec(ctx context.Context, reader client.Reader, obj client.Object) (*TopicIdentity, error) {
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
-	clusterExternalRef, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	location, err := refs.GetLocation(obj)
 	if err != nil {
 		return nil, err
-	}
-	_, cluster, err := ParseClusterExternal(clusterExternalRef)
-	if err != nil {
-		return nil, err
-	}
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	topicObj, ok := obj.(*ManagedKafkaTopic)
+	if !ok {
+		topicObj = &ManagedKafkaTopic{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(obj.(*unstructured.Unstructured).Object, topicObj); err != nil {
+			return nil, fmt.Errorf("error converting to ManagedKafkaTopic: %w", err)
+		}
+	}
+
+	if err := topicObj.Spec.ClusterRef.Normalize(ctx, reader, topicObj.GetNamespace()); err != nil {
+		return nil, err
+	}
+	clusterExternalRef := topicObj.Spec.ClusterRef.External
+	clusterIdentity := &ClusterIdentity{}
+	if err := clusterIdentity.FromExternal(clusterExternalRef); err != nil {
+		return nil, err
+	}
+
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, err
+	}
+
+	identity := &TopicIdentity{
+		Project:  projectID,
+		Location: location,
+		Cluster:  clusterIdentity.Cluster,
+		Topic:    resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *ManagedKafkaTopic) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromManagedKafkaTopicSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseTopicExternal(externalRef)
-		if err != nil {
+		statusIdentity := &TopicIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualParent.Cluster != cluster {
-			return nil, fmt.Errorf("spec.cluster changed, expect %s, got %s", actualParent.Cluster, cluster)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
-	return &TopicIdentity{
-		parent: &TopicParent{
-			ProjectID: projectID,
-			Location:  location,
-			Cluster:   cluster,
-		},
-		id: resourceID,
-	}, nil
-}
 
-func ParseTopicExternal(external string) (parent *TopicParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "clusters" || tokens[6] != "topics" {
-		return nil, "", fmt.Errorf("format of ManagedKafkaTopic external=%q was not known (use projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}/topics/{{topicID}})", external)
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change ManagedKafkaTopic identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
-	parent = &TopicParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-		Cluster:   tokens[5],
-	}
-	resourceID = tokens[7]
-	return parent, resourceID, nil
+
+	return specIdentity, nil
 }

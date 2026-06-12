@@ -88,6 +88,9 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	if len(tokens) == 2 && tokens[0] == "tagBindings" {
 		replacements.ReplaceStringValue(tokens[1], "${tagBindingID}")
 	}
+	if len(tokens) == 2 && tokens[0] == "operations" {
+		replacements.ReplaceStringValue(tokens[1], "${operationID}")
+	}
 }
 
 // isCloudResourceManagerAPI returns true if this is a cloud resource manager URL

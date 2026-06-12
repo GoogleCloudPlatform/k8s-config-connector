@@ -1,0 +1,16 @@
+apiVersion: managedkafka.cnrm.cloud.google.com/v1alpha1
+kind: ManagedKafkaConsumerGroup
+metadata:
+  name: managedkafkaconsumergroup-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  clusterRef:
+    name: managedkafkacluster-${uniqueId}
+  topics:
+    projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/mytopic-${uniqueId}:
+      partitions:
+      - key: 0
+        offset: 10
+        metadata: "initial metadata"

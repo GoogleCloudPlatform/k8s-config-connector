@@ -31,5 +31,13 @@ go run . generate-types \
   --resource ManagedKafkaConsumerGroup:ConsumerGroup \
   --resource ManagedKafkaTopic:Topic
 
+go run . generate-mapper \
+  --service google.cloud.managedkafka.v1 \
+  --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --multiversion
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/managedkafka/

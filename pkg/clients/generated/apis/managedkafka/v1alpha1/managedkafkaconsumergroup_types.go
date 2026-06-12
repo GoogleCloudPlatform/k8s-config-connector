@@ -38,28 +38,7 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type ManagedKafkaConsumerGroupSpec struct {
-	/* ClusterRef is a reference to a ManagedKafkaCluster. */
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
-
-	Location string `json:"location"`
-
-	/* The Project that this resource belongs to. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
-
-	/* The ManagedKafkaConsumerGroup name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
-}
-
-type ConsumergroupObservedStateStatus struct {
-	/* Optional. Metadata for this consumer group for all topics it has metadata for. The key of the map is a topic name, structured like: projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic} */
-	// +optional
-	Topics map[string]ConsumergroupTopicsStatus `json:"topics,omitempty"`
-}
-
-type ConsumergroupPartitionsStatus struct {
+type ConsumergroupPartitions struct {
 	/* Required. Key of the partition index for topic metadata in this consumer group. */
 	Key int32 `json:"key"`
 
@@ -71,10 +50,30 @@ type ConsumergroupPartitionsStatus struct {
 	Offset int64 `json:"offset"`
 }
 
-type ConsumergroupTopicsStatus struct {
+type ConsumergroupTopics struct {
 	/* Optional. Metadata for this consumer group and topic for all partition indexes it has metadata for. */
 	// +optional
-	Partitions []ConsumergroupPartitionsStatus `json:"partitions,omitempty"`
+	Partitions []ConsumergroupPartitions `json:"partitions,omitempty"`
+}
+
+type ManagedKafkaConsumerGroupSpec struct {
+	/* Required. Reference to the Kafka cluster to which the consumer group belongs. */
+	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+
+	/* Required. The location of the Kafka resource. */
+	Location string `json:"location"`
+
+	/* Optional. The project that this resource belongs to. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+
+	/* The ManagedKafkaConsumerGroup name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Optional. Metadata for this consumer group for all topics it has metadata for. The key of the map is a topic name, structured like: projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic} */
+	// +optional
+	Topics map[string]ConsumergroupTopics `json:"topics,omitempty"`
 }
 
 type ManagedKafkaConsumerGroupStatus struct {
@@ -88,10 +87,6 @@ type ManagedKafkaConsumerGroupStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *ConsumergroupObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

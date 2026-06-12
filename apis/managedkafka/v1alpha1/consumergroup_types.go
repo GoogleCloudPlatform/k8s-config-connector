@@ -25,10 +25,25 @@ var ManagedKafkaConsumerGroupGVK = GroupVersion.WithKind("ManagedKafkaConsumerGr
 // ManagedKafkaConsumerGroupSpec defines the desired state of ManagedKafkaConsumerGroup
 // +kcc:spec:proto=google.cloud.managedkafka.v1.ConsumerGroup
 type ManagedKafkaConsumerGroupSpec struct {
-	*Parent `json:",inline"`
+	// Required. The location of the Kafka resource.
+	// +required
+	Location string `json:"location"`
+
+	// Required. Reference to the Kafka cluster to which the consumer group belongs.
+	// +required
+	ClusterRef *ClusterRef `json:"clusterRef"`
+
+	// Optional. The project that this resource belongs to.
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// The ManagedKafkaConsumerGroup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Optional. Metadata for this consumer group for all topics it has metadata for.
+	// The key of the map is a topic name, structured like: projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConsumerGroup.topics
+	Topics map[string]*ConsumerTopicMetadata `json:"topics,omitempty"`
 }
 
 // +kcc:proto=google.cloud.managedkafka.v1.ConsumerPartitionMetadata
@@ -56,15 +71,6 @@ type ConsumerTopicMetadata struct {
 	Partitions []*ConsumerPartitionMetadata `json:"partitions,omitempty"`
 }
 
-type Parent struct {
-	// +required
-	Location string `json:"location"`
-	// +required
-	ClusterRef *ClusterRef `json:"clusterRef"`
-	// +optional
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
-}
-
 // ManagedKafkaConsumerGroupStatus defines the config connector machine state of ManagedKafkaConsumerGroup
 type ManagedKafkaConsumerGroupStatus struct {
 	/* Conditions represent the latest available observations of the
@@ -76,17 +82,6 @@ type ManagedKafkaConsumerGroupStatus struct {
 
 	// A unique specifier for the ManagedKafkaConsumerGroup resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ManagedKafkaConsumerGroupObservedState `json:"observedState,omitempty"`
-}
-
-// ManagedKafkaConsumerGroupObservedState is the state of the ManagedKafkaConsumerGroup resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.managedkafka.v1.ConsumerGroup
-type ManagedKafkaConsumerGroupObservedState struct {
-	// Optional. Metadata for this consumer group for all topics it has metadata for.
-	// The key of the map is a topic name, structured like: projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}
-	Topics map[string]*ConsumerTopicMetadata `json:"topics,omitempty"`
 }
 
 // +genclient
