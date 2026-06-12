@@ -1,4 +1,4 @@
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -14,19 +14,20 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource not found (resource=pubsubtopic-${uniqueId}).",
+    "message": "Resource not found (resource=pubsubtopic-sample-${uniqueId}).",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
 Content-Type: application/json
 
 {
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   }
 }
@@ -44,14 +45,15 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+  "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}"
 }
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -67,14 +69,15 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+  "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}"
 }
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -90,78 +93,28 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource not found (resource=pubsubsubscription-${uniqueId}).",
+    "message": "Resource not found (resource=pubsubsubscription-sample-${uniqueId}).",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}?alt=json
 Content-Type: application/json
 
 {
   "ackDeadlineSeconds": 15,
+  "deadLetterPolicy": null,
+  "expirationPolicy": null,
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+  "messageRetentionDuration": "86400s",
+  "topic": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}"
 }
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "ackDeadlineSeconds": 15,
-  "expirationPolicy": {
-    "ttl": "2678400s"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-  "pushConfig": {},
-  "state": 1,
-  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource not found (resource=pubsubsubscription-${uniqueId}).",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -180,30 +133,92 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+  "messageRetentionDuration": "86400s",
+  "name": "projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}",
   "pushConfig": {},
-  "state": 1,
-  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+  "state": "ACTIVE",
+  "topic": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}"
 }
 
 ---
 
-PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource not found (resource=pubsubsubscription-sample-${uniqueId}).",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "ackDeadlineSeconds": 15,
+  "expirationPolicy": {
+    "ttl": "2678400s"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "messageRetentionDuration": "86400s",
+  "name": "projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}",
+  "pushConfig": {},
+  "state": "ACTIVE",
+  "topic": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}"
+}
+
+---
+
+PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}?alt=json&updateMask=labels%2CackDeadlineSeconds%2CenableExactlyOnceDelivery
 Content-Type: application/json
 
 {
   "subscription": {
     "ackDeadlineSeconds": 20,
+    "deadLetterPolicy": null,
+    "enableExactlyOnceDelivery": true,
+    "expirationPolicy": {
+      "ttl": "2678400s"
+    },
     "labels": {
       "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "label-one": "value-one",
+      "managed-by-cnrm": "true",
+      "newkey": "newval"
     },
-    "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-    "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
-  },
-  "updateMask": "ackDeadlineSeconds"
+    "messageRetentionDuration": "86400s"
+  }
 }
 
 200 OK
@@ -218,26 +233,30 @@ X-Xss-Protection: 0
 
 {
   "ackDeadlineSeconds": 20,
+  "enableExactlyOnceDelivery": true,
   "expirationPolicy": {
     "ttl": "2678400s"
   },
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true",
+    "newkey": "newval"
   },
-  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+  "messageRetentionDuration": "86400s",
+  "name": "projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}",
   "pushConfig": {
     "attributes": {
       "x-goog-version": "v1"
     }
   },
-  "state": 1,
-  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+  "state": "ACTIVE",
+  "topic": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}"
 }
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -252,22 +271,26 @@ X-Xss-Protection: 0
 
 {
   "ackDeadlineSeconds": 20,
+  "enableExactlyOnceDelivery": true,
   "expirationPolicy": {
     "ttl": "2678400s"
   },
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true",
+    "newkey": "newval"
   },
-  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+  "messageRetentionDuration": "86400s",
+  "name": "projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}",
   "pushConfig": {},
-  "state": 1,
-  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+  "state": "ACTIVE",
+  "topic": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}"
 }
 
 ---
 
-DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -284,7 +307,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -300,14 +323,15 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+  "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}"
 }
 
 ---
 
-DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
