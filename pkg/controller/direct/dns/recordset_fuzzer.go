@@ -36,30 +36,6 @@ func dnsRecordSetFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.SpecField(".Ttl")
 	f.SpecField(".Type")
 
-	f.Ignore_JSONBookkeeping(".ForceSendFields")
-	f.Ignore_JSONBookkeeping(".NullFields")
-	f.Ignore_JSONBookkeeping(".ServerResponse")
-
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.ForceSendFields")
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.NullFields")
-
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.Geo.ForceSendFields")
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.Geo.NullFields")
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.Geo.Items[]")
-
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.PrimaryBackup.ForceSendFields")
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.PrimaryBackup.NullFields")
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.PrimaryBackup.BackupGeoTargets.ForceSendFields")
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.PrimaryBackup.BackupGeoTargets.NullFields")
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.PrimaryBackup.BackupGeoTargets.Items[]")
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.PrimaryBackup.PrimaryTargets.ForceSendFields")
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.PrimaryBackup.PrimaryTargets.NullFields")
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.PrimaryBackup.PrimaryTargets.InternalLoadBalancers[]")
-
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.Wrr.ForceSendFields")
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.Wrr.NullFields")
-	f.Ignore_JSONBookkeeping(".RoutingPolicy.Wrr.Items[]")
-
 	// Top level unimplemented fields
 	f.Unimplemented_NotYetTriaged(".Kind")
 	f.Unimplemented_NotYetTriaged(".SignatureRrdatas")
@@ -73,12 +49,10 @@ func dnsRecordSetFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".RoutingPolicy.Wrr.Kind")
 	f.Unimplemented_NotYetTriaged(".RoutingPolicy.PrimaryBackup.PrimaryTargets.ExternalEndpoints")
 
-	// Geo, BackupGeoTargets, Wrr nested items contain HealthCheckedTargets.
-	// Since items are elements of a slice, their path resets to "" in ClearNonProtoFields traversal.
-	// Therefore, any nested fields of elements must be specified relative to the containing slice element.
-	f.Unimplemented_NotYetTriaged(".HealthCheckedTargets.ExternalEndpoints")
-	f.Ignore_JSONBookkeeping(".HealthCheckedTargets.ForceSendFields")
-	f.Ignore_JSONBookkeeping(".HealthCheckedTargets.NullFields")
+	// Nested fields inside slices of Geo, BackupGeoTargets, and Wrr items
+	f.Unimplemented_NotYetTriaged(".RoutingPolicy.Geo.Items[].HealthCheckedTargets.ExternalEndpoints")
+	f.Unimplemented_NotYetTriaged(".RoutingPolicy.PrimaryBackup.BackupGeoTargets.Items[].HealthCheckedTargets.ExternalEndpoints")
+	f.Unimplemented_NotYetTriaged(".RoutingPolicy.Wrr.Items[].HealthCheckedTargets.ExternalEndpoints")
 
 	// Filter out nested slice fields (Rrdatas and SignatureRrdatas) since they are not mapped
 	// in Geo/Wrr item mappers (which use RrdatasRefs in KRM), but cannot be easily matched via
