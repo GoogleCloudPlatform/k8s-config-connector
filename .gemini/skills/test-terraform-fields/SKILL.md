@@ -177,17 +177,19 @@ If the mock test fails or produces a diff against the baseline golden logs, appl
 Before finishing the task or proposing a PR, the agent must run formatting, generation, static analysis, and full CI validation checks locally to ensure zero CI/CD failures:
 
 1. **Prepare PR and Regenerate Code**:
-   - Run `make ready-pr` to ensure all manifests, Go client types, and code formatting are up to date:
+   - Run `make ready-pr` and `make resource-docs` to ensure all manifests, Go client types, documentation, and code formatting are up to date:
      ```bash
      make ready-pr
+     make resource-docs
      ```
 2. **Mandatory CI/CD Presubmit Verification (CRITICAL)**:
-   - To guarantee generated PRs pass GitHub Actions CI/CD checks cleanly, execute the primary validation scripts locally:
+   - To guarantee generated PRs pass GitHub Actions CI/CD checks cleanly, execute the resource docs generation and the primary validation scripts locally:
      ```bash
+     make resource-docs
      dev/ci/presubmits/validate-generated-files
      scripts/validate-prereqs.sh
      ```
-   - *(Note: `validate-generated-files` runs GitHub Actions workflow codegen, static config generation, CRDs, and mappers. `validate-prereqs.sh` validates formatting and generation).*
+   - *(Note: `validate-generated-files` runs GitHub Actions workflow codegen, static config generation, CRDs, mappers, and resource docs. `validate-prereqs.sh` validates formatting and generation).*
 3. **Go Vet**:
    ```bash
    go vet ./...
