@@ -25,15 +25,20 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/notebooks/apiv1"
 
 	notebookspb "cloud.google.com/go/notebooks/apiv1/notebookspb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
@@ -140,7 +145,6 @@ func (a *InstanceAdapter) Find(ctx context.Context) (bool, error) {
 func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Instance", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
 	req := &notebookspb.CreateInstanceRequest{
 		Parent:     a.id.Parent().String(),
@@ -157,35 +161,29 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	}
 	log.V(2).Info("successfully created Instance", "name", a.id)
 
-	status := &krm.NotebookInstanceStatus{}
-	status.ObservedState = NotebookInstanceObservedState_v1beta1_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return createOp.UpdateStatus(ctx, status, nil)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Instance", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	paths, err := common.CompareProtoMessage(a.desired, a.actual, common.BasicDiff)
+	a.desired.Name = a.id.String()
+
+	diffs, updateMask, err := compareNotebooks(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
 
-	if len(paths) == 0 {
+	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id)
+		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	for path := range paths {
-		report.AddField(path, nil, nil)
-	}
-	structuredreporting.ReportDiff(ctx, report)
+	structuredreporting.ReportDiff(ctx, diffs)
+
+	paths := sets.New(updateMask.GetPaths()...)
 
 	var updated *notebookspb.Instance
 	if paths.Has("metadata") {
@@ -198,7 +196,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 			return fmt.Errorf("updating Instance %s: %w", a.id, err)
 		}
 	}
-	if paths.HasAny("shielded_instance_config.enable_secure_boot", "shielded_instance_config.enable_vtpm", "shielded_instance_config.enable_integrity_monitoring") {
+	if paths.Has("shielded_instance_config") {
 		// stops the instance first before update the shielded instance config
 		stopReq := &notebookspb.StopInstanceRequest{
 			Name: a.id.String(),
@@ -241,20 +239,50 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	log.V(2).Info("successfully updated Instance", "name", a.id)
 
-	status := &krm.NotebookInstanceStatus{}
 	if updated != nil {
-		status.ObservedState = NotebookInstanceObservedState_v1beta1_FromProto(mapCtx, updated)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-	} else {
-		status.ObservedState = NotebookInstanceObservedState_v1beta1_FromProto(mapCtx, a.actual)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
+		return a.updateStatus(ctx, updateOp, updated)
+	}
+	return a.updateStatus(ctx, updateOp, a.actual)
+}
+
+func compareNotebooks(ctx context.Context, actual, desired *notebookspb.Instance) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, NotebookInstanceSpec_v1beta1_FromProto, NotebookInstanceSpec_v1beta1_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+	maskedActual.Name = desired.Name
+
+	clonedDesired := proto.Clone(desired).(*notebookspb.Instance)
+
+	populateDefaults := func(obj *notebookspb.Instance) {
+		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
+		if obj.ShieldedInstanceConfig == nil {
+			obj.ShieldedInstanceConfig = &notebookspb.Instance_ShieldedInstanceConfig{
+				EnableSecureBoot:          false,
+				EnableVtpm:                true,
+				EnableIntegrityMonitoring: true,
+			}
 		}
 	}
+	populateDefaults(maskedActual)
+	populateDefaults(clonedDesired)
+
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
+}
+
+func (a *InstanceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *notebookspb.Instance) error {
+	mapCtx := &direct.MapContext{}
+	status := &krm.NotebookInstanceStatus{}
+	status.ObservedState = NotebookInstanceObservedState_v1beta1_FromProto(mapCtx, latest)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return updateOp.UpdateStatus(ctx, status, nil)
+	return op.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
