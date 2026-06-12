@@ -15,13 +15,34 @@
 package mockclouddms
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	// TODO: Add field specific normalizations here
+	if !strings.Contains(url, "datamigration.googleapis.com") && !strings.Contains(url, "google.cloud.clouddms") && !strings.Contains(url, "google.longrunning.Operations") {
+		return
+	}
+
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".latestCommitTime", mockgcpregistry.PlaceholderTimestamp)
+
+	// Array normalization for List/responses
+	replacements.ReplacePath(".conversionWorkspaces[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".conversionWorkspaces[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".conversionWorkspaces[].latestCommitTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.latestCommitTime", mockgcpregistry.PlaceholderTimestamp)
+
+	// LRO metadata
+	replacements.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

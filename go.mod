@@ -26,7 +26,7 @@ require (
 	cloud.google.com/go/billing v1.21.0
 	cloud.google.com/go/certificatemanager v1.9.6
 	cloud.google.com/go/cloudbuild v1.25.0
-	cloud.google.com/go/clouddms v1.8.8
+	cloud.google.com/go/clouddms v1.13.0
 	cloud.google.com/go/cloudquotas v1.11.0
 	cloud.google.com/go/cloudtasks v1.13.7
 	cloud.google.com/go/compute v1.54.0
@@ -112,7 +112,7 @@ require (
 	github.com/prometheus/procfs v0.16.0
 	github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749
 	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd
-	github.com/spf13/cobra v1.8.1
+	github.com/spf13/cobra v1.10.2
 	github.com/spf13/pflag v1.0.10
 	github.com/stretchr/testify v1.11.1
 	github.com/tmccombs/hcl2json v0.6.8
@@ -134,7 +134,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/api v0.33.10
 	k8s.io/apiextensions-apiserver v0.33.10
-	k8s.io/apimachinery v0.33.10
+	k8s.io/apimachinery v0.34.2
 	k8s.io/client-go v0.33.10
 	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/controller-runtime v0.20.4
@@ -163,14 +163,14 @@ require (
 	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
 	github.com/google/cel-go v0.23.2 // indirect
 	github.com/google/flatbuffers v24.3.25+incompatible // indirect
-	github.com/google/gnostic-models v0.6.9 // indirect
+	github.com/google/gnostic-models v0.7.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 // indirect
 	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/spiffe/go-spiffe/v2 v2.6.0 // indirect
-	github.com/stoewer/go-strcase v1.3.0 // indirect
+	github.com/stoewer/go-strcase v1.3.1 // indirect
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.42.0 // indirect
@@ -239,7 +239,7 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.3.15 // indirect
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.1 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-checkpoint v0.5.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -325,7 +325,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/cli-runtime v0.32.1 // indirect
 	k8s.io/component-base v0.33.10 // indirect
-	k8s.io/kube-openapi v0.0.0-20250318190949-c8a335a9a2ff
+	k8s.io/kube-openapi v0.0.0-20250710124328-f3f2b991d03b
 	k8s.io/kubectl v0.32.1 // indirect
 	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect

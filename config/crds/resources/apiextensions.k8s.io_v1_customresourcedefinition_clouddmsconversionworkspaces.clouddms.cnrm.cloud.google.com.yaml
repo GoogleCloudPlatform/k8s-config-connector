@@ -73,6 +73,9 @@ spec:
                     description: Required. Engine named version, for example 12.c.1.
                     type: string
                 type: object
+              destinationProvider:
+                description: Optional. The database provider for the destination database.
+                type: string
               displayName:
                 description: Optional. The display name for the workspace.
                 type: string
@@ -135,6 +138,9 @@ spec:
                     description: Required. Engine named version, for example 12.c.1.
                     type: string
                 type: object
+              sourceProvider:
+                description: Optional. The database provider for the source database.
+                type: string
             required:
             - location
             - projectRef

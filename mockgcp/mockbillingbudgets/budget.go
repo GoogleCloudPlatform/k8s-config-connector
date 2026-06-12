@@ -130,33 +130,34 @@ func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBu
 		return nil, err
 	}
 
+	updated := proto.CloneOf(obj)
 	for _, path := range req.GetUpdateMask().GetPaths() {
-		switch {
-		case path == "displayName" || path == "display_name":
-			obj.DisplayName = req.GetBudget().GetDisplayName()
-		case path == "amount" || strings.HasPrefix(path, "amount."):
-			obj.Amount = req.GetBudget().GetAmount()
-		case path == "budgetFilter" || path == "budget_filter" ||
-			strings.HasPrefix(path, "budgetFilter.") || strings.HasPrefix(path, "budget_filter."):
-			obj.BudgetFilter = req.GetBudget().GetBudgetFilter()
-		case path == "thresholdRules" || path == "threshold_rules":
-			obj.ThresholdRules = req.GetBudget().GetThresholdRules()
-		case path == "allUpdatesRule" || path == "all_updates_rule" || path == "notificationsRule" || path == "notifications_rule" ||
-			strings.HasPrefix(path, "allUpdatesRule.") || strings.HasPrefix(path, "all_updates_rule.") ||
-			strings.HasPrefix(path, "notificationsRule.") || strings.HasPrefix(path, "notifications_rule."):
-			obj.AllUpdatesRule = req.GetBudget().GetAllUpdatesRule()
+		parts := strings.Split(path, ".")
+		rootField := parts[0]
+		switch rootField {
+		case "display_name", "displayName":
+			updated.DisplayName = req.GetBudget().GetDisplayName()
+		case "amount":
+			updated.Amount = req.GetBudget().GetAmount()
+		case "budget_filter", "budgetFilter":
+			updated.BudgetFilter = req.GetBudget().GetBudgetFilter()
+		case "threshold_rules", "thresholdRules":
+			updated.ThresholdRules = req.GetBudget().GetThresholdRules()
+		case "all_updates_rule", "allUpdatesRule", "notifications_rule", "notificationsRule":
+			updated.AllUpdatesRule = req.GetBudget().GetAllUpdatesRule()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "unhandled path %q in mockgcp UpdateBudget", path)
 		}
 	}
 
-	obj.Etag = fields.ComputeWeakEtag(obj)
+	s.populateDefaultsForBudget(updated)
+	updated.Etag = fields.ComputeWeakEtag(updated)
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
-	return obj, nil
+	return updated, nil
 }
 
 func (s *BudgetServiceServer) DeleteBudget(ctx context.Context, req *pb.DeleteBudgetRequest) (*emptypb.Empty, error) {

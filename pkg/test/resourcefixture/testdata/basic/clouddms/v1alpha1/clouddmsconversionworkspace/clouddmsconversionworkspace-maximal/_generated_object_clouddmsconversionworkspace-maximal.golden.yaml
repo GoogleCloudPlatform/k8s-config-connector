@@ -1,0 +1,38 @@
+apiVersion: clouddms.cnrm.cloud.google.com/v1alpha1
+kind: CloudDMSConversionWorkspace
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: conversionworkspace-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  destination:
+    engine: POSTGRESQL
+    version: "15"
+  displayName: Updated Conversion Workspace
+  globalSettings:
+    convert_foreign_key_to_interleave: "false"
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  source:
+    engine: MYSQL
+    version: "5.7"
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/conversionworkspaces/conversionworkspace-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    latestCommitID: mock-initial-commit-id
+    latestCommitTime: "2024-04-01T12:34:56.123456Z"
+    updateTime: "1970-01-01T00:00:00Z"
