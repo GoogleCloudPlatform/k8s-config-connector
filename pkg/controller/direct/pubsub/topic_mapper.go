@@ -63,6 +63,8 @@ func MessageStoragePolicy_FromProto(mapCtx *direct.MapContext, in *pb.MessageSto
 	}
 	out := &krm.MessageStoragePolicy{}
 	out.AllowedPersistenceRegions = in.AllowedPersistenceRegions
+	enforceInTransit := in.EnforceInTransit
+	out.EnforceInTransit = &enforceInTransit
 	return out
 }
 
@@ -72,6 +74,9 @@ func MessageStoragePolicy_ToProto(mapCtx *direct.MapContext, in *krm.MessageStor
 	}
 	out := &pb.MessageStoragePolicy{}
 	out.AllowedPersistenceRegions = in.AllowedPersistenceRegions
+	if in.EnforceInTransit != nil {
+		out.EnforceInTransit = *in.EnforceInTransit
+	}
 	return out
 }
 

@@ -844,6 +844,11 @@ func (in *TopicMessageStoragePolicy) DeepCopyInto(out *TopicMessageStoragePolicy
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
+	if in.EnforceInTransit != nil {
+		in, out := &in.EnforceInTransit, &out.EnforceInTransit
+		*out = new(bool)
+		**out = **in
+	}
 	return
 }
 

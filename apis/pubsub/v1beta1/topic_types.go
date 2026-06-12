@@ -39,6 +39,15 @@ type MessageStoragePolicy struct {
 	// and is not a valid configuration.
 	// +required
 	AllowedPersistenceRegions []string `json:"allowedPersistenceRegions"`
+
+	// Optional. If true, `allowed_persistence_regions` is also used to enforce
+	//  in-transit guarantees for messages. That is, Pub/Sub will fail
+	//  Publish operations on this topic and subscribe operations
+	//  on any subscription attached to this topic in any region that is
+	//  not in `allowed_persistence_regions`.
+	// +kcc:proto:field=google.pubsub.v1.MessageStoragePolicy.enforce_in_transit
+	// +optional
+	EnforceInTransit *bool `json:"enforceInTransit,omitempty"`
 }
 
 type SchemaSettings struct {

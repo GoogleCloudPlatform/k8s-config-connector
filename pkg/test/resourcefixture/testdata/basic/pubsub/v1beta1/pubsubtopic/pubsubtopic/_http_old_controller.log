@@ -105,6 +105,12 @@ Content-Type: application/json
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "us-central1"
+    ],
+    "enforceInTransit": true
+  },
   "schemaSettings": {
     "encoding": "JSON",
     "schema": "projects/${projectId}/schemas/pubsubschema-${uniqueId}"
@@ -126,6 +132,12 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
+  },
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "us-central1"
+    ],
+    "enforceInTransit": true
   },
   "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
   "schemaSettings": {
@@ -155,6 +167,12 @@ X-Xss-Protection: 0
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "us-central1"
+    ],
+    "enforceInTransit": true
+  },
   "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
   "schemaSettings": {
     "encoding": "JSON",
@@ -164,7 +182,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json&updateMask=labels%2CmessageRetentionDuration
+PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json&updateMask=labels%2CmessageStoragePolicy%2CmessageRetentionDuration
 Content-Type: application/json
 
 {
@@ -176,6 +194,11 @@ Content-Type: application/json
       "newkey": "newval"
     },
     "messageRetentionDuration": "3600s",
+    "messageStoragePolicy": {
+      "allowedPersistenceRegions": [
+        "us-central1"
+      ]
+    },
     "schemaSettings": {
       "encoding": "JSON",
       "schema": "projects/${projectId}/schemas/pubsubschema-${uniqueId}"
@@ -201,6 +224,11 @@ X-Xss-Protection: 0
     "newkey": "newval"
   },
   "messageRetentionDuration": "3600s",
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "us-central1"
+    ]
+  },
   "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
   "schemaSettings": {
     "encoding": "JSON",
@@ -231,6 +259,11 @@ X-Xss-Protection: 0
     "newkey": "newval"
   },
   "messageRetentionDuration": "3600s",
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "us-central1"
+    ]
+  },
   "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
   "schemaSettings": {
     "encoding": "JSON",
