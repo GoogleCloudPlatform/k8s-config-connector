@@ -108,6 +108,7 @@ import (
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflow/v1alpha1"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
 	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/discoveryengine/v1alpha1"
+	dlpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dlp/v1alpha1"
 	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dlp/v1beta1"
 	dnsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dns/v1alpha1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dns/v1beta1"
@@ -299,6 +300,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	dialogflowv1alpha1.AddToScheme,
 	dialogflowcxv1alpha1.AddToScheme,
 	discoveryenginev1alpha1.AddToScheme,
+	dlpv1alpha1.AddToScheme,
 	dlpv1beta1.AddToScheme,
 	dnsv1alpha1.AddToScheme,
 	dnsv1beta1.AddToScheme,

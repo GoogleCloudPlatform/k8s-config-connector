@@ -111,6 +111,7 @@ import (
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
 	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1"
+	dlpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1alpha1"
 	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1"
 	dnsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1alpha1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1"
@@ -298,6 +299,7 @@ type Interface interface {
 	DialogflowV1alpha1() dialogflowv1alpha1.DialogflowV1alpha1Interface
 	DialogflowcxV1alpha1() dialogflowcxv1alpha1.DialogflowcxV1alpha1Interface
 	DiscoveryengineV1alpha1() discoveryenginev1alpha1.DiscoveryengineV1alpha1Interface
+	DlpV1alpha1() dlpv1alpha1.DlpV1alpha1Interface
 	DlpV1beta1() dlpv1beta1.DlpV1beta1Interface
 	DnsV1alpha1() dnsv1alpha1.DnsV1alpha1Interface
 	DnsV1beta1() dnsv1beta1.DnsV1beta1Interface
@@ -483,6 +485,7 @@ type Clientset struct {
 	dialogflowV1alpha1              *dialogflowv1alpha1.DialogflowV1alpha1Client
 	dialogflowcxV1alpha1            *dialogflowcxv1alpha1.DialogflowcxV1alpha1Client
 	discoveryengineV1alpha1         *discoveryenginev1alpha1.DiscoveryengineV1alpha1Client
+	dlpV1alpha1                     *dlpv1alpha1.DlpV1alpha1Client
 	dlpV1beta1                      *dlpv1beta1.DlpV1beta1Client
 	dnsV1alpha1                     *dnsv1alpha1.DnsV1alpha1Client
 	dnsV1beta1                      *dnsv1beta1.DnsV1beta1Client
@@ -1007,6 +1010,11 @@ func (c *Clientset) DialogflowcxV1alpha1() dialogflowcxv1alpha1.DialogflowcxV1al
 // DiscoveryengineV1alpha1 retrieves the DiscoveryengineV1alpha1Client
 func (c *Clientset) DiscoveryengineV1alpha1() discoveryenginev1alpha1.DiscoveryengineV1alpha1Interface {
 	return c.discoveryengineV1alpha1
+}
+
+// DlpV1alpha1 retrieves the DlpV1alpha1Client
+func (c *Clientset) DlpV1alpha1() dlpv1alpha1.DlpV1alpha1Interface {
+	return c.dlpV1alpha1
 }
 
 // DlpV1beta1 retrieves the DlpV1beta1Client
@@ -1867,6 +1875,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.dlpV1alpha1, err = dlpv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.dlpV1beta1, err = dlpv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2350,6 +2362,7 @@ func New(c rest.Interface) *Clientset {
 	cs.dialogflowV1alpha1 = dialogflowv1alpha1.New(c)
 	cs.dialogflowcxV1alpha1 = dialogflowcxv1alpha1.New(c)
 	cs.discoveryengineV1alpha1 = discoveryenginev1alpha1.New(c)
+	cs.dlpV1alpha1 = dlpv1alpha1.New(c)
 	cs.dlpV1beta1 = dlpv1beta1.New(c)
 	cs.dnsV1alpha1 = dnsv1alpha1.New(c)
 	cs.dnsV1beta1 = dnsv1beta1.New(c)
