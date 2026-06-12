@@ -393,6 +393,8 @@
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityAuthorizationPolicy              | False        | True        | False  | DCL        | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityBackendAuthenticationConfig      | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityClientTLSPolicy                  | False        | True        | False  | DCL        | True        |
+| networksecurity.cnrm.cloud.google.com         | NetworkSecurityGatewaySecurityPolicy            | False        | True        | False  | Direct     | True        |
+| networksecurity.cnrm.cloud.google.com         | NetworkSecurityGatewaySecurityPolicyRule        | False        | True        | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityInterceptDeployment              | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityInterceptEndpointGroup           | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityMirroringDeployment              | True         | False       | False  | Direct     | True        |

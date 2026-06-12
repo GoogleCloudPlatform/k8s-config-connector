@@ -25,4 +25,8 @@ type NetworkSecurityAuthorizationPolicyExpansion interface{}
 
 type NetworkSecurityClientTLSPolicyExpansion interface{}
 
+type NetworkSecurityGatewaySecurityPolicyExpansion interface{}
+
+type NetworkSecurityGatewaySecurityPolicyRuleExpansion interface{}
+
 type NetworkSecurityServerTLSPolicyExpansion interface{}

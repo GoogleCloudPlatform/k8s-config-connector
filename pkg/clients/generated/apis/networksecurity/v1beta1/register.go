@@ -65,6 +65,18 @@ var (
 		Kind:    reflect.TypeOf(NetworkSecurityClientTLSPolicy{}).Name(),
 	}
 
+	NetworkSecurityGatewaySecurityPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityGatewaySecurityPolicy{}).Name(),
+	}
+
+	NetworkSecurityGatewaySecurityPolicyRuleGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityGatewaySecurityPolicyRule{}).Name(),
+	}
+
 	NetworkSecurityServerTLSPolicyGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

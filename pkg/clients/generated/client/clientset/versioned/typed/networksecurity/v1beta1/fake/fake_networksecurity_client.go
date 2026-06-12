@@ -39,6 +39,14 @@ func (c *FakeNetworksecurityV1beta1) NetworkSecurityClientTLSPolicies(namespace 
 	return newFakeNetworkSecurityClientTLSPolicies(c, namespace)
 }
 
+func (c *FakeNetworksecurityV1beta1) NetworkSecurityGatewaySecurityPolicies(namespace string) v1beta1.NetworkSecurityGatewaySecurityPolicyInterface {
+	return newFakeNetworkSecurityGatewaySecurityPolicies(c, namespace)
+}
+
+func (c *FakeNetworksecurityV1beta1) NetworkSecurityGatewaySecurityPolicyRules(namespace string) v1beta1.NetworkSecurityGatewaySecurityPolicyRuleInterface {
+	return newFakeNetworkSecurityGatewaySecurityPolicyRules(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1beta1) NetworkSecurityServerTLSPolicies(namespace string) v1beta1.NetworkSecurityServerTLSPolicyInterface {
 	return newFakeNetworkSecurityServerTLSPolicies(c, namespace)
 }

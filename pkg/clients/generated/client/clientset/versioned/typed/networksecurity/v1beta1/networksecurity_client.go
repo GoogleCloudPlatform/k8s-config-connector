@@ -33,6 +33,8 @@ type NetworksecurityV1beta1Interface interface {
 	RESTClient() rest.Interface
 	NetworkSecurityAuthorizationPoliciesGetter
 	NetworkSecurityClientTLSPoliciesGetter
+	NetworkSecurityGatewaySecurityPoliciesGetter
+	NetworkSecurityGatewaySecurityPolicyRulesGetter
 	NetworkSecurityServerTLSPoliciesGetter
 }
 
@@ -47,6 +49,14 @@ func (c *NetworksecurityV1beta1Client) NetworkSecurityAuthorizationPolicies(name
 
 func (c *NetworksecurityV1beta1Client) NetworkSecurityClientTLSPolicies(namespace string) NetworkSecurityClientTLSPolicyInterface {
 	return newNetworkSecurityClientTLSPolicies(c, namespace)
+}
+
+func (c *NetworksecurityV1beta1Client) NetworkSecurityGatewaySecurityPolicies(namespace string) NetworkSecurityGatewaySecurityPolicyInterface {
+	return newNetworkSecurityGatewaySecurityPolicies(c, namespace)
+}
+
+func (c *NetworksecurityV1beta1Client) NetworkSecurityGatewaySecurityPolicyRules(namespace string) NetworkSecurityGatewaySecurityPolicyRuleInterface {
+	return newNetworkSecurityGatewaySecurityPolicyRules(c, namespace)
 }
 
 func (c *NetworksecurityV1beta1Client) NetworkSecurityServerTLSPolicies(namespace string) NetworkSecurityServerTLSPolicyInterface {
