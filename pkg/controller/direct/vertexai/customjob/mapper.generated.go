@@ -70,22 +70,6 @@ func CustomJobDiskSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobDiskS
 	out.BootDiskSizeGb = direct.ValueOf(in.BootDiskSizeGB)
 	return out
 }
-func CustomJobEncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.CustomJobEncryptionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomJobEncryptionSpec{}
-	// MISSING: KMSKeyName
-	return out
-}
-func CustomJobEncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobEncryptionSpec) *pb.EncryptionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionSpec{}
-	// MISSING: KMSKeyName
-	return out
-}
 func CustomJobEnvVar_FromProto(mapCtx *direct.MapContext, in *pb.EnvVar) *krm.CustomJobEnvVar {
 	if in == nil {
 		return nil
@@ -164,32 +148,6 @@ func CustomJobNfsMount_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobNfsMo
 	out.MountPoint = direct.ValueOf(in.MountPoint)
 	return out
 }
-func CustomJobPythonPackageSpec_FromProto(mapCtx *direct.MapContext, in *pb.PythonPackageSpec) *krm.CustomJobPythonPackageSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomJobPythonPackageSpec{}
-	out.ExecutorImageURI = direct.LazyPtr(in.GetExecutorImageUri())
-	// MISSING: PackageUris
-	// (near miss): "PackageUris" vs "PackageURIs"
-	out.PythonModule = direct.LazyPtr(in.GetPythonModule())
-	out.Args = in.Args
-	out.Env = direct.Slice_FromProto(mapCtx, in.Env, CustomJobEnvVar_FromProto)
-	return out
-}
-func CustomJobPythonPackageSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobPythonPackageSpec) *pb.PythonPackageSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PythonPackageSpec{}
-	out.ExecutorImageUri = direct.ValueOf(in.ExecutorImageURI)
-	// MISSING: PackageUris
-	// (near miss): "PackageUris" vs "PackageURIs"
-	out.PythonModule = direct.ValueOf(in.PythonModule)
-	out.Args = in.Args
-	out.Env = direct.Slice_ToProto(mapCtx, in.Env, CustomJobEnvVar_ToProto)
-	return out
-}
 func CustomJobScheduling_FromProto(mapCtx *direct.MapContext, in *pb.Scheduling) *krm.CustomJobScheduling {
 	if in == nil {
 		return nil
@@ -212,90 +170,6 @@ func CustomJobScheduling_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSch
 	out.Strategy = direct.Enum_ToProto[pb.Scheduling_Strategy](mapCtx, in.Strategy)
 	out.DisableRetries = direct.ValueOf(in.DisableRetries)
 	out.MaxWaitDuration = direct.StringDuration_ToProto(mapCtx, in.MaxWaitDuration)
-	return out
-}
-func CustomJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomJobSpec) *krm.CustomJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomJobSpec{}
-	// MISSING: PersistentResourceID
-	// MISSING: WorkerPoolSpecs
-	// MISSING: Scheduling
-	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
-	}
-	if in.GetNetwork() != "" {
-		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
-	}
-	out.ReservedIPRanges = in.ReservedIpRanges
-	// MISSING: PSCInterfaceConfig
-	// (near miss): "PSCInterfaceConfig" vs "PscInterfaceConfig"
-	out.BaseOutputDirectory = CustomJobGcsDestination_FromProto(mapCtx, in.GetBaseOutputDirectory())
-	out.ProtectedArtifactLocationID = direct.LazyPtr(in.GetProtectedArtifactLocationId())
-	if in.GetTensorboard() != "" {
-		out.TensorboardRef = &refsv1beta1.VertexAITensorboardRef{External: in.GetTensorboard()}
-	}
-	out.EnableWebAccess = direct.LazyPtr(in.GetEnableWebAccess())
-	out.EnableDashboardAccess = direct.LazyPtr(in.GetEnableDashboardAccess())
-	out.Experiment = direct.LazyPtr(in.GetExperiment())
-	out.ExperimentRun = direct.LazyPtr(in.GetExperimentRun())
-	out.Models = in.Models
-	return out
-}
-func CustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSpec) *pb.CustomJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomJobSpec{}
-	// MISSING: PersistentResourceID
-	// MISSING: WorkerPoolSpecs
-	// MISSING: Scheduling
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	if in.NetworkRef != nil {
-		out.Network = in.NetworkRef.External
-	}
-	out.ReservedIpRanges = in.ReservedIPRanges
-	// MISSING: PSCInterfaceConfig
-	// (near miss): "PSCInterfaceConfig" vs "PscInterfaceConfig"
-	out.BaseOutputDirectory = CustomJobGcsDestination_ToProto(mapCtx, in.BaseOutputDirectory)
-	out.ProtectedArtifactLocationId = direct.ValueOf(in.ProtectedArtifactLocationID)
-	if in.TensorboardRef != nil {
-		out.Tensorboard = in.TensorboardRef.External
-	}
-	out.EnableWebAccess = direct.ValueOf(in.EnableWebAccess)
-	out.EnableDashboardAccess = direct.ValueOf(in.EnableDashboardAccess)
-	out.Experiment = direct.ValueOf(in.Experiment)
-	out.ExperimentRun = direct.ValueOf(in.ExperimentRun)
-	out.Models = in.Models
-	return out
-}
-func CustomJobWorkerPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPoolSpec) *krm.CustomJobWorkerPoolSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomJobWorkerPoolSpec{}
-	// MISSING: ContainerSpec
-	// MISSING: PythonPackageSpec
-	// MISSING: MachineSpec
-	out.ReplicaCount = direct.LazyPtr(in.GetReplicaCount())
-	// MISSING: NfsMounts
-	// MISSING: DiskSpec
-	return out
-}
-func CustomJobWorkerPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobWorkerPoolSpec) *pb.WorkerPoolSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkerPoolSpec{}
-	// MISSING: ContainerSpec
-	// MISSING: PythonPackageSpec
-	// MISSING: MachineSpec
-	out.ReplicaCount = direct.ValueOf(in.ReplicaCount)
-	// MISSING: NfsMounts
-	// MISSING: DiskSpec
 	return out
 }
 func DNSPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.DnsPeeringConfig) *krm.DNSPeeringConfig {
@@ -346,42 +220,6 @@ func PSCInterfaceConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCInterfaceC
 		out.NetworkAttachment = in.NetworkAttachmentRef.External
 	}
 	out.DnsPeeringConfigs = direct.Slice_ToProto(mapCtx, in.DNSPeeringConfigs, DNSPeeringConfig_ToProto)
-	return out
-}
-func VertexAICustomJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krm.VertexAICustomJobObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAICustomJobObservedState{}
-	// MISSING: Name
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
-	// MISSING: WebAccessUris
-	// (near miss): "WebAccessUris" vs "WebAccessURIs"
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
-	return out
-}
-func VertexAICustomJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAICustomJobObservedState) *pb.CustomJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomJob{}
-	// MISSING: Name
-	out.State = direct.Enum_ToProto[pb.JobState](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Error = direct.Status_ToProto(mapCtx, in.Error)
-	// MISSING: WebAccessUris
-	// (near miss): "WebAccessUris" vs "WebAccessURIs"
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
 func VertexAICustomJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krm.VertexAICustomJobSpec {
