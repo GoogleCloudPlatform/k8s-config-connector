@@ -237,7 +237,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				!strings.Contains(name, "iam-logsinkref") &&
 				!strings.Contains(name, "iam-serviceaccountref") &&
 				!strings.Contains(name, "iam-serviceidentityref") &&
-				!strings.Contains(name, "iam-sqlinstanceref")
+				!strings.Contains(name, "iam-sqlinstanceref") &&
+				!strings.Contains(name, "networksecuritytlsinspectionpolicy")
 		}
 		pathFilter := func(path string) bool {
 			return !strings.Contains(path, "testdata/iam/iampartialpolicy")

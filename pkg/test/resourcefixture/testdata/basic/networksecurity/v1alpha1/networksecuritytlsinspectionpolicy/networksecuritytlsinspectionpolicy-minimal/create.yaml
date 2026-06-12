@@ -1,0 +1,16 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityTLSInspectionPolicy
+metadata:
+  name: tlsinspect-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: us-central1
+  caPoolRef:
+    external: "projects/${projectId}/locations/us-central1/caPools/my-capool-${uniqueId}"
+  trustConfigRef:
+    external: "projects/${projectId}/locations/us-central1/trustConfigs/my-trustconfig-${uniqueId}"
+  excludePublicCASet: false
+  minTLSVersion: TLS_1_2
+  tlsFeatureProfile: PROFILE_COMPATIBLE
+  description: "Minimal TLS Inspection Policy"

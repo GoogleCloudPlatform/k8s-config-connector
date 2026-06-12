@@ -1,0 +1,18 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityTLSInspectionPolicy
+metadata:
+  name: tlsinspect-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: us-central1
+  caPoolRef:
+    external: "projects/${projectId}/locations/us-central1/caPools/my-capool-${uniqueId}"
+  trustConfigRef:
+    external: "projects/${projectId}/locations/us-central1/trustConfigs/my-trustconfig-updated-${uniqueId}"
+  excludePublicCASet: true
+  minTLSVersion: TLS_1_3
+  tlsFeatureProfile: CUSTOM
+  customTLSFeatures:
+    - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+  description: "Updated TLS Inspection Policy"

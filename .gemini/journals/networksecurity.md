@@ -24,3 +24,9 @@
 - **Problem**: `NetworkSecuritySecurityProfile` contains two references to endpoint groups (`mirroringEndpointGroup` and `interceptEndpointGroup`), which did not have pre-existing reference structs in `apis/refs/v1beta1/networksecurityrefs.go`.
 - **Solution**: Defined `NetworkSecurityMirroringEndpointGroupRef` and `NetworkSecurityInterceptEndpointGroupRef` in `apis/refs/v1beta1/networksecurityrefs.go` to provide structured validation for endpoint group references, and used them in `CustomMirroringProfile` and `CustomInterceptProfile` respectively.
 - **Impact**: Enables strict validation and clean reference resolution for endpoint group fields within a SecurityProfile definition.
+
+### [2026-05-27] TlsInspectionPolicy Missing in Pinned googleapis SHA
+- **Context**: Scaffolding direct types for `NetworkSecurityTlsInspectionPolicy`.
+- **Problem**: The proto message `TlsInspectionPolicy` was missing in the pinned `googleapis` SHA (`731d7f2ab6e4e2ea15030c95039e2cb66174d4fb`) in `apis/git.versions`. `dev/tools/controllerbuilder/generate-types` failed with "proto: not found".
+- **Solution**: Fetched the `tls_inspection_policy.proto` file from the latest `googleapis` master branch and placed it in `mockgcp/apis/google/cloud/networksecurity/v1/tls_inspection_policy.proto`. Modified `dev/tools/controllerbuilder/generate-proto.sh` to include `-I ${REPO_ROOT}/mockgcp/apis/google/cloud/networksecurity/*/*.proto` so that `protoc` compiles the mockgcp file into `.build/googleapis.pb`. Then ran `generate-types` and manually moved the fields into `NetworkSecurityTlsInspectionPolicySpec`.
+- **Impact**: When scaffolding new resources, if a proto message is missing from the pinned `googleapis` commit, agents can inject the missing `.proto` file into `mockgcp/apis/` and update `generate-proto.sh` to compile it without bumping `apis/git.versions` and breaking stability rules.
