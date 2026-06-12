@@ -549,7 +549,7 @@ Content-Type: application/json
   "defaultTableExpirationMs": "3800000",
   "description": "Fully Configured BigQuery Dataset updated",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
-  "isCaseInsensitive": false,
+  "isCaseInsensitive": true,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -602,7 +602,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
+  "isCaseInsensitive": true,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -665,7 +665,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
+  "isCaseInsensitive": true,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -727,7 +727,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
+  "isCaseInsensitive": true,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
