@@ -68,8 +68,7 @@ spec:
                   against deletion.
                 type: boolean
               instanceRef:
-                description: InstanceRef defines the resource reference to BigtableInstance,
-                  which "External" field holds the GCP identifier for the KRM object.
+                description: InstanceRef is a reference to a BigtableInstance.
                 oneOf:
                 - not:
                     required:
@@ -150,10 +149,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                type: object
             type: object
         required:
         - spec
@@ -286,10 +281,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                type: object
             type: object
         required:
         - spec

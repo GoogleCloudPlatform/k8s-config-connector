@@ -20,7 +20,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-
 func BigtableMaterializedViewSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MaterializedView) *krm.BigtableMaterializedViewSpec {
 	if in == nil {
 		return nil

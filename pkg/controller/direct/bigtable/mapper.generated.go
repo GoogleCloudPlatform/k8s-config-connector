@@ -401,52 +401,7 @@ func BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
 	return out
 }
-<<<<<<< HEAD
-func BigtableMaterializedViewObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MaterializedView) *krmbigtablev1alpha1.BigtableMaterializedViewObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmbigtablev1alpha1.BigtableMaterializedViewObservedState{}
-	// MISSING: Name
-	// MISSING: Etag
-	return out
-}
-func BigtableMaterializedViewObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.BigtableMaterializedViewObservedState) *pb.MaterializedView {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MaterializedView{}
-	// MISSING: Name
-	// MISSING: Etag
-	return out
-}
-func BigtableMaterializedViewSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MaterializedView) *krmbigtablev1alpha1.BigtableMaterializedViewSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmbigtablev1alpha1.BigtableMaterializedViewSpec{}
-	// MISSING: Name
-	out.Query = direct.LazyPtr(in.GetQuery())
-	// MISSING: Etag
-	out.DeletionProtection = direct.LazyPtr(in.GetDeletionProtection())
-	return out
-}
-func BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.BigtableMaterializedViewSpec) *pb.MaterializedView {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MaterializedView{}
-	// MISSING: Name
-	out.Query = direct.ValueOf(in.Query)
-	// MISSING: Etag
-	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
-	return out
-}
 func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krmbigtablev1beta1.ChangeStreamConfig {
-=======
-
-func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krm.ChangeStreamConfig {
->>>>>>> 99042a8ba1 (feat: promote BigtableMaterializedView from v1alpha1 to v1beta1)
 	if in == nil {
 		return nil
 	}
