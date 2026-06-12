@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type CCInsightsIssueModelExpansion interface{}
+
 type CCInsightsPhraseMatcherExpansion interface{}
 
 type CCInsightsViewExpansion interface{}
