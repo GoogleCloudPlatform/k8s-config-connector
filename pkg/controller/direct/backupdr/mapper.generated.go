@@ -141,30 +141,30 @@ func BackupDRBackupPlanObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	return out
 }
 
-/*
-found existing non-generated mapping function "BackupDRBackupPlanSpec_v1beta1_FromProto", skipping
-
-	func BackupDRBackupPlanSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.BackupDRBackupPlanSpec {
-		if in == nil {
-			return nil
-		}
-		out := &krm.BackupDRBackupPlanSpec{}
-		// MISSING: Name
-		out.Description = direct.LazyPtr(in.GetDescription())
-		// MISSING: Labels
-		out.BackupRules = direct.Slice_FromProto(mapCtx, in.BackupRules, BackupRule_v1beta1_FromProto)
-		out.ResourceType = direct.LazyPtr(in.GetResourceType())
-		// MISSING: Etag
-		if in.GetBackupVault() != "" {
-			out.BackupVaultRef = &krm.BackupVaultRef{External: in.GetBackupVault()}
-		}
-		// MISSING: LogRetentionDays
-		// MISSING: SupportedResourceTypes
-		// MISSING: RevisionID
-		// MISSING: RevisionName
-		return out
+/* found existing non-generated mapping function "BackupDRBackupPlanSpec_v1beta1_FromProto", skipping
+func BackupDRBackupPlanSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.BackupDRBackupPlanSpec {
+	if in == nil {
+		return nil
 	}
+	out := &krm.BackupDRBackupPlanSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Labels
+	out.BackupRules = direct.Slice_FromProto(mapCtx, in.BackupRules, BackupRule_v1beta1_FromProto)
+	out.ResourceType = direct.LazyPtr(in.GetResourceType())
+	// MISSING: Etag
+	if in.GetBackupVault() != "" {
+		out.BackupVaultRef = &krm.BackupVaultRef{External: in.GetBackupVault()}
+	}
+	// MISSING: LogRetentionDays
+	// MISSING: SupportedResourceTypes
+	// MISSING: RevisionID
+	// MISSING: RevisionName
+	return out
+}
 */
+
+/* found existing non-generated mapping function "BackupDRBackupPlanSpec_v1beta1_ToProto", skipping
 func BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanSpec) *pb.BackupPlan {
 	if in == nil {
 		return nil
@@ -185,6 +185,7 @@ func BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.B
 	// MISSING: RevisionName
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "BackupDRBackupVaultObservedState_v1beta1_FromProto", skipping
 func BackupDRBackupVaultObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultObservedState {
