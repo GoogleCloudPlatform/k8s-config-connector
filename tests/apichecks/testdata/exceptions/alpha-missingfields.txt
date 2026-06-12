@@ -176,6 +176,14 @@
 [missing_field] crd=apihubexternalapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=apihubexternalapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.paths[]" is not set in unstructured objects
 [missing_field] crd=apihubexternalapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=apihubinstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.cmekKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=apihubinstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.disableSearch" is not set in unstructured objects
+[missing_field] crd=apihubinstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.encryptionType" is not set in unstructured objects
+[missing_field] crd=apihubinstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.vertexLocation" is not set in unstructured objects
+[missing_field] crd=apihubinstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=apihubinstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=apihubinstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=apihubinstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects

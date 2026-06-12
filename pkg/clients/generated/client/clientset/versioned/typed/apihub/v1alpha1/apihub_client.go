@@ -34,6 +34,7 @@ type ApihubV1alpha1Interface interface {
 	APIHubAPIsGetter
 	APIHubDeploymentsGetter
 	APIHubExternalAPIsGetter
+	APIHubInstancesGetter
 	APIHubPluginsGetter
 	APIHubRuntimeProjectAttachmentsGetter
 }
@@ -53,6 +54,10 @@ func (c *ApihubV1alpha1Client) APIHubDeployments(namespace string) APIHubDeploym
 
 func (c *ApihubV1alpha1Client) APIHubExternalAPIs(namespace string) APIHubExternalAPIInterface {
 	return newAPIHubExternalAPIs(c, namespace)
+}
+
+func (c *ApihubV1alpha1Client) APIHubInstances(namespace string) APIHubInstanceInterface {
+	return newAPIHubInstances(c, namespace)
 }
 
 func (c *ApihubV1alpha1Client) APIHubPlugins(namespace string) APIHubPluginInterface {

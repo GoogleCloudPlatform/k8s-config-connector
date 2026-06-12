@@ -122,22 +122,6 @@ func APIHubInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubInstanc
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
-func APIHubInstance_Config_FromProto(mapCtx *direct.MapContext, in *pb.ApiHubInstance_Config) *krm.APIHubInstance_Config {
-	if in == nil {
-		return nil
-	}
-	out := &krm.APIHubInstance_Config{}
-	// MISSING: CmekKeyName
-	return out
-}
-func APIHubInstance_Config_ToProto(mapCtx *direct.MapContext, in *krm.APIHubInstance_Config) *pb.ApiHubInstance_Config {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ApiHubInstance_Config{}
-	// MISSING: CmekKeyName
-	return out
-}
 func APIHubPluginObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.APIHubPluginObservedState {
 	if in == nil {
 		return nil
