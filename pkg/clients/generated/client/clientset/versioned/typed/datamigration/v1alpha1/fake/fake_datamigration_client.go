@@ -31,6 +31,10 @@ type FakeDatamigrationV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeDatamigrationV1alpha1) DatabaseMigrationConnectionProfiles(namespace string) v1alpha1.DatabaseMigrationConnectionProfileInterface {
+	return newFakeDatabaseMigrationConnectionProfiles(c, namespace)
+}
+
 func (c *FakeDatamigrationV1alpha1) DatabaseMigrationConversionWorkspaces(namespace string) v1alpha1.DatabaseMigrationConversionWorkspaceInterface {
 	return newFakeDatabaseMigrationConversionWorkspaces(c, namespace)
 }
