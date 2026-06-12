@@ -349,8 +349,20 @@ func WriteObservedStateMessageAsComment(out io.Writer, msgDetails *OutputMessage
 func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	goType := GoNameForProtoMessage(msg)
 
+	hasFields := false
+	for i := 0; i < msg.Fields().Len(); i++ {
+		field := msg.Fields().Get(i)
+		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+			hasFields = true
+			break
+		}
+	}
+
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationMisc, msg.FullName())
+	if !hasFields {
+		fmt.Fprintf(out, "// +kubebuilder:validation:XPreserveUnknownFields\n")
+	}
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)

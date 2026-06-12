@@ -1,0 +1,5 @@
+### [2026-05-26] Scaffolded BigQueryMigrationWorkflow
+- **Context**: Implemented initial direct resource for BigQueryMigrationWorkflow.
+- **Problem**: The proto definition has a nested map `Tasks` which contains output-only fields that generator by default handles awkwardly (creating `MigrationTask` as an input struct, but not generating an `ObservedState` struct for the map values). The initial generator run marks the entire `MigrationWorkflow` as unreachable.
+- **Solution**: Manually copied the `Tasks` field to the `BigQueryMigrationWorkflowSpec` without `MigrationTaskObservedState` since nested `ObservedState` structures are not handled cleanly by default if they are part of a map. After explicitly defining the missing fields in the spec and running `generate.sh`, the generator was able to output the correct types.
+- **Impact**: Agents working on map fields with output-only components in new direct resources must be prepared to manually plumb nested status or drop output-only fields if they break `generate-types`.

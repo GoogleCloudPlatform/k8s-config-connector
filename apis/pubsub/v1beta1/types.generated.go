@@ -186,12 +186,14 @@ type IngestionDataSourceSettings_CloudStorage struct {
 
 /* unreachable type IngestionDataSourceSettings_CloudStorage_AvroFormat
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings.CloudStorage.AvroFormat
+// +kubebuilder:validation:XPreserveUnknownFields
 type IngestionDataSourceSettings_CloudStorage_AvroFormat struct {
 }
 */
 
 /* unreachable type IngestionDataSourceSettings_CloudStorage_PubSubAvroFormat
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings.CloudStorage.PubSubAvroFormat
+// +kubebuilder:validation:XPreserveUnknownFields
 type IngestionDataSourceSettings_CloudStorage_PubSubAvroFormat struct {
 }
 */

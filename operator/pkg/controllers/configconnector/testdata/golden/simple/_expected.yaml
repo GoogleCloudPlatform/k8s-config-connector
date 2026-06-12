@@ -2484,6 +2484,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - bigquerymigration.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - bigqueryreservation.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4227,6 +4239,14 @@ rules:
   - watch
 - apiGroups:
   - bigquerydatatransfer.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - bigquerymigration.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
