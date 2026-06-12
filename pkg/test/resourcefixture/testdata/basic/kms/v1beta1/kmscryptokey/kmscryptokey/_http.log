@@ -175,10 +175,11 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=destroyScheduledDuration%2Clabels
+PATCH https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
 Content-Type: application/json
 
 {
+  "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
     "key-one": "value-two",
@@ -204,6 +205,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
     "key-one": "value-two",
@@ -242,6 +244,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
     "key-one": "value-two",

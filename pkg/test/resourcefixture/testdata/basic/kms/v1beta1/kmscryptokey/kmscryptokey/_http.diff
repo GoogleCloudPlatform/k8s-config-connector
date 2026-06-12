@@ -60,13 +60,14 @@
 ---
 >     "algorithm": 13,
 >     "protectionLevel": 1
-178c178,269
+178c178,272
 < GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
 ---
-> PATCH https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=destroyScheduledDuration%2Clabels
+> PATCH https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
 > Content-Type: application/json
 > 
 > {
+>   "destroyScheduledDuration": "2592000s",
 >   "labels": {
 >     "cnrm-test": "true",
 >     "key-one": "value-two",
@@ -92,6 +93,7 @@
 > 
 > {
 >   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "destroyScheduledDuration": "2592000s",
 >   "labels": {
 >     "cnrm-test": "true",
 >     "key-one": "value-two",
@@ -130,6 +132,7 @@
 > 
 > {
 >   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "destroyScheduledDuration": "2592000s",
 >   "labels": {
 >     "cnrm-test": "true",
 >     "key-one": "value-two",
@@ -155,31 +158,31 @@
 > 
 > GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?%24alt=json%3Benum-encoding%3Dint
 > Content-Type: application/json
-193c284
+193c287
 <       "algorithm": "EC_SIGN_P384_SHA384",
 ---
 >       "algorithm": 13,
-197,198c288,289
+197,198c291,292
 <       "protectionLevel": "SOFTWARE",
 <       "state": "ENABLED"
 ---
 >       "protectionLevel": 1,
 >       "state": 1
-206c297
+206c300
 < POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
 ---
 > POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?%24alt=json%3Benum-encoding%3Dint
-209c300,302
+209c303,305
 < {}
 ---
 > {
 >   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
 > }
-222c315
+222c318
 <   "algorithm": "EC_SIGN_P384_SHA384",
 ---
 >   "algorithm": 13,
-227,228c320,321
+227,228c323,324
 <   "protectionLevel": "SOFTWARE",
 <   "state": "DESTROY_SCHEDULED"
 ---

@@ -28,6 +28,7 @@ import (
 	kms "cloud.google.com/go/kms/apiv1"
 	"cloud.google.com/go/kms/apiv1/kmspb"
 	"google.golang.org/api/iterator"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -277,6 +278,15 @@ func compareCryptoKey(ctx context.Context, actual, desired *kmspb.CryptoKey) (*s
 	}
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
+
+	populateDefaults := func(obj *kmspb.CryptoKey) {
+		if obj.DestroyScheduledDuration == nil {
+			obj.DestroyScheduledDuration = &durationpb.Duration{Seconds: 2592000} // "2592000s"
+		}
+	}
+	populateDefaults(maskedActual)
+	populateDefaults(desired)
+
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
