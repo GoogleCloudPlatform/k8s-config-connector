@@ -33,7 +33,26 @@ func computeSubnetworkFuzzer() fuzztesting.KRMFuzzer {
 		ComputeSubnetworkStatus_v1beta1_FromProto, ComputeSubnetworkStatus_v1beta1_ToProto,
 	)
 
-	// Spec fields
+	// Spec fields mapping:
+	// - description                        -> .description
+	// - ipCidrRange                        -> .ip_cidr_range
+	// - ipv6AccessType                     -> .ipv6_access_type
+	// - logConfig                          -> .log_config
+	//   - aggregationInterval              -> .log_config.aggregation_interval
+	//   - filterExpr                       -> .log_config.filter_expr
+	//   - flowSampling                     -> .log_config.flow_sampling
+	//   - metadata                         -> .log_config.metadata
+	//   - metadataFields                   -> .log_config.metadata_fields
+	// - networkRef                         -> .network
+	// - privateIpGoogleAccess              -> .private_ip_google_access
+	// - privateIpv6GoogleAccess            -> .private_ipv6_google_access
+	// - purpose                            -> .purpose
+	// - region                             -> .region
+	// - role                               -> .role
+	// - secondaryIpRange                   -> .secondary_ip_ranges
+	//   - ipCidrRange                      -> .secondary_ip_ranges[].ip_cidr_range
+	//   - rangeName                        -> .secondary_ip_ranges[].range_name
+	// - stackType                          -> .stack_type
 	f.SpecField(".description")
 	f.SpecField(".ip_cidr_range")
 	f.SpecField(".ipv6_access_type")
