@@ -67,6 +67,8 @@ func AwsPropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.AwsPropertie
 	}
 	return out
 }
+
+/* found existing non-generated mapping function "AzurePropertiesStatus_FromProto", skipping
 func AzurePropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.AzureProperties) *krm.AzurePropertiesStatus {
 	if in == nil {
 		return nil
@@ -82,21 +84,27 @@ func AzurePropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.AzureProp
 	out.Identity = direct.LazyPtr(in.GetIdentity())
 	return out
 }
-func AzurePropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.AzurePropertiesStatus) *pb.AzureProperties {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "AzurePropertiesStatus_ToProto", skipping
+
+	func AzurePropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.AzurePropertiesStatus) *pb.AzureProperties {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AzureProperties{}
+		out.Application = direct.ValueOf(in.Application)
+		out.ClientId = direct.ValueOf(in.ClientID)
+		out.ObjectId = direct.ValueOf(in.ObjectID)
+		// MISSING: CustomerTenantID
+		// MISSING: RedirectURI
+		// (near miss): "RedirectURI" vs "RedirectUri"
+		// MISSING: FederatedApplicationClientID
+		out.Identity = direct.ValueOf(in.Identity)
+		return out
 	}
-	out := &pb.AzureProperties{}
-	out.Application = direct.ValueOf(in.Application)
-	out.ClientId = direct.ValueOf(in.ClientID)
-	out.ObjectId = direct.ValueOf(in.ObjectID)
-	// MISSING: CustomerTenantID
-	// MISSING: RedirectURI
-	// (near miss): "RedirectURI" vs "RedirectUri"
-	// MISSING: FederatedApplicationClientID
-	out.Identity = direct.ValueOf(in.Identity)
-	return out
-}
+*/
 func BigQueryConnectionConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.BigQueryConnectionConnectionObservedState {
 	if in == nil {
 		return nil
@@ -147,6 +155,8 @@ func BigQueryConnectionConnectionObservedState_ToProto(mapCtx *direct.MapContext
 	out.HasCredential = direct.ValueOf(in.HasCredential)
 	return out
 }
+
+/* found existing non-generated mapping function "BigQueryConnectionConnectionSpec_FromProto", skipping
 func BigQueryConnectionConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.BigQueryConnectionConnectionSpec {
 	if in == nil {
 		return nil
@@ -161,6 +171,7 @@ func BigQueryConnectionConnectionSpec_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: LastModifiedTime
 	return out
 }
+*/
 
 /*
 found existing non-generated mapping function "BigQueryConnectionConnectionSpec_ToProto", skipping
