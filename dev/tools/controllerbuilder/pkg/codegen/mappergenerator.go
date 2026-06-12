@@ -137,6 +137,23 @@ func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescrip
 		return nil
 	}
 
+	var expectedGroup string
+	if v.generatedFileAnnotation != nil {
+		if groups := v.generatedFileAnnotation.Attributes["krm.group"]; len(groups) > 0 {
+			expectedGroup = strings.TrimSuffix(groups[0], ".cnrm.cloud.google.com")
+		}
+	}
+	if expectedGroup != "" {
+		var filtered []*gocode.GoStruct
+		for _, m := range matches {
+			expectedSubstr := "/apis/" + expectedGroup + "/"
+			if strings.Contains(m.GoPackage, expectedSubstr) {
+				filtered = append(filtered, m)
+			}
+		}
+		return filtered
+	}
+
 	var krmGroup string
 	if v.generatedFileAnnotation != nil {
 		if groups := v.generatedFileAnnotation.Attributes["krm.group"]; len(groups) > 0 {
@@ -211,7 +228,14 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 		}
 	}
 
+	var lastPairKey string
 	for _, pair := range v.typePairs {
+		pairKey := pair.KRMType.GoPackage + "/" + pair.KRMType.Name + ":" + string(pair.Proto.FullName())
+		if pairKey == lastPairKey {
+			continue
+		}
+		lastPairKey = pairKey
+
 		goPackage, shouldVisit := v.goPathForMessage(pair.Proto)
 		if !shouldVisit {
 			continue
