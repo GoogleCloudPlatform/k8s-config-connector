@@ -442,6 +442,7 @@
 | networkservices.cnrm.cloud.google.com         | NetworkServicesTLSRoute                         | False        | True        | False  | DCL        | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesWasmPlugin                       | True         | False       | False  | Direct     | True        |
 | notebooks.cnrm.cloud.google.com               | NotebookInstance                                | True         | True        | False  | Direct     | True        |
+| notebooks.cnrm.cloud.google.com               | NotebookRuntime                                 | True         | False       | False  | Direct     | True        |
 | notebooks.cnrm.cloud.google.com               | NotebooksEnvironment                            | True         | False       | False  | Direct     | True        |
 | notebooks.cnrm.cloud.google.com               | NotebooksExecution                              | True         | False       | False  | Direct     | True        |
 | orgpolicy.cnrm.cloud.google.com               | OrgPolicyCustomConstraint                       | True         | True        | False  | Direct     | True        |
