@@ -62,6 +62,22 @@ func (i *LoggingLogExclusionIdentity) String() string {
 	return ""
 }
 
+func (i *LoggingLogExclusionIdentity) ParentString() string {
+	if i.Project != "" {
+		return fmt.Sprintf("projects/%s", i.Project)
+	}
+	if i.Folder != "" {
+		return fmt.Sprintf("folders/%s", i.Folder)
+	}
+	if i.Organization != "" {
+		return fmt.Sprintf("organizations/%s", i.Organization)
+	}
+	if i.BillingAccount != "" {
+		return fmt.Sprintf("billingAccounts/%s", i.BillingAccount)
+	}
+	return ""
+}
+
 func (i *LoggingLogExclusionIdentity) ID() string {
 	return i.Exclusion
 }
