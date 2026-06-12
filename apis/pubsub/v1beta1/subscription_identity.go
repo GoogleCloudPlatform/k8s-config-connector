@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,32 +15,78 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
-	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// SubscriptionIdentity is the identity of a PubSubSubscription.
-type SubscriptionIdentity struct {
-	parent *parent.ProjectParent
-	id     string
+var (
+	_ identity.IdentityV2 = &PubSubSubscriptionIdentity{}
+	_ identity.Resource   = &PubSubSubscription{}
+)
+
+var PubSubSubscriptionIdentityFormat = gcpurls.Template[PubSubSubscriptionIdentity]("pubsub.googleapis.com", "projects/{project}/subscriptions/{subscription}")
+
+// +k8s:deepcopy-gen=false
+
+// PubSubSubscriptionIdentity is the identity of a GCP PubSubSubscription resource.
+type PubSubSubscriptionIdentity struct {
+	Project      string
+	Subscription string
 }
 
-func (i *SubscriptionIdentity) String() string {
-	return i.parent.String() + "/subscriptions/" + i.id
+func (i *PubSubSubscriptionIdentity) String() string {
+	return PubSubSubscriptionIdentityFormat.ToString(*i)
 }
 
-func (i *SubscriptionIdentity) ID() string {
-	return i.id
-}
-
-func ParseSubscriptionExternal(external string) (*SubscriptionIdentity, error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "topics" {
-		return nil, fmt.Errorf("format of PubSubSnapshot external=%q was not known (use projects/{{projectID}}/subscriptions/{{subscriptionID}})", external)
+func (i *PubSubSubscriptionIdentity) FromExternal(ref string) error {
+	parsed, match, err := PubSubSubscriptionIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of PubSubSubscription external=%q was not known (use %s): %w", ref, PubSubSubscriptionIdentityFormat.CanonicalForm(), err)
 	}
-	return &SubscriptionIdentity{parent: &parent.ProjectParent{
-		ProjectID: tokens[1],
-	}, id: tokens[3]}, nil
+	if !match {
+		return fmt.Errorf("format of PubSubSubscription external=%q was not known (use %s)", ref, PubSubSubscriptionIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *PubSubSubscriptionIdentity) Host() string {
+	return PubSubSubscriptionIdentityFormat.Host()
+}
+
+func (i *PubSubSubscriptionIdentity) ParentString() string {
+	return "projects/" + i.Project
+}
+
+func getIdentityFromPubSubSubscriptionSpec(ctx context.Context, reader client.Reader, obj *PubSubSubscription) (*PubSubSubscriptionIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	identity := &PubSubSubscriptionIdentity{
+		Project:      projectID,
+		Subscription: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *PubSubSubscription) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromPubSubSubscriptionSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	return specIdentity, nil
 }
