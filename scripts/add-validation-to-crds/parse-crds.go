@@ -360,6 +360,18 @@ oneOf:
 - required: [organizationRef]
 - required: [projectRef]
 `
+		} else if kind == "ComputeInstance" && fieldPath == ".spec" {
+			ruleYAML = `
+anyOf:
+- required:
+  - bootDisk
+  - machineType
+  - networkInterface
+  - zone
+- required:
+  - instanceTemplateRef
+  - zone
+`
 		} else if signature == "bigQueryDatasetRef,loggingLogBucketRef,pubSubTopicRef,storageBucketRef" && kind == "LoggingLogSink" {
 			ruleYAML = `
 oneOf:
@@ -397,6 +409,7 @@ oneOf:
 		return err
 	}
 	props.OneOf = rule.OneOf
+	props.AnyOf = rule.AnyOf
 
 	return nil
 }
