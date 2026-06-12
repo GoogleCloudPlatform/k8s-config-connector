@@ -14,11 +14,9 @@ spec:
   description: Updated description
   location: us-central1
   producerAcceptLists:
-  - kind: Project
-    name: project-1-${uniqueId}
+  - external: ${projectId}
   producerRejectLists:
-  - kind: Project
-    name: project-2-${uniqueId}
+  - external: project-2-${uniqueId}
   projectRef:
     external: ${projectId}
   subnetworkRefs:

@@ -52,11 +52,14 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	// Subnets
 	replacements.ReplacePath(".gatewayAddress", "10.0.0.1")
+	replacements.RemovePath(".state")
+	replacements.RemovePath(".items[].state")
 	for _, region := range regions.GetAllRegions(context.Background()) {
 		prefix := fmt.Sprintf(".items.regions/%s.subnetworks[]", region.Name)
 		replacements.ReplacePath(prefix+".creationTimestamp", mockgcpregistry.PlaceholderTimestamp)
 		replacements.ReplacePath(prefix+".fingerprint", PlaceholderFingerprint)
 		replacements.ReplacePath(prefix+".id", PlaceholderID)
+		replacements.RemovePath(prefix + ".state")
 	}
 
 	// Routes

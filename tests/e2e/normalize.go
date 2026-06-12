@@ -413,6 +413,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, project.ProjectID, "${projectId}")
 	})
+	if project2 := testgcp.TestDependentFolderProjectID.Get(); project2 != "" {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			return strings.ReplaceAll(s, project2, "project-2-${uniqueId}")
+		})
+	}
 
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}")
