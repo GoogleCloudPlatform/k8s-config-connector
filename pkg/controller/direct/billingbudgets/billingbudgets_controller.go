@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -230,17 +231,9 @@ func (a *BillingBudgetsBudgetAdapter) Delete(ctx context.Context, deleteOp *dire
 }
 
 func compareBillingBudgetsBudget(ctx context.Context, actual, desired *pb.Budget) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	var maskedActual *pb.Budget
-	{
-		mapCtx := &direct.MapContext{}
-		spec := BillingBudgetsBudgetSpec_v1beta1_FromProto(mapCtx, actual)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
-		maskedActual = BillingBudgetsBudgetSpec_v1beta1_ToProto(mapCtx, spec)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
+	maskedActual, err := mappers.OnlySpecFields(actual, BillingBudgetsBudgetSpec_v1beta1_FromProto, BillingBudgetsBudgetSpec_v1beta1_ToProto)
+	if err != nil {
+		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
