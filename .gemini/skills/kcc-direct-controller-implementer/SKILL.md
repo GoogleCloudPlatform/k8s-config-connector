@@ -65,6 +65,7 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
           return op.UpdateStatus(ctx, status, nil)
       }
       ```
+    - **Immutable Resources**: If a direct resource is completely immutable in GCP (meaning no fields can be updated once created), the `Update` method must STILL perform the `compare<Resource>` comparison check on spec fields. If a diff is detected, return a descriptive error (e.g. `fmt.Errorf("<Kind> is immutable and cannot be updated")`) so that the error/diff is surfaced on the resource status rather than silently doing nothing. Also, register the model using `registry.CannotBeDeleted()` if deletion is not supported.
 
 4.  **Mappers**:
     Verify `mapper.generated.go` and manual mappers. Ensure all references use the standard `Ref` pattern.
