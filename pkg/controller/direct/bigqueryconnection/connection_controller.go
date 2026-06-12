@@ -26,16 +26,17 @@ import (
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -89,17 +90,32 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	if err != nil {
 		return nil, err
 	}
-	return &Adapter{
+
+	adapter := &Adapter{
 		id:        connectionIdentity,
 		gcpClient: gcpClient,
-		desired:   obj,
 		reader:    reader,
 		namespace: obj.Namespace,
-	}, nil
+	}
+
+	if err := adapter.normalizeReference(ctx, obj); err != nil {
+		return nil, err
+	}
+
+	mapCtx := &direct.MapContext{}
+	desiredProto := BigQueryConnectionConnectionSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	// aws.accessRole.Identity is a output-only field in CREATE, it is required in the UPDATE.
+	desiredProto = processAwsIdentityMerge(desiredProto, obj.Status.ObservedState)
+
+	adapter.desired = desiredProto
+	return adapter, nil
 }
 
-func (a *Adapter) normalizeReference(ctx context.Context) error {
-	obj := a.desired
+func (a *Adapter) normalizeReference(ctx context.Context, obj *krm.BigQueryConnectionConnection) error {
 	// Resolve SQLInstanceRef and SQLDatabaseRef
 	if obj.Spec.CloudSQLSpec != nil {
 		sql := obj.Spec.CloudSQLSpec
@@ -164,7 +180,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 type Adapter struct {
 	id        *krm.BigQueryConnectionConnectionIdentity
 	gcpClient *gcp.Client
-	desired   *krm.BigQueryConnectionConnection
+	desired   *pb.Connection
 	actual    *pb.Connection
 	reader    client.Reader
 	namespace string
@@ -195,27 +211,15 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	u := createOp.GetUnstructured()
-
 	fqn := a.id.String()
 
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Connection", "name", fqn)
 
-	if err := a.normalizeReference(ctx); err != nil {
-		return err
-	}
-	mapCtx := &direct.MapContext{}
-	desired := a.desired.DeepCopy()
-	resource := BigQueryConnectionConnectionSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	parent := a.id.ParentString()
 	req := &pb.CreateConnectionRequest{
 		Parent:     parent,
-		Connection: resource,
+		Connection: a.desired,
 	}
 	if a.id.HasIdentitySpecified() {
 		req.ConnectionId = a.id.Connection
@@ -226,16 +230,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	log.V(2).Info("successfully created Connection", "name", created.Name)
 
-	status := &krm.BigQueryConnectionConnectionStatus{}
-	status.ObservedState = BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	tokens := strings.Split(created.Name, "/")
-	externalRef := parent + "/connections/" + tokens[5]
-	status.ExternalRef = &externalRef
-	return setStatus(u, status)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 // aws.accessRole.Identity is a output-only field in CREATE, it is required in the UPDATE.
@@ -247,42 +242,28 @@ func processAwsIdentityMerge(desired *pb.Connection, previouslyApplied *krm.BigQ
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	u := updateOp.GetUnstructured()
-
 	fqn := a.id.String()
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Connection", "name", fqn)
 
-	if err := a.normalizeReference(ctx); err != nil {
-		return err
-	}
-	mapCtx := &direct.MapContext{}
-	connection := BigQueryConnectionConnectionSpec_ToProto(mapCtx, &a.desired.Spec)
-	connection = processAwsIdentityMerge(connection, a.desired.Status.ObservedState)
+	a.desired.Name = a.actual.Name
 
-	connection.Name = a.actual.Name
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	paths, err := common.CompareProtoMessage(connection, a.actual, common.BasicDiff)
+	diffs, updateMask, err := compareConnection(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
-	if len(paths) == 0 {
+	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", fqn)
 		return nil
 	}
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	for path := range paths {
-		report.AddField(path, nil, nil)
-	}
-	structuredreporting.ReportDiff(ctx, report)
+	diffs.Object = updateOp.GetUnstructured()
+	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateConnectionRequest{
 		Name:       fqn,
-		Connection: connection,
-		UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
+		Connection: a.desired,
+		UpdateMask: updateMask,
 	}
 	updated, err := a.gcpClient.UpdateConnection(ctx, req)
 	if err != nil {
@@ -290,12 +271,47 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	log.V(2).Info("successfully updated Connection", "name", fqn)
 
-	status := &krm.BigQueryConnectionConnectionStatus{}
-	status.ObservedState = BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx, updated)
+	return a.updateStatus(ctx, updateOp, updated)
+}
+
+func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Connection) error {
+	mapCtx := &direct.MapContext{}
+	observedState := BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	return setStatus(u, status)
+
+	status := &krm.BigQueryConnectionConnectionStatus{}
+	status.ObservedState = observedState
+
+	parent := a.id.ParentString()
+	tokens := strings.Split(latest.Name, "/")
+	externalRef := parent + "/connections/" + tokens[len(tokens)-1]
+	status.ExternalRef = &externalRef
+
+	return op.UpdateStatus(ctx, status, nil)
+}
+
+func compareConnection(ctx context.Context, actual, desired *pb.Connection) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, BigQueryConnectionConnectionSpec_FromProto, BigQueryConnectionConnectionSpec_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+	maskedActual.Name = desired.Name
+
+	clonedDesired := proto.Clone(desired).(*pb.Connection)
+
+	populateDefaults := func(obj *pb.Connection) {
+		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
+	}
+	populateDefaults(maskedActual)
+	populateDefaults(clonedDesired)
+
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -340,23 +356,4 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	}
 	log.V(2).Info("successfully deleted Connection", "name", fqn)
 	return true, nil
-}
-
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
-	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
-	}
-
-	old, _, _ := unstructured.NestedMap(u.Object, "status")
-	if old != nil {
-		status["conditions"] = old["conditions"]
-		status["observedGeneration"] = old["observedGeneration"]
-		status["externalRef"] = old["externalRef"]
-		status["serviceGeneratedID"] = old["serviceGeneratedID"]
-	}
-
-	u.Object["status"] = status
-
-	return nil
 }

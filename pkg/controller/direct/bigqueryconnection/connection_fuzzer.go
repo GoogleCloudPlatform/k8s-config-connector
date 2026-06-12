@@ -34,52 +34,52 @@ func bigQueryConnectionConnectionFuzzer() fuzztesting.KRMFuzzer {
 		BigQueryConnectionConnectionObservedState_FromProto, BigQueryConnectionConnectionObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".friendly_name")
-	f.SpecFields.Insert(".description")
+	f.SpecField(".friendly_name")
+	f.SpecField(".description")
 
 	// aws spec fields
-	f.SpecFields.Insert(".aws.access_role.iam_role_id")
+	f.SpecField(".aws.access_role.iam_role_id")
 
 	// azure spec fields
-	f.SpecFields.Insert(".azure.customer_tenant_id")
-	f.SpecFields.Insert(".azure.federated_application_client_id")
+	f.SpecField(".azure.customer_tenant_id")
+	f.SpecField(".azure.federated_application_client_id")
 
 	// cloud_resource spec fields
-	f.SpecFields.Insert(".cloud_resource")
+	f.SpecField(".cloud_resource")
 
 	// cloud_sql spec fields
-	f.SpecFields.Insert(".cloud_sql.instance_id")
-	f.SpecFields.Insert(".cloud_sql.database")
-	f.SpecFields.Insert(".cloud_sql.type")
+	f.SpecField(".cloud_sql.instance_id")
+	f.SpecField(".cloud_sql.database")
+	f.SpecField(".cloud_sql.type")
 
 	// cloud_spanner spec fields
-	f.SpecFields.Insert(".cloud_spanner.database")
-	f.SpecFields.Insert(".cloud_spanner.use_parallelism")
-	f.SpecFields.Insert(".cloud_spanner.use_data_boost")
-	f.SpecFields.Insert(".cloud_spanner.use_serverless_analytics")
-	f.SpecFields.Insert(".cloud_spanner.max_parallelism")
-	f.SpecFields.Insert(".cloud_spanner.database_role")
+	f.SpecField(".cloud_spanner.database")
+	f.SpecField(".cloud_spanner.use_parallelism")
+	f.SpecField(".cloud_spanner.use_data_boost")
+	f.SpecField(".cloud_spanner.use_serverless_analytics")
+	f.SpecField(".cloud_spanner.max_parallelism")
+	f.SpecField(".cloud_spanner.database_role")
 
 	// spark spec fields
-	f.SpecFields.Insert(".spark.metastore_service_config.metastore_service")
-	f.SpecFields.Insert(".spark.spark_history_server_config.dataproc_cluster")
+	f.SpecField(".spark.metastore_service_config.metastore_service")
+	f.SpecField(".spark.spark_history_server_config.dataproc_cluster")
 
-	f.StatusFields.Insert(".has_credential")
+	f.StatusField(".has_credential")
 
 	// Status/ObservedState mappings:
-	f.StatusFields.Insert(".aws.access_role.identity")
-	f.StatusFields.Insert(".azure.application")
-	f.StatusFields.Insert(".azure.client_id")
-	f.StatusFields.Insert(".azure.object_id")
-	f.StatusFields.Insert(".azure.redirect_uri")
-	f.StatusFields.Insert(".azure.identity")
-	f.StatusFields.Insert(".cloud_resource.service_account_id")
-	f.StatusFields.Insert(".cloud_sql.service_account_id")
-	f.StatusFields.Insert(".spark.service_account_id")
+	f.StatusField(".aws.access_role.identity")
+	f.StatusField(".azure.application")
+	f.StatusField(".azure.client_id")
+	f.StatusField(".azure.object_id")
+	f.StatusField(".azure.redirect_uri")
+	f.StatusField(".azure.identity")
+	f.StatusField(".cloud_resource.service_account_id")
+	f.StatusField(".cloud_sql.service_account_id")
+	f.StatusField(".spark.service_account_id")
 
-	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".creation_time")
-	f.UnimplementedFields.Insert(".last_modified_time")
+	f.Unimplemented_Identity(".name")
+	f.Unimplemented_Identity(".creation_time")
+	f.Unimplemented_Identity(".last_modified_time")
 
 	f.Unimplemented_NotYetTriaged(".salesforce_data_cloud")
 	f.Unimplemented_NotYetTriaged(".aws.cross_account_role")
