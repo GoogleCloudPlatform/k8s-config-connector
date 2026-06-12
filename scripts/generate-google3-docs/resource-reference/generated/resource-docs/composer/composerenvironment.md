@@ -889,7 +889,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -899,7 +899,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -909,7 +909,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -973,7 +973,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -983,7 +983,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -993,7 +993,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>

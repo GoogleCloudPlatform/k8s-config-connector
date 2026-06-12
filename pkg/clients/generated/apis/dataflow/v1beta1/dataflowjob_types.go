@@ -88,6 +88,7 @@ type DataflowJobSpec struct {
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
+	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
