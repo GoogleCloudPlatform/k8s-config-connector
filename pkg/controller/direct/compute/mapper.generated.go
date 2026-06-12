@@ -553,6 +553,244 @@ func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 }
 */
 
+/* found existing non-generated mapping function "ComputeInstanceSpec_v1beta1_FromProto", skipping
+func ComputeInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.ComputeInstanceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInstanceSpec{}
+	out.AdvancedMachineFeatures = InstanceAdvancedMachineFeatures_v1beta1_FromProto(mapCtx, in.GetAdvancedMachineFeatures())
+	// MISSING: CanIPForward
+	// (near miss): "CanIPForward" vs "CanIpForward"
+	out.ConfidentialInstanceConfig = InstanceConfidentialInstanceConfig_v1beta1_FromProto(mapCtx, in.GetConfidentialInstanceConfig())
+	// MISSING: CPUPlatform
+	// MISSING: CreationTimestamp
+	out.DeletionProtection = in.DeletionProtection
+	out.Description = in.Description
+	// MISSING: Disks
+	// MISSING: DisplayDevice
+	// MISSING: Fingerprint
+	// MISSING: GuestAccelerators
+	out.Hostname = in.Hostname
+	// MISSING: ID
+	// MISSING: InstanceEncryptionKey
+	// MISSING: KeyRevocationActionType
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastStartTimestamp
+	// MISSING: LastStopTimestamp
+	// MISSING: LastSuspendedTimestamp
+	out.MachineType = in.MachineType
+	if v := in.GetMetadata(); v != nil {
+		out.Metadata = []krm.InstanceMetadata{InstanceMetadata_v1beta1_FromProto(mapCtx, v)}
+	}
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	// MISSING: Name
+	// MISSING: NetworkInterfaces
+	out.NetworkPerformanceConfig = InstanceNetworkPerformanceConfig_v1beta1_FromProto(mapCtx, in.GetNetworkPerformanceConfig())
+	out.Params = InstanceParams_v1beta1_FromProto(mapCtx, in.GetParams())
+	// MISSING: PrivateIPV6GoogleAccess
+	out.ReservationAffinity = InstanceReservationAffinity_v1beta1_FromProto(mapCtx, in.GetReservationAffinity())
+	out.ResourcePolicies = ComputeInstanceSpec_ResourcePolicies_FromProto(mapCtx, in.ResourcePolicies)
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.Scheduling = InstanceScheduling_v1beta1_FromProto(mapCtx, in.GetScheduling())
+	// MISSING: SelfLink
+	// MISSING: ServiceAccounts
+	out.ShieldedInstanceConfig = InstanceShieldedInstanceConfig_v1beta1_FromProto(mapCtx, in.GetShieldedInstanceConfig())
+	// MISSING: ShieldedInstanceIntegrityPolicy
+	// MISSING: SourceMachineImage
+	// MISSING: SourceMachineImageEncryptionKey
+	// MISSING: StartRestricted
+	// MISSING: Status
+	// MISSING: StatusMessage
+	if v := in.GetTags(); v != nil {
+		out.Tags = []krm.string{string_v1beta1_FromProto(mapCtx, v)}
+	}
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceSpec_v1beta1_ToProto", skipping
+func ComputeInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceSpec) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	out.AdvancedMachineFeatures = InstanceAdvancedMachineFeatures_v1beta1_ToProto(mapCtx, in.AdvancedMachineFeatures)
+	// MISSING: CanIPForward
+	// (near miss): "CanIPForward" vs "CanIpForward"
+	out.ConfidentialInstanceConfig = InstanceConfidentialInstanceConfig_v1beta1_ToProto(mapCtx, in.ConfidentialInstanceConfig)
+	// MISSING: CPUPlatform
+	// MISSING: CreationTimestamp
+	out.DeletionProtection = in.DeletionProtection
+	out.Description = in.Description
+	// MISSING: Disks
+	// MISSING: DisplayDevice
+	// MISSING: Fingerprint
+	// MISSING: GuestAccelerators
+	out.Hostname = in.Hostname
+	// MISSING: ID
+	// MISSING: InstanceEncryptionKey
+	// MISSING: KeyRevocationActionType
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastStartTimestamp
+	// MISSING: LastStopTimestamp
+	// MISSING: LastSuspendedTimestamp
+	out.MachineType = in.MachineType
+	if len(in.Metadata) > 0 && in.Metadata[0] != nil {
+		out.Metadata = InstanceMetadata_v1beta1_ToProto(mapCtx, in.Metadata[0])
+	}
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	// MISSING: Name
+	// MISSING: NetworkInterfaces
+	out.NetworkPerformanceConfig = InstanceNetworkPerformanceConfig_v1beta1_ToProto(mapCtx, in.NetworkPerformanceConfig)
+	out.Params = InstanceParams_v1beta1_ToProto(mapCtx, in.Params)
+	// MISSING: PrivateIPV6GoogleAccess
+	out.ReservationAffinity = InstanceReservationAffinity_v1beta1_ToProto(mapCtx, in.ReservationAffinity)
+	out.ResourcePolicies = ComputeInstanceSpec_ResourcePolicies_ToProto(mapCtx, in.ResourcePolicies)
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.Scheduling = InstanceScheduling_v1beta1_ToProto(mapCtx, in.Scheduling)
+	// MISSING: SelfLink
+	// MISSING: ServiceAccounts
+	out.ShieldedInstanceConfig = InstanceShieldedInstanceConfig_v1beta1_ToProto(mapCtx, in.ShieldedInstanceConfig)
+	// MISSING: ShieldedInstanceIntegrityPolicy
+	// MISSING: SourceMachineImage
+	// MISSING: SourceMachineImageEncryptionKey
+	// MISSING: StartRestricted
+	// MISSING: Status
+	// MISSING: StatusMessage
+	if len(in.Tags) > 0 && in.Tags[0] != nil {
+		out.Tags = string_v1beta1_ToProto(mapCtx, in.Tags[0])
+	}
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceStatus_v1beta1_FromProto", skipping
+func ComputeInstanceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.ComputeInstanceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInstanceStatus{}
+	// MISSING: AdvancedMachineFeatures
+	// MISSING: CanIPForward
+	// MISSING: ConfidentialInstanceConfig
+	// MISSING: CPUPlatform
+	// (near miss): "CPUPlatform" vs "CpuPlatform"
+	// MISSING: CreationTimestamp
+	// MISSING: DeletionProtection
+	// MISSING: Description
+	// MISSING: Disks
+	// MISSING: DisplayDevice
+	// MISSING: Fingerprint
+	// MISSING: GuestAccelerators
+	// MISSING: Hostname
+	// MISSING: ID
+	// MISSING: InstanceEncryptionKey
+	// MISSING: KeyRevocationActionType
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastStartTimestamp
+	// MISSING: LastStopTimestamp
+	// MISSING: LastSuspendedTimestamp
+	// MISSING: MachineType
+	// MISSING: Metadata
+	// MISSING: MinCPUPlatform
+	// MISSING: Name
+	// MISSING: NetworkInterfaces
+	// MISSING: NetworkPerformanceConfig
+	// MISSING: Params
+	// MISSING: PrivateIPV6GoogleAccess
+	// MISSING: ReservationAffinity
+	// MISSING: ResourcePolicies
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: Scheduling
+	out.SelfLink = in.SelfLink
+	// MISSING: ServiceAccounts
+	// MISSING: ShieldedInstanceConfig
+	// MISSING: ShieldedInstanceIntegrityPolicy
+	// MISSING: SourceMachineImage
+	// MISSING: SourceMachineImageEncryptionKey
+	// MISSING: StartRestricted
+	// MISSING: Status
+	// MISSING: StatusMessage
+	// MISSING: Tags
+	// MISSING: Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceStatus_v1beta1_ToProto", skipping
+func ComputeInstanceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceStatus) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	// MISSING: AdvancedMachineFeatures
+	// MISSING: CanIPForward
+	// MISSING: ConfidentialInstanceConfig
+	// MISSING: CPUPlatform
+	// (near miss): "CPUPlatform" vs "CpuPlatform"
+	// MISSING: CreationTimestamp
+	// MISSING: DeletionProtection
+	// MISSING: Description
+	// MISSING: Disks
+	// MISSING: DisplayDevice
+	// MISSING: Fingerprint
+	// MISSING: GuestAccelerators
+	// MISSING: Hostname
+	// MISSING: ID
+	// MISSING: InstanceEncryptionKey
+	// MISSING: KeyRevocationActionType
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastStartTimestamp
+	// MISSING: LastStopTimestamp
+	// MISSING: LastSuspendedTimestamp
+	// MISSING: MachineType
+	// MISSING: Metadata
+	// MISSING: MinCPUPlatform
+	// MISSING: Name
+	// MISSING: NetworkInterfaces
+	// MISSING: NetworkPerformanceConfig
+	// MISSING: Params
+	// MISSING: PrivateIPV6GoogleAccess
+	// MISSING: ReservationAffinity
+	// MISSING: ResourcePolicies
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: Scheduling
+	out.SelfLink = in.SelfLink
+	// MISSING: ServiceAccounts
+	// MISSING: ShieldedInstanceConfig
+	// MISSING: ShieldedInstanceIntegrityPolicy
+	// MISSING: SourceMachineImage
+	// MISSING: SourceMachineImageEncryptionKey
+	// MISSING: StartRestricted
+	// MISSING: Status
+	// MISSING: StatusMessage
+	// MISSING: Tags
+	// MISSING: Zone
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeInterconnectObservedState_v1alpha1_FromProto", skipping
 func ComputeInterconnectObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Interconnect) *krmcomputev1alpha1.ComputeInterconnectObservedState {
 	if in == nil {
