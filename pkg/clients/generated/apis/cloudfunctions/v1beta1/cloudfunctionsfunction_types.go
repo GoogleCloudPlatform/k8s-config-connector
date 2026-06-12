@@ -160,6 +160,7 @@ type CloudFunctionsFunctionSpec struct {
 	// +optional
 	VpcConnectorEgressSettings *string `json:"vpcConnectorEgressSettings,omitempty"`
 
+	/* VPCAccessConnectorRef is a reference to a VPCAccessConnector. */
 	// +optional
 	VpcConnectorRef *v1alpha1.ResourceRef `json:"vpcConnectorRef,omitempty"`
 }

@@ -152,12 +152,7 @@ vpcConnectorRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The name of the function (as defined in source code) that will be
-executed. Defaults to the resource name suffix, if not specified. For
-backward compatibility, if function with given name is not found, then the
-system will try to use function named "function".
-For Node.js this is name of a function exported by the module specified
-in `source_location`.</p>
+            <p>Immutable. The name of the function (as defined in source code) that will be executed. Defaults to the resource name suffix, if not specified. For backward compatibility, if function with given name is not found, then the system will try to use function named "function". For Node.js this is name of a function exported by the module specified in `source_location`.</p>
         </td>
     </tr>
     <tr>
@@ -191,15 +186,15 @@ in `source_location`.</p>
 `providers/cloud.storage/eventTypes/object.change` and
 `providers/cloud.pubsub/eventTypes/topic.publish`.
 
-Event types match pattern `providers/*/eventTypes/*.*`.
+Event types match pattern `providers/* /eventTypes/*.*`.
 The pattern contains:
 
 1. namespace: For example, `cloud.storage` and
-   `google.firebase.analytics`.
+`google.firebase.analytics`.
 2. resource type: The type of resource on which event occurs. For
-   example, the Google Cloud Storage API includes the type `object`.
+example, the Google Cloud Storage API includes the type `object`.
 3. action: The action that generates the event. For example, action for
-   a Google Cloud Storage Object is 'change'.
+a Google Cloud Storage Object is 'change'.
 These parts are lower case.</p>
         </td>
     </tr>
@@ -237,12 +232,12 @@ Not all syntactically correct values are accepted by all services. For
 example:
 
 1. The authorization model must support it. Google Cloud Functions
-   only allows EventTriggers to be deployed that observe resources in the
-   same project as the `Function`.
+only allows EventTriggers to be deployed that observe resources in the
+same project as the `Function`.
 2. The resource type must match the pattern expected for an
-   `event_type`. For example, an `EventTrigger` that has an
-   `event_type` of "google.pubsub.topic.publish" should have a resource
-   that matches Google Cloud Pub/Sub topics.
+`event_type`. For example, an `EventTrigger` that has an
+`event_type` of "google.pubsub.topic.publish" should have a resource
+that matches Google Cloud Pub/Sub topics.
 
 Additionally, some services may support short names when creating an
 `EventTrigger`. These will always be returned in the normalized "long"
@@ -326,8 +321,7 @@ event types in the `google.storage` namespace.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ingress settings for the function, controlling what traffic can reach
-it. Possible values: INGRESS_SETTINGS_UNSPECIFIED, ALLOW_ALL, ALLOW_INTERNAL_ONLY, ALLOW_INTERNAL_AND_GCLB</p>
+            <p>The ingress settings for the function, controlling what traffic can reach it. Possible values: INGRESS_SETTINGS_UNSPECIFIED, ALLOW_ALL, ALLOW_INTERNAL_ONLY, ALLOW_INTERNAL_AND_GCLB</p>
         </td>
     </tr>
     <tr>
@@ -337,8 +331,7 @@ it. Possible values: INGRESS_SETTINGS_UNSPECIFIED, ALLOW_ALL, ALLOW_INTERNAL_ONL
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The limit on the maximum number of function instances that may coexist at a
-given time.</p>
+            <p>The limit on the maximum number of function instances that may coexist at a given time.</p>
         </td>
     </tr>
     <tr>
@@ -358,9 +351,7 @@ given time.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project id of the function.
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -370,7 +361,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -380,7 +371,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -410,12 +401,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The runtime in which to run the function. Required when deploying a new
-function, optional when updating an existing function. For a complete
-list of possible choices, see the
-[`gcloud` command
-reference](/sdk/gcloud/reference/functions/deploy#--runtime).
-</p>
+            <p>The runtime in which to run the function. Required when deploying a new function, optional when updating an existing function. For a complete list of possible choices, see the [`gcloud` command reference](/sdk/gcloud/reference/functions/deploy#--runtime).</p>
         </td>
     </tr>
     <tr>
@@ -435,10 +421,7 @@ reference](/sdk/gcloud/reference/functions/deploy#--runtime).
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The email of the function's service account. If empty, defaults to
-`{project_id}@appspot.gserviceaccount.com`.
-
-Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -493,12 +476,12 @@ There are supported Cloud Source Repository URLs in the following
 formats:
 
 To refer to a specific commit:
-`https://source.developers.google.com/projects/*/repos/*/revisions/*/paths/*`
+`https://source.developers.google.com/projects/* /repos/* /revisions/* /paths/*`
 To refer to a moveable alias (branch):
-`https://source.developers.google.com/projects/*/repos/*/moveable-aliases/*/paths/*`
+`https://source.developers.google.com/projects/* /repos/* /moveable-aliases/* /paths/*`
 In particular, to refer to HEAD use `master` moveable alias.
 To refer to a specific fixed alias (tag):
-`https://source.developers.google.com/projects/*/repos/*/fixed-aliases/*/paths/*`
+`https://source.developers.google.com/projects/* /repos/* /fixed-aliases/* /paths/*`
 
 You may omit `paths/*` if you want to use the main directory.</p>
         </td>
@@ -510,9 +493,7 @@ You may omit `paths/*` if you want to use the main directory.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The function execution timeout. Execution is considered failed and
-can be terminated if the function is not completed at the end of the
-timeout period. Defaults to 60 seconds.</p>
+            <p>The function execution timeout. Execution is considered failed and can be terminated if the function is not completed at the end of the timeout period. Defaults to 60 seconds.</p>
         </td>
     </tr>
     <tr>
@@ -522,8 +503,7 @@ timeout period. Defaults to 60 seconds.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The egress settings for the connector, controlling what traffic is diverted
-through it. Possible values: VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED, PRIVATE_RANGES_ONLY, ALL_TRAFFIC</p>
+            <p>The egress settings for the connector, controlling what traffic is diverted through it. Possible values: VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED, PRIVATE_RANGES_ONLY, ALL_TRAFFIC</p>
         </td>
     </tr>
     <tr>
@@ -533,7 +513,7 @@ through it. Possible values: VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED, PRIVATE_
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>VPCAccessConnectorRef is a reference to a VPCAccessConnector.</p>
         </td>
     </tr>
     <tr>
@@ -543,12 +523,7 @@ through it. Possible values: VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED, PRIVATE_
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The VPC Network Connector that this cloud function can connect to. It can
-be either the fully-qualified URI, or the short name of the network
-connector resource. The format of this field is
-`projects/*/locations/*/connectors/*`
-
-Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource (format: `projects/{{project}}/locations/{{location}}/connectors/{{name}}`).</p>
+            <p>A reference to an externally managed VPCAccessConnector resource. Should be in the format `projects/{project_id}/locations/{location}/connectors/{connector_id}`</p>
         </td>
     </tr>
     <tr>
@@ -558,7 +533,7 @@ Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a VPCAccessConnector resource.</p>
         </td>
     </tr>
     <tr>
@@ -568,7 +543,7 @@ Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a VPCAccessConnector resource.</p>
         </td>
     </tr>
 </tbody>
@@ -606,7 +581,7 @@ versionId: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the CloudFunctionsFunction's current state.</p>
         </td>
     </tr>
     <tr>
@@ -683,9 +658,7 @@ versionId: integer
         <td><code>sourceRepository.deployedUrl</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The URL pointing to the hosted repository where the function
-were defined at the time of deployment. It always points to a specific
-commit in the format described above.</p>
+            <p>Output only. The URL pointing to the hosted repository where the function were defined at the time of deployment. It always points to a specific commit in the format described above.</p>
         </td>
     </tr>
     <tr>
@@ -706,8 +679,7 @@ commit in the format described above.</p>
         <td><code>versionId</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Output only. The version identifier of the Cloud Function. Each deployment attempt
-results in a new version of a function being created.</p>
+            <p>Output only. The version identifier of the Cloud Function. Each deployment attempt results in a new version of a function being created.</p>
         </td>
     </tr>
 </tbody>
