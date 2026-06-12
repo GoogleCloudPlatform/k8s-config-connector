@@ -145,6 +145,8 @@ func DeadLetterPolicy_ToProto(mapCtx *direct.MapContext, in *krm.DeadLetterPolic
 	out.MaxDeliveryAttempts = direct.ValueOf(in.MaxDeliveryAttempts)
 	return out
 }
+
+/* found existing non-generated mapping function "ExpirationPolicy_FromProto", skipping
 func ExpirationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.ExpirationPolicy) *krm.ExpirationPolicy {
 	if in == nil {
 		return nil
@@ -154,15 +156,21 @@ func ExpirationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.ExpirationPoli
 	// (near miss): "TTL" vs "Ttl"
 	return out
 }
-func ExpirationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.ExpirationPolicy) *pb.ExpirationPolicy {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ExpirationPolicy_ToProto", skipping
+
+	func ExpirationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.ExpirationPolicy) *pb.ExpirationPolicy {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ExpirationPolicy{}
+		// MISSING: TTL
+		// (near miss): "TTL" vs "Ttl"
+		return out
 	}
-	out := &pb.ExpirationPolicy{}
-	// MISSING: TTL
-	// (near miss): "TTL" vs "Ttl"
-	return out
-}
+*/
 func PubSubSchemaSpec_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.PubSubSchemaSpec {
 	if in == nil {
 		return nil
@@ -316,27 +324,27 @@ func PubSubTopicSpec_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.Pub
 }
 */
 
-/*
-found existing non-generated mapping function "PubSubTopicSpec_ToProto", skipping
-
-	func PubSubTopicSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubTopicSpec) *pb.Topic {
-		if in == nil {
-			return nil
-		}
-		out := &pb.Topic{}
-		// MISSING: Name
-		// MISSING: Labels
-		out.MessageStoragePolicy = MessageStoragePolicy_ToProto(mapCtx, in.MessageStoragePolicy)
-		// MISSING: KMSKeyName
-		out.SchemaSettings = SchemaSettings_ToProto(mapCtx, in.SchemaSettings)
-		// MISSING: SatisfiesPzs
-		out.MessageRetentionDuration = direct.StringDuration_ToProto(mapCtx, in.MessageRetentionDuration)
-		// MISSING: State
-		// MISSING: IngestionDataSourceSettings
-		// MISSING: MessageTransforms
-		return out
+/* found existing non-generated mapping function "PubSubTopicSpec_ToProto", skipping
+func PubSubTopicSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubTopicSpec) *pb.Topic {
+	if in == nil {
+		return nil
 	}
+	out := &pb.Topic{}
+	// MISSING: Name
+	// MISSING: Labels
+	out.MessageStoragePolicy = MessageStoragePolicy_ToProto(mapCtx, in.MessageStoragePolicy)
+	// MISSING: KMSKeyName
+	out.SchemaSettings = SchemaSettings_ToProto(mapCtx, in.SchemaSettings)
+	// MISSING: SatisfiesPzs
+	out.MessageRetentionDuration = direct.StringDuration_ToProto(mapCtx, in.MessageRetentionDuration)
+	// MISSING: State
+	// MISSING: IngestionDataSourceSettings
+	// MISSING: MessageTransforms
+	return out
+}
 */
+
+/* found existing non-generated mapping function "PushConfig_FromProto", skipping
 func PushConfig_FromProto(mapCtx *direct.MapContext, in *pb.PushConfig) *krm.PushConfig {
 	if in == nil {
 		return nil
@@ -350,21 +358,27 @@ func PushConfig_FromProto(mapCtx *direct.MapContext, in *pb.PushConfig) *krm.Pus
 	out.NoWrapper = PushConfigNoWrapper_FromProto(mapCtx, in.GetNoWrapper())
 	return out
 }
-func PushConfig_ToProto(mapCtx *direct.MapContext, in *krm.PushConfig) *pb.PushConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "PushConfig_ToProto", skipping
+
+	func PushConfig_ToProto(mapCtx *direct.MapContext, in *krm.PushConfig) *pb.PushConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PushConfig{}
+		out.PushEndpoint = direct.ValueOf(in.PushEndpoint)
+		out.Attributes = in.Attributes
+		// MISSING: OIDCToken
+		// (near miss): "OIDCToken" vs "OidcToken"
+		// MISSING: PubsubWrapper
+		if oneof := PushConfigNoWrapper_ToProto(mapCtx, in.NoWrapper); oneof != nil {
+			out.Wrapper = &pb.PushConfig_NoWrapper_{NoWrapper: oneof}
+		}
+		return out
 	}
-	out := &pb.PushConfig{}
-	out.PushEndpoint = direct.ValueOf(in.PushEndpoint)
-	out.Attributes = in.Attributes
-	// MISSING: OIDCToken
-	// (near miss): "OIDCToken" vs "OidcToken"
-	// MISSING: PubsubWrapper
-	if oneof := PushConfigNoWrapper_ToProto(mapCtx, in.NoWrapper); oneof != nil {
-		out.Wrapper = &pb.PushConfig_NoWrapper_{NoWrapper: oneof}
-	}
-	return out
-}
+*/
 func PushConfigNoWrapper_FromProto(mapCtx *direct.MapContext, in *pb.PushConfig_NoWrapper) *krm.PushConfigNoWrapper {
 	if in == nil {
 		return nil
