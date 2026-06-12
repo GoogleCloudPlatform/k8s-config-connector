@@ -39,8 +39,7 @@ func ResolveEnvironmentRefs(ctx context.Context, kube client.Reader, obj *krm.Co
 		if obj.Spec.Config.NodeConfig != nil {
 			nodeConfig := obj.Spec.Config.NodeConfig
 			if nodeConfig.SubnetworkRef != nil {
-				nodeConfig.SubnetworkRef, err = refs.ResolveComputeSubnetwork(ctx, kube, obj, nodeConfig.SubnetworkRef)
-				if err != nil {
+				if err := nodeConfig.SubnetworkRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
 					return err
 				}
 			}
@@ -59,8 +58,7 @@ func ResolveEnvironmentRefs(ctx context.Context, kube client.Reader, obj *krm.Co
 		if obj.Spec.Config.PrivateEnvironmentConfig != nil {
 			pec := obj.Spec.Config.PrivateEnvironmentConfig
 			if pec.CloudComposerConnectionSubnetworkRef != nil {
-				pec.CloudComposerConnectionSubnetworkRef, err = refs.ResolveComputeSubnetwork(ctx, kube, obj, pec.CloudComposerConnectionSubnetworkRef)
-				if err != nil {
+				if err := pec.CloudComposerConnectionSubnetworkRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
 					return err
 				}
 			}

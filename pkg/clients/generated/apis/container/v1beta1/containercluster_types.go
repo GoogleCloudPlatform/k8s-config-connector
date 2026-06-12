@@ -1324,6 +1324,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	ServiceExternalIpsConfig *ClusterServiceExternalIpsConfig `json:"serviceExternalIpsConfig,omitempty"`
 
+	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 

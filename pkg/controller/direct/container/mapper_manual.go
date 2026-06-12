@@ -371,7 +371,7 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	out.ClusterIPV4CIDR = direct.LazyPtr(in.GetClusterIpv4Cidr())
 	out.AddonsConfig = AddonsConfig_FromProto(mapCtx, in.GetAddonsConfig())
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.EnableKubernetesAlpha = direct.LazyPtr(in.GetEnableKubernetesAlpha())
 	out.NetworkPolicy = NetworkPolicy_FromProto(mapCtx, in.GetNetworkPolicy())

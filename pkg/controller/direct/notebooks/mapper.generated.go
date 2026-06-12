@@ -374,7 +374,7 @@ func NotebookInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.In
 		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnet() != "" {
-		out.SubnetRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnet()}
+		out.SubnetRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnet()}
 	}
 	out.Labels = in.Labels
 	out.Metadata = in.Metadata

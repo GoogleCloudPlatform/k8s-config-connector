@@ -55,7 +55,7 @@ type NetworkConnectivityRegionalEndpointSpec struct {
 	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 	// Optional. The name of the subnetwork from which the IP address will be allocated.
 	// +kubebuilder:validation:Optional
-	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	// Required. The service endpoint this private regional endpoint connects to. Format: `{apiname}.{region}.p.rep.googleapis.com` Example: "cloudkms.us-central1.p.rep.googleapis.com".
 	// +kubebuilder:validation:Required

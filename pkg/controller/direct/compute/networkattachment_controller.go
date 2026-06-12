@@ -312,16 +312,11 @@ func (a *NetworkAttachmentAdapter) get(ctx context.Context) (*computepb.NetworkA
 func (a *NetworkAttachmentAdapter) resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.ComputeNetworkAttachment) error {
 	// resolve subnetwork
 	if obj.Spec.SubnetworkRefs != nil {
-		var subnetworks []*refsv1beta1.ComputeSubnetworkRef
 		for _, i := range obj.Spec.SubnetworkRefs {
-			subnetwork, err := refsv1beta1.ResolveComputeSubnetwork(ctx, reader, obj, i)
-			if err != nil {
+			if err := i.Normalize(ctx, reader, obj.Namespace); err != nil {
 				return err
 			}
-			i.External = subnetwork.External
-			subnetworks = append(subnetworks, i)
 		}
-		obj.Spec.SubnetworkRefs = subnetworks
 	}
 	// resolve project
 	if obj.Spec.ProducerRejectLists != nil {

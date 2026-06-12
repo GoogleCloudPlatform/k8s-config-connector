@@ -56,7 +56,7 @@ func DataflowJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Dataf
 				out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: wp.GetNetwork()}
 			}
 			if wp.GetSubnetwork() != "" {
-				out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: wp.GetSubnetwork()}
+				out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: wp.GetSubnetwork()}
 			}
 			if wp.GetIpConfiguration() != pb.WorkerIPAddressConfiguration_WORKER_IP_UNSPECIFIED {
 				out.IpConfiguration = direct.Enum_FromProto(mapCtx, wp.GetIpConfiguration())

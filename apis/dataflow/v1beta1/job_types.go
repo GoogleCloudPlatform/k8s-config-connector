@@ -70,7 +70,7 @@ type DataflowJobSpec struct {
 	ServiceAccountRef *refs.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	// +optional
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	/* A writeable location on Google Cloud Storage for the Dataflow job to dump its temporary data. */
 	TempGcsLocation string `json:"tempGcsLocation"`
