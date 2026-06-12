@@ -45,14 +45,11 @@ type BackendbucketBypassCacheOnRequestHeaders struct {
 }
 
 type BackendbucketCacheKeyPolicy struct {
-	/* Allows HTTP request headers (by name) to be used in the
-	cache key. */
+	/* Allows HTTP request headers (by name) to be used in the cache key. */
 	// +optional
 	IncludeHttpHeaders []string `json:"includeHttpHeaders,omitempty"`
 
-	/* Names of query string parameters to include in cache keys.
-	Default parameters are always included. '&' and '=' will
-	be percent encoded and not treated as delimiters. */
+	/* Names of query string parameters to include in cache keys. Default parameters are always included. '&' and '=' will be percent encoded and not treated as delimiters. */
 	// +optional
 	QueryStringWhitelist []string `json:"queryStringWhitelist,omitempty"`
 }
@@ -66,8 +63,7 @@ type BackendbucketCdnPolicy struct {
 	// +optional
 	CacheKeyPolicy *BackendbucketCacheKeyPolicy `json:"cacheKeyPolicy,omitempty"`
 
-	/* Specifies the cache setting for all responses from this backend.
-	The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"]. */
+	/* Specifies the cache setting for all responses from this backend. The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"]. */
 	// +optional
 	CacheMode *string `json:"cacheMode,omitempty"`
 
@@ -75,8 +71,7 @@ type BackendbucketCdnPolicy struct {
 	// +optional
 	ClientTtl *int64 `json:"clientTtl,omitempty"`
 
-	/* Specifies the default TTL for cached content served by this origin for responses
-	that do not have an existing valid TTL (max-age or s-max-age). */
+	/* Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-max-age). */
 	// +optional
 	DefaultTtl *int64 `json:"defaultTtl,omitempty"`
 
@@ -88,8 +83,7 @@ type BackendbucketCdnPolicy struct {
 	// +optional
 	NegativeCaching *bool `json:"negativeCaching,omitempty"`
 
-	/* Sets a cache TTL for the specified HTTP status code. negativeCaching must be enabled to configure negativeCachingPolicy.
-	Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's default cache TTLs. */
+	/* Sets a cache TTL for the specified HTTP status code. negativeCaching must be enabled to configure negativeCachingPolicy. Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's default cache TTLs. */
 	// +optional
 	NegativeCachingPolicy []BackendbucketNegativeCachingPolicy `json:"negativeCachingPolicy,omitempty"`
 
@@ -101,26 +95,17 @@ type BackendbucketCdnPolicy struct {
 	// +optional
 	ServeWhileStale *int64 `json:"serveWhileStale,omitempty"`
 
-	/* Maximum number of seconds the response to a signed URL request will
-	be considered fresh. After this time period,
-	the response will be revalidated before being served.
-	When serving responses to signed URL requests,
-	Cloud CDN will internally behave as though
-	all responses from this backend had a "Cache-Control: public,
-	max-age=[TTL]" header, regardless of any existing Cache-Control
-	header. The actual headers served in responses will not be altered. */
+	/* Maximum number of seconds the response to a signed URL request will be considered fresh. After this time period, the response will be revalidated before being served. When serving responses to signed URL requests, Cloud CDN will internally behave as though all responses from this backend had a "Cache-Control: public, max-age=[TTL]" header, regardless of any existing Cache-Control header. The actual headers served in responses will not be altered. */
 	// +optional
 	SignedUrlCacheMaxAgeSec *int64 `json:"signedUrlCacheMaxAgeSec,omitempty"`
 }
 
 type BackendbucketNegativeCachingPolicy struct {
-	/* The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501
-	can be specified as values, and you cannot specify a status code more than once. */
+	/* The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501 can be specified as values, and you cannot specify a status code more than once. */
 	// +optional
 	Code *int64 `json:"code,omitempty"`
 
-	/* The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s
-	(30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL. */
+	/* The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s (30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL. */
 	// +optional
 	Ttl *int64 `json:"ttl,omitempty"`
 }
@@ -141,8 +126,7 @@ type ComputeBackendBucketSpec struct {
 	// +optional
 	CustomResponseHeaders []string `json:"customResponseHeaders,omitempty"`
 
-	/* An optional textual description of the resource; provided by the
-	client when the resource is created. */
+	/* An optional textual description of the resource; provided by the client when the resource is created. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
@@ -154,7 +138,7 @@ type ComputeBackendBucketSpec struct {
 	// +optional
 	EnableCdn *bool `json:"enableCdn,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The ComputeBackendBucket name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -171,6 +155,7 @@ type ComputeBackendBucketStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* Server-defined URL for the resource. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 }
