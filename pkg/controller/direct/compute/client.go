@@ -142,3 +142,27 @@ func (m *gcpClient) newReservationsClient(ctx context.Context) (*compute.Reserva
 	}
 	return client, err
 }
+
+func (m *gcpClient) newSecurityPoliciesClient(ctx context.Context) (*compute.SecurityPoliciesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewSecurityPoliciesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute SecurityPoliciesClient client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newRegionSecurityPoliciesClient(ctx context.Context) (*compute.RegionSecurityPoliciesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewRegionSecurityPoliciesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute RegionSecurityPoliciesClient client: %w", err)
+	}
+	return client, err
+}

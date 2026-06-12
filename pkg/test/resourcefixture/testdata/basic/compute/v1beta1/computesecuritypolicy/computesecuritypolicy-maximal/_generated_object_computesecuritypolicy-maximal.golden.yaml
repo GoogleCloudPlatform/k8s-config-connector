@@ -1,0 +1,61 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSecurityPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: ${securityPolicyID}
+  namespace: ${uniqueId}
+spec:
+  adaptiveProtectionConfig:
+    layer7DdosDefenseConfig:
+      enable: true
+      ruleVisibility: STANDARD
+  rule:
+  - action: allow
+    match:
+      config:
+        srcIpRanges:
+        - '*'
+      versionedExpr: SRC_IPS_V1
+    priority: 2147483647
+  - action: deny(502)
+    match:
+      config:
+        srcIpRanges:
+        - 60.0.0.0/6
+      versionedExpr: SRC_IPS_V1
+    priority: 111111111
+  - action: allow
+    match:
+      config:
+        srcIpRanges:
+        - 63.0.0.0/8
+        - 61.128.0.0/10
+      versionedExpr: SRC_IPS_V1
+    priority: 555
+  - action: deny(403)
+    match:
+      config:
+        srcIpRanges:
+        - 145.4.56.4/30
+        - 63.63.63.63/32
+        - 4.5.4.0/24
+      versionedExpr: SRC_IPS_V1
+    priority: 0
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  fingerprint: abcdef0123A=
+  observedGeneration: 2
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
