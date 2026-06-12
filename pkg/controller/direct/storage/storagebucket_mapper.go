@@ -289,3 +289,79 @@ func StorageBucketLifecycleRule_ToProto(mapCtx *direct.MapContext, in *krm.Stora
 	out.Condition = StorageBucketLifecycleRuleCondition_ToProto(mapCtx, in.Condition)
 	return out
 }
+
+func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.Bucket) *krm.StorageBucketSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageBucketSpec{}
+	// MISSING: Acl
+	// MISSING: DefaultObjectAcl
+	if in.Lifecycle != nil {
+		out.LifecycleRule = direct.Slice_FromProto(mapCtx, in.Lifecycle.Rule, StorageBucketLifecycleRule_FromProto)
+	}
+	// MISSING: TimeCreated
+	// MISSING: ID
+	// MISSING: Name
+	// MISSING: ProjectNumber
+	// MISSING: Metageneration
+	out.Cors = direct.Slice_FromProto(mapCtx, in.Cors, StorageBucketCors_FromProto)
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.StorageClass = direct.LazyPtr(in.GetStorageClass())
+	// MISSING: Etag
+	// MISSING: Updated
+	out.DefaultEventBasedHold = direct.LazyPtr(in.GetDefaultEventBasedHold())
+	// MISSING: Labels
+	out.Website = StorageBucketWebsite_FromProto(mapCtx, in.GetWebsite())
+	out.Versioning = StorageBucketVersioning_FromProto(mapCtx, in.GetVersioning())
+	out.Logging = StorageBucketLogging_FromProto(mapCtx, in.GetLogging())
+	// MISSING: Owner
+	out.Encryption = StorageBucketEncryption_FromProto(mapCtx, in.GetEncryption())
+	// MISSING: Billing
+	out.RetentionPolicy = StorageBucketRetentionPolicy_FromProto(mapCtx, in.GetRetentionPolicy())
+	// MISSING: LocationType
+	// MISSING: IAMConfiguration
+	// MISSING: ZoneAffinity
+	// MISSING: SatisfiesPzs
+	out.Autoclass = StorageBucketAutoclass_FromProto(mapCtx, in.GetAutoclass())
+	return out
+}
+
+func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketSpec) *pb.Bucket {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Bucket{}
+	// MISSING: Acl
+	// MISSING: DefaultObjectAcl
+	if len(in.LifecycleRule) > 0 {
+		out.Lifecycle = &pb.Bucket_Lifecycle{
+			Rule: direct.Slice_ToProto(mapCtx, in.LifecycleRule, StorageBucketLifecycleRule_ToProto),
+		}
+	}
+	// MISSING: TimeCreated
+	// MISSING: ID
+	// MISSING: Name
+	// MISSING: ProjectNumber
+	// MISSING: Metageneration
+	out.Cors = direct.Slice_ToProto(mapCtx, in.Cors, StorageBucketCors_ToProto)
+	out.Location = direct.ValueOf(in.Location)
+	out.StorageClass = direct.ValueOf(in.StorageClass)
+	// MISSING: Etag
+	// MISSING: Updated
+	out.DefaultEventBasedHold = direct.ValueOf(in.DefaultEventBasedHold)
+	// MISSING: Labels
+	out.Website = StorageBucketWebsite_ToProto(mapCtx, in.Website)
+	out.Versioning = StorageBucketVersioning_ToProto(mapCtx, in.Versioning)
+	out.Logging = StorageBucketLogging_ToProto(mapCtx, in.Logging)
+	// MISSING: Owner
+	out.Encryption = StorageBucketEncryption_ToProto(mapCtx, in.Encryption)
+	// MISSING: Billing
+	out.RetentionPolicy = StorageBucketRetentionPolicy_ToProto(mapCtx, in.RetentionPolicy)
+	// MISSING: LocationType
+	// MISSING: IAMConfiguration
+	// MISSING: ZoneAffinity
+	// MISSING: SatisfiesPzs
+	out.Autoclass = StorageBucketAutoclass_ToProto(mapCtx, in.Autoclass)
+	return out
+}

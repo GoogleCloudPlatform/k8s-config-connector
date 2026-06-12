@@ -23,12 +23,7 @@
 
 package storage
 
-import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	pb "google.golang.org/genproto/googleapis/storage/v1"
-)
-
+/* found existing non-generated mapping function "StorageBucketSpec_FromProto", skipping
 func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.Bucket) *krm.StorageBucketSpec {
 	if in == nil {
 		return nil
@@ -36,9 +31,7 @@ func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.Bucket) *krm.
 	out := &krm.StorageBucketSpec{}
 	// MISSING: Acl
 	// MISSING: DefaultObjectAcl
-	if in.Lifecycle != nil {
-		out.LifecycleRule = direct.Slice_FromProto(mapCtx, in.Lifecycle.Rule, StorageBucketLifecycleRule_FromProto)
-	}
+	// MISSING: Lifecycle
 	// MISSING: TimeCreated
 	// MISSING: ID
 	// MISSING: Name
@@ -65,6 +58,9 @@ func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.Bucket) *krm.
 	out.Autoclass = StorageBucketAutoclass_FromProto(mapCtx, in.GetAutoclass())
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "StorageBucketSpec_ToProto", skipping
 func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketSpec) *pb.Bucket {
 	if in == nil {
 		return nil
@@ -72,11 +68,7 @@ func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketS
 	out := &pb.Bucket{}
 	// MISSING: Acl
 	// MISSING: DefaultObjectAcl
-	if len(in.LifecycleRule) > 0 {
-		out.Lifecycle = &pb.Bucket_Lifecycle{
-			Rule: direct.Slice_ToProto(mapCtx, in.LifecycleRule, StorageBucketLifecycleRule_ToProto),
-		}
-	}
+	// MISSING: Lifecycle
 	// MISSING: TimeCreated
 	// MISSING: ID
 	// MISSING: Name
@@ -103,3 +95,4 @@ func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketS
 	out.Autoclass = StorageBucketAutoclass_ToProto(mapCtx, in.Autoclass)
 	return out
 }
+*/
