@@ -320,6 +320,60 @@ func ComputeAddressStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 	out.Users = in.Users
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeAutoscalerSpec_v1alpha1_FromProto", skipping
+func ComputeAutoscalerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Autoscaler) *krmcomputev1alpha1.ComputeAutoscalerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeAutoscalerSpec{}
+	out.AutoscalingPolicy = AutoscalerAutoscalingPolicy_v1alpha1_FromProto(mapCtx, in.GetAutoscalingPolicy())
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: RecommendedSize
+	// MISSING: Region
+	// MISSING: ScalingScheduleStatus
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: StatusDetails
+	if in.GetTarget() != "" {
+		out.TargetRef = &krmcomputev1alpha1.AutoscalerTargetRef{External: in.GetTarget()}
+	}
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeAutoscalerSpec_v1alpha1_ToProto", skipping
+
+	func ComputeAutoscalerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeAutoscalerSpec) *pb.Autoscaler {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Autoscaler{}
+		out.AutoscalingPolicy = AutoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx, in.AutoscalingPolicy)
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: Name
+		// MISSING: RecommendedSize
+		// MISSING: Region
+		// MISSING: ScalingScheduleStatus
+		// MISSING: SelfLink
+		// MISSING: Status
+		// MISSING: StatusDetails
+		if in.TargetRef != nil {
+			out.Target = &in.TargetRef.External
+		}
+		out.Zone = in.Zone
+		return out
+	}
+*/
 func ComputeDiskSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Disk) *krm.ComputeDiskSpec {
 	if in == nil {
 		return nil
