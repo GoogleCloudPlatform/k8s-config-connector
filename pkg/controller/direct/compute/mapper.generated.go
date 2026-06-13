@@ -1151,21 +1151,51 @@ func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_FromProto(mapCtx *direct.Map
 }
 */
 
-/* found existing non-generated mapping function "ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto", skipping
-func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
+/*
+found existing non-generated mapping function "ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto", skipping
+
+	func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NetworkEdgeSecurityService{}
+		out.Description = in.Description
+		out.Fingerprint = in.Fingerprint
+		// MISSING: Name
+		if in.SecurityPolicyRef != nil {
+			out.SecurityPolicy = &in.SecurityPolicyRef.External
+		}
+		return out
+	}
+*/
+func ComputeNetworkFirewallPolicyAssociationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyAssociation) *krm.ComputeNetworkFirewallPolicyAssociationSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NetworkEdgeSecurityService{}
-	out.Description = in.Description
-	out.Fingerprint = in.Fingerprint
-	// MISSING: Name
-	if in.SecurityPolicyRef != nil {
-		out.SecurityPolicy = &in.SecurityPolicyRef.External
+	out := &krm.ComputeNetworkFirewallPolicyAssociationSpec{}
+	if in.GetAttachmentTarget() != "" {
+		out.AttachmentTargetRef = &krm.ComputeNetworkRef{External: in.GetAttachmentTarget()}
 	}
+	// MISSING: DisplayName
+	// MISSING: FirewallPolicyID
+	// MISSING: Name
+	// MISSING: ShortName
 	return out
 }
-*/
+func ComputeNetworkFirewallPolicyAssociationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkFirewallPolicyAssociationSpec) *pb.FirewallPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyAssociation{}
+	if in.AttachmentTargetRef != nil {
+		out.AttachmentTarget = &in.AttachmentTargetRef.External
+	}
+	// MISSING: DisplayName
+	// MISSING: FirewallPolicyID
+	// MISSING: Name
+	// MISSING: ShortName
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeNetworkSpec_v1beta1_FromProto", skipping
 func ComputeNetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.ComputeNetworkSpec {
