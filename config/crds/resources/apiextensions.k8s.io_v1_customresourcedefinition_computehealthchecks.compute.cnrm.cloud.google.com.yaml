@@ -102,6 +102,10 @@ spec:
                       for health checking. If not specified, gRPC health check follows
                       behavior specified in ''port'' and ''portName'' fields. Possible
                       values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].'
+                    enum:
+                    - USE_FIXED_PORT
+                    - USE_NAMED_PORT
+                    - USE_SERVING_PORT
                     type: string
                 type: object
               healthyThreshold:
@@ -134,11 +138,18 @@ spec:
                       for health checking. If not specified, HTTP2 health check follows
                       behavior specified in ''port'' and ''portName'' fields. Possible
                       values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].'
+                    enum:
+                    - USE_FIXED_PORT
+                    - USE_NAMED_PORT
+                    - USE_SERVING_PORT
                     type: string
                   proxyHeader:
                     description: 'Specifies the type of proxy header to append before
                       sending data to the backend. Default value: "NONE" Possible
                       values: ["NONE", "PROXY_V1"].'
+                    enum:
+                    - NONE
+                    - PROXY_V1
                     type: string
                   requestPath:
                     description: The request path of the HTTP2 health check request.
@@ -176,11 +187,18 @@ spec:
                       for health checking. If not specified, HTTP health check follows
                       behavior specified in ''port'' and ''portName'' fields. Possible
                       values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].'
+                    enum:
+                    - USE_FIXED_PORT
+                    - USE_NAMED_PORT
+                    - USE_SERVING_PORT
                     type: string
                   proxyHeader:
                     description: 'Specifies the type of proxy header to append before
                       sending data to the backend. Default value: "NONE" Possible
                       values: ["NONE", "PROXY_V1"].'
+                    enum:
+                    - NONE
+                    - PROXY_V1
                     type: string
                   requestPath:
                     description: The request path of the HTTP health check request.
@@ -218,11 +236,18 @@ spec:
                       for health checking. If not specified, HTTPS health check follows
                       behavior specified in ''port'' and ''portName'' fields. Possible
                       values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].'
+                    enum:
+                    - USE_FIXED_PORT
+                    - USE_NAMED_PORT
+                    - USE_SERVING_PORT
                     type: string
                   proxyHeader:
                     description: 'Specifies the type of proxy header to append before
                       sending data to the backend. Default value: "NONE" Possible
                       values: ["NONE", "PROXY_V1"].'
+                    enum:
+                    - NONE
+                    - PROXY_V1
                     type: string
                   requestPath:
                     description: The request path of the HTTPS health check request.
@@ -274,11 +299,18 @@ spec:
                       for health checking. If not specified, SSL health check follows
                       behavior specified in ''port'' and ''portName'' fields. Possible
                       values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].'
+                    enum:
+                    - USE_FIXED_PORT
+                    - USE_NAMED_PORT
+                    - USE_SERVING_PORT
                     type: string
                   proxyHeader:
                     description: 'Specifies the type of proxy header to append before
                       sending data to the backend. Default value: "NONE" Possible
                       values: ["NONE", "PROXY_V1"].'
+                    enum:
+                    - NONE
+                    - PROXY_V1
                     type: string
                   request:
                     description: The application data to send once the SSL connection
@@ -313,11 +345,18 @@ spec:
                       for health checking. If not specified, TCP health check follows
                       behavior specified in ''port'' and ''portName'' fields. Possible
                       values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].'
+                    enum:
+                    - USE_FIXED_PORT
+                    - USE_NAMED_PORT
+                    - USE_SERVING_PORT
                     type: string
                   proxyHeader:
                     description: 'Specifies the type of proxy header to append before
                       sending data to the backend. Default value: "NONE" Possible
                       values: ["NONE", "PROXY_V1"].'
+                    enum:
+                    - NONE
+                    - PROXY_V1
                     type: string
                   request:
                     description: The application data to send once the TCP connection

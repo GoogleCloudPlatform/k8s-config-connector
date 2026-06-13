@@ -35,12 +35,15 @@ Run the `generate.sh` script.
 Apply the baseline validations from `kcc-direct-base-types-implementer`, plus these greenfield-specific rules:
 
 - **Stability Level**: Add `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"`.
+- **Status Struct Proto Annotation**: Add `// +kcc:status:proto=<proto_message>` above the `Status` struct.
+- **Status Field Proto Annotation**: For handcrafted or output-only fields under the `Status` struct, add `// +kcc:proto:field=<field>` tags to preserve their exact mapping.
 - **Field Validation**: Manually add or verify kubebuilder tags:
   - Use `// +kubebuilder:validation:Required` for fields that are mandatory in the GCP API.
   - Use `// +kubebuilder:validation:Optional` for all other fields.
 - **Enums**: 
   - Use `*string` for the Go type of proto enum fields (do NOT use custom wrapped string types).
   - Use `// +kubebuilder:validation:Enum=VALUE1;VALUE2` to provide validation in the CRD while keeping the Go type simple.
+- **Handcrafted / Skipped Types**: If `generate-types` skips generating types because a handcrafted file (e.g., `<kind>_types.go` or `healthcheck_types.go`) already exists with those proto tags, verify and enhance the handcrafted file's annotations manually to align with the direct KRM types requirements.
 
 ### 4. Journaling
 Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.

@@ -107,6 +107,7 @@ type HealthCheckGRPCHealthCheck struct {
 	//   checking.
 	// If not specified, gRPC health check follows behavior specified in 'port' and
 	// 'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].
+	// +kubebuilder:validation:Enum=USE_FIXED_PORT;USE_NAMED_PORT;USE_SERVING_PORT
 	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.port_specification
 	PortSpecification *string `json:"portSpecification,omitempty"`
 }
@@ -139,11 +140,13 @@ type HealthCheckHTTP2HealthCheck struct {
 	//   checking.
 	// If not specified, HTTP2 health check follows behavior specified in 'port' and
 	// 'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].
+	// +kubebuilder:validation:Enum=USE_FIXED_PORT;USE_NAMED_PORT;USE_SERVING_PORT
 	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.port_specification
 	PortSpecification *string `json:"portSpecification,omitempty"`
 
 	// Specifies the type of proxy header to append before sending data to the
 	// backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].
+	// +kubebuilder:validation:Enum=NONE;PROXY_V1
 	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.proxy_header
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
@@ -187,11 +190,13 @@ type HealthCheckHTTPHealthCheck struct {
 	//   checking.
 	// If not specified, HTTP health check follows behavior specified in 'port' and
 	// 'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].
+	// +kubebuilder:validation:Enum=USE_FIXED_PORT;USE_NAMED_PORT;USE_SERVING_PORT
 	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.port_specification
 	PortSpecification *string `json:"portSpecification,omitempty"`
 
 	// Specifies the type of proxy header to append before sending data to the
 	// backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].
+	// +kubebuilder:validation:Enum=NONE;PROXY_V1
 	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.proxy_header
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
@@ -235,11 +240,13 @@ type HealthCheckHTTPSHealthCheck struct {
 	//   checking.
 	// If not specified, HTTPS health check follows behavior specified in 'port' and
 	// 'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].
+	// +kubebuilder:validation:Enum=USE_FIXED_PORT;USE_NAMED_PORT;USE_SERVING_PORT
 	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.port_specification
 	PortSpecification *string `json:"portSpecification,omitempty"`
 
 	// Specifies the type of proxy header to append before sending data to the
 	// backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].
+	// +kubebuilder:validation:Enum=NONE;PROXY_V1
 	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.proxy_header
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
@@ -285,11 +292,13 @@ type HealthCheckSSLHealthCheck struct {
 	//   checking.
 	// If not specified, SSL health check follows behavior specified in 'port' and
 	// 'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].
+	// +kubebuilder:validation:Enum=USE_FIXED_PORT;USE_NAMED_PORT;USE_SERVING_PORT
 	// +kcc:proto:field=google.cloud.compute.v1.SSLHealthCheck.port_specification
 	PortSpecification *string `json:"portSpecification,omitempty"`
 
 	// Specifies the type of proxy header to append before sending data to the
 	// backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].
+	// +kubebuilder:validation:Enum=NONE;PROXY_V1
 	// +kcc:proto:field=google.cloud.compute.v1.SSLHealthCheck.proxy_header
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
@@ -329,11 +338,13 @@ type HealthCheckTCPHealthCheck struct {
 	//   checking.
 	// If not specified, TCP health check follows behavior specified in 'port' and
 	// 'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].
+	// +kubebuilder:validation:Enum=USE_FIXED_PORT;USE_NAMED_PORT;USE_SERVING_PORT
 	// +kcc:proto:field=google.cloud.compute.v1.TCPHealthCheck.port_specification
 	PortSpecification *string `json:"portSpecification,omitempty"`
 
 	// Specifies the type of proxy header to append before sending data to the
 	// backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].
+	// +kubebuilder:validation:Enum=NONE;PROXY_V1
 	// +kcc:proto:field=google.cloud.compute.v1.TCPHealthCheck.proxy_header
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
@@ -352,6 +363,7 @@ type HealthCheckTCPHealthCheck struct {
 }
 
 // ComputeHealthCheckStatus defines the config connector machine state of ComputeHealthCheck
+// +kcc:status:proto=google.cloud.compute.v1.HealthCheck
 type ComputeHealthCheckStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeHealthCheck's current state. */
@@ -359,6 +371,7 @@ type ComputeHealthCheckStatus struct {
 
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
@@ -367,10 +380,12 @@ type ComputeHealthCheckStatus struct {
 
 	/* Server-defined URL for the resource. */
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 
 	/* The type of the health check. One of HTTP, HTTPS, TCP, or SSL. */
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.type
 	Type *string `json:"type,omitempty"`
 }
 
