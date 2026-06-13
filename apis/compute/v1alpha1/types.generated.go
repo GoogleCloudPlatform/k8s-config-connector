@@ -21,8 +21,30 @@
 // resource: ComputeNetworkAttachment:NetworkAttachment
 // resource: ComputeInterconnect:Interconnect
 // resource: ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation
+// resource: ComputeOrganizationSecurityPolicyRule:SecurityPolicyRule
 
 package v1alpha1
+
+/* unreachable type Expr
+// +kcc:proto=google.cloud.compute.v1.Expr
+type Expr struct {
+	// Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
+	// +kcc:proto:field=google.cloud.compute.v1.Expr.description
+	Description *string `json:"description,omitempty"`
+
+	// Textual representation of an expression in Common Expression Language syntax.
+	// +kcc:proto:field=google.cloud.compute.v1.Expr.expression
+	Expression *string `json:"expression,omitempty"`
+
+	// Optional. String indicating the location of the expression for error reporting, e.g. a file name and a position in the file.
+	// +kcc:proto:field=google.cloud.compute.v1.Expr.location
+	Location *string `json:"location,omitempty"`
+
+	// Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression.
+	// +kcc:proto:field=google.cloud.compute.v1.Expr.title
+	Title *string `json:"title,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Interconnect", skipping
 
@@ -447,6 +469,318 @@ type NetworkEdgeSecurityService struct {
 	// [Output Only] Server-defined URL for this resource with the resource id.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SecurityPolicyRule", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRule
+type SecurityPolicyRule struct {
+	// The Action to perform when the rule is matched. The following are the valid actions: - allow: allow access to target. - deny(STATUS): deny access to target, returns the HTTP response code specified. Valid values for `STATUS` are 403, 404, and 502. - rate_based_ban: limit client traffic to the configured threshold and ban the client if the traffic exceeds the threshold. Configure parameters for this action in RateLimitOptions. Requires rate_limit_options to be set. - redirect: redirect to a different target. This can either be an internal reCAPTCHA redirect, or an external URL-based redirect via a 302 response. Parameters for this action can be configured via redirectOptions. This action is only supported in Global Security Policies of type CLOUD_ARMOR. - throttle: limit client traffic to the configured threshold. Configure parameters for this action in rateLimitOptions. Requires rate_limit_options to be set for this.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.action
+	Action *string `json:"action,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional, additional actions that are performed on headers. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.header_action
+	HeaderAction *SecurityPolicyRuleHTTPHeaderAction `json:"headerAction,omitempty"`
+
+	// [Output only] Type of the resource. Always compute#securityPolicyRule for security policy rules
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.match
+	Match *SecurityPolicyRuleMatcher `json:"match,omitempty"`
+
+	// A match condition that incoming packets are evaluated against for CLOUD_ARMOR_NETWORK security policies. If it matches, the corresponding 'action' is enforced. The match criteria for a rule consists of built-in match fields (like 'srcIpRanges') and potentially multiple user-defined match fields ('userDefinedFields'). Field values may be extracted directly from the packet or derived from it (e.g. 'srcRegionCodes'). Some fields may not be present in every packet (e.g. 'srcPorts'). A user-defined field is only present if the base header is found in the packet and the entire field is in bounds. Each match field may specify which values can match it, listing one or more ranges, prefixes, or exact values that are considered a match for the field. A field value must be present in order to match a specified match field. If no match values are specified for a match field, then any field value is considered to match it, and it's not required to be present. For strings specifying '*' is also equivalent to match all. For a packet to match a rule, all specified match fields must match the corresponding field values derived from the packet. Example: networkMatch: srcIpRanges: - "192.0.2.0/24" - "198.51.100.0/24" userDefinedFields: - name: "ipv4_fragment_offset" values: - "1-0x1fff" The above match condition matches packets with a source IP in 192.0.2.0/24 or 198.51.100.0/24 and a user-defined field named "ipv4_fragment_offset" with a value between 1 and 0x1fff inclusive.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.network_match
+	NetworkMatch *SecurityPolicyRuleNetworkMatcher `json:"networkMatch,omitempty"`
+
+	// Preconfigured WAF configuration to be applied for the rule. If the rule does not evaluate preconfigured WAF rules, i.e., if evaluatePreconfiguredWaf() is not used, this field will have no effect.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.preconfigured_waf_config
+	PreconfiguredWafConfig *SecurityPolicyRulePreconfiguredWafConfig `json:"preconfiguredWafConfig,omitempty"`
+
+	// If set to true, the specified action is not enforced.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.preview
+	Preview *bool `json:"preview,omitempty"`
+
+	// An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest priority.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.priority
+	Priority *int32 `json:"priority,omitempty"`
+
+	// Must be specified if the action is "rate_based_ban" or "throttle". Cannot be specified for any other actions.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.rate_limit_options
+	RateLimitOptions *SecurityPolicyRuleRateLimitOptions `json:"rateLimitOptions,omitempty"`
+
+	// Parameters defining the redirect action. Cannot be specified for any other actions. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.redirect_options
+	RedirectOptions *SecurityPolicyRuleRedirectOptions `json:"redirectOptions,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleHTTPHeaderAction
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderAction
+type SecurityPolicyRuleHTTPHeaderAction struct {
+	// The list of request headers to add or overwrite if they're already present.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderAction.request_headers_to_adds
+	RequestHeadersToAdds []SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption `json:"requestHeadersToAdds,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderActionHttpHeaderOption
+type SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption struct {
+	// The name of the header to set.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderActionHttpHeaderOption.header_name
+	HeaderName *string `json:"headerName,omitempty"`
+
+	// The value to set the named header to.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderActionHttpHeaderOption.header_value
+	HeaderValue *string `json:"headerValue,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPolicyRuleMatcher", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcher
+type SecurityPolicyRuleMatcher struct {
+	// The configuration options available when specifying versioned_expr. This field must be specified if versioned_expr is specified and cannot be specified if versioned_expr is not specified.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcher.config
+	Config *SecurityPolicyRuleMatcherConfig `json:"config,omitempty"`
+
+	// User defined CEVAL expression. A CEVAL expression is used to specify match criteria such as origin.ip, source.region_code and contents in the request header. Expressions containing `evaluateThreatIntelligence` require Cloud Armor Managed Protection Plus tier and are not supported in Edge Policies nor in Regional Policies. Expressions containing `evaluatePreconfiguredExpr('sourceiplist-*')` require Cloud Armor Managed Protection Plus tier and are only supported in Global Security Policies.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcher.expr
+	Expr *Expr `json:"expr,omitempty"`
+
+	// The configuration options available when specifying a user defined CEVAL expression (i.e., 'expr').
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcher.expr_options
+	ExprOptions *SecurityPolicyRuleMatcherExprOptions `json:"exprOptions,omitempty"`
+
+	// Preconfigured versioned expression. If this field is specified, config must also be specified. Available preconfigured expressions along with their requirements are: SRC_IPS_V1 - must specify the corresponding src_ip_range field in config.
+	//  Check the VersionedExpr enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcher.versioned_expr
+	VersionedExpr *string `json:"versionedExpr,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPolicyRuleMatcherConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherConfig
+type SecurityPolicyRuleMatcherConfig struct {
+	// CIDR IP address range. Maximum number of src_ip_ranges allowed is 10.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherConfig.src_ip_ranges
+	SrcIPRanges []string `json:"srcIPRanges,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleMatcherExprOptions
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptions
+type SecurityPolicyRuleMatcherExprOptions struct {
+	// reCAPTCHA configuration options to be applied for the rule. If the rule does not evaluate reCAPTCHA tokens, this field has no effect.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptions.recaptcha_options
+	RecaptchaOptions *SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions `json:"recaptchaOptions,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions
+type SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions struct {
+	// A list of site keys to be used during the validation of reCAPTCHA action-tokens. The provided site keys need to be created from reCAPTCHA API under the same project where the security policy is created.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions.action_token_site_keys
+	ActionTokenSiteKeys []string `json:"actionTokenSiteKeys,omitempty"`
+
+	// A list of site keys to be used during the validation of reCAPTCHA session-tokens. The provided site keys need to be created from reCAPTCHA API under the same project where the security policy is created.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions.session_token_site_keys
+	SessionTokenSiteKeys []string `json:"sessionTokenSiteKeys,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleNetworkMatcher
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher
+type SecurityPolicyRuleNetworkMatcher struct {
+	// Destination IPv4/IPv6 addresses or CIDR prefixes, in standard text format.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.dest_ip_ranges
+	DestIPRanges []string `json:"destIPRanges,omitempty"`
+
+	// Destination port numbers for TCP/UDP/SCTP. Each element can be a 16-bit unsigned decimal number (e.g. "80") or range (e.g. "0-1023").
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.dest_ports
+	DestPorts []string `json:"destPorts,omitempty"`
+
+	// IPv4 protocol / IPv6 next header (after extension headers). Each element can be an 8-bit unsigned decimal number (e.g. "6"), range (e.g. "253-254"), or one of the following protocol names: "tcp", "udp", "icmp", "esp", "ah", "ipip", or "sctp".
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.ip_protocols
+	IPProtocols []string `json:"ipProtocols,omitempty"`
+
+	// BGP Autonomous System Number associated with the source IP address.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.src_asns
+	SrcAsns []uint32 `json:"srcAsns,omitempty"`
+
+	// Source IPv4/IPv6 addresses or CIDR prefixes, in standard text format.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.src_ip_ranges
+	SrcIPRanges []string `json:"srcIPRanges,omitempty"`
+
+	// Source port numbers for TCP/UDP/SCTP. Each element can be a 16-bit unsigned decimal number (e.g. "80") or range (e.g. "0-1023").
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.src_ports
+	SrcPorts []string `json:"srcPorts,omitempty"`
+
+	// Two-letter ISO 3166-1 alpha-2 country code associated with the source IP address.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.src_region_codes
+	SrcRegionCodes []string `json:"srcRegionCodes,omitempty"`
+
+	// User-defined fields. Each element names a defined field and lists the matching values for that field.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.user_defined_fields
+	UserDefinedFields []SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch `json:"userDefinedFields,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch
+type SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch struct {
+	// Name of the user-defined field, as given in the definition.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch.name
+	Name *string `json:"name,omitempty"`
+
+	// Matching values of the field. Each element can be a 32-bit unsigned decimal or hexadecimal (starting with "0x") number (e.g. "64") or range (e.g. "0x400-0x7ff").
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch.values
+	Values []string `json:"values,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRulePreconfiguredWafConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfig
+type SecurityPolicyRulePreconfiguredWafConfig struct {
+	// A list of exclusions to apply during preconfigured WAF evaluation.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfig.exclusions
+	Exclusions []SecurityPolicyRulePreconfiguredWafConfigExclusion `json:"exclusions,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRulePreconfiguredWafConfigExclusion
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion
+type SecurityPolicyRulePreconfiguredWafConfigExclusion struct {
+	// A list of request cookie names whose value will be excluded from inspection during preconfigured WAF evaluation.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.request_cookies_to_exclude
+	RequestCookiesToExclude []SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams `json:"requestCookiesToExclude,omitempty"`
+
+	// A list of request header names whose value will be excluded from inspection during preconfigured WAF evaluation.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.request_headers_to_exclude
+	RequestHeadersToExclude []SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams `json:"requestHeadersToExclude,omitempty"`
+
+	// A list of request query parameter names whose value will be excluded from inspection during preconfigured WAF evaluation. Note that the parameter can be in the query string or in the POST body.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.request_query_params_to_exclude
+	RequestQueryParamsToExclude []SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams `json:"requestQueryParamsToExclude,omitempty"`
+
+	// A list of request URIs from the request line to be excluded from inspection during preconfigured WAF evaluation. When specifying this field, the query or fragment part should be excluded.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.request_uris_to_exclude
+	RequestUrisToExclude []SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams `json:"requestUrisToExclude,omitempty"`
+
+	// A list of target rule IDs under the WAF rule set to apply the preconfigured WAF exclusion. If omitted, it refers to all the rule IDs under the WAF rule set.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.target_rule_ids
+	TargetRuleIds []string `json:"targetRuleIds,omitempty"`
+
+	// Target WAF rule set to apply the preconfigured WAF exclusion.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.target_rule_set
+	TargetRuleSet *string `json:"targetRuleSet,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams
+type SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams struct {
+	// The match operator for the field.
+	//  Check the Op enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams.op
+	Op *string `json:"op,omitempty"`
+
+	// The value of the field.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams.val
+	Val *string `json:"val,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleRateLimitOptions
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions
+type SecurityPolicyRuleRateLimitOptions struct {
+	// Can only be specified if the action for the rule is "rate_based_ban". If specified, determines the time (in seconds) the traffic will continue to be banned by the rate limit after the rate falls below the threshold.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.ban_duration_sec
+	BanDurationSec *int32 `json:"banDurationSec,omitempty"`
+
+	// Can only be specified if the action for the rule is "rate_based_ban". If specified, the key will be banned for the configured 'ban_duration_sec' when the number of requests that exceed the 'rate_limit_threshold' also exceed this 'ban_threshold'.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.ban_threshold
+	BanThreshold *SecurityPolicyRuleRateLimitOptionsThreshold `json:"banThreshold,omitempty"`
+
+	// Action to take for requests that are under the configured rate limit threshold. Valid option is "allow" only.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.conform_action
+	ConformAction *string `json:"conformAction,omitempty"`
+
+	// Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if "enforceOnKey" is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. - USER_IP: The IP address of the originating client, which is resolved based on "userIpRequestHeaders" configured with the security policy. If there is no "userIpRequestHeaders" configuration or an IP address cannot be resolved from it, the key type defaults to IP. - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL.
+	//  Check the EnforceOnKey enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.enforce_on_key
+	EnforceOnKey *string `json:"enforceOnKey,omitempty"`
+
+	// If specified, any combination of values of enforce_on_key_type/enforce_on_key_name is treated as the key on which ratelimit threshold/action is enforced. You can specify up to 3 enforce_on_key_configs. If enforce_on_key_configs is specified, enforce_on_key must not be specified.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.enforce_on_key_configs
+	EnforceOnKeyConfigs []SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig `json:"enforceOnKeyConfigs,omitempty"`
+
+	// Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.enforce_on_key_name
+	EnforceOnKeyName *string `json:"enforceOnKeyName,omitempty"`
+
+	// Action to take for requests that are above the configured rate limit threshold, to either deny with a specified HTTP response code, or redirect to a different endpoint. Valid options are `deny(STATUS)`, where valid values for `STATUS` are 403, 404, 429, and 502, and `redirect`, where the redirect parameters come from `exceedRedirectOptions` below. The `redirect` action is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.exceed_action
+	ExceedAction *string `json:"exceedAction,omitempty"`
+
+	// Parameters defining the redirect action that is used as the exceed action. Cannot be specified if the exceed action is not redirect. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.exceed_redirect_options
+	ExceedRedirectOptions *SecurityPolicyRuleRedirectOptions `json:"exceedRedirectOptions,omitempty"`
+
+	// Threshold at which to begin ratelimiting.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.rate_limit_threshold
+	RateLimitThreshold *SecurityPolicyRuleRateLimitOptionsThreshold `json:"rateLimitThreshold,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig
+type SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig struct {
+	// Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig.enforce_on_key_name
+	EnforceOnKeyName *string `json:"enforceOnKeyName,omitempty"`
+
+	// Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if "enforceOnKeyConfigs" is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. - USER_IP: The IP address of the originating client, which is resolved based on "userIpRequestHeaders" configured with the security policy. If there is no "userIpRequestHeaders" configuration or an IP address cannot be resolved from it, the key type defaults to IP. - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL.
+	//  Check the EnforceOnKeyType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig.enforce_on_key_type
+	EnforceOnKeyType *string `json:"enforceOnKeyType,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleRateLimitOptionsThreshold
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsThreshold
+type SecurityPolicyRuleRateLimitOptionsThreshold struct {
+	// Number of HTTP(S) requests for calculating the threshold.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsThreshold.count
+	Count *int32 `json:"count,omitempty"`
+
+	// Interval over which the threshold is computed.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsThreshold.interval_sec
+	IntervalSec *int32 `json:"intervalSec,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleRedirectOptions
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRedirectOptions
+type SecurityPolicyRuleRedirectOptions struct {
+	// Target for the redirect action. This is required if the type is EXTERNAL_302 and cannot be specified for GOOGLE_RECAPTCHA.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRedirectOptions.target
+	Target *string `json:"target,omitempty"`
+
+	// Type of the redirect action. Possible values are: - GOOGLE_RECAPTCHA: redirect to reCAPTCHA for manual challenge assessment. - EXTERNAL_302: redirect to a different URL via a 302 response.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRedirectOptions.type
+	Type *string `json:"type,omitempty"`
 }
 */
 
