@@ -42,61 +42,47 @@ type ServicelevelobjectiveAvailability struct {
 }
 
 type ServicelevelobjectiveBasicSli struct {
-	/* Good service is defined to be the count of requests made to this service that return successfully. */
 	// +optional
 	Availability *ServicelevelobjectiveAvailability `json:"availability,omitempty"`
 
-	/* Good service is defined to be the count of requests made to this service that are fast enough with respect to `latency.threshold`. */
 	// +optional
 	Latency *ServicelevelobjectiveLatency `json:"latency,omitempty"`
 
-	/* OPTIONAL: The set of locations to which this SLI is relevant. Telemetry from other locations will not be used to calculate performance for this SLI. If omitted, this SLI applies to all locations in which the Service has activity. For service types that don't support breaking down by location, setting this field will result in an error. */
 	// +optional
 	Location []string `json:"location,omitempty"`
 
-	/* OPTIONAL: The set of RPCs to which this SLI is relevant. Telemetry from other methods will not be used to calculate performance for this SLI. If omitted, this SLI applies to all the Service's methods. For service types that don't support breaking down by method, setting this field will result in an error. */
 	// +optional
 	Method []string `json:"method,omitempty"`
 
-	/* Good service is defined to be the count of operations performed by this service that return successfully */
 	// +optional
 	OperationAvailability *ServicelevelobjectiveOperationAvailability `json:"operationAvailability,omitempty"`
 
-	/* Good service is defined to be the count of operations performed by this service that are fast enough with respect to `operation_latency.threshold`. */
 	// +optional
 	OperationLatency *ServicelevelobjectiveOperationLatency `json:"operationLatency,omitempty"`
 
-	/* OPTIONAL: The set of API versions to which this SLI is relevant. Telemetry from other API versions will not be used to calculate performance for this SLI. If omitted, this SLI applies to all API versions. For service types that don't support breaking down by version, setting this field will result in an error. */
 	// +optional
 	Version []string `json:"version,omitempty"`
 }
 
 type ServicelevelobjectiveBasicSliPerformance struct {
-	/* Good service is defined to be the count of requests made to this service that return successfully. */
 	// +optional
 	Availability *ServicelevelobjectiveAvailability `json:"availability,omitempty"`
 
-	/* Good service is defined to be the count of requests made to this service that are fast enough with respect to `latency.threshold`. */
 	// +optional
 	Latency *ServicelevelobjectiveLatency `json:"latency,omitempty"`
 
-	/* OPTIONAL: The set of locations to which this SLI is relevant. Telemetry from other locations will not be used to calculate performance for this SLI. If omitted, this SLI applies to all locations in which the Service has activity. For service types that don't support breaking down by location, setting this field will result in an error. */
 	// +optional
 	Location []string `json:"location,omitempty"`
 
-	/* OPTIONAL: The set of RPCs to which this SLI is relevant. Telemetry from other methods will not be used to calculate performance for this SLI. If omitted, this SLI applies to all the Service's methods. For service types that don't support breaking down by method, setting this field will result in an error. */
 	// +optional
 	Method []string `json:"method,omitempty"`
 
-	/* Good service is defined to be the count of operations performed by this service that return successfully */
 	// +optional
 	OperationAvailability *ServicelevelobjectiveOperationAvailability `json:"operationAvailability,omitempty"`
 
-	/* Good service is defined to be the count of operations performed by this service that are fast enough with respect to `operation_latency.threshold`. */
 	// +optional
 	OperationLatency *ServicelevelobjectiveOperationLatency `json:"operationLatency,omitempty"`
 
-	/* OPTIONAL: The set of API versions to which this SLI is relevant. Telemetry from other API versions will not be used to calculate performance for this SLI. If omitted, this SLI applies to all API versions. For service types that don't support breaking down by version, setting this field will result in an error. */
 	// +optional
 	Version []string `json:"version,omitempty"`
 }
@@ -126,25 +112,20 @@ type ServicelevelobjectiveGoodTotalRatio struct {
 }
 
 type ServicelevelobjectiveGoodTotalRatioThreshold struct {
-	/* `BasicSli` to evaluate to judge window quality. */
 	// +optional
 	BasicSliPerformance *ServicelevelobjectiveBasicSliPerformance `json:"basicSliPerformance,omitempty"`
 
-	/* `RequestBasedSli` to evaluate to judge window quality. */
 	// +optional
 	Performance *ServicelevelobjectivePerformance `json:"performance,omitempty"`
 
-	/* If window `performance >= threshold`, the window is counted as good. */
 	// +optional
 	Threshold *float64 `json:"threshold,omitempty"`
 }
 
 type ServicelevelobjectiveLatency struct {
-	/* A description of the experience associated with failing requests. Possible values: LATENCY_EXPERIENCE_UNSPECIFIED, DELIGHTING, SATISFYING, ANNOYING */
 	// +optional
 	Experience *string `json:"experience,omitempty"`
 
-	/* Good service is defined to be the count of requests made to this service that return in no more than `threshold`. */
 	// +optional
 	Threshold *string `json:"threshold,omitempty"`
 }
@@ -173,11 +154,9 @@ type ServicelevelobjectiveOperationAvailability struct {
 }
 
 type ServicelevelobjectiveOperationLatency struct {
-	/* A description of the experience associated with failing requests. Possible values: LATENCY_EXPERIENCE_UNSPECIFIED, DELIGHTING, SATISFYING, ANNOYING */
 	// +optional
 	Experience *string `json:"experience,omitempty"`
 
-	/* Good service is defined to be the count of operations that are completed in no more than `threshold`. */
 	// +optional
 	Threshold *string `json:"threshold,omitempty"`
 }
@@ -260,7 +239,7 @@ type MonitoringServiceLevelObjectiveSpec struct {
 	/* The fraction of service that must be good in order for this objective to be met. `0 < goal <= 0.999`. */
 	Goal float64 `json:"goal"`
 
-	/* Immutable. The Project that this resource belongs to. */
+	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

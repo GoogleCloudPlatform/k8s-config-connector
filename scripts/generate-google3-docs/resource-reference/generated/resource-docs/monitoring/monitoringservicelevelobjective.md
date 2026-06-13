@@ -181,7 +181,7 @@ serviceRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The Project that this resource belongs to.</p>
+            <p>The project that this resource belongs to.</p>
         </td>
     </tr>
     <tr>
@@ -191,9 +191,7 @@ serviceRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -203,7 +201,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -213,7 +211,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -263,7 +261,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Good service is defined to be the count of requests made to this service that return successfully.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -273,7 +271,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Good service is defined to be the count of requests made to this service that are fast enough with respect to `latency.threshold`.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -283,7 +281,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A description of the experience associated with failing requests. Possible values: LATENCY_EXPERIENCE_UNSPECIFIED, DELIGHTING, SATISFYING, ANNOYING</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -293,7 +291,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Good service is defined to be the count of requests made to this service that return in no more than `threshold`.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -303,7 +301,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>OPTIONAL: The set of locations to which this SLI is relevant. Telemetry from other locations will not be used to calculate performance for this SLI. If omitted, this SLI applies to all locations in which the Service has activity. For service types that don't support breaking down by location, setting this field will result in an error.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -323,7 +321,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>OPTIONAL: The set of RPCs to which this SLI is relevant. Telemetry from other methods will not be used to calculate performance for this SLI. If omitted, this SLI applies to all the Service's methods. For service types that don't support breaking down by method, setting this field will result in an error.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -343,7 +341,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Good service is defined to be the count of operations performed by this service that return successfully</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -353,7 +351,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Good service is defined to be the count of operations performed by this service that are fast enough with respect to `operation_latency.threshold`.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -363,7 +361,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A description of the experience associated with failing requests. Possible values: LATENCY_EXPERIENCE_UNSPECIFIED, DELIGHTING, SATISFYING, ANNOYING</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -373,7 +371,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Good service is defined to be the count of operations that are completed in no more than `threshold`.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -383,7 +381,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>OPTIONAL: The set of API versions to which this SLI is relevant. Telemetry from other API versions will not be used to calculate performance for this SLI. If omitted, this SLI applies to all API versions. For service types that don't support breaking down by version, setting this field will result in an error.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -533,7 +531,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>`BasicSli` to evaluate to judge window quality.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -543,7 +541,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Good service is defined to be the count of requests made to this service that return successfully.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -553,7 +551,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Good service is defined to be the count of requests made to this service that are fast enough with respect to `latency.threshold`.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -563,7 +561,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A description of the experience associated with failing requests. Possible values: LATENCY_EXPERIENCE_UNSPECIFIED, DELIGHTING, SATISFYING, ANNOYING</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -573,7 +571,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Good service is defined to be the count of requests made to this service that return in no more than `threshold`.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -583,7 +581,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>OPTIONAL: The set of locations to which this SLI is relevant. Telemetry from other locations will not be used to calculate performance for this SLI. If omitted, this SLI applies to all locations in which the Service has activity. For service types that don't support breaking down by location, setting this field will result in an error.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -603,7 +601,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>OPTIONAL: The set of RPCs to which this SLI is relevant. Telemetry from other methods will not be used to calculate performance for this SLI. If omitted, this SLI applies to all the Service's methods. For service types that don't support breaking down by method, setting this field will result in an error.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -623,7 +621,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Good service is defined to be the count of operations performed by this service that return successfully</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -633,7 +631,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Good service is defined to be the count of operations performed by this service that are fast enough with respect to `operation_latency.threshold`.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -643,7 +641,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A description of the experience associated with failing requests. Possible values: LATENCY_EXPERIENCE_UNSPECIFIED, DELIGHTING, SATISFYING, ANNOYING</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -653,7 +651,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Good service is defined to be the count of operations that are completed in no more than `threshold`.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -663,7 +661,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>OPTIONAL: The set of API versions to which this SLI is relevant. Telemetry from other API versions will not be used to calculate performance for this SLI. If omitted, this SLI applies to all API versions. For service types that don't support breaking down by version, setting this field will result in an error.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -683,7 +681,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>`RequestBasedSli` to evaluate to judge window quality.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -783,7 +781,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>If window `performance >= threshold`, the window is counted as good.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -913,9 +911,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The service for the resource
-
-Allowed value: The Google Cloud resource name of a `MonitoringService` resource (format: `projects/{{project}}/services/{{name}}`).</p>
+            <p>The name of a `MonitoringService` resource.</p>
         </td>
     </tr>
     <tr>
@@ -967,7 +963,7 @@ serviceManagementOwned: boolean
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
