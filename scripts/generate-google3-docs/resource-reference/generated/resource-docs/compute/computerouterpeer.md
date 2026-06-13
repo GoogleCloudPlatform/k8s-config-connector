@@ -120,8 +120,7 @@ routerRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>User-specified flag to indicate which mode to use for advertisement.
-Valid values of this enum field are: 'DEFAULT', 'CUSTOM' Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"].</p>
+            <p>User-specified flag to indicate which mode to use for advertisement. Valid values of this enum field are: 'DEFAULT', 'CUSTOM' Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"].</p>
         </td>
     </tr>
     <tr>
@@ -161,11 +160,7 @@ Leave this field blank to advertise no custom groups.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>User-specified list of individual IP ranges to advertise in
-custom mode. This field can only be populated if advertiseMode
-is 'CUSTOM' and is advertised to all peers of the router. These IP
-ranges will be advertised in addition to any specified groups.
-Leave this field blank to advertise no custom IP ranges.</p>
+            <p>User-specified list of individual IP ranges to advertise in custom mode. This field can only be populated if advertiseMode is 'CUSTOM' and is advertised to all peers of the router. These IP ranges will be advertised in addition to any specified groups. Leave this field blank to advertise no custom IP ranges.</p>
         </td>
     </tr>
     <tr>
@@ -195,8 +190,7 @@ Leave this field blank to advertise no custom IP ranges.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The IP range to advertise. The value must be a
-CIDR-formatted string.</p>
+            <p>The IP range to advertise. The value must be a CIDR-formatted string.</p>
         </td>
     </tr>
     <tr>
@@ -206,9 +200,7 @@ CIDR-formatted string.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The priority of routes advertised to this BGP peer.
-Where there is more than one matching route of maximum
-length, the routes with the lowest priority value win.</p>
+            <p>The priority of routes advertised to this BGP peer. Where there is more than one matching route of maximum length, the routes with the lowest priority value win.</p>
         </td>
     </tr>
     <tr>
@@ -228,11 +220,7 @@ length, the routes with the lowest priority value win.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The minimum interval, in milliseconds, between BFD control packets
-received from the peer router. The actual value is negotiated
-between the two routers and is equal to the greater of this value
-and the transmit interval of the other router. If set, this value
-must be between 1000 and 30000.</p>
+            <p>The minimum interval, in milliseconds, between BFD control packets received from the peer router. The actual value is negotiated between the two routers and is equal to the greater of this value and the transmit interval of the other router. If set, this value must be between 1000 and 30000.</p>
         </td>
     </tr>
     <tr>
@@ -242,11 +230,7 @@ must be between 1000 and 30000.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The minimum interval, in milliseconds, between BFD control packets
-transmitted to the peer router. The actual value is negotiated
-between the two routers and is equal to the greater of this value
-and the corresponding receive interval of the other router. If set,
-this value must be between 1000 and 30000.</p>
+            <p>The minimum interval, in milliseconds, between BFD control packets transmitted to the peer router. The actual value is negotiated between the two routers and is equal to the greater of this value and the corresponding receive interval of the other router. If set, this value must be between 1000 and 30000.</p>
         </td>
     </tr>
     <tr>
@@ -256,9 +240,7 @@ this value must be between 1000 and 30000.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The number of consecutive BFD packets that must be missed before
-BFD declares that a peer is unavailable. If set, the value must
-be a value between 5 and 16.</p>
+            <p>The number of consecutive BFD packets that must be missed before BFD declares that a peer is unavailable. If set, the value must be a value between 5 and 16.</p>
         </td>
     </tr>
     <tr>
@@ -268,11 +250,7 @@ be a value between 5 and 16.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The BFD session initialization mode for this BGP peer.
-If set to 'ACTIVE', the Cloud Router will initiate the BFD session
-for this BGP peer. If set to 'PASSIVE', the Cloud Router will wait
-for the peer router to initiate the BFD session for this BGP peer.
-If set to 'DISABLED', BFD is disabled for this BGP peer. Possible values: ["ACTIVE", "DISABLED", "PASSIVE"].</p>
+            <p>The BFD session initialization mode for this BGP peer. If set to 'ACTIVE', the Cloud Router will initiate the BFD session for this BGP peer. If set to 'PASSIVE', the Cloud Router will wait for the peer router to initiate the BFD session for this BGP peer. If set to 'DISABLED', BFD is disabled for this BGP peer. Possible values: ["ACTIVE", "DISABLED", "PASSIVE"].</p>
         </td>
     </tr>
     <tr>
@@ -282,10 +260,7 @@ If set to 'DISABLED', BFD is disabled for this BGP peer. Possible values: ["ACTI
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>The status of the BGP peer connection. If set to false, any active session
-with the peer is terminated and all associated routing information is removed.
-If set to true, the peer connection can be established with routing information.
-The default is true.</p>
+            <p>The status of the BGP peer connection. If set to false, any active session with the peer is terminated and all associated routing information is removed. If set to true, the peer connection can be established with routing information. The default is true.</p>
         </td>
     </tr>
     <tr>
@@ -305,8 +280,7 @@ The default is true.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>IP address of the interface inside Google Cloud Platform.
-Only IPv4 is supported.</p>
+            <p>IP address of the interface inside Google Cloud Platform. Only IPv4 is supported.</p>
         </td>
     </tr>
     <tr>
@@ -326,10 +300,7 @@ Only IPv4 is supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>IPv6 address of the interface inside Google Cloud Platform.
-The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64.
-If you do not specify the next hop addresses, Google Cloud automatically
-assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range for you.</p>
+            <p>IPv6 address of the interface inside Google Cloud Platform. The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64. If you do not specify the next hop addresses, Google Cloud automatically assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range for you.</p>
         </td>
     </tr>
     <tr>
@@ -339,8 +310,7 @@ assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Peer BGP Autonomous System Number (ASN).
-Each BGP interface may use a different value.</p>
+            <p>Peer BGP Autonomous System Number (ASN). Each BGP interface may use a different value.</p>
         </td>
     </tr>
     <tr>
@@ -350,8 +320,7 @@ Each BGP interface may use a different value.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>IP address of the BGP interface outside Google Cloud Platform.
-Only IPv4 is supported. Required if 'ip_address' is set.</p>
+            <p>IP address of the BGP interface outside Google Cloud Platform. Only IPv4 is supported. Required if 'ip_address' is set.</p>
         </td>
     </tr>
     <tr>
@@ -361,10 +330,7 @@ Only IPv4 is supported. Required if 'ip_address' is set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>IPv6 address of the BGP interface outside Google Cloud Platform.
-The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64.
-If you do not specify the next hop addresses, Google Cloud automatically
-assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range for you.</p>
+            <p>IPv6 address of the BGP interface outside Google Cloud Platform. The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64. If you do not specify the next hop addresses, Google Cloud automatically assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range for you.</p>
         </td>
     </tr>
     <tr>
@@ -374,8 +340,7 @@ assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Region where the router and BgpPeer reside.
-If it is not provided, the provider region is used.</p>
+            <p>Immutable. Region where the router and BgpPeer reside. If it is not provided, the provider region is used.</p>
         </td>
     </tr>
     <tr>
@@ -395,11 +360,7 @@ If it is not provided, the provider region is used.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The URI of the VM instance that is used as third-party router
-appliances such as Next Gen Firewalls, Virtual Routers, or Router
-Appliances. The VM instance must be located in zones contained in
-the same region as this Cloud Router. The VM instance is the peer
-side of the BGP session.</p>
+            <p>The URI of the VM instance that is used as third-party router appliances such as Next Gen Firewalls, Virtual Routers, or Router Appliances. The VM instance must be located in zones contained in the same region as this Cloud Router. The VM instance is the peer side of the BGP session.</p>
         </td>
     </tr>
     <tr>
@@ -409,7 +370,7 @@ side of the BGP session.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeInstance` resource.</p>
+            <p>The external name of the referenced resource</p>
         </td>
     </tr>
     <tr>
@@ -449,7 +410,7 @@ side of the BGP session.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `ComputeRouterInterface` resource.</p>
+            <p>The external name of the referenced resource</p>
         </td>
     </tr>
     <tr>
@@ -489,7 +450,7 @@ side of the BGP session.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `ComputeRouter` resource.</p>
+            <p>The external name of the referenced resource</p>
         </td>
     </tr>
     <tr>
@@ -541,7 +502,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeRouterPeer's current state.</p>
         </td>
     </tr>
     <tr>

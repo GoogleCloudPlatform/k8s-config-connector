@@ -32,6 +32,7 @@
 // resource: ComputeNodeTemplate:NodeTemplate
 // resource: ComputeReservation:Reservation
 // resource: ComputeRouter:Router
+// resource: ComputeRouterPeer:RouterBgpPeer
 // resource: ComputeResourcePolicy:ResourcePolicy
 // resource: ComputeSecurityPolicy:SecurityPolicy
 // resource: ComputeSnapshot:Snapshot
@@ -3605,7 +3606,8 @@ type RouterBGP struct {
 }
 */
 
-/* unreachable type RouterBGPPeer
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.RouterBgpPeer", skipping
+
 // +kcc:proto=google.cloud.compute.v1.RouterBgpPeer
 type RouterBGPPeer struct {
 	// User-specified flag to indicate which mode to use for advertisement.
