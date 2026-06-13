@@ -23,7 +23,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+./controllerbuilder generate-types \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
@@ -39,9 +39,10 @@ go run . generate-types \
   --resource ComputeHealthCheck:HealthCheck \
   --resource ComputeNodeGroup:NodeGroup \
   --resource ComputeInstance:Instance \
+  --resource ComputeBackendService:BackendService \
   --include-skipped-output
 
-go run . generate-mapper \
+./controllerbuilder generate-mapper \
     --multiversion \
     --service google.cloud.compute.v1 \
     --api-version compute.cnrm.cloud.google.com/v1beta1 \

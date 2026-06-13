@@ -347,3 +347,39 @@ type ComputeForwardingRuleRef struct {
 	/* The namespace field of a ComputeForwardingRule resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type ComputeInstanceGroupRef struct {
+	/* The ComputeInstanceGroup selflink when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The name field of a ComputeInstanceGroup resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a ComputeInstanceGroup resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeNetworkEndpointGroupRef struct {
+	/* The ComputeNetworkEndpointGroup selflink when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The name field of a ComputeNetworkEndpointGroup resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a ComputeNetworkEndpointGroup resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeHealthCheckRef struct {
+	/* The ComputeHealthCheck selflink when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The name field of a ComputeHealthCheck resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a ComputeHealthCheck resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeHTTPHealthCheckRef struct {
+	/* The ComputeHTTPHealthCheck selflink when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The name field of a ComputeHTTPHealthCheck resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a ComputeHTTPHealthCheck resource. */
+	Namespace string `json:"namespace,omitempty"`
+}

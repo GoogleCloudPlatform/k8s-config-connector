@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -166,6 +167,696 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.LocationHint = in.LocationHint
 	out.MachineType = in.MachineType
 	out.MinCpuPlatform = in.MinCPUPlatform
+	return out
+}
+func BackendserviceBackend_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Backend) *krm.BackendserviceBackend {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceBackend{}
+	out.BalancingMode = in.BalancingMode
+	out.CapacityScaler = in.CapacityScaler
+	// MISSING: CustomMetrics
+	out.Description = in.Description
+	out.Failover = in.Failover
+	// MISSING: Group
+	out.MaxConnections = in.MaxConnections
+	out.MaxConnectionsPerEndpoint = in.MaxConnectionsPerEndpoint
+	out.MaxConnectionsPerInstance = in.MaxConnectionsPerInstance
+	out.MaxRate = in.MaxRate
+	out.MaxRatePerEndpoint = in.MaxRatePerEndpoint
+	out.MaxRatePerInstance = in.MaxRatePerInstance
+	out.MaxUtilization = in.MaxUtilization
+	// MISSING: Preference
+	return out
+}
+func BackendserviceBackend_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceBackend) *pb.Backend {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Backend{}
+	out.BalancingMode = in.BalancingMode
+	out.CapacityScaler = in.CapacityScaler
+	// MISSING: CustomMetrics
+	out.Description = in.Description
+	out.Failover = in.Failover
+	// MISSING: Group
+	out.MaxConnections = in.MaxConnections
+	out.MaxConnectionsPerEndpoint = in.MaxConnectionsPerEndpoint
+	out.MaxConnectionsPerInstance = in.MaxConnectionsPerInstance
+	out.MaxRate = in.MaxRate
+	out.MaxRatePerEndpoint = in.MaxRatePerEndpoint
+	out.MaxRatePerInstance = in.MaxRatePerInstance
+	out.MaxUtilization = in.MaxUtilization
+	// MISSING: Preference
+	return out
+}
+func BackendserviceBaseEjectionTime_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.BackendserviceBaseEjectionTime {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceBaseEjectionTime{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+func BackendserviceBaseEjectionTime_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceBaseEjectionTime) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+func BackendserviceBypassCacheOnRequestHeaders_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceCdnPolicyBypassCacheOnRequestHeader) *krm.BackendserviceBypassCacheOnRequestHeaders {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceBypassCacheOnRequestHeaders{}
+	out.HeaderName = in.HeaderName
+	return out
+}
+func BackendserviceBypassCacheOnRequestHeaders_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceBypassCacheOnRequestHeaders) *pb.BackendServiceCdnPolicyBypassCacheOnRequestHeader {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceCdnPolicyBypassCacheOnRequestHeader{}
+	out.HeaderName = in.HeaderName
+	return out
+}
+func BackendserviceCacheKeyPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CacheKeyPolicy) *krm.BackendserviceCacheKeyPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceCacheKeyPolicy{}
+	out.IncludeHost = in.IncludeHost
+	// MISSING: IncludeHTTPHeaders
+	// (near miss): "IncludeHTTPHeaders" vs "IncludeHttpHeaders"
+	out.IncludeNamedCookies = in.IncludeNamedCookies
+	out.IncludeProtocol = in.IncludeProtocol
+	out.IncludeQueryString = in.IncludeQueryString
+	out.QueryStringBlacklist = in.QueryStringBlacklist
+	out.QueryStringWhitelist = in.QueryStringWhitelist
+	return out
+}
+func BackendserviceCacheKeyPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceCacheKeyPolicy) *pb.CacheKeyPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CacheKeyPolicy{}
+	out.IncludeHost = in.IncludeHost
+	// MISSING: IncludeHTTPHeaders
+	// (near miss): "IncludeHTTPHeaders" vs "IncludeHttpHeaders"
+	out.IncludeNamedCookies = in.IncludeNamedCookies
+	out.IncludeProtocol = in.IncludeProtocol
+	out.IncludeQueryString = in.IncludeQueryString
+	out.QueryStringBlacklist = in.QueryStringBlacklist
+	out.QueryStringWhitelist = in.QueryStringWhitelist
+	return out
+}
+func BackendserviceCdnPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceCdnPolicy) *krm.BackendserviceCdnPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceCdnPolicy{}
+	out.BypassCacheOnRequestHeaders = direct.Slice_FromProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendserviceBypassCacheOnRequestHeaders_v1beta1_FromProto)
+	out.CacheKeyPolicy = BackendserviceCacheKeyPolicy_v1beta1_FromProto(mapCtx, in.GetCacheKeyPolicy())
+	out.CacheMode = in.CacheMode
+	// MISSING: ClientTTL
+	// (near miss): "ClientTTL" vs "ClientTtl"
+	// MISSING: DefaultTTL
+	// (near miss): "DefaultTTL" vs "DefaultTtl"
+	// MISSING: MaxTTL
+	// (near miss): "MaxTTL" vs "MaxTtl"
+	out.NegativeCaching = in.NegativeCaching
+	out.NegativeCachingPolicy = direct.Slice_FromProto(mapCtx, in.NegativeCachingPolicy, BackendserviceNegativeCachingPolicy_v1beta1_FromProto)
+	// MISSING: RequestCoalescing
+	out.ServeWhileStale = in.ServeWhileStale
+	// MISSING: SignedURLCacheMaxAgeSec
+	// (near miss): "SignedURLCacheMaxAgeSec" vs "SignedUrlCacheMaxAgeSec"
+	// MISSING: SignedURLKeyNames
+	return out
+}
+func BackendserviceCdnPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceCdnPolicy) *pb.BackendServiceCdnPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceCdnPolicy{}
+	out.BypassCacheOnRequestHeaders = direct.Slice_ToProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendserviceBypassCacheOnRequestHeaders_v1beta1_ToProto)
+	out.CacheKeyPolicy = BackendserviceCacheKeyPolicy_v1beta1_ToProto(mapCtx, in.CacheKeyPolicy)
+	out.CacheMode = in.CacheMode
+	// MISSING: ClientTTL
+	// (near miss): "ClientTTL" vs "ClientTtl"
+	// MISSING: DefaultTTL
+	// (near miss): "DefaultTTL" vs "DefaultTtl"
+	// MISSING: MaxTTL
+	// (near miss): "MaxTTL" vs "MaxTtl"
+	out.NegativeCaching = in.NegativeCaching
+	out.NegativeCachingPolicy = direct.Slice_ToProto(mapCtx, in.NegativeCachingPolicy, BackendserviceNegativeCachingPolicy_v1beta1_ToProto)
+	// MISSING: RequestCoalescing
+	out.ServeWhileStale = in.ServeWhileStale
+	// MISSING: SignedURLCacheMaxAgeSec
+	// (near miss): "SignedURLCacheMaxAgeSec" vs "SignedUrlCacheMaxAgeSec"
+	// MISSING: SignedURLKeyNames
+	return out
+}
+func BackendserviceCircuitBreakers_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CircuitBreakers) *krm.BackendserviceCircuitBreakers {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceCircuitBreakers{}
+	out.MaxConnections = in.MaxConnections
+	out.MaxPendingRequests = in.MaxPendingRequests
+	out.MaxRequests = in.MaxRequests
+	out.MaxRequestsPerConnection = in.MaxRequestsPerConnection
+	out.MaxRetries = in.MaxRetries
+	return out
+}
+func BackendserviceCircuitBreakers_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceCircuitBreakers) *pb.CircuitBreakers {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CircuitBreakers{}
+	out.MaxConnections = in.MaxConnections
+	out.MaxPendingRequests = in.MaxPendingRequests
+	out.MaxRequests = in.MaxRequests
+	out.MaxRequestsPerConnection = in.MaxRequestsPerConnection
+	out.MaxRetries = in.MaxRetries
+	return out
+}
+func BackendserviceConnectTimeout_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.BackendserviceConnectTimeout {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceConnectTimeout{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+func BackendserviceConnectTimeout_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceConnectTimeout) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+func BackendserviceConnectionTrackingPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceConnectionTrackingPolicy) *krm.BackendserviceConnectionTrackingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceConnectionTrackingPolicy{}
+	out.ConnectionPersistenceOnUnhealthyBackends = in.ConnectionPersistenceOnUnhealthyBackends
+	out.EnableStrongAffinity = in.EnableStrongAffinity
+	out.IdleTimeoutSec = in.IdleTimeoutSec
+	out.TrackingMode = in.TrackingMode
+	return out
+}
+func BackendserviceConnectionTrackingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceConnectionTrackingPolicy) *pb.BackendServiceConnectionTrackingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceConnectionTrackingPolicy{}
+	out.ConnectionPersistenceOnUnhealthyBackends = in.ConnectionPersistenceOnUnhealthyBackends
+	out.EnableStrongAffinity = in.EnableStrongAffinity
+	out.IdleTimeoutSec = in.IdleTimeoutSec
+	out.TrackingMode = in.TrackingMode
+	return out
+}
+func BackendserviceConsistentHash_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ConsistentHashLoadBalancerSettings) *krm.BackendserviceConsistentHash {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceConsistentHash{}
+	// MISSING: HTTPCookie
+	// (near miss): "HTTPCookie" vs "HttpCookie"
+	// MISSING: HTTPHeaderName
+	// (near miss): "HTTPHeaderName" vs "HttpHeaderName"
+	out.MinimumRingSize = in.MinimumRingSize
+	return out
+}
+func BackendserviceConsistentHash_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceConsistentHash) *pb.ConsistentHashLoadBalancerSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConsistentHashLoadBalancerSettings{}
+	// MISSING: HTTPCookie
+	// (near miss): "HTTPCookie" vs "HttpCookie"
+	// MISSING: HTTPHeaderName
+	// (near miss): "HTTPHeaderName" vs "HttpHeaderName"
+	out.MinimumRingSize = in.MinimumRingSize
+	return out
+}
+func BackendserviceCustomPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy) *krm.BackendserviceCustomPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceCustomPolicy{}
+	out.Data = in.Data
+	out.Name = in.Name
+	return out
+}
+func BackendserviceCustomPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceCustomPolicy) *pb.BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy{}
+	out.Data = in.Data
+	out.Name = in.Name
+	return out
+}
+func BackendserviceFailoverPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceFailoverPolicy) *krm.BackendserviceFailoverPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceFailoverPolicy{}
+	out.DisableConnectionDrainOnFailover = in.DisableConnectionDrainOnFailover
+	out.DropTrafficIfUnhealthy = in.DropTrafficIfUnhealthy
+	out.FailoverRatio = in.FailoverRatio
+	return out
+}
+func BackendserviceFailoverPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceFailoverPolicy) *pb.BackendServiceFailoverPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceFailoverPolicy{}
+	out.DisableConnectionDrainOnFailover = in.DisableConnectionDrainOnFailover
+	out.DropTrafficIfUnhealthy = in.DropTrafficIfUnhealthy
+	out.FailoverRatio = in.FailoverRatio
+	return out
+}
+func BackendserviceIap_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceIAP) *krm.BackendserviceIap {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceIap{}
+	// MISSING: Enabled
+	// MISSING: OAUTH2ClientID
+	// (near miss): "OAUTH2ClientID" vs "Oauth2ClientId"
+	// MISSING: OAUTH2ClientSecret
+	// MISSING: OAUTH2ClientSecretSha256
+	// (near miss): "OAUTH2ClientSecretSha256" vs "Oauth2ClientSecretSha256"
+	return out
+}
+func BackendserviceIap_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceIap) *pb.BackendServiceIAP {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceIAP{}
+	// MISSING: Enabled
+	// MISSING: OAUTH2ClientID
+	// (near miss): "OAUTH2ClientID" vs "Oauth2ClientId"
+	// MISSING: OAUTH2ClientSecret
+	// MISSING: OAUTH2ClientSecretSha256
+	// (near miss): "OAUTH2ClientSecretSha256" vs "Oauth2ClientSecretSha256"
+	return out
+}
+func BackendserviceInterval_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.BackendserviceInterval {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceInterval{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+func BackendserviceInterval_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceInterval) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+func BackendserviceLocalityLbPolicies_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceLocalityLoadBalancingPolicyConfig) *krm.BackendserviceLocalityLbPolicies {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceLocalityLbPolicies{}
+	out.CustomPolicy = BackendserviceCustomPolicy_v1beta1_FromProto(mapCtx, in.GetCustomPolicy())
+	out.Policy = BackendservicePolicy_v1beta1_FromProto(mapCtx, in.GetPolicy())
+	return out
+}
+func BackendserviceLocalityLbPolicies_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceLocalityLbPolicies) *pb.BackendServiceLocalityLoadBalancingPolicyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceLocalityLoadBalancingPolicyConfig{}
+	out.CustomPolicy = BackendserviceCustomPolicy_v1beta1_ToProto(mapCtx, in.CustomPolicy)
+	out.Policy = BackendservicePolicy_v1beta1_ToProto(mapCtx, in.Policy)
+	return out
+}
+func BackendserviceLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceLogConfig) *krm.BackendserviceLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceLogConfig{}
+	out.Enable = in.Enable
+	// MISSING: OptionalFields
+	// MISSING: OptionalMode
+	out.SampleRate = in.SampleRate
+	return out
+}
+func BackendserviceLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceLogConfig) *pb.BackendServiceLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceLogConfig{}
+	out.Enable = in.Enable
+	// MISSING: OptionalFields
+	// MISSING: OptionalMode
+	out.SampleRate = in.SampleRate
+	return out
+}
+func BackendserviceNegativeCachingPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceCdnPolicyNegativeCachingPolicy) *krm.BackendserviceNegativeCachingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceNegativeCachingPolicy{}
+	out.Code = in.Code
+	// MISSING: TTL
+	// (near miss): "TTL" vs "Ttl"
+	return out
+}
+func BackendserviceNegativeCachingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceNegativeCachingPolicy) *pb.BackendServiceCdnPolicyNegativeCachingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceCdnPolicyNegativeCachingPolicy{}
+	out.Code = in.Code
+	// MISSING: TTL
+	// (near miss): "TTL" vs "Ttl"
+	return out
+}
+func BackendserviceOutlierDetection_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.OutlierDetection) *krm.BackendserviceOutlierDetection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceOutlierDetection{}
+	out.BaseEjectionTime = BackendserviceBaseEjectionTime_v1beta1_FromProto(mapCtx, in.GetBaseEjectionTime())
+	out.ConsecutiveErrors = in.ConsecutiveErrors
+	out.ConsecutiveGatewayFailure = in.ConsecutiveGatewayFailure
+	out.EnforcingConsecutiveErrors = in.EnforcingConsecutiveErrors
+	out.EnforcingConsecutiveGatewayFailure = in.EnforcingConsecutiveGatewayFailure
+	out.EnforcingSuccessRate = in.EnforcingSuccessRate
+	out.Interval = BackendserviceInterval_v1beta1_FromProto(mapCtx, in.GetInterval())
+	out.MaxEjectionPercent = in.MaxEjectionPercent
+	out.SuccessRateMinimumHosts = in.SuccessRateMinimumHosts
+	out.SuccessRateRequestVolume = in.SuccessRateRequestVolume
+	out.SuccessRateStdevFactor = in.SuccessRateStdevFactor
+	return out
+}
+func BackendserviceOutlierDetection_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceOutlierDetection) *pb.OutlierDetection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OutlierDetection{}
+	out.BaseEjectionTime = BackendserviceBaseEjectionTime_v1beta1_ToProto(mapCtx, in.BaseEjectionTime)
+	out.ConsecutiveErrors = in.ConsecutiveErrors
+	out.ConsecutiveGatewayFailure = in.ConsecutiveGatewayFailure
+	out.EnforcingConsecutiveErrors = in.EnforcingConsecutiveErrors
+	out.EnforcingConsecutiveGatewayFailure = in.EnforcingConsecutiveGatewayFailure
+	out.EnforcingSuccessRate = in.EnforcingSuccessRate
+	out.Interval = BackendserviceInterval_v1beta1_ToProto(mapCtx, in.Interval)
+	out.MaxEjectionPercent = in.MaxEjectionPercent
+	out.SuccessRateMinimumHosts = in.SuccessRateMinimumHosts
+	out.SuccessRateRequestVolume = in.SuccessRateRequestVolume
+	out.SuccessRateStdevFactor = in.SuccessRateStdevFactor
+	return out
+}
+func BackendservicePolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceLocalityLoadBalancingPolicyConfigPolicy) *krm.BackendservicePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendservicePolicy{}
+	out.Name = in.Name
+	return out
+}
+func BackendservicePolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendservicePolicy) *pb.BackendServiceLocalityLoadBalancingPolicyConfigPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceLocalityLoadBalancingPolicyConfigPolicy{}
+	out.Name = in.Name
+	return out
+}
+func BackendserviceSecuritySettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings) *krm.BackendserviceSecuritySettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceSecuritySettings{}
+	// MISSING: AwsV4Authentication
+	if in.GetClientTlsPolicy() != "" {
+		out.ClientTLSPolicyRef = &refsv1beta1.NetworkSecurityClientTLSPolicyRef{External: in.GetClientTlsPolicy()}
+	}
+	out.SubjectAltNames = in.SubjectAltNames
+	return out
+}
+func BackendserviceSecuritySettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceSecuritySettings) *pb.SecuritySettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecuritySettings{}
+	// MISSING: AwsV4Authentication
+	if in.ClientTLSPolicyRef != nil {
+		out.ClientTlsPolicy = &in.ClientTLSPolicyRef.External
+	}
+	out.SubjectAltNames = in.SubjectAltNames
+	return out
+}
+func BackendserviceSubsetting_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subsetting) *krm.BackendserviceSubsetting {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceSubsetting{}
+	out.Policy = in.Policy
+	return out
+}
+func BackendserviceSubsetting_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceSubsetting) *pb.Subsetting {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Subsetting{}
+	out.Policy = in.Policy
+	return out
+}
+func BackendserviceTtl_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.BackendserviceTtl {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendserviceTtl{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+func BackendserviceTtl_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendserviceTtl) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+func ComputeBackendServiceObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendService) *krm.ComputeBackendServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeBackendServiceObservedState{}
+	// MISSING: AffinityCookieTTLSec
+	// MISSING: Backends
+	// MISSING: CDNPolicy
+	// MISSING: ConnectionDraining
+	// MISSING: CreationTimestamp
+	// MISSING: CustomMetrics
+	// MISSING: EnableCDN
+	// MISSING: ExternalManagedMigrationState
+	// MISSING: ExternalManagedMigrationTestingPercentage
+	// MISSING: Fingerprint
+	// MISSING: HaPolicy
+	// MISSING: IAP
+	// MISSING: ID
+	// MISSING: IPAddressSelectionPolicy
+	// MISSING: Kind
+	// MISSING: MaxStreamDuration
+	// MISSING: Metadatas
+	// MISSING: Name
+	// MISSING: Params
+	// MISSING: Port
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: ServiceBindings
+	// MISSING: ServiceLbPolicy
+	// MISSING: StrongSessionAffinityCookie
+	// MISSING: TLSSettings
+	// MISSING: UsedBy
+	return out
+}
+func ComputeBackendServiceObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendServiceObservedState) *pb.BackendService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendService{}
+	// MISSING: AffinityCookieTTLSec
+	// MISSING: Backends
+	// MISSING: CDNPolicy
+	// MISSING: ConnectionDraining
+	// MISSING: CreationTimestamp
+	// MISSING: CustomMetrics
+	// MISSING: EnableCDN
+	// MISSING: ExternalManagedMigrationState
+	// MISSING: ExternalManagedMigrationTestingPercentage
+	// MISSING: Fingerprint
+	// MISSING: HaPolicy
+	// MISSING: IAP
+	// MISSING: ID
+	// MISSING: IPAddressSelectionPolicy
+	// MISSING: Kind
+	// MISSING: MaxStreamDuration
+	// MISSING: Metadatas
+	// MISSING: Name
+	// MISSING: Params
+	// MISSING: Port
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: ServiceBindings
+	// MISSING: ServiceLbPolicy
+	// MISSING: StrongSessionAffinityCookie
+	// MISSING: TLSSettings
+	// MISSING: UsedBy
+	return out
+}
+func ComputeBackendServiceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendService) *krm.ComputeBackendServiceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeBackendServiceSpec{}
+	// MISSING: AffinityCookieTTLSec
+	// (near miss): "AffinityCookieTTLSec" vs "AffinityCookieTtlSec"
+	// MISSING: Backends
+	// MISSING: CDNPolicy
+	// (near miss): "CDNPolicy" vs "CdnPolicy"
+	out.CircuitBreakers = BackendserviceCircuitBreakers_v1beta1_FromProto(mapCtx, in.GetCircuitBreakers())
+	out.CompressionMode = in.CompressionMode
+	// MISSING: ConnectionDraining
+	out.ConnectionTrackingPolicy = BackendserviceConnectionTrackingPolicy_v1beta1_FromProto(mapCtx, in.GetConnectionTrackingPolicy())
+	out.ConsistentHash = BackendserviceConsistentHash_v1beta1_FromProto(mapCtx, in.GetConsistentHash())
+	// MISSING: CreationTimestamp
+	// MISSING: CustomMetrics
+	out.CustomRequestHeaders = in.CustomRequestHeaders
+	out.CustomResponseHeaders = in.CustomResponseHeaders
+	out.Description = in.Description
+	if in.GetEdgeSecurityPolicy() != "" {
+		out.EdgeSecurityPolicyRef = &krm.ComputeSecurityPolicyRef{External: in.GetEdgeSecurityPolicy()}
+	}
+	// MISSING: EnableCDN
+	// (near miss): "EnableCDN" vs "EnableCdn"
+	// MISSING: ExternalManagedMigrationState
+	// MISSING: ExternalManagedMigrationTestingPercentage
+	out.FailoverPolicy = BackendserviceFailoverPolicy_v1beta1_FromProto(mapCtx, in.GetFailoverPolicy())
+	// MISSING: Fingerprint
+	// MISSING: HaPolicy
+	out.HealthChecks = ComputeBackendServiceSpec_HealthChecks_FromProto(mapCtx, in.HealthChecks)
+	// MISSING: IAP
+	// (near miss): "IAP" vs "Iap"
+	// MISSING: ID
+	// MISSING: IPAddressSelectionPolicy
+	// MISSING: Kind
+	out.LoadBalancingScheme = in.LoadBalancingScheme
+	out.LocalityLbPolicies = direct.Slice_FromProto(mapCtx, in.LocalityLbPolicies, BackendserviceLocalityLbPolicies_v1beta1_FromProto)
+	out.LocalityLbPolicy = in.LocalityLbPolicy
+	out.LogConfig = BackendserviceLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
+	// MISSING: MaxStreamDuration
+	// MISSING: Metadatas
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.OutlierDetection = BackendserviceOutlierDetection_v1beta1_FromProto(mapCtx, in.GetOutlierDetection())
+	// MISSING: Params
+	// MISSING: Port
+	out.PortName = in.PortName
+	out.Protocol = in.Protocol
+	// MISSING: Region
+	out.SecurityPolicy = in.SecurityPolicy
+	out.SecuritySettings = BackendserviceSecuritySettings_v1beta1_FromProto(mapCtx, in.GetSecuritySettings())
+	// MISSING: SelfLink
+	// MISSING: ServiceBindings
+	// MISSING: ServiceLbPolicy
+	out.SessionAffinity = in.SessionAffinity
+	// MISSING: StrongSessionAffinityCookie
+	out.Subsetting = BackendserviceSubsetting_v1beta1_FromProto(mapCtx, in.GetSubsetting())
+	out.TimeoutSec = in.TimeoutSec
+	// MISSING: TLSSettings
+	// MISSING: UsedBy
+	return out
+}
+func ComputeBackendServiceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendServiceSpec) *pb.BackendService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendService{}
+	// MISSING: AffinityCookieTTLSec
+	// (near miss): "AffinityCookieTTLSec" vs "AffinityCookieTtlSec"
+	// MISSING: Backends
+	// MISSING: CDNPolicy
+	// (near miss): "CDNPolicy" vs "CdnPolicy"
+	out.CircuitBreakers = BackendserviceCircuitBreakers_v1beta1_ToProto(mapCtx, in.CircuitBreakers)
+	out.CompressionMode = in.CompressionMode
+	// MISSING: ConnectionDraining
+	out.ConnectionTrackingPolicy = BackendserviceConnectionTrackingPolicy_v1beta1_ToProto(mapCtx, in.ConnectionTrackingPolicy)
+	out.ConsistentHash = BackendserviceConsistentHash_v1beta1_ToProto(mapCtx, in.ConsistentHash)
+	// MISSING: CreationTimestamp
+	// MISSING: CustomMetrics
+	out.CustomRequestHeaders = in.CustomRequestHeaders
+	out.CustomResponseHeaders = in.CustomResponseHeaders
+	out.Description = in.Description
+	if in.EdgeSecurityPolicyRef != nil {
+		out.EdgeSecurityPolicy = &in.EdgeSecurityPolicyRef.External
+	}
+	// MISSING: EnableCDN
+	// (near miss): "EnableCDN" vs "EnableCdn"
+	// MISSING: ExternalManagedMigrationState
+	// MISSING: ExternalManagedMigrationTestingPercentage
+	out.FailoverPolicy = BackendserviceFailoverPolicy_v1beta1_ToProto(mapCtx, in.FailoverPolicy)
+	// MISSING: Fingerprint
+	// MISSING: HaPolicy
+	out.HealthChecks = ComputeBackendServiceSpec_HealthChecks_ToProto(mapCtx, in.HealthChecks)
+	// MISSING: IAP
+	// (near miss): "IAP" vs "Iap"
+	// MISSING: ID
+	// MISSING: IPAddressSelectionPolicy
+	// MISSING: Kind
+	out.LoadBalancingScheme = in.LoadBalancingScheme
+	out.LocalityLbPolicies = direct.Slice_ToProto(mapCtx, in.LocalityLbPolicies, BackendserviceLocalityLbPolicies_v1beta1_ToProto)
+	out.LocalityLbPolicy = in.LocalityLbPolicy
+	out.LogConfig = BackendserviceLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+	// MISSING: MaxStreamDuration
+	// MISSING: Metadatas
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.OutlierDetection = BackendserviceOutlierDetection_v1beta1_ToProto(mapCtx, in.OutlierDetection)
+	// MISSING: Params
+	// MISSING: Port
+	out.PortName = in.PortName
+	out.Protocol = in.Protocol
+	// MISSING: Region
+	out.SecurityPolicy = in.SecurityPolicy
+	out.SecuritySettings = BackendserviceSecuritySettings_v1beta1_ToProto(mapCtx, in.SecuritySettings)
+	// MISSING: SelfLink
+	// MISSING: ServiceBindings
+	// MISSING: ServiceLbPolicy
+	out.SessionAffinity = in.SessionAffinity
+	// MISSING: StrongSessionAffinityCookie
+	out.Subsetting = BackendserviceSubsetting_v1beta1_ToProto(mapCtx, in.Subsetting)
+	out.TimeoutSec = in.TimeoutSec
+	// MISSING: TLSSettings
+	// MISSING: UsedBy
 	return out
 }
 
