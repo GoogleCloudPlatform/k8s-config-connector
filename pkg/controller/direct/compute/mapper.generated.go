@@ -1388,25 +1388,109 @@ func ComputeResourcePolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
+func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicy{}
+	out.Description = in.Description
+	out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
+	out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
+	out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+	// MISSING: Kind
+	// MISSING: Name
+	out.Region = in.Region
+	// MISSING: ResourceStatus
+	// MISSING: SelfLink
+	out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
+	// MISSING: WorkloadPolicy
+	return out
+}
+*/
 
-	func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+/* found existing non-generated mapping function "ComputeRouterNATSpec_v1beta1_FromProto", skipping
+func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNat) *krm.ComputeRouterNATSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterNATSpec{}
+	// MISSING: AutoNetworkTier
+	// MISSING: DrainNATIps
+	// (near miss): "DrainNATIps" vs "DrainNatIps"
+	out.EnableDynamicPortAllocation = in.EnableDynamicPortAllocation
+	out.EnableEndpointIndependentMapping = in.EnableEndpointIndependentMapping
+	// MISSING: EndpointTypes
+	out.IcmpIdleTimeoutSec = in.IcmpIdleTimeoutSec
+	out.LogConfig = RouternatLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
+	// MISSING: MaxPortsPerVM
+	// (near miss): "MaxPortsPerVM" vs "MaxPortsPerVm"
+	// MISSING: MinPortsPerVM
+	// (near miss): "MinPortsPerVM" vs "MinPortsPerVm"
+	// MISSING: Name
+	// MISSING: Nat64Subnetworks
+	// MISSING: NATIPAllocateOption
+	// (near miss): "NATIPAllocateOption" vs "NatIpAllocateOption"
+	// MISSING: NATIps
+	// (near miss): "NATIps" vs "NatIps"
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, RouternatRules_v1beta1_FromProto)
+	// MISSING: SourceSubnetworkIPRangesToNAT
+	// (near miss): "SourceSubnetworkIPRangesToNAT" vs "SourceSubnetworkIpRangesToNat"
+	// MISSING: SourceSubnetworkIPRangesToNat64
+	// MISSING: Subnetworks
+	// MISSING: TCPEstablishedIdleTimeoutSec
+	// (near miss): "TCPEstablishedIdleTimeoutSec" vs "TcpEstablishedIdleTimeoutSec"
+	// MISSING: TCPTimeWaitTimeoutSec
+	// (near miss): "TCPTimeWaitTimeoutSec" vs "TcpTimeWaitTimeoutSec"
+	// MISSING: TCPTransitoryIdleTimeoutSec
+	// (near miss): "TCPTransitoryIdleTimeoutSec" vs "TcpTransitoryIdleTimeoutSec"
+	// MISSING: Type
+	// MISSING: UDPIdleTimeoutSec
+	// (near miss): "UDPIdleTimeoutSec" vs "UdpIdleTimeoutSec"
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeRouterNATSpec_v1beta1_ToProto", skipping
+
+	func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterNATSpec) *pb.RouterNat {
 		if in == nil {
 			return nil
 		}
-		out := &pb.ResourcePolicy{}
-		out.Description = in.Description
-		out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
-		out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
-		out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
-		// MISSING: Kind
+		out := &pb.RouterNat{}
+		// MISSING: AutoNetworkTier
+		// MISSING: DrainNATIps
+		// (near miss): "DrainNATIps" vs "DrainNatIps"
+		out.EnableDynamicPortAllocation = in.EnableDynamicPortAllocation
+		out.EnableEndpointIndependentMapping = in.EnableEndpointIndependentMapping
+		// MISSING: EndpointTypes
+		out.IcmpIdleTimeoutSec = in.IcmpIdleTimeoutSec
+		out.LogConfig = RouternatLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+		// MISSING: MaxPortsPerVM
+		// (near miss): "MaxPortsPerVM" vs "MaxPortsPerVm"
+		// MISSING: MinPortsPerVM
+		// (near miss): "MinPortsPerVM" vs "MinPortsPerVm"
 		// MISSING: Name
-		out.Region = in.Region
-		// MISSING: ResourceStatus
-		// MISSING: SelfLink
-		out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
-		// MISSING: WorkloadPolicy
+		// MISSING: Nat64Subnetworks
+		// MISSING: NATIPAllocateOption
+		// (near miss): "NATIPAllocateOption" vs "NatIpAllocateOption"
+		// MISSING: NATIps
+		// (near miss): "NATIps" vs "NatIps"
+		out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, RouternatRules_v1beta1_ToProto)
+		// MISSING: SourceSubnetworkIPRangesToNAT
+		// (near miss): "SourceSubnetworkIPRangesToNAT" vs "SourceSubnetworkIpRangesToNat"
+		// MISSING: SourceSubnetworkIPRangesToNat64
+		// MISSING: Subnetworks
+		// MISSING: TCPEstablishedIdleTimeoutSec
+		// (near miss): "TCPEstablishedIdleTimeoutSec" vs "TcpEstablishedIdleTimeoutSec"
+		// MISSING: TCPTimeWaitTimeoutSec
+		// (near miss): "TCPTimeWaitTimeoutSec" vs "TcpTimeWaitTimeoutSec"
+		// MISSING: TCPTransitoryIdleTimeoutSec
+		// (near miss): "TCPTransitoryIdleTimeoutSec" vs "TcpTransitoryIdleTimeoutSec"
+		// MISSING: Type
+		// MISSING: UDPIdleTimeoutSec
+		// (near miss): "UDPIdleTimeoutSec" vs "UdpIdleTimeoutSec"
 		return out
 	}
 */
@@ -2823,18 +2907,128 @@ func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_FromProto(ma
 }
 */
 
-/*
-found existing non-generated mapping function "ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto", skipping
+func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicySnapshotSchedulePolicySnapshotProperties) *pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties{}
+	out.ChainName = in.ChainName
+	out.GuestFlush = in.GuestFlush
+	out.Labels = in.Labels
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+*/
 
-	func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicySnapshotSchedulePolicySnapshotProperties) *pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties {
+/* found existing non-generated mapping function "RouternatAction_v1beta1_FromProto", skipping
+func RouternatAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatRuleAction) *krm.RouternatAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouternatAction{}
+	// MISSING: SourceNATActiveIps
+	// MISSING: SourceNATActiveRanges
+	// MISSING: SourceNATDrainIps
+	// MISSING: SourceNATDrainRanges
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RouternatAction_v1beta1_ToProto", skipping
+func RouternatAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouternatAction) *pb.RouterNatRuleAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterNatRuleAction{}
+	// MISSING: SourceNATActiveIps
+	// MISSING: SourceNATActiveRanges
+	// MISSING: SourceNATDrainIps
+	// MISSING: SourceNATDrainRanges
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RouternatLogConfig_v1beta1_FromProto", skipping
+func RouternatLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatLogConfig) *krm.RouternatLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouternatLogConfig{}
+	out.Enable = in.Enable
+	out.Filter = in.Filter
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RouternatLogConfig_v1beta1_ToProto", skipping
+func RouternatLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouternatLogConfig) *pb.RouterNatLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterNatLogConfig{}
+	out.Enable = in.Enable
+	out.Filter = in.Filter
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RouternatRules_v1beta1_FromProto", skipping
+func RouternatRules_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatRule) *krm.RouternatRules {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouternatRules{}
+	out.Action = RouternatAction_v1beta1_FromProto(mapCtx, in.GetAction())
+	out.Description = in.Description
+	out.Match = in.Match
+	out.RuleNumber = in.RuleNumber
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RouternatRules_v1beta1_ToProto", skipping
+func RouternatRules_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouternatRules) *pb.RouterNatRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterNatRule{}
+	out.Action = RouternatAction_v1beta1_ToProto(mapCtx, in.Action)
+	out.Description = in.Description
+	out.Match = in.Match
+	out.RuleNumber = in.RuleNumber
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RouternatSubnetwork_v1beta1_FromProto", skipping
+func RouternatSubnetwork_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatSubnetworkToNat) *krm.RouternatSubnetwork {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouternatSubnetwork{}
+	// MISSING: Name
+	// MISSING: SecondaryIPRangeNames
+	// (near miss): "SecondaryIPRangeNames" vs "SecondaryIpRangeNames"
+	// MISSING: SourceIPRangesToNAT
+	// (near miss): "SourceIPRangesToNAT" vs "SourceIpRangesToNat"
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "RouternatSubnetwork_v1beta1_ToProto", skipping
+
+	func RouternatSubnetwork_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouternatSubnetwork) *pb.RouterNatSubnetworkToNat {
 		if in == nil {
 			return nil
 		}
-		out := &pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties{}
-		out.ChainName = in.ChainName
-		out.GuestFlush = in.GuestFlush
-		out.Labels = in.Labels
-		out.StorageLocations = in.StorageLocations
+		out := &pb.RouterNatSubnetworkToNat{}
+		// MISSING: Name
+		// MISSING: SecondaryIPRangeNames
+		// (near miss): "SecondaryIPRangeNames" vs "SecondaryIpRangeNames"
+		// MISSING: SourceIPRangesToNAT
+		// (near miss): "SourceIPRangesToNAT" vs "SourceIpRangesToNat"
 		return out
 	}
 */
