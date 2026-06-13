@@ -19,6 +19,7 @@
 // proto.service: google.monitoring.v3
 // resource: MonitoringNotificationChannel:NotificationChannel
 // resource: MonitoringUptimeCheckConfig:UptimeCheckConfig
+// resource: MonitoringGroup:Group
 
 package v1beta1
 
@@ -41,6 +42,44 @@ type MonitoredResource struct {
 	//  labels `"project_id"`, `"instance_id"`, and `"zone"`.
 	// +kcc:proto:field=google.api.MonitoredResource.labels
 	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.Group", skipping
+
+// +kcc:proto=google.monitoring.v3.Group
+type Group struct {
+	// Output only. The name of this group. The format is:
+	//
+	//      projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+	//
+	//  When creating a group, this field is ignored and a new name is created
+	//  consisting of the project specified in the call to `CreateGroup`
+	//  and a unique `[GROUP_ID]` that is generated automatically.
+	// +kcc:proto:field=google.monitoring.v3.Group.name
+	Name *string `json:"name,omitempty"`
+
+	// A user-assigned name for this group, used only for display purposes.
+	// +kcc:proto:field=google.monitoring.v3.Group.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The name of the group's parent, if it has one. The format is:
+	//
+	//      projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+	//
+	//  For groups with no parent, `parent_name` is the empty string, `""`.
+	// +kcc:proto:field=google.monitoring.v3.Group.parent_name
+	ParentName *string `json:"parentName,omitempty"`
+
+	// The filter used to determine which monitored resources belong to this
+	//  group.
+	// +kcc:proto:field=google.monitoring.v3.Group.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// If true, the members of this group are considered to be a cluster.
+	//  The system can perform additional analysis on groups that are clusters.
+	// +kcc:proto:field=google.monitoring.v3.Group.is_cluster
+	IsCluster *bool `json:"isCluster,omitempty"`
 }
 */
 

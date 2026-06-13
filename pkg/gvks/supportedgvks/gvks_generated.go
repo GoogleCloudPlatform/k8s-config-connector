@@ -2080,15 +2080,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "monitoring.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "MonitoringGroup",
-	}: {
-		Terraform:   false,
-		DCL:         true,
-		SupportsIAM: false,
-	},
-	{
-		Group:   "monitoring.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "MonitoringMetricDescriptor",
 	}: {
 		Terraform:   false,

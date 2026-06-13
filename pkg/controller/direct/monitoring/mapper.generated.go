@@ -56,6 +56,48 @@ found existing non-generated mapping function "MonitoredResource_ToProto", skipp
 		return out
 	}
 */
+func MonitoringGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Group) *krm.MonitoringGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringGroupObservedState{}
+	// MISSING: Name
+	// MISSING: ParentName
+	return out
+}
+func MonitoringGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringGroupObservedState) *pb.Group {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Group{}
+	// MISSING: Name
+	// MISSING: ParentName
+	return out
+}
+func MonitoringGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.Group) *krm.MonitoringGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringGroupSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: ParentName
+	out.Filter = direct.LazyPtr(in.GetFilter())
+	out.IsCluster = direct.LazyPtr(in.GetIsCluster())
+	return out
+}
+func MonitoringGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringGroupSpec) *pb.Group {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Group{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: ParentName
+	out.Filter = direct.ValueOf(in.Filter)
+	out.IsCluster = direct.ValueOf(in.IsCluster)
+	return out
+}
 func MonitoringNotificationChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotificationChannel) *krm.MonitoringNotificationChannelSpec {
 	if in == nil {
 		return nil
