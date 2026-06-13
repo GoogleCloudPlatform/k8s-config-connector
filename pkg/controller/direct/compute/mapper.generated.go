@@ -2387,20 +2387,144 @@ func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_FromProto(mapCtx *direct.Map
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto", skipping
+func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkEdgeSecurityService{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	// MISSING: Name
+	if in.SecurityPolicyRef != nil {
+		out.SecurityPolicy = &in.SecurityPolicyRef.External
+	}
+	return out
+}
+*/
 
-	func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
+/* found existing non-generated mapping function "ComputeNetworkEndpointGroupSpec_v1beta1_FromProto", skipping
+func ComputeNetworkEndpointGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEndpointGroup) *krm.ComputeNetworkEndpointGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNetworkEndpointGroupSpec{}
+	// MISSING: Annotations
+	// MISSING: AppEngine
+	// MISSING: CloudFunction
+	// MISSING: CloudRun
+	// MISSING: CreationTimestamp
+	out.DefaultPort = in.DefaultPort
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.NetworkEndpointType = in.NetworkEndpointType
+	// MISSING: PSCData
+	// MISSING: PSCTargetService
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Size
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krm.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	// MISSING: Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeNetworkEndpointGroupSpec_v1beta1_ToProto", skipping
+func ComputeNetworkEndpointGroupSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkEndpointGroupSpec) *pb.NetworkEndpointGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkEndpointGroup{}
+	// MISSING: Annotations
+	// MISSING: AppEngine
+	// MISSING: CloudFunction
+	// MISSING: CloudRun
+	// MISSING: CreationTimestamp
+	out.DefaultPort = in.DefaultPort
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.NetworkEndpointType = in.NetworkEndpointType
+	// MISSING: PSCData
+	// MISSING: PSCTargetService
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Size
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = &in.SubnetworkRef.External
+	}
+	// MISSING: Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeNetworkEndpointGroupStatus_v1beta1_FromProto", skipping
+func ComputeNetworkEndpointGroupStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEndpointGroup) *krm.ComputeNetworkEndpointGroupStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNetworkEndpointGroupStatus{}
+	// MISSING: Annotations
+	// MISSING: AppEngine
+	// MISSING: CloudFunction
+	// MISSING: CloudRun
+	// MISSING: CreationTimestamp
+	// MISSING: DefaultPort
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: NetworkEndpointType
+	// MISSING: PSCData
+	// MISSING: PSCTargetService
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	out.Size = in.Size
+	// MISSING: Subnetwork
+	// MISSING: Zone
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeNetworkEndpointGroupStatus_v1beta1_ToProto", skipping
+
+	func ComputeNetworkEndpointGroupStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkEndpointGroupStatus) *pb.NetworkEndpointGroup {
 		if in == nil {
 			return nil
 		}
-		out := &pb.NetworkEdgeSecurityService{}
-		out.Description = in.Description
-		out.Fingerprint = in.Fingerprint
+		out := &pb.NetworkEndpointGroup{}
+		// MISSING: Annotations
+		// MISSING: AppEngine
+		// MISSING: CloudFunction
+		// MISSING: CloudRun
+		// MISSING: CreationTimestamp
+		// MISSING: DefaultPort
+		// MISSING: Description
+		// MISSING: ID
+		// MISSING: Kind
 		// MISSING: Name
-		if in.SecurityPolicyRef != nil {
-			out.SecurityPolicy = &in.SecurityPolicyRef.External
-		}
+		// MISSING: Network
+		// MISSING: NetworkEndpointType
+		// MISSING: PSCData
+		// MISSING: PSCTargetService
+		// MISSING: Region
+		out.SelfLink = in.SelfLink
+		out.Size = in.Size
+		// MISSING: Subnetwork
+		// MISSING: Zone
 		return out
 	}
 */

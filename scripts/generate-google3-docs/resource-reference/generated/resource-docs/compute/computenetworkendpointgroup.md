@@ -99,8 +99,7 @@ subnetworkRef:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. The default port used if the port number is not specified in the
-network endpoint.</p>
+            <p>Immutable. The default port used if the port number is not specified in the network endpoint.</p>
         </td>
     </tr>
     <tr>
@@ -110,8 +109,7 @@ network endpoint.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. An optional description of this resource. Provide this property when
-you create the resource.</p>
+            <p>Immutable. An optional description of this resource. Provide this property when you create the resource.</p>
         </td>
     </tr>
     <tr>
@@ -149,8 +147,7 @@ Possible values include: GCE_VM_IP, GCE_VM_IP_PORT, and NON_GCP_PRIVATE_IP_PORT.
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The network to which all network endpoints in the NEG belong. Uses
-"default" project network if unspecified.</p>
+            <p>The network to which all network endpoints in the NEG belong. Uses "default" project network if unspecified.</p>
         </td>
     </tr>
     <tr>
@@ -160,7 +157,7 @@ Possible values include: GCE_VM_IP, GCE_VM_IP_PORT, and NON_GCP_PRIVATE_IP_PORT.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -170,7 +167,7 @@ Possible values include: GCE_VM_IP, GCE_VM_IP_PORT, and NON_GCP_PRIVATE_IP_PORT.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -180,7 +177,7 @@ Possible values include: GCE_VM_IP, GCE_VM_IP_PORT, and NON_GCP_PRIVATE_IP_PORT.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -210,7 +207,7 @@ Possible values include: GCE_VM_IP, GCE_VM_IP_PORT, and NON_GCP_PRIVATE_IP_PORT.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -220,7 +217,7 @@ Possible values include: GCE_VM_IP, GCE_VM_IP_PORT, and NON_GCP_PRIVATE_IP_PORT.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -230,7 +227,7 @@ Possible values include: GCE_VM_IP, GCE_VM_IP_PORT, and NON_GCP_PRIVATE_IP_PORT.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
 </tbody>
@@ -261,7 +258,7 @@ size: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeNetworkEndpointGroup's current state.</p>
         </td>
     </tr>
     <tr>
