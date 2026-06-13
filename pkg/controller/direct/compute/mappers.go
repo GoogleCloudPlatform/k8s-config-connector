@@ -19,6 +19,7 @@ import (
 
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -85,5 +86,59 @@ func ComputeOrganizationSecurityPolicyStatus_v1alpha1_ToProto(mapCtx *direct.Map
 			out.Id = &idVal
 		}
 	}
+	return out
+}
+
+// ComputeExternalVPNGatewayInterface_v1beta1_FromProto maps a pb.ExternalVpnGatewayInterface to a krm.ComputeExternalVPNGatewayInterface.
+// It is handcoded here because of type mismatches: KRM ID is *int64, while Proto ID is *uint32.
+func ComputeExternalVPNGatewayInterface_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ExternalVpnGatewayInterface) *krm.ComputeExternalVPNGatewayInterface {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeExternalVPNGatewayInterface{}
+	if in.Id != nil {
+		idVal := int64(*in.Id)
+		out.ID = &idVal
+	}
+	out.IPAddress = in.IpAddress
+	return out
+}
+
+// ComputeExternalVPNGatewayInterface_v1beta1_ToProto maps a krm.ComputeExternalVPNGatewayInterface to a pb.ExternalVpnGatewayInterface.
+// It is handcoded here because of type mismatches: KRM ID is *int64, while Proto ID is *uint32.
+func ComputeExternalVPNGatewayInterface_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeExternalVPNGatewayInterface) *pb.ExternalVpnGatewayInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExternalVpnGatewayInterface{}
+	if in.ID != nil {
+		idVal := uint32(*in.ID)
+		out.Id = &idVal
+	}
+	out.IpAddress = in.IPAddress
+	return out
+}
+
+// ComputeExternalVPNGatewayStatus_v1beta1_FromProto maps a pb.ExternalVpnGateway to a krm.ComputeExternalVPNGatewayStatus.
+// It is handcoded here to organize status mappings cleanly within mappers.go.
+func ComputeExternalVPNGatewayStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ExternalVpnGateway) *krm.ComputeExternalVPNGatewayStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeExternalVPNGatewayStatus{}
+	out.LabelFingerprint = in.LabelFingerprint
+	out.SelfLink = in.SelfLink
+	return out
+}
+
+// ComputeExternalVPNGatewayStatus_v1beta1_ToProto maps a krm.ComputeExternalVPNGatewayStatus to a pb.ExternalVpnGateway.
+// It is handcoded here to organize status mappings cleanly within mappers.go.
+func ComputeExternalVPNGatewayStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeExternalVPNGatewayStatus) *pb.ExternalVpnGateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExternalVpnGateway{}
+	out.LabelFingerprint = in.LabelFingerprint
+	out.SelfLink = in.SelfLink
 	return out
 }

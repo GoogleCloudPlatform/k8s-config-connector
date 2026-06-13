@@ -122,11 +122,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. The numeric ID for this interface. Allowed values are based on the redundancy type
-of this external VPN gateway
-* '0 - SINGLE_IP_INTERNALLY_REDUNDANT'
-* '0, 1 - TWO_IPS_REDUNDANCY'
-* '0, 1, 2, 3 - FOUR_IPS_REDUNDANCY'.</p>
+            <p>Immutable. The numeric ID for this interface. Allowed values are based on the redundancy type of this external VPN gateway * '0 - SINGLE_IP_INTERNALLY_REDUNDANT' * '0, 1 - TWO_IPS_REDUNDANCY' * '0, 1, 2, 3 - FOUR_IPS_REDUNDANCY'.</p>
         </td>
     </tr>
     <tr>
@@ -136,10 +132,7 @@ of this external VPN gateway
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. IP address of the interface in the external VPN gateway.
-Only IPv4 is supported. This IP address can be either from
-your on-premise gateway or another Cloud provider's VPN gateway,
-it cannot be an IP address from Google Compute Engine.</p>
+            <p>Immutable. IP address of the interface in the external VPN gateway. Only IPv4 is supported. This IP address can be either from your on-premise gateway or another Cloud provider's VPN gateway, it cannot be an IP address from Google Compute Engine.</p>
         </td>
     </tr>
     <tr>
@@ -149,7 +142,7 @@ it cannot be an IP address from Google Compute Engine.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Indicates the redundancy type of this external VPN gateway Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT", "TWO_IPS_REDUNDANCY"].</p>
+            <p>Immutable. Indicates the redundancy type of this external VPN gateway. Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT", "TWO_IPS_REDUNDANCY"].</p>
         </td>
     </tr>
     <tr>
@@ -190,7 +183,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -239,8 +232,7 @@ selfLink: string
         <td><code>labelFingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The fingerprint used for optimistic locking of this resource.  Used
-internally during updates.</p>
+            <p>The fingerprint used for optimistic locking of this resource. Used internally during updates.</p>
         </td>
     </tr>
     <tr>
@@ -254,7 +246,7 @@ internally during updates.</p>
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>The self link of the ComputeExternalVPNGateway.</p>
         </td>
     </tr>
 </tbody>

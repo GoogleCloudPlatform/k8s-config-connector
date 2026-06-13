@@ -646,6 +646,110 @@ func ComputeDiskStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	// MISSING: Zone
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeExternalVPNGatewayInterface_v1beta1_FromProto", skipping
+func ComputeExternalVPNGatewayInterface_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ExternalVpnGatewayInterface) *krm.ComputeExternalVPNGatewayInterface {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeExternalVPNGatewayInterface{}
+	out.ID = in.Id
+	out.IPAddress = in.IpAddress
+	// MISSING: IPV6Address
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeExternalVPNGatewayInterface_v1beta1_ToProto", skipping
+
+	func ComputeExternalVPNGatewayInterface_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeExternalVPNGatewayInterface) *pb.ExternalVpnGatewayInterface {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ExternalVpnGatewayInterface{}
+		out.Id = in.ID
+		out.IpAddress = in.IPAddress
+		// MISSING: IPV6Address
+		return out
+	}
+*/
+func ComputeExternalVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ExternalVpnGateway) *krm.ComputeExternalVPNGatewaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeExternalVPNGatewaySpec{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	out.Interfaces = direct.Slice_FromProto(mapCtx, in.Interfaces, ComputeExternalVPNGatewayInterface_v1beta1_FromProto)
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	out.RedundancyType = in.RedundancyType
+	// MISSING: SelfLink
+	return out
+}
+func ComputeExternalVPNGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeExternalVPNGatewaySpec) *pb.ExternalVpnGateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExternalVpnGateway{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	out.Interfaces = direct.Slice_ToProto(mapCtx, in.Interfaces, ComputeExternalVPNGatewayInterface_v1beta1_ToProto)
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	out.RedundancyType = in.RedundancyType
+	// MISSING: SelfLink
+	return out
+}
+
+/* found existing non-generated mapping function "ComputeExternalVPNGatewayStatus_v1beta1_FromProto", skipping
+func ComputeExternalVPNGatewayStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ExternalVpnGateway) *krm.ComputeExternalVPNGatewayStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeExternalVPNGatewayStatus{}
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Interfaces
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: RedundancyType
+	out.SelfLink = in.SelfLink
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeExternalVPNGatewayStatus_v1beta1_ToProto", skipping
+
+	func ComputeExternalVPNGatewayStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeExternalVPNGatewayStatus) *pb.ExternalVpnGateway {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ExternalVpnGateway{}
+		// MISSING: CreationTimestamp
+		// MISSING: Description
+		// MISSING: ID
+		// MISSING: Interfaces
+		// MISSING: Kind
+		out.LabelFingerprint = in.LabelFingerprint
+		// MISSING: Labels
+		// MISSING: Name
+		// MISSING: RedundancyType
+		out.SelfLink = in.SelfLink
+		return out
+	}
+*/
 func ComputeFirewallPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ComputeFirewallPolicy {
 	if in == nil {
 		return nil
