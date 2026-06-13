@@ -5036,29 +5036,113 @@ func ComputeVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.V
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeVPNGatewaySpec_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeVPNGatewaySpec_v1beta1_ToProto", skipping
+func ComputeVPNGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeVPNGatewaySpec) *pb.VpnGateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpnGateway{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: GatewayIPVersion
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.Region = in.Region
+	// MISSING: SelfLink
+	out.StackType = in.StackType
+	out.VpnInterfaces = direct.Slice_ToProto(mapCtx, in.VPNInterfaces, VPNGatewayInterface_v1beta1_ToProto)
+	return out
+}
+*/
 
-	func ComputeVPNGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeVPNGatewaySpec) *pb.VpnGateway {
+/* found existing non-generated mapping function "ComputeVPNTunnelSpec_v1beta1_FromProto", skipping
+func ComputeVPNTunnelSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VpnTunnel) *krm.ComputeVPNTunnelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeVPNTunnelSpec{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: DetailedStatus
+	// MISSING: ID
+	out.IkeVersion = in.IkeVersion
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	out.LocalTrafficSelector = in.LocalTrafficSelector
+	// MISSING: Name
+	if in.GetPeerExternalGateway() != "" {
+		out.PeerExternalGatewayRef = &krm.ComputeExternalVPNGatewayRef{External: in.GetPeerExternalGateway()}
+	}
+	out.PeerExternalGatewayInterface = in.PeerExternalGatewayInterface
+	// MISSING: PeerGcpGateway
+	// MISSING: PeerIP
+	// (near miss): "PeerIP" vs "PeerIp"
+	out.Region = in.Region
+	out.RemoteTrafficSelector = in.RemoteTrafficSelector
+	if in.GetRouter() != "" {
+		out.RouterRef = &krm.ComputeRouterRef{External: in.GetRouter()}
+	}
+	// MISSING: SelfLink
+	out.SharedSecret = in.SharedSecret
+	// MISSING: SharedSecretHash
+	// MISSING: Status
+	if in.GetTargetVpnGateway() != "" {
+		out.TargetVPNGatewayRef = &refsv1beta1.ComputeTargetVPNGatewayRef{External: in.GetTargetVpnGateway()}
+	}
+	// MISSING: VPNGateway
+	// MISSING: VPNGatewayInterface
+	// (near miss): "VPNGatewayInterface" vs "VpnGatewayInterface"
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeVPNTunnelSpec_v1beta1_ToProto", skipping
+
+	func ComputeVPNTunnelSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeVPNTunnelSpec) *pb.VpnTunnel {
 		if in == nil {
 			return nil
 		}
-		out := &pb.VpnGateway{}
+		out := &pb.VpnTunnel{}
 		// MISSING: CreationTimestamp
 		out.Description = in.Description
-		// MISSING: GatewayIPVersion
+		// MISSING: DetailedStatus
 		// MISSING: ID
+		out.IkeVersion = in.IkeVersion
 		// MISSING: Kind
 		// MISSING: LabelFingerprint
 		// MISSING: Labels
+		out.LocalTrafficSelector = in.LocalTrafficSelector
 		// MISSING: Name
-		if in.NetworkRef != nil {
-			out.Network = &in.NetworkRef.External
+		if in.PeerExternalGatewayRef != nil {
+			out.PeerExternalGateway = &in.PeerExternalGatewayRef.External
 		}
+		out.PeerExternalGatewayInterface = in.PeerExternalGatewayInterface
+		// MISSING: PeerGcpGateway
+		// MISSING: PeerIP
+		// (near miss): "PeerIP" vs "PeerIp"
 		out.Region = in.Region
+		out.RemoteTrafficSelector = in.RemoteTrafficSelector
+		if in.RouterRef != nil {
+			out.Router = &in.RouterRef.External
+		}
 		// MISSING: SelfLink
-		out.StackType = in.StackType
-		out.VpnInterfaces = direct.Slice_ToProto(mapCtx, in.VPNInterfaces, VPNGatewayInterface_v1beta1_ToProto)
+		out.SharedSecret = in.SharedSecret
+		// MISSING: SharedSecretHash
+		// MISSING: Status
+		if in.TargetVPNGatewayRef != nil {
+			out.TargetVpnGateway = &in.TargetVPNGatewayRef.External
+		}
+		// MISSING: VPNGateway
+		// MISSING: VPNGatewayInterface
+		// (near miss): "VPNGatewayInterface" vs "VpnGatewayInterface"
 		return out
 	}
 */
