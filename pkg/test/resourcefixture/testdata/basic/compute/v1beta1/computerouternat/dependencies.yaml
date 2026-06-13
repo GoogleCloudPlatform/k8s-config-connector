@@ -50,8 +50,10 @@ metadata:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computerouter-${uniqueId}
 spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
   description: example router description
-  region: us-central1
   networkRef:
     name: computenetwork-${uniqueId}
 ---

@@ -30,8 +30,10 @@ metadata:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computerouter-${uniqueId}
 spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west2
   description: example router description
-  region: us-west2
   networkRef:
     name: default
   bgp:

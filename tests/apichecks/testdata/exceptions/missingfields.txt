@@ -880,8 +880,8 @@
 [missing_field] crd=computerouterpeers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.routerApplianceInstanceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computerouters.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.bgp.advertiseMode" is not set in unstructured objects
 [missing_field] crd=computerouters.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.bgp.advertisedGroups[]" is not set in unstructured objects
-[missing_field] crd=computerouters.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.bgp.advertisedIpRanges[].description" is not set in unstructured objects
-[missing_field] crd=computerouters.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.bgp.advertisedIpRanges[].range" is not set in unstructured objects
+[missing_field] crd=computerouters.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.bgp.advertisedIPRanges[].description" is not set in unstructured objects
+[missing_field] crd=computerouters.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.bgp.advertisedIPRanges[].range" is not set in unstructured objects
 [missing_field] crd=computerouters.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.bgp.asn" is not set in unstructured objects
 [missing_field] crd=computerouters.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.bgp.keepaliveInterval" is not set in unstructured objects
 [missing_field] crd=computerouters.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptedInterconnectRouter" is not set in unstructured objects

@@ -1410,6 +1410,86 @@ found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1
 		return out
 	}
 */
+func ComputeRouterObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Router) *krm.ComputeRouterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterObservedState{}
+	// MISSING: BGPPeers
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Interfaces
+	// MISSING: Kind
+	// MISSING: Md5AuthenticationKeys
+	// MISSING: Name
+	// MISSING: Nats
+	// MISSING: Region
+	// MISSING: SelfLink
+	return out
+}
+func ComputeRouterObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterObservedState) *pb.Router {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Router{}
+	// MISSING: BGPPeers
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Interfaces
+	// MISSING: Kind
+	// MISSING: Md5AuthenticationKeys
+	// MISSING: Name
+	// MISSING: Nats
+	// MISSING: Region
+	// MISSING: SelfLink
+	return out
+}
+func ComputeRouterSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Router) *krm.ComputeRouterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterSpec{}
+	out.BGP = RouterBGP_v1beta1_FromProto(mapCtx, in.GetBgp())
+	// MISSING: BGPPeers
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.EncryptedInterconnectRouter = in.EncryptedInterconnectRouter
+	// MISSING: ID
+	// MISSING: Interfaces
+	// MISSING: Kind
+	// MISSING: Md5AuthenticationKeys
+	// MISSING: Name
+	// MISSING: Nats
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: Region
+	// MISSING: SelfLink
+	return out
+}
+func ComputeRouterSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterSpec) *pb.Router {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Router{}
+	out.Bgp = RouterBGP_v1beta1_ToProto(mapCtx, in.BGP)
+	// MISSING: BGPPeers
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.EncryptedInterconnectRouter = in.EncryptedInterconnectRouter
+	// MISSING: ID
+	// MISSING: Interfaces
+	// MISSING: Kind
+	// MISSING: Md5AuthenticationKeys
+	// MISSING: Name
+	// MISSING: Nats
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	// MISSING: Region
+	// MISSING: SelfLink
+	return out
+}
 func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyObservedState {
 	if in == nil {
 		return nil
@@ -2838,6 +2918,50 @@ found existing non-generated mapping function "ResourcePolicySnapshotSchedulePol
 		return out
 	}
 */
+func RouterAdvertisedIPRange_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterAdvertisedIpRange) *krm.RouterAdvertisedIPRange {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouterAdvertisedIPRange{}
+	out.Description = in.Description
+	out.Range = in.Range
+	return out
+}
+func RouterAdvertisedIPRange_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouterAdvertisedIPRange) *pb.RouterAdvertisedIpRange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterAdvertisedIpRange{}
+	out.Description = in.Description
+	out.Range = in.Range
+	return out
+}
+func RouterBGP_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterBgp) *krm.RouterBGP {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouterBGP{}
+	out.AdvertiseMode = in.AdvertiseMode
+	out.AdvertisedGroups = in.AdvertisedGroups
+	out.AdvertisedIPRanges = direct.Slice_FromProto(mapCtx, in.AdvertisedIpRanges, RouterAdvertisedIPRange_v1beta1_FromProto)
+	out.Asn = in.Asn
+	// MISSING: IdentifierRange
+	out.KeepaliveInterval = in.KeepaliveInterval
+	return out
+}
+func RouterBGP_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouterBGP) *pb.RouterBgp {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterBgp{}
+	out.AdvertiseMode = in.AdvertiseMode
+	out.AdvertisedGroups = in.AdvertisedGroups
+	out.AdvertisedIpRanges = direct.Slice_ToProto(mapCtx, in.AdvertisedIPRanges, RouterAdvertisedIPRange_v1beta1_ToProto)
+	out.Asn = in.Asn
+	// MISSING: IdentifierRange
+	out.KeepaliveInterval = in.KeepaliveInterval
+	return out
+}
 func SecurityPolicyAdvancedOptionsConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAdvancedOptionsConfig) *krm.SecurityPolicyAdvancedOptionsConfig {
 	if in == nil {
 		return nil

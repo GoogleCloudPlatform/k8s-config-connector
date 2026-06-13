@@ -30,14 +30,16 @@ metadata:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computerouter-${uniqueId}
 spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west1
   networkRef:
     name: default
   description: example router description
-  region: us-west1
   bgp:
     asn: 64514
     advertiseMode: CUSTOM
     advertisedGroups:
       - ALL_SUBNETS
-    advertisedIpRanges:
+    advertisedIPRanges:
       - range: "1.2.3.4"

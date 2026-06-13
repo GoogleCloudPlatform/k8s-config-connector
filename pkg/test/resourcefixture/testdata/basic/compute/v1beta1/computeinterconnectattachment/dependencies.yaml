@@ -30,6 +30,8 @@ metadata:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computerouter-${uniqueId}
 spec:
-  region: us-west2
+  location: us-west2
+  projectRef:
+    external: ${projectId}
   networkRef:
     name: default

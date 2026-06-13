@@ -15,11 +15,11 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeRouter
 metadata:
-  annotations:
-    cnrm.cloud.google.com/project-id: ${projectId}
   name: computerouter-${uniqueId}
 spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west1
   description: example router description
-  region: us-west1
   networkRef:
     name: default
