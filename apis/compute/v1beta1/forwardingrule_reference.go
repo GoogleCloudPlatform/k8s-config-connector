@@ -18,8 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	reference "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
-
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -62,11 +61,13 @@ func (r *ForwardingRuleRef) GetExternal() string {
 
 func (r *ForwardingRuleRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ForwardingRuleRef) ValidateExternal(ref string) error {
 	id := &ForwardingRuleIdentity{}
-	external := reference.FixStaleComputeExternalFormat(r.GetExternal())
+	external := refs.TrimComputeURIPrefix(r.GetExternal())
 	if err := id.FromExternal(external); err != nil {
 		return err
 	}
@@ -96,7 +97,7 @@ func (r *ForwardingRuleRef) Normalize(ctx context.Context, reader client.Reader,
 		if selfLink == "" {
 			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 		}
-		r.SetExternal(reference.FixStaleComputeExternalFormat(selfLink))
+		r.SetExternal(refs.TrimComputeURIPrefix(selfLink))
 		return nil
 	}
 	return r.ValidateExternal(r.GetExternal())

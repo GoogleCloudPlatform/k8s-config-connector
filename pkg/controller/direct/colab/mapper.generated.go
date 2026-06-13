@@ -227,7 +227,7 @@ func NetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.NetworkSpec) *krm.N
 		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	return out
 }

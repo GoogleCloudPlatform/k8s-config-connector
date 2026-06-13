@@ -61,6 +61,8 @@ func (r *VertexAIDeploymentResourcePoolRef) GetExternal() string {
 
 func (r *VertexAIDeploymentResourcePoolRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *VertexAIDeploymentResourcePoolRef) ValidateExternal(ref string) error {

@@ -1061,6 +1061,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"bigtablelogicalviews.bigtable.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
 		"bigtablematerializedviews.bigtable.cnrm.cloud.google.com":                      true, // status.observedState is an empty object
 		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                          true, // spec.staticIPConnectivity and status.observedState are empty objects
+		"configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com":              true, // spec.rolloutStrategy.allAtOnce is an empty object
 		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                          true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
 		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                       true, // status.observedState is an empty object
 		"dataformrepositories.dataform.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
@@ -1075,6 +1076,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"servicenetworkingpeereddnsdomains.servicenetworking.cnrm.cloud.google.com":     true, // status.observedState is an empty object
 		"spannerbackupschedules.spanner.cnrm.cloud.google.com":                          true, // spec.fullBackupSpec is an empty object
 		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                                true, // spec.metadata.config.algorithmConfig.bruteForceConfig is an empty object
+		"dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com":                                 true, // spec.actions[].publishToChronicle, publishToScc, and others are empty objects
 
 	}
 

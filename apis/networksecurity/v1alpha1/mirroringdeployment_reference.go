@@ -60,6 +60,8 @@ func (r *NetworkSecurityMirroringDeploymentRef) GetExternal() string {
 
 func (r *NetworkSecurityMirroringDeploymentRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *NetworkSecurityMirroringDeploymentRef) ValidateExternal(external string) error {

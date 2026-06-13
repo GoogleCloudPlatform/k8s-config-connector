@@ -29,7 +29,8 @@ go run . generate-types \
     --include-skipped-output \
     --resource PubSubSnapshot:Snapshot \
     --resource PubSubSchema:Schema \
-    --resource PubSubTopic:Topic
+    --resource PubSubTopic:Topic \
+    --resource PubSubSubscription:Subscription
 
 go run . generate-mapper \
     --service google.pubsub.v1 \

@@ -124,6 +124,7 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/pubsub/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/container/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/privacy/dlp/v2/*.proto \
     -o ${VERSIONED_OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
 
 cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"

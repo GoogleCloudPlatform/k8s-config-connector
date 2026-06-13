@@ -47,6 +47,10 @@ func (c *FakeDataprocV1alpha1) DataprocSessions(namespace string) v1alpha1.Datap
 	return newFakeDataprocSessions(c, namespace)
 }
 
+func (c *FakeDataprocV1alpha1) DataprocSessionTemplates(namespace string) v1alpha1.DataprocSessionTemplateInterface {
+	return newFakeDataprocSessionTemplates(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeDataprocV1alpha1) RESTClient() rest.Interface {

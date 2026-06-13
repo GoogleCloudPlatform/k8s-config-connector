@@ -41,6 +41,10 @@ func (i *PubSubSchemaIdentity) String() string {
 	return PubSubSchemaIdentityFormat.ToString(*i)
 }
 
+func (i *PubSubSchemaIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s", i.Project)
+}
+
 func (i *PubSubSchemaIdentity) FromExternal(ref string) error {
 	parsed, match, err := PubSubSchemaIdentityFormat.Parse(ref)
 	if err != nil {

@@ -27,11 +27,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.certificatemanager.v1 \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1alpha1" \
+    --include-skipped-output \
     --resource CertificateManagerCertificateIssuanceConfig:CertificateIssuanceConfig
-
-go run . generate-mapper \
-    --service google.cloud.certificatemanager.v1 \
-    --api-version "certificatemanager.cnrm.cloud.google.com/v1alpha1"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

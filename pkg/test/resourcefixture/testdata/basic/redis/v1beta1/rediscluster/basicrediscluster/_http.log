@@ -588,6 +588,9 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -599,6 +602,9 @@ X-Xss-Protection: 0
         }
       }
     ],
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_HIGHMEM_MEDIUM",
     "persistenceConfig": {
@@ -619,6 +625,15 @@ X-Xss-Protection: 0
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
+      }
+    ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "replicaCount": 0,
@@ -652,6 +667,9 @@ X-Xss-Protection: 0
 
 {
   "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
   "discoveryEndpoints": [
@@ -663,6 +681,9 @@ X-Xss-Protection: 0
       }
     }
   ],
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 2,
   "persistenceConfig": {
@@ -683,6 +704,15 @@ X-Xss-Protection: 0
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
+    }
+  ],
+  "pscServiceAttachments": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
     }
   ],
   "replicaCount": 0,
@@ -765,6 +795,9 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -776,6 +809,9 @@ X-Xss-Protection: 0
         }
       }
     ],
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_HIGHMEM_MEDIUM",
     "persistenceConfig": {
@@ -796,6 +832,15 @@ X-Xss-Protection: 0
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
+      }
+    ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "replicaCount": 0,
@@ -829,6 +874,9 @@ X-Xss-Protection: 0
 
 {
   "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
   "discoveryEndpoints": [
@@ -840,6 +888,9 @@ X-Xss-Protection: 0
       }
     }
   ],
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 2,
   "persistenceConfig": {
@@ -860,6 +911,15 @@ X-Xss-Protection: 0
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
+    }
+  ],
+  "pscServiceAttachments": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
     }
   ],
   "replicaCount": 0,

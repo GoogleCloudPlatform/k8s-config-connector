@@ -91,3 +91,90 @@ func ProjectStatus_ToProto(mapCtx *direct.MapContext, in *krm.ProjectStatus) *pb
 	}
 	return out
 }
+
+func FolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.FolderSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FolderSpec{}
+	out.DisplayName = in.GetDisplayName()
+
+	parent := in.GetParent()
+	if parent != "" {
+		if strings.HasPrefix(parent, "folders/") {
+			out.FolderRef = &refsv1beta1.FolderRef{
+				External: parent,
+			}
+		} else if strings.HasPrefix(parent, "organizations/") {
+			out.OrganizationRef = &krm.OrganizationRef{
+				External: parent,
+			}
+		} else {
+			mapCtx.Errorf("unknown parent format: %q", parent)
+		}
+	}
+
+	if in.GetName() != "" {
+		tokens := strings.Split(in.GetName(), "/")
+		if len(tokens) == 2 && tokens[0] == "folders" {
+			out.ResourceID = direct.LazyPtr(tokens[1])
+		}
+	}
+
+	return out
+}
+
+func FolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.FolderSpec) *pb.Folder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Folder{}
+	out.DisplayName = in.DisplayName
+
+	if in.FolderRef != nil {
+		out.Parent = in.FolderRef.External
+	} else if in.OrganizationRef != nil {
+		out.Parent = in.OrganizationRef.External
+	}
+
+	return out
+}
+
+func FolderStatus_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.FolderStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FolderStatus{}
+	if in.GetName() != "" {
+		out.Name = direct.LazyPtr(in.GetName())
+		tokens := strings.Split(in.GetName(), "/")
+		if len(tokens) == 2 && tokens[0] == "folders" {
+			out.FolderId = direct.LazyPtr(tokens[1])
+		}
+	}
+
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+
+	state := in.GetState().String()
+	if state != "" {
+		out.LifecycleState = direct.LazyPtr(state)
+	}
+
+	return out
+}
+
+func FolderStatus_ToProto(mapCtx *direct.MapContext, in *krm.FolderStatus) *pb.Folder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Folder{}
+	if in.Name != nil {
+		out.Name = *in.Name
+	}
+	if in.LifecycleState != nil {
+		if val, ok := pb.Folder_State_value[*in.LifecycleState]; ok {
+			out.State = pb.Folder_State(val)
+		}
+	}
+	return out
+}

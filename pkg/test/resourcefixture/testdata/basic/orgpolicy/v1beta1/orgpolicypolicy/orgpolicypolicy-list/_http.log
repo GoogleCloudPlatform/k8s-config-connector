@@ -1,0 +1,202 @@
+GET https://orgpolicy.googleapis.com/v2/projects/${projectId}/policies/serviceuser.services?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fpolicies%2Fserviceuser.services
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://orgpolicy.googleapis.com/v2/projects/${projectId}/policies?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "name": "projects/${projectId}/policies/serviceuser.services",
+  "spec": {
+    "rules": [
+      {
+        "allowAll": true
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/policies/serviceuser.services",
+  "spec": {
+    "etag": "abcdef0123A=",
+    "rules": [
+      {
+        "allowAll": true
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://orgpolicy.googleapis.com/v2/projects/${projectId}/policies/serviceuser.services?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fpolicies%2Fserviceuser.services
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/policies/serviceuser.services",
+  "spec": {
+    "etag": "abcdef0123A=",
+    "rules": [
+      {
+        "allowAll": true
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+PATCH https://orgpolicy.googleapis.com/v2/projects/${projectId}/policies/serviceuser.services?%24alt=json%3Benum-encoding%3Dint&updateMask=policy.spec
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: policy.name=projects%2F${projectId}%2Fpolicies%2Fserviceuser.services
+
+{
+  "name": "projects/${projectId}/policies/serviceuser.services",
+  "spec": {
+    "rules": [
+      {
+        "values": {
+          "deniedValues": [
+            "doubleclicksearch.googleapis.com",
+            "replicapoolupdater.googleapis.com"
+          ]
+        }
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/policies/serviceuser.services",
+  "spec": {
+    "etag": "abcdef0123A=",
+    "rules": [
+      {
+        "values": {
+          "deniedValues": [
+            "doubleclicksearch.googleapis.com",
+            "replicapoolupdater.googleapis.com"
+          ]
+        }
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://orgpolicy.googleapis.com/v2/projects/${projectId}/policies/serviceuser.services?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fpolicies%2Fserviceuser.services
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/policies/serviceuser.services",
+  "spec": {
+    "etag": "abcdef0123A=",
+    "rules": [
+      {
+        "values": {
+          "deniedValues": [
+            "doubleclicksearch.googleapis.com",
+            "replicapoolupdater.googleapis.com"
+          ]
+        }
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://orgpolicy.googleapis.com/v2/projects/${projectId}/policies/serviceuser.services?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fpolicies%2Fserviceuser.services
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

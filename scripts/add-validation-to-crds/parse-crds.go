@@ -340,6 +340,18 @@ oneOf:
     - required: [folderRef]
     - required: [organizationRef]
 `
+		} else if signature == "displayName,folderRef,organizationRef,resourceID" && kind == "Folder" {
+			// Folder allows either folderRef or organizationRef (or neither).
+			// This oneOf is necessary for backwards compatibility with the existing CRD.
+			ruleYAML = `
+oneOf:
+- required: [folderRef]
+- required: [organizationRef]
+- not:
+    anyOf:
+    - required: [folderRef]
+    - required: [organizationRef]
+`
 		} else if (kind == "LoggingLogView" || kind == "LoggingLogBucket" || kind == "LoggingLogExclusion") && fieldPath == ".spec" {
 			ruleYAML = `
 oneOf:
@@ -347,6 +359,26 @@ oneOf:
 - required: [folderRef]
 - required: [organizationRef]
 - required: [projectRef]
+`
+		} else if kind == "ComputeInstance" && fieldPath == ".spec" {
+			ruleYAML = `
+anyOf:
+- required:
+  - bootDisk
+  - machineType
+  - networkInterface
+  - zone
+- required:
+  - instanceTemplateRef
+  - zone
+`
+		} else if signature == "bigQueryDatasetRef,loggingLogBucketRef,pubSubTopicRef,storageBucketRef" && kind == "LoggingLogSink" {
+			ruleYAML = `
+oneOf:
+- required: [bigQueryDatasetRef]
+- required: [loggingLogBucketRef]
+- required: [pubSubTopicRef]
+- required: [storageBucketRef]
 `
 		} else if signature == "external,kind,name,namespace" {
 			ruleYAML = refRuleWithKind
@@ -359,7 +391,7 @@ oneOf:
 			}
 		} else if signature == "external,name,namespace" {
 			ruleYAML = refRuleWithoutKind
-		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig") {
+		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ComputeInstance" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig") {
 			ruleYAML = legacyRefRule
 		} else {
 			if strings.HasPrefix(signature, "external,") {
@@ -377,6 +409,7 @@ oneOf:
 		return err
 	}
 	props.OneOf = rule.OneOf
+	props.AnyOf = rule.AnyOf
 
 	return nil
 }

@@ -61,6 +61,8 @@ func (r *OSConfigOSPolicyAssignmentRef) GetExternal() string {
 
 func (r *OSConfigOSPolicyAssignmentRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *OSConfigOSPolicyAssignmentRef) ValidateExternal(ref string) error {

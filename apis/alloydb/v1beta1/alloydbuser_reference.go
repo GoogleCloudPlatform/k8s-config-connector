@@ -62,6 +62,8 @@ func (r *AlloyDBUserRef) GetExternal() string {
 
 func (r *AlloyDBUserRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *AlloyDBUserRef) ValidateExternal(ref string) error {

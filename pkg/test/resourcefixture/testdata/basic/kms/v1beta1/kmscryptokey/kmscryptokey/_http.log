@@ -1,6 +1,5 @@
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -24,7 +23,6 @@ X-Xss-Protection: 0
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings?alt=json&keyRingId=kmscryptokey-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -45,7 +43,6 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -64,9 +61,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -88,9 +84,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys?%24alt=json%3Benum-encoding%3Dint&cryptoKeyId=kmscryptokey-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -98,10 +93,11 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "purpose": "ASYMMETRIC_SIGN",
+  "purpose": 1,
+  "rotationPeriod": "172800s",
   "versionTemplate": {
-    "algorithm": "EC_SIGN_P384_SHA384",
-    "protectionLevel": "SOFTWARE"
+    "algorithm": 1,
+    "protectionLevel": 1
   }
 }
 
@@ -125,25 +121,25 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "primary": {
-    "algorithm": "EC_SIGN_P384_SHA384",
+    "algorithm": 1,
     "createTime": "2024-04-01T12:34:56.123456Z",
     "generateTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-    "protectionLevel": "SOFTWARE",
-    "state": "ENABLED"
+    "protectionLevel": 1,
+    "state": 1
   },
-  "purpose": "ASYMMETRIC_SIGN",
+  "purpose": 1,
+  "rotationPeriod": "172800s",
   "versionTemplate": {
-    "algorithm": "EC_SIGN_P384_SHA384",
-    "protectionLevel": "SOFTWARE"
+    "algorithm": 1,
+    "protectionLevel": 1
   }
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -165,24 +161,120 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "primary": {
-    "algorithm": "EC_SIGN_P384_SHA384",
+    "algorithm": 1,
     "createTime": "2024-04-01T12:34:56.123456Z",
     "generateTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-    "protectionLevel": "SOFTWARE",
-    "state": "ENABLED"
+    "protectionLevel": 1,
+    "state": 1
   },
-  "purpose": "ASYMMETRIC_SIGN",
+  "purpose": 1,
+  "rotationPeriod": "172800s",
   "versionTemplate": {
-    "algorithm": "EC_SIGN_P384_SHA384",
-    "protectionLevel": "SOFTWARE"
+    "algorithm": 1,
+    "protectionLevel": 1
   }
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+PATCH https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels%2CrotationPeriod
+Content-Type: application/json
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "purpose": 1,
+  "rotationPeriod": "259200s",
+  "versionTemplate": {
+    "algorithm": 1,
+    "protectionLevel": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": 1,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": 1,
+    "state": 1
+  },
+  "purpose": 1,
+  "rotationPeriod": "259200s",
+  "versionTemplate": {
+    "algorithm": 1,
+    "protectionLevel": 1
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": 1,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": 1,
+    "state": 1
+  },
+  "purpose": 1,
+  "rotationPeriod": "259200s",
+  "versionTemplate": {
+    "algorithm": 1,
+    "protectionLevel": 1
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -197,12 +289,12 @@ X-Xss-Protection: 0
 {
   "cryptoKeyVersions": [
     {
-      "algorithm": "EC_SIGN_P384_SHA384",
+      "algorithm": 1,
       "createTime": "2024-04-01T12:34:56.123456Z",
       "generateTime": "2024-04-01T12:34:56.123456Z",
       "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-      "protectionLevel": "SOFTWARE",
-      "state": "ENABLED"
+      "protectionLevel": 1,
+      "state": 1
     }
   ],
   "totalSize": 1
@@ -210,11 +302,12 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-{}
+{
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -227,20 +320,64 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "algorithm": "EC_SIGN_P384_SHA384",
+  "algorithm": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "destroyTime": "2024-04-01T12:34:56.123456Z",
   "generateTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-  "protectionLevel": "SOFTWARE",
-  "state": "DESTROY_SCHEDULED"
+  "protectionLevel": 1,
+  "state": 4
+}
+
+---
+
+PATCH https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=rotationPeriod
+Content-Type: application/json
+
+{
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "rotationPeriod": "0s"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": 1,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": 1,
+    "state": 1
+  },
+  "purpose": 1,
+  "rotationPeriod": "0s",
+  "versionTemplate": {
+    "algorithm": 1,
+    "protectionLevel": 1
+  }
 }
 
 ---
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

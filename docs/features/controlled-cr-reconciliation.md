@@ -8,11 +8,11 @@ By defining `ResourceSettings` within the `ConfigConnector` and `ConfigConnector
 
 ### Valid Modes
 Resource lists can act in one of two modes:
-* **Exclusive (Deny-list)**: `Enabled: false`. The system reconciles everything EXCEPT the resources explicitly listed. This is the default mode.
-* **Inclusive (Allow-list)**: `Enabled: true`. The system reconciles ONLY the resources explicitly listed and ignores all others.
+* **Exclusive (Deny-list)**: `mode: exclude`. The system reconciles everything EXCEPT the resources explicitly listed. This is the default mode.
+* **Inclusive (Allow-list)**: `mode: include`. The system reconciles ONLY the resources explicitly listed and ignores all others.
 
 > [!WARNING]
-> **Mode Conflicts Forbidden**: To prevent unpredictable behaviors, you cannot mix inclusive and exclusive modes across configurations. The `ConfigConnector` (global) and `ConfigConnectorContext` (namespace) **must** utilize the same `Enabled` value. If they clash, the `ConfigConnectorContext` will report an error (`Healthy: False`) and the Manager pod for that namespace will refuse to start tracking reconciliation until the conflict is resolved.
+> **Mode Conflicts Forbidden**: To prevent unpredictable behaviors, you cannot mix inclusive and exclusive modes across configurations. The `ConfigConnector` (global) and `ConfigConnectorContext` (namespace) **must** utilize the same `mode` value. If they clash, the `ConfigConnectorContext` will report an error (`Healthy: False`) and the Manager pod for that namespace will refuse to start tracking reconciliation until the conflict is resolved.
 
 ### Additive Layering
 Because both global and local settings use the same mode, they combine **additively**:
@@ -32,7 +32,7 @@ spec:
   # ... other specs ...
   experiments:
     resourceSettings:
-      enabled: false  # (Optional) Defaults to false. `false` = Exclusive, `true` = Inclusive
+      mode: exclude  # (Optional) Defaults to "exclude". "exclude" = Exclusive, "include" = Inclusive
       resources:
         # Exclude/Include an entire Group
         - group: pubsub.cnrm.cloud.google.com
@@ -55,7 +55,7 @@ spec:
   mode: namespaced
   experiments:
     resourceSettings:
-      enabled: false
+      mode: exclude
       resources:
       - group: pubsub.cnrm.cloud.google.com
 ---
@@ -68,7 +68,7 @@ metadata:
 spec:
   experiments:
     resourceSettings:
-      enabled: false
+      mode: exclude
       resources:
       - group: storage.cnrm.cloud.google.com
         kind: StorageBucket
@@ -93,7 +93,7 @@ spec:
   mode: namespaced
   experiments:
     resourceSettings:
-      enabled: true
+      mode: include
       resources:
       - group: iam.cnrm.cloud.google.com
         kind: IAMServiceAccount
@@ -107,7 +107,7 @@ metadata:
 spec:
   experiments:
     resourceSettings:
-      enabled: true
+      mode: include
       resources:
       - group: pubsub.cnrm.cloud.google.com
         kind: PubSubTopic

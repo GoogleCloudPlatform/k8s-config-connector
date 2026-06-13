@@ -46,25 +46,21 @@ type CertificateManagerCertificateMapSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The CertificateManagerCertificateMap name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type CertificatemapGclbTargetsStatus struct {
-	/* An IP configuration where this Certificate Map is serving. */
+	/* IP configurations for this Target Stage. */
 	// +optional
 	IpConfigs []CertificatemapIpConfigsStatus `json:"ipConfigs,omitempty"`
 
-	/* Proxy name must be in the format projects/* /locations/* /targetHttpsProxies/*.
-	This field is part of a union field 'target_proxy': Only one of 'targetHttpsProxy' or
-	'targetSslProxy' may be set. */
+	/* A HTTPS proxy serving as GCLB target. */
 	// +optional
 	TargetHttpsProxy *string `json:"targetHttpsProxy,omitempty"`
 
-	/* Proxy name must be in the format projects/* /locations/* /targetSslProxies/*.
-	This field is part of a union field 'target_proxy': Only one of 'targetHttpsProxy' or
-	'targetSslProxy' may be set. */
+	/* A SSL proxy serving as GCLB target. */
 	// +optional
 	TargetSslProxy *string `json:"targetSslProxy,omitempty"`
 }
@@ -74,7 +70,7 @@ type CertificatemapIpConfigsStatus struct {
 	// +optional
 	IpAddress *string `json:"ipAddress,omitempty"`
 
-	/* A list of ports. */
+	/* Ports. */
 	// +optional
 	Ports []int64 `json:"ports,omitempty"`
 }
@@ -83,13 +79,11 @@ type CertificateManagerCertificateMapStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CertificateManagerCertificateMap's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Creation timestamp of a Certificate Map. Timestamp is in RFC3339 UTC "Zulu" format,
-	accurate to nanoseconds with up to nine fractional digits.
-	Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	/* Output only. The creation timestamp of a Certificate Map. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* A list of target proxies that use this Certificate Map. */
+	/* Output only. A list of GCLB targets which use this Certificate Map. */
 	// +optional
 	GclbTargets []CertificatemapGclbTargetsStatus `json:"gclbTargets,omitempty"`
 
@@ -97,9 +91,7 @@ type CertificateManagerCertificateMapStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Update timestamp of a Certificate Map. Timestamp is in RFC3339 UTC "Zulu" format,
-	accurate to nanoseconds with up to nine fractional digits.
-	Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	/* Output only. The update timestamp of a Certificate Map. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }

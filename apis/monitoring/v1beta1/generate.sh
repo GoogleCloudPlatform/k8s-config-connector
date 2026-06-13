@@ -31,7 +31,7 @@ go run . generate-types \
   --resource MonitoringUptimeCheckConfig:UptimeCheckConfig
 
 go run . generate-mapper \
-  --service google.monitoring.v3 \
+  --service google.monitoring.v3,google.api \
   --api-version monitoring.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 

@@ -24,6 +24,8 @@ go run "${REPO_ROOT}/dev/tools/openapi-to-krm/main.go" \
   --schema-file "${REPO_ROOT}/apis/dns/v1beta1/dns-api.json" \
   --api-version "dns.cnrm.cloud.google.com/v1beta1" \
   --resource "DNSManagedZone:ManagedZone" \
+  --resource "DNSPolicy:Policy" \
+  --resource "DNSRecordSet:ResourceRecordSet" \
   --ignore-field "*:kind" \
   --require-field "ManagedZoneCloudLoggingConfig:enableLogging,ManagedZoneForwardingConfig:targetNameServers,ManagedZonePeeringConfig:targetNetwork,ManagedZoneServiceDirectoryConfig:namespace" \
   --output-file "${REPO_ROOT}/apis/dns/v1beta1/types.generated.go"
@@ -32,6 +34,10 @@ go run "${REPO_ROOT}/dev/tools/openapi-to-krm/main.go" \
 go run "${REPO_ROOT}/dev/tools/openapi-to-krm/cmd/generate-mapper/main.go" \
   --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSManagedZoneSpec::google.golang.org/api/dns/v1/ManagedZone" \
   --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSManagedZoneStatus::google.golang.org/api/dns/v1/ManagedZone" \
+  --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSPolicySpec::google.golang.org/api/dns/v1/Policy" \
+  --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSPolicyStatus::google.golang.org/api/dns/v1/Policy" \
+  --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSRecordSetSpec::google.golang.org/api/dns/v1/ResourceRecordSet" \
+  --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSRecordSetStatus::google.golang.org/api/dns/v1/ResourceRecordSet" \
   --output-file "${REPO_ROOT}/pkg/controller/direct/dns/zz_generated.mappers.go"
 
 cd ${REPO_ROOT}

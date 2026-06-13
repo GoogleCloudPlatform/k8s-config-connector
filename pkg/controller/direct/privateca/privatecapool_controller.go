@@ -22,15 +22,22 @@ import (
 	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	api "cloud.google.com/go/security/privateca/apiv1"
 	pb "cloud.google.com/go/security/privateca/apiv1/privatecapb"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/klog/v2"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -57,7 +64,7 @@ type caPoolAdapter struct {
 	location  string
 	caPoolID  string
 
-	desired  *krm.PrivateCACAPool
+	desired  *pb.CaPool
 	actual   *pb.CaPool
 	caClient *api.CertificateAuthorityClient
 }
@@ -76,6 +83,11 @@ func (m *caPoolModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 	obj := &krm.PrivateCACAPool{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	resourceID := direct.ValueOf(obj.Spec.ResourceID)
@@ -100,11 +112,18 @@ func (m *caPoolModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
+	mapCtx := &direct.MapContext{}
+	desired := PrivateCACAPoolSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+
 	return &caPoolAdapter{
 		caPoolID:  resourceID,
 		location:  location,
 		projectID: projectID,
-		desired:   obj,
+		desired:   desired,
 		caClient:  caClient,
 	}, nil
 }
@@ -136,22 +155,129 @@ func (m *caPoolModel) AdapterForURL(ctx context.Context, url string) (directbase
 
 // Delete implements the Adapter interface.
 func (a *caPoolAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	return false, fmt.Errorf("not implemented")
+	log := klog.FromContext(ctx)
+	log.V(2).Info("deleting PrivateCACAPool", "name", a.fullyQualifiedName())
+
+	req := &pb.DeleteCaPoolRequest{Name: a.fullyQualifiedName()}
+	op, err := a.caClient.DeleteCaPool(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			log.V(2).Info("skipping delete for non-existent PrivateCACAPool, assuming it was already deleted", "name", a.fullyQualifiedName())
+			return true, nil
+		}
+		return false, fmt.Errorf("deleting PrivateCACAPool %s: %w", a.fullyQualifiedName(), err)
+	}
+	log.V(2).Info("successfully deleted PrivateCACAPool", "name", a.fullyQualifiedName())
+
+	err = op.Wait(ctx)
+	if err != nil {
+		return false, fmt.Errorf("waiting delete PrivateCACAPool %s: %w", a.fullyQualifiedName(), err)
+	}
+	return true, nil
 }
 
 // Create implements the Adapter interface.
 func (a *caPoolAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	return fmt.Errorf("not implemented")
+	log := klog.FromContext(ctx)
+	log.V(2).Info("creating PrivateCACAPool", "id", a.fullyQualifiedName())
+
+	parent := fmt.Sprintf("projects/%s/locations/%s", a.projectID, a.location)
+
+	req := &pb.CreateCaPoolRequest{
+		Parent:   parent,
+		CaPoolId: a.caPoolID,
+		CaPool:   a.desired,
+	}
+	op, err := a.caClient.CreateCaPool(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating PrivateCACAPool %s: %w", a.fullyQualifiedName(), err)
+	}
+	created, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("waiting PrivateCACAPool %s creation: %w", a.fullyQualifiedName(), err)
+	}
+	log.V(2).Info("successfully created PrivateCACAPool", "name", a.fullyQualifiedName())
+
+	return a.updateStatus(ctx, createOp, created)
 }
 
 // Update implements the Adapter interface.
 func (a *caPoolAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return fmt.Errorf("not implemented")
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating PrivateCACAPool", "name", a.fullyQualifiedName())
+
+	diffs, updateMask, err := comparePrivateCACAPool(ctx, a.actual, a.desired)
+	if err != nil {
+		return err
+	}
+
+	latest := a.actual
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
+
+		a.desired.Name = a.fullyQualifiedName()
+		req := &pb.UpdateCaPoolRequest{
+			UpdateMask: updateMask,
+			CaPool:     a.desired,
+		}
+		op, err := a.caClient.UpdateCaPool(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating PrivateCACAPool %s: %w", a.fullyQualifiedName(), err)
+		}
+		updated, err := op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("waiting update PrivateCACAPool %s: %w", a.fullyQualifiedName(), err)
+		}
+		log.V(2).Info("successfully updated PrivateCACAPool", "name", a.fullyQualifiedName())
+		latest = updated
+	}
+
+	return a.updateStatus(ctx, updateOp, latest)
 }
 
 // Export implements the Adapter interface.
 func (a *caPoolAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	return nil, fmt.Errorf("not implemented")
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.PrivateCACAPool{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(PrivateCACAPoolSpec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.projectID}
+	obj.Spec.Location = a.location
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+	u.Object = uObj
+	u.SetName(a.actual.Name)
+	u.SetGroupVersionKind(krm.PrivateCACAPoolGVK)
+	return u, nil
+}
+
+func comparePrivateCACAPool(ctx context.Context, actual, desired *pb.CaPool) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, PrivateCACAPoolSpec_FromProto, PrivateCACAPoolSpec_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+	maskedActual.Name = desired.Name
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
+}
+
+func (a *caPoolAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.CaPool) error {
+	status := &krm.PrivateCACAPoolStatus{}
+	return op.UpdateStatus(ctx, status, nil)
 }
 
 // Find implements the Adapter interface.

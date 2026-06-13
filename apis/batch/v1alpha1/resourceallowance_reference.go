@@ -61,6 +61,8 @@ func (r *CloudBatchResourceAllowanceRef) GetExternal() string {
 
 func (r *CloudBatchResourceAllowanceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CloudBatchResourceAllowanceRef) ValidateExternal(ref string) error {

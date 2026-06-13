@@ -31,7 +31,7 @@ var (
 	_ identity.Resource   = &BigtableAppProfile{}
 )
 
-var BigtableAppProfileIdentityFormat = gcpurls.Template[BigtableAppProfileIdentity]("bigtableadmin.googleapis.com", "projects/{project}/instances/{instance}/appProfiles/{appprofile}")
+var BigtableAppProfileIdentityFormat = gcpurls.Template[BigtableAppProfileIdentity]("bigtable.googleapis.com", "projects/{project}/instances/{instance}/appProfiles/{appprofile}")
 
 // +k8s:deepcopy-gen=false
 type BigtableAppProfileIdentity struct {

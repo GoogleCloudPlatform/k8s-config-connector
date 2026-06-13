@@ -33,6 +33,8 @@ status:
       port: 6379
       pscConfig:
         network: projects/${projectId}/global/networks/${networkID}
+    encryptionInfo:
+      encryptionType: GOOGLE_DEFAULT_ENCRYPTION
     preciseSizeGb: 130
     pscConnections:
     - address: 10.11.12.13
@@ -45,6 +47,10 @@ status:
       network: projects/${projectId}/global/networks/${networkID}
       projectID: ${projectId}
       pscConnectionID: ${pscConnectionID}
+    pscServiceAttachments:
+    - connectionType: CONNECTION_TYPE_DISCOVERY
+      serviceAttachment: projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa
+    - serviceAttachment: projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2
     sizeGb: 130
     state: ACTIVE
     uid: 0123456789abcdef

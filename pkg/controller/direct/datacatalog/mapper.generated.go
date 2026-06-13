@@ -582,6 +582,8 @@ func DataCatalogTagObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.DataplexTransferStatus = direct.Enum_ToProto[pb.TagTemplate_DataplexTransferStatus](mapCtx, in.DataplexTransferStatus)
 	return out
 }
+
+/* found existing non-generated mapping function "DataCatalogTagSpec_v1alpha1_FromProto", skipping
 func DataCatalogTagSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krmdatacatalogv1alpha1.DataCatalogTagSpec {
 	if in == nil {
 		return nil
@@ -592,30 +594,38 @@ func DataCatalogTagSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tag
 		out.TemplateRef = &krmdatacatalogv1alpha1.TagTemplateRef{External: in.GetTemplate()}
 	}
 	out.Column = direct.LazyPtr(in.GetColumn())
-	// TODO: map type string message for field Fields
+	out.Fields = Fields_FromProto(mapCtx, in.Fields)
 	return out
 }
-func DataCatalogTagSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.DataCatalogTagSpec) *pb.Tag {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "DataCatalogTagSpec_v1alpha1_ToProto", skipping
+
+	func DataCatalogTagSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.DataCatalogTagSpec) *pb.Tag {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Tag{}
+		// MISSING: Name
+		if in.TemplateRef != nil {
+			out.Template = in.TemplateRef.External
+		}
+		if oneof := DataCatalogTagSpec_Column_ToProto(mapCtx, in.Column); oneof != nil {
+			out.Scope = oneof
+		}
+		out.Fields = Fields_ToProto(mapCtx, in.Fields)
+		return out
 	}
-	out := &pb.Tag{}
-	// MISSING: Name
-	if in.TemplateRef != nil {
-		out.Template = in.TemplateRef.External
-	}
-	if oneof := DataCatalogTagSpec_Column_ToProto(mapCtx, in.Column); oneof != nil {
-		out.Scope = oneof
-	}
-	// TODO: map type string message for field Fields
-	return out
-}
+*/
 func DataCatalogTagSpec_Column_ToProto(mapCtx *direct.MapContext, in *string) *pb.Tag_Column {
 	if in == nil {
 		return nil
 	}
 	return &pb.Tag_Column{Column: *in}
 }
+
+/* found existing non-generated mapping function "DataCatalogTagTemplateSpec_v1alpha1_FromProto", skipping
 func DataCatalogTagTemplateSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplate) *krmdatacatalogv1alpha1.DataCatalogTagTemplateSpec {
 	if in == nil {
 		return nil
@@ -624,22 +634,28 @@ func DataCatalogTagTemplateSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.IsPubliclyReadable = direct.LazyPtr(in.GetIsPubliclyReadable())
-	// TODO: map type string message for field Fields
+	out.Fields = Fields_FromProto(mapCtx, in.Fields)
 	// MISSING: DataplexTransferStatus
 	return out
 }
-func DataCatalogTagTemplateSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.DataCatalogTagTemplateSpec) *pb.TagTemplate {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "DataCatalogTagTemplateSpec_v1alpha1_ToProto", skipping
+
+	func DataCatalogTagTemplateSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.DataCatalogTagTemplateSpec) *pb.TagTemplate {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TagTemplate{}
+		// MISSING: Name
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.IsPubliclyReadable = direct.ValueOf(in.IsPubliclyReadable)
+		out.Fields = Fields_ToProto(mapCtx, in.Fields)
+		// MISSING: DataplexTransferStatus
+		return out
 	}
-	out := &pb.TagTemplate{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.IsPubliclyReadable = direct.ValueOf(in.IsPubliclyReadable)
-	// TODO: map type string message for field Fields
-	// MISSING: DataplexTransferStatus
-	return out
-}
+*/
 func DataCatalogTaxonomyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Taxonomy) *krm.DataCatalogTaxonomyObservedState {
 	if in == nil {
 		return nil

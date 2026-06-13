@@ -25,6 +25,7 @@ package container
 
 import (
 	pb "cloud.google.com/go/container/apiv1/containerpb"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -67,7 +68,7 @@ func AdditionalIPRangesConfig_FromProto(mapCtx *direct.MapContext, in *pb.Additi
 	}
 	out := &krm.AdditionalIPRangesConfig{}
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.PodIPV4RangeNames = in.PodIpv4RangeNames
 	return out
@@ -557,7 +558,7 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	out.ClusterIPV4CIDR = direct.LazyPtr(in.GetClusterIpv4Cidr())
 	out.AddonsConfig = AddonsConfig_FromProto(mapCtx, in.GetAddonsConfig())
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	// MISSING: NodePools
 	// MISSING: Locations
@@ -1945,7 +1946,7 @@ func PrivateClusterConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrivateClu
 	out.PeeringName = direct.LazyPtr(in.GetPeeringName())
 	// MISSING: MasterGlobalAccessConfig
 	if in.GetPrivateEndpointSubnetwork() != "" {
-		out.PrivateEndpointSubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetPrivateEndpointSubnetwork()}
+		out.PrivateEndpointSubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetPrivateEndpointSubnetwork()}
 	}
 	return out
 }

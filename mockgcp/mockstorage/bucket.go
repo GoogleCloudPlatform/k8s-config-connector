@@ -296,6 +296,9 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 		if patch.Versioning != nil {
 			obj.Versioning = patch.Versioning
 		}
+		if patch.IpFilter != nil {
+			obj.IpFilter = patch.IpFilter
+		}
 
 		if patch.SoftDeletePolicy != nil {
 			if patch.SoftDeletePolicy.RetentionDurationSeconds != nil {

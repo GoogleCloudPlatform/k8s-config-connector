@@ -147,7 +147,7 @@ func (r *StoredInfoType) getURL(userBasePath string) (string, error) {
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 		"name":     dcl.ValueOrEmptyString(nr.Name),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/storedInfoTypes/{{name}}", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -160,7 +160,7 @@ func (r *StoredInfoType) listURL(userBasePath string) (string, error) {
 		"location": dcl.ValueOrEmptyString(nr.Location),
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/storedInfoTypes", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -174,7 +174,7 @@ func (r *StoredInfoType) createURL(userBasePath string) (string, error) {
 		"location": dcl.ValueOrEmptyString(nr.Location),
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/storedInfoTypes", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -189,7 +189,7 @@ func (r *StoredInfoType) deleteURL(userBasePath string) (string, error) {
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 		"name":     dcl.ValueOrEmptyString(nr.Name),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/storedInfoTypes/{{name}}", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -2309,7 +2309,7 @@ func (r *StoredInfoType) updateURL(userBasePath, updateName string) (string, err
 			"parent":   dcl.ValueOrEmptyString(nr.Parent),
 			"name":     dcl.ValueOrEmptyString(nr.Name),
 		}
-		if dcl.IsRegion(nr.Location) {
+		if isRegion(nr.Location) {
 			return dcl.URL("{{parent}}/locations/{{location}}/storedInfoTypes/{{name}}", nr.basePath(), userBasePath, fields), nil
 		}
 

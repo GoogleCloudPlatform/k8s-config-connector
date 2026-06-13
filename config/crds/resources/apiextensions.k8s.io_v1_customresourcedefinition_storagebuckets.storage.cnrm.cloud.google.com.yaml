@@ -165,6 +165,80 @@ spec:
                 required:
                 - kmsKeyRef
                 type: object
+              ipFilter:
+                description: The bucket IP filtering configuration.
+                properties:
+                  allowAllServiceAgentAccess:
+                    description: Whether to allow all service agents to access the
+                      bucket regardless of the IP filter configuration.
+                    type: boolean
+                  allowCrossOrgVpcs:
+                    description: Whether to allow cross-org VPCs in the bucket's IP
+                      filter configuration.
+                    type: boolean
+                  mode:
+                    description: The mode of the IP filter. Valid values are 'Enabled'
+                      and 'Disabled'.
+                    type: string
+                  publicNetworkSource:
+                    description: The public network IP address ranges that can access
+                      the bucket and its data.
+                    properties:
+                      allowedIpCidrRanges:
+                        description: The list of public IPv4, IPv6 cidr ranges that
+                          are allowed to access the bucket.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - allowedIpCidrRanges
+                    type: object
+                  vpcNetworkSources:
+                    description: The list of VPC networks that can access the bucket.
+                    items:
+                      properties:
+                        allowedIpCidrRanges:
+                          description: The list of public or private IPv4 and IPv6
+                            CIDR ranges that can access the bucket.
+                          items:
+                            type: string
+                          type: array
+                        networkRef:
+                          description: The VPC network that can access the bucket.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed ComputeNetwork
+                                resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                              type: string
+                            name:
+                              description: The name of a ComputeNetwork resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a ComputeNetwork resource.
+                              type: string
+                          type: object
+                      required:
+                      - allowedIpCidrRanges
+                      - networkRef
+                      type: object
+                    type: array
+                required:
+                - mode
+                type: object
               lifecycleRule:
                 description: The bucket's Lifecycle Rules configuration.
                 items:

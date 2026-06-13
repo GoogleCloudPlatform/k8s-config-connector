@@ -26,7 +26,8 @@ go run . generate-types \
     --service google.cloud.servicedirectory.v1beta1 \
     --api-version servicedirectory.cnrm.cloud.google.com/v1beta1 \
     --include-skipped-output \
-    --resource ServiceDirectoryNamespace:Namespace
+    --resource ServiceDirectoryNamespace:Namespace \
+    --resource ServiceDirectoryService:Service
 
 go run . generate-mapper \
     --service google.cloud.servicedirectory.v1beta1 \

@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -9,7 +9,7 @@
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
+// See the License for the_identity.go specific language governing permissions and
 // limitations under the License.
 
 package v1alpha1
@@ -17,100 +17,96 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// NetworkEdgeSecurityServiceIdentity is the identity of a ComputeNetworkEdgeSecurityService.
-type NetworkEdgeSecurityServiceIdentity struct {
-	parent *NetworkEdgeSecurityServiceParent
-	id     string
+var (
+	_ identity.IdentityV2 = &ComputeNetworkEdgeSecurityServiceIdentity{}
+	_ identity.Resource   = &ComputeNetworkEdgeSecurityService{}
+)
+
+var ComputeNetworkEdgeSecurityServiceIdentityFormat = gcpurls.Template[ComputeNetworkEdgeSecurityServiceIdentity](
+	"compute.googleapis.com",
+	"projects/{project}/regions/{region}/networkEdgeSecurityServices/{networkEdgeSecurityService}",
+)
+
+// ComputeNetworkEdgeSecurityServiceIdentity is the identity of a GCP ComputeNetworkEdgeSecurityService resource.
+// +k8s:deepcopy-gen=false
+type ComputeNetworkEdgeSecurityServiceIdentity struct {
+	Project                    string
+	Region                     string
+	NetworkEdgeSecurityService string
 }
 
-func (i *NetworkEdgeSecurityServiceIdentity) String() string {
-	return i.parent.String() + "/networkEdgeSecurityServices/" + i.id
+func (i *ComputeNetworkEdgeSecurityServiceIdentity) String() string {
+	return ComputeNetworkEdgeSecurityServiceIdentityFormat.ToString(*i)
 }
 
-func (i *NetworkEdgeSecurityServiceIdentity) ID() string {
-	return i.id
-}
-
-func (i *NetworkEdgeSecurityServiceIdentity) Parent() *NetworkEdgeSecurityServiceParent {
-	return i.parent
-}
-
-type NetworkEdgeSecurityServiceParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *NetworkEdgeSecurityServiceParent) String() string {
-	return "projects/" + p.ProjectID + "/regions/" + p.Location
-}
-
-// New builds a NetworkEdgeSecurityServiceIdentity from the Config Connector NetworkEdgeSecurityService object.
-func NewNetworkEdgeSecurityServiceIdentity(ctx context.Context, reader client.Reader, obj *ComputeNetworkEdgeSecurityService) (*NetworkEdgeSecurityServiceIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (i *ComputeNetworkEdgeSecurityServiceIdentity) FromExternal(ref string) error {
+	parsed, match, err := ComputeNetworkEdgeSecurityServiceIdentityFormat.Parse(ref)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("format of ComputeNetworkEdgeSecurityService external=%q was not known (use %s): %w", ref, ComputeNetworkEdgeSecurityServiceIdentityFormat.CanonicalForm(), err)
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	if !match {
+		return fmt.Errorf("format of ComputeNetworkEdgeSecurityService external=%q was not known (use %s)", ref, ComputeNetworkEdgeSecurityServiceIdentityFormat.CanonicalForm())
 	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+	*i = *parsed
+	return nil
+}
+
+func (i *ComputeNetworkEdgeSecurityServiceIdentity) Host() string {
+	return ComputeNetworkEdgeSecurityServiceIdentityFormat.Host()
+}
+
+func getIdentityFromComputeNetworkEdgeSecurityServiceSpec(ctx context.Context, reader client.Reader, obj *ComputeNetworkEdgeSecurityService) (*ComputeNetworkEdgeSecurityServiceIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &ComputeNetworkEdgeSecurityServiceIdentity{
+		Project:                    projectID,
+		Region:                     location,
+		NetworkEdgeSecurityService: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *ComputeNetworkEdgeSecurityService) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromComputeNetworkEdgeSecurityServiceSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseNetworkEdgeSecurityServiceExternal(externalRef)
-		if err != nil {
+		statusIdentity := &ComputeNetworkEdgeSecurityServiceIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
-	return &NetworkEdgeSecurityServiceIdentity{
-		parent: &NetworkEdgeSecurityServiceParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
-}
 
-func ParseNetworkEdgeSecurityServiceExternal(external string) (parent *NetworkEdgeSecurityServiceParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "networkEdgeSecurityServices" {
-		return nil, "", fmt.Errorf("format of networkEdgeSecurityServices external=%q was not known (use projects/{{projectID}}/locations/{{location}}/networkedgesecurityservices/{{networkedgesecurityserviceID}})", external)
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change ComputeNetworkEdgeSecurityService identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
-	parent = &NetworkEdgeSecurityServiceParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+
+	return specIdentity, nil
 }

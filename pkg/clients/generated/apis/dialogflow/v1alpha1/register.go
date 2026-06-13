@@ -71,10 +71,22 @@ var (
 		Kind:    reflect.TypeOf(DialogflowFulfillment{}).Name(),
 	}
 
+	DialogflowGeneratorGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DialogflowGenerator{}).Name(),
+	}
+
 	DialogflowIntentGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(DialogflowIntent{}).Name(),
+	}
+
+	DialogflowKnowledgeBaseGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DialogflowKnowledgeBase{}).Name(),
 	}
 
 	dialogflowAPIVersion = SchemeGroupVersion.String()

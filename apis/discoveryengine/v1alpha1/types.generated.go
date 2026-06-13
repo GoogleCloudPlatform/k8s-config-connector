@@ -21,6 +21,7 @@
 // resource: DiscoveryEngineEngine:Engine
 // resource: DiscoveryEngineIdentityMappingStore:IdentityMappingStore
 // resource: DiscoveryEngineTargetSite:TargetSite
+// resource: DiscoveryEngineConversation:Conversation
 
 package v1alpha1
 
@@ -58,6 +59,30 @@ type CmekConfig struct {
 	// Optional. Single-regional CMEKs that are required for some VAIS features.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
 	SingleRegionKeys []SingleRegionKey `json:"singleRegionKeys,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.ConversationContext
+type ConversationContext struct {
+	// The current list of documents the user is seeing.
+	//  It contains the document resource references.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.ConversationContext.context_documents
+	ContextDocuments []string `json:"contextDocuments,omitempty"`
+
+	// The current active document the user opened.
+	//  It contains the document resource reference.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.ConversationContext.active_document
+	ActiveDocument *string `json:"activeDocument,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.ConversationMessage
+type ConversationMessage struct {
+	// User text input.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.ConversationMessage.user_input
+	UserInput *TextInput `json:"userInput,omitempty"`
+
+	// Search reply.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.ConversationMessage.reply
+	Reply *Reply `json:"reply,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1.DataStore.BillingEstimation
@@ -462,6 +487,13 @@ type HealthcareFhirConfig struct {
 }
 */
 
+// +kcc:proto=google.cloud.discoveryengine.v1.Reply
+type Reply struct {
+	// Summary based on search results.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Reply.summary
+	Summary *SearchResponse_Summary `json:"summary,omitempty"`
+}
+
 /* unreachable type Schema
 // +kcc:proto=google.cloud.discoveryengine.v1.Schema
 type Schema struct {
@@ -482,6 +514,119 @@ type Schema struct {
 	Name *string `json:"name,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary
+type SearchResponse_Summary struct {
+	// The summary content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.summary_text
+	SummaryText *string `json:"summaryText,omitempty"`
+
+	// Additional summary-skipped reasons. This provides the reason for ignored
+	//  cases. If nothing is skipped, this field is not set.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.summary_skipped_reasons
+	SummarySkippedReasons []string `json:"summarySkippedReasons,omitempty"`
+
+	// A collection of Safety Attribute categories and their associated
+	//  confidence scores.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.safety_attributes
+	SafetyAttributes *SearchResponse_Summary_SafetyAttributes `json:"safetyAttributes,omitempty"`
+
+	// Summary with metadata information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.summary_with_metadata
+	SummaryWithMetadata *SearchResponse_Summary_SummaryWithMetadata `json:"summaryWithMetadata,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.Citation
+type SearchResponse_Summary_Citation struct {
+	// Index indicates the start of the segment, measured in bytes/unicode.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Citation.start_index
+	StartIndex *int64 `json:"startIndex,omitempty"`
+
+	// End of the attributed segment, exclusive.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Citation.end_index
+	EndIndex *int64 `json:"endIndex,omitempty"`
+
+	// Citation sources for the attributed segment.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Citation.sources
+	Sources []SearchResponse_Summary_CitationSource `json:"sources,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.CitationMetadata
+type SearchResponse_Summary_CitationMetadata struct {
+	// Citations for segments.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.CitationMetadata.citations
+	Citations []SearchResponse_Summary_Citation `json:"citations,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.CitationSource
+type SearchResponse_Summary_CitationSource struct {
+	// Document reference index from SummaryWithMetadata.references.
+	//  It is 0-indexed and the value will be zero if the reference_index is
+	//  not set explicitly.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.CitationSource.reference_index
+	ReferenceIndex *int64 `json:"referenceIndex,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference
+type SearchResponse_Summary_Reference struct {
+	// Title of the document.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.title
+	Title *string `json:"title,omitempty"`
+
+	// Required.
+	//  [Document.name][google.cloud.discoveryengine.v1.Document.name] of the
+	//  document. Full resource name of the referenced document, in the format
+	//  `projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.document
+	Document *string `json:"document,omitempty"`
+
+	// Cloud Storage or HTTP uri for the document.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.uri
+	URI *string `json:"uri,omitempty"`
+
+	// List of cited chunk contents derived from document content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.chunk_contents
+	ChunkContents []SearchResponse_Summary_Reference_ChunkContent `json:"chunkContents,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.ChunkContent
+type SearchResponse_Summary_Reference_ChunkContent struct {
+	// Chunk textual content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.ChunkContent.content
+	Content *string `json:"content,omitempty"`
+
+	// Page identifier.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.ChunkContent.page_identifier
+	PageIdentifier *string `json:"pageIdentifier,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.SafetyAttributes
+type SearchResponse_Summary_SafetyAttributes struct {
+	// The display names of Safety Attribute categories associated with the
+	//  generated content. Order matches the Scores.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.SafetyAttributes.categories
+	Categories []string `json:"categories,omitempty"`
+
+	// The confidence scores of the each category, higher
+	//  value means higher confidence. Order matches the Categories.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.SafetyAttributes.scores
+	Scores []float32 `json:"scores,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.SummaryWithMetadata
+type SearchResponse_Summary_SummaryWithMetadata struct {
+	// Summary text with no citation information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.SummaryWithMetadata.summary
+	Summary *string `json:"summary,omitempty"`
+
+	// Citation metadata for given summary.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.SummaryWithMetadata.citation_metadata
+	CitationMetadata *SearchResponse_Summary_CitationMetadata `json:"citationMetadata,omitempty"`
+
+	// Document References.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.SummaryWithMetadata.references
+	References []SearchResponse_Summary_Reference `json:"references,omitempty"`
+}
 
 // +kcc:proto=google.cloud.discoveryengine.v1.SingleRegionKey
 type SingleRegionKey struct {
@@ -518,6 +663,17 @@ type TargetSite_FailureReason_QuotaFailure struct {
 	TotalRequiredQuota *int64 `json:"totalRequiredQuota,omitempty"`
 }
 
+// +kcc:proto=google.cloud.discoveryengine.v1.TextInput
+type TextInput struct {
+	// Text input.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.TextInput.input
+	Input *string `json:"input,omitempty"`
+
+	// Conversation context of the input.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.TextInput.context
+	Context *ConversationContext `json:"context,omitempty"`
+}
+
 // +kcc:proto=google.cloud.discoveryengine.v1.WorkspaceConfig
 type WorkspaceConfig struct {
 	// The Google Workspace data source.
@@ -544,6 +700,22 @@ type WorkspaceConfig struct {
 /* unreachable type CmekConfigObservedState
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.CmekConfig
 type CmekConfigObservedState struct {
+	// Required. The name of the CmekConfig of the form
+	//  `projects/{project}/locations/{location}/cmekConfig` or
+	//  `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// KMS key resource name which will be used to encrypt resources
+	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+
+	// KMS key version resource name which will be used to encrypt resources
+	//  `<kms_key>/cryptoKeyVersions/{keyVersion}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key_version
+	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
+
 	// Output only. The states of the CmekConfig.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.state
 	State *string `json:"state,omitempty"`
@@ -556,8 +728,21 @@ type CmekConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.last_rotation_timestamp_micros
 	LastRotationTimestampMicros *int64 `json:"lastRotationTimestampMicros,omitempty"`
 
+	// Optional. Single-regional CMEKs that are required for some VAIS features.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
+	SingleRegionKeys []SingleRegionKey `json:"singleRegionKeys,omitempty"`
+
 	// Output only. Whether the NotebookLM Corpus is ready to be used.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.notebooklm_state
 	NotebooklmState *string `json:"notebooklmState,omitempty"`
+}
+*/
+
+/* unreachable type ConversationMessageObservedState
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.ConversationMessage
+type ConversationMessageObservedState struct {
+	// Output only. Message creation timestamp.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.ConversationMessage.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
 */

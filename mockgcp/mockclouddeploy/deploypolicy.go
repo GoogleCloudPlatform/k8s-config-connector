@@ -110,6 +110,12 @@ func (s *cloudDeploy) UpdateDeployPolicy(ctx context.Context, req *pb.UpdateDepl
 		switch path {
 		case "suspended":
 			obj.Suspended = req.GetDeployPolicy().GetSuspended()
+		case "selectors":
+			obj.Selectors = req.GetDeployPolicy().GetSelectors()
+		case "rules":
+			obj.Rules = req.GetDeployPolicy().GetRules()
+		case "description":
+			obj.Description = req.GetDeployPolicy().GetDescription()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

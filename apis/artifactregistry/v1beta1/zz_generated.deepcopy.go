@@ -253,8 +253,8 @@ func (in *ArtifactRegistryRepositorySpec) DeepCopyInto(out *ArtifactRegistryRepo
 		*out = new(string)
 		**out = **in
 	}
-	if in.KmsKeyRef != nil {
-		in, out := &in.KmsKeyRef, &out.KmsKeyRef
+	if in.KMSKeyNameRef != nil {
+		in, out := &in.KMSKeyNameRef, &out.KMSKeyNameRef
 		*out = new(refsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}

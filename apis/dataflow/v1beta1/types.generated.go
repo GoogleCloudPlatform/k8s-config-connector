@@ -612,7 +612,8 @@ type FlexTemplateRuntimeEnvironment struct {
 }
 */
 
-/* unreachable type Job
+/* found existing non-generated go type with proto tag "google.dataflow.v1beta3.Job", skipping
+
 // +kcc:proto=google.dataflow.v1beta3.Job
 type Job struct {
 	// The unique ID of this job.
@@ -1398,7 +1399,8 @@ type EnvironmentObservedState struct {
 }
 */
 
-/* unreachable type JobObservedState
+/* found existing non-generated go type with proto tag "google.dataflow.v1beta3.Job", skipping
+
 // +kcc:observedstate:proto=google.dataflow.v1beta3.Job
 type JobObservedState struct {
 	// Optional. The environment for the job.

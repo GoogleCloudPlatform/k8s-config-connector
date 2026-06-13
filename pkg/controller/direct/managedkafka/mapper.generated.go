@@ -25,6 +25,7 @@ package managedkafka
 
 import (
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmmanagedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -279,7 +280,7 @@ func ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto(mapCtx *direct.Ma
 	}
 	out := &krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupObservedState{}
 	// MISSING: Name
-	// TODO: map type string message for field Topics
+	out.Topics = Topics_FromProto(mapCtx, in.Topics)
 	return out
 }
 */
@@ -291,7 +292,7 @@ func ManagedKafkaConsumerGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapC
 	}
 	out := &pb.ConsumerGroup{}
 	// MISSING: Name
-	// TODO: map type string message for field Topics
+	out.Topics = Topics_ToProto(mapCtx, in.Topics)
 	return out
 }
 */
@@ -369,7 +370,7 @@ func NetworkConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkC
 	}
 	out := &krmmanagedkafkav1alpha1.NetworkConfig{}
 	if in.GetSubnet() != "" {
-		out.SubnetRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnet()}
+		out.SubnetRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnet()}
 	}
 	return out
 }
@@ -391,7 +392,7 @@ func NetworkConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkCo
 	}
 	out := &krm.NetworkConfig{}
 	if in.GetSubnet() != "" {
-		out.SubnetRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnet()}
+		out.SubnetRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnet()}
 	}
 	return out
 }

@@ -61,6 +61,8 @@ func (r *DataformRepositoryRef) GetExternal() string {
 
 func (r *DataformRepositoryRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *DataformRepositoryRef) ValidateExternal(ref string) error {

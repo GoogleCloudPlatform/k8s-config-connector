@@ -1,0 +1,23 @@
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACAPool
+metadata:
+  name: privatecacapool-dep-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  tier: ENTERPRISE
+  issuancePolicy:
+    allowedKeyTypes:
+    - rsa:
+        minModulusSize: 2048
+        maxModulusSize: 4096
+    maximumLifetime: 86400s
+    allowedIssuanceModes:
+      allowCsrBasedIssuance: true
+      allowConfigBasedIssuance: false
+    baselineValues:
+      keyUsage:
+        baseKeyUsage:
+          digitalSignature: true
+          keyEncipherment: true

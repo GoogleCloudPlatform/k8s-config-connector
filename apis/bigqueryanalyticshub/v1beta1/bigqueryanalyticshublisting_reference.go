@@ -61,6 +61,8 @@ func (r *BigQueryAnalyticsHubListingRef) GetExternal() string {
 
 func (r *BigQueryAnalyticsHubListingRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *BigQueryAnalyticsHubListingRef) ValidateExternal(ref string) error {

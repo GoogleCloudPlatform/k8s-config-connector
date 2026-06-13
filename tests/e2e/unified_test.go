@@ -99,6 +99,9 @@ func TestAllInSeries(t *testing.T) {
 			sampleKey := sampleKey
 
 			t.Run(sampleKey.Name, func(t *testing.T) {
+				if os.Getenv("SKIP_ALL") != "" {
+					t.Skip("SKIP_ALL is set")
+				}
 				if sharedHarness != nil {
 					t.Parallel()
 				}
@@ -243,18 +246,16 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 			fixture := fixture
 			group := fixture.GVK.Group
 
-			skipTestReason := ""
-
 			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
 				skippedGroups := strings.Split(s, ",")
 				if slice.StringSliceContains(skippedGroups, group) {
-					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.TestKey, group, s)
+					continue
 				}
 			}
 			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
 				groups := strings.Split(s, ",")
 				if !slice.StringSliceContains(groups, group) {
-					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.TestKey, group, s)
+					continue
 				}
 			}
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
@@ -263,8 +264,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				testName = "pkg/test/resourcefixture/testdata/" + fixture.TestKey
 			}
 			t.Run(testName, func(t *testing.T) {
-				if skipTestReason != "" {
-					t.Skip(skipTestReason)
+				if os.Getenv("SKIP_ALL") != "" {
+					t.Skip("SKIP_ALL is set")
 				}
 
 				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.TestKey)
@@ -314,23 +315,18 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					return primaryResource, opt
 				}
 
-				// Start gradually, only running for apikeyskey and tags* fixtures initially
+				// If the default controller is terraform/DCL, but there is a direct controller available, set forceDirect=true.
+				// Use static_config.go as the source of truth.
 				forceDirect := false
-				switch fixture.GVK.Kind {
-				case "TagsTagKey", "TagsTagValue", "TagsTagBinding":
-					forceDirect = true
-				case "APIKeysKey":
-					forceDirect = true
-				case "LoggingLogView":
-					forceDirect = true
-				case "TagsLocationTagBinding":
-					forceDirect = false
-				case "FirestoreIndex":
-					forceDirect = true
-				default:
-					forceDirect = false
+				config, err := resourceconfig.LoadConfig().GetControllersForGVK(fixture.GVK)
+				if err != nil {
+					t.Fatalf("error getting controller config for GVK %v: %v", fixture.GVK, err)
 				}
-
+				if config.DefaultController != k8scontrollertype.ReconcilerTypeDirect {
+					if slices.Contains(config.SupportedControllers, k8scontrollertype.ReconcilerTypeDirect) {
+						forceDirect = true
+					}
+				}
 				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
 					forceDirect = false // VCR tests don't like variable requests
 				}

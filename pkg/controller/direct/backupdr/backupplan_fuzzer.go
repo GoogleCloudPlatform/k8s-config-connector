@@ -33,21 +33,21 @@ func backupDRBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 		BackupDRBackupPlanObservedState_v1beta1_FromProto, BackupDRBackupPlanObservedState_v1beta1_ToProto,
 	)
 
-	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".backup_rules")
-	f.SpecFields.Insert(".resource_type")
-	f.SpecFields.Insert(".backup_vault")
+	f.SpecField(".description")
+	f.SpecField(".backup_rules")
+	f.SpecField(".resource_type")
+	f.SpecField(".backup_vault")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".backup_vault_service_account")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
+	f.StatusField(".state")
+	f.StatusField(".backup_vault_service_account")
 
-	f.UnimplementedFields.Insert(".name") // special field
-	f.UnimplementedFields.Insert(".log_retention_days")
-	f.UnimplementedFields.Insert(".revision_id")
-	f.UnimplementedFields.Insert(".revision_name")
-	f.UnimplementedFields.Insert(".supported_resource_types")
+	f.Unimplemented_Identity(".name")
+	f.Unimplemented_NotYetTriaged(".log_retention_days")
+	f.Unimplemented_NotYetTriaged(".revision_id")
+	f.Unimplemented_NotYetTriaged(".revision_name")
+	f.Unimplemented_NotYetTriaged(".supported_resource_types")
 	f.Unimplemented_Etag()
 	f.Unimplemented_LabelsAnnotations(".labels")
 

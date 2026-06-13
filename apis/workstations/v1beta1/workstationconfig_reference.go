@@ -61,6 +61,8 @@ func (r *WorkstationConfigRef) GetExternal() string {
 
 func (r *WorkstationConfigRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *WorkstationConfigRef) ValidateExternal(ref string) error {

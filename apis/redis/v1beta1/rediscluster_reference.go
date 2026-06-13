@@ -60,6 +60,8 @@ func (r *RedisClusterRef) GetExternal() string {
 
 func (r *RedisClusterRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *RedisClusterRef) ValidateExternal(ref string) error {

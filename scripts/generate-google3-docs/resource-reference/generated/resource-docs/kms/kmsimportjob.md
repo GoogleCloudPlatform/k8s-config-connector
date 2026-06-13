@@ -89,7 +89,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>KMSKeyRingRef defines the resource reference to KMSKeyRing, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>KMSKeyRingRef is a reference to a KMSKeyRing.</p>
         </td>
     </tr>
     <tr>
@@ -99,7 +99,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed KMSKeyRing. Should be in the format `projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}`.</p>
+            <p>A reference to an externally managed KMSKeyRing resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyRingID}}".</p>
         </td>
     </tr>
     <tr>
@@ -109,7 +109,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` of a `KMSKeyRing` resource.</p>
+            <p>The name of a KMSKeyRing resource.</p>
         </td>
     </tr>
     <tr>
@@ -119,7 +119,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` of a `KMSKeyRing` resource.</p>
+            <p>The namespace of a KMSKeyRing resource.</p>
         </td>
     </tr>
     <tr>

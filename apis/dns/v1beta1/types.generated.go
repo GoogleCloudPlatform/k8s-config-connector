@@ -17,6 +17,8 @@
 // krm.group: dns.cnrm.cloud.google.com
 // krm.version: v1beta1
 // resource: DNSManagedZone:ManagedZone
+// resource: DNSPolicy:Policy
+// resource: DNSRecordSet:ResourceRecordSet
 
 package v1beta1
 
@@ -252,3 +254,260 @@ type ManagedZoneServiceDirectoryConfigNamespace struct {
 
 }
 */
+
+/* found existing non-generated go type with openapi tag "Policy", skipping
+
+// +openapi:Policy
+type Policy struct {
+	// Sets an alternative name server for the associated networks. When specified,
+	// all DNS queries are forwarded to a name server that you choose. Names such as
+	// .internal are not available when an alternative name server is specified.
+	AlternativeNameServerConfig *PolicyAlternativeNameServerConfig `json:"alternativeNameServerConfig,omitempty"`
+
+	// A mutable string of at most 1024 characters associated with this resource for
+	// the user's convenience. Has no effect on the policy's function.
+	Description *string `json:"description,omitempty"`
+
+	// Configurations related to DNS64 for this policy.
+	DNS64Config *PolicyDns64Config `json:"dns64Config,omitempty"`
+
+	// Allows networks bound to this policy to receive DNS queries sent by VMs or
+	// applications over VPN connections. When enabled, a virtual IP address is
+	// allocated from each of the subnetworks that are bound to this policy.
+	EnableInboundForwarding *bool `json:"enableInboundForwarding,omitempty"`
+
+	// Controls whether logging is enabled for the networks bound to this policy.
+	// Defaults to no logging if not set.
+	EnableLogging *bool `json:"enableLogging,omitempty"`
+
+	// Unique identifier for the resource; defined by the server (output only).
+	ID *uint64 `json:"id,omitempty"`
+
+	// User-assigned name for this policy.
+	Name *string `json:"name,omitempty"`
+
+	// List of network names specifying networks to which this policy is applied.
+	Networks []PolicyNetwork `json:"networks,omitempty"`
+
+}
+*/
+
+/* found existing non-generated go type with openapi tag "PolicyAlternativeNameServerConfig", skipping
+
+// +openapi:PolicyAlternativeNameServerConfig
+type PolicyAlternativeNameServerConfig struct {
+	// Sets an alternative name server for the associated networks. When specified,
+	// all DNS queries are forwarded to a name server that you choose. Names such as
+	// .internal are not available when an alternative name server is specified.
+	TargetNameServers []PolicyAlternativeNameServerConfigTargetNameServer `json:"targetNameServers,omitempty"`
+
+}
+*/
+
+/* found existing non-generated go type with openapi tag "PolicyAlternativeNameServerConfigTargetNameServer", skipping
+
+// +openapi:PolicyAlternativeNameServerConfigTargetNameServer
+type PolicyAlternativeNameServerConfigTargetNameServer struct {
+	// Forwarding path for this TargetNameServer. If unset or set to DEFAULT, Cloud
+	// DNS makes forwarding decisions based on address ranges; that is, RFC1918
+	// addresses go to the VPC network, non-RFC1918 addresses go to the internet. When
+	// set to PRIVATE, Cloud DNS always sends queries through the VPC network for this
+	// target.
+	ForwardingPath *string `json:"forwardingPath,omitempty"`
+
+	// IPv4 address to forward queries to.
+	Ipv4Address *string `json:"ipv4Address,omitempty"`
+
+	// IPv6 address to forward to. Does not accept both fields (ipv4 & ipv6) being
+	// populated. Public preview as of November 2022.
+	Ipv6Address *string `json:"ipv6Address,omitempty"`
+
+}
+*/
+
+// +openapi:PolicyDns64Config
+type PolicyDns64Config struct {
+	// The scope to which DNS64 config will be applied to.
+	Scope *PolicyDns64ConfigScope `json:"scope,omitempty"`
+}
+
+// +openapi:PolicyDns64ConfigScope
+type PolicyDns64ConfigScope struct {
+	// Controls whether DNS64 is enabled globally for all networks bound to the
+	// policy.
+	AllQueries *bool `json:"allQueries,omitempty"`
+}
+
+/* found existing non-generated go type with openapi tag "PolicyNetwork", skipping
+
+// +openapi:PolicyNetwork
+type PolicyNetwork struct {
+	// The fully qualified URL of the VPC network to bind to. This should be formatted
+	// like
+	// https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}
+	NetworkURL *string `json:"networkUrl,omitempty"`
+
+}
+*/
+
+// +openapi:RRSetRoutingPolicy
+type RRSetRoutingPolicy struct {
+	Geo *RRSetRoutingPolicyGeoPolicy `json:"geo,omitempty"`
+
+	// The fully qualified URL of the HealthCheck to use for this RRSetRoutingPolicy.
+	// Format this URL like
+	// `https://www.googleapis.com/compute/v1/projects/{project}/global/healthChecks/{healthCheck}`.
+	// https://cloud.google.com/compute/docs/reference/rest/v1/healthChecks
+	HealthCheck *string `json:"healthCheck,omitempty"`
+
+	PrimaryBackup *RRSetRoutingPolicyPrimaryBackupPolicy `json:"primaryBackup,omitempty"`
+
+	Wrr *RRSetRoutingPolicyWrrPolicy `json:"wrr,omitempty"`
+}
+
+// +openapi:RRSetRoutingPolicyGeoPolicy
+type RRSetRoutingPolicyGeoPolicy struct {
+	// Without fencing, if health check fails for all configured items in the current
+	// geo bucket, we failover to the next nearest geo bucket. With fencing, if health
+	// checking is enabled, as long as some targets in the current geo bucket are
+	// healthy, we return only the healthy targets. However, if all targets are
+	// unhealthy, we don't failover to the next nearest bucket; instead, we return all
+	// the items in the current bucket even when all targets are unhealthy.
+	EnableFencing *bool `json:"enableFencing,omitempty"`
+
+	// The primary geo routing configuration. If there are multiple items with the
+	// same location, an error is returned instead.
+	Items []RRSetRoutingPolicyGeoPolicyGeoPolicyItem `json:"items,omitempty"`
+}
+
+// +openapi:RRSetRoutingPolicyGeoPolicyGeoPolicyItem
+type RRSetRoutingPolicyGeoPolicyGeoPolicyItem struct {
+	// For A and AAAA types only. Endpoints to return in the query result only if they
+	// are healthy. These can be specified along with `rrdata` within this item.
+	HealthCheckedTargets *RRSetRoutingPolicyHealthCheckTargets `json:"healthCheckedTargets,omitempty"`
+
+	// The geo-location granularity is a GCP region. This location string should
+	// correspond to a GCP region. e.g. "us-east1", "southamerica-east1", "asia-east1",
+	// etc.
+	Location *string `json:"location,omitempty"`
+
+	Rrdatas []string `json:"rrdatas,omitempty"`
+
+	// DNSSEC generated signatures for all the `rrdata` within this item. When using
+	// health-checked targets for DNSSEC-enabled zones, you can only use at most one
+	// health-checked IP address per item.
+	SignatureRrdatas []string `json:"signatureRrdatas,omitempty"`
+}
+
+// +openapi:RRSetRoutingPolicyHealthCheckTargets
+type RRSetRoutingPolicyHealthCheckTargets struct {
+	// The Internet IP addresses to be health checked. The format matches the format
+	// of ResourceRecordSet.rrdata as defined in RFC 1035 (section 5) and RFC 1034
+	// (section 3.6.1)
+	ExternalEndpoints []string `json:"externalEndpoints,omitempty"`
+
+	// Configuration for internal load balancers to be health checked.
+	InternalLoadBalancers []RRSetRoutingPolicyLoadBalancerTarget `json:"internalLoadBalancers,omitempty"`
+}
+
+// +openapi:RRSetRoutingPolicyLoadBalancerTarget
+type RRSetRoutingPolicyLoadBalancerTarget struct {
+	// The frontend IP address of the load balancer to health check.
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// The protocol of the load balancer to health check.
+	IPProtocol *string `json:"ipProtocol,omitempty"`
+
+	// The type of load balancer specified by this target. This value must match the
+	// configuration of the load balancer located at the LoadBalancerTarget's IP
+	// address, port, and region. Use the following: - *regionalL4ilb*: for a regional
+	// internal passthrough Network Load Balancer. - *regionalL7ilb*: for a regional
+	// internal Application Load Balancer. - *globalL7ilb*: for a global internal
+	// Application Load Balancer.
+	LoadBalancerType *string `json:"loadBalancerType,omitempty"`
+
+	// The fully qualified URL of the network that the load balancer is attached to.
+	// This should be formatted like
+	// `https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}`.
+	NetworkURL *string `json:"networkUrl,omitempty"`
+
+	// The configured port of the load balancer.
+	Port *string `json:"port,omitempty"`
+
+	// The project ID in which the load balancer is located.
+	Project *string `json:"project,omitempty"`
+
+	// The region in which the load balancer is located.
+	Region *string `json:"region,omitempty"`
+}
+
+// +openapi:RRSetRoutingPolicyPrimaryBackupPolicy
+type RRSetRoutingPolicyPrimaryBackupPolicy struct {
+	// Backup targets provide a regional failover policy for the otherwise global
+	// primary targets. If serving state is set to `BACKUP`, this policy essentially
+	// becomes a geo routing policy.
+	BackupGeoTargets *RRSetRoutingPolicyGeoPolicy `json:"backupGeoTargets,omitempty"`
+
+	// Endpoints that are health checked before making the routing decision. Unhealthy
+	// endpoints are omitted from the results. If all endpoints are unhealthy, we serve
+	// a response based on the `backup_geo_targets`.
+	PrimaryTargets *RRSetRoutingPolicyHealthCheckTargets `json:"primaryTargets,omitempty"`
+
+	// When serving state is `PRIMARY`, this field provides the option of sending a
+	// small percentage of the traffic to the backup targets.
+	TrickleTraffic *float64 `json:"trickleTraffic,omitempty"`
+}
+
+// +openapi:RRSetRoutingPolicyWrrPolicy
+type RRSetRoutingPolicyWrrPolicy struct {
+	Items []RRSetRoutingPolicyWrrPolicyWrrPolicyItem `json:"items,omitempty"`
+}
+
+// +openapi:RRSetRoutingPolicyWrrPolicyWrrPolicyItem
+type RRSetRoutingPolicyWrrPolicyWrrPolicyItem struct {
+	// Endpoints that are health checked before making the routing decision. The
+	// unhealthy endpoints are omitted from the result. If all endpoints within a
+	// bucket are unhealthy, we choose a different bucket (sampled with respect to its
+	// weight) for responding. If DNSSEC is enabled for this zone, only one of `rrdata`
+	// or `health_checked_targets` can be set.
+	HealthCheckedTargets *RRSetRoutingPolicyHealthCheckTargets `json:"healthCheckedTargets,omitempty"`
+
+	Rrdatas []string `json:"rrdatas,omitempty"`
+
+	// DNSSEC generated signatures for all the `rrdata` within this item. When using
+	// health-checked targets for DNSSEC-enabled zones, you can only use at most one
+	// health-checked IP address per item.
+	SignatureRrdatas []string `json:"signatureRrdatas,omitempty"`
+
+	// The weight corresponding to this `WrrPolicyItem` object. When multiple
+	// `WrrPolicyItem` objects are configured, the probability of returning an
+	// `WrrPolicyItem` object's data is proportional to its weight relative to the sum
+	// of weights configured for all items. This weight must be non-negative.
+	Weight *float64 `json:"weight,omitempty"`
+}
+
+// +openapi:ResourceRecordSet
+type ResourceRecordSet struct {
+	// For example, www.example.com.
+	Name *string `json:"name,omitempty"`
+
+	// Configures dynamic query responses based on either the geo location of the
+	// querying user or a weighted round robin based routing policy. A valid
+	// `ResourceRecordSet` contains only `rrdata` (for static resolution) or a
+	// `routing_policy` (for dynamic resolution).
+	RoutingPolicy *RRSetRoutingPolicy `json:"routingPolicy,omitempty"`
+
+	// As defined in RFC 1035 (section 5) and RFC 1034 (section 3.6.1) -- see
+	// examples.
+	Rrdatas []string `json:"rrdatas,omitempty"`
+
+	// As defined in RFC 4034 (section 3.2).
+	SignatureRrdatas []string `json:"signatureRrdatas,omitempty"`
+
+	// Number of seconds that this `ResourceRecordSet` can be cached by resolvers.
+	TTL *int64 `json:"ttl,omitempty"`
+
+	// The identifier of a supported record type. See the list of Supported DNS record
+	// types.
+	Type *string `json:"type,omitempty"`
+}

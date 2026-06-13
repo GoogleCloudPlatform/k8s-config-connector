@@ -21,7 +21,6 @@
 
 package v1beta1
 
-/* unreachable type AutomatedBackupConfig
 // +kcc:proto=google.cloud.redis.cluster.v1.AutomatedBackupConfig
 type AutomatedBackupConfig struct {
 	// Optional. Trigger automated backups at a fixed frequency.
@@ -39,9 +38,7 @@ type AutomatedBackupConfig struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.AutomatedBackupConfig.retention
 	Retention *string `json:"retention,omitempty"`
 }
-*/
 
-/* unreachable type AutomatedBackupConfig_FixedFrequencySchedule
 // +kcc:proto=google.cloud.redis.cluster.v1.AutomatedBackupConfig.FixedFrequencySchedule
 type AutomatedBackupConfig_FixedFrequencySchedule struct {
 	// Required. The start time of every automated backup in UTC. It must be set
@@ -49,7 +46,6 @@ type AutomatedBackupConfig_FixedFrequencySchedule struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.AutomatedBackupConfig.FixedFrequencySchedule.start_time
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.redis.cluster.v1.Cluster", skipping
 
@@ -193,7 +189,6 @@ type ClusterEndpoint struct {
 }
 */
 
-/* unreachable type ClusterMaintenancePolicy
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy
 type ClusterMaintenancePolicy struct {
 
@@ -203,7 +198,6 @@ type ClusterMaintenancePolicy struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy.weekly_maintenance_window
 	WeeklyMaintenanceWindow []ClusterWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
 }
-*/
 
 /* unreachable type ClusterMaintenanceSchedule
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterMaintenanceSchedule
@@ -246,7 +240,6 @@ type ClusterPersistenceConfig_RdbConfig struct {
 	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
 }
 
-/* unreachable type ClusterWeeklyMaintenanceWindow
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterWeeklyMaintenanceWindow
 type ClusterWeeklyMaintenanceWindow struct {
 	// Allows to define schedule that runs specified day of the week.
@@ -257,7 +250,6 @@ type ClusterWeeklyMaintenanceWindow struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterWeeklyMaintenanceWindow.start_time
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
-*/
 
 /* unreachable type ConnectionDetail
 // +kcc:proto=google.cloud.redis.cluster.v1.ConnectionDetail
@@ -404,7 +396,6 @@ type ZoneDistributionConfig struct {
 	Zone *string `json:"zone,omitempty"`
 }
 
-/* unreachable type TimeOfDay
 // +kcc:proto=google.type.TimeOfDay
 type TimeOfDay struct {
 	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
@@ -425,7 +416,6 @@ type TimeOfDay struct {
 	// +kcc:proto:field=google.type.TimeOfDay.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.redis.cluster.v1.Cluster", skipping
 
@@ -511,7 +501,6 @@ type ClusterEndpointObservedState struct {
 }
 */
 
-/* unreachable type ClusterMaintenancePolicyObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy
 type ClusterMaintenancePolicyObservedState struct {
 	// Output only. The time when the policy was created i.e. Maintenance Window
@@ -524,9 +513,7 @@ type ClusterMaintenancePolicyObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
-*/
 
-/* unreachable type ClusterMaintenanceScheduleObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ClusterMaintenanceSchedule
 type ClusterMaintenanceScheduleObservedState struct {
 	// Output only. The start time of any upcoming scheduled maintenance for this
@@ -539,7 +526,6 @@ type ClusterMaintenanceScheduleObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterMaintenanceSchedule.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
-*/
 
 /* unreachable type ConnectionDetailObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ConnectionDetail
@@ -637,7 +623,6 @@ type DiscoveryEndpointObservedState struct {
 	PSCConfig *PSCConfig `json:"pscConfig,omitempty"`
 }
 
-/* unreachable type EncryptionInfoObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.EncryptionInfo
 type EncryptionInfoObservedState struct {
 	// Output only. Type of encryption.
@@ -658,7 +643,6 @@ type EncryptionInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.EncryptionInfo.last_update_time
 	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
 }
-*/
 
 /* unreachable type PSCAutoConnectionObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscAutoConnection
@@ -713,7 +697,6 @@ type PSCConnectionObservedState struct {
 }
 */
 
-/* unreachable type PSCServiceAttachmentObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscServiceAttachment
 type PSCServiceAttachmentObservedState struct {
 	// Output only. Service attachment URI which your self-created PscConnection
@@ -725,4 +708,3 @@ type PSCServiceAttachmentObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscServiceAttachment.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
 }
-*/

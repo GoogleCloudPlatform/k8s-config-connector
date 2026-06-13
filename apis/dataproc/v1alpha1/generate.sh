@@ -30,6 +30,7 @@ go run . generate-types \
   --resource DataprocJob:Job \
   --resource DataprocNodeGroup:NodeGroup \
   --resource DataprocSession:Session \
+  --resource DataprocSessionTemplate:SessionTemplate \
   --include-skipped-output
 
 cd ${REPO_ROOT}

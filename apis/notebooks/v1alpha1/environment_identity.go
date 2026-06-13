@@ -34,6 +34,10 @@ func (i *EnvironmentIdentity) String() string {
 	return i.parent.String() + "/environments/" + i.id
 }
 
+func (i *EnvironmentIdentity) ParentString() string {
+	return i.parent.String()
+}
+
 func (i *EnvironmentIdentity) ID() string {
 	return i.id
 }

@@ -23,6 +23,42 @@
 
 package resourcemanager
 
+/* found existing non-generated mapping function "FolderSpec_FromProto", skipping
+func FolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.FolderSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FolderSpec{}
+	// MISSING: Name
+	// MISSING: Parent
+	out.DisplayName = in.GetDisplayName()
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: Etag
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FolderSpec_ToProto", skipping
+func FolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.FolderSpec) *pb.Folder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Folder{}
+	// MISSING: Name
+	// MISSING: Parent
+	out.DisplayName = FolderSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: Etag
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ProjectSpec_FromProto", skipping
 func ProjectSpec_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.ProjectSpec {
 	if in == nil {

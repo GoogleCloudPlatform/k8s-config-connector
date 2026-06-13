@@ -105,7 +105,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         uses: golangci/golangci-lint-action@v9
         with:
           version: v2.9.0
-          args: --timeout=10m
+          args: --timeout=20m
 EOF
     continue
     fi

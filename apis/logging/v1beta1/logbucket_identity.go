@@ -68,6 +68,25 @@ func (i *LogBucketIdentity) String() string {
 	return ""
 }
 
+func (i *LogBucketIdentity) ParentString() string {
+	if i.Project != "" {
+		return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+	}
+	if i.Folder != "" {
+		return fmt.Sprintf("folders/%s/locations/%s", i.Folder, i.Location)
+	}
+	if i.Organization != "" {
+		return fmt.Sprintf("organizations/%s/locations/%s", i.Organization, i.Location)
+	}
+	if i.BillingAccount != "" {
+		return fmt.Sprintf("billingAccounts/%s/locations/%s", i.BillingAccount, i.Location)
+	}
+	if i.AccessPolicy != "" {
+		return fmt.Sprintf("accessPolicies/%s/locations/%s", i.AccessPolicy, i.Location)
+	}
+	return ""
+}
+
 func (i *LogBucketIdentity) ID() string {
 	return i.Bucket
 }
@@ -152,7 +171,7 @@ func getIdentityFromLoggingLogBucketSpec(ctx context.Context, reader client.Read
 		if err := billingIdentity.FromExternal(billingRef.External); err != nil {
 			return nil, fmt.Errorf("parsing billingAccountRef.external=%q: %w", billingRef.External, err)
 		}
-		identity.BillingAccount = billingIdentity.BillingAccountID
+		identity.BillingAccount = billingIdentity.BillingAccount
 	} else {
 		// Fallback to project ID from namespace
 		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)

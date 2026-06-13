@@ -3,11 +3,10 @@ kind: LoggingLogSink
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: logsink-${uniqueId}
@@ -19,7 +18,6 @@ spec:
   filter: resource.type="bigquery_dataset" AND logName:"cloudaudit.googleapis.com"
   projectRef:
     external: ${projectId}
-  resourceID: logsink-${uniqueId}
   uniqueWriterIdentity: true
 status:
   conditions:
@@ -28,5 +26,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 3
+  observedGeneration: 2
   writerIdentity: serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com

@@ -61,6 +61,8 @@ func (r *NetworkSecurityClientTLSPolicyRef) GetExternal() string {
 
 func (r *NetworkSecurityClientTLSPolicyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *NetworkSecurityClientTLSPolicyRef) ValidateExternal(ref string) error {

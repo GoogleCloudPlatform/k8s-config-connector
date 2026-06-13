@@ -105,7 +105,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a ApigeeEnvironment resource.</p>
+            <p>The name of an ApigeeEnvironment resource.</p>
         </td>
     </tr>
     <tr>
@@ -115,7 +115,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a ApigeeEnvironment resource.</p>
+            <p>The namespace of an ApigeeEnvironment resource.</p>
         </td>
     </tr>
     <tr>
@@ -145,7 +145,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a ApigeeInstance resource.</p>
+            <p>The name of an ApigeeInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -155,7 +155,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a ApigeeInstance resource.</p>
+            <p>The namespace of an ApigeeInstance resource.</p>
         </td>
     </tr>
     <tr>

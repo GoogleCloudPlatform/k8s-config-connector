@@ -68,6 +68,8 @@ func (r *CloudBuildWorkerPoolRef) GetExternal() string {
 
 func (r *CloudBuildWorkerPoolRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CloudBuildWorkerPoolRef) ValidateExternal(ref string) error {

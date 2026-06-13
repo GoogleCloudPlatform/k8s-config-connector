@@ -56,6 +56,8 @@ func (r *TagsTagKeyRef) GetExternal() string {
 
 func (r *TagsTagKeyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *TagsTagKeyRef) ValidateExternal(ref string) error {

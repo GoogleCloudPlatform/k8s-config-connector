@@ -44,7 +44,7 @@ func TestBigtableBackupIdentity_FromExternal(t *testing.T) {
 		},
 		{
 			name: "full url",
-			ref:  "https://bigtableadmin.googleapis.com/projects/my-project/instances/my-instance/clusters/my-cluster/backups/my-backup",
+			ref:  "https://bigtable.googleapis.com/projects/my-project/instances/my-instance/clusters/my-cluster/backups/my-backup",
 			want: &BackupIdentity{
 				Project:  "my-project",
 				Instance: "my-instance",

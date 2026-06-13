@@ -258,6 +258,34 @@ spec:
               engineVersion:
                 description: Optional. Immutable. Engine version of the instance.
                 type: string
+              kmsKeyRef:
+                description: Optional. The KMS key reference for the instance.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -269,6 +297,48 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maintenancePolicy:
+                description: Optional. The maintenance policy for the instance.
+                properties:
+                  weeklyMaintenanceWindow:
+                    description: Optional. Maintenance window that is applied to resources
+                      covered by this policy. Minimum 1. For the current version,
+                      the maximum number of weekly_window is expected to be one.
+                    items:
+                      properties:
+                        day:
+                          description: Optional. Allows to define schedule that runs
+                            specified day of the week.
+                          type: string
+                        startTime:
+                          description: Optional. Start time of the window in UTC.
+                          properties:
+                            hours:
+                              description: Hours of day in 24 hour format. Should
+                                be from 0 to 23. An API may choose to allow the value
+                                "24:00:00" for scenarios like business closing time.
+                              format: int32
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
+                              type: integer
+                            seconds:
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
+                              type: integer
+                          type: object
+                      type: object
+                    type: array
+                type: object
               maintenanceVersion:
                 description: Optional. The maintenance version of the instance.
                 type: string
@@ -506,6 +576,26 @@ spec:
                     description: Output only. The current version of the maintenance
                       schedule.
                     type: string
+                  encryptionInfo:
+                    description: Output only. Encryption information for the instance.
+                    properties:
+                      encryptionType:
+                        description: Output only. Type of encryption.
+                        type: string
+                      kmsKeyPrimaryState:
+                        description: Output only. The state of the primary KMS key.
+                        type: string
+                      kmsKeyVersions:
+                        description: Output only. KMS key versions that are being
+                          used to protect the instance.
+                        items:
+                          type: string
+                        type: array
+                      lastUpdateTime:
+                        description: Output only. Latest update timestamp of the encryption
+                          info.
+                        type: string
+                    type: object
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
@@ -561,6 +651,29 @@ spec:
                           type: array
                       type: object
                     type: array
+                  maintenancePolicy:
+                    description: Output only. User-defined weekly maintenance windows
+                      in which space is reserved for maintenance.
+                    properties:
+                      createTime:
+                        description: Output only. The time when the policy was created.
+                        type: string
+                      updateTime:
+                        description: Output only. The time when the policy was updated.
+                        type: string
+                    type: object
+                  maintenanceSchedule:
+                    description: Output only. Upcoming maintenance schedule.
+                    properties:
+                      endTime:
+                        description: Output only. The end time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                      startTime:
+                        description: Output only. The start time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                    type: object
                   nodeConfig:
                     description: Output only. Configuration of individual nodes of
                       the instance.
@@ -854,6 +967,34 @@ spec:
               engineVersion:
                 description: Optional. Immutable. Engine version of the instance.
                 type: string
+              kmsKeyRef:
+                description: Optional. The KMS key reference for the instance.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -865,6 +1006,48 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maintenancePolicy:
+                description: Optional. The maintenance policy for the instance.
+                properties:
+                  weeklyMaintenanceWindow:
+                    description: Optional. Maintenance window that is applied to resources
+                      covered by this policy. Minimum 1. For the current version,
+                      the maximum number of weekly_window is expected to be one.
+                    items:
+                      properties:
+                        day:
+                          description: Optional. Allows to define schedule that runs
+                            specified day of the week.
+                          type: string
+                        startTime:
+                          description: Optional. Start time of the window in UTC.
+                          properties:
+                            hours:
+                              description: Hours of day in 24 hour format. Should
+                                be from 0 to 23. An API may choose to allow the value
+                                "24:00:00" for scenarios like business closing time.
+                              format: int32
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
+                              type: integer
+                            seconds:
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
+                              type: integer
+                          type: object
+                      type: object
+                    type: array
+                type: object
               maintenanceVersion:
                 description: Optional. The maintenance version of the instance.
                 type: string
@@ -1102,6 +1285,26 @@ spec:
                     description: Output only. The current version of the maintenance
                       schedule.
                     type: string
+                  encryptionInfo:
+                    description: Output only. Encryption information for the instance.
+                    properties:
+                      encryptionType:
+                        description: Output only. Type of encryption.
+                        type: string
+                      kmsKeyPrimaryState:
+                        description: Output only. The state of the primary KMS key.
+                        type: string
+                      kmsKeyVersions:
+                        description: Output only. KMS key versions that are being
+                          used to protect the instance.
+                        items:
+                          type: string
+                        type: array
+                      lastUpdateTime:
+                        description: Output only. Latest update timestamp of the encryption
+                          info.
+                        type: string
+                    type: object
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
@@ -1157,6 +1360,29 @@ spec:
                           type: array
                       type: object
                     type: array
+                  maintenancePolicy:
+                    description: Output only. User-defined weekly maintenance windows
+                      in which space is reserved for maintenance.
+                    properties:
+                      createTime:
+                        description: Output only. The time when the policy was created.
+                        type: string
+                      updateTime:
+                        description: Output only. The time when the policy was updated.
+                        type: string
+                    type: object
+                  maintenanceSchedule:
+                    description: Output only. Upcoming maintenance schedule.
+                    properties:
+                      endTime:
+                        description: Output only. The end time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                      startTime:
+                        description: Output only. The start time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                    type: object
                   nodeConfig:
                     description: Output only. Configuration of individual nodes of
                       the instance.

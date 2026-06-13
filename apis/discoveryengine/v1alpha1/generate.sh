@@ -28,7 +28,8 @@ go run . generate-types --service google.cloud.discoveryengine.v1 --api-version 
   --resource DiscoveryEngineDataStore:DataStore \
   --resource DiscoveryEngineEngine:Engine \
   --resource DiscoveryEngineIdentityMappingStore:IdentityMappingStore \
-  --resource DiscoveryEngineTargetSite:TargetSite
+  --resource DiscoveryEngineTargetSite:TargetSite \
+  --resource DiscoveryEngineConversation:Conversation
 
 go run . generate-mapper --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
 

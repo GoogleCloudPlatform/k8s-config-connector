@@ -62,6 +62,22 @@ func (i *LoggingLogExclusionIdentity) String() string {
 	return ""
 }
 
+func (i *LoggingLogExclusionIdentity) ParentString() string {
+	if i.Project != "" {
+		return fmt.Sprintf("projects/%s", i.Project)
+	}
+	if i.Folder != "" {
+		return fmt.Sprintf("folders/%s", i.Folder)
+	}
+	if i.Organization != "" {
+		return fmt.Sprintf("organizations/%s", i.Organization)
+	}
+	if i.BillingAccount != "" {
+		return fmt.Sprintf("billingAccounts/%s", i.BillingAccount)
+	}
+	return ""
+}
+
 func (i *LoggingLogExclusionIdentity) ID() string {
 	return i.Exclusion
 }
@@ -147,7 +163,7 @@ func getIdentityFromLoggingLogExclusionSpec(ctx context.Context, reader client.R
 		if err := billingIdentity.FromExternal(billingRef.External); err != nil {
 			return nil, fmt.Errorf("parsing billingAccountRef.external=%q: %w", billingRef.External, err)
 		}
-		identity.BillingAccount = billingIdentity.BillingAccountID
+		identity.BillingAccount = billingIdentity.BillingAccount
 	} else {
 		// Fallback to project ID from namespace
 		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)

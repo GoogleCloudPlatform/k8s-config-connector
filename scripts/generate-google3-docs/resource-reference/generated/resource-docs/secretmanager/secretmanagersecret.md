@@ -488,7 +488,7 @@ No more than 64 labels can be assigned to a given resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>PubSubTopicRef defines the resource reference to PubSubTopic, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>PubSubTopicRef is a reference to a PubSubTopic.</p>
         </td>
     </tr>
     <tr>

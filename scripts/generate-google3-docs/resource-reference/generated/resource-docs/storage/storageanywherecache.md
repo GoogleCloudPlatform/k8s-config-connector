@@ -101,7 +101,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally-managed StorageBucket resource.</p>
+            <p>A reference to an externally managed StorageBucket resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>
@@ -273,7 +273,7 @@ observedState:
         <td><code>observedState.pendingUpdate</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Output only. True if there is an active update operation against this cache instance. Subsequential update requests will be rejected if this field is true. Output only.</p>
+            <p>Output only. True if there is an active update operation against this cache instance. Subsequent update requests will be rejected if this field is true. Output only.</p>
         </td>
     </tr>
     <tr>

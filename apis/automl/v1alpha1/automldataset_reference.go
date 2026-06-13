@@ -60,6 +60,8 @@ func (r *AutoMLDatasetRef) GetExternal() string {
 
 func (r *AutoMLDatasetRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *AutoMLDatasetRef) ValidateExternal(external string) error {

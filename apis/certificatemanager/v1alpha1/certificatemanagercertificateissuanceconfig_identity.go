@@ -60,20 +60,27 @@ func (i *CertificateManagerCertificateIssuanceConfigIdentity) Host() string {
 	return CertificateManagerCertificateIssuanceConfigIdentityFormat.Host()
 }
 
-func getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CertificateManagerCertificateIssuanceConfigIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+func getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx context.Context, reader client.Reader, obj *CertificateManagerCertificateIssuanceConfig) (*CertificateManagerCertificateIssuanceConfigIdentity, error) {
+	if obj.Spec.ProjectRef == nil {
+		return nil, fmt.Errorf("spec.projectRef must be specified")
 	}
-
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location")
-	}
-
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project")
+		return nil, fmt.Errorf("resolving projectRef: %w", err)
+	}
+
+	location := obj.Spec.Location
+	if location == "" {
+		return nil, fmt.Errorf("spec.location must be specified")
+	}
+
+	// Resolve user-configured ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
 	identity := &CertificateManagerCertificateIssuanceConfigIdentity{

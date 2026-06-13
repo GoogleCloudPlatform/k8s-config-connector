@@ -225,7 +225,7 @@ func NetworkConnectivityRegionalEndpointSpec_FromProto(mapCtx *direct.MapContext
 		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.TargetGoogleAPI = direct.LazyPtr(in.GetTargetGoogleApi())
 	return out

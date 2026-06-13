@@ -131,11 +131,32 @@ func (g *MapperGenerator) visitFile(f protoreflect.FileDescriptor) {
 
 func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescriptor) []*gocode.GoStruct {
 	// Use precomputed mappings
-	if matches, found := v.precomputedMappings[msg.FullName()]; found {
-		return matches
+	matches, found := v.precomputedMappings[msg.FullName()]
+	if !found {
+		klog.V(2).Infof("did not find mapping for %q", msg.FullName())
+		return nil
 	}
-	klog.V(2).Infof("did not find mapping for %q", msg.FullName())
-	return nil
+
+	var krmGroup string
+	if v.generatedFileAnnotation != nil {
+		if groups := v.generatedFileAnnotation.Attributes["krm.group"]; len(groups) > 0 {
+			krmGroup = groups[0]
+		}
+	}
+
+	if krmGroup != "" {
+		groupName := strings.TrimSuffix(krmGroup, ".cnrm.cloud.google.com")
+		expectedPackagePrefix := "github.com/GoogleCloudPlatform/k8s-config-connector/apis/" + groupName
+		var filtered []*gocode.GoStruct
+		for _, match := range matches {
+			if strings.HasPrefix(match.GoPackage, expectedPackagePrefix) {
+				filtered = append(filtered, match)
+			}
+		}
+		return filtered
+	}
+
+	return matches
 }
 
 func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
@@ -445,8 +466,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
 						useSliceFromProtoFunction = ""
 					} else {
-						fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
-						continue
+						useSliceFromProtoFunction = ""
+						useCustomMethod = krmFieldName + "_FromProto"
 					}
 				}
 
@@ -746,8 +767,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
 						useSliceToProtoFunction = ""
 					} else {
-						fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
-						continue
+						useSliceToProtoFunction = ""
+						useCustomMethod = krmFieldName + "_ToProto"
 					}
 				}
 

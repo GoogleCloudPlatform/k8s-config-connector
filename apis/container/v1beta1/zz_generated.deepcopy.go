@@ -72,7 +72,7 @@ func (in *AdditionalIPRangesConfig) DeepCopyInto(out *AdditionalIPRangesConfig) 
 	*out = *in
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(refsv1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.PodIPV4RangeNames != nil {
@@ -930,7 +930,7 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(refsv1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.VerticalPodAutoscaling != nil {
@@ -2913,7 +2913,7 @@ func (in *PrivateClusterConfig) DeepCopyInto(out *PrivateClusterConfig) {
 	}
 	if in.PrivateEndpointSubnetworkRef != nil {
 		in, out := &in.PrivateEndpointSubnetworkRef, &out.PrivateEndpointSubnetworkRef
-		*out = new(refsv1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.PublicEndpoint != nil {

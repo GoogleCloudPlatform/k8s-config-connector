@@ -272,7 +272,6 @@ type Instance_StateInfo_UpdateInfo struct {
 }
 */
 
-/* unreachable type MaintenancePolicy
 // +kcc:proto=google.cloud.memorystore.v1.MaintenancePolicy
 type MaintenancePolicy struct {
 
@@ -282,7 +281,6 @@ type MaintenancePolicy struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.MaintenancePolicy.weekly_maintenance_window
 	WeeklyMaintenanceWindow []WeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
 }
-*/
 
 /* unreachable type MaintenanceSchedule
 // +kcc:proto=google.cloud.memorystore.v1.MaintenanceSchedule
@@ -404,7 +402,6 @@ type PSCConnection struct {
 }
 */
 
-/* unreachable type WeeklyMaintenanceWindow
 // +kcc:proto=google.cloud.memorystore.v1.WeeklyMaintenanceWindow
 type WeeklyMaintenanceWindow struct {
 	// Optional. Allows to define schedule that runs specified day of the week.
@@ -415,7 +412,6 @@ type WeeklyMaintenanceWindow struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.WeeklyMaintenanceWindow.start_time
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "ZoneDistributionConfig", skipping
 
@@ -667,7 +663,6 @@ type Instance_StateInfo_UpdateInfoObservedState struct {
 }
 */
 
-/* unreachable type MaintenancePolicyObservedState
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.MaintenancePolicy
 type MaintenancePolicyObservedState struct {
 	// Output only. The time when the policy was created.
@@ -678,9 +673,7 @@ type MaintenancePolicyObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.MaintenancePolicy.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
-*/
 
-/* unreachable type MaintenanceScheduleObservedState
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.MaintenanceSchedule
 type MaintenanceScheduleObservedState struct {
 	// Output only. The start time of any upcoming scheduled maintenance for this
@@ -693,7 +686,6 @@ type MaintenanceScheduleObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.MaintenanceSchedule.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "NodeConfigObservedState", skipping
 

@@ -22,5 +22,6 @@
 // resource: NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup
 // resource: NetworkSecurityMirroringDeployment:MirroringDeployment
 // resource: NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup
+// resource: NetworkSecuritySACRealm:SACRealm
 
 package v1alpha1

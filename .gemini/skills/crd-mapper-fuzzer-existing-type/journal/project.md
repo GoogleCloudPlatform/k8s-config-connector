@@ -18,3 +18,10 @@ Transitioned the `Project` resource under `apis/resourcemanager` to support dire
   - Implemented the canonical `_identity.go` (`project_identity.go`) and `_reference.go` (`project_reference.go`) under `apis/resourcemanager/v1beta1/` following the `identity.IdentityV2` and `refs.Ref` interface models.
   - Leveraged `common.ToStructuredType[*Project](u)` in the `Normalize` fallback callback function of the reference implementation to safely convert unstructured objects into fully typed ones.
   - Validated template registration with `go test ./pkg/gcpurls/...`, syntax correctness via `go vet ./apis/resourcemanager/v1beta1/...`, and project-wide formatting via `make fmt`.
+
+## KRM Round-trip Fuzzer
+- Implemented the `Project` round-trip KRM fuzzer under `pkg/controller/direct/resourcemanager/project_fuzzer.go` and registered it via `fuzztesting.RegisterKRMFuzzer`.
+- Because the `parent` and `name` fields are expected to follow strict naming prefixes (e.g. `folders/`, `organizations/`, and `projects/`), random protobuf input generation could cause mapper validation errors. We addressed this by implementing `FilterSpec` and `FilterStatus` functions within the fuzzer:
+  - `FilterSpec` normalizes `.parent` to start with `folders/` or `organizations/` prefix using sanitized alphanumeric IDs.
+  - `FilterStatus` normalizes `.name` to start with `projects/` prefix using sanitized alphanumeric IDs.
+- The fuzzer covers 3 spec fields (`.display_name`, `.parent`, `.project_id`), 1 status field (`.name`), and sets 6 unimplemented fields (`.state`, `.create_time`, `.update_time`, `.delete_time`, `.etag`, `.labels`).

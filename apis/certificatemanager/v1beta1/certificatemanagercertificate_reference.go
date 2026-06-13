@@ -16,19 +16,15 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-var _ refsv1beta1.Ref = &CertificateManagerCertificateRef{}
 
 var CertificateManagerCertificateGVK = schema.GroupVersionKind{
 	Group:   "certificatemanager.cnrm.cloud.google.com",
@@ -36,9 +32,12 @@ var CertificateManagerCertificateGVK = schema.GroupVersionKind{
 	Kind:    "CertificateManagerCertificate",
 }
 
-// A reference to a CertificateManagerCertificate resource.
+var _ refs.Ref = &CertificateManagerCertificateRef{}
+
+// CertificateManagerCertificateRef is a reference to a CertificateManagerCertificate.
 type CertificateManagerCertificateRef struct {
-	// Allowed value: The format `projects/{{project}}/locations/{{location}}/certificates/{{name}}` or `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificates/{{name}}`.
+	// A reference to an externally managed CertificateManagerCertificate resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/certificates/{{certificateID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a CertificateManagerCertificate resource.
@@ -46,6 +45,10 @@ type CertificateManagerCertificateRef struct {
 
 	// The namespace of a CertificateManagerCertificate resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&CertificateManagerCertificateRef{})
 }
 
 func (r *CertificateManagerCertificateRef) GetGVK() schema.GroupVersionKind {
@@ -65,64 +68,37 @@ func (r *CertificateManagerCertificateRef) GetExternal() string {
 
 func (r *CertificateManagerCertificateRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CertificateManagerCertificateRef) ValidateExternal(ref string) error {
-	if !strings.HasPrefix(ref, "projects/") && !strings.HasPrefix(ref, "//certificatemanager.googleapis.com/projects/") {
-		return fmt.Errorf("external reference format %q is not known; expected projects/<project>/locations/<location>/certificates/<name> or //certificatemanager.googleapis.com/projects/<project>/locations/<location>/certificates/<name>", ref)
+	id := &CertificateManagerCertificateIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
 	}
 	return nil
+}
+
+func (r *CertificateManagerCertificateRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &CertificateManagerCertificateIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
 func (r *CertificateManagerCertificateRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.GetExternal() != "" {
-		return r.ValidateExternal(r.GetExternal())
-	}
-	key := r.GetNamespacedName()
-	if key.Namespace == "" {
-		key.Namespace = defaultNamespace
-	}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(r.GetGVK())
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*CertificateManagerCertificate](u)
+		if err != nil {
+			return ""
 		}
-		return fmt.Errorf("reading referenced %s %s: %w", r.GetGVK(), key, err)
-	}
-
-	// Get external from status.externalRef. This is the most trustworthy place.
-	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if externalRef == "" {
-		if externalRef, err = certificateLegacyExternalRef(ctx, reader, u); err != nil {
-			return err
+		identity, err := getIdentityFromCertificateManagerCertificateSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
 		}
+		return identity.String()
 	}
-	if externalRef == "" {
-		return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.SetExternal(externalRef)
-	return nil
-}
-
-func certificateLegacyExternalRef(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (string, error) {
-	resourceID, err := refsv1beta1.GetResourceID(u)
-	if err != nil {
-		return "", err
-	}
-
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-	if err != nil {
-		return "", err
-	}
-
-	location, err := refsv1beta1.GetLocation(u)
-	if err != nil {
-		return "", err
-	}
-
-	return fmt.Sprintf("projects/%s/locations/%s/certificates/%s", projectID, location, resourceID), nil
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

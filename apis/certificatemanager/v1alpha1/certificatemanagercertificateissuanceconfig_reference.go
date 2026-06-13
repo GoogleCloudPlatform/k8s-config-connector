@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -61,6 +62,8 @@ func (r *CertificateManagerCertificateIssuanceConfigRef) GetExternal() string {
 
 func (r *CertificateManagerCertificateIssuanceConfigRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CertificateManagerCertificateIssuanceConfigRef) ValidateExternal(ref string) error {
@@ -81,7 +84,11 @@ func (r *CertificateManagerCertificateIssuanceConfigRef) ParseExternalToIdentity
 
 func (r *CertificateManagerCertificateIssuanceConfigRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx, reader, u)
+		obj, err := common.ToStructuredType[*CertificateManagerCertificateIssuanceConfig](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}

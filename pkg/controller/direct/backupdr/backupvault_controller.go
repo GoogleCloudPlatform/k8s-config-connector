@@ -23,15 +23,17 @@ package backupdr
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
@@ -63,6 +65,11 @@ func (m *modelBackupVault) AdapterForObject(ctx context.Context, op *directbase.
 	obj := &krm.BackupDRBackupVault{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	id, err := krm.NewBackupVaultIdentity(ctx, reader, obj)
@@ -140,7 +147,6 @@ func (a *BackupVaultAdapter) Find(ctx context.Context) (bool, error) {
 func (a *BackupVaultAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating BackupVault", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
 	req := &pb.CreateBackupVaultRequest{
 		Parent:        a.id.Parent().String(),
@@ -157,80 +163,68 @@ func (a *BackupVaultAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 	log.V(2).Info("successfully created BackupVault", "name", a.id)
 
-	status := &krm.BackupDRBackupVaultStatus{}
-	status.ObservedState = BackupDRBackupVaultObservedState_v1beta1_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return createOp.UpdateStatus(ctx, status, nil)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating BackupVault", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	paths := []string{}
-	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
-		report.AddField("description", a.actual.Description, a.desired.Description)
-		paths = append(paths, "description")
-	}
-	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
-		report.AddField("labels", a.actual.Labels, a.desired.Labels)
-		paths = append(paths, "labels")
-	}
-	if !reflect.DeepEqual(a.desired.BackupMinimumEnforcedRetentionDuration, a.actual.BackupMinimumEnforcedRetentionDuration) {
-		report.AddField("backup_minimum_enforced_retention_duration", a.actual.BackupMinimumEnforcedRetentionDuration, a.desired.BackupMinimumEnforcedRetentionDuration)
-		paths = append(paths, "backup_minimum_enforced_retention_duration")
-	}
-	if !reflect.DeepEqual(a.desired.EffectiveTime, a.actual.EffectiveTime) {
-		report.AddField("effective_time", a.actual.EffectiveTime, a.desired.EffectiveTime)
-		paths = append(paths, "effective_time")
-	}
-	if !reflect.DeepEqual(a.desired.Annotations, a.actual.Annotations) {
-		report.AddField("annotations", a.actual.Annotations, a.desired.Annotations)
-		paths = append(paths, "annotations")
-	}
-	if !reflect.DeepEqual(a.desired.AccessRestriction, a.actual.AccessRestriction) {
-		report.AddField("access_restriction", a.actual.AccessRestriction, a.desired.AccessRestriction)
-		paths = append(paths, "access_restriction")
+	diffs, updateMask, err := compareBackupVault(ctx, a.actual, a.desired)
+	if err != nil {
+		return err
 	}
 
-	var updated *pb.BackupVault
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-		// even though there is no update, we still want to update KRM status
-		updated = a.actual
-	} else {
-		structuredreporting.ReportDiff(ctx, report)
+	latest := a.actual
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
+
 		a.desired.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		a.desired.Etag = a.actual.Etag // Etag is always updated, even if it is not changed.
 		req := &pb.UpdateBackupVaultRequest{
 			BackupVault: a.desired,
-			UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
+			UpdateMask:  updateMask,
 		}
 		op, err := a.gcpClient.UpdateBackupVault(ctx, req)
 		if err != nil {
 			return fmt.Errorf("updating BackupVault %s: %w", a.id, err)
 		}
 
-		updated, err = op.Wait(ctx)
+		latest, err = op.Wait(ctx)
 		if err != nil {
 			return fmt.Errorf("BackupVault %s waiting update: %w", a.id, err)
 		}
 		log.V(2).Info("successfully updated BackupVault", "name", a.id)
 	}
 
+	return a.updateStatus(ctx, updateOp, latest)
+}
+
+func (a *BackupVaultAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.BackupVault) error {
+	mapCtx := &direct.MapContext{}
 	status := &krm.BackupDRBackupVaultStatus{}
-	status.ObservedState = BackupDRBackupVaultObservedState_v1beta1_FromProto(mapCtx, updated)
+	status.ObservedState = BackupDRBackupVaultObservedState_v1beta1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return updateOp.UpdateStatus(ctx, status, nil)
+	return op.UpdateStatus(ctx, status, nil)
+}
+
+func compareBackupVault(ctx context.Context, actual, desired *pb.BackupVault) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, BackupDRBackupVaultSpec_v1beta1_FromProto, BackupDRBackupVaultSpec_v1beta1_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+	maskedActual.Name = desired.Name
+	maskedActual.Labels = actual.Labels
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.

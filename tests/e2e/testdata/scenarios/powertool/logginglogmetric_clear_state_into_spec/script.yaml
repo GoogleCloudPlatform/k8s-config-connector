@@ -43,6 +43,7 @@ spec:
     unit: "1"
 ---
 kind: RunCLI
+DEFER-HTTP-LOG: true
 args: [ "powertools", "change-state-into-spec", "--namespace=${projectId}", "--kind=LoggingLogMetric", "--name=logginglogmetric-${uniqueId}" ]
 ---
 TEST: READ-OBJECT-AND-COMPARE-SPEC

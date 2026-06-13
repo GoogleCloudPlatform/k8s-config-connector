@@ -61,6 +61,8 @@ func (r *AIStreamsClusterRef) GetExternal() string {
 
 func (r *AIStreamsClusterRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *AIStreamsClusterRef) ValidateExternal(ref string) error {

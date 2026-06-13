@@ -1,0 +1,11 @@
+apiVersion: securitycenter.cnrm.cloud.google.com/v1alpha1
+kind: SecurityCenterMuteConfig
+metadata:
+  name: scmuteconfig-dyn-${uniqueId}
+spec:
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  description: "Dynamic SecurityCenterMuteConfig description"
+  filter: category = "VULNERABILITY" AND severity = "LOW"
+  type: DYNAMIC
+  expiryTime: "2028-06-05T12:00:00Z"

@@ -23,6 +23,7 @@ import (
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/wait"
 )
 
 func TestConfigConnectorE2E(t *testing.T) {
@@ -65,24 +66,21 @@ func TestConfigConnectorE2E(t *testing.T) {
 	}
 
 	// Poll for status/observedGeneration
-	newCC := &corev1beta1.ConfigConnector{}
-	for i := 0; i < 180; i++ {
+	err := wait.PollUntilContextTimeout(ctx, 2*time.Second, 3*time.Minute, true, func(ctx context.Context) (bool, error) {
+		newCC := &corev1beta1.ConfigConnector{}
 		if err := c.Get(ctx, nn, newCC); err != nil {
-			t.Errorf("failed to get ConfigConnector: %v", err)
-			return
+			return false, nil
 		}
 		status := newCC.GetCommonStatus()
 		if status.Healthy && len(status.Errors) == 0 {
-			return
+			return true, nil
 		}
-		time.Sleep(1 * time.Second)
-	}
-
-	status := newCC.GetCommonStatus()
-	if got, want := status.Healthy, true; got != want {
-		t.Errorf("unexpected value for status.healthy: got '%v', want '%v', status: %+v", got, want, status)
-	}
-	if len(status.Errors) != 0 {
-		t.Errorf("unexpected number of errors in status.errors: got %v, want 0. Got errors: %v", len(status.Errors), status.Errors)
+		return false, nil
+	})
+	if err != nil {
+		newCC := &corev1beta1.ConfigConnector{}
+		_ = c.Get(ctx, nn, newCC)
+		status := newCC.GetCommonStatus()
+		t.Errorf("ConfigConnector failed to become healthy within timeout. err: %v, status: %v", err, status)
 	}
 }

@@ -35,6 +35,7 @@ import (
 	apigatewayv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1beta1"
 	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
+	apigeeregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigeeregistry/v1alpha1"
 	apihubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apihub/v1alpha1"
 	apikeysv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apikeys/v1alpha1"
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1"
@@ -86,25 +87,31 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1"
+	contactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contactcenterinsights/v1alpha1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1"
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1alpha1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1beta1"
 	containerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containerattached/v1beta1"
+	contentwarehousev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contentwarehouse/v1alpha1"
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
+	datalabelingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalabeling/v1alpha1"
+	datamigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datamigration/v1alpha1"
 	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataplex/v1alpha1"
 	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1alpha1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1"
 	datastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastore/v1alpha1"
 	datastreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastream/v1alpha1"
 	deploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/deploymentmanager/v1alpha1"
+	developerconnectv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/developerconnect/v1alpha1"
 	devicestreamingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/devicestreaming/v1alpha1"
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
 	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1"
+	dlpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1alpha1"
 	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1"
 	dnsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1alpha1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1"
@@ -145,6 +152,7 @@ import (
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1"
+	modelarmorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/modelarmor/v1alpha1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1"
 	netappv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/netapp/v1alpha1"
 	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1alpha1"
@@ -156,7 +164,6 @@ import (
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1beta1"
 	notebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha1"
 	notebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1"
-	orgpolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1alpha1"
 	orgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1beta1"
 	osconfigv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1alpha1"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1beta1"
@@ -216,6 +223,7 @@ type Interface interface {
 	ApigatewayV1beta1() apigatewayv1beta1.ApigatewayV1beta1Interface
 	ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface
 	ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface
+	ApigeeregistryV1alpha1() apigeeregistryv1alpha1.ApigeeregistryV1alpha1Interface
 	ApihubV1alpha1() apihubv1alpha1.ApihubV1alpha1Interface
 	ApikeysV1alpha1() apikeysv1alpha1.ApikeysV1alpha1Interface
 	AppengineV1alpha1() appenginev1alpha1.AppengineV1alpha1Interface
@@ -267,25 +275,31 @@ type Interface interface {
 	ComputeV1beta1() computev1beta1.ComputeV1beta1Interface
 	ConfigcontrollerV1beta1() configcontrollerv1beta1.ConfigcontrollerV1beta1Interface
 	ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface
+	ContactcenterinsightsV1alpha1() contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Interface
 	ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface
 	ContaineranalysisV1alpha1() containeranalysisv1alpha1.ContaineranalysisV1alpha1Interface
 	ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface
 	ContainerattachedV1beta1() containerattachedv1beta1.ContainerattachedV1beta1Interface
+	ContentwarehouseV1alpha1() contentwarehousev1alpha1.ContentwarehouseV1alpha1Interface
 	DatacatalogV1alpha1() datacatalogv1alpha1.DatacatalogV1alpha1Interface
 	DatacatalogV1beta1() datacatalogv1beta1.DatacatalogV1beta1Interface
 	DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface
 	DataformV1beta1() dataformv1beta1.DataformV1beta1Interface
 	DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface
+	DatalabelingV1alpha1() datalabelingv1alpha1.DatalabelingV1alpha1Interface
+	DatamigrationV1alpha1() datamigrationv1alpha1.DatamigrationV1alpha1Interface
 	DataplexV1alpha1() dataplexv1alpha1.DataplexV1alpha1Interface
 	DataprocV1alpha1() dataprocv1alpha1.DataprocV1alpha1Interface
 	DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface
 	DatastoreV1alpha1() datastorev1alpha1.DatastoreV1alpha1Interface
 	DatastreamV1alpha1() datastreamv1alpha1.DatastreamV1alpha1Interface
 	DeploymentmanagerV1alpha1() deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Interface
+	DeveloperconnectV1alpha1() developerconnectv1alpha1.DeveloperconnectV1alpha1Interface
 	DevicestreamingV1alpha1() devicestreamingv1alpha1.DevicestreamingV1alpha1Interface
 	DialogflowV1alpha1() dialogflowv1alpha1.DialogflowV1alpha1Interface
 	DialogflowcxV1alpha1() dialogflowcxv1alpha1.DialogflowcxV1alpha1Interface
 	DiscoveryengineV1alpha1() discoveryenginev1alpha1.DiscoveryengineV1alpha1Interface
+	DlpV1alpha1() dlpv1alpha1.DlpV1alpha1Interface
 	DlpV1beta1() dlpv1beta1.DlpV1beta1Interface
 	DnsV1alpha1() dnsv1alpha1.DnsV1alpha1Interface
 	DnsV1beta1() dnsv1beta1.DnsV1beta1Interface
@@ -326,6 +340,7 @@ type Interface interface {
 	MetastoreV1alpha1() metastorev1alpha1.MetastoreV1alpha1Interface
 	MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interface
 	MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interface
+	ModelarmorV1alpha1() modelarmorv1alpha1.ModelarmorV1alpha1Interface
 	MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface
 	NetappV1alpha1() netappv1alpha1.NetappV1alpha1Interface
 	NetworkconnectivityV1alpha1() networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Interface
@@ -337,7 +352,6 @@ type Interface interface {
 	NetworkservicesV1beta1() networkservicesv1beta1.NetworkservicesV1beta1Interface
 	NotebooksV1alpha1() notebooksv1alpha1.NotebooksV1alpha1Interface
 	NotebooksV1beta1() notebooksv1beta1.NotebooksV1beta1Interface
-	OrgpolicyV1alpha1() orgpolicyv1alpha1.OrgpolicyV1alpha1Interface
 	OrgpolicyV1beta1() orgpolicyv1beta1.OrgpolicyV1beta1Interface
 	OsconfigV1alpha1() osconfigv1alpha1.OsconfigV1alpha1Interface
 	OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface
@@ -395,6 +409,7 @@ type Clientset struct {
 	apigatewayV1beta1               *apigatewayv1beta1.ApigatewayV1beta1Client
 	apigeeV1alpha1                  *apigeev1alpha1.ApigeeV1alpha1Client
 	apigeeV1beta1                   *apigeev1beta1.ApigeeV1beta1Client
+	apigeeregistryV1alpha1          *apigeeregistryv1alpha1.ApigeeregistryV1alpha1Client
 	apihubV1alpha1                  *apihubv1alpha1.ApihubV1alpha1Client
 	apikeysV1alpha1                 *apikeysv1alpha1.ApikeysV1alpha1Client
 	appengineV1alpha1               *appenginev1alpha1.AppengineV1alpha1Client
@@ -446,25 +461,31 @@ type Clientset struct {
 	computeV1beta1                  *computev1beta1.ComputeV1beta1Client
 	configcontrollerV1beta1         *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
 	configdeliveryV1alpha1          *configdeliveryv1alpha1.ConfigdeliveryV1alpha1Client
+	contactcenterinsightsV1alpha1   *contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Client
 	containerV1beta1                *containerv1beta1.ContainerV1beta1Client
 	containeranalysisV1alpha1       *containeranalysisv1alpha1.ContaineranalysisV1alpha1Client
 	containeranalysisV1beta1        *containeranalysisv1beta1.ContaineranalysisV1beta1Client
 	containerattachedV1beta1        *containerattachedv1beta1.ContainerattachedV1beta1Client
+	contentwarehouseV1alpha1        *contentwarehousev1alpha1.ContentwarehouseV1alpha1Client
 	datacatalogV1alpha1             *datacatalogv1alpha1.DatacatalogV1alpha1Client
 	datacatalogV1beta1              *datacatalogv1beta1.DatacatalogV1beta1Client
 	dataflowV1beta1                 *dataflowv1beta1.DataflowV1beta1Client
 	dataformV1beta1                 *dataformv1beta1.DataformV1beta1Client
 	datafusionV1beta1               *datafusionv1beta1.DatafusionV1beta1Client
+	datalabelingV1alpha1            *datalabelingv1alpha1.DatalabelingV1alpha1Client
+	datamigrationV1alpha1           *datamigrationv1alpha1.DatamigrationV1alpha1Client
 	dataplexV1alpha1                *dataplexv1alpha1.DataplexV1alpha1Client
 	dataprocV1alpha1                *dataprocv1alpha1.DataprocV1alpha1Client
 	dataprocV1beta1                 *dataprocv1beta1.DataprocV1beta1Client
 	datastoreV1alpha1               *datastorev1alpha1.DatastoreV1alpha1Client
 	datastreamV1alpha1              *datastreamv1alpha1.DatastreamV1alpha1Client
 	deploymentmanagerV1alpha1       *deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Client
+	developerconnectV1alpha1        *developerconnectv1alpha1.DeveloperconnectV1alpha1Client
 	devicestreamingV1alpha1         *devicestreamingv1alpha1.DevicestreamingV1alpha1Client
 	dialogflowV1alpha1              *dialogflowv1alpha1.DialogflowV1alpha1Client
 	dialogflowcxV1alpha1            *dialogflowcxv1alpha1.DialogflowcxV1alpha1Client
 	discoveryengineV1alpha1         *discoveryenginev1alpha1.DiscoveryengineV1alpha1Client
+	dlpV1alpha1                     *dlpv1alpha1.DlpV1alpha1Client
 	dlpV1beta1                      *dlpv1beta1.DlpV1beta1Client
 	dnsV1alpha1                     *dnsv1alpha1.DnsV1alpha1Client
 	dnsV1beta1                      *dnsv1beta1.DnsV1beta1Client
@@ -505,6 +526,7 @@ type Clientset struct {
 	metastoreV1alpha1               *metastorev1alpha1.MetastoreV1alpha1Client
 	metastoreV1beta1                *metastorev1beta1.MetastoreV1beta1Client
 	mlengineV1alpha1                *mlenginev1alpha1.MlengineV1alpha1Client
+	modelarmorV1alpha1              *modelarmorv1alpha1.ModelarmorV1alpha1Client
 	monitoringV1beta1               *monitoringv1beta1.MonitoringV1beta1Client
 	netappV1alpha1                  *netappv1alpha1.NetappV1alpha1Client
 	networkconnectivityV1alpha1     *networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Client
@@ -516,7 +538,6 @@ type Clientset struct {
 	networkservicesV1beta1          *networkservicesv1beta1.NetworkservicesV1beta1Client
 	notebooksV1alpha1               *notebooksv1alpha1.NotebooksV1alpha1Client
 	notebooksV1beta1                *notebooksv1beta1.NotebooksV1beta1Client
-	orgpolicyV1alpha1               *orgpolicyv1alpha1.OrgpolicyV1alpha1Client
 	orgpolicyV1beta1                *orgpolicyv1beta1.OrgpolicyV1beta1Client
 	osconfigV1alpha1                *osconfigv1alpha1.OsconfigV1alpha1Client
 	osconfigV1beta1                 *osconfigv1beta1.OsconfigV1beta1Client
@@ -609,6 +630,11 @@ func (c *Clientset) ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface {
 // ApigeeV1beta1 retrieves the ApigeeV1beta1Client
 func (c *Clientset) ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface {
 	return c.apigeeV1beta1
+}
+
+// ApigeeregistryV1alpha1 retrieves the ApigeeregistryV1alpha1Client
+func (c *Clientset) ApigeeregistryV1alpha1() apigeeregistryv1alpha1.ApigeeregistryV1alpha1Interface {
+	return c.apigeeregistryV1alpha1
 }
 
 // ApihubV1alpha1 retrieves the ApihubV1alpha1Client
@@ -866,6 +892,11 @@ func (c *Clientset) ConfigdeliveryV1alpha1() configdeliveryv1alpha1.Configdelive
 	return c.configdeliveryV1alpha1
 }
 
+// ContactcenterinsightsV1alpha1 retrieves the ContactcenterinsightsV1alpha1Client
+func (c *Clientset) ContactcenterinsightsV1alpha1() contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Interface {
+	return c.contactcenterinsightsV1alpha1
+}
+
 // ContainerV1beta1 retrieves the ContainerV1beta1Client
 func (c *Clientset) ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface {
 	return c.containerV1beta1
@@ -884,6 +915,11 @@ func (c *Clientset) ContaineranalysisV1beta1() containeranalysisv1beta1.Containe
 // ContainerattachedV1beta1 retrieves the ContainerattachedV1beta1Client
 func (c *Clientset) ContainerattachedV1beta1() containerattachedv1beta1.ContainerattachedV1beta1Interface {
 	return c.containerattachedV1beta1
+}
+
+// ContentwarehouseV1alpha1 retrieves the ContentwarehouseV1alpha1Client
+func (c *Clientset) ContentwarehouseV1alpha1() contentwarehousev1alpha1.ContentwarehouseV1alpha1Interface {
+	return c.contentwarehouseV1alpha1
 }
 
 // DatacatalogV1alpha1 retrieves the DatacatalogV1alpha1Client
@@ -909,6 +945,16 @@ func (c *Clientset) DataformV1beta1() dataformv1beta1.DataformV1beta1Interface {
 // DatafusionV1beta1 retrieves the DatafusionV1beta1Client
 func (c *Clientset) DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface {
 	return c.datafusionV1beta1
+}
+
+// DatalabelingV1alpha1 retrieves the DatalabelingV1alpha1Client
+func (c *Clientset) DatalabelingV1alpha1() datalabelingv1alpha1.DatalabelingV1alpha1Interface {
+	return c.datalabelingV1alpha1
+}
+
+// DatamigrationV1alpha1 retrieves the DatamigrationV1alpha1Client
+func (c *Clientset) DatamigrationV1alpha1() datamigrationv1alpha1.DatamigrationV1alpha1Interface {
+	return c.datamigrationV1alpha1
 }
 
 // DataplexV1alpha1 retrieves the DataplexV1alpha1Client
@@ -941,6 +987,11 @@ func (c *Clientset) DeploymentmanagerV1alpha1() deploymentmanagerv1alpha1.Deploy
 	return c.deploymentmanagerV1alpha1
 }
 
+// DeveloperconnectV1alpha1 retrieves the DeveloperconnectV1alpha1Client
+func (c *Clientset) DeveloperconnectV1alpha1() developerconnectv1alpha1.DeveloperconnectV1alpha1Interface {
+	return c.developerconnectV1alpha1
+}
+
 // DevicestreamingV1alpha1 retrieves the DevicestreamingV1alpha1Client
 func (c *Clientset) DevicestreamingV1alpha1() devicestreamingv1alpha1.DevicestreamingV1alpha1Interface {
 	return c.devicestreamingV1alpha1
@@ -959,6 +1010,11 @@ func (c *Clientset) DialogflowcxV1alpha1() dialogflowcxv1alpha1.DialogflowcxV1al
 // DiscoveryengineV1alpha1 retrieves the DiscoveryengineV1alpha1Client
 func (c *Clientset) DiscoveryengineV1alpha1() discoveryenginev1alpha1.DiscoveryengineV1alpha1Interface {
 	return c.discoveryengineV1alpha1
+}
+
+// DlpV1alpha1 retrieves the DlpV1alpha1Client
+func (c *Clientset) DlpV1alpha1() dlpv1alpha1.DlpV1alpha1Interface {
+	return c.dlpV1alpha1
 }
 
 // DlpV1beta1 retrieves the DlpV1beta1Client
@@ -1161,6 +1217,11 @@ func (c *Clientset) MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interfac
 	return c.mlengineV1alpha1
 }
 
+// ModelarmorV1alpha1 retrieves the ModelarmorV1alpha1Client
+func (c *Clientset) ModelarmorV1alpha1() modelarmorv1alpha1.ModelarmorV1alpha1Interface {
+	return c.modelarmorV1alpha1
+}
+
 // MonitoringV1beta1 retrieves the MonitoringV1beta1Client
 func (c *Clientset) MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface {
 	return c.monitoringV1beta1
@@ -1214,11 +1275,6 @@ func (c *Clientset) NotebooksV1alpha1() notebooksv1alpha1.NotebooksV1alpha1Inter
 // NotebooksV1beta1 retrieves the NotebooksV1beta1Client
 func (c *Clientset) NotebooksV1beta1() notebooksv1beta1.NotebooksV1beta1Interface {
 	return c.notebooksV1beta1
-}
-
-// OrgpolicyV1alpha1 retrieves the OrgpolicyV1alpha1Client
-func (c *Clientset) OrgpolicyV1alpha1() orgpolicyv1alpha1.OrgpolicyV1alpha1Interface {
-	return c.orgpolicyV1alpha1
 }
 
 // OrgpolicyV1beta1 retrieves the OrgpolicyV1beta1Client
@@ -1515,6 +1571,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.apigeeregistryV1alpha1, err = apigeeregistryv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.apihubV1alpha1, err = apihubv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1719,6 +1779,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.contactcenterinsightsV1alpha1, err = contactcenterinsightsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.containerV1beta1, err = containerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1732,6 +1796,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.containerattachedV1beta1, err = containerattachedv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.contentwarehouseV1alpha1, err = contentwarehousev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1752,6 +1820,14 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.datafusionV1beta1, err = datafusionv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.datalabelingV1alpha1, err = datalabelingv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.datamigrationV1alpha1, err = datamigrationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1779,6 +1855,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.developerconnectV1alpha1, err = developerconnectv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.devicestreamingV1alpha1, err = devicestreamingv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1792,6 +1872,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.discoveryengineV1alpha1, err = discoveryenginev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.dlpV1alpha1, err = dlpv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1955,6 +2039,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.modelarmorV1alpha1, err = modelarmorv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.monitoringV1beta1, err = monitoringv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1996,10 +2084,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.notebooksV1beta1, err = notebooksv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
-	cs.orgpolicyV1alpha1, err = orgpolicyv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2202,6 +2286,7 @@ func New(c rest.Interface) *Clientset {
 	cs.apigatewayV1beta1 = apigatewayv1beta1.New(c)
 	cs.apigeeV1alpha1 = apigeev1alpha1.New(c)
 	cs.apigeeV1beta1 = apigeev1beta1.New(c)
+	cs.apigeeregistryV1alpha1 = apigeeregistryv1alpha1.New(c)
 	cs.apihubV1alpha1 = apihubv1alpha1.New(c)
 	cs.apikeysV1alpha1 = apikeysv1alpha1.New(c)
 	cs.appengineV1alpha1 = appenginev1alpha1.New(c)
@@ -2253,25 +2338,31 @@ func New(c rest.Interface) *Clientset {
 	cs.computeV1beta1 = computev1beta1.New(c)
 	cs.configcontrollerV1beta1 = configcontrollerv1beta1.New(c)
 	cs.configdeliveryV1alpha1 = configdeliveryv1alpha1.New(c)
+	cs.contactcenterinsightsV1alpha1 = contactcenterinsightsv1alpha1.New(c)
 	cs.containerV1beta1 = containerv1beta1.New(c)
 	cs.containeranalysisV1alpha1 = containeranalysisv1alpha1.New(c)
 	cs.containeranalysisV1beta1 = containeranalysisv1beta1.New(c)
 	cs.containerattachedV1beta1 = containerattachedv1beta1.New(c)
+	cs.contentwarehouseV1alpha1 = contentwarehousev1alpha1.New(c)
 	cs.datacatalogV1alpha1 = datacatalogv1alpha1.New(c)
 	cs.datacatalogV1beta1 = datacatalogv1beta1.New(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.New(c)
 	cs.dataformV1beta1 = dataformv1beta1.New(c)
 	cs.datafusionV1beta1 = datafusionv1beta1.New(c)
+	cs.datalabelingV1alpha1 = datalabelingv1alpha1.New(c)
+	cs.datamigrationV1alpha1 = datamigrationv1alpha1.New(c)
 	cs.dataplexV1alpha1 = dataplexv1alpha1.New(c)
 	cs.dataprocV1alpha1 = dataprocv1alpha1.New(c)
 	cs.dataprocV1beta1 = dataprocv1beta1.New(c)
 	cs.datastoreV1alpha1 = datastorev1alpha1.New(c)
 	cs.datastreamV1alpha1 = datastreamv1alpha1.New(c)
 	cs.deploymentmanagerV1alpha1 = deploymentmanagerv1alpha1.New(c)
+	cs.developerconnectV1alpha1 = developerconnectv1alpha1.New(c)
 	cs.devicestreamingV1alpha1 = devicestreamingv1alpha1.New(c)
 	cs.dialogflowV1alpha1 = dialogflowv1alpha1.New(c)
 	cs.dialogflowcxV1alpha1 = dialogflowcxv1alpha1.New(c)
 	cs.discoveryengineV1alpha1 = discoveryenginev1alpha1.New(c)
+	cs.dlpV1alpha1 = dlpv1alpha1.New(c)
 	cs.dlpV1beta1 = dlpv1beta1.New(c)
 	cs.dnsV1alpha1 = dnsv1alpha1.New(c)
 	cs.dnsV1beta1 = dnsv1beta1.New(c)
@@ -2312,6 +2403,7 @@ func New(c rest.Interface) *Clientset {
 	cs.metastoreV1alpha1 = metastorev1alpha1.New(c)
 	cs.metastoreV1beta1 = metastorev1beta1.New(c)
 	cs.mlengineV1alpha1 = mlenginev1alpha1.New(c)
+	cs.modelarmorV1alpha1 = modelarmorv1alpha1.New(c)
 	cs.monitoringV1beta1 = monitoringv1beta1.New(c)
 	cs.netappV1alpha1 = netappv1alpha1.New(c)
 	cs.networkconnectivityV1alpha1 = networkconnectivityv1alpha1.New(c)
@@ -2323,7 +2415,6 @@ func New(c rest.Interface) *Clientset {
 	cs.networkservicesV1beta1 = networkservicesv1beta1.New(c)
 	cs.notebooksV1alpha1 = notebooksv1alpha1.New(c)
 	cs.notebooksV1beta1 = notebooksv1beta1.New(c)
-	cs.orgpolicyV1alpha1 = orgpolicyv1alpha1.New(c)
 	cs.orgpolicyV1beta1 = orgpolicyv1beta1.New(c)
 	cs.osconfigV1alpha1 = osconfigv1alpha1.New(c)
 	cs.osconfigV1beta1 = osconfigv1beta1.New(c)

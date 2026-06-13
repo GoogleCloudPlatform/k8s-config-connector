@@ -55,6 +55,8 @@ func (r *ParameterRef) GetExternal() string {
 
 func (r *ParameterRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ParameterRef) ValidateExternal(ref string) error {

@@ -58,6 +58,8 @@ func (r *TasksQueueRef) GetExternal() string {
 
 func (r *TasksQueueRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *TasksQueueRef) ValidateExternal(ref string) error {

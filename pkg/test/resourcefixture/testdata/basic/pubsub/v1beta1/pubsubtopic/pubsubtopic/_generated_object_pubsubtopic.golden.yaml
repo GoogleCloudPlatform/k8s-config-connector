@@ -4,11 +4,10 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     label-one: value-one
@@ -17,7 +16,10 @@ metadata:
   namespace: ${uniqueId}
 spec:
   messageRetentionDuration: 3600s
-  resourceID: pubsubtopic-sample-${uniqueId}
+  messageStoragePolicy:
+    allowedPersistenceRegions:
+    - us-central1
+    enforceInTransit: false
   schemaSettings:
     encoding: JSON
     schemaRef:
@@ -29,4 +31,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 3
+  observedGeneration: 2

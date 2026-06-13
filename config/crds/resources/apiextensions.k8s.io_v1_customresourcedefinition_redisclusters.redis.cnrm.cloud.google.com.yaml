@@ -66,13 +66,130 @@ spec:
                 description: Optional. The authorization mode of the Redis cluster.
                   If not provided, auth feature is disabled for the cluster.
                 type: string
+              automatedBackupConfig:
+                description: Optional. The automated backup config for the cluster.
+                properties:
+                  automatedBackupMode:
+                    description: Optional. The automated backup mode. If the mode
+                      is disabled, the other fields will be ignored.
+                    type: string
+                  fixedFrequencySchedule:
+                    description: Optional. Trigger automated backups at a fixed frequency.
+                    properties:
+                      startTime:
+                        description: Required. The start time of every automated backup
+                          in UTC. It must be set to the start of an hour. This field
+                          is required.
+                        properties:
+                          hours:
+                            description: Hours of day in 24 hour format. Should be
+                              from 0 to 23. An API may choose to allow the value "24:00:00"
+                              for scenarios like business closing time.
+                            format: int32
+                            type: integer
+                          minutes:
+                            description: Minutes of hour of day. Must be from 0 to
+                              59.
+                            format: int32
+                            type: integer
+                          nanos:
+                            description: Fractions of seconds in nanoseconds. Must
+                              be from 0 to 999,999,999.
+                            format: int32
+                            type: integer
+                          seconds:
+                            description: Seconds of minutes of the time. Must normally
+                              be from 0 to 59. An API may allow the value 60 if it
+                              allows leap-seconds.
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
+                  retention:
+                    description: Optional. How long to keep automated backups before
+                      the backups are deleted. The value should be between 1 day and
+                      365 days. If not specified, the default value is 35 days.
+                    type: string
+                type: object
               deletionProtectionEnabled:
                 description: Optional. The delete operation will fail when the value
                   is set to true.
                 type: boolean
+              kmsKeyRef:
+                description: Optional. The KMS key name to encrypt data at rest.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               location:
                 description: Immutable. Location of the resource.
                 type: string
+              maintenancePolicy:
+                description: Optional. ClusterMaintenancePolicy determines when to
+                  allow or deny updates.
+                properties:
+                  weeklyMaintenanceWindow:
+                    description: Optional. Maintenance window that is applied to resources
+                      covered by this policy. Minimum 1. For the current version,
+                      the maximum number of weekly_maintenance_window is expected
+                      to be one.
+                    items:
+                      properties:
+                        day:
+                          description: Allows to define schedule that runs specified
+                            day of the week.
+                          type: string
+                        startTime:
+                          description: Start time of the window in UTC.
+                          properties:
+                            hours:
+                              description: Hours of day in 24 hour format. Should
+                                be from 0 to 23. An API may choose to allow the value
+                                "24:00:00" for scenarios like business closing time.
+                              format: int32
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
+                              type: integer
+                            seconds:
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
+                              type: integer
+                          type: object
+                      type: object
+                    type: array
+                type: object
               nodeType:
                 description: Optional. The type of a redis node in the cluster. NodeType
                   determines the underlying machine-type of a redis node.
@@ -295,6 +412,55 @@ spec:
                           type: object
                       type: object
                     type: array
+                  encryptionInfo:
+                    description: Output only. Encryption information for the client
+                      to retrieve.
+                    properties:
+                      encryptionType:
+                        description: Output only. Type of encryption.
+                        type: string
+                      kmsKeyPrimaryState:
+                        description: Output only. The state of the primary version
+                          of the KMS key perceived by the system. This field is not
+                          populated in backups.
+                        type: string
+                      kmsKeyVersions:
+                        description: Output only. KMS key versions that are being
+                          used to protect the data at-rest.
+                        items:
+                          type: string
+                        type: array
+                      lastUpdateTime:
+                        description: Output only. The most recent time when the encryption
+                          info was updated.
+                        type: string
+                    type: object
+                  maintenancePolicy:
+                    description: Optional. ClusterMaintenancePolicy determines when
+                      to allow or deny updates.
+                    properties:
+                      createTime:
+                        description: Output only. The time when the policy was created
+                          i.e. Maintenance Window or Deny Period was assigned.
+                        type: string
+                      updateTime:
+                        description: Output only. The time when the policy was updated
+                          i.e. Maintenance Window or Deny Period was updated.
+                        type: string
+                    type: object
+                  maintenanceSchedule:
+                    description: Output only. ClusterMaintenanceSchedule Output only
+                      Published maintenance schedule.
+                    properties:
+                      endTime:
+                        description: Output only. The end time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                      startTime:
+                        description: Output only. The start time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                    type: object
                   preciseSizeGb:
                     description: Output only. Precise value of redis memory size in
                       GB for the entire cluster.
@@ -327,6 +493,21 @@ spec:
                         serviceAttachment:
                           description: Required. The service attachment which is the
                             target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                          type: string
+                      type: object
+                    type: array
+                  pscServiceAttachments:
+                    description: Output only. Service attachment details to configure
+                      Psc connections.
+                    items:
+                      properties:
+                        connectionType:
+                          description: Output only. Type of a PSC connection targeting
+                            this service attachment.
+                          type: string
+                        serviceAttachment:
+                          description: Output only. Service attachment URI which your
+                            self-created PscConnection should use as target
                           type: string
                       type: object
                     type: array
@@ -408,13 +589,130 @@ spec:
                 description: Optional. The authorization mode of the Redis cluster.
                   If not provided, auth feature is disabled for the cluster.
                 type: string
+              automatedBackupConfig:
+                description: Optional. The automated backup config for the cluster.
+                properties:
+                  automatedBackupMode:
+                    description: Optional. The automated backup mode. If the mode
+                      is disabled, the other fields will be ignored.
+                    type: string
+                  fixedFrequencySchedule:
+                    description: Optional. Trigger automated backups at a fixed frequency.
+                    properties:
+                      startTime:
+                        description: Required. The start time of every automated backup
+                          in UTC. It must be set to the start of an hour. This field
+                          is required.
+                        properties:
+                          hours:
+                            description: Hours of day in 24 hour format. Should be
+                              from 0 to 23. An API may choose to allow the value "24:00:00"
+                              for scenarios like business closing time.
+                            format: int32
+                            type: integer
+                          minutes:
+                            description: Minutes of hour of day. Must be from 0 to
+                              59.
+                            format: int32
+                            type: integer
+                          nanos:
+                            description: Fractions of seconds in nanoseconds. Must
+                              be from 0 to 999,999,999.
+                            format: int32
+                            type: integer
+                          seconds:
+                            description: Seconds of minutes of the time. Must normally
+                              be from 0 to 59. An API may allow the value 60 if it
+                              allows leap-seconds.
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
+                  retention:
+                    description: Optional. How long to keep automated backups before
+                      the backups are deleted. The value should be between 1 day and
+                      365 days. If not specified, the default value is 35 days.
+                    type: string
+                type: object
               deletionProtectionEnabled:
                 description: Optional. The delete operation will fail when the value
                   is set to true.
                 type: boolean
+              kmsKeyRef:
+                description: Optional. The KMS key name to encrypt data at rest.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               location:
                 description: Immutable. Location of the resource.
                 type: string
+              maintenancePolicy:
+                description: Optional. ClusterMaintenancePolicy determines when to
+                  allow or deny updates.
+                properties:
+                  weeklyMaintenanceWindow:
+                    description: Optional. Maintenance window that is applied to resources
+                      covered by this policy. Minimum 1. For the current version,
+                      the maximum number of weekly_maintenance_window is expected
+                      to be one.
+                    items:
+                      properties:
+                        day:
+                          description: Allows to define schedule that runs specified
+                            day of the week.
+                          type: string
+                        startTime:
+                          description: Start time of the window in UTC.
+                          properties:
+                            hours:
+                              description: Hours of day in 24 hour format. Should
+                                be from 0 to 23. An API may choose to allow the value
+                                "24:00:00" for scenarios like business closing time.
+                              format: int32
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
+                              type: integer
+                            seconds:
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
+                              type: integer
+                          type: object
+                      type: object
+                    type: array
+                type: object
               nodeType:
                 description: Optional. The type of a redis node in the cluster. NodeType
                   determines the underlying machine-type of a redis node.
@@ -637,6 +935,55 @@ spec:
                           type: object
                       type: object
                     type: array
+                  encryptionInfo:
+                    description: Output only. Encryption information for the client
+                      to retrieve.
+                    properties:
+                      encryptionType:
+                        description: Output only. Type of encryption.
+                        type: string
+                      kmsKeyPrimaryState:
+                        description: Output only. The state of the primary version
+                          of the KMS key perceived by the system. This field is not
+                          populated in backups.
+                        type: string
+                      kmsKeyVersions:
+                        description: Output only. KMS key versions that are being
+                          used to protect the data at-rest.
+                        items:
+                          type: string
+                        type: array
+                      lastUpdateTime:
+                        description: Output only. The most recent time when the encryption
+                          info was updated.
+                        type: string
+                    type: object
+                  maintenancePolicy:
+                    description: Optional. ClusterMaintenancePolicy determines when
+                      to allow or deny updates.
+                    properties:
+                      createTime:
+                        description: Output only. The time when the policy was created
+                          i.e. Maintenance Window or Deny Period was assigned.
+                        type: string
+                      updateTime:
+                        description: Output only. The time when the policy was updated
+                          i.e. Maintenance Window or Deny Period was updated.
+                        type: string
+                    type: object
+                  maintenanceSchedule:
+                    description: Output only. ClusterMaintenanceSchedule Output only
+                      Published maintenance schedule.
+                    properties:
+                      endTime:
+                        description: Output only. The end time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                      startTime:
+                        description: Output only. The start time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                    type: object
                   preciseSizeGb:
                     description: Output only. Precise value of redis memory size in
                       GB for the entire cluster.
@@ -669,6 +1016,21 @@ spec:
                         serviceAttachment:
                           description: Required. The service attachment which is the
                             target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                          type: string
+                      type: object
+                    type: array
+                  pscServiceAttachments:
+                    description: Output only. Service attachment details to configure
+                      Psc connections.
+                    items:
+                      properties:
+                        connectionType:
+                          description: Output only. Type of a PSC connection targeting
+                            this service attachment.
+                          type: string
+                        serviceAttachment:
+                          description: Output only. Service attachment URI which your
+                            self-created PscConnection should use as target
                           type: string
                       type: object
                     type: array

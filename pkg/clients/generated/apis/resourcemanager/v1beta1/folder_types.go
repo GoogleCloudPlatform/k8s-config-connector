@@ -42,16 +42,11 @@ type FolderSpec struct {
 	/* The folder's display name. A folder's display name must be unique amongst its siblings, e.g. no two folders with the same parent can share the same display name. The display name must start and end with a letter or digit, may contain letters, digits, spaces, hyphens and underscores and can be no longer than 30 characters. */
 	DisplayName string `json:"displayName"`
 
-	/* The folder that this resource belongs to. Changing this forces the
-	resource to be migrated to the newly specified folder. Only one of
-	folderRef or organizationRef may be specified. */
+	/* The folder that this resource belongs to. Changing this forces the resource to be migrated to the newly specified folder. Only one of folderRef or organizationRef may be specified. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-	/* The organization that this resource belongs to. Changing this
-	forces the resource to be migrated to the newly specified
-	organization. Only one of folderRef or organizationRef may be
-	specified. */
+	/* The organization that this resource belongs to. Changing this forces the resource to be migrated to the newly specified organization. Only one of folderRef or organizationRef may be specified. */
 	// +optional
 	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 

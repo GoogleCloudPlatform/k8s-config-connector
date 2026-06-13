@@ -45,7 +45,11 @@ func (w *visitorWalker) visitAny(path string, v reflect.Value) {
 		}
 	}
 	if shouldCallVisitor {
-		if err := w.visitor.VisitField(path, v.Interface()); err != nil {
+		val := v.Interface()
+		if v.Kind() != reflect.Ptr && v.CanAddr() {
+			val = v.Addr().Interface()
+		}
+		if err := w.visitor.VisitField(path, val); err != nil {
 			w.errs = append(w.errs, err)
 		}
 	}
@@ -74,12 +78,28 @@ func (w *visitorWalker) visitAny(path string, v reflect.Value) {
 	case reflect.Slice:
 		elemType := v.Type().Elem()
 		switch elemType.Kind() {
-		case reflect.Struct, reflect.String:
+		case reflect.Struct:
+			for i := 0; i < v.Len(); i++ {
+				elem := v.Index(i)
+				if elem.CanAddr() {
+					w.visitAny(path+"[]", elem.Addr())
+				} else {
+					w.visitAny(path+"[]", elem)
+				}
+			}
+		case reflect.Ptr:
+			for i := 0; i < v.Len(); i++ {
+				elem := v.Index(i)
+				if !elem.IsNil() {
+					w.visitAny(path+"[]", elem.Elem())
+				}
+			}
+		case reflect.String:
 			for i := 0; i < v.Len(); i++ {
 				w.visitAny(path+"[]", v.Index(i))
 			}
-		case reflect.Uint8:
-			// Do not visit []byte as individual values, treat as a leaf
+		case reflect.Uint8, reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Float32, reflect.Float64, reflect.Bool:
+			// Treat primitive slices as leaves
 		default:
 			w.errs = append(w.errs, fmt.Errorf("visiting slice of type %v is not supported", elemType.Kind()))
 		}

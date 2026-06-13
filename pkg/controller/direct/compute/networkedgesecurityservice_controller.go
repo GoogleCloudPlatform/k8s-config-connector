@@ -64,7 +64,7 @@ func (m *modelNetworkEdgeSecurityService) AdapterForObject(ctx context.Context, 
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewNetworkEdgeSecurityServiceIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func (m *modelNetworkEdgeSecurityService) AdapterForObject(ctx context.Context, 
 
 	return &NetworkEdgeSecurityServiceAdapter{
 		gcpClient: networkEdgeSecurityServicesClient,
-		id:        id,
+		id:        id.(*krm.ComputeNetworkEdgeSecurityServiceIdentity),
 		desired:   obj,
 		reader:    reader,
 	}, nil
@@ -95,7 +95,7 @@ func (m *modelNetworkEdgeSecurityService) AdapterForURL(ctx context.Context, url
 
 type NetworkEdgeSecurityServiceAdapter struct {
 	gcpClient *compute.NetworkEdgeSecurityServicesClient
-	id        *krm.NetworkEdgeSecurityServiceIdentity
+	id        *krm.ComputeNetworkEdgeSecurityServiceIdentity
 	desired   *krm.ComputeNetworkEdgeSecurityService
 	actual    *computepb.NetworkEdgeSecurityService
 	reader    client.Reader
@@ -112,9 +112,9 @@ func (a *NetworkEdgeSecurityServiceAdapter) Find(ctx context.Context) (bool, err
 	log.V(2).Info("getting ComputeNetworkEdgeSecurityService", "name", a.id)
 
 	req := &computepb.GetNetworkEdgeSecurityServiceRequest{
-		Project:                    a.id.Parent().ProjectID,
-		Region:                     a.id.Parent().Location,
-		NetworkEdgeSecurityService: a.id.ID(),
+		Project:                    a.id.Project,
+		Region:                     a.id.Region,
+		NetworkEdgeSecurityService: a.id.NetworkEdgeSecurityService,
 	}
 	actual, err := a.gcpClient.Get(ctx, req)
 	if err != nil {
@@ -144,11 +144,11 @@ func (a *NetworkEdgeSecurityServiceAdapter) Create(ctx context.Context, createOp
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = direct.LazyPtr(a.id.ID())
+	resource.Name = direct.LazyPtr(a.id.NetworkEdgeSecurityService)
 
 	req := &computepb.InsertNetworkEdgeSecurityServiceRequest{
-		Project:                            a.id.Parent().ProjectID,
-		Region:                             a.id.Parent().Location,
+		Project:                            a.id.Project,
+		Region:                             a.id.Region,
 		NetworkEdgeSecurityServiceResource: resource,
 	}
 	op, err := a.gcpClient.Insert(ctx, req)
@@ -194,7 +194,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = direct.LazyPtr(a.id.ID())
+	resource.Name = direct.LazyPtr(a.id.NetworkEdgeSecurityService)
 	// An up-to-date fingerprint must be provided in order to patch
 	resource.Fingerprint = a.actual.Fingerprint
 
@@ -227,9 +227,9 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	updateMask := strings.Join(paths, ",")
 
 	req := &computepb.PatchNetworkEdgeSecurityServiceRequest{
-		Project:                            a.id.Parent().ProjectID,
-		Region:                             a.id.Parent().Location,
-		NetworkEdgeSecurityService:         a.id.ID(),
+		Project:                            a.id.Project,
+		Region:                             a.id.Region,
+		NetworkEdgeSecurityService:         a.id.NetworkEdgeSecurityService,
 		NetworkEdgeSecurityServiceResource: resource,
 		UpdateMask:                         direct.LazyPtr(updateMask),
 	}
@@ -278,8 +278,8 @@ func (a *NetworkEdgeSecurityServiceAdapter) Export(ctx context.Context) (*unstru
 		return nil, mapCtx.Err()
 	}
 
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location // Region is the location for this resource.
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Region // Region is the location for this resource.
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -297,9 +297,9 @@ func (a *NetworkEdgeSecurityServiceAdapter) Delete(ctx context.Context, deleteOp
 	log.V(2).Info("deleting ComputeNetworkEdgeSecurityService", "name", a.id)
 
 	req := &computepb.DeleteNetworkEdgeSecurityServiceRequest{
-		Project:                    a.id.Parent().ProjectID,
-		Region:                     a.id.Parent().Location,
-		NetworkEdgeSecurityService: a.id.ID(),
+		Project:                    a.id.Project,
+		Region:                     a.id.Region,
+		NetworkEdgeSecurityService: a.id.NetworkEdgeSecurityService,
 	}
 	op, err := a.gcpClient.Delete(ctx, req)
 	if err != nil {
@@ -318,9 +318,9 @@ func (a *NetworkEdgeSecurityServiceAdapter) Delete(ctx context.Context, deleteOp
 
 func (a *NetworkEdgeSecurityServiceAdapter) get(ctx context.Context) (*computepb.NetworkEdgeSecurityService, error) {
 	getReq := &computepb.GetNetworkEdgeSecurityServiceRequest{
-		Project:                    a.id.Parent().ProjectID,
-		Region:                     a.id.Parent().Location,
-		NetworkEdgeSecurityService: a.id.ID(),
+		Project:                    a.id.Project,
+		Region:                     a.id.Region,
+		NetworkEdgeSecurityService: a.id.NetworkEdgeSecurityService,
 	}
 	resource, err := a.gcpClient.Get(ctx, getReq)
 	if err != nil {

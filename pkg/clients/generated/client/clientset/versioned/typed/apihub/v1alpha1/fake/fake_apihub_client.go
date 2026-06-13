@@ -39,6 +39,14 @@ func (c *FakeApihubV1alpha1) APIHubDeployments(namespace string) v1alpha1.APIHub
 	return newFakeAPIHubDeployments(c, namespace)
 }
 
+func (c *FakeApihubV1alpha1) APIHubPlugins(namespace string) v1alpha1.APIHubPluginInterface {
+	return newFakeAPIHubPlugins(c, namespace)
+}
+
+func (c *FakeApihubV1alpha1) APIHubRuntimeProjectAttachments(namespace string) v1alpha1.APIHubRuntimeProjectAttachmentInterface {
+	return newFakeAPIHubRuntimeProjectAttachments(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeApihubV1alpha1) RESTClient() rest.Interface {

@@ -60,6 +60,8 @@ func (r *WorkflowsExecutionRef) GetExternal() string {
 
 func (r *WorkflowsExecutionRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *WorkflowsExecutionRef) ValidateExternal(ref string) error {

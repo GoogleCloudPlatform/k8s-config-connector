@@ -51,6 +51,60 @@ func AssetStatus_ToProto(mapCtx *direct.MapContext, in *krm.AssetStatus) *pb.Ass
 	out.SecurityPolicyApplyingAssets = direct.ValueOf(in.SecurityPolicyApplyingAssets)
 	return out
 }
+func DataplexDataTaxonomyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataTaxonomy) *krm.DataplexDataTaxonomyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataTaxonomyObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	out.AttributeCount = direct.LazyPtr(in.GetAttributeCount())
+	// MISSING: Etag
+	out.ClassCount = direct.LazyPtr(in.GetClassCount())
+	return out
+}
+func DataplexDataTaxonomyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataTaxonomyObservedState) *pb.DataTaxonomy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataTaxonomy{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	out.AttributeCount = direct.ValueOf(in.AttributeCount)
+	// MISSING: Etag
+	out.ClassCount = direct.ValueOf(in.ClassCount)
+	return out
+}
+func DataplexDataTaxonomySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataTaxonomy) *krm.DataplexDataTaxonomySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataTaxonomySpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Labels
+	// MISSING: Etag
+	return out
+}
+func DataplexDataTaxonomySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataTaxonomySpec) *pb.DataTaxonomy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataTaxonomy{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Labels
+	// MISSING: Etag
+	return out
+}
 func DataplexEntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.DataplexEntryGroupObservedState {
 	if in == nil {
 		return nil

@@ -653,7 +653,7 @@ virtualRepositoryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a ArtifactRegistryRepository resource.</p>
+            <p>The name of an ArtifactRegistryRepository resource.</p>
         </td>
     </tr>
     <tr>
@@ -663,7 +663,7 @@ virtualRepositoryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a ArtifactRegistryRepository resource.</p>
+            <p>The namespace of an ArtifactRegistryRepository resource.</p>
         </td>
     </tr>
 </tbody>

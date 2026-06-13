@@ -39,19 +39,15 @@ type MessageStoragePolicy struct {
 	// and is not a valid configuration.
 	// +required
 	AllowedPersistenceRegions []string `json:"allowedPersistenceRegions"`
-}
 
-type SchemaRef struct {
-	// Allowed value: string of the format `projects/{{project}}/schemas/{{value}}`,
-	// where {{value}} is the `name` field of a `PubSubSchema`
-	// resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
+	// Optional. If true, `allowed_persistence_regions` is also used to enforce
+	//  in-transit guarantees for messages. That is, Pub/Sub will fail
+	//  Publish operations on this topic and subscribe operations
+	//  on any subscription attached to this topic in any region that is
+	//  not in `allowed_persistence_regions`.
+	// +kcc:proto:field=google.pubsub.v1.MessageStoragePolicy.enforce_in_transit
+	// +optional
+	EnforceInTransit *bool `json:"enforceInTransit,omitempty"`
 }
 
 type SchemaSettings struct {
@@ -60,7 +56,7 @@ type SchemaSettings struct {
 	Encoding *string `json:"encoding,omitempty"`
 
 	// +required
-	SchemaRef *SchemaRef `json:"schemaRef"`
+	SchemaRef *PubSubSchemaRef `json:"schemaRef"`
 }
 
 // PubSubTopicSpec defines the desired state of PubSubTopic

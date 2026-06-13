@@ -64,6 +64,8 @@ func (r *ComputeNodeGroupRef) GetExternal() string {
 
 func (r *ComputeNodeGroupRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeNodeGroupRef) ValidateExternal(ref string) error {

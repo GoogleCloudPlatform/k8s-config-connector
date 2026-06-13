@@ -19,8 +19,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -93,9 +91,9 @@ func ParseImportJobExternal(external string) (*KMSKeyRingIdentity, string, error
 		return nil, "", fmt.Errorf("format of KMSImportJob external=%q was not known (use projects/{{projectID}}/locations/{{location}}/keyRings/{{keyRingID}}/importJobs/{{importJobID}})", external)
 	}
 	p := &KMSKeyRingIdentity{
-		Parent: &parent.ProjectAndLocationParent{
-			ProjectID: tokens[1], Location: tokens[3],
-		}, ID: tokens[5],
+		Project:  tokens[1],
+		Location: tokens[3],
+		Keyring:  tokens[5],
 	}
 	resourceID := tokens[7]
 	return p, resourceID, nil

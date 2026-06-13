@@ -67,6 +67,8 @@ func (r *MemorystoreInstanceRef) GetExternal() string {
 
 func (r *MemorystoreInstanceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *MemorystoreInstanceRef) ValidateExternal(ref string) error {

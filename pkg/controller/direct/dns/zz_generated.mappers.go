@@ -118,6 +118,131 @@ func DNSManagedZoneStatus_ToAPI(mapCtx *direct.MapContext, in *krm.DNSManagedZon
 }
 */
 
+func DNSPolicySpec_FromAPI(mapCtx *direct.MapContext, in *api.Policy) *krm.DNSPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSPolicySpec{}
+	out.AlternativeNameServerConfig = PolicyAlternativeNameServerConfig_FromAPI(mapCtx, in.AlternativeNameServerConfig)
+	out.Description = direct.LazyPtr(in.Description)
+	out.EnableInboundForwarding = direct.LazyPtr(in.EnableInboundForwarding)
+	out.EnableLogging = direct.LazyPtr(in.EnableLogging)
+	out.Networks = direct.Slice_FromProto(mapCtx, in.Networks, PolicyNetworks_FromAPI)
+	out.ResourceID = direct.LazyPtr(in.Name)
+	return out
+}
+
+func DNSPolicySpec_ToAPI(mapCtx *direct.MapContext, in *krm.DNSPolicySpec) *api.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &api.Policy{}
+	out.AlternativeNameServerConfig = PolicyAlternativeNameServerConfig_ToAPI(mapCtx, in.AlternativeNameServerConfig)
+	out.Description = direct.ValueOf(in.Description)
+	out.EnableInboundForwarding = direct.ValueOf(in.EnableInboundForwarding)
+	out.EnableLogging = direct.ValueOf(in.EnableLogging)
+	out.Networks = direct.Slice_ToProto(mapCtx, in.Networks, PolicyNetworks_ToAPI)
+	// MISSING: Dns64Config
+	// MISSING: Id
+	out.Name = direct.ValueOf(in.ResourceID)
+	// MISSING: HTTPStatusCode
+	// MISSING: Header
+	return out
+}
+
+func DNSPolicyStatus_FromAPI(mapCtx *direct.MapContext, in *api.Policy) *krm.DNSPolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSPolicyStatus{}
+	// MISSING: Conditions
+	// MISSING: ObservedGeneration
+	return out
+}
+
+func DNSPolicyStatus_ToAPI(mapCtx *direct.MapContext, in *krm.DNSPolicyStatus) *api.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &api.Policy{}
+	// MISSING: AlternativeNameServerConfig
+	// MISSING: Description
+	// MISSING: Dns64Config
+	// MISSING: EnableInboundForwarding
+	// MISSING: EnableLogging
+	// MISSING: Id
+	// MISSING: Name
+	// MISSING: Networks
+	// MISSING: HTTPStatusCode
+	// MISSING: Header
+	return out
+}
+
+/* found existing non-generated mapping function "DNSRecordSetSpec_FromAPI", skipping
+func DNSRecordSetSpec_FromAPI(mapCtx *direct.MapContext, in *api.ResourceRecordSet) *krm.DNSRecordSetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSRecordSetSpec{}
+	out.Name = in.Name
+	out.RoutingPolicy = RecordsetRoutingPolicy_FromAPI(mapCtx, in.RoutingPolicy)
+	out.Rrdatas = in.Rrdatas
+	out.Ttl = direct.LazyPtr(in.Ttl)
+	out.Type = in.Type
+	// MISSING: ManagedZoneRef
+	// MISSING: RrdatasRefs
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "DNSRecordSetSpec_ToAPI", skipping
+func DNSRecordSetSpec_ToAPI(mapCtx *direct.MapContext, in *krm.DNSRecordSetSpec) *api.ResourceRecordSet {
+	if in == nil {
+		return nil
+	}
+	out := &api.ResourceRecordSet{}
+	out.Name = in.Name
+	out.RoutingPolicy = RecordsetRoutingPolicy_ToAPI(mapCtx, in.RoutingPolicy)
+	out.Rrdatas = in.Rrdatas
+	out.Ttl = direct.ValueOf(in.Ttl)
+	out.Type = in.Type
+	// MISSING: SignatureRrdatas
+	// MISSING: HTTPStatusCode
+	// MISSING: Header
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "DNSRecordSetStatus_FromAPI", skipping
+func DNSRecordSetStatus_FromAPI(mapCtx *direct.MapContext, in *api.ResourceRecordSet) *krm.DNSRecordSetStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSRecordSetStatus{}
+	// MISSING: Conditions
+	// MISSING: ObservedGeneration
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "DNSRecordSetStatus_ToAPI", skipping
+func DNSRecordSetStatus_ToAPI(mapCtx *direct.MapContext, in *krm.DNSRecordSetStatus) *api.ResourceRecordSet {
+	if in == nil {
+		return nil
+	}
+	out := &api.ResourceRecordSet{}
+	// MISSING: Name
+	// MISSING: RoutingPolicy
+	// MISSING: Rrdatas
+	// MISSING: SignatureRrdatas
+	// MISSING: Ttl
+	// MISSING: Type
+	// MISSING: HTTPStatusCode
+	// MISSING: Header
+	return out
+}
+*/
+
 func ManagedZoneCloudLoggingConfig_FromAPI(mapCtx *direct.MapContext, in *api.ManagedZoneCloudLoggingConfig) *krm.ManagedZoneCloudLoggingConfig {
 	if in == nil {
 		return nil
@@ -233,6 +358,70 @@ func ManagedZoneServiceDirectoryConfig_ToAPI(mapCtx *direct.MapContext, in *krm.
 	out.Namespace = ManagedZoneServiceDirectoryConfigNamespace_ToAPI(mapCtx, in.Namespace)
 	return out
 }
+
+func PolicyAlternativeNameServerConfig_FromAPI(mapCtx *direct.MapContext, in *api.PolicyAlternativeNameServerConfig) *krm.PolicyAlternativeNameServerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PolicyAlternativeNameServerConfig{}
+	out.TargetNameServers = direct.Slice_FromProto(mapCtx, in.TargetNameServers, PolicyTargetNameServers_FromAPI)
+	return out
+}
+
+func PolicyAlternativeNameServerConfig_ToAPI(mapCtx *direct.MapContext, in *krm.PolicyAlternativeNameServerConfig) *api.PolicyAlternativeNameServerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &api.PolicyAlternativeNameServerConfig{}
+	out.TargetNameServers = direct.Slice_ToProto(mapCtx, in.TargetNameServers, PolicyTargetNameServers_ToAPI)
+	return out
+}
+
+func PolicyNetworks_FromAPI(mapCtx *direct.MapContext, in *api.PolicyNetwork) *krm.PolicyNetworks {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PolicyNetworks{}
+	out.NetworkRef.External = in.NetworkUrl
+	return out
+}
+
+func PolicyNetworks_ToAPI(mapCtx *direct.MapContext, in *krm.PolicyNetworks) *api.PolicyNetwork {
+	if in == nil {
+		return nil
+	}
+	out := &api.PolicyNetwork{}
+	out.NetworkUrl = in.NetworkRef.External
+	return out
+}
+
+/* found existing non-generated mapping function "RecordsetRoutingPolicy_FromAPI", skipping
+func RecordsetRoutingPolicy_FromAPI(mapCtx *direct.MapContext, in *api.RRSetRoutingPolicy) *krm.RecordsetRoutingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RecordsetRoutingPolicy{}
+	out.Geo = RecordsetGeo_FromAPI(mapCtx, in.Geo)
+	out.PrimaryBackup = RecordsetPrimaryBackup_FromAPI(mapCtx, in.PrimaryBackup)
+	out.Wrr = RecordsetWrr_FromAPI(mapCtx, in.Wrr)
+	// MISSING: EnableGeoFencing
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RecordsetRoutingPolicy_ToAPI", skipping
+func RecordsetRoutingPolicy_ToAPI(mapCtx *direct.MapContext, in *krm.RecordsetRoutingPolicy) *api.RRSetRoutingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &api.RRSetRoutingPolicy{}
+	out.Geo = RecordsetGeo_ToAPI(mapCtx, in.Geo)
+	out.PrimaryBackup = RecordsetPrimaryBackup_ToAPI(mapCtx, in.PrimaryBackup)
+	out.Wrr = RecordsetWrr_ToAPI(mapCtx, in.Wrr)
+	// MISSING: HealthCheck
+	return out
+}
+*/
 
 func DnsKeySpec_FromAPI(mapCtx *direct.MapContext, in *api.DnsKeySpec) *krm.DnsKeySpec {
 	if in == nil {
@@ -353,3 +542,100 @@ func ManagedZoneServiceDirectoryConfigNamespace_ToAPI(mapCtx *direct.MapContext,
 	// MISSING: DeletionTime
 	return out
 }
+
+func PolicyTargetNameServers_FromAPI(mapCtx *direct.MapContext, in *api.PolicyAlternativeNameServerConfigTargetNameServer) *krm.PolicyTargetNameServers {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PolicyTargetNameServers{}
+	out.ForwardingPath = direct.LazyPtr(in.ForwardingPath)
+	out.Ipv4Address = in.Ipv4Address
+	return out
+}
+
+func PolicyTargetNameServers_ToAPI(mapCtx *direct.MapContext, in *krm.PolicyTargetNameServers) *api.PolicyAlternativeNameServerConfigTargetNameServer {
+	if in == nil {
+		return nil
+	}
+	out := &api.PolicyAlternativeNameServerConfigTargetNameServer{}
+	out.ForwardingPath = direct.ValueOf(in.ForwardingPath)
+	out.Ipv4Address = in.Ipv4Address
+	// MISSING: Ipv6Address
+	return out
+}
+
+/* found existing non-generated mapping function "RecordsetGeo_FromAPI", skipping
+func RecordsetGeo_FromAPI(mapCtx *direct.MapContext, in *api.RRSetRoutingPolicyGeoPolicy) *krm.RecordsetGeo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RecordsetGeo{}
+	// MISSING: HealthCheckedTargets
+	// MISSING: Location
+	// MISSING: RrdatasRefs
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RecordsetGeo_ToAPI", skipping
+func RecordsetGeo_ToAPI(mapCtx *direct.MapContext, in *krm.RecordsetGeo) *api.RRSetRoutingPolicyGeoPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &api.RRSetRoutingPolicyGeoPolicy{}
+	// MISSING: EnableFencing
+	// MISSING: Items
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RecordsetPrimaryBackup_FromAPI", skipping
+func RecordsetPrimaryBackup_FromAPI(mapCtx *direct.MapContext, in *api.RRSetRoutingPolicyPrimaryBackupPolicy) *krm.RecordsetPrimaryBackup {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RecordsetPrimaryBackup{}
+	// MISSING: BackupGeo
+	// MISSING: EnableGeoFencingForBackups
+	// MISSING: Primary
+	// MISSING: TrickleRatio
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RecordsetPrimaryBackup_ToAPI", skipping
+func RecordsetPrimaryBackup_ToAPI(mapCtx *direct.MapContext, in *krm.RecordsetPrimaryBackup) *api.RRSetRoutingPolicyPrimaryBackupPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &api.RRSetRoutingPolicyPrimaryBackupPolicy{}
+	// MISSING: BackupGeoTargets
+	// MISSING: PrimaryTargets
+	// MISSING: TrickleTraffic
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RecordsetWrr_FromAPI", skipping
+func RecordsetWrr_FromAPI(mapCtx *direct.MapContext, in *api.RRSetRoutingPolicyWrrPolicy) *krm.RecordsetWrr {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RecordsetWrr{}
+	// MISSING: HealthCheckedTargets
+	// MISSING: RrdatasRefs
+	// MISSING: Weight
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RecordsetWrr_ToAPI", skipping
+func RecordsetWrr_ToAPI(mapCtx *direct.MapContext, in *krm.RecordsetWrr) *api.RRSetRoutingPolicyWrrPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &api.RRSetRoutingPolicyWrrPolicy{}
+	// MISSING: Items
+	return out
+}
+*/

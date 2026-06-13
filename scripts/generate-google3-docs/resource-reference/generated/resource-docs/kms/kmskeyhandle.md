@@ -54,9 +54,7 @@ title: "KMSKeyHandle"
 ## Prerequisites
 
 Before you can use this resource, you must follow the guide https://cloud.google.com/kms/docs/enable-autokey to enable
-and configure Cloud KMS Autokey on a resource folder. This includes: setup resource folder, setup key project, enable
-Cloud KMS Autokey on the resource folder, setup the Cloud KMS service agent, grant Autokey user roles and enableand
-configure Cloud KMS Autokey on a resource folder. This includes: 
+and configure Cloud KMS Autokey. This includes:
 
 *   Setup resource folder.
 *   Setup key project.

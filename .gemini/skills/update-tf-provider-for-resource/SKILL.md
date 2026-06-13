@@ -107,4 +107,16 @@ Every time you update the vendored provider code, you **MUST** verify that it co
      git restore go.work
      ```
 4. **Proceed to CRD Generation**:
-   - Once the schema compiles, proceed to [.gemini/skills/update-terraform-fields/SKILL.md](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/update-terraform-fields/SKILL.md) to regenerate the CRD manifests and Go clients, verifying that your schema modifications translate correctly to KRM.
+   - Once the schema compiles, proceed to [.gemini/skills/update-terraform-fields/SKILL.md](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/.gemini/skills/update-terraform-fields/SKILL.md) to regenerate the CRD manifests and Go clients, verifying that your schema modifications translate correctly to KRM.
+5. **Mandatory CI/CD Presubmit Verification**:
+   - Run the resource docs generation and the core CI presubmit validation scripts locally to ensure complete alignment across vendored code, CRDs, documentation, and generated artifacts before submitting a PR:
+     ```bash
+     make resource-docs
+     dev/ci/presubmits/validate-generated-files
+     scripts/validate-prereqs.sh
+     ```
+   - Ensure any modified or regenerated files (including generated docs) are staged and committed cleanly:
+     ```bash
+     git add -A
+     git commit -m "chore: verify provider changes and ensure clean CI/CD presubmit state"
+     ```

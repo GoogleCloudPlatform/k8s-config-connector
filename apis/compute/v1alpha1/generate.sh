@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -22,10 +21,16 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-go run . generate-mapper \
-    --multiversion \
-    --service google.cloud.compute.v1 \
-    --api-version compute.cnrm.cloud.google.com/v1alpha1
+./generate-proto.sh
+
+go run . generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeNetworkEdgeSecurityService:NetworkEdgeSecurityService \
+  --resource ComputeNetworkAttachment:NetworkAttachment \
+  --resource ComputeInterconnect:Interconnect \
+  --resource ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

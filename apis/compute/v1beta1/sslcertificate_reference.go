@@ -65,6 +65,8 @@ func (r *ComputeSSLCertificateRef) GetExternal() string {
 
 func (r *ComputeSSLCertificateRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeSSLCertificateRef) ValidateExternal(ref string) error {
