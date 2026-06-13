@@ -84,6 +84,11 @@ privateKey:
     secretKeyRef:
       key: string
       name: string
+projectRef:
+  external: string
+  kind: string
+  name: string
+  namespace: string
 resourceID: string
 ```
 
@@ -101,9 +106,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The certificate in PEM format.
-The certificate chain must be no greater than 5 certs long.
-The chain must include at least one intermediate cert.</p>
+            <p>Immutable. The certificate in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.</p>
         </td>
     </tr>
     <tr>
@@ -173,7 +176,7 @@ The chain must include at least one intermediate cert.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Location represents the geographical location of the ComputeSSLCertificate. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)</p>
+            <p>The location of this resource.</p>
         </td>
     </tr>
     <tr>
@@ -238,12 +241,62 @@ The chain must include at least one intermediate cert.</p>
     </tr>
     <tr>
         <td>
+            <p><code>projectRef</code></p>
+            <p><i>Required</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The project that this resource belongs to.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>resourceID</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+            <p>The ComputeSSLCertificate name. If not given, the metadata.name will be used.</p>
         </td>
     </tr>
 </tbody>
@@ -263,7 +316,9 @@ conditions:
   type: string
 creationTimestamp: string
 expireTime: string
+externalRef: string
 observedGeneration: integer
+observedState: {}
 selfLink: string
 ```
 
@@ -285,7 +340,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -345,10 +400,24 @@ selfLink: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A unique specifier for the ComputeSSLCertificate resource in GCP.</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
         </td>
     </tr>
     <tr>
