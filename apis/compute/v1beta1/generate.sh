@@ -30,6 +30,7 @@ go run . generate-types \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeResourcePolicy:ResourcePolicy \
   --resource ComputeSecurityPolicy:SecurityPolicy \
+  --resource ComputeSSLPolicy:SslPolicy \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeNetwork:Network \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
