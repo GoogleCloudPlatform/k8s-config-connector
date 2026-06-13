@@ -385,7 +385,7 @@
 | monitoring.cnrm.cloud.google.com              | MonitoringMonitoredProject                      | False        | True        | False  | DCL        | False       |
 | monitoring.cnrm.cloud.google.com              | MonitoringNotificationChannel                   | False        | True        | False  | Terraform  | True        |
 | monitoring.cnrm.cloud.google.com              | MonitoringServiceLevelObjective                 | False        | True        | False  | DCL        | False       |
-| monitoring.cnrm.cloud.google.com              | MonitoringService                               | False        | True        | False  | DCL        | False       |
+| monitoring.cnrm.cloud.google.com              | MonitoringService                               | False        | True        | False  | DCL        | True        |
 | monitoring.cnrm.cloud.google.com              | MonitoringUptimeCheckConfig                     | False        | True        | False  | DCL        | True        |
 | netapp.cnrm.cloud.google.com                  | NetAppBackupPolicy                              | True         | False       | False  | Direct     | True        |
 | netapp.cnrm.cloud.google.com                  | NetAppBackupVault                               | True         | False       | False  | Direct     | True        |

@@ -124,6 +124,50 @@ func MonitoringNotificationChannelStatus_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: MutationRecords
 	return out
 }
+func MonitoringServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.MonitoringServiceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringServiceSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Custom
+	// MISSING: AppEngine
+	// MISSING: CloudEndpoints
+	// MISSING: ClusterIstio
+	// MISSING: MeshIstio
+	// MISSING: IstioCanonicalService
+	// MISSING: CloudRun
+	// MISSING: GKENamespace
+	// MISSING: GKEWorkload
+	// MISSING: GKEService
+	// MISSING: BasicService
+	out.Telemetry = ServiceTelemetry_FromProto(mapCtx, in.GetTelemetry())
+	// MISSING: UserLabels
+	return out
+}
+func MonitoringServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringServiceSpec) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Custom
+	// MISSING: AppEngine
+	// MISSING: CloudEndpoints
+	// MISSING: ClusterIstio
+	// MISSING: MeshIstio
+	// MISSING: IstioCanonicalService
+	// MISSING: CloudRun
+	// MISSING: GKENamespace
+	// MISSING: GKEWorkload
+	// MISSING: GKEService
+	// MISSING: BasicService
+	out.Telemetry = ServiceTelemetry_ToProto(mapCtx, in.Telemetry)
+	// MISSING: UserLabels
+	return out
+}
 func MonitoringUptimeCheckConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig) *krm.MonitoringUptimeCheckConfigSpec {
 	if in == nil {
 		return nil
