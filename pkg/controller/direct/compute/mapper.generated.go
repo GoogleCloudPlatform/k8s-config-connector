@@ -1757,6 +1757,88 @@ func ComputeSubnetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	return out
 }
 
+/* found existing non-generated mapping function "ComputeTargetGRPCProxySpec_v1beta1_FromProto", skipping
+func ComputeTargetGRPCProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetGrpcProxy) *krm.ComputeTargetGRPCProxySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetGRPCProxySpec{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: URLMap
+	out.ValidateForProxyless = in.ValidateForProxyless
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeTargetGRPCProxySpec_v1beta1_ToProto", skipping
+func ComputeTargetGRPCProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetGRPCProxySpec) *pb.TargetGrpcProxy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetGrpcProxy{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: URLMap
+	out.ValidateForProxyless = in.ValidateForProxyless
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeTargetGRPCProxyStatus_v1beta1_FromProto", skipping
+func ComputeTargetGRPCProxyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetGrpcProxy) *krm.ComputeTargetGRPCProxyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetGRPCProxyStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfLinkWithID
+	// (near miss): "SelfLinkWithID" vs "SelfLinkWithId"
+	// MISSING: URLMap
+	// MISSING: ValidateForProxyless
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeTargetGRPCProxyStatus_v1beta1_ToProto", skipping
+func ComputeTargetGRPCProxyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetGRPCProxyStatus) *pb.TargetGrpcProxy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetGrpcProxy{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfLinkWithID
+	// (near miss): "SelfLinkWithID" vs "SelfLinkWithId"
+	// MISSING: URLMap
+	// MISSING: ValidateForProxyless
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeTargetHTTPSProxyObservedState_v1beta1_FromProto", skipping
 func ComputeTargetHTTPSProxyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetHttpsProxy) *krm.ComputeTargetHTTPSProxyObservedState {
 	if in == nil {
