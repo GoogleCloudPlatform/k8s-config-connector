@@ -489,6 +489,40 @@ func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 }
 */
 
+/* found existing non-generated mapping function "ComputeHTTPSHealthCheckSpec_v1beta1_FromProto", skipping
+func ComputeHTTPSHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HTTPSHealthCheck) *krm.ComputeHTTPSHealthCheckSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeHTTPSHealthCheckSpec{}
+	out.Host = in.Host
+	out.Port = in.Port
+	// MISSING: PortName
+	// MISSING: PortSpecification
+	// MISSING: ProxyHeader
+	out.RequestPath = in.RequestPath
+	// MISSING: Response
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeHTTPSHealthCheckSpec_v1beta1_ToProto", skipping
+func ComputeHTTPSHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHTTPSHealthCheckSpec) *pb.HTTPSHealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HTTPSHealthCheck{}
+	out.Host = in.Host
+	out.Port = in.Port
+	// MISSING: PortName
+	// MISSING: PortSpecification
+	// MISSING: ProxyHeader
+	out.RequestPath = in.RequestPath
+	// MISSING: Response
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_FromProto", skipping
 func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHealthCheckSpec {
 	if in == nil {
