@@ -289,7 +289,7 @@ func IndexDisplayNameMapping_FromProto(mapCtx *direct.MapContext, in *structpb.V
 }
 
 func IndexDisplayNameMapping_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) *pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping {
-	if in == nil {
+	if in == nil || in.Raw == nil {
 		return nil
 	}
 	out := &pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping{

@@ -67,17 +67,39 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 
 	f.FilterSpec = func(in *pb.Model) {
 		if in.Metadata != nil {
-			clearUnsupportedValueFields(in.Metadata)
+			if in.Metadata.Kind == nil {
+				in.Metadata = nil
+			} else {
+				clearUnsupportedValueFields(in.Metadata)
+			}
 		}
 		if in.ExplanationSpec != nil {
 			if in.ExplanationSpec.Metadata != nil {
 				for _, input := range in.ExplanationSpec.Metadata.Inputs {
+					var cleanedInputBaselines []*structpb.Value
 					for _, b := range input.InputBaselines {
-						clearUnsupportedValueFields(b)
+						if b != nil {
+							if b.Kind == nil {
+								continue
+							}
+							clearUnsupportedValueFields(b)
+							cleanedInputBaselines = append(cleanedInputBaselines, b)
+						}
 					}
+					input.InputBaselines = cleanedInputBaselines
+
+					var cleanedEncodedBaselines []*structpb.Value
 					for _, b := range input.EncodedBaselines {
-						clearUnsupportedValueFields(b)
+						if b != nil {
+							if b.Kind == nil {
+								continue
+							}
+							clearUnsupportedValueFields(b)
+							cleanedEncodedBaselines = append(cleanedEncodedBaselines, b)
+						}
 					}
+					input.EncodedBaselines = cleanedEncodedBaselines
+
 					if input.Visualization != nil {
 						input.Visualization.Type = 0
 						input.Visualization.Polarity = 0
@@ -85,12 +107,21 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 					}
 				}
 				for _, output := range in.ExplanationSpec.Metadata.Outputs {
-					clearUnsupportedValueFields(output.GetIndexDisplayNameMapping())
+					if output.GetIndexDisplayNameMapping() != nil && output.GetIndexDisplayNameMapping().Kind == nil {
+						output.DisplayNameMapping = nil
+					} else {
+						clearUnsupportedValueFields(output.GetIndexDisplayNameMapping())
+					}
 				}
 			}
 			if in.ExplanationSpec.Parameters != nil {
 				if in.ExplanationSpec.Parameters.GetExamples() != nil {
-					clearUnsupportedValueFields(in.ExplanationSpec.Parameters.GetExamples().GetNearestNeighborSearchConfig())
+					config := in.ExplanationSpec.Parameters.GetExamples().GetNearestNeighborSearchConfig()
+					if config != nil && config.Kind == nil {
+						in.ExplanationSpec.Parameters.GetExamples().Config = nil
+					} else {
+						clearUnsupportedValueFields(config)
+					}
 				}
 			}
 		}
@@ -136,7 +167,7 @@ func clearUnsupportedValueFields(v *structpb.Value) {
 	}
 	switch k := v.Kind.(type) {
 	case *structpb.Value_ListValue:
-		v.Kind = nil // clear list_value since KRM doesn't support recursive/nested lists in Value
+		v.Kind = &structpb.Value_NullValue{NullValue: structpb.NullValue_NULL_VALUE} // clear list_value since KRM doesn't support recursive/nested lists in Value
 	case *structpb.Value_StructValue:
 		if k.StructValue != nil {
 			for _, val := range k.StructValue.Fields {

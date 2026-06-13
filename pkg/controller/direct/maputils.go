@@ -88,7 +88,9 @@ func Slice_FromProto[T, U any](mapCtx *MapContext, in []*T, mapper func(mapCtx *
 	outSlice := make([]U, 0, len(in))
 	for _, inItem := range in {
 		outItem := mapper(mapCtx, inItem)
-		outSlice = append(outSlice, *outItem)
+		if outItem != nil {
+			outSlice = append(outSlice, *outItem)
+		}
 	}
 	return outSlice
 }
@@ -632,6 +634,9 @@ func Status_ToProto(mapCtx *MapContext, in *common.Status) *statuspb.Status {
 
 func JSON_FromProto(mapCtx *MapContext, in *structpb.Value) *apiextensionsv1.JSON {
 	if in == nil {
+		return nil
+	}
+	if in.Kind == nil {
 		return nil
 	}
 	b, err := protojson.Marshal(in)
