@@ -30,6 +30,7 @@
 // resource: ComputeHealthCheck:HealthCheck
 // resource: ComputeNodeGroup:NodeGroup
 // resource: ComputeInstance:Instance
+// resource: ComputeRouterPeer:RouterBgpPeer
 
 package v1beta1
 
@@ -2489,6 +2490,156 @@ type ResourceStatusScheduling struct {
 	// Specifies the availability domain to place the instance in. The value must be a number between 1 and the number of availability domains specified in the spread placement policy attached to the instance.
 	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatusScheduling.availability_domain
 	AvailabilityDomain *int32 `json:"availabilityDomain,omitempty"`
+}
+*/
+
+/* unreachable type RouterAdvertisedIPRange
+// +kcc:proto=google.cloud.compute.v1.RouterAdvertisedIpRange
+type RouterAdvertisedIPRange struct {
+	// User-specified description for the IP range.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterAdvertisedIpRange.description
+	Description *string `json:"description,omitempty"`
+
+	// The IP range to advertise. The value must be a CIDR-formatted string.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterAdvertisedIpRange.range
+	Range *string `json:"range,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.RouterBgpPeer", skipping
+
+// +kcc:proto=google.cloud.compute.v1.RouterBgpPeer
+type RouterBGPPeer struct {
+	// User-specified flag to indicate which mode to use for advertisement.
+	//  Check the AdvertiseMode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.advertise_mode
+	AdvertiseMode *string `json:"advertiseMode,omitempty"`
+
+	// User-specified list of prefix groups to advertise in custom mode, which currently supports the following option: - ALL_SUBNETS: Advertises all of the router's own VPC subnets. This excludes any routes learned for subnets that use VPC Network Peering. Note that this field can only be populated if advertise_mode is CUSTOM and overrides the list defined for the router (in the "bgp" message). These groups are advertised in addition to any specified prefixes. Leave this field blank to advertise no custom groups.
+	//  Check the AdvertisedGroups enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.advertised_groups
+	AdvertisedGroups []string `json:"advertisedGroups,omitempty"`
+
+	// User-specified list of individual IP ranges to advertise in custom mode. This field can only be populated if advertise_mode is CUSTOM and overrides the list defined for the router (in the "bgp" message). These IP ranges are advertised in addition to any specified groups. Leave this field blank to advertise no custom IP ranges.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.advertised_ip_ranges
+	AdvertisedIPRanges []RouterAdvertisedIPRange `json:"advertisedIPRanges,omitempty"`
+
+	// The priority of routes advertised to this BGP peer. Where there is more than one matching route of maximum length, the routes with the lowest priority value win.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.advertised_route_priority
+	AdvertisedRoutePriority *uint32 `json:"advertisedRoutePriority,omitempty"`
+
+	// BFD configuration for the BGP peering.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.bfd
+	Bfd *RouterBGPPeerBfd `json:"bfd,omitempty"`
+
+	// A list of user-defined custom learned route IP address ranges for a BGP session.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.custom_learned_ip_ranges
+	CustomLearnedIPRanges []RouterBGPPeerCustomLearnedIPRange `json:"customLearnedIPRanges,omitempty"`
+
+	// The user-defined custom learned route priority for a BGP session. This value is applied to all custom learned route ranges for the session. You can choose a value from `0` to `65335`. If you don't provide a value, Google Cloud assigns a priority of `100` to the ranges.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.custom_learned_route_priority
+	CustomLearnedRoutePriority *int32 `json:"customLearnedRoutePriority,omitempty"`
+
+	// The status of the BGP peer connection. If set to FALSE, any active session with the peer is terminated and all associated routing information is removed. If set to TRUE, the peer connection can be established with routing information. The default is TRUE.
+	//  Check the Enable enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.enable
+	Enable *string `json:"enable,omitempty"`
+
+	// Enable IPv4 traffic over BGP Peer. It is enabled by default if the peerIpAddress is version 4.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.enable_ipv4
+	EnableIPV4 *bool `json:"enableIPV4,omitempty"`
+
+	// Enable IPv6 traffic over BGP Peer. It is enabled by default if the peerIpAddress is version 6.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.enable_ipv6
+	EnableIPV6 *bool `json:"enableIPV6,omitempty"`
+
+	// List of export policies applied to this peer, in the order they must be evaluated. The name must correspond to an existing policy that has ROUTE_POLICY_TYPE_EXPORT type.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.export_policies
+	ExportPolicies []string `json:"exportPolicies,omitempty"`
+
+	// List of import policies applied to this peer, in the order they must be evaluated. The name must correspond to an existing policy that has ROUTE_POLICY_TYPE_IMPORT type.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.import_policies
+	ImportPolicies []string `json:"importPolicies,omitempty"`
+
+	// Name of the interface the BGP peer is associated with.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.interface_name
+	InterfaceName *string `json:"interfaceName,omitempty"`
+
+	// IP address of the interface inside Google Cloud Platform.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// IPv4 address of the interface inside Google Cloud Platform.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.ipv4_nexthop_address
+	IPV4NexthopAddress *string `json:"ipv4NexthopAddress,omitempty"`
+
+	// IPv6 address of the interface inside Google Cloud Platform.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.ipv6_nexthop_address
+	IPV6NexthopAddress *string `json:"ipv6NexthopAddress,omitempty"`
+
+	// [Output Only] The resource that configures and manages this BGP peer. - MANAGED_BY_USER is the default value and can be managed by you or other users - MANAGED_BY_ATTACHMENT is a BGP peer that is configured and managed by Cloud Interconnect, specifically by an InterconnectAttachment of type PARTNER. Google automatically creates, updates, and deletes this type of BGP peer when the PARTNER InterconnectAttachment is created, updated, or deleted.
+	//  Check the ManagementType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.management_type
+	ManagementType *string `json:"managementType,omitempty"`
+
+	// Present if MD5 authentication is enabled for the peering. Must be the name of one of the entries in the Router.md5_authentication_keys. The field must comply with RFC1035.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.md5_authentication_key_name
+	Md5AuthenticationKeyName *string `json:"md5AuthenticationKeyName,omitempty"`
+
+	// Name of this BGP peer. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.name
+	Name *string `json:"name,omitempty"`
+
+	// Peer BGP Autonomous System Number (ASN). Each BGP interface may use a different value.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.peer_asn
+	PeerAsn *uint32 `json:"peerAsn,omitempty"`
+
+	// IP address of the BGP interface outside Google Cloud Platform.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.peer_ip_address
+	PeerIPAddress *string `json:"peerIPAddress,omitempty"`
+
+	// IPv4 address of the BGP interface outside Google Cloud Platform.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.peer_ipv4_nexthop_address
+	PeerIPV4NexthopAddress *string `json:"peerIPV4NexthopAddress,omitempty"`
+
+	// IPv6 address of the BGP interface outside Google Cloud Platform.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.peer_ipv6_nexthop_address
+	PeerIPV6NexthopAddress *string `json:"peerIPV6NexthopAddress,omitempty"`
+
+	// URI of the VM instance that is used as third-party router appliances such as Next Gen Firewalls, Virtual Routers, or Router Appliances. The VM instance must be located in zones contained in the same region as this Cloud Router. The VM instance is the peer side of the BGP session.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.router_appliance_instance
+	RouterApplianceInstance *string `json:"routerApplianceInstance,omitempty"`
+}
+*/
+
+/* unreachable type RouterBGPPeerBfd
+// +kcc:proto=google.cloud.compute.v1.RouterBgpPeerBfd
+type RouterBGPPeerBfd struct {
+	// The minimum interval, in milliseconds, between BFD control packets received from the peer router. The actual value is negotiated between the two routers and is equal to the greater of this value and the transmit interval of the other router. If set, this value must be between 1000 and 30000. The default is 1000.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeerBfd.min_receive_interval
+	MinReceiveInterval *uint32 `json:"minReceiveInterval,omitempty"`
+
+	// The minimum interval, in milliseconds, between BFD control packets transmitted to the peer router. The actual value is negotiated between the two routers and is equal to the greater of this value and the corresponding receive interval of the other router. If set, this value must be between 1000 and 30000. The default is 1000.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeerBfd.min_transmit_interval
+	MinTransmitInterval *uint32 `json:"minTransmitInterval,omitempty"`
+
+	// The number of consecutive BFD packets that must be missed before BFD declares that a peer is unavailable. If set, the value must be a value between 5 and 16. The default is 5.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeerBfd.multiplier
+	Multiplier *uint32 `json:"multiplier,omitempty"`
+
+	// The BFD session initialization mode for this BGP peer. If set to ACTIVE, the Cloud Router will initiate the BFD session for this BGP peer. If set to PASSIVE, the Cloud Router will wait for the peer router to initiate the BFD session for this BGP peer. If set to DISABLED, BFD is disabled for this BGP peer. The default is DISABLED.
+	//  Check the SessionInitializationMode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeerBfd.session_initialization_mode
+	SessionInitializationMode *string `json:"sessionInitializationMode,omitempty"`
+}
+*/
+
+/* unreachable type RouterBGPPeerCustomLearnedIPRange
+// +kcc:proto=google.cloud.compute.v1.RouterBgpPeerCustomLearnedIpRange
+type RouterBGPPeerCustomLearnedIPRange struct {
+	// The custom learned route IP address range. Must be a valid CIDR-formatted prefix. If an IP address is provided without a subnet mask, it is interpreted as, for IPv4, a `/32` singular IP address range, and, for IPv6, `/128`.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeerCustomLearnedIpRange.range
+	Range *string `json:"range,omitempty"`
 }
 */
 
