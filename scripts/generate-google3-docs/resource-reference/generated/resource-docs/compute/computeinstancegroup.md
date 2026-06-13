@@ -120,7 +120,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>InstanceRef is a reference to a ComputeInstance.</p>
         </td>
     </tr>
     <tr>
@@ -130,7 +130,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeInstance` resource.</p>
+            <p>A reference to an externally managed ComputeInstance resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".</p>
         </td>
     </tr>
     <tr>
@@ -140,7 +140,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -150,7 +150,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -200,7 +200,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -210,7 +210,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -220,7 +220,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -230,7 +230,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -283,7 +283,7 @@ size: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
