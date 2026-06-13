@@ -17,8 +17,41 @@ package kms
 import (
 	pb "cloud.google.com/go/kms/apiv1/kmspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+// KMSAutokeyConfigSpec_FromProto converts the protobuf AutokeyConfig to the KRM type.
+// This is handcoded because the GCP proto for AutokeyConfig from the googleapis submodule does not contain KeyProjectResolutionMode,
+// but the Go SDK's kmspb does, so we override it to include mapping of KeyProjectResolutionMode.
+func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *krm.KMSAutokeyConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KMSAutokeyConfigSpec{}
+	if in.GetKeyProject() != "" {
+		out.KeyProjectRef = &refsv1beta1.ProjectRef{External: in.GetKeyProject()}
+	}
+	out.KeyProjectResolutionMode = direct.Enum_FromProto(mapCtx, in.GetKeyProjectResolutionMode())
+	return out
+}
+
+// KMSAutokeyConfigSpec_ToProto converts the KRM type KMSAutokeyConfigSpec to the protobuf representation.
+// This is handcoded because the GCP proto for AutokeyConfig from the googleapis submodule does not contain KeyProjectResolutionMode,
+// but the Go SDK's kmspb does, so we override it to include mapping of KeyProjectResolutionMode.
+func KMSAutokeyConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSAutokeyConfigSpec) *pb.AutokeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutokeyConfig{}
+	if in.KeyProjectRef != nil {
+		out.KeyProject = in.KeyProjectRef.External
+	}
+	if in.KeyProjectResolutionMode != nil {
+		out.KeyProjectResolutionMode = direct.Enum_ToProto[pb.AutokeyConfig_KeyProjectResolutionMode](mapCtx, in.KeyProjectResolutionMode)
+	}
+	return out
+}
 
 // CryptoKeyVersionTemplate_FromProto converts the protobuf CryptoKeyVersionTemplate to the KRM type.
 // This is handcoded because the KRM's Algorithm field is a required non-pointer string,
