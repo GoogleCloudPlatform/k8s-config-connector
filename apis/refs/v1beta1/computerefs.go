@@ -339,6 +339,71 @@ func ResolveComputeFirewallPolicy(ctx context.Context, reader client.Reader, src
 		External: tokens[len(tokens)-1]}, nil
 }
 
+type ComputeNetworkFirewallPolicyRef struct {
+	// A reference to an externally managed ComputeNetworkFirewallPolicy resource.
+	// Should be in the format `projects/{{project}}/global/firewallPolicies/{{firewallPolicyID}}`.
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeNetworkFirewallPolicy` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeNetworkFirewallPolicy` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+func ResolveComputeNetworkFirewallPolicy(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeNetworkFirewallPolicyRef) (*ComputeNetworkFirewallPolicyRef, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeNetworkFirewallPolicy := &unstructured.Unstructured{}
+	computeNetworkFirewallPolicy.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeNetworkFirewallPolicy",
+	})
+	if err := reader.Get(ctx, key, computeNetworkFirewallPolicy); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, k8s.NewReferenceNotFoundError(computeNetworkFirewallPolicy.GroupVersionKind(), key)
+		}
+		return nil, fmt.Errorf("error reading referenced ComputeNetworkFirewallPolicy %v: %w", key, err)
+	}
+
+	externalRef, _, _ := unstructured.NestedString(computeNetworkFirewallPolicy.Object, "status", "externalRef")
+	if externalRef != "" {
+		return &ComputeNetworkFirewallPolicyRef{
+			External: externalRef}, nil
+	}
+
+	selfLink, _, _ := unstructured.NestedString(computeNetworkFirewallPolicy.Object, "status", "selfLink")
+	if selfLink == "" {
+		return nil, k8s.NewReferenceNotFoundError(computeNetworkFirewallPolicy.GroupVersionKind(), key)
+	}
+
+	partialID := strings.TrimPrefix(selfLink, "https://www.googleapis.com/")
+	external := strings.TrimPrefix(partialID, "compute/v1/")
+	external = strings.TrimPrefix(external, "compute/beta/")
+	return &ComputeNetworkFirewallPolicyRef{
+		External: external}, nil
+}
+
 type ComputeForwardingRuleRef struct {
 	/* The ComputeForwardingRule selflink in the form "projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`

@@ -1,0 +1,5 @@
+### [2026-06-13] Support for ComputeNetworkFirewallPolicyRule
+- **Context**: Implementing direct KRM types and generate.sh for ComputeNetworkFirewallPolicyRule (v1alpha1).
+- **Problem**: When generating types, dependent types (like `FirewallPolicyRuleSecureTag` and `FirewallPolicyRuleMatcher`) from `v1beta1` were commented out as "unreachable" in `v1beta1/types.generated.go`, causing compilation errors when referenced directly in `v1alpha1/firewallpolicyrule_types.go`.
+- **Solution**: Copied the sub-structures `FirewallPolicyRuleSecureTag`, `FirewallPolicyRuleMatcherLayer4Config`, and `FirewallPolicyRuleMatcher` directly into `apis/compute/v1alpha1/firewallpolicyrule_types.go`. Also defined a new reference type `ComputeNetworkFirewallPolicyRef` and resolver `ResolveComputeNetworkFirewallPolicy` under `apis/refs/v1beta1/computerefs.go` to cleanly resolve the network firewall policy.
+- **Impact**: Enables clean and self-contained generation of `ComputeNetworkFirewallPolicyRule` types without compilation failures caused by commented-out types in neighboring versions.
