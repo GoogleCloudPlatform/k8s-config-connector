@@ -32,7 +32,7 @@ go run . generate-types \
   --resource ComputeSecurityPolicy:SecurityPolicy \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeNetwork:Network \
-  --resource ComputeTargetTcpProxy:TargetTcpProxy \
+  --resource ComputeTargetTCPProxy:TargetTcpProxy \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
   --resource ComputeNodeTemplate:NodeTemplate \
   --resource ComputeReservation:Reservation \
