@@ -213,7 +213,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNodeTemplate` resource.</p>
+            <p>A reference to an externally managed ComputeNodeTemplate resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/nodeTemplates/{{nodeTemplateID}}".</p>
         </td>
     </tr>
     <tr>
@@ -223,7 +223,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNodeTemplate resource.</p>
         </td>
     </tr>
     <tr>
@@ -233,7 +233,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNodeTemplate resource.</p>
         </td>
     </tr>
     <tr>
