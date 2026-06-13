@@ -168,6 +168,56 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
+func ComputeFirewallPolicyAssociationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyAssociation) *krm.ComputeFirewallPolicyAssociationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallPolicyAssociationObservedState{}
+	out.DisplayName = in.DisplayName
+	out.FirewallPolicyID = in.FirewallPolicyId
+	// MISSING: Name
+	out.ShortName = in.ShortName
+	return out
+}
+func ComputeFirewallPolicyAssociationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyAssociationObservedState) *pb.FirewallPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyAssociation{}
+	out.DisplayName = in.DisplayName
+	out.FirewallPolicyId = in.FirewallPolicyID
+	// MISSING: Name
+	out.ShortName = in.ShortName
+	return out
+}
+
+/* found existing non-generated mapping function "ComputeFirewallPolicyAssociationSpec_v1beta1_FromProto", skipping
+func ComputeFirewallPolicyAssociationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyAssociation) *krm.ComputeFirewallPolicyAssociationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallPolicyAssociationSpec{}
+	if in.GetAttachmentTarget() != "" {
+		out.AttachmentTargetRef = &v1alpha1.ResourceRef{External: in.GetAttachmentTarget()}
+	}
+	// MISSING: Name
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeFirewallPolicyAssociationSpec_v1beta1_ToProto", skipping
+func ComputeFirewallPolicyAssociationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyAssociationSpec) *pb.FirewallPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyAssociation{}
+	if in.AttachmentTargetRef != nil {
+		out.AttachmentTarget = &in.AttachmentTargetRef.External
+	}
+	// MISSING: Name
+	return out
+}
+*/
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {

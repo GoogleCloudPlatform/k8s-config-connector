@@ -658,15 +658,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "ComputeFirewallPolicyAssociation",
-	}: {
-		Terraform:   false,
-		DCL:         true,
-		SupportsIAM: false,
-	},
-	{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "ComputeFirewall",
 	}: {
 		Terraform:   true,
