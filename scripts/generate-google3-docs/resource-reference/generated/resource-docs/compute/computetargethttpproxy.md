@@ -105,12 +105,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Specifies how long to keep a connection open, after completing a response,
-while there is no matching traffic (in seconds). If an HTTP keepalive is
-not specified, a default value (610 seconds) will be used. For Global
-external HTTP(S) load balancer, the minimum allowed value is 5 seconds and
-the maximum allowed value is 1200 seconds. For Global external HTTP(S)
-load balancer (classic), this option is not available publicly.</p>
+            <p>Immutable. Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds). If an HTTP keepalive is not specified, a default value (610 seconds) will be used. For Global external HTTP(S) load balancer, the minimum allowed value is 5 seconds and the maximum allowed value is 1200 seconds. For Global external HTTP(S) load balancer (classic), this option is not available publicly.</p>
         </td>
     </tr>
     <tr>
@@ -130,8 +125,7 @@ load balancer (classic), this option is not available publicly.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. This field only applies when the forwarding rule that references
-this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.</p>
+            <p>Immutable. This field only applies when the forwarding rule that references this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.</p>
         </td>
     </tr>
     <tr>
@@ -151,8 +145,7 @@ this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A reference to the ComputeURLMap resource that defines the mapping
-from URL to the BackendService.</p>
+            <p>A reference to the ComputeURLMap resource that defines the mapping from URL to the BackendService.</p>
         </td>
     </tr>
     <tr>
@@ -162,7 +155,7 @@ from URL to the BackendService.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeURLMap` resource.</p>
+            <p>A reference to an externally managed ComputeURLMap resource. Should be in the format "projects/{{projectID}}/global/urlMaps/{{urlMapID}}" or "projects/{{projectID}}/regions/{{region}}/urlMaps/{{urlMapID}}".</p>
         </td>
     </tr>
     <tr>
@@ -172,7 +165,7 @@ from URL to the BackendService.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeURLMap resource.</p>
         </td>
     </tr>
     <tr>
@@ -182,7 +175,7 @@ from URL to the BackendService.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeURLMap resource.</p>
         </td>
     </tr>
 </tbody>
@@ -214,7 +207,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
