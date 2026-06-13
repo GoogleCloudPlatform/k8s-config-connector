@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -305,7 +306,7 @@ func (in *AllocationPolicy_NetworkInterface) DeepCopyInto(out *AllocationPolicy_
 	*out = *in
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(computev1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.SubnetworkRef != nil {

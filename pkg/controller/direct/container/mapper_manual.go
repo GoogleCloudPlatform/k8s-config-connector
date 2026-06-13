@@ -16,6 +16,7 @@ package container
 
 import (
 	pb "cloud.google.com/go/container/apiv1/containerpb"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -366,7 +367,7 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	out.LoggingService = direct.LazyPtr(in.GetLoggingService())
 	out.MonitoringService = direct.LazyPtr(in.GetMonitoringService())
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &computerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.ClusterIPV4CIDR = direct.LazyPtr(in.GetClusterIpv4Cidr())
 	out.AddonsConfig = AddonsConfig_FromProto(mapCtx, in.GetAddonsConfig())

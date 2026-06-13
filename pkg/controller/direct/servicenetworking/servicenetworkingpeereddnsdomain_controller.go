@@ -26,7 +26,7 @@ import (
 	"strings"
 	"time"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 
 	"google.golang.org/api/option"
 	api "google.golang.org/api/servicenetworking/v1"
@@ -259,7 +259,7 @@ func (a *peeredDNSDomainAdapter) Export(ctx context.Context) (*unstructured.Unst
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.NetworkRef = &computev1beta1.ComputeNetworkRef{External: a.id.Network.String()}
+	obj.Spec.NetworkRef = &computerefs.ComputeNetworkRef{External: a.id.Network.String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

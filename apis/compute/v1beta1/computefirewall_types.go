@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -127,7 +128,7 @@ type ComputeFirewallSpec struct {
 
 	/* The network to attach this firewall to. */
 	// +kcc:proto:field=google.cloud.compute.v1.Firewall.network
-	NetworkRef *ComputeNetworkRef `json:"networkRef"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef"`
 
 	/* Priority for this rule. This is an integer between 0 and 65535, both
 	inclusive. When not specified, the value assumed is 1000. Relative

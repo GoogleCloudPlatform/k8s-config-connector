@@ -19,8 +19,8 @@
 package v1beta1
 
 import (
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	apisrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -177,7 +177,7 @@ func (in *CrossInstanceReplicationConfig_RemoteInstance) DeepCopyInto(out *Cross
 	*out = *in
 	if in.InstanceRef != nil {
 		in, out := &in.InstanceRef, &out.InstanceRef
-		*out = new(refs.MemorystoreInstanceRef)
+		*out = new(apisrefs.MemorystoreInstanceRef)
 		**out = **in
 	}
 }
@@ -933,7 +933,7 @@ func (in *PscAutoConnection) DeepCopyInto(out *PscAutoConnection) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(computev1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 }

@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -30,7 +30,7 @@ type ServiceNetworkingPeeredDNSDomainSpec struct {
 
 	// The network that this resource belongs to.
 	// +required
-	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// The DNS domain name suffix e.g. `example.com.`. Cloud DNS requires that a DNS suffix ends with a trailing dot.
 	// +kcc:proto:field=mockgcp.cloud.servicenetworking.v1.PeeredDnsDomain.dns_suffix

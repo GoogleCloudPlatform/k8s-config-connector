@@ -119,17 +119,17 @@ func (in *BackendbucketCdnPolicy) DeepCopyInto(out *BackendbucketCdnPolicy) {
 	}
 	if in.ClientTtl != nil {
 		in, out := &in.ClientTtl, &out.ClientTtl
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.DefaultTtl != nil {
 		in, out := &in.DefaultTtl, &out.DefaultTtl
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MaxTtl != nil {
 		in, out := &in.MaxTtl, &out.MaxTtl
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.NegativeCaching != nil {
@@ -151,7 +151,7 @@ func (in *BackendbucketCdnPolicy) DeepCopyInto(out *BackendbucketCdnPolicy) {
 	}
 	if in.ServeWhileStale != nil {
 		in, out := &in.ServeWhileStale, &out.ServeWhileStale
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.SignedUrlCacheMaxAgeSec != nil {
@@ -177,12 +177,12 @@ func (in *BackendbucketNegativeCachingPolicy) DeepCopyInto(out *BackendbucketNeg
 	*out = *in
 	if in.Code != nil {
 		in, out := &in.Code, &out.Code
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Ttl != nil {
 		in, out := &in.Ttl, &out.Ttl
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return

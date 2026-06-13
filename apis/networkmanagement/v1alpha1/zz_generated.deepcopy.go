@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -408,7 +409,7 @@ func (in *Endpoint) DeepCopyInto(out *Endpoint) {
 	}
 	if in.ComputeNetworkRef != nil {
 		in, out := &in.ComputeNetworkRef, &out.ComputeNetworkRef
-		*out = new(computev1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.NetworkType != nil {

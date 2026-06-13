@@ -20,6 +20,7 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -502,7 +503,7 @@ func (in *ClusterGceClusterConfig) DeepCopyInto(out *ClusterGceClusterConfig) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(computev1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.NodeGroupAffinity != nil {

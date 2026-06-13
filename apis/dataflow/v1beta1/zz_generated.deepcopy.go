@@ -19,6 +19,7 @@
 package v1beta1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -169,7 +170,7 @@ func (in *DataflowFlexTemplateJobSpec) DeepCopyInto(out *DataflowFlexTemplateJob
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(computev1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.SubnetworkRef != nil {
@@ -368,7 +369,7 @@ func (in *DataflowJobSpec) DeepCopyInto(out *DataflowJobSpec) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(computev1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.Parameters != nil {

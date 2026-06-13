@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -831,7 +832,7 @@ func (in *ReverseSSHConnectivity) DeepCopyInto(out *ReverseSSHConnectivity) {
 	}
 	if in.VPCRef != nil {
 		in, out := &in.VPCRef, &out.VPCRef
-		*out = new(computev1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 }
@@ -866,7 +867,7 @@ func (in *VPCPeeringConnectivity) DeepCopyInto(out *VPCPeeringConnectivity) {
 	*out = *in
 	if in.VPCRef != nil {
 		in, out := &in.VPCRef, &out.VPCRef
-		*out = new(computev1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 }
@@ -886,7 +887,7 @@ func (in *VpcPeeringConfig) DeepCopyInto(out *VpcPeeringConfig) {
 	*out = *in
 	if in.VpcNameRef != nil {
 		in, out := &in.VpcNameRef, &out.VpcNameRef
-		*out = new(computev1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.Subnet != nil {

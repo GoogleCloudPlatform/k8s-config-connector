@@ -19,9 +19,9 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -91,7 +91,7 @@ func (in *ExternalAccessRule_IPRange) DeepCopyInto(out *ExternalAccessRule_IPRan
 	}
 	if in.ExternalAddressRef != nil {
 		in, out := &in.ExternalAddressRef, &out.ExternalAddressRef
-		*out = new(vmwareenginev1beta1.ExternalAddressRef)
+		*out = new(v1beta1.ExternalAddressRef)
 		**out = **in
 	}
 }
@@ -431,7 +431,7 @@ func (in *PeerNetwork) DeepCopyInto(out *PeerNetwork) {
 	}
 	if in.ComputeNetworkRef != nil {
 		in, out := &in.ComputeNetworkRef, &out.ComputeNetworkRef
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 }
@@ -1682,7 +1682,7 @@ func (in *VMwareEnginePrivateConnectionSpec) DeepCopyInto(out *VMwareEnginePriva
 	}
 	if in.ServiceNetworkRef != nil {
 		in, out := &in.ServiceNetworkRef, &out.ServiceNetworkRef
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 }

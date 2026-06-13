@@ -16,7 +16,7 @@ package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
@@ -82,7 +82,7 @@ func FirewallPolicyRuleMatcherLayer4Config_v1beta1_ToProto(mapCtx *direct.MapCon
 	return out
 }
 
-func ComputeFirewallPolicyRuleSpec_TargetResources_ToProto(mapCtx *direct.MapContext, in []*computev1beta1.ComputeNetworkRef) []string {
+func ComputeFirewallPolicyRuleSpec_TargetResources_ToProto(mapCtx *direct.MapContext, in []*computerefs.ComputeNetworkRef) []string {
 	if in == nil {
 		return nil
 	}
@@ -116,13 +116,13 @@ func ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_ToProto(mapCtx *direct.
 	return out
 }
 
-func ComputeFirewallPolicyRuleSpec_TargetResources_FromProto(mapCtx *direct.MapContext, in []string) []*computev1beta1.ComputeNetworkRef {
+func ComputeFirewallPolicyRuleSpec_TargetResources_FromProto(mapCtx *direct.MapContext, in []string) []*computerefs.ComputeNetworkRef {
 	if in == nil {
 		return nil
 	}
-	var out []*computev1beta1.ComputeNetworkRef
+	var out []*computerefs.ComputeNetworkRef
 	for _, i := range in {
-		out = append(out, &computev1beta1.ComputeNetworkRef{
+		out = append(out, &computerefs.ComputeNetworkRef{
 			External: i,
 		})
 	}

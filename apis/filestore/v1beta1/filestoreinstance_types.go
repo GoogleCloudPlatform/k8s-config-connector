@@ -15,7 +15,7 @@
 package v1beta1
 
 import (
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -60,7 +60,7 @@ type InstanceNetworks struct {
 	/* Immutable. */
 	// +optional
 	// +kcc:proto:field=google.cloud.filestore.v1.NetworkConfig.network
-	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	/* Immutable. A /29 CIDR block in one of the [internal IP address ranges](https://www.arin.net/reference/research/statistics/address_filters/) that identifies the range of IP addresses reserved for this instance. For example, 10.0.0.0/29 or 192.168.0.0/29. The range you specify can't overlap with either existing subnets or assigned IP address ranges for other Cloud Filestore instances in the selected VPC network. */
 	// +optional

@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -213,5 +213,5 @@ type PSCAutomationConfig struct {
 	//  [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/get):
 	//  `projects/{project}/global/networks/{network}`.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PSCAutomationConfig.network
-	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 }

@@ -887,7 +887,7 @@ func PscAutoConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnec
 	// MISSING: ForwardingRule
 	// MISSING: ProjectID
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	// MISSING: ServiceAttachment
 	// MISSING: PSCConnectionStatus

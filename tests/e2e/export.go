@@ -19,6 +19,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
@@ -300,7 +302,7 @@ func resolveProjectID(h *create.Harness, obj *unstructured.Unstructured) string 
 }
 
 func resolveNetwork(h *create.Harness, obj *unstructured.Unstructured) *computev1beta1.NetworkIdentity {
-	networkRef := computev1beta1.ComputeNetworkRef{}
+	networkRef := computerefs.ComputeNetworkRef{}
 
 	networkRef.External, _, _ = unstructured.NestedString(obj.Object, "spec", "networkRef", "external")
 	networkRef.Name, _, _ = unstructured.NestedString(obj.Object, "spec", "networkRef", "name")

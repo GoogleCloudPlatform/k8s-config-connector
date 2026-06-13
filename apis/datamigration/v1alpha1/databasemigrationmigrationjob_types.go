@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -219,7 +220,7 @@ func init() {
 type VPCPeeringConnectivity struct {
 	// The name of the VPC network to peer with the Cloud SQL private network.
 	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConnectivity.vpc
-	VPCRef *computev1beta1.ComputeNetworkRef `json:"vpcRef,omitempty"`
+	VPCRef *computerefs.ComputeNetworkRef `json:"vpcRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.clouddms.v1.ReverseSshConnectivity
@@ -241,7 +242,7 @@ type ReverseSSHConnectivity struct {
 
 	// The name of the VPC to peer with the Cloud SQL private network.
 	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vpc
-	VPCRef *computev1beta1.ComputeNetworkRef `json:"vpcRef,omitempty"`
+	VPCRef *computerefs.ComputeNetworkRef `json:"vpcRef,omitempty"`
 }
 
 // +kubebuilder:pruning:PreserveUnknownFields

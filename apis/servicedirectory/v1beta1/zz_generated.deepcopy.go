@@ -19,8 +19,9 @@
 package v1beta1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	apisrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -125,7 +126,7 @@ func (in *ServiceDirectoryEndpointSpec) DeepCopyInto(out *ServiceDirectoryEndpoi
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(computev1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.Port != nil {
@@ -274,7 +275,7 @@ func (in *ServiceDirectoryNamespaceSpec) DeepCopyInto(out *ServiceDirectoryNames
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(refs.ProjectRef)
+		*out = new(apisrefs.ProjectRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {

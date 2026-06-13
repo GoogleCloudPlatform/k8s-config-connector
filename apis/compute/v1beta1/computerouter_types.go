@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -96,7 +97,7 @@ type ComputeRouterSpec struct {
 
 	/* A reference to the network to which this router belongs. */
 	// +required
-	NetworkRef ComputeNetworkRef `json:"networkRef"`
+	NetworkRef computerefs.ComputeNetworkRef `json:"networkRef"`
 
 	/* Immutable. Region where the router resides. */
 	// +required

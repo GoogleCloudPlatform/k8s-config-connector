@@ -25,6 +25,8 @@ import (
 	"errors"
 	"fmt"
 
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
 	"google.golang.org/api/iterator"
@@ -46,7 +48,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.ComputeNetworkGVK, NewNetworkModel)
+	registry.RegisterModel(computerefs.ComputeNetworkGVK, NewNetworkModel)
 }
 
 func NewNetworkModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -279,7 +281,7 @@ func (a *NetworkAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 
 	u.Object = uObj
 	u.SetName(a.id.String())
-	u.SetGroupVersionKind(krm.ComputeNetworkGVK)
+	u.SetGroupVersionKind(computerefs.ComputeNetworkGVK)
 
 	return u, nil
 }

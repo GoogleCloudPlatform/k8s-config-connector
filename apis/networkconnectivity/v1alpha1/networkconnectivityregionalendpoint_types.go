@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -52,7 +53,7 @@ type NetworkConnectivityRegionalEndpointSpec struct {
 
 	// Optional. The name of the VPC network for this private regional endpoint.
 	// +kubebuilder:validation:Optional
-	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 	// Optional. The name of the subnetwork from which the IP address will be allocated.
 	// +kubebuilder:validation:Optional
 	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`

@@ -144,7 +144,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `StorageBucket` resource.</p>
+            <p>A reference to an externally managed StorageBucket resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>
@@ -154,7 +154,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a StorageBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -164,7 +164,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a StorageBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -224,8 +224,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Allows HTTP request headers (by name) to be used in the
-cache key.</p>
+            <p>Allows HTTP request headers (by name) to be used in the cache key.</p>
         </td>
     </tr>
     <tr>
@@ -245,9 +244,7 @@ cache key.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Names of query string parameters to include in cache keys.
-Default parameters are always included. '&' and '=' will
-be percent encoded and not treated as delimiters.</p>
+            <p>Names of query string parameters to include in cache keys.</p>
         </td>
     </tr>
     <tr>
@@ -267,8 +264,7 @@ be percent encoded and not treated as delimiters.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies the cache setting for all responses from this backend.
-The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"].</p>
+            <p>Specifies the cache setting for all responses from this backend. The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC.</p>
         </td>
     </tr>
     <tr>
@@ -288,8 +284,7 @@ The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATI
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies the default TTL for cached content served by this origin for responses
-that do not have an existing valid TTL (max-age or s-max-age).</p>
+            <p>Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-maxage).</p>
         </td>
     </tr>
     <tr>
@@ -319,8 +314,7 @@ that do not have an existing valid TTL (max-age or s-max-age).</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Sets a cache TTL for the specified HTTP status code. negativeCaching must be enabled to configure negativeCachingPolicy.
-Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's default cache TTLs.</p>
+            <p>Sets a cache TTL for the specified HTTP status code. negativeCaching must be enabled to configure negativeCachingPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -340,8 +334,7 @@ Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's def
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501
-can be specified as values, and you cannot specify a status code more than once.</p>
+            <p>The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501 can be specified as values, and you cannot specify a status code more than once.</p>
         </td>
     </tr>
     <tr>
@@ -351,8 +344,7 @@ can be specified as values, and you cannot specify a status code more than once.
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s
-(30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL.</p>
+            <p>The TTL (in seconds) for which to cache responses with the corresponding status code.</p>
         </td>
     </tr>
     <tr>
@@ -382,14 +374,7 @@ can be specified as values, and you cannot specify a status code more than once.
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Maximum number of seconds the response to a signed URL request will
-be considered fresh. After this time period,
-the response will be revalidated before being served.
-When serving responses to signed URL requests,
-Cloud CDN will internally behave as though
-all responses from this backend had a "Cache-Control: public,
-max-age=[TTL]" header, regardless of any existing Cache-Control
-header. The actual headers served in responses will not be altered.</p>
+            <p>Maximum number of seconds the response to a signed URL request will be considered fresh.</p>
         </td>
     </tr>
     <tr>
@@ -429,8 +414,7 @@ header. The actual headers served in responses will not be altered.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>An optional textual description of the resource; provided by the
-client when the resource is created.</p>
+            <p>An optional textual description of the resource; provided by the client when the resource is created.</p>
         </td>
     </tr>
     <tr>
@@ -491,7 +475,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -554,7 +538,7 @@ selfLink: string
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>Server-defined URL for the resource.</p>
         </td>
     </tr>
 </tbody>

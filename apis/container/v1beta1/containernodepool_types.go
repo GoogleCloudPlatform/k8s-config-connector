@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -60,7 +61,7 @@ type NodePoolManagement struct {
 // +kcc:proto=google.container.v1.AdditionalNodeNetworkConfig
 type AdditionalNodeNetworkConfig struct {
 	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
-	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 }

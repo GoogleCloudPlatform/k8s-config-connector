@@ -20,6 +20,7 @@ package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -35,7 +36,7 @@ func ComputeNetworkPeeringSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	out.ImportSubnetRoutesWithPublicIP = in.ImportSubnetRoutesWithPublicIp
 
 	if in.GetNetwork() != "" {
-		out.PeerNetworkRef = krm.ComputeNetworkRef{External: in.GetNetwork()}
+		out.PeerNetworkRef = computerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 
 	out.ResourceID = in.Name

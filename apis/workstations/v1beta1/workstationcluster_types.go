@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -55,7 +56,7 @@ type WorkstationClusterSpec struct {
 	// Immutable. Reference to the Compute Engine network in which instances associated
 	//  with this workstation cluster will be created.
 	// +required
-	NetworkRef computev1beta1.ComputeNetworkRef `json:"networkRef"`
+	NetworkRef computerefs.ComputeNetworkRef `json:"networkRef"`
 
 	// Immutable. Reference to the Compute Engine subnetwork in which instances
 	//  associated with this workstation cluster will be created. Must be part of

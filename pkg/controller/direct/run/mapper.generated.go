@@ -25,6 +25,7 @@ package run
 
 import (
 	pb "cloud.google.com/go/run/apiv2/runpb"
+	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krmrunv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
@@ -1286,7 +1287,7 @@ func VPCAccess_NetworkInterface_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	}
 	out := &krmrunv1alpha1.VPCAccess_NetworkInterface{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
 		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
@@ -1314,7 +1315,7 @@ func VPCAccess_NetworkInterface_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	}
 	out := &krm.VPCAccess_NetworkInterface{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
 		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}

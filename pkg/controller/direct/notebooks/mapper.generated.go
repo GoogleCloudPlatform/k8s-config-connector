@@ -25,6 +25,7 @@ package notebooks
 
 import (
 	pb "cloud.google.com/go/notebooks/apiv1/notebookspb"
+	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmdataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	krmnotebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1alpha1"
@@ -170,7 +171,7 @@ func ExecutionTemplate_VertexAiParameters_v1alpha1_FromProto(mapCtx *direct.MapC
 	}
 	out := &krmnotebooksv1alpha1.ExecutionTemplate_VertexAiParameters{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.Env = in.Env
 	return out
@@ -371,7 +372,7 @@ func NotebookInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	out.NoPublicIP = direct.LazyPtr(in.GetNoPublicIp())
 	out.NoProxyAccess = direct.LazyPtr(in.GetNoProxyAccess())
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnet() != "" {
 		out.SubnetRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnet()}

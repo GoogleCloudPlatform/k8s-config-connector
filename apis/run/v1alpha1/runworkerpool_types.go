@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -259,7 +260,7 @@ type VPCAccess struct {
 type VPCAccess_NetworkInterface struct {
 	// Optional. The VPC network that the Cloud Run resource will be able to
 	//  send traffic to.
-	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. The VPC subnetwork that the Cloud Run resource will get IPs
 	//  from.

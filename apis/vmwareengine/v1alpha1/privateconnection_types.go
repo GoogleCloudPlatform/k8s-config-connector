@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -56,7 +56,7 @@ type VMwareEnginePrivateConnectionSpec struct {
 	// Required. Reference to the service network to create private connection.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.PrivateConnection.service_network
 	// +required
-	ServiceNetworkRef *computev1beta1.ComputeNetworkRef `json:"serviceNetworkRef"`
+	ServiceNetworkRef *computerefs.ComputeNetworkRef `json:"serviceNetworkRef"`
 }
 
 // VMwareEnginePrivateConnectionStatus defines the config connector machine state of VMwareEnginePrivateConnection

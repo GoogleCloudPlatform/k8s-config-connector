@@ -25,6 +25,7 @@ package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
+	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -168,6 +169,96 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
+func BackendBucketCDNPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicy) *krm.BackendBucketCDNPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendBucketCDNPolicy{}
+	out.BypassCacheOnRequestHeaders = direct.Slice_FromProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendBucketCDNPolicyBypassCacheOnRequestHeader_v1beta1_FromProto)
+	out.CacheKeyPolicy = BackendBucketCDNPolicyCacheKeyPolicy_v1beta1_FromProto(mapCtx, in.GetCacheKeyPolicy())
+	out.CacheMode = in.CacheMode
+	out.ClientTTL = in.ClientTtl
+	out.DefaultTTL = in.DefaultTtl
+	out.MaxTTL = in.MaxTtl
+	out.NegativeCaching = in.NegativeCaching
+	out.NegativeCachingPolicy = direct.Slice_FromProto(mapCtx, in.NegativeCachingPolicy, BackendBucketCDNPolicyNegativeCachingPolicy_v1beta1_FromProto)
+	out.RequestCoalescing = in.RequestCoalescing
+	out.ServeWhileStale = in.ServeWhileStale
+	out.SignedURLCacheMaxAgeSec = in.SignedUrlCacheMaxAgeSec
+	// MISSING: SignedURLKeyNames
+	return out
+}
+func BackendBucketCDNPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCDNPolicy) *pb.BackendBucketCdnPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicy{}
+	out.BypassCacheOnRequestHeaders = direct.Slice_ToProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendBucketCDNPolicyBypassCacheOnRequestHeader_v1beta1_ToProto)
+	out.CacheKeyPolicy = BackendBucketCDNPolicyCacheKeyPolicy_v1beta1_ToProto(mapCtx, in.CacheKeyPolicy)
+	out.CacheMode = in.CacheMode
+	out.ClientTtl = in.ClientTTL
+	out.DefaultTtl = in.DefaultTTL
+	out.MaxTtl = in.MaxTTL
+	out.NegativeCaching = in.NegativeCaching
+	out.NegativeCachingPolicy = direct.Slice_ToProto(mapCtx, in.NegativeCachingPolicy, BackendBucketCDNPolicyNegativeCachingPolicy_v1beta1_ToProto)
+	out.RequestCoalescing = in.RequestCoalescing
+	out.ServeWhileStale = in.ServeWhileStale
+	out.SignedUrlCacheMaxAgeSec = in.SignedURLCacheMaxAgeSec
+	// MISSING: SignedURLKeyNames
+	return out
+}
+func BackendBucketCDNPolicyBypassCacheOnRequestHeader_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader) *krm.BackendBucketCDNPolicyBypassCacheOnRequestHeader {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendBucketCDNPolicyBypassCacheOnRequestHeader{}
+	out.HeaderName = in.HeaderName
+	return out
+}
+func BackendBucketCDNPolicyBypassCacheOnRequestHeader_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCDNPolicyBypassCacheOnRequestHeader) *pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader{}
+	out.HeaderName = in.HeaderName
+	return out
+}
+func BackendBucketCDNPolicyCacheKeyPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyCacheKeyPolicy) *krm.BackendBucketCDNPolicyCacheKeyPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendBucketCDNPolicyCacheKeyPolicy{}
+	out.IncludeHTTPHeaders = in.IncludeHttpHeaders
+	out.QueryStringWhitelist = in.QueryStringWhitelist
+	return out
+}
+func BackendBucketCDNPolicyCacheKeyPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCDNPolicyCacheKeyPolicy) *pb.BackendBucketCdnPolicyCacheKeyPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicyCacheKeyPolicy{}
+	out.IncludeHttpHeaders = in.IncludeHTTPHeaders
+	out.QueryStringWhitelist = in.QueryStringWhitelist
+	return out
+}
+func BackendBucketCDNPolicyNegativeCachingPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyNegativeCachingPolicy) *krm.BackendBucketCDNPolicyNegativeCachingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendBucketCDNPolicyNegativeCachingPolicy{}
+	out.Code = in.Code
+	out.TTL = in.Ttl
+	return out
+}
+func BackendBucketCDNPolicyNegativeCachingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCDNPolicyNegativeCachingPolicy) *pb.BackendBucketCdnPolicyNegativeCachingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicyNegativeCachingPolicy{}
+	out.Code = in.Code
+	out.Ttl = in.TTL
+	return out
+}
 func ComputeAddressObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressObservedState {
 	if in == nil {
 		return nil
@@ -223,7 +314,7 @@ func ComputeAddressSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Addr
 	// MISSING: Labels
 	// MISSING: Name
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.NetworkTier = in.NetworkTier
 	out.PrefixLength = in.PrefixLength
@@ -380,6 +471,102 @@ func ComputeAutoscalerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmco
 	return out
 }
 */
+
+/* found existing non-generated mapping function "ComputeBackendBucketSpec_v1beta1_FromProto", skipping
+func ComputeBackendBucketSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucket) *krm.ComputeBackendBucketSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeBackendBucketSpec{}
+	// MISSING: BucketName
+	out.CDNPolicy = BackendBucketCDNPolicy_v1beta1_FromProto(mapCtx, in.GetCdnPolicy())
+	out.CompressionMode = in.CompressionMode
+	// MISSING: CreationTimestamp
+	out.CustomResponseHeaders = in.CustomResponseHeaders
+	out.Description = in.Description
+	out.EdgeSecurityPolicy = in.EdgeSecurityPolicy
+	out.EnableCDN = in.EnableCdn
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LoadBalancingScheme
+	// MISSING: Name
+	// MISSING: Params
+	// MISSING: SelfLink
+	// MISSING: UsedBy
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeBackendBucketSpec_v1beta1_ToProto", skipping
+
+	func ComputeBackendBucketSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendBucketSpec) *pb.BackendBucket {
+		if in == nil {
+			return nil
+		}
+		out := &pb.BackendBucket{}
+		// MISSING: BucketName
+		out.CdnPolicy = BackendBucketCDNPolicy_v1beta1_ToProto(mapCtx, in.CDNPolicy)
+		out.CompressionMode = in.CompressionMode
+		// MISSING: CreationTimestamp
+		out.CustomResponseHeaders = in.CustomResponseHeaders
+		out.Description = in.Description
+		out.EdgeSecurityPolicy = in.EdgeSecurityPolicy
+		out.EnableCdn = in.EnableCDN
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: LoadBalancingScheme
+		// MISSING: Name
+		// MISSING: Params
+		// MISSING: SelfLink
+		// MISSING: UsedBy
+		return out
+	}
+*/
+func ComputeBackendBucketStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucket) *krm.ComputeBackendBucketStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeBackendBucketStatus{}
+	// MISSING: BucketName
+	// MISSING: CDNPolicy
+	// MISSING: CompressionMode
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: CustomResponseHeaders
+	// MISSING: Description
+	// MISSING: EdgeSecurityPolicy
+	// MISSING: EnableCDN
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LoadBalancingScheme
+	// MISSING: Name
+	// MISSING: Params
+	out.SelfLink = in.SelfLink
+	// MISSING: UsedBy
+	return out
+}
+func ComputeBackendBucketStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendBucketStatus) *pb.BackendBucket {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucket{}
+	// MISSING: BucketName
+	// MISSING: CDNPolicy
+	// MISSING: CompressionMode
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: CustomResponseHeaders
+	// MISSING: Description
+	// MISSING: EdgeSecurityPolicy
+	// MISSING: EnableCDN
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LoadBalancingScheme
+	// MISSING: Name
+	// MISSING: Params
+	out.SelfLink = in.SelfLink
+	// MISSING: UsedBy
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeBackendServiceSignedURLKeySpec_v1alpha1_FromProto", skipping
 func ComputeBackendServiceSignedURLKeySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SignedUrlKey) *krmcomputev1alpha1.ComputeBackendServiceSignedURLKeySpec {
@@ -1001,7 +1188,7 @@ func ComputeFirewallSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Fir
 	out.LogConfig = FirewallLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
 	// MISSING: Name
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	// MISSING: Params
 	out.Priority = in.Priority
@@ -1138,7 +1325,7 @@ func ComputeForwardingRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	out.MetadataFilters = direct.Slice_FromProto(mapCtx, in.MetadataFilters, MetadataFilter_v1beta1_FromProto)
 	// MISSING: Name
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.NetworkTier = in.NetworkTier
 	// MISSING: NoAutomateDNSZone
@@ -2001,7 +2188,7 @@ func ComputeInstanceGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: Name
 	out.NamedPorts = direct.Slice_FromProto(mapCtx, in.NamedPorts, InstanceGroupNamedPort_v1beta1_FromProto)
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	// MISSING: Region
 	// MISSING: SelfLink
@@ -2778,7 +2965,7 @@ func ComputeNetworkEndpointGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext
 	// MISSING: Kind
 	// MISSING: Name
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.NetworkEndpointType = in.NetworkEndpointType
 	// MISSING: PSCData
@@ -3034,7 +3221,7 @@ func ComputeNetworkPeeringSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	out.ImportSubnetRoutesWithPublicIP = in.ImportSubnetRoutesWithPublicIp
 	// MISSING: Name
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	// MISSING: PeerMtu
 	out.StackType = in.StackType
@@ -3657,7 +3844,7 @@ func ComputeRouteSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Route)
 	// MISSING: Kind
 	// MISSING: Name
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.NextHopGateway = in.NextHopGateway
 	// MISSING: NextHopHub
@@ -3879,7 +4066,7 @@ func ComputeRouterSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Route
 	// MISSING: Name
 	// MISSING: Nats
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.Region = in.Region
 	// MISSING: SelfLink
@@ -4388,7 +4575,7 @@ func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.S
 	out.LogConfig = SubnetworkLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
 	// MISSING: Name
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	// MISSING: Params
 	out.PrivateIPGoogleAccess = in.PrivateIpGoogleAccess
@@ -5222,7 +5409,7 @@ func ComputeVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.V
 	// MISSING: Labels
 	// MISSING: Name
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.Region = in.Region
 	// MISSING: SelfLink

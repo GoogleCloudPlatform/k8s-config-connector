@@ -15,7 +15,7 @@
 package v1beta1
 
 import (
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -324,5 +324,5 @@ type StorageBucketIpFilterVpcNetworkSources struct {
 	AllowedIpCidrRanges []string `json:"allowedIpCidrRanges"`
 
 	/* The VPC network that can access the bucket. */
-	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef"`
 }

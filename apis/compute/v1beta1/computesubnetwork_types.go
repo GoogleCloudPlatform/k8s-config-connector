@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -55,7 +56,7 @@ type ComputeSubnetworkSpec struct {
 	// distributed mode can have subnetworks.
 	// +required
 	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.network
-	NetworkRef *ComputeNetworkRef `json:"networkRef"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef"`
 
 	// When enabled, VMs in this subnetwork without external IP addresses can
 	// access Google APIs and services by using Private Google Access.

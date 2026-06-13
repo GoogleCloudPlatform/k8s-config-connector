@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -71,7 +72,7 @@ type ComputeAddressSpec struct {
 	   only be used with INTERNAL type with the VPC_PEERING and
 	   IPSEC_INTERCONNECT purposes. */
 	// +optional
-	NetworkRef *ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	/* Immutable. The networking tier used for configuring this address. If this field is not
 	   specified, it is assumed to be PREMIUM.
