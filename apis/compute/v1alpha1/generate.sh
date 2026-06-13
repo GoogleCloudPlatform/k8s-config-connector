@@ -30,7 +30,14 @@ go run . generate-types \
   --resource ComputeNetworkAttachment:NetworkAttachment \
   --resource ComputeInterconnect:Interconnect \
   --resource ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation \
+  --resource ComputeGlobalNetworkEndpointGroup:NetworkEndpointGroup \
   --include-skipped-output
+
+go run . generate-mapper \
+    --multiversion \
+    --service google.cloud.compute.v1 \
+    --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+    --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
