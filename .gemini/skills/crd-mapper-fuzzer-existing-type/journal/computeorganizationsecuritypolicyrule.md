@@ -1,0 +1,8 @@
+# Journal: ComputeOrganizationSecurityPolicyRule Transition
+
+## Observations
+- **Resource Name vs Proto Message Name:** The resource `ComputeOrganizationSecurityPolicyRule` is defined in KRM/Terraform with the name "SecurityPolicyRule", but in the GCP modern direct API (the `computepb` Go client), it actually maps to the proto message `FirewallPolicyRule` (hierarchical firewall rules).
+- **Type File Naming:** To conform to the code generation tool `generate-types`, the file name must match the lowercase proto message name. Since the proto message is `FirewallPolicyRule`, the file name was created as `apis/compute/v1alpha1/firewallpolicyrule_types.go`.
+- **Match Field Struct Flattening:** The KRM structure nests match configurations under `.match.config` (e.g., `destIpRanges`, `srcIpRanges`, `layer4Config`). However, the proto `FirewallPolicyRuleMatcher` flat-maps these fields directly under `.match` (e.g., `dest_ip_ranges`, `src_ip_ranges`, `layer4_configs`). This discrepancy was solved by handcoding mappers in `pkg/controller/direct/compute/securitypolicyrule_mappings.go`.
+- **Fuzzer Normalization (FilterSpec):** When writing the KRM roundtrip fuzzer, we used the `FilterSpec` function to normalize empty `Match` structs to `nil`. This handles the pointer (proto) vs non-pointer (KRM struct) mismatch, avoiding empty-to-nil roundtrip differences.
+- **Fuzzer Type Inference:** Since `ComputeOrganizationSecurityPolicyRule` has no `ObservedState` status fields, we defined empty/dummy `ObservedState` mapping functions to allow the Go compiler to infer generic type arguments for `fuzztesting.NewKRMTypedFuzzer`.
