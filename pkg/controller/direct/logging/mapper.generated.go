@@ -144,21 +144,137 @@ func LoggingLogExclusionSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogExcl
 }
 */
 
-/* found existing non-generated mapping function "LoggingLogExclusionSpec_ToProto", skipping
-func LoggingLogExclusionSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogExclusionSpec) *pb.LogExclusion {
+/*
+found existing non-generated mapping function "LoggingLogExclusionSpec_ToProto", skipping
+
+	func LoggingLogExclusionSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogExclusionSpec) *pb.LogExclusion {
+		if in == nil {
+			return nil
+		}
+		out := &pb.LogExclusion{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		out.Filter = LoggingLogExclusionSpec_Filter_ToProto(mapCtx, in.Filter)
+		out.Disabled = direct.ValueOf(in.Disabled)
+		// MISSING: CreateTime
+		// MISSING: UpdateTime
+		return out
+	}
+*/
+func LoggingLogMetric_FromProto(mapCtx *direct.MapContext, in *pb.LogMetric) *krm.LoggingLogMetric {
 	if in == nil {
 		return nil
 	}
-	out := &pb.LogExclusion{}
+	out := &krm.LoggingLogMetric{}
 	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	out.Filter = LoggingLogExclusionSpec_Filter_ToProto(mapCtx, in.Filter)
-	out.Disabled = direct.ValueOf(in.Disabled)
+	// MISSING: Description
+	// MISSING: Filter
+	// MISSING: BucketName
+	// MISSING: Disabled
+	// MISSING: MetricDescriptor
+	// MISSING: ValueExtractor
+	// MISSING: LabelExtractors
+	// MISSING: BucketOptions
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
+	// MISSING: Version
 	return out
 }
-*/
+func LoggingLogMetric_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogMetric) *pb.LogMetric {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogMetric{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Filter
+	// MISSING: BucketName
+	// MISSING: Disabled
+	// MISSING: MetricDescriptor
+	// MISSING: ValueExtractor
+	// MISSING: LabelExtractors
+	// MISSING: BucketOptions
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Version
+	return out
+}
+func LoggingLogMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogMetric) *krm.LoggingLogMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLogMetricSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Filter = in.GetFilter()
+	// MISSING: BucketName
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.MetricDescriptor = LogmetricMetricDescriptor_FromProto(mapCtx, in.GetMetricDescriptor())
+	out.ValueExtractor = direct.LazyPtr(in.GetValueExtractor())
+	out.LabelExtractors = in.LabelExtractors
+	out.BucketOptions = LogmetricBucketOptions_FromProto(mapCtx, in.GetBucketOptions())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Version
+	return out
+}
+func LoggingLogMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogMetricSpec) *pb.LogMetric {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogMetric{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Filter = LoggingLogMetricSpec_Filter_ToProto(mapCtx, in.Filter)
+	// MISSING: BucketName
+	out.Disabled = direct.ValueOf(in.Disabled)
+	out.MetricDescriptor = LogmetricMetricDescriptor_ToProto(mapCtx, in.MetricDescriptor)
+	out.ValueExtractor = direct.ValueOf(in.ValueExtractor)
+	out.LabelExtractors = in.LabelExtractors
+	out.BucketOptions = LogmetricBucketOptions_ToProto(mapCtx, in.BucketOptions)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Version
+	return out
+}
+func LoggingLogMetricStatus_FromProto(mapCtx *direct.MapContext, in *pb.LogMetric) *krm.LoggingLogMetricStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLogMetricStatus{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Filter
+	// MISSING: BucketName
+	// MISSING: Disabled
+	out.MetricDescriptor = LogmetricMetricDescriptorStatus_FromProto(mapCtx, in.GetMetricDescriptor())
+	// MISSING: ValueExtractor
+	// MISSING: LabelExtractors
+	// MISSING: BucketOptions
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Version
+	return out
+}
+func LoggingLogMetricStatus_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogMetricStatus) *pb.LogMetric {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogMetric{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Filter
+	// MISSING: BucketName
+	// MISSING: Disabled
+	out.MetricDescriptor = LogmetricMetricDescriptorStatus_ToProto(mapCtx, in.MetricDescriptor)
+	// MISSING: ValueExtractor
+	// MISSING: LabelExtractors
+	// MISSING: BucketOptions
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Version
+	return out
+}
 
 /* found existing non-generated mapping function "LoggingLogSinkSpec_FromProto", skipping
 func LoggingLogSinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogSink) *krm.LoggingLogSinkSpec {
