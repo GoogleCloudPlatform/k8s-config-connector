@@ -64,6 +64,7 @@ go run . generate-types \
   --resource ComputeNetwork:Network \
   --resource ComputeNetworkEndpointGroup:NetworkEndpointGroup \
   --resource ComputeNetworkFirewallPolicy:FirewallPolicy \
+  --resource ComputeNetworkFirewallPolicyAssociation:FirewallPolicyAssociation \
   --resource ComputeNetworkPeering:NetworkPeering \
   --resource ComputeNodeGroup:NodeGroup \
   --resource ComputeNodeTemplate:NodeTemplate \
