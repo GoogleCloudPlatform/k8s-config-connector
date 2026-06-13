@@ -21,6 +21,7 @@
 // resource: ComputeNetworkAttachment:NetworkAttachment
 // resource: ComputeInterconnect:Interconnect
 // resource: ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation
+// resource: ComputeRouterInterface:RouterInterface
 
 package v1alpha1
 
@@ -447,6 +448,50 @@ type NetworkEdgeSecurityService struct {
 	// [Output Only] Server-defined URL for this resource with the resource id.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.RouterInterface", skipping
+
+// +kcc:proto=google.cloud.compute.v1.RouterInterface
+type RouterInterface struct {
+	// IP address and range of the interface. - For Internet Protocol version 4 (IPv4), the IP range must be in the RFC3927 link-local IP address space. The value must be a CIDR-formatted string, for example, 169.254.0.1/30. Note: Do not truncate the IP address, as it represents the IP address of the interface. - For Internet Protocol version 6 (IPv6), the value must be a unique local address (ULA) range from fdff:1::/64 with a mask length of 126 or less. This value should be a CIDR-formatted string, for example, fdff:1::1/112. Within the router's VPC, this IPv6 prefix will be reserved exclusively for this connection and cannot be used for any other purpose.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterInterface.ip_range
+	IPRange *string `json:"ipRange,omitempty"`
+
+	// IP version of this interface.
+	//  Check the IpVersion enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterInterface.ip_version
+	IPVersion *string `json:"ipVersion,omitempty"`
+
+	// URI of the linked Interconnect attachment. It must be in the same region as the router. Each interface can have one linked resource, which can be a VPN tunnel, an Interconnect attachment, or a subnetwork.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterInterface.linked_interconnect_attachment
+	LinkedInterconnectAttachment *string `json:"linkedInterconnectAttachment,omitempty"`
+
+	// URI of the linked VPN tunnel, which must be in the same region as the router. Each interface can have one linked resource, which can be a VPN tunnel, an Interconnect attachment, or a subnetwork.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterInterface.linked_vpn_tunnel
+	LinkedVPNTunnel *string `json:"linkedVPNTunnel,omitempty"`
+
+	// [Output Only] The resource that configures and manages this interface. - MANAGED_BY_USER is the default value and can be managed directly by users. - MANAGED_BY_ATTACHMENT is an interface that is configured and managed by Cloud Interconnect, specifically, by an InterconnectAttachment of type PARTNER. Google automatically creates, updates, and deletes this type of interface when the PARTNER InterconnectAttachment is created, updated, or deleted.
+	//  Check the ManagementType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterInterface.management_type
+	ManagementType *string `json:"managementType,omitempty"`
+
+	// Name of this interface entry. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterInterface.name
+	Name *string `json:"name,omitempty"`
+
+	// The regional private internal IP address that is used to establish BGP sessions to a VM instance acting as a third-party Router Appliance, such as a Next Gen Firewall, a Virtual Router, or an SD-WAN VM.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterInterface.private_ip_address
+	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
+
+	// Name of the interface that will be redundant with the current interface you are creating. The redundantInterface must belong to the same Cloud Router as the interface here. To establish the BGP session to a Router Appliance VM, you must create two BGP peers. The two BGP peers must be attached to two separate interfaces that are redundant with each other. The redundant_interface must be 1-63 characters long, and comply with RFC1035. Specifically, the redundant_interface must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterInterface.redundant_interface
+	RedundantInterface *string `json:"redundantInterface,omitempty"`
+
+	// The URI of the subnetwork resource that this interface belongs to, which must be in the same region as the Cloud Router. When you establish a BGP session to a VM instance using this interface, the VM instance must belong to the same subnetwork as the subnetwork specified here.
+	// +kcc:proto:field=google.cloud.compute.v1.RouterInterface.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
 }
 */
 
