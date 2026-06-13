@@ -29,6 +29,7 @@ go run . generate-types \
   --resource ComputeNetworkEdgeSecurityService:NetworkEdgeSecurityService \
   --resource ComputeNetworkAttachment:NetworkAttachment \
   --resource ComputeInterconnect:Interconnect \
+  --resource ComputePacketMirroring:PacketMirroring \
   --resource ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation \
   --include-skipped-output
 
