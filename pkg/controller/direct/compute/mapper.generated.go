@@ -2162,6 +2162,704 @@ found existing non-generated mapping function "HealthCheckTCPHealthCheck_v1beta1
 		return out
 	}
 */
+func InstanceAccessConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AccessConfig) *krm.InstanceAccessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceAccessConfig{}
+	// MISSING: ExternalIPV6
+	// MISSING: ExternalIPV6PrefixLength
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NATIP
+	out.NetworkTier = in.NetworkTier
+	out.PublicPtrDomainName = in.PublicPtrDomainName
+	// MISSING: SecurityPolicy
+	// MISSING: SetPublicPtr
+	// MISSING: Type
+	return out
+}
+func InstanceAccessConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceAccessConfig) *pb.AccessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccessConfig{}
+	// MISSING: ExternalIPV6
+	// MISSING: ExternalIPV6PrefixLength
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NATIP
+	out.NetworkTier = in.NetworkTier
+	out.PublicPtrDomainName = in.PublicPtrDomainName
+	// MISSING: SecurityPolicy
+	// MISSING: SetPublicPtr
+	// MISSING: Type
+	return out
+}
+
+/* found existing non-generated mapping function "InstanceAdvancedMachineFeatures_v1beta1_FromProto", skipping
+func InstanceAdvancedMachineFeatures_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedMachineFeatures) *krm.InstanceAdvancedMachineFeatures {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceAdvancedMachineFeatures{}
+	out.EnableNestedVirtualization = in.EnableNestedVirtualization
+	// MISSING: EnableUefiNetworking
+	// MISSING: PerformanceMonitoringUnit
+	out.ThreadsPerCore = in.ThreadsPerCore
+	// MISSING: TurboMode
+	out.VisibleCoreCount = in.VisibleCoreCount
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "InstanceAdvancedMachineFeatures_v1beta1_ToProto", skipping
+
+	func InstanceAdvancedMachineFeatures_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceAdvancedMachineFeatures) *pb.AdvancedMachineFeatures {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AdvancedMachineFeatures{}
+		out.EnableNestedVirtualization = in.EnableNestedVirtualization
+		// MISSING: EnableUefiNetworking
+		// MISSING: PerformanceMonitoringUnit
+		out.ThreadsPerCore = in.ThreadsPerCore
+		// MISSING: TurboMode
+		out.VisibleCoreCount = in.VisibleCoreCount
+		return out
+	}
+*/
+func InstanceAliasIpRange_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AliasIpRange) *krm.InstanceAliasIpRange {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceAliasIpRange{}
+	// MISSING: IPCIDRRange
+	// (near miss): "IPCIDRRange" vs "IpCidrRange"
+	out.SubnetworkRangeName = in.SubnetworkRangeName
+	return out
+}
+func InstanceAliasIpRange_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceAliasIpRange) *pb.AliasIpRange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AliasIpRange{}
+	// MISSING: IPCIDRRange
+	// (near miss): "IPCIDRRange" vs "IpCidrRange"
+	out.SubnetworkRangeName = in.SubnetworkRangeName
+	return out
+}
+func InstanceAttachedDisk_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AttachedDisk) *krm.InstanceAttachedDisk {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceAttachedDisk{}
+	// MISSING: Architecture
+	// MISSING: AutoDelete
+	// MISSING: Boot
+	out.DeviceName = in.DeviceName
+	// MISSING: DiskEncryptionKey
+	// MISSING: DiskSizeGB
+	// MISSING: ForceAttach
+	// MISSING: GuestOSFeatures
+	// MISSING: Index
+	// MISSING: InitializeParams
+	// MISSING: Interface
+	// MISSING: Kind
+	// MISSING: Licenses
+	out.Mode = in.Mode
+	// MISSING: SavedState
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: Source
+	// MISSING: Type
+	return out
+}
+func InstanceAttachedDisk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceAttachedDisk) *pb.AttachedDisk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttachedDisk{}
+	// MISSING: Architecture
+	// MISSING: AutoDelete
+	// MISSING: Boot
+	out.DeviceName = in.DeviceName
+	// MISSING: DiskEncryptionKey
+	// MISSING: DiskSizeGB
+	// MISSING: ForceAttach
+	// MISSING: GuestOSFeatures
+	// MISSING: Index
+	// MISSING: InitializeParams
+	// MISSING: Interface
+	// MISSING: Kind
+	// MISSING: Licenses
+	out.Mode = in.Mode
+	// MISSING: SavedState
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: Source
+	// MISSING: Type
+	return out
+}
+func InstanceBootDisk_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AttachedDisk) *krm.InstanceBootDisk {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceBootDisk{}
+	// MISSING: Architecture
+	out.AutoDelete = in.AutoDelete
+	// MISSING: Boot
+	out.DeviceName = in.DeviceName
+	// MISSING: DiskEncryptionKey
+	// MISSING: DiskSizeGB
+	// MISSING: ForceAttach
+	// MISSING: GuestOSFeatures
+	// MISSING: Index
+	out.InitializeParams = InstanceInitializeParams_v1beta1_FromProto(mapCtx, in.GetInitializeParams())
+	// MISSING: Interface
+	// MISSING: Kind
+	// MISSING: Licenses
+	out.Mode = in.Mode
+	// MISSING: SavedState
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: Source
+	// MISSING: Type
+	return out
+}
+func InstanceBootDisk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceBootDisk) *pb.AttachedDisk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttachedDisk{}
+	// MISSING: Architecture
+	out.AutoDelete = in.AutoDelete
+	// MISSING: Boot
+	out.DeviceName = in.DeviceName
+	// MISSING: DiskEncryptionKey
+	// MISSING: DiskSizeGB
+	// MISSING: ForceAttach
+	// MISSING: GuestOSFeatures
+	// MISSING: Index
+	out.InitializeParams = InstanceInitializeParams_v1beta1_ToProto(mapCtx, in.InitializeParams)
+	// MISSING: Interface
+	// MISSING: Kind
+	// MISSING: Licenses
+	out.Mode = in.Mode
+	// MISSING: SavedState
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: Source
+	// MISSING: Type
+	return out
+}
+
+/* found existing non-generated mapping function "InstanceConfidentialInstanceConfig_v1beta1_FromProto", skipping
+func InstanceConfidentialInstanceConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ConfidentialInstanceConfig) *krm.InstanceConfidentialInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceConfidentialInstanceConfig{}
+	// MISSING: ConfidentialInstanceType
+	out.EnableConfidentialCompute = in.EnableConfidentialCompute
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "InstanceConfidentialInstanceConfig_v1beta1_ToProto", skipping
+
+	func InstanceConfidentialInstanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceConfidentialInstanceConfig) *pb.ConfidentialInstanceConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ConfidentialInstanceConfig{}
+		// MISSING: ConfidentialInstanceType
+		out.EnableConfidentialCompute = in.EnableConfidentialCompute
+		return out
+	}
+*/
+func InstanceGuestAccelerator_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krm.InstanceGuestAccelerator {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGuestAccelerator{}
+	// MISSING: AcceleratorCount
+	// MISSING: AcceleratorType
+	return out
+}
+func InstanceGuestAccelerator_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGuestAccelerator) *pb.AcceleratorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AcceleratorConfig{}
+	// MISSING: AcceleratorCount
+	// MISSING: AcceleratorType
+	return out
+}
+
+/* found existing non-generated mapping function "InstanceInitializeParams_v1beta1_FromProto", skipping
+func InstanceInitializeParams_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AttachedDiskInitializeParams) *krm.InstanceInitializeParams {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceInitializeParams{}
+	// MISSING: Architecture
+	// MISSING: Description
+	// MISSING: DiskName
+	// MISSING: DiskSizeGB
+	// MISSING: DiskType
+	// MISSING: EnableConfidentialCompute
+	out.Labels = in.Labels
+	// MISSING: Licenses
+	// MISSING: OnUpdateAction
+	// MISSING: ProvisionedIops
+	// MISSING: ProvisionedThroughput
+	// MISSING: ReplicaZones
+	out.ResourceManagerTags = in.ResourceManagerTags
+	// MISSING: ResourcePolicies
+	// MISSING: SourceImage
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceSnapshot
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: StoragePool
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceInitializeParams_v1beta1_ToProto", skipping
+func InstanceInitializeParams_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceInitializeParams) *pb.AttachedDiskInitializeParams {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttachedDiskInitializeParams{}
+	// MISSING: Architecture
+	// MISSING: Description
+	// MISSING: DiskName
+	// MISSING: DiskSizeGB
+	// MISSING: DiskType
+	// MISSING: EnableConfidentialCompute
+	out.Labels = in.Labels
+	// MISSING: Licenses
+	// MISSING: OnUpdateAction
+	// MISSING: ProvisionedIops
+	// MISSING: ProvisionedThroughput
+	// MISSING: ReplicaZones
+	out.ResourceManagerTags = in.ResourceManagerTags
+	// MISSING: ResourcePolicies
+	// MISSING: SourceImage
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceSnapshot
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: StoragePool
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceIpv6AccessConfig_v1beta1_FromProto", skipping
+func InstanceIpv6AccessConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AccessConfig) *krm.InstanceIpv6AccessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceIpv6AccessConfig{}
+	// MISSING: ExternalIPV6
+	// (near miss): "ExternalIPV6" vs "ExternalIpv6"
+	// MISSING: ExternalIPV6PrefixLength
+	// (near miss): "ExternalIPV6PrefixLength" vs "ExternalIpv6PrefixLength"
+	// MISSING: Kind
+	out.Name = in.Name
+	// MISSING: NATIP
+	out.NetworkTier = in.NetworkTier
+	out.PublicPtrDomainName = in.PublicPtrDomainName
+	// MISSING: SecurityPolicy
+	// MISSING: SetPublicPtr
+	// MISSING: Type
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceIpv6AccessConfig_v1beta1_ToProto", skipping
+func InstanceIpv6AccessConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceIpv6AccessConfig) *pb.AccessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccessConfig{}
+	// MISSING: ExternalIPV6
+	// (near miss): "ExternalIPV6" vs "ExternalIpv6"
+	// MISSING: ExternalIPV6PrefixLength
+	// (near miss): "ExternalIPV6PrefixLength" vs "ExternalIpv6PrefixLength"
+	// MISSING: Kind
+	out.Name = in.Name
+	// MISSING: NATIP
+	out.NetworkTier = in.NetworkTier
+	out.PublicPtrDomainName = in.PublicPtrDomainName
+	// MISSING: SecurityPolicy
+	// MISSING: SetPublicPtr
+	// MISSING: Type
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceLocalSsdRecoveryTimeout_v1beta1_FromProto", skipping
+func InstanceLocalSsdRecoveryTimeout_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.InstanceLocalSsdRecoveryTimeout {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceLocalSsdRecoveryTimeout{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceLocalSsdRecoveryTimeout_v1beta1_ToProto", skipping
+func InstanceLocalSsdRecoveryTimeout_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceLocalSsdRecoveryTimeout) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceMaxRunDuration_v1beta1_FromProto", skipping
+func InstanceMaxRunDuration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.InstanceMaxRunDuration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceMaxRunDuration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceMaxRunDuration_v1beta1_ToProto", skipping
+func InstanceMaxRunDuration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceMaxRunDuration) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceMetadata_v1beta1_FromProto", skipping
+func InstanceMetadata_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Items) *krm.InstanceMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceMetadata{}
+	out.Key = in.Key
+	out.Value = in.Value
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceMetadata_v1beta1_ToProto", skipping
+func InstanceMetadata_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceMetadata) *pb.Items {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Items{}
+	out.Key = in.Key
+	out.Value = in.Value
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceNetworkInterface_v1beta1_FromProto", skipping
+func InstanceNetworkInterface_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkInterface) *krm.InstanceNetworkInterface {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceNetworkInterface{}
+	// MISSING: AccessConfigs
+	// MISSING: AliasIPRanges
+	// MISSING: Fingerprint
+	// MISSING: InternalIPV6PrefixLength
+	// (near miss): "InternalIPV6PrefixLength" vs "InternalIpv6PrefixLength"
+	// MISSING: IPV6AccessConfigs
+	// MISSING: IPV6AccessType
+	// (near miss): "IPV6AccessType" vs "Ipv6AccessType"
+	// MISSING: IPV6Address
+	// (near miss): "IPV6Address" vs "Ipv6Address"
+	// MISSING: Kind
+	out.Name = in.Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.InstanceResourceRef{External: in.GetNetwork()}
+	}
+	// MISSING: NetworkAttachment
+	// MISSING: NetworkIP
+	// (near miss): "NetworkIP" vs "NetworkIp"
+	out.NicType = in.NicType
+	out.QueueCount = in.QueueCount
+	out.StackType = in.StackType
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krm.InstanceResourceRef{External: in.GetSubnetwork()}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceNetworkInterface_v1beta1_ToProto", skipping
+func InstanceNetworkInterface_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceNetworkInterface) *pb.NetworkInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkInterface{}
+	// MISSING: AccessConfigs
+	// MISSING: AliasIPRanges
+	// MISSING: Fingerprint
+	// MISSING: InternalIPV6PrefixLength
+	// (near miss): "InternalIPV6PrefixLength" vs "InternalIpv6PrefixLength"
+	// MISSING: IPV6AccessConfigs
+	// MISSING: IPV6AccessType
+	// (near miss): "IPV6AccessType" vs "Ipv6AccessType"
+	// MISSING: IPV6Address
+	// (near miss): "IPV6Address" vs "Ipv6Address"
+	// MISSING: Kind
+	out.Name = in.Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	// MISSING: NetworkAttachment
+	// MISSING: NetworkIP
+	// (near miss): "NetworkIP" vs "NetworkIp"
+	out.NicType = in.NicType
+	out.QueueCount = in.QueueCount
+	out.StackType = in.StackType
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = &in.SubnetworkRef.External
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceNetworkPerformanceConfig_v1beta1_FromProto", skipping
+func InstanceNetworkPerformanceConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPerformanceConfig) *krm.InstanceNetworkPerformanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceNetworkPerformanceConfig{}
+	out.TotalEgressBandwidthTier = in.TotalEgressBandwidthTier
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceNetworkPerformanceConfig_v1beta1_ToProto", skipping
+func InstanceNetworkPerformanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceNetworkPerformanceConfig) *pb.NetworkPerformanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPerformanceConfig{}
+	out.TotalEgressBandwidthTier = in.TotalEgressBandwidthTier
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceParams_v1beta1_FromProto", skipping
+func InstanceParams_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceParams) *krm.InstanceParams {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceParams{}
+	out.ResourceManagerTags = in.ResourceManagerTags
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceParams_v1beta1_ToProto", skipping
+func InstanceParams_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceParams) *pb.InstanceParams {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceParams{}
+	out.ResourceManagerTags = in.ResourceManagerTags
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceReservationAffinity_v1beta1_FromProto", skipping
+func InstanceReservationAffinity_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.InstanceReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceReservationAffinity{}
+	// MISSING: ConsumeReservationType
+	// MISSING: Key
+	// MISSING: Values
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceReservationAffinity_v1beta1_ToProto", skipping
+func InstanceReservationAffinity_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceReservationAffinity) *pb.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationAffinity{}
+	// MISSING: ConsumeReservationType
+	// MISSING: Key
+	// MISSING: Values
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceScheduling_v1beta1_FromProto", skipping
+func InstanceScheduling_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Scheduling) *krm.InstanceScheduling {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceScheduling{}
+	out.AutomaticRestart = in.AutomaticRestart
+	// MISSING: AvailabilityDomain
+	// MISSING: HostErrorTimeoutSeconds
+	out.InstanceTerminationAction = in.InstanceTerminationAction
+	out.LocalSsdRecoveryTimeout = InstanceLocalSsdRecoveryTimeout_v1beta1_FromProto(mapCtx, in.GetLocalSsdRecoveryTimeout())
+	// MISSING: LocationHint
+	out.MaxRunDuration = InstanceMaxRunDuration_v1beta1_FromProto(mapCtx, in.GetMaxRunDuration())
+	out.MinNodeCpus = in.MinNodeCpus
+	out.NodeAffinities = direct.Slice_FromProto(mapCtx, in.NodeAffinities, InstanceNodeAffinities_v1beta1_FromProto)
+	out.OnHostMaintenance = in.OnHostMaintenance
+	// MISSING: OnInstanceStopAction
+	out.Preemptible = in.Preemptible
+	out.ProvisioningModel = in.ProvisioningModel
+	// MISSING: TerminationTime
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceScheduling_v1beta1_ToProto", skipping
+func InstanceScheduling_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceScheduling) *pb.Scheduling {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Scheduling{}
+	out.AutomaticRestart = in.AutomaticRestart
+	// MISSING: AvailabilityDomain
+	// MISSING: HostErrorTimeoutSeconds
+	out.InstanceTerminationAction = in.InstanceTerminationAction
+	out.LocalSsdRecoveryTimeout = InstanceLocalSsdRecoveryTimeout_v1beta1_ToProto(mapCtx, in.LocalSsdRecoveryTimeout)
+	// MISSING: LocationHint
+	out.MaxRunDuration = InstanceMaxRunDuration_v1beta1_ToProto(mapCtx, in.MaxRunDuration)
+	out.MinNodeCpus = in.MinNodeCpus
+	out.NodeAffinities = direct.Slice_ToProto(mapCtx, in.NodeAffinities, InstanceNodeAffinities_v1beta1_ToProto)
+	out.OnHostMaintenance = in.OnHostMaintenance
+	// MISSING: OnInstanceStopAction
+	out.Preemptible = in.Preemptible
+	out.ProvisioningModel = in.ProvisioningModel
+	// MISSING: TerminationTime
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "InstanceScratchDisk_v1beta1_FromProto", skipping
+func InstanceScratchDisk_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AttachedDisk) *krm.InstanceScratchDisk {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceScratchDisk{}
+	// MISSING: Architecture
+	// MISSING: AutoDelete
+	// MISSING: Boot
+	// MISSING: DeviceName
+	// MISSING: DiskEncryptionKey
+	// MISSING: DiskSizeGB
+	// MISSING: ForceAttach
+	// MISSING: GuestOSFeatures
+	// MISSING: Index
+	// MISSING: InitializeParams
+	out.Interface = in.Interface
+	// MISSING: Kind
+	// MISSING: Licenses
+	// MISSING: Mode
+	// MISSING: SavedState
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: Source
+	// MISSING: Type
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "InstanceScratchDisk_v1beta1_ToProto", skipping
+
+	func InstanceScratchDisk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceScratchDisk) *pb.AttachedDisk {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AttachedDisk{}
+		// MISSING: Architecture
+		// MISSING: AutoDelete
+		// MISSING: Boot
+		// MISSING: DeviceName
+		// MISSING: DiskEncryptionKey
+		// MISSING: DiskSizeGB
+		// MISSING: ForceAttach
+		// MISSING: GuestOSFeatures
+		// MISSING: Index
+		// MISSING: InitializeParams
+		out.Interface = in.Interface
+		// MISSING: Kind
+		// MISSING: Licenses
+		// MISSING: Mode
+		// MISSING: SavedState
+		// MISSING: ShieldedInstanceInitialState
+		// MISSING: Source
+		// MISSING: Type
+		return out
+	}
+*/
+func InstanceServiceAccount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccount) *krm.InstanceServiceAccount {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceServiceAccount{}
+	// MISSING: Email
+	out.Scopes = in.Scopes
+	return out
+}
+func InstanceServiceAccount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceServiceAccount) *pb.ServiceAccount {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceAccount{}
+	// MISSING: Email
+	out.Scopes = in.Scopes
+	return out
+}
+
+/* found existing non-generated mapping function "InstanceShieldedInstanceConfig_v1beta1_FromProto", skipping
+func InstanceShieldedInstanceConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShieldedInstanceConfig) *krm.InstanceShieldedInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceShieldedInstanceConfig{}
+	out.EnableIntegrityMonitoring = in.EnableIntegrityMonitoring
+	out.EnableSecureBoot = in.EnableSecureBoot
+	// MISSING: EnableVTPM
+	// (near miss): "EnableVTPM" vs "EnableVtpm"
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "InstanceShieldedInstanceConfig_v1beta1_ToProto", skipping
+
+	func InstanceShieldedInstanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceShieldedInstanceConfig) *pb.ShieldedInstanceConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ShieldedInstanceConfig{}
+		out.EnableIntegrityMonitoring = in.EnableIntegrityMonitoring
+		out.EnableSecureBoot = in.EnableSecureBoot
+		// MISSING: EnableVTPM
+		// (near miss): "EnableVTPM" vs "EnableVtpm"
+		return out
+	}
+*/
 func InterconnectCircuitInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectCircuitInfo) *krmcomputev1alpha1.InterconnectCircuitInfo {
 	if in == nil {
 		return nil

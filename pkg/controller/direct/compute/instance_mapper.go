@@ -15,6 +15,8 @@
 package compute
 
 import (
+	"strconv"
+
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -192,4 +194,211 @@ func InstanceShieldedInstanceConfig_v1beta1_FromProto(mapCtx *direct.MapContext,
 
 func InstanceShieldedInstanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceShieldedInstanceConfig) *pb.ShieldedInstanceConfig {
 	return nil
+}
+
+func InstanceInitializeParams_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AttachedDiskInitializeParams) *krm.InstanceInitializeParams {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceInitializeParams{}
+	out.Size = in.DiskSizeGb
+	out.Type = in.DiskType
+	if in.SourceImage != nil {
+		out.SourceDiskRef = &krm.InstanceResourceRef{External: *in.SourceImage}
+	}
+	return out
+}
+
+func InstanceInitializeParams_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceInitializeParams) *pb.AttachedDiskInitializeParams {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttachedDiskInitializeParams{}
+	out.DiskSizeGb = in.Size
+	out.DiskType = in.Type
+	if in.SourceDiskRef != nil {
+		out.SourceImage = &in.SourceDiskRef.External
+	}
+	return out
+}
+
+func InstanceIpv6AccessConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AccessConfig) *krm.InstanceIpv6AccessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceIpv6AccessConfig{}
+	out.ExternalIpv6 = in.ExternalIpv6
+	if in.ExternalIpv6PrefixLength != nil {
+		prefixStr := strconv.FormatInt(int64(*in.ExternalIpv6PrefixLength), 10)
+		out.ExternalIpv6PrefixLength = &prefixStr
+	}
+	out.Name = in.Name
+	if in.NetworkTier != nil {
+		out.NetworkTier = *in.NetworkTier
+	}
+	out.PublicPtrDomainName = in.PublicPtrDomainName
+	return out
+}
+
+func InstanceIpv6AccessConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceIpv6AccessConfig) *pb.AccessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccessConfig{}
+	out.ExternalIpv6 = in.ExternalIpv6
+	if in.ExternalIpv6PrefixLength != nil {
+		if val, err := strconv.ParseInt(*in.ExternalIpv6PrefixLength, 10, 32); err == nil {
+			val32 := int32(val)
+			out.ExternalIpv6PrefixLength = &val32
+		}
+	}
+	out.Name = in.Name
+	if in.NetworkTier != "" {
+		out.NetworkTier = &in.NetworkTier
+	}
+	out.PublicPtrDomainName = in.PublicPtrDomainName
+	return out
+}
+
+func InstanceLocalSsdRecoveryTimeout_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.InstanceLocalSsdRecoveryTimeout {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceLocalSsdRecoveryTimeout{}
+	if in.Nanos != nil {
+		val := int64(*in.Nanos)
+		out.Nanos = &val
+	}
+	if in.Seconds != nil {
+		out.Seconds = *in.Seconds
+	}
+	return out
+}
+
+func InstanceLocalSsdRecoveryTimeout_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceLocalSsdRecoveryTimeout) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	if in.Nanos != nil {
+		val := int32(*in.Nanos)
+		out.Nanos = &val
+	}
+	out.Seconds = &in.Seconds
+	return out
+}
+
+func InstanceMaxRunDuration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.InstanceMaxRunDuration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceMaxRunDuration{}
+	if in.Nanos != nil {
+		val := int64(*in.Nanos)
+		out.Nanos = &val
+	}
+	if in.Seconds != nil {
+		out.Seconds = *in.Seconds
+	}
+	return out
+}
+
+func InstanceMaxRunDuration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceMaxRunDuration) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	if in.Nanos != nil {
+		val := int32(*in.Nanos)
+		out.Nanos = &val
+	}
+	out.Seconds = &in.Seconds
+	return out
+}
+
+func InstanceNetworkInterface_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkInterface) *krm.InstanceNetworkInterface {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceNetworkInterface{}
+	out.AccessConfig = direct.Slice_FromProto(mapCtx, in.AccessConfigs, InstanceAccessConfig_v1beta1_FromProto)
+	out.AliasIpRange = direct.Slice_FromProto(mapCtx, in.AliasIpRanges, InstanceAliasIpRange_v1beta1_FromProto)
+	if in.InternalIpv6PrefixLength != nil {
+		val := int64(*in.InternalIpv6PrefixLength)
+		out.InternalIpv6PrefixLength = &val
+	}
+	out.Ipv6AccessConfig = direct.Slice_FromProto(mapCtx, in.Ipv6AccessConfigs, InstanceIpv6AccessConfig_v1beta1_FromProto)
+	out.Ipv6AccessType = in.Ipv6AccessType
+	out.Ipv6Address = in.Ipv6Address
+	out.Name = in.Name
+	out.NetworkIp = in.NetworkIP
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.InstanceResourceRef{External: in.GetNetwork()}
+	}
+	out.NicType = in.NicType
+	if in.QueueCount != nil {
+		val := int64(*in.QueueCount)
+		out.QueueCount = &val
+	}
+	out.StackType = in.StackType
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krm.InstanceResourceRef{External: in.GetSubnetwork()}
+	}
+	return out
+}
+
+func InstanceNetworkInterface_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceNetworkInterface) *pb.NetworkInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkInterface{}
+	out.AccessConfigs = direct.Slice_ToProto(mapCtx, in.AccessConfig, InstanceAccessConfig_v1beta1_ToProto)
+	out.AliasIpRanges = direct.Slice_ToProto(mapCtx, in.AliasIpRange, InstanceAliasIpRange_v1beta1_ToProto)
+	if in.InternalIpv6PrefixLength != nil {
+		val := int32(*in.InternalIpv6PrefixLength)
+		out.InternalIpv6PrefixLength = &val
+	}
+	out.Ipv6AccessConfigs = direct.Slice_ToProto(mapCtx, in.Ipv6AccessConfig, InstanceIpv6AccessConfig_v1beta1_ToProto)
+	out.Ipv6AccessType = in.Ipv6AccessType
+	out.Ipv6Address = in.Ipv6Address
+	out.Name = in.Name
+	out.NetworkIP = in.NetworkIp
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.NicType = in.NicType
+	if in.QueueCount != nil {
+		val := int32(*in.QueueCount)
+		out.QueueCount = &val
+	}
+	out.StackType = in.StackType
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = &in.SubnetworkRef.External
+	}
+	return out
+}
+
+func InstanceScratchDisk_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AttachedDisk) *krm.InstanceScratchDisk {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceScratchDisk{}
+	if in.Interface != nil {
+		out.Interface = *in.Interface
+	}
+	out.Size = in.DiskSizeGb
+	return out
+}
+
+func InstanceScratchDisk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceScratchDisk) *pb.AttachedDisk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttachedDisk{}
+	if in.Interface != "" {
+		out.Interface = &in.Interface
+	}
+	out.DiskSizeGb = in.Size
+	out.Type = direct.PtrTo("SCRATCH")
+	return out
 }

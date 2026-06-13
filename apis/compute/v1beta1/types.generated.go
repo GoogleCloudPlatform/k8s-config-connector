@@ -47,7 +47,8 @@ type AcceleratorConfig struct {
 }
 */
 
-/* unreachable type AccessConfig
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AccessConfig", skipping
+
 // +kcc:proto=google.cloud.compute.v1.AccessConfig
 type AccessConfig struct {
 	// Applies to ipv6AccessConfigs only. The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. To use a static external IP address, it must be unused and in the same region as the instance's zone. If not specified, Google Cloud will automatically assign an external IPv6 address from the instance's subnetwork.
@@ -94,7 +95,8 @@ type AccessConfig struct {
 }
 */
 
-/* unreachable type AdvancedMachineFeatures
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AdvancedMachineFeatures", skipping
+
 // +kcc:proto=google.cloud.compute.v1.AdvancedMachineFeatures
 type AdvancedMachineFeatures struct {
 	// Whether to enable nested virtualization or not (default is false).
@@ -124,7 +126,8 @@ type AdvancedMachineFeatures struct {
 }
 */
 
-/* unreachable type AliasIPRange
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AliasIpRange", skipping
+
 // +kcc:proto=google.cloud.compute.v1.AliasIpRange
 type AliasIPRange struct {
 	// The IP alias ranges to allocate for this interface. This IP CIDR range must belong to the specified subnetwork and cannot contain IP addresses reserved by system or used by other network interfaces. This range may be a single IP address (such as 10.2.3.4), a netmask (such as /24) or a CIDR-formatted string (such as 10.1.2.0/24).
@@ -311,7 +314,8 @@ type AllocationSpecificSkuReservation struct {
 }
 */
 
-/* unreachable type AttachedDisk
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AttachedDisk", skipping
+
 // +kcc:proto=google.cloud.compute.v1.AttachedDisk
 type AttachedDisk struct {
 	// [Output Only] The architecture of the attached disk. Valid values are ARM64 or X86_64.
@@ -393,7 +397,8 @@ type AttachedDisk struct {
 }
 */
 
-/* unreachable type AttachedDiskInitializeParams
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AttachedDiskInitializeParams", skipping
+
 // +kcc:proto=google.cloud.compute.v1.AttachedDiskInitializeParams
 type AttachedDiskInitializeParams struct {
 	// The architecture of the attached disk. Valid values are arm64 or x86_64.
@@ -476,7 +481,8 @@ type AttachedDiskInitializeParams struct {
 }
 */
 
-/* unreachable type ConfidentialInstanceConfig
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ConfidentialInstanceConfig", skipping
+
 // +kcc:proto=google.cloud.compute.v1.ConfidentialInstanceConfig
 type ConfidentialInstanceConfig struct {
 	// Defines the type of technology used by the confidential instance.
@@ -524,7 +530,8 @@ type DisplayDevice struct {
 }
 */
 
-/* unreachable type Duration
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Duration", skipping
+
 // +kcc:proto=google.cloud.compute.v1.Duration
 type Duration struct {
 	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
@@ -1406,7 +1413,8 @@ type InstanceParams struct {
 }
 */
 
-/* unreachable type Items
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Items", skipping
+
 // +kcc:proto=google.cloud.compute.v1.Items
 type Items struct {
 	// Key for the metadata entry. Keys must conform to the following regexp: [a-zA-Z0-9-_]+, and be less than 128 bytes in length. This is reflected as part of a URL in the metadata server. Additionally, to avoid ambiguity, keys must not conflict with any other metadata keys for the project.
@@ -1569,7 +1577,8 @@ type Network struct {
 }
 */
 
-/* unreachable type NetworkInterface
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NetworkInterface", skipping
+
 // +kcc:proto=google.cloud.compute.v1.NetworkInterface
 type NetworkInterface struct {
 	// An array of configurations for this interface. Currently, only one access config, ONE_TO_ONE_NAT, is supported. If there are no accessConfigs specified, then this instance will have no external internet access.
@@ -1773,7 +1782,8 @@ type NetworkPeeringConnectionStatusTrafficConfiguration struct {
 }
 */
 
-/* unreachable type NetworkPerformanceConfig
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NetworkPerformanceConfig", skipping
+
 // +kcc:proto=google.cloud.compute.v1.NetworkPerformanceConfig
 type NetworkPerformanceConfig struct {
 	// Check the TotalEgressBandwidthTier enum for the list of possible values.
@@ -2122,7 +2132,8 @@ type ReservationAdvancedDeploymentControl struct {
 }
 */
 
-/* unreachable type ReservationAffinity
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ReservationAffinity", skipping
+
 // +kcc:proto=google.cloud.compute.v1.ReservationAffinity
 type ReservationAffinity struct {
 	// Specifies the type of reservation from which this instance can consume resources: ANY_RESERVATION (default), SPECIFIC_RESERVATION, or NO_RESERVATION. See Consuming reserved instances for examples.
@@ -2524,7 +2535,8 @@ type SSLHealthCheck struct {
 }
 */
 
-/* unreachable type Scheduling
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Scheduling", skipping
+
 // +kcc:proto=google.cloud.compute.v1.Scheduling
 type Scheduling struct {
 	// Specifies whether the instance should be automatically restarted if it is terminated by Compute Engine (not terminated by a user). You can only set the automatic restart option for standard instances. Preemptible instances cannot be automatically restarted. By default, this is set to true so an instance is automatically restarted if it is terminated by Compute Engine.
@@ -3165,7 +3177,8 @@ type ServerBinding struct {
 }
 */
 
-/* unreachable type ServiceAccount
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ServiceAccount", skipping
+
 // +kcc:proto=google.cloud.compute.v1.ServiceAccount
 type ServiceAccount struct {
 	// Email address of the service account.
@@ -3203,7 +3216,8 @@ type ShareSettingsProjectConfig struct {
 }
 */
 
-/* unreachable type ShieldedInstanceConfig
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ShieldedInstanceConfig", skipping
+
 // +kcc:proto=google.cloud.compute.v1.ShieldedInstanceConfig
 type ShieldedInstanceConfig struct {
 	// Defines whether the instance has integrity monitoring enabled. Enabled by default.

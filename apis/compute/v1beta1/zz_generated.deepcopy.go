@@ -3435,8 +3435,8 @@ func (in *InstanceInitializeParams) DeepCopyInto(out *InstanceInitializeParams) 
 		*out = new(int64)
 		**out = **in
 	}
-	if in.SourceImageRef != nil {
-		in, out := &in.SourceImageRef, &out.SourceImageRef
+	if in.SourceDiskRef != nil {
+		in, out := &in.SourceDiskRef, &out.SourceDiskRef
 		*out = new(InstanceResourceRef)
 		**out = **in
 	}
