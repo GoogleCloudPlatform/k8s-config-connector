@@ -107,5 +107,11 @@ var (
 		Kind:    reflect.TypeOf(NetworkSecuritySecurityProfile{}).Name(),
 	}
 
+	NetworkSecuritySecurityProfileGroupGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecuritySecurityProfileGroup{}).Name(),
+	}
+
 	networksecurityAPIVersion = SchemeGroupVersion.String()
 )
