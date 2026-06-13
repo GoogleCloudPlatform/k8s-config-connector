@@ -91,8 +91,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The deletion policy for the shared VPC service. Setting ABANDON allows the resource
-				to be abandoned rather than deleted. Possible values are: "ABANDON".</p>
+            <p>The deletion policy for the shared VPC service. Setting ABANDON allows the resource to be abandoned rather than deleted. Possible values are: "ABANDON".</p>
         </td>
     </tr>
     <tr>
@@ -102,7 +101,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ProjectRef is a reference to a GCP Project.</p>
         </td>
     </tr>
     <tr>
@@ -112,7 +111,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -122,7 +121,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -132,7 +131,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
 </tbody>
@@ -161,7 +160,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeSharedVPCServiceProject's current state.</p>
         </td>
     </tr>
     <tr>
