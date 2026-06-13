@@ -21,6 +21,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"google.golang.org/protobuf/reflect/protoreflect"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/prunetypes"
@@ -136,7 +138,25 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 
 	resourceAnnotations := make([]string, 0, len(o.Resources))
 	for _, resource := range o.Resources {
-		resourceProtoFullName := resource.ProtoMessageFullName(o.ServiceName)
+		var resourceProtoFullName string
+		if strings.Contains(resource.ProtoName, ".") {
+			resourceProtoFullName = resource.ProtoName
+		} else {
+			found := false
+			for _, svc := range strings.Split(o.ServiceName, ",") {
+				candidate := svc + "." + resource.ProtoName
+				_, err := api.Files().FindDescriptorByName(protoreflect.FullName(candidate))
+				if err == nil {
+					resourceProtoFullName = candidate
+					found = true
+					break
+				}
+			}
+			if !found {
+				// Fallback to the first service if none found
+				resourceProtoFullName = strings.Split(o.ServiceName, ",")[0] + "." + resource.ProtoName
+			}
+		}
 		log.V(2).Info("visiting proto", "name", resourceProtoFullName)
 		if err := typeGenerator.VisitProto(resourceProtoFullName); err != nil {
 			return err

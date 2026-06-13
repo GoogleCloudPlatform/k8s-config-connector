@@ -43,6 +43,9 @@ func (r *Resource) ProtoMessageName() string {
 func (r *Resource) ProtoMessageFullName(protoPackage string) string {
 	s := r.ProtoName
 	if !strings.Contains(s, ".") {
+		if strings.Contains(protoPackage, ",") {
+			protoPackage = strings.Split(protoPackage, ",")[0]
+		}
 		s = protoPackage + "." + s
 	}
 	return s
