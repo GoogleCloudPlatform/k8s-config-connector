@@ -30,6 +30,7 @@
 // resource: ComputeHealthCheck:HealthCheck
 // resource: ComputeNodeGroup:NodeGroup
 // resource: ComputeInstance:Instance
+// resource: ComputeSharedVPCServiceProject:ProjectsEnableXpnResourceRequest
 
 package v1beta1
 
@@ -2007,6 +2008,16 @@ type NodeTemplateNodeTypeFlexibility struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ProjectsEnableXpnResourceRequest", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ProjectsEnableXpnResourceRequest
+type ProjectsEnableXpnResourceRequest struct {
+	// Service resource (a.k.a service project) ID.
+	// +kcc:proto:field=google.cloud.compute.v1.ProjectsEnableXpnResourceRequest.xpn_resource
+	XpnResource *XpnResourceID `json:"xpnResource,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Reservation", skipping
 
 // +kcc:proto=google.cloud.compute.v1.Reservation
@@ -3628,5 +3639,19 @@ type UpcomingMaintenance struct {
 	// The current start time of the maintenance window. This timestamp value is in RFC3339 text format.
 	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_start_time
 	WindowStartTime *string `json:"windowStartTime,omitempty"`
+}
+*/
+
+/* unreachable type XpnResourceID
+// +kcc:proto=google.cloud.compute.v1.XpnResourceId
+type XpnResourceID struct {
+	// The ID of the service resource. In the case of projects, this field supports project id (e.g., my-project-123) and project number (e.g. 12345678).
+	// +kcc:proto:field=google.cloud.compute.v1.XpnResourceId.id
+	ID *string `json:"id,omitempty"`
+
+	// The type of the service resource.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.XpnResourceId.type
+	Type *string `json:"type,omitempty"`
 }
 */

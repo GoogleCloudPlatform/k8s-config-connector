@@ -1099,15 +1099,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "ComputeSharedVPCServiceProject",
-	}: {
-		Terraform:   true,
-		DCL:         false,
-		SupportsIAM: false,
-	},
-	{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "ComputeSnapshot",
 	}: {
 		Terraform:   true,
