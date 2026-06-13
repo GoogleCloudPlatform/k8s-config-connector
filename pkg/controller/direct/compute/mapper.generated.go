@@ -168,6 +168,56 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
+func ComputeExternalVPNGatewayObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ExternalVpnGateway) *krm.ComputeExternalVPNGatewayObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeExternalVPNGatewayObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeExternalVPNGatewayObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeExternalVPNGatewayObservedState) *pb.ExternalVpnGateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExternalVpnGateway{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeExternalVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ExternalVpnGateway) *krm.ComputeExternalVPNGatewaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeExternalVPNGatewaySpec{}
+	out.Description = in.Description
+	out.Interfaces = direct.Slice_FromProto(mapCtx, in.Interfaces, ExternalVPNGatewayInterface_v1beta1_FromProto)
+	out.Labels = in.Labels
+	// MISSING: Name
+	out.RedundancyType = in.RedundancyType
+	return out
+}
+func ComputeExternalVPNGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeExternalVPNGatewaySpec) *pb.ExternalVpnGateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExternalVpnGateway{}
+	out.Description = in.Description
+	out.Interfaces = direct.Slice_ToProto(mapCtx, in.Interfaces, ExternalVPNGatewayInterface_v1beta1_ToProto)
+	out.Labels = in.Labels
+	// MISSING: Name
+	out.RedundancyType = in.RedundancyType
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
@@ -1854,6 +1904,26 @@ func Duration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1
 	out := &pb.Duration{}
 	out.Nanos = in.Nanos
 	out.Seconds = in.Seconds
+	return out
+}
+func ExternalVPNGatewayInterface_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ExternalVpnGatewayInterface) *krm.ExternalVPNGatewayInterface {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExternalVPNGatewayInterface{}
+	out.ID = in.Id
+	out.IPAddress = in.IpAddress
+	out.IPV6Address = in.Ipv6Address
+	return out
+}
+func ExternalVPNGatewayInterface_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ExternalVPNGatewayInterface) *pb.ExternalVpnGatewayInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExternalVpnGatewayInterface{}
+	out.Id = in.ID
+	out.IpAddress = in.IPAddress
+	out.Ipv6Address = in.IPV6Address
 	return out
 }
 func FirewallPolicyRuleMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
