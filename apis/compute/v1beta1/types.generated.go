@@ -30,6 +30,7 @@
 // resource: ComputeHealthCheck:HealthCheck
 // resource: ComputeNodeGroup:NodeGroup
 // resource: ComputeInstance:Instance
+// resource: ComputeImage:Image
 
 package v1beta1
 
@@ -512,6 +513,32 @@ type CustomerEncryptionKey struct {
 	// [Output only] The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource.
 	// +kcc:proto:field=google.cloud.compute.v1.CustomerEncryptionKey.sha256
 	Sha256 *string `json:"sha256,omitempty"`
+}
+*/
+
+/* unreachable type DeprecationStatus
+// +kcc:proto=google.cloud.compute.v1.DeprecationStatus
+type DeprecationStatus struct {
+	// An optional RFC3339 timestamp on or after which the state of this resource is intended to change to DELETED. This is only informational and the status will not change unless the client explicitly changes it.
+	// +kcc:proto:field=google.cloud.compute.v1.DeprecationStatus.deleted
+	Deleted *string `json:"deleted,omitempty"`
+
+	// An optional RFC3339 timestamp on or after which the state of this resource is intended to change to DEPRECATED. This is only informational and the status will not change unless the client explicitly changes it.
+	// +kcc:proto:field=google.cloud.compute.v1.DeprecationStatus.deprecated
+	Deprecated *string `json:"deprecated,omitempty"`
+
+	// An optional RFC3339 timestamp on or after which the state of this resource is intended to change to OBSOLETE. This is only informational and the status will not change unless the client explicitly changes it.
+	// +kcc:proto:field=google.cloud.compute.v1.DeprecationStatus.obsolete
+	Obsolete *string `json:"obsolete,omitempty"`
+
+	// The URL of the suggested replacement for a deprecated resource. The suggested replacement resource must be the same kind of resource as the deprecated resource.
+	// +kcc:proto:field=google.cloud.compute.v1.DeprecationStatus.replacement
+	Replacement *string `json:"replacement,omitempty"`
+
+	// The deprecation state of this resource. This can be ACTIVE, DEPRECATED, OBSOLETE, or DELETED. Operations which communicate the end of life date for an image, can use ACTIVE. Operations which create a new resource using a DEPRECATED resource will return successfully, but with a warning indicating the deprecated resource and recommending its replacement. Operations which use OBSOLETE or DELETED resources will be rejected and result in an error.
+	//  Check the State enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.DeprecationStatus.state
+	State *string `json:"state,omitempty"`
 }
 */
 
@@ -1183,6 +1210,151 @@ type HealthCheckLogConfig struct {
 	// Indicates whether or not to export logs. This is false by default, which means no health check logging will be done.
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckLogConfig.enable
 	Enable *bool `json:"enable,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Image", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Image
+type Image struct {
+	// The architecture of the image. Valid values are ARM64 or X86_64.
+	//  Check the Architecture enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.architecture
+	Architecture *string `json:"architecture,omitempty"`
+
+	// Size of the image tar.gz archive stored in Google Cloud Storage (in bytes).
+	// +kcc:proto:field=google.cloud.compute.v1.Image.archive_size_bytes
+	ArchiveSizeBytes *int64 `json:"archiveSizeBytes,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// The deprecation status associated with this image.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.deprecated
+	Deprecated *DeprecationStatus `json:"deprecated,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.description
+	Description *string `json:"description,omitempty"`
+
+	// Size of the image when restored onto a persistent disk (in GB).
+	// +kcc:proto:field=google.cloud.compute.v1.Image.disk_size_gb
+	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
+
+	// Whether this image is created from a confidential compute mode disk. [Output Only]: This field is not set by user, but from source disk.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.enable_confidential_compute
+	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
+
+	// The name of the image family to which this image belongs. The image family name can be from a publicly managed image family provided by Compute Engine, or from a custom image family you create. For example, centos-stream-9 is a publicly available image family. For more information, see Image family best practices. When creating disks, you can specify an image family instead of a specific image name. The image family always returns its latest image that is not deprecated. The name of the image family must comply with RFC1035.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.family
+	Family *string `json:"family,omitempty"`
+
+	// A list of features to enable on the guest operating system. Applicable only for bootable images. To see a list of available options, see the guestOSfeatures[].type parameter.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.guest_os_features
+	GuestOSFeatures []GuestOSFeature `json:"guestOSFeatures,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Encrypts the image using a customer-supplied encryption key. After you encrypt an image with a customer-supplied key, you must provide the same key if you use the image later (e.g. to create a disk from the image). Customer-supplied encryption keys do not protect access to metadata of the disk. If you do not provide an encryption key when creating the image, then the disk will be encrypted using an automatically generated key and you do not need to provide a key to use the image later.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.image_encryption_key
+	ImageEncryptionKey *CustomerEncryptionKey `json:"imageEncryptionKey,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#image for images.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A fingerprint for the labels being applied to this image, which is essentially a hash of the labels used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve an image.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.label_fingerprint
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
+	// Labels to apply to this image. These can be later modified by the setLabels method.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Integer license codes indicating which licenses are attached to this image.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.license_codes
+	LicenseCodes []int64 `json:"licenseCodes,omitempty"`
+
+	// Any applicable license URI.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.licenses
+	Licenses []string `json:"licenses,omitempty"`
+
+	// Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.name
+	Name *string `json:"name,omitempty"`
+
+	// The parameters of the raw disk image.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.raw_disk
+	RawDisk *RawDisk `json:"rawDisk,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	// [Output Only] Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Set the secure boot keys of shielded instance.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.shielded_instance_initial_state
+	ShieldedInstanceInitialState *InitialStateConfig `json:"shieldedInstanceInitialState,omitempty"`
+
+	// URL of the source disk used to create this image. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /disks/disk - projects/project/zones/zone/disks/disk - zones/zone/disks/disk In order to create an image, you must provide the full or partial URL of one of the following: - The rawDisk.source URL - The sourceDisk URL - The sourceImage URL - The sourceSnapshot URL
+	// +kcc:proto:field=google.cloud.compute.v1.Image.source_disk
+	SourceDisk *string `json:"sourceDisk,omitempty"`
+
+	// The customer-supplied encryption key of the source disk. Required if the source disk is protected by a customer-supplied encryption key.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.source_disk_encryption_key
+	SourceDiskEncryptionKey *CustomerEncryptionKey `json:"sourceDiskEncryptionKey,omitempty"`
+
+	// [Output Only] The ID value of the disk used to create this image. This value may be used to determine whether the image was taken from the current or a previous instance of a given disk name.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.source_disk_id
+	SourceDiskID *string `json:"sourceDiskID,omitempty"`
+
+	// URL of the source image used to create this image. The following are valid formats for the URL: - https://www.googleapis.com/compute/v1/projects/project_id/global/ images/image_name - projects/project_id/global/images/image_name In order to create an image, you must provide the full or partial URL of one of the following: - The rawDisk.source URL - The sourceDisk URL - The sourceImage URL - The sourceSnapshot URL
+	// +kcc:proto:field=google.cloud.compute.v1.Image.source_image
+	SourceImage *string `json:"sourceImage,omitempty"`
+
+	// The customer-supplied encryption key of the source image. Required if the source image is protected by a customer-supplied encryption key.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.source_image_encryption_key
+	SourceImageEncryptionKey *CustomerEncryptionKey `json:"sourceImageEncryptionKey,omitempty"`
+
+	// [Output Only] The ID value of the image used to create this image. This value may be used to determine whether the image was taken from the current or a previous instance of a given image name.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.source_image_id
+	SourceImageID *string `json:"sourceImageID,omitempty"`
+
+	// URL of the source snapshot used to create this image. The following are valid formats for the URL: - https://www.googleapis.com/compute/v1/projects/project_id/global/ snapshots/snapshot_name - projects/project_id/global/snapshots/snapshot_name In order to create an image, you must provide the full or partial URL of one of the following: - The rawDisk.source URL - The sourceDisk URL - The sourceImage URL - The sourceSnapshot URL
+	// +kcc:proto:field=google.cloud.compute.v1.Image.source_snapshot
+	SourceSnapshot *string `json:"sourceSnapshot,omitempty"`
+
+	// The customer-supplied encryption key of the source snapshot. Required if the source snapshot is protected by a customer-supplied encryption key.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.source_snapshot_encryption_key
+	SourceSnapshotEncryptionKey *CustomerEncryptionKey `json:"sourceSnapshotEncryptionKey,omitempty"`
+
+	// [Output Only] The ID value of the snapshot used to create this image. This value may be used to determine whether the snapshot was taken from the current or a previous instance of a given snapshot name.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.source_snapshot_id
+	SourceSnapshotID *string `json:"sourceSnapshotID,omitempty"`
+
+	// The type of the image used to create this disk. The default and only valid value is RAW.
+	//  Check the SourceType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.source_type
+	SourceType *string `json:"sourceType,omitempty"`
+
+	// [Output Only] The status of the image. An image can be used to create other resources, such as instances, only after the image has been successfully created and the status is set to READY. Possible values are FAILED, PENDING, or READY.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Image.status
+	Status *string `json:"status,omitempty"`
+
+	// Cloud Storage bucket storage location of the image (regional or multi-regional).
+	// +kcc:proto:field=google.cloud.compute.v1.Image.storage_locations
+	StorageLocations []string `json:"storageLocations,omitempty"`
 }
 */
 
@@ -2004,6 +2176,24 @@ type NodeTemplateNodeTypeFlexibility struct {
 
 	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplateNodeTypeFlexibility.memory
 	Memory *string `json:"memory,omitempty"`
+}
+*/
+
+/* unreachable type RawDisk
+// +kcc:proto=google.cloud.compute.v1.RawDisk
+type RawDisk struct {
+	// The format used to encode and transmit the block device, which should be TAR. This is just a container and transmission format and not a runtime format. Provided by the client when the disk image is created.
+	//  Check the ContainerType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.RawDisk.container_type
+	ContainerType *string `json:"containerType,omitempty"`
+
+	// [Deprecated] This field is deprecated. An optional SHA1 checksum of the disk image before unpackaging provided by the client when the disk image is created.
+	// +kcc:proto:field=google.cloud.compute.v1.RawDisk.sha1_checksum
+	Sha1Checksum *string `json:"sha1Checksum,omitempty"`
+
+	// The full Google Cloud Storage URL where the raw disk image archive is stored. The following are valid formats for the URL: - https://storage.googleapis.com/bucket_name/image_archive_name - https://storage.googleapis.com/bucket_name/folder_name/ image_archive_name In order to create an image, you must provide the full or partial URL of one of the following: - The rawDisk.source URL - The sourceDisk URL - The sourceImage URL - The sourceSnapshot URL
+	// +kcc:proto:field=google.cloud.compute.v1.RawDisk.source
+	Source *string `json:"source,omitempty"`
 }
 */
 

@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -521,37 +522,199 @@ func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 }
 */
 
-/* found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_ToProto", skipping
-func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHealthCheckSpec) *pb.HealthCheck {
+/*
+found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_ToProto", skipping
+
+	func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHealthCheckSpec) *pb.HealthCheck {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HealthCheck{}
+		out.CheckIntervalSec = in.CheckIntervalSec
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: GrpcHealthCheck
+		// (near miss): "GrpcHealthCheck" vs "GRPCHealthCheck"
+		out.HealthyThreshold = in.HealthyThreshold
+		// MISSING: Http2HealthCheck
+		// (near miss): "Http2HealthCheck" vs "HTTP2HealthCheck"
+		out.HttpHealthCheck = HealthCheckHTTPHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPHealthCheck)
+		out.HttpsHealthCheck = HealthCheckHTTPSHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPSHealthCheck)
+		// MISSING: ID
+		// MISSING: Kind
+		out.LogConfig = HealthCheckLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+		// MISSING: Name
+		// MISSING: Region
+		// MISSING: SelfLink
+		// MISSING: SourceRegions
+		out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
+		out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
+		out.TimeoutSec = in.TimeoutSec
+		// MISSING: Type
+		out.UnhealthyThreshold = in.UnhealthyThreshold
+		return out
+	}
+*/
+func ComputeImageObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Image) *krm.ComputeImageObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.HealthCheck{}
-	out.CheckIntervalSec = in.CheckIntervalSec
+	out := &krm.ComputeImageObservedState{}
+	// MISSING: Architecture
+	// MISSING: ArchiveSizeBytes
 	// MISSING: CreationTimestamp
-	out.Description = in.Description
-	// MISSING: GrpcHealthCheck
-	// (near miss): "GrpcHealthCheck" vs "GRPCHealthCheck"
-	out.HealthyThreshold = in.HealthyThreshold
-	// MISSING: Http2HealthCheck
-	// (near miss): "Http2HealthCheck" vs "HTTP2HealthCheck"
-	out.HttpHealthCheck = HealthCheckHTTPHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPHealthCheck)
-	out.HttpsHealthCheck = HealthCheckHTTPSHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPSHealthCheck)
+	// MISSING: Deprecated
+	// MISSING: DiskSizeGB
+	// MISSING: EnableConfidentialCompute
+	// MISSING: GuestOSFeatures
 	// MISSING: ID
 	// MISSING: Kind
-	out.LogConfig = HealthCheckLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
 	// MISSING: Name
-	// MISSING: Region
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
 	// MISSING: SelfLink
-	// MISSING: SourceRegions
-	out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
-	out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
-	out.TimeoutSec = in.TimeoutSec
-	// MISSING: Type
-	out.UnhealthyThreshold = in.UnhealthyThreshold
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
 	return out
 }
-*/
+func ComputeImageObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeImageObservedState) *pb.Image {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Image{}
+	// MISSING: Architecture
+	// MISSING: ArchiveSizeBytes
+	// MISSING: CreationTimestamp
+	// MISSING: Deprecated
+	// MISSING: DiskSizeGB
+	// MISSING: EnableConfidentialCompute
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	// MISSING: Name
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
+	return out
+}
+func ComputeImageSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Image) *krm.ComputeImageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeImageSpec{}
+	// MISSING: Architecture
+	// MISSING: ArchiveSizeBytes
+	// MISSING: CreationTimestamp
+	// MISSING: Deprecated
+	out.Description = in.Description
+	// MISSING: DiskSizeGB
+	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+	// MISSING: EnableConfidentialCompute
+	out.Family = in.Family
+	// MISSING: GuestOSFeatures
+	// (near miss): "GuestOSFeatures" vs "GuestOsFeatures"
+	// MISSING: ID
+	out.ImageEncryptionKey = ImageImageEncryptionKey_v1beta1_FromProto(mapCtx, in.GetImageEncryptionKey())
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: Name
+	out.RawDisk = ImageRawDisk_v1beta1_FromProto(mapCtx, in.GetRawDisk())
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	if in.GetSourceImage() != "" {
+		out.SourceImageRef = &krm.ComputeImageRef{External: in.GetSourceImage()}
+	}
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	if in.GetSourceSnapshot() != "" {
+		out.SourceSnapshotRef = &refsv1beta1.ComputeSnapshotRef{External: in.GetSourceSnapshot()}
+	}
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+func ComputeImageSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeImageSpec) *pb.Image {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Image{}
+	// MISSING: Architecture
+	// MISSING: ArchiveSizeBytes
+	// MISSING: CreationTimestamp
+	// MISSING: Deprecated
+	out.Description = in.Description
+	// MISSING: DiskSizeGB
+	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+	// MISSING: EnableConfidentialCompute
+	out.Family = in.Family
+	// MISSING: GuestOSFeatures
+	// (near miss): "GuestOSFeatures" vs "GuestOsFeatures"
+	// MISSING: ID
+	out.ImageEncryptionKey = ImageImageEncryptionKey_v1beta1_ToProto(mapCtx, in.ImageEncryptionKey)
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: Name
+	out.RawDisk = ImageRawDisk_v1beta1_ToProto(mapCtx, in.RawDisk)
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	if in.SourceImageRef != nil {
+		out.SourceImage = &in.SourceImageRef.External
+	}
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	if in.SourceSnapshotRef != nil {
+		out.SourceSnapshot = &in.SourceSnapshotRef.External
+	}
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
+	out.StorageLocations = in.StorageLocations
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeInstanceSpec_v1beta1_FromProto", skipping
 func ComputeInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.ComputeInstanceSpec {
