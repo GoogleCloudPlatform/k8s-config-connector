@@ -1,0 +1,213 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var ComputePerInstanceConfigGVK = GroupVersion.WithKind("ComputePerInstanceConfig")
+
+type ComputeInstanceGroupManagerRef struct {
+	/* The `name` field of a `ComputeInstanceGroupManager` resource. */
+	// +optional
+	External string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace string `json:"namespace,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.PreservedStatePreservedDisk
+type PerinstanceconfigDisk struct {
+	/* A value that prescribes what should happen to the stateful disk when the VM instance is deleted.
+	The available options are 'NEVER' and 'ON_PERMANENT_INSTANCE_DELETION'.
+	'NEVER' - detach the disk when the VM is deleted, but do not delete the disk.
+	'ON_PERMANENT_INSTANCE_DELETION' will delete the stateful disk when the VM is permanently
+	deleted from the instance group. Default value: "NEVER" Possible values: ["NEVER", "ON_PERMANENT_INSTANCE_DELETION"]. */
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedDisk.auto_delete
+	// +optional
+	DeleteRule *string `json:"deleteRule,omitempty"`
+
+	/* A unique device name that is reflected into the /dev/ tree of a Linux operating system running within the instance. */
+	DeviceName string `json:"deviceName"`
+
+	/* The mode of the disk. Default value: "READ_WRITE" Possible values: ["READ_ONLY", "READ_WRITE"]. */
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedDisk.mode
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
+	/* The URI of an existing persistent disk to attach under the specified device-name in the format
+	'projects/project-id/zones/zone/disks/disk-name'. */
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedDisk.source
+	Source string `json:"source"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.PreservedStatePreservedNetworkIpIpAddress
+type PerinstanceconfigIpAddress struct {
+	/* The URL of the reservation for this IP address. */
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIpIpAddress.address
+	// +optional
+	Address *string `json:"address,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.PreservedStatePreservedNetworkIp
+type PerinstanceconfigExternalIp struct {
+	/* These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Default value: "NEVER" Possible values: ["NEVER", "ON_PERMANENT_INSTANCE_DELETION"]. */
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIp.auto_delete
+	// +optional
+	AutoDelete *string `json:"autoDelete,omitempty"`
+
+	InterfaceName string `json:"interfaceName"`
+
+	/* Ip address representation. */
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIp.ip_address
+	// +optional
+	IpAddress *PerinstanceconfigIpAddress `json:"ipAddress,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.PreservedStatePreservedNetworkIp
+type PerinstanceconfigInternalIp struct {
+	/* These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Default value: "NEVER" Possible values: ["NEVER", "ON_PERMANENT_INSTANCE_DELETION"]. */
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIp.auto_delete
+	// +optional
+	AutoDelete *string `json:"autoDelete,omitempty"`
+
+	InterfaceName string `json:"interfaceName"`
+
+	/* Ip address representation. */
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIp.ip_address
+	// +optional
+	IpAddress *PerinstanceconfigIpAddress `json:"ipAddress,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.PreservedState
+type PerinstanceconfigPreservedState struct {
+	/* Stateful disks for the instance. */
+	// +optional
+	Disk []PerinstanceconfigDisk `json:"disk,omitempty"`
+
+	/* Preserved external IPs defined for this instance. This map is keyed with the name of the network interface. */
+	// +optional
+	ExternalIp []PerinstanceconfigExternalIp `json:"externalIp,omitempty"`
+
+	/* Preserved internal IPs defined for this instance. This map is keyed with the name of the network interface. */
+	// +optional
+	InternalIp []PerinstanceconfigInternalIp `json:"internalIp,omitempty"`
+
+	/* Preserved metadata defined for this instance. This is a list of key->value pairs. */
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedState.metadata
+	// +optional
+	Metadata map[string]string `json:"metadata,omitempty"`
+}
+
+// ComputePerInstanceConfigSpec defines the desired state of ComputePerInstanceConfig
+// +kcc:spec:proto=google.cloud.compute.v1.PerInstanceConfig
+type ComputePerInstanceConfigSpec struct {
+	InstanceGroupManagerRef ComputeInstanceGroupManagerRef `json:"instanceGroupManagerRef"`
+
+	/* The minimal action to perform on the instance during an update.
+	Default is 'NONE'. Possible values are:
+	* REPLACE
+	* RESTART
+	* REFRESH
+	* NONE. */
+	// +optional
+	MinimalAction *string `json:"minimalAction,omitempty"`
+
+	/* The most disruptive action to perform on the instance during an update.
+	Default is 'REPLACE'. Possible values are:
+	* REPLACE
+	* RESTART
+	* REFRESH
+	* NONE. */
+	// +optional
+	MostDisruptiveAllowedAction *string `json:"mostDisruptiveAllowedAction,omitempty"`
+
+	/* The preserved state for this instance. */
+	// +kcc:proto:field=google.cloud.compute.v1.PerInstanceConfig.preserved_state
+	// +optional
+	PreservedState *PerinstanceconfigPreservedState `json:"preservedState,omitempty"`
+
+	/* The project that this resource belongs to. */
+	ProjectRef refs.ProjectRef `json:"projectRef"`
+
+	/* When true, deleting this config will immediately remove any specified state from the underlying instance.
+	When false, deleting this config will *not* immediately remove any state from the underlying instance.
+	State will be removed on the next instance recreation or update. */
+	// +optional
+	RemoveInstanceStateOnDestroy *bool `json:"removeInstanceStateOnDestroy,omitempty"`
+
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +kcc:proto:field=google.cloud.compute.v1.PerInstanceConfig.name
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Immutable. Zone where the containing instance group manager is located. */
+	Zone string `json:"zone"`
+}
+
+type ComputePerInstanceConfigStatus struct {
+	/* Conditions represent the latest available observations of the
+	   ComputePerInstanceConfig's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcomputeperinstanceconfig;gcpcomputeperinstanceconfigs
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// ComputePerInstanceConfig is the Schema for the compute API
+// +k8s:openapi-gen=true
+type ComputePerInstanceConfig struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   ComputePerInstanceConfigSpec   `json:"spec,omitempty"`
+	Status ComputePerInstanceConfigStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputePerInstanceConfigList contains a list of ComputePerInstanceConfig
+type ComputePerInstanceConfigList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputePerInstanceConfig `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputePerInstanceConfig{}, &ComputePerInstanceConfigList{})
+}
