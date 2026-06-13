@@ -24,11 +24,18 @@ var CloudSecurityComplianceFrameworkGVK = GroupVersion.WithKind("CloudSecurityCo
 
 // CloudSecurityComplianceFrameworkSpec defines the desired state of CloudSecurityComplianceFramework
 // +kcc:spec:proto=google.cloud.cloudsecuritycompliance.v1.Framework
+// +kubebuilder:validation:XValidation:rule="(has(self.organizationRef) ? 1 : 0) + (has(self.projectRef) ? 1 : 0) == 1",message="Exactly one parent field must be set"
 type CloudSecurityComplianceFrameworkSpec struct {
-	// The organization that this resource belongs to.
-	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef"`
+	// The organization that this resource belongs to. Only one of organizationRef or projectRef may be specified.
+	// +optional
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+
+	// The project that this resource belongs to. Only one of organizationRef or projectRef may be specified.
+	// +optional
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// The location of this resource.
+	// +required
 	Location *string `json:"location"`
 
 	// The CloudSecurityComplianceFramework name. If not given, the metadata.name will be used.
@@ -48,6 +55,10 @@ type CloudSecurityComplianceFrameworkSpec struct {
 
 	// Optional. The category of the framework.
 	Category []string `json:"category,omitempty"`
+
+	// Optional. The labels with user-defined metadata to organize your frameworks.
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 // CloudSecurityComplianceFrameworkStatus defines the config connector machine state of CloudSecurityComplianceFramework

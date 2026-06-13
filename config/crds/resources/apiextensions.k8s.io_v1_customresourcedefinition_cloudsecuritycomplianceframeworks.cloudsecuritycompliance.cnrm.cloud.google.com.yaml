@@ -284,11 +284,18 @@ spec:
                 description: Optional. Display name of the framework. The maximum
                   length is 200 characters.
                 type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. The labels with user-defined metadata to organize
+                  your frameworks.
+                type: object
               location:
                 description: The location of this resource.
                 type: string
               organizationRef:
-                description: The organization that this resource belongs to.
+                description: The organization that this resource belongs to. Only
+                  one of organizationRef or projectRef may be specified.
                 properties:
                   external:
                     description: The 'name' field of an organization, when not managed
@@ -297,14 +304,50 @@ spec:
                 required:
                 - external
                 type: object
+              projectRef:
+                description: The project that this resource belongs to. Only one of
+                  organizationRef or projectRef may be specified.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
                 description: The CloudSecurityComplianceFramework name. If not given,
                   the metadata.name will be used.
                 type: string
             required:
             - location
-            - organizationRef
             type: object
+            x-kubernetes-validations:
+            - message: Exactly one parent field must be set
+              rule: '(has(self.organizationRef) ? 1 : 0) + (has(self.projectRef) ?
+                1 : 0) == 1'
           status:
             description: CloudSecurityComplianceFrameworkStatus defines the config
               connector machine state of CloudSecurityComplianceFramework
