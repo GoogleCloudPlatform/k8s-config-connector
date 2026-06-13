@@ -168,6 +168,156 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
+func BackendbucketBypassCacheOnRequestHeaders_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader) *krm.BackendbucketBypassCacheOnRequestHeaders {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendbucketBypassCacheOnRequestHeaders{}
+	out.HeaderName = in.HeaderName
+	return out
+}
+func BackendbucketBypassCacheOnRequestHeaders_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendbucketBypassCacheOnRequestHeaders) *pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader{}
+	out.HeaderName = in.HeaderName
+	return out
+}
+func BackendbucketCacheKeyPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyCacheKeyPolicy) *krm.BackendbucketCacheKeyPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendbucketCacheKeyPolicy{}
+	// MISSING: IncludeHTTPHeaders
+	// (near miss): "IncludeHTTPHeaders" vs "IncludeHttpHeaders"
+	out.QueryStringWhitelist = in.QueryStringWhitelist
+	return out
+}
+func BackendbucketCacheKeyPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendbucketCacheKeyPolicy) *pb.BackendBucketCdnPolicyCacheKeyPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicyCacheKeyPolicy{}
+	// MISSING: IncludeHTTPHeaders
+	// (near miss): "IncludeHTTPHeaders" vs "IncludeHttpHeaders"
+	out.QueryStringWhitelist = in.QueryStringWhitelist
+	return out
+}
+func BackendbucketCdnPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicy) *krm.BackendbucketCdnPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendbucketCdnPolicy{}
+	out.BypassCacheOnRequestHeaders = direct.Slice_FromProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendbucketBypassCacheOnRequestHeaders_v1beta1_FromProto)
+	out.CacheKeyPolicy = BackendbucketCacheKeyPolicy_v1beta1_FromProto(mapCtx, in.GetCacheKeyPolicy())
+	out.CacheMode = in.CacheMode
+	// MISSING: ClientTTL
+	// (near miss): "ClientTTL" vs "ClientTtl"
+	// MISSING: DefaultTTL
+	// (near miss): "DefaultTTL" vs "DefaultTtl"
+	// MISSING: MaxTTL
+	// (near miss): "MaxTTL" vs "MaxTtl"
+	out.NegativeCaching = in.NegativeCaching
+	out.NegativeCachingPolicy = direct.Slice_FromProto(mapCtx, in.NegativeCachingPolicy, BackendbucketNegativeCachingPolicy_v1beta1_FromProto)
+	out.RequestCoalescing = in.RequestCoalescing
+	out.ServeWhileStale = in.ServeWhileStale
+	// MISSING: SignedURLCacheMaxAgeSec
+	// (near miss): "SignedURLCacheMaxAgeSec" vs "SignedUrlCacheMaxAgeSec"
+	// MISSING: SignedURLKeyNames
+	return out
+}
+func BackendbucketCdnPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendbucketCdnPolicy) *pb.BackendBucketCdnPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicy{}
+	out.BypassCacheOnRequestHeaders = direct.Slice_ToProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendbucketBypassCacheOnRequestHeaders_v1beta1_ToProto)
+	out.CacheKeyPolicy = BackendbucketCacheKeyPolicy_v1beta1_ToProto(mapCtx, in.CacheKeyPolicy)
+	out.CacheMode = in.CacheMode
+	// MISSING: ClientTTL
+	// (near miss): "ClientTTL" vs "ClientTtl"
+	// MISSING: DefaultTTL
+	// (near miss): "DefaultTTL" vs "DefaultTtl"
+	// MISSING: MaxTTL
+	// (near miss): "MaxTTL" vs "MaxTtl"
+	out.NegativeCaching = in.NegativeCaching
+	out.NegativeCachingPolicy = direct.Slice_ToProto(mapCtx, in.NegativeCachingPolicy, BackendbucketNegativeCachingPolicy_v1beta1_ToProto)
+	out.RequestCoalescing = in.RequestCoalescing
+	out.ServeWhileStale = in.ServeWhileStale
+	// MISSING: SignedURLCacheMaxAgeSec
+	// (near miss): "SignedURLCacheMaxAgeSec" vs "SignedUrlCacheMaxAgeSec"
+	// MISSING: SignedURLKeyNames
+	return out
+}
+func BackendbucketNegativeCachingPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyNegativeCachingPolicy) *krm.BackendbucketNegativeCachingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendbucketNegativeCachingPolicy{}
+	out.Code = in.Code
+	// MISSING: TTL
+	// (near miss): "TTL" vs "Ttl"
+	return out
+}
+func BackendbucketNegativeCachingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendbucketNegativeCachingPolicy) *pb.BackendBucketCdnPolicyNegativeCachingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicyNegativeCachingPolicy{}
+	out.Code = in.Code
+	// MISSING: TTL
+	// (near miss): "TTL" vs "Ttl"
+	return out
+}
+func ComputeBackendBucketSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucket) *krm.ComputeBackendBucketSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeBackendBucketSpec{}
+	// MISSING: BucketName
+	// MISSING: CDNPolicy
+	// (near miss): "CDNPolicy" vs "CdnPolicy"
+	out.CompressionMode = in.CompressionMode
+	// MISSING: CreationTimestamp
+	out.CustomResponseHeaders = in.CustomResponseHeaders
+	out.Description = in.Description
+	out.EdgeSecurityPolicy = in.EdgeSecurityPolicy
+	// MISSING: EnableCDN
+	// (near miss): "EnableCDN" vs "EnableCdn"
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LoadBalancingScheme
+	// MISSING: Name
+	// MISSING: Params
+	// MISSING: SelfLink
+	// MISSING: UsedBy
+	return out
+}
+func ComputeBackendBucketSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendBucketSpec) *pb.BackendBucket {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucket{}
+	// MISSING: BucketName
+	// MISSING: CDNPolicy
+	// (near miss): "CDNPolicy" vs "CdnPolicy"
+	out.CompressionMode = in.CompressionMode
+	// MISSING: CreationTimestamp
+	out.CustomResponseHeaders = in.CustomResponseHeaders
+	out.Description = in.Description
+	out.EdgeSecurityPolicy = in.EdgeSecurityPolicy
+	// MISSING: EnableCDN
+	// (near miss): "EnableCDN" vs "EnableCdn"
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LoadBalancingScheme
+	// MISSING: Name
+	// MISSING: Params
+	// MISSING: SelfLink
+	// MISSING: UsedBy
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
