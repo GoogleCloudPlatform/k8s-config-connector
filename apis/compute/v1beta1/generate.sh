@@ -55,6 +55,7 @@ go run . generate-types \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --resource ComputeURLMap:UrlMap \
+  --resource ComputeInterconnectAttachment:InterconnectAttachment \
   --include-skipped-output
 
 go run . generate-mapper \
