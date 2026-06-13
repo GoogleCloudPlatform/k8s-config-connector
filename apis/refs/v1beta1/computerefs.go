@@ -347,3 +347,61 @@ type ComputeForwardingRuleRef struct {
 	/* The namespace field of a ComputeForwardingRule resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type ComputeDiskRef struct {
+	/* The ComputeDisk selflink in the form "projects/{{project}}/zones/{{zone}}/disks/{{name}}" or "projects/{{project}}/regions/{{region}}/disks/{{name}}" when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The name field of a ComputeDisk resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a ComputeDisk resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+func ResolveComputeDisk(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeDiskRef) (*ComputeDiskRef, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		ref.External = TrimComputeURIPrefix(ref.External)
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeDisk := &unstructured.Unstructured{}
+	computeDisk.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeDisk",
+	})
+	if err := reader.Get(ctx, key, computeDisk); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, k8s.NewReferenceNotFoundError(computeDisk.GroupVersionKind(), key)
+		}
+		return nil, fmt.Errorf("error reading referenced ComputeDisk %v: %w", key, err)
+	}
+
+	selfLink, _, _ := unstructured.NestedString(computeDisk.Object, "status", "selfLink")
+	if selfLink == "" {
+		return nil, k8s.NewReferenceNotFoundError(computeDisk.GroupVersionKind(), key)
+	}
+
+	externalRef := TrimComputeURIPrefix(selfLink)
+	return &ComputeDiskRef{
+		External: externalRef,
+	}, nil
+}
