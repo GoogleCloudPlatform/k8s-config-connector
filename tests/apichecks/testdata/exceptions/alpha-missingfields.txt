@@ -726,6 +726,16 @@
 [missing_field] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.logLevel" is not set in unstructured objects
 [missing_field] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata" is not set in unstructured objects
 [missing_field] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.registry" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistrycustomranges.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributes[].key" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistrycustomranges.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributes[].value" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistrycustomranges.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistrycustomranges.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.ipv4CIDRRange" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistrycustomranges.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.ipv6CIDRRange" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistrycustomranges.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistrycustomranges.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistrycustomranges.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRange" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistrycustomranges.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudnumberregistrycustomranges.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.realm" is not set in unstructured objects
 [missing_field] crd=cloudsecuritycompliancecloudcontrols.cloudsecuritycompliance.cnrm.cloud.google.com version=v1alpha1: field ".spec.categories[]" is not set in unstructured objects
 [missing_field] crd=cloudsecuritycompliancecloudcontrols.cloudsecuritycompliance.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=cloudsecuritycompliancecloudcontrols.cloudsecuritycompliance.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
