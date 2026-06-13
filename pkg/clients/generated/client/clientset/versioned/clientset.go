@@ -90,6 +90,7 @@ import (
 	composerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/composer/v1beta1"
 	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1alpha1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
+	configv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/config/v1alpha1"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1"
 	connectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/connectors/v1alpha1"
@@ -288,6 +289,7 @@ type Interface interface {
 	ComposerV1beta1() composerv1beta1.ComposerV1beta1Interface
 	ComputeV1alpha1() computev1alpha1.ComputeV1alpha1Interface
 	ComputeV1beta1() computev1beta1.ComputeV1beta1Interface
+	ConfigV1alpha1() configv1alpha1.ConfigV1alpha1Interface
 	ConfigcontrollerV1beta1() configcontrollerv1beta1.ConfigcontrollerV1beta1Interface
 	ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface
 	ConnectorsV1alpha1() connectorsv1alpha1.ConnectorsV1alpha1Interface
@@ -484,6 +486,7 @@ type Clientset struct {
 	composerV1beta1                 *composerv1beta1.ComposerV1beta1Client
 	computeV1alpha1                 *computev1alpha1.ComputeV1alpha1Client
 	computeV1beta1                  *computev1beta1.ComputeV1beta1Client
+	configV1alpha1                  *configv1alpha1.ConfigV1alpha1Client
 	configcontrollerV1beta1         *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
 	configdeliveryV1alpha1          *configdeliveryv1alpha1.ConfigdeliveryV1alpha1Client
 	connectorsV1alpha1              *connectorsv1alpha1.ConnectorsV1alpha1Client
@@ -935,6 +938,11 @@ func (c *Clientset) ComputeV1alpha1() computev1alpha1.ComputeV1alpha1Interface {
 // ComputeV1beta1 retrieves the ComputeV1beta1Client
 func (c *Clientset) ComputeV1beta1() computev1beta1.ComputeV1beta1Interface {
 	return c.computeV1beta1
+}
+
+// ConfigV1alpha1 retrieves the ConfigV1alpha1Client
+func (c *Clientset) ConfigV1alpha1() configv1alpha1.ConfigV1alpha1Interface {
+	return c.configV1alpha1
 }
 
 // ConfigcontrollerV1beta1 retrieves the ConfigcontrollerV1beta1Client
@@ -1871,6 +1879,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.configV1alpha1, err = configv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.configcontrollerV1beta1, err = configcontrollerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2461,6 +2473,7 @@ func New(c rest.Interface) *Clientset {
 	cs.composerV1beta1 = composerv1beta1.New(c)
 	cs.computeV1alpha1 = computev1alpha1.New(c)
 	cs.computeV1beta1 = computev1beta1.New(c)
+	cs.configV1alpha1 = configv1alpha1.New(c)
 	cs.configcontrollerV1beta1 = configcontrollerv1beta1.New(c)
 	cs.configdeliveryV1alpha1 = configdeliveryv1alpha1.New(c)
 	cs.connectorsV1alpha1 = connectorsv1alpha1.New(c)
