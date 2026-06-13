@@ -20,6 +20,7 @@ package keyhandle
 
 import (
 	pb "cloud.google.com/go/kms/apiv1/kmspb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -29,8 +30,8 @@ func init() {
 
 func KMSKeyHandleFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.KeyHandle{},
-		KMSKeyHandleSpec_FromProto, KMSKeyHandleSpec_ToProto,
-		KMSKeyHandleStatusObservedState_FromProto, KMSKeyHandleStatusObservedState_ToProto,
+		kms.KMSKeyHandleSpec_FromProto, kms.KMSKeyHandleSpec_ToProto,
+		kms.KMSKeyHandleObservedState_FromProto, kms.KMSKeyHandleObservedState_ToProto,
 	)
 
 	f.SpecField(".resource_type_selector")
