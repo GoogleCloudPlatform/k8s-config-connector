@@ -18,7 +18,6 @@
 [iam_gap_direct] crd=computeimages.compute.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=computeinstances.compute.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=computeinstancetemplates.compute.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
-[iam_gap_direct] crd=computemachineimages.compute.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=computenodegroups.compute.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=computenodetemplates.compute.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=computereservations.compute.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct

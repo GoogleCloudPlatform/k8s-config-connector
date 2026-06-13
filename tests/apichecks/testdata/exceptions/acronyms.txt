@@ -198,6 +198,8 @@
 [acronyms] crd=computeinterconnectattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".status.cloudRouterIpAddress" should be ".status.cloudRouterIPAddress"
 [acronyms] crd=computeinterconnectattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".status.customerRouterIpAddress" should be ".status.customerRouterIPAddress"
 [acronyms] crd=computeinterconnectattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".status.googleReferenceId" should be ".status.googleReferenceID"
+[acronyms] crd=computemachineimages.compute.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.instanceProperties.scheduling.minNodeCpus" should be ".status.observedState.instanceProperties.scheduling.minNodeCPUs"
+[acronyms] crd=computemachineimages.compute.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.sourceInstanceProperties.scheduling.minNodeCpus" should be ".status.observedState.sourceInstanceProperties.scheduling.minNodeCPUs"
 [acronyms] crd=computenetworkfirewallpolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".status.networkFirewallPolicyId" should be ".status.networkFirewallPolicyID"
 [acronyms] crd=computenetworkfirewallpolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".status.selfLinkWithId" should be ".status.selfLinkWithID"
 [acronyms] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.destFqdns" should be ".spec.match.destFQDNs"

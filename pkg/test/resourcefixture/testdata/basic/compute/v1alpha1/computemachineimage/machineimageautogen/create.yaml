@@ -17,6 +17,7 @@ kind: ComputeMachineImage
 metadata:
   name: computemachineimage-${uniqueId}
 spec:
+  location: global
   projectRef:
     external: ${projectId}
   resourceID: computemachineimage${uniqueId}
