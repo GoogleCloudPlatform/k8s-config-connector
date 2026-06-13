@@ -16,6 +16,7 @@ kind: ComputeManagedSSLCertificate
 metadata:
   name: computemanagedsslcertificate-${uniqueId}
 spec:
+  location: global
   managed:
     domains:
     - sslcert.fixture.club.
