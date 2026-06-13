@@ -21,6 +21,7 @@
 // resource: ComputeNetworkAttachment:NetworkAttachment
 // resource: ComputeInterconnect:Interconnect
 // resource: ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation
+// resource: ComputeNetworkPeeringRoutesConfig:NetworkPeering
 
 package v1alpha1
 
@@ -447,6 +448,130 @@ type NetworkEdgeSecurityService struct {
 	// [Output Only] Server-defined URL for this resource with the resource id.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NetworkPeering", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NetworkPeering
+type NetworkPeering struct {
+	// This field will be deprecated soon. Use the exchange_subnet_routes field instead. Indicates whether full mesh connectivity is created and managed automatically between peered networks. Currently this field should always be true since Google Compute Engine will automatically create and manage subnetwork routes between two networks when peering state is ACTIVE.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.auto_create_routes
+	AutoCreateRoutes *bool `json:"autoCreateRoutes,omitempty"`
+
+	// [Output Only] The effective state of the peering connection as a whole.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.connection_status
+	ConnectionStatus *NetworkPeeringConnectionStatus `json:"connectionStatus,omitempty"`
+
+	// Indicates whether full mesh connectivity is created and managed automatically between peered networks. Currently this field should always be true since Google Compute Engine will automatically create and manage subnetwork routes between two networks when peering state is ACTIVE.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.exchange_subnet_routes
+	ExchangeSubnetRoutes *bool `json:"exchangeSubnetRoutes,omitempty"`
+
+	// Whether to export the custom routes to peer network. The default value is false.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.export_custom_routes
+	ExportCustomRoutes *bool `json:"exportCustomRoutes,omitempty"`
+
+	// Whether subnet routes with public IP range are exported. The default value is true, all subnet routes are exported. IPv4 special-use ranges are always exported to peers and are not controlled by this field.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.export_subnet_routes_with_public_ip
+	ExportSubnetRoutesWithPublicIP *bool `json:"exportSubnetRoutesWithPublicIP,omitempty"`
+
+	// Whether to import the custom routes from peer network. The default value is false.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.import_custom_routes
+	ImportCustomRoutes *bool `json:"importCustomRoutes,omitempty"`
+
+	// Whether subnet routes with public IP range are imported. The default value is false. IPv4 special-use ranges are always imported from peers and are not controlled by this field.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.import_subnet_routes_with_public_ip
+	ImportSubnetRoutesWithPublicIP *bool `json:"importSubnetRoutesWithPublicIP,omitempty"`
+
+	// Name of this peering. Provided by the client when the peering is created. The name must comply with RFC1035. Specifically, the name must be 1-63 characters long and match regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`. The first character must be a lowercase letter, and all the following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.name
+	Name *string `json:"name,omitempty"`
+
+	// The URL of the peer network. It can be either full URL or partial URL. The peer network may belong to a different project. If the partial URL does not contain project, it is assumed that the peer network is in the same project as the current network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.network
+	Network *string `json:"network,omitempty"`
+
+	// [Output Only] Maximum Transmission Unit in bytes of the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.peer_mtu
+	PeerMtu *int32 `json:"peerMtu,omitempty"`
+
+	// Which IP version(s) of traffic and routes are allowed to be imported or exported between peer networks. The default value is IPV4_ONLY.
+	//  Check the StackType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.stack_type
+	StackType *string `json:"stackType,omitempty"`
+
+	// [Output Only] State for the peering, either `ACTIVE` or `INACTIVE`. The peering is `ACTIVE` when there's a matching configuration in the peer network.
+	//  Check the State enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.state
+	State *string `json:"state,omitempty"`
+
+	// [Output Only] Details about the current state of the peering.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.state_details
+	StateDetails *string `json:"stateDetails,omitempty"`
+
+	// The update strategy determines the semantics for updates and deletes to the peering connection configuration.
+	//  Check the UpdateStrategy enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.update_strategy
+	UpdateStrategy *string `json:"updateStrategy,omitempty"`
+}
+*/
+
+/* unreachable type NetworkPeeringConnectionStatus
+// +kcc:proto=google.cloud.compute.v1.NetworkPeeringConnectionStatus
+type NetworkPeeringConnectionStatus struct {
+	// The consensus state contains information about the status of update and delete for a consensus peering connection.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatus.consensus_state
+	ConsensusState *NetworkPeeringConnectionStatusConsensusState `json:"consensusState,omitempty"`
+
+	// The active connectivity settings for the peering connection based on the settings of the network peerings.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatus.traffic_configuration
+	TrafficConfiguration *NetworkPeeringConnectionStatusTrafficConfiguration `json:"trafficConfiguration,omitempty"`
+
+	// The update strategy determines the update/delete semantics for this peering connection.
+	//  Check the UpdateStrategy enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatus.update_strategy
+	UpdateStrategy *string `json:"updateStrategy,omitempty"`
+}
+*/
+
+/* unreachable type NetworkPeeringConnectionStatusConsensusState
+// +kcc:proto=google.cloud.compute.v1.NetworkPeeringConnectionStatusConsensusState
+type NetworkPeeringConnectionStatusConsensusState struct {
+	// The status of the delete request.
+	//  Check the DeleteStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusConsensusState.delete_status
+	DeleteStatus *string `json:"deleteStatus,omitempty"`
+
+	// The status of the update request.
+	//  Check the UpdateStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusConsensusState.update_status
+	UpdateStatus *string `json:"updateStatus,omitempty"`
+}
+*/
+
+/* unreachable type NetworkPeeringConnectionStatusTrafficConfiguration
+// +kcc:proto=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration
+type NetworkPeeringConnectionStatusTrafficConfiguration struct {
+	// Whether custom routes are being exported to the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.export_custom_routes_to_peer
+	ExportCustomRoutesToPeer *bool `json:"exportCustomRoutesToPeer,omitempty"`
+
+	// Whether subnet routes with public IP ranges are being exported to the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.export_subnet_routes_with_public_ip_to_peer
+	ExportSubnetRoutesWithPublicIPToPeer *bool `json:"exportSubnetRoutesWithPublicIPToPeer,omitempty"`
+
+	// Whether custom routes are being imported from the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.import_custom_routes_from_peer
+	ImportCustomRoutesFromPeer *bool `json:"importCustomRoutesFromPeer,omitempty"`
+
+	// Whether subnet routes with public IP ranges are being imported from the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.import_subnet_routes_with_public_ip_from_peer
+	ImportSubnetRoutesWithPublicIPFromPeer *bool `json:"importSubnetRoutesWithPublicIPFromPeer,omitempty"`
+
+	// Which IP version(s) of traffic and routes are being imported or exported between peer networks.
+	//  Check the StackType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.stack_type
+	StackType *string `json:"stackType,omitempty"`
 }
 */
 
