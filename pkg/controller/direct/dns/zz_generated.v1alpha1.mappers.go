@@ -81,6 +81,58 @@ func DNSResponsePolicyStatus_ToAPI(mapCtx *direct.MapContext, in *krm.DNSRespons
 	return out
 }
 
+func DNSResponsePolicyRuleSpec_FromAPI(mapCtx *direct.MapContext, in *api.ResponsePolicyRule) *krm.DNSResponsePolicyRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSResponsePolicyRuleSpec{}
+	out.Behavior = direct.LazyPtr(in.Behavior)
+	out.DnsName = in.DnsName
+	out.LocalData = ResponsepolicyruleLocalData_FromAPI(mapCtx, in.LocalData)
+	// MISSING: ProjectRef
+	// MISSING: ResourceID
+	// MISSING: ResponsePolicy
+	return out
+}
+
+func DNSResponsePolicyRuleSpec_ToAPI(mapCtx *direct.MapContext, in *krm.DNSResponsePolicyRuleSpec) *api.ResponsePolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &api.ResponsePolicyRule{}
+	out.Behavior = direct.ValueOf(in.Behavior)
+	out.DnsName = in.DnsName
+	out.LocalData = ResponsepolicyruleLocalData_ToAPI(mapCtx, in.LocalData)
+	// MISSING: RuleName
+	// MISSING: HTTPStatusCode
+	// MISSING: Header
+	return out
+}
+
+func DNSResponsePolicyRuleStatus_FromAPI(mapCtx *direct.MapContext, in *api.ResponsePolicyRule) *krm.DNSResponsePolicyRuleStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSResponsePolicyRuleStatus{}
+	// MISSING: Conditions
+	// MISSING: ObservedGeneration
+	return out
+}
+
+func DNSResponsePolicyRuleStatus_ToAPI(mapCtx *direct.MapContext, in *krm.DNSResponsePolicyRuleStatus) *api.ResponsePolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &api.ResponsePolicyRule{}
+	// MISSING: Behavior
+	// MISSING: DnsName
+	// MISSING: LocalData
+	// MISSING: RuleName
+	// MISSING: HTTPStatusCode
+	// MISSING: Header
+	return out
+}
+
 func ResponsepolicyGkeClusters_FromAPI(mapCtx *direct.MapContext, in *api.ResponsePolicyGKECluster) *krm.ResponsepolicyGkeClusters {
 	if in == nil {
 		return nil
@@ -114,5 +166,51 @@ func ResponsepolicyNetworks_ToAPI(mapCtx *direct.MapContext, in *krm.Responsepol
 	}
 	out := &api.ResponsePolicyNetwork{}
 	out.NetworkUrl = in.NetworkUrl
+	return out
+}
+
+func ResponsepolicyruleLocalData_FromAPI(mapCtx *direct.MapContext, in *api.ResponsePolicyRuleLocalData) *krm.ResponsepolicyruleLocalData {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponsepolicyruleLocalData{}
+	out.LocalDatas = direct.Slice_FromProto(mapCtx, in.LocalDatas, ResponsepolicyruleLocalDatas_FromAPI)
+	return out
+}
+
+func ResponsepolicyruleLocalData_ToAPI(mapCtx *direct.MapContext, in *krm.ResponsepolicyruleLocalData) *api.ResponsePolicyRuleLocalData {
+	if in == nil {
+		return nil
+	}
+	out := &api.ResponsePolicyRuleLocalData{}
+	out.LocalDatas = direct.Slice_ToProto(mapCtx, in.LocalDatas, ResponsepolicyruleLocalDatas_ToAPI)
+	return out
+}
+
+func ResponsepolicyruleLocalDatas_FromAPI(mapCtx *direct.MapContext, in *api.ResourceRecordSet) *krm.ResponsepolicyruleLocalDatas {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponsepolicyruleLocalDatas{}
+	out.Name = in.Name
+	out.Rrdatas = in.Rrdatas
+	out.Ttl = direct.LazyPtr(in.Ttl)
+	out.Type = in.Type
+	return out
+}
+
+func ResponsepolicyruleLocalDatas_ToAPI(mapCtx *direct.MapContext, in *krm.ResponsepolicyruleLocalDatas) *api.ResourceRecordSet {
+	if in == nil {
+		return nil
+	}
+	out := &api.ResourceRecordSet{}
+	out.Name = in.Name
+	out.Rrdatas = in.Rrdatas
+	out.Ttl = direct.ValueOf(in.Ttl)
+	out.Type = in.Type
+	// MISSING: RoutingPolicy
+	// MISSING: SignatureRrdatas
+	// MISSING: HTTPStatusCode
+	// MISSING: Header
 	return out
 }

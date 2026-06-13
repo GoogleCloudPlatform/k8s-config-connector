@@ -280,7 +280,7 @@
 | dns.cnrm.cloud.google.com                     | DNSPolicy                                       | False        | True        | False  | Terraform  | True        |
 | dns.cnrm.cloud.google.com                     | DNSRecordSet                                    | False        | True        | False  | Terraform  | True        |
 | dns.cnrm.cloud.google.com                     | DNSResponsePolicy                               | True         | False       | False  | Terraform  | True        |
-| dns.cnrm.cloud.google.com                     | DNSResponsePolicyRule                           | True         | False       | False  | Terraform  | False       |
+| dns.cnrm.cloud.google.com                     | DNSResponsePolicyRule                           | True         | False       | False  | Terraform  | True        |
 | documentai.cnrm.cloud.google.com              | DocumentAIProcessorDefaultVersion               | True         | False       | False  | Terraform  | False       |
 | documentai.cnrm.cloud.google.com              | DocumentAIProcessor                             | True         | False       | False  | Direct     | True        |
 | documentai.cnrm.cloud.google.com              | DocumentAIProcessorVersion                      | True         | True        | False  | Direct     | True        |
