@@ -1268,6 +1268,58 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: StatusMessage
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto", skipping
+func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec{}
+	out.Action = in.Action
+	out.Description = in.Description
+	out.Direction = in.Direction
+	// MISSING: Disabled
+	out.EnableLogging = in.EnableLogging
+	// MISSING: Kind
+	out.Match = OrganizationsecuritypolicyruleMatch_v1alpha1_FromProto(mapCtx, in.GetMatch())
+	// MISSING: Priority
+	// MISSING: RuleName
+	// MISSING: RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	out.TargetResources = in.TargetResources
+	// MISSING: TargetSecureTags
+	out.TargetServiceAccounts = in.TargetServiceAccounts
+	// MISSING: TLSInspect
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto", skipping
+
+	func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec) *pb.FirewallPolicyRule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.FirewallPolicyRule{}
+		out.Action = in.Action
+		out.Description = in.Description
+		out.Direction = in.Direction
+		// MISSING: Disabled
+		out.EnableLogging = in.EnableLogging
+		// MISSING: Kind
+		out.Match = OrganizationsecuritypolicyruleMatch_v1alpha1_ToProto(mapCtx, in.Match)
+		// MISSING: Priority
+		// MISSING: RuleName
+		// MISSING: RuleTupleCount
+		// MISSING: SecurityProfileGroup
+		out.TargetResources = in.TargetResources
+		// MISSING: TargetSecureTags
+		out.TargetServiceAccounts = in.TargetServiceAccounts
+		// MISSING: TLSInspect
+		return out
+	}
+*/
 func ComputeReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ComputeReservationSpec {
 	if in == nil {
 		return nil
