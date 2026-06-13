@@ -1,3 +1,12 @@
+### [2026-05-28] Vendoring missing protos for SecurityProfileGroup
+- **Context**: Implementing types for `NetworkSecuritySecurityProfileGroup` (Issue #8738).
+- **Problem**: The proto messages for `SecurityProfileGroup` and its helper modules (`security_profile_group_intercept.proto`, `security_profile_group_mirroring.proto`, `security_profile_group_threatprevention.proto`, `security_profile_group_urlfiltering.proto`, `security_profile_group_service.proto`) were missing from the pinned `googleapis` SHA (`731d7f2ab6`).
+- **Solution**: 
+  1. Extracted all `security_profile_group*.proto` files from the `googleapis` master branch and placed them in `mockgcp/apis/google/cloud/networksecurity/v1/`.
+  2. Regenerated `.build/googleapis.pb` with `generate-proto.sh` and ran `generate-types` for `NetworkSecuritySecurityProfileGroup`.
+  3. Added `NetworkSecuritySecurityProfileRef` under `apis/refs/v1beta1/networksecurityrefs.go` to handle reference fields.
+- **Impact**: Enables smooth generation of types and CRDs for resources added to Google APIs after the pinned SHA `731d7f2ab6`.
+
 ### [2026-05-27] Missing proto in pinned googleapis SHA
 - **Context**: Implementing types for `NetworkSecurityInterceptDeployment` (Issue #8726).
 - **Problem**: The proto message `InterceptDeployment` does not exist in the pinned `googleapis` SHA (`731d7f2ab6`). The generator (`generate-types`) failed with `proto: not found`.

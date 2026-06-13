@@ -33,3 +33,13 @@ type NetworkSecurityMirroringDeploymentGroupRef struct {
 	/* The namespace field of a NetworkSecurityMirroringDeploymentGroup resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type NetworkSecuritySecurityProfileRef struct {
+	/* A reference to an externally managed NetworkSecuritySecurityProfile resource.
+	Should be in the format "projects/{{projectID}}/locations/{{location}}/securityProfiles/{{securityProfileID}}" or "organizations/{{organizationID}}/locations/{{location}}/securityProfiles/{{securityProfileID}}". */
+	External string `json:"external,omitempty"`
+	/* The name field of a NetworkSecuritySecurityProfile resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a NetworkSecuritySecurityProfile resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
