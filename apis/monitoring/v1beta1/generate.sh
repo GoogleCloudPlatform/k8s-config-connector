@@ -24,6 +24,14 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 go run . generate-types \
+  --service google.monitoring.dashboard.v1 \
+  --api-version monitoring.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output \
+  --resource MonitoringDashboard:Dashboard
+
+mv "${REPO_ROOT}/apis/monitoring/v1beta1/types.generated.go" "${REPO_ROOT}/apis/monitoring/v1beta1/dashboard_types.generated.go"
+
+go run . generate-types \
   --service google.monitoring.v3 \
   --api-version monitoring.cnrm.cloud.google.com/v1beta1  \
   --include-skipped-output \
@@ -31,7 +39,7 @@ go run . generate-types \
   --resource MonitoringUptimeCheckConfig:UptimeCheckConfig
 
 go run . generate-mapper \
-  --service google.monitoring.v3,google.api \
+  --service google.monitoring.v3,google.monitoring.dashboard.v1,google.api \
   --api-version monitoring.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 
