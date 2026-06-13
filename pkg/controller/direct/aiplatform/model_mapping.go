@@ -151,9 +151,9 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 			StringValue: direct.ValueOf(in.StringValue),
 		}
 	}
-	if in.StructValue != nil {
+	if len(in.StructValue.Raw) > 0 {
 		out.Kind = &structpb.Value_StructValue{
-			StructValue: StructValue_ToProto(mapCtx, in.StructValue),
+			StructValue: direct.Struct_ToProto(mapCtx, &in.StructValue),
 		}
 	}
 	return out
@@ -178,37 +178,31 @@ func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
 		value := in.GetBoolValue()
 		out.BoolValue = &value
 	case *structpb.Value_StructValue:
-		out.StructValue = StructValue_FromProto(mapCtx, in.GetStructValue())
+		if structVal := direct.Struct_FromProto(mapCtx, in.GetStructValue()); structVal != nil {
+			out.StructValue = *structVal
+		}
 	}
 	return out
 }
 
-func StructValue_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) map[string]string {
+func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
 	if in == nil {
 		return nil
 	}
-	out := make(map[string]string)
-	for key, val := range in.Fields {
-		out[key] = val.GetStringValue()
+	out := &krm.ListValue{}
+	for _, value := range in.Values {
+		out.Values = append(out.Values, direct.ValueOf(Value_FromProto(mapCtx, value)))
 	}
 	return out
 }
 
-func StructValue_ToProto(mapCtx *direct.MapContext, in map[string]string) *structpb.Struct {
+func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
 	if in == nil {
 		return nil
 	}
-	out := &structpb.Struct{}
-	if len(in) > 0 {
-		out.Fields = make(map[string]*structpb.Value)
-	}
-	for key, val := range in {
-		value := &structpb.Value_StringValue{
-			StringValue: val,
-		}
-		out.Fields[key] = &structpb.Value{
-			Kind: value,
-		}
+	out := &structpb.ListValue{}
+	for _, value := range in.Values {
+		out.Values = append(out.Values, Value_ToProto(mapCtx, &value))
 	}
 	return out
 }

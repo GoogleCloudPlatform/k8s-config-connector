@@ -39,6 +39,10 @@ func (c *FakeAiplatformV1alpha1) VertexAIFeatureOnlineStores(namespace string) v
 	return newFakeVertexAIFeatureOnlineStores(c, namespace)
 }
 
+func (c *FakeAiplatformV1alpha1) VertexAIPersistentResources(namespace string) v1alpha1.VertexAIPersistentResourceInterface {
+	return newFakeVertexAIPersistentResources(c, namespace)
+}
+
 func (c *FakeAiplatformV1alpha1) VertexAISpecialistPools(namespace string) v1alpha1.VertexAISpecialistPoolInterface {
 	return newFakeVertexAISpecialistPools(c, namespace)
 }
