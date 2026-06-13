@@ -34,6 +34,7 @@
 // resource: ComputeHTTPHealthCheck:HTTPHealthCheck
 // resource: ComputeDisk:Disk
 // resource: ComputeAddress:Address
+// resource: ComputePacketMirroring:PacketMirroring
 
 package v1beta1
 
@@ -2367,6 +2368,158 @@ type NodeTemplateNodeTypeFlexibility struct {
 
 	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplateNodeTypeFlexibility.memory
 	Memory *string `json:"memory,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PacketMirroring", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PacketMirroring
+type PacketMirroring struct {
+	// The Forwarding Rule resource of type loadBalancingScheme=INTERNAL that will be used as collector for mirrored traffic. The specified forwarding rule must have isMirroringCollector set to true.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.collector_ilb
+	CollectorIlb *PacketMirroringForwardingRuleInfo `json:"collectorIlb,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.description
+	Description *string `json:"description,omitempty"`
+
+	// Indicates whether or not this packet mirroring takes effect. If set to FALSE, this packet mirroring policy will not be enforced on the network. The default is TRUE.
+	//  Check the Enable enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.enable
+	Enable *string `json:"enable,omitempty"`
+
+	// Filter for mirrored traffic. If unspecified, all IPv4 traffic is mirrored.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.filter
+	Filter *PacketMirroringFilter `json:"filter,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#packetMirroring for packet mirrorings.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// PacketMirroring mirroredResourceInfos. MirroredResourceInfo specifies a set of mirrored VM instances, subnetworks and/or tags for which traffic from/to all VM instances will be mirrored.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.mirrored_resources
+	MirroredResources *PacketMirroringMirroredResourceInfo `json:"mirroredResources,omitempty"`
+
+	// Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.name
+	Name *string `json:"name,omitempty"`
+
+	// Specifies the mirrored VPC network. Only packets in this network will be mirrored. All mirrored VMs should have a NIC in the given network. All mirrored subnetworks should belong to the given network.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.network
+	Network *PacketMirroringNetworkInfo `json:"network,omitempty"`
+
+	// The priority of applying this configuration. Priority is used to break ties in cases where there is more than one matching rule. In the case of two rules that apply for a given Instance, the one with the lowest-numbered priority value wins. Default value is 1000. Valid range is 0 through 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.priority
+	Priority *uint32 `json:"priority,omitempty"`
+
+	// [Output Only] URI of the region where the packetMirroring resides.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroring.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PacketMirroringFilter", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PacketMirroringFilter
+type PacketMirroringFilter struct {
+	// Protocols that apply as filter on mirrored traffic. If no protocols are specified, all traffic that matches the specified CIDR ranges is mirrored. If neither cidrRanges nor IPProtocols is specified, all IPv4 traffic is mirrored.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringFilter.I_p_protocols
+	IPProtocols []string `json:"IPProtocols,omitempty"`
+
+	// One or more IPv4 or IPv6 CIDR ranges that apply as filters on the source (ingress) or destination (egress) IP in the IP header. If no ranges are specified, all IPv4 traffic that matches the specified IPProtocols is mirrored. If neither cidrRanges nor IPProtocols is specified, all IPv4 traffic is mirrored. To mirror all IPv4 and IPv6 traffic, use "0.0.0.0/0,::/0".
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringFilter.cidr_ranges
+	CIDRRanges []string `json:"cidrRanges,omitempty"`
+
+	// Direction of traffic to mirror, either INGRESS, EGRESS, or BOTH. The default is BOTH.
+	//  Check the Direction enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringFilter.direction
+	Direction *string `json:"direction,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PacketMirroringForwardingRuleInfo", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PacketMirroringForwardingRuleInfo
+type PacketMirroringForwardingRuleInfo struct {
+	// [Output Only] Unique identifier for the forwarding rule; defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringForwardingRuleInfo.canonical_url
+	CanonicalURL *string `json:"canonicalURL,omitempty"`
+
+	// Resource URL to the forwarding rule representing the ILB configured as destination of the mirrored traffic.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringForwardingRuleInfo.url
+	URL *string `json:"url,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PacketMirroringMirroredResourceInfo", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PacketMirroringMirroredResourceInfo
+type PacketMirroringMirroredResourceInfo struct {
+	// A set of virtual machine instances that are being mirrored. They must live in zones contained in the same region as this packetMirroring. Note that this config will apply only to those network interfaces of the Instances that belong to the network specified in this packetMirroring. You may specify a maximum of 50 Instances.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringMirroredResourceInfo.instances
+	Instances []PacketMirroringMirroredResourceInfoInstanceInfo `json:"instances,omitempty"`
+
+	// A set of subnetworks for which traffic from/to all VM instances will be mirrored. They must live in the same region as this packetMirroring. You may specify a maximum of 5 subnetworks.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringMirroredResourceInfo.subnetworks
+	Subnetworks []PacketMirroringMirroredResourceInfoSubnetInfo `json:"subnetworks,omitempty"`
+
+	// A set of mirrored tags. Traffic from/to all VM instances that have one or more of these tags will be mirrored.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringMirroredResourceInfo.tags
+	Tags []string `json:"tags,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PacketMirroringMirroredResourceInfoInstanceInfo", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PacketMirroringMirroredResourceInfoInstanceInfo
+type PacketMirroringMirroredResourceInfoInstanceInfo struct {
+	// [Output Only] Unique identifier for the instance; defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringMirroredResourceInfoInstanceInfo.canonical_url
+	CanonicalURL *string `json:"canonicalURL,omitempty"`
+
+	// Resource URL to the virtual machine instance which is being mirrored.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringMirroredResourceInfoInstanceInfo.url
+	URL *string `json:"url,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PacketMirroringMirroredResourceInfoSubnetInfo", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PacketMirroringMirroredResourceInfoSubnetInfo
+type PacketMirroringMirroredResourceInfoSubnetInfo struct {
+	// [Output Only] Unique identifier for the subnetwork; defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringMirroredResourceInfoSubnetInfo.canonical_url
+	CanonicalURL *string `json:"canonicalURL,omitempty"`
+
+	// Resource URL to the subnetwork for which traffic from/to all VM instances will be mirrored.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringMirroredResourceInfoSubnetInfo.url
+	URL *string `json:"url,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PacketMirroringNetworkInfo", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PacketMirroringNetworkInfo
+type PacketMirroringNetworkInfo struct {
+	// [Output Only] Unique identifier for the network; defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringNetworkInfo.canonical_url
+	CanonicalURL *string `json:"canonicalURL,omitempty"`
+
+	// URL of the network resource.
+	// +kcc:proto:field=google.cloud.compute.v1.PacketMirroringNetworkInfo.url
+	URL *string `json:"url,omitempty"`
 }
 */
 

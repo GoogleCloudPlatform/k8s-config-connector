@@ -43,6 +43,7 @@ go run . generate-types \
   --resource ComputeHTTPHealthCheck:HTTPHealthCheck \
   --resource ComputeDisk:Disk \
   --resource ComputeAddress:Address \
+  --resource ComputePacketMirroring:PacketMirroring \
   --include-skipped-output
 
 go run . generate-mapper \
