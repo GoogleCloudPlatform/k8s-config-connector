@@ -1041,21 +1041,101 @@ func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_FromProto(mapCtx *direct.Map
 }
 */
 
-/* found existing non-generated mapping function "ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto", skipping
-func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
+/*
+found existing non-generated mapping function "ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto", skipping
+
+	func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NetworkEdgeSecurityService{}
+		out.Description = in.Description
+		out.Fingerprint = in.Fingerprint
+		// MISSING: Name
+		if in.SecurityPolicyRef != nil {
+			out.SecurityPolicy = &in.SecurityPolicyRef.External
+		}
+		return out
+	}
+*/
+func ComputeNetworkFirewallPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ComputeNetworkFirewallPolicyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NetworkEdgeSecurityService{}
-	out.Description = in.Description
+	out := &krm.ComputeNetworkFirewallPolicyObservedState{}
+	// MISSING: Associations
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: DisplayName
 	out.Fingerprint = in.Fingerprint
+	out.ID = in.Id
+	// MISSING: Kind
 	// MISSING: Name
-	if in.SecurityPolicyRef != nil {
-		out.SecurityPolicy = &in.SecurityPolicyRef.External
-	}
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	out.RuleTupleCount = in.RuleTupleCount
+	// MISSING: Rules
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	// MISSING: ShortName
 	return out
 }
-*/
+func ComputeNetworkFirewallPolicyObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkFirewallPolicyObservedState) *pb.FirewallPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicy{}
+	// MISSING: Associations
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: DisplayName
+	out.Fingerprint = in.Fingerprint
+	out.Id = in.ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	out.RuleTupleCount = in.RuleTupleCount
+	// MISSING: Rules
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	// MISSING: ShortName
+	return out
+}
+func ComputeNetworkFirewallPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ComputeNetworkFirewallPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNetworkFirewallPolicySpec{}
+	// MISSING: Associations
+	out.Description = in.Description
+	// MISSING: DisplayName
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	// MISSING: Rules
+	// MISSING: ShortName
+	return out
+}
+func ComputeNetworkFirewallPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkFirewallPolicySpec) *pb.FirewallPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicy{}
+	// MISSING: Associations
+	out.Description = in.Description
+	// MISSING: DisplayName
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	// MISSING: Rules
+	// MISSING: ShortName
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeNetworkSpec_v1beta1_FromProto", skipping
 func ComputeNetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.ComputeNetworkSpec {
