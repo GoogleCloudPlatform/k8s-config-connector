@@ -22,7 +22,7 @@ import (
 
 var NetworkSecuritySecurityProfileGroupGVK = GroupVersion.WithKind("NetworkSecuritySecurityProfileGroup")
 
-// NetworkSecuritySecurityProfileGroupSpec defines the desired state of NetworkSecuritySecurityProfileGroup
+// NetworkSecuritySecurityProfileGroupSpec defines the desired state of NetworkSecuritySecurityProfileGroup.
 // +kcc:spec:proto=google.cloud.networksecurity.v1.SecurityProfileGroup
 // +kubebuilder:validation:XValidation:rule="has(self.projectRef) != has(self.organizationRef)",message="Exactly one of projectRef or organizationRef must be specified."
 type NetworkSecuritySecurityProfileGroupSpec struct {

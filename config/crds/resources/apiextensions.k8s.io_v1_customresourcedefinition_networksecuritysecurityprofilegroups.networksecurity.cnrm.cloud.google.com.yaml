@@ -62,7 +62,7 @@ spec:
             type: object
           spec:
             description: NetworkSecuritySecurityProfileGroupSpec defines the desired
-              state of NetworkSecuritySecurityProfileGroup
+              state of NetworkSecuritySecurityProfileGroup.
             properties:
               customInterceptProfileRef:
                 description: Optional. Reference to a SecurityProfile with the CustomIntercept
