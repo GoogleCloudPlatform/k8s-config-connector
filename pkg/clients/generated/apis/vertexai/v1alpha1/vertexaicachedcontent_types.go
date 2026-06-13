@@ -73,7 +73,7 @@ type CachedcontentContents struct {
 type CachedcontentDataStoreSpecs struct {
 	/* Full resource name of DataStore, such as Format: `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}` */
 	// +optional
-	DataStore *string `json:"dataStore,omitempty"`
+	DataStoreRef *v1alpha1.ResourceRef `json:"dataStoreRef,omitempty"`
 
 	/* Optional. Filter specification to filter documents in the data store specified by data_store field. For more information on filtering, see [Filtering](https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata) */
 	// +optional
@@ -297,11 +297,11 @@ type CachedcontentParts struct {
 type CachedcontentRagResources struct {
 	/* Optional. RagCorpora resource name. Format: `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}` */
 	// +optional
-	RagCorpus *string `json:"ragCorpus,omitempty"`
+	RagCorpusRef *v1alpha1.ResourceRef `json:"ragCorpusRef,omitempty"`
 
 	/* Optional. rag_file_id. The files should be in the same rag_corpus set in rag_corpus field. */
 	// +optional
-	RagFileIds []string `json:"ragFileIds,omitempty"`
+	RagFileIDs []string `json:"ragFileIDs,omitempty"`
 }
 
 type CachedcontentRagRetrievalConfig struct {
@@ -429,11 +429,11 @@ type CachedcontentVertexAiSearch struct {
 
 	/* Optional. Fully-qualified Vertex AI Search data store resource ID. Format: `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}` */
 	// +optional
-	Datastore *string `json:"datastore,omitempty"`
+	DatastoreRef *v1alpha1.ResourceRef `json:"datastoreRef,omitempty"`
 
 	/* Optional. Fully-qualified Vertex AI Search engine resource ID. Format: `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}` */
 	// +optional
-	Engine *string `json:"engine,omitempty"`
+	EngineRef *v1alpha1.ResourceRef `json:"engineRef,omitempty"`
 
 	/* Optional. Filter strings to be passed to the search API. */
 	// +optional
