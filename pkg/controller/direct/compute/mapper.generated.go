@@ -25,6 +25,7 @@ package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
+	krmcertificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -1726,36 +1727,110 @@ func ComputeTargetHTTPSProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/* found existing non-generated mapping function "ComputeTargetHTTPSProxySpec_v1beta1_ToProto", skipping
-func ComputeTargetHTTPSProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetHTTPSProxySpec) *pb.TargetHttpsProxy {
+/*
+found existing non-generated mapping function "ComputeTargetHTTPSProxySpec_v1beta1_ToProto", skipping
+
+	func ComputeTargetHTTPSProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetHTTPSProxySpec) *pb.TargetHttpsProxy {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TargetHttpsProxy{}
+		// MISSING: AuthorizationPolicy
+		if in.CertificateMapRef != nil {
+			out.CertificateMap = &in.CertificateMapRef.External
+		}
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: HTTPKeepAliveTimeoutSec
+		// (near miss): "HTTPKeepAliveTimeoutSec" vs "HttpKeepAliveTimeoutSec"
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: Name
+		out.ProxyBind = in.ProxyBind
+		out.QuicOverride = in.QuicOverride
+		// MISSING: Region
+		// MISSING: SelfLink
+		// MISSING: ServerTLSPolicy
+		// MISSING: SSLCertificates
+		// (near miss): "SSLCertificates" vs "SslCertificates"
+		// MISSING: SSLPolicy
+		// MISSING: TLSEarlyData
+		// MISSING: URLMap
+		return out
+	}
+*/
+func ComputeTargetSSLProxyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetSslProxy) *krm.ComputeTargetSSLProxyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.TargetHttpsProxy{}
-	// MISSING: AuthorizationPolicy
+	out := &krm.ComputeTargetSSLProxyObservedState{}
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: SelfLink
+	// MISSING: Service
+	// MISSING: SSLCertificates
+	// MISSING: SSLPolicy
+	return out
+}
+func ComputeTargetSSLProxyObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetSSLProxyObservedState) *pb.TargetSslProxy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetSslProxy{}
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: SelfLink
+	// MISSING: Service
+	// MISSING: SSLCertificates
+	// MISSING: SSLPolicy
+	return out
+}
+func ComputeTargetSSLProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetSslProxy) *krm.ComputeTargetSSLProxySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetSSLProxySpec{}
+	if in.GetCertificateMap() != "" {
+		out.CertificateMapRef = &krmcertificatemanagerv1beta1.CertificateManagerCertificateMapRef{External: in.GetCertificateMap()}
+	}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	out.ProxyHeader = in.ProxyHeader
+	// MISSING: SelfLink
+	// MISSING: Service
+	// MISSING: SSLCertificates
+	// (near miss): "SSLCertificates" vs "SslCertificates"
+	// MISSING: SSLPolicy
+	return out
+}
+func ComputeTargetSSLProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetSSLProxySpec) *pb.TargetSslProxy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetSslProxy{}
 	if in.CertificateMapRef != nil {
 		out.CertificateMap = &in.CertificateMapRef.External
 	}
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
-	// MISSING: HTTPKeepAliveTimeoutSec
-	// (near miss): "HTTPKeepAliveTimeoutSec" vs "HttpKeepAliveTimeoutSec"
 	// MISSING: ID
 	// MISSING: Kind
 	// MISSING: Name
-	out.ProxyBind = in.ProxyBind
-	out.QuicOverride = in.QuicOverride
-	// MISSING: Region
+	out.ProxyHeader = in.ProxyHeader
 	// MISSING: SelfLink
-	// MISSING: ServerTLSPolicy
+	// MISSING: Service
 	// MISSING: SSLCertificates
 	// (near miss): "SSLCertificates" vs "SslCertificates"
 	// MISSING: SSLPolicy
-	// MISSING: TLSEarlyData
-	// MISSING: URLMap
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "ComputeTargetTCPProxySpec_v1beta1_FromProto", skipping
 func ComputeTargetTCPProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetTcpProxy) *krm.ComputeTargetTCPProxySpec {

@@ -34,6 +34,7 @@ go run . generate-types \
   --resource ComputeNetwork:Network \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
+  --resource ComputeTargetSSLProxy:TargetSslProxy \
   --resource ComputeNodeTemplate:NodeTemplate \
   --resource ComputeReservation:Reservation \
   --resource ComputeHealthCheck:HealthCheck \
