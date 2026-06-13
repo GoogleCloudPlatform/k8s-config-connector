@@ -190,7 +190,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeSecurityPolicy                           | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeServiceAttachment                        | False        | True        | False  | DCL        | False       |
 | compute.cnrm.cloud.google.com                 | ComputeSharedVPCHostProject                     | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeSharedVPCServiceProject                  | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeSharedVPCServiceProject                  | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeSnapshot                                 | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeSSLCertificate                           | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeSSLPolicy                                | False        | True        | False  | Terraform  | False       |
