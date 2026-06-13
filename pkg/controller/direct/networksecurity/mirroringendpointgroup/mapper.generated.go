@@ -25,6 +25,7 @@ package mirroringendpointgroup
 
 import (
 	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -230,7 +231,7 @@ func NetworkSecurityInterceptDeploymentSpec_FromProto(mapCtx *direct.MapContext,
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetForwardingRule() != "" {
-		out.ForwardingRuleRef = &refsv1beta1.ComputeForwardingRuleRef{External: in.GetForwardingRule()}
+		out.ForwardingRuleRef = &computev1beta1.ForwardingRuleRef{External: in.GetForwardingRule()}
 	}
 	if in.GetInterceptDeploymentGroup() != "" {
 		out.InterceptDeploymentGroupRef = &refsv1beta1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
@@ -340,7 +341,7 @@ func NetworkSecurityMirroringDeploymentSpec_FromProto(mapCtx *direct.MapContext,
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetForwardingRule() != "" {
-		out.ForwardingRuleRef = &refsv1beta1.ComputeForwardingRuleRef{External: in.GetForwardingRule()}
+		out.ForwardingRuleRef = &computev1beta1.ForwardingRuleRef{External: in.GetForwardingRule()}
 	}
 	if in.GetMirroringDeploymentGroup() != "" {
 		out.MirroringDeploymentGroupRef = &refsv1beta1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
