@@ -145,7 +145,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeGlobalNetworkEndpointGroup               | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeGlobalNetworkEndpoint                    | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeHealthCheck                              | False        | True        | False  | Terraform  | True        |
-| compute.cnrm.cloud.google.com                 | ComputeHTTPHealthCheck                          | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeHTTPHealthCheck                          | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeHTTPSHealthCheck                         | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeImage                                    | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeInstanceGroupManager                     | False        | True        | False  | DCL        | False       |

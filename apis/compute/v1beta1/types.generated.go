@@ -28,6 +28,7 @@
 // resource: ComputeNodeTemplate:NodeTemplate
 // resource: ComputeReservation:Reservation
 // resource: ComputeHealthCheck:HealthCheck
+// resource: ComputeHTTPHealthCheck:HTTPHealthCheck
 // resource: ComputeNodeGroup:NodeGroup
 // resource: ComputeInstance:Instance
 
