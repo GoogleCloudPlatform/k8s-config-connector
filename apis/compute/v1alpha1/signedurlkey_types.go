@@ -16,9 +16,9 @@ package v1alpha1
 
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -26,22 +26,6 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 var ComputeBackendServiceSignedURLKeyGVK = GroupVersion.WithKind("ComputeBackendServiceSignedURLKey")
-
-type BackendservicesignedurlkeyKeyValue struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	// +optional
-	Value *string `json:"value,omitempty"`
-
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	// +optional
-	ValueFrom *BackendservicesignedurlkeyValueFrom `json:"valueFrom,omitempty"`
-}
-
-type BackendservicesignedurlkeyValueFrom struct {
-	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	// +optional
-	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
-}
 
 // ComputeBackendServiceSignedURLKeySpec defines the desired state of ComputeBackendServiceSignedURLKey
 // +kcc:proto=google.cloud.compute.v1.SignedUrlKey
@@ -52,11 +36,11 @@ type ComputeBackendServiceSignedURLKeySpec struct {
 	/* Immutable. 128-bit key value used for signing the URL. The key value must be a
 	valid RFC 4648 Section 5 base64url encoded string. */
 	// +required
-	KeyValue BackendservicesignedurlkeyKeyValue `json:"keyValue"`
+	KeyValue secret.Legacy `json:"keyValue"`
 
 	/* The project that this resource belongs to. */
 	// +required
-	ProjectRef refsv1beta1.ProjectRef `json:"projectRef"`
+	ProjectRef refs.ProjectRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
