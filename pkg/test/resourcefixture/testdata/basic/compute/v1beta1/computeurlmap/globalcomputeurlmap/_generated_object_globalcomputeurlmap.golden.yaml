@@ -11,15 +11,19 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-  name: computeurlmap-${uniqueId}
+  name: ${urlMapID}
   namespace: ${uniqueId}
 spec:
   defaultCustomErrorResponsePolicy:
     errorResponseRule:
     - matchResponseCodes:
       - 5xx
-      overrideResponseCode: 503
-      path: /5xx-updated.html
+      overrideResponseCode: 502
+      path: /5xx.html
+    - matchResponseCodes:
+      - 4xx
+      overrideResponseCode: 404
+      path: /4xx-global.html
     errorServiceRef:
       name: ${backendBucketID}
   defaultService:
@@ -36,15 +40,19 @@ spec:
       errorResponseRule:
       - matchResponseCodes:
         - 4xx
-        overrideResponseCode: 403
-        path: /4xx-updated.html
+        overrideResponseCode: 404
+        path: /4xx.html
+      - matchResponseCodes:
+        - 5xx
+        overrideResponseCode: 502
+        path: /5xx-pathmatcher.html
       errorServiceRef:
         name: ${backendBucketID}
     defaultService:
       backendBucketRef:
         name: ${backendBucketID}
     name: allpaths
-  resourceID: computeurlmap-${uniqueId}
+  resourceID: ${urlMapID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -53,6 +61,7 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
+  fingerprint: abcdef0123A=
   mapId: 1111111111111111
   observedGeneration: 3
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
