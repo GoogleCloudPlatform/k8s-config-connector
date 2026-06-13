@@ -1812,25 +1812,119 @@ func ComputeResourcePolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
+func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicy{}
+	out.Description = in.Description
+	out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
+	out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
+	out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+	// MISSING: Kind
+	// MISSING: Name
+	out.Region = in.Region
+	// MISSING: ResourceStatus
+	// MISSING: SelfLink
+	out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
+	// MISSING: WorkloadPolicy
+	return out
+}
+*/
 
-	func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+/* found existing non-generated mapping function "ComputeSSLPolicySpec_v1beta1_FromProto", skipping
+func ComputeSSLPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslPolicy) *krm.ComputeSSLPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSSLPolicySpec{}
+	// MISSING: CreationTimestamp
+	out.CustomFeatures = in.CustomFeatures
+	out.Description = in.Description
+	// MISSING: EnabledFeatures
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: MinTLSVersion
+	// (near miss): "MinTLSVersion" vs "MinTlsVersion"
+	// MISSING: Name
+	out.Profile = in.Profile
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeSSLPolicySpec_v1beta1_ToProto", skipping
+func ComputeSSLPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSSLPolicySpec) *pb.SslPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslPolicy{}
+	// MISSING: CreationTimestamp
+	out.CustomFeatures = in.CustomFeatures
+	out.Description = in.Description
+	// MISSING: EnabledFeatures
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: MinTLSVersion
+	// (near miss): "MinTLSVersion" vs "MinTlsVersion"
+	// MISSING: Name
+	out.Profile = in.Profile
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeSSLPolicyStatus_v1beta1_FromProto", skipping
+func ComputeSSLPolicyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslPolicy) *krm.ComputeSSLPolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSSLPolicyStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: CustomFeatures
+	// MISSING: Description
+	out.EnabledFeatures = in.EnabledFeatures
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: MinTLSVersion
+	// MISSING: Name
+	// MISSING: Profile
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeSSLPolicyStatus_v1beta1_ToProto", skipping
+
+	func ComputeSSLPolicyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSSLPolicyStatus) *pb.SslPolicy {
 		if in == nil {
 			return nil
 		}
-		out := &pb.ResourcePolicy{}
-		out.Description = in.Description
-		out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
-		out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
-		out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+		out := &pb.SslPolicy{}
+		out.CreationTimestamp = in.CreationTimestamp
+		// MISSING: CustomFeatures
+		// MISSING: Description
+		out.EnabledFeatures = in.EnabledFeatures
+		out.Fingerprint = in.Fingerprint
+		// MISSING: ID
 		// MISSING: Kind
+		// MISSING: MinTLSVersion
 		// MISSING: Name
-		out.Region = in.Region
-		// MISSING: ResourceStatus
-		// MISSING: SelfLink
-		out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
-		// MISSING: WorkloadPolicy
+		// MISSING: Profile
+		// MISSING: Region
+		out.SelfLink = in.SelfLink
+		// MISSING: Warnings
 		return out
 	}
 */
