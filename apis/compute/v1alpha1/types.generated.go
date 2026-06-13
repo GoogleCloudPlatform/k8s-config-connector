@@ -21,6 +21,7 @@
 // resource: ComputeNetworkAttachment:NetworkAttachment
 // resource: ComputeInterconnect:Interconnect
 // resource: ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation
+// resource: ComputeOrganizationSecurityPolicyAssociation:google.cloud.compute.v1beta.SecurityPolicyAssociation
 
 package v1alpha1
 
@@ -848,6 +849,40 @@ type FutureReservationTimeWindow struct {
 	// Start time of the Future Reservation. The start_time is an RFC3339 string.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationTimeWindow.start_time
 	StartTime *string `json:"startTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1beta.SecurityPolicyAssociation", skipping
+
+// +kcc:proto=google.cloud.compute.v1beta.SecurityPolicyAssociation
+type SecurityPolicyAssociation struct {
+	// The resource that the security policy is attached to.
+	// +kcc:proto:field=google.cloud.compute.v1beta.SecurityPolicyAssociation.attachment_id
+	AttachmentID *string `json:"attachmentID,omitempty"`
+
+	// [Output Only] The display name of the security policy of the association.
+	// +kcc:proto:field=google.cloud.compute.v1beta.SecurityPolicyAssociation.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// A list of folders to exclude from the security policy.
+	// +kcc:proto:field=google.cloud.compute.v1beta.SecurityPolicyAssociation.excluded_folders
+	ExcludedFolders []string `json:"excludedFolders,omitempty"`
+
+	// A list of projects to exclude from the security policy.
+	// +kcc:proto:field=google.cloud.compute.v1beta.SecurityPolicyAssociation.excluded_projects
+	ExcludedProjects []string `json:"excludedProjects,omitempty"`
+
+	// The name for an association.
+	// +kcc:proto:field=google.cloud.compute.v1beta.SecurityPolicyAssociation.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] The security policy ID of the association.
+	// +kcc:proto:field=google.cloud.compute.v1beta.SecurityPolicyAssociation.security_policy_id
+	SecurityPolicyID *string `json:"securityPolicyID,omitempty"`
+
+	// [Output Only] The short name of the security policy of the association.
+	// +kcc:proto:field=google.cloud.compute.v1beta.SecurityPolicyAssociation.short_name
+	ShortName *string `json:"shortName,omitempty"`
 }
 */
 
