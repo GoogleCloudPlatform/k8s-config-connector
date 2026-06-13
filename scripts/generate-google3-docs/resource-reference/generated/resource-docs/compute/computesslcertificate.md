@@ -101,9 +101,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The certificate in PEM format.
-The certificate chain must be no greater than 5 certs long.
-The chain must include at least one intermediate cert.</p>
+            <p>Immutable. The certificate in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.</p>
         </td>
     </tr>
     <tr>
@@ -285,7 +283,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeSSLCertificate's current state.</p>
         </td>
     </tr>
     <tr>

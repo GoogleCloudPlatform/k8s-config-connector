@@ -30,11 +30,7 @@ import (
 
 var _ refsv1beta1.Ref = &ComputeSSLCertificateRef{}
 
-var ComputeSSLCertificateGVK = schema.GroupVersionKind{
-	Group:   "compute.cnrm.cloud.google.com",
-	Version: "v1beta1",
-	Kind:    "ComputeSSLCertificate",
-}
+var ComputeSSLCertificateGVK = GroupVersion.WithKind("ComputeSSLCertificate")
 
 // A reference to a ComputeSSLCertificate resource.
 type ComputeSSLCertificateRef struct {
