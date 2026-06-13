@@ -21,11 +21,13 @@
 // krm.version: v1beta1
 // proto.service: google.monitoring.v3
 // proto.service: google.api
+// proto.service: google.monitoring.metricsscope.v1
 
 package monitoring
 
 import (
 	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
+	metricsscopepb "cloud.google.com/go/monitoring/metricsscope/apiv1/metricsscopepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	monitoredrespb "google.golang.org/genproto/googleapis/api/monitoredres"
@@ -56,6 +58,40 @@ found existing non-generated mapping function "MonitoredResource_ToProto", skipp
 		return out
 	}
 */
+func MonitoringMonitoredProjectObservedState_FromProto(mapCtx *direct.MapContext, in *metricsscopepb.MonitoredProject) *krm.MonitoringMonitoredProjectObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringMonitoredProjectObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func MonitoringMonitoredProjectObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringMonitoredProjectObservedState) *metricsscopepb.MonitoredProject {
+	if in == nil {
+		return nil
+	}
+	out := &metricsscopepb.MonitoredProject{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func MonitoringMonitoredProjectSpec_FromProto(mapCtx *direct.MapContext, in *metricsscopepb.MonitoredProject) *krm.MonitoringMonitoredProjectSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringMonitoredProjectSpec{}
+	// MISSING: Name
+	return out
+}
+func MonitoringMonitoredProjectSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringMonitoredProjectSpec) *metricsscopepb.MonitoredProject {
+	if in == nil {
+		return nil
+	}
+	out := &metricsscopepb.MonitoredProject{}
+	// MISSING: Name
+	return out
+}
 func MonitoringNotificationChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotificationChannel) *krm.MonitoringNotificationChannelSpec {
 	if in == nil {
 		return nil

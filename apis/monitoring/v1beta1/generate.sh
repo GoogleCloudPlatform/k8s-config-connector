@@ -30,8 +30,14 @@ go run . generate-types \
   --resource MonitoringNotificationChannel:NotificationChannel \
   --resource MonitoringUptimeCheckConfig:UptimeCheckConfig
 
+go run . generate-types \
+  --service google.monitoring.metricsscope.v1 \
+  --api-version monitoring.cnrm.cloud.google.com/v1beta1  \
+  --include-skipped-output \
+  --resource MonitoringMonitoredProject:MonitoredProject
+
 go run . generate-mapper \
-  --service google.monitoring.v3,google.api \
+  --service google.monitoring.v3,google.api,google.monitoring.metricsscope.v1 \
   --api-version monitoring.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 
