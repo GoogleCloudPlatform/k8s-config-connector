@@ -30,6 +30,7 @@
 // resource: ComputeHealthCheck:HealthCheck
 // resource: ComputeNodeGroup:NodeGroup
 // resource: ComputeInstance:Instance
+// resource: ComputeHTTPSHealthCheck:HTTPSHealthCheck
 
 package v1beta1
 
