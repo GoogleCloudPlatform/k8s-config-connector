@@ -302,9 +302,13 @@ discoveryengine.cnrm.cloud.google.com,DiscoveryEngineDataStore,True,False,False,
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineDataStoreTargetSite,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineEngine,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineIdentityMappingStore,True,False,False,Direct,True
+discoveryengine.cnrm.cloud.google.com,DiscoveryEngineLicenseConfig,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineSampleQuery,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineSampleQuerySet,True,False,False,Direct,True
+discoveryengine.cnrm.cloud.google.com,DiscoveryEngineSearchEngine,True,False,False,Direct,True
+discoveryengine.cnrm.cloud.google.com,DiscoveryEngineServingConfig,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineSession,True,False,False,Direct,True
+discoveryengine.cnrm.cloud.google.com,DiscoveryEngineUserStore,True,False,False,Direct,True
 dlp.cnrm.cloud.google.com,DLPConnection,True,False,False,Direct,True
 dlp.cnrm.cloud.google.com,DLPDeidentifyTemplate,False,True,False,DCL,False
 dlp.cnrm.cloud.google.com,DLPDiscoveryConfig,True,False,False,Direct,True
@@ -369,6 +373,7 @@ healthcare.cnrm.cloud.google.com,HealthcareDataset,True,False,False,Terraform,Fa
 healthcare.cnrm.cloud.google.com,HealthcareDICOMStore,True,False,False,Terraform,False
 healthcare.cnrm.cloud.google.com,HealthcareFHIRStore,True,False,False,Terraform,False
 healthcare.cnrm.cloud.google.com,HealthcareHL7V2Store,True,False,False,Terraform,False
+hypercomputecluster.cnrm.cloud.google.com,HypercomputeClusterCluster,True,False,False,Direct,True
 iam.cnrm.cloud.google.com,IAMAccessBoundaryPolicy,False,True,False,Terraform,False
 iam.cnrm.cloud.google.com,IAMAuditConfig,False,True,False,Direct,True
 iam.cnrm.cloud.google.com,IAMCustomRole,False,True,False,Terraform,False
@@ -463,6 +468,7 @@ networksecurity.cnrm.cloud.google.com,NetworkSecuritySecurityProfileGroup,True,F
 networksecurity.cnrm.cloud.google.com,NetworkSecuritySecurityProfile,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityServerTLSPolicy,False,True,False,DCL,False
 networksecurity.cnrm.cloud.google.com,NetworkSecurityTLSInspectionPolicy,True,False,False,Direct,True
+networksecurity.cnrm.cloud.google.com,NetworkSecurityURLList,True,False,False,Direct,True
 networkservices.cnrm.cloud.google.com,NetworkServicesAuthzExtension,True,False,False,Direct,True
 networkservices.cnrm.cloud.google.com,NetworkServicesEdgeCacheKeyset,True,False,False,Terraform,False
 networkservices.cnrm.cloud.google.com,NetworkServicesEdgeCacheOrigin,True,False,False,Terraform,False
@@ -478,6 +484,7 @@ networkservices.cnrm.cloud.google.com,NetworkServicesTCPRoute,False,True,False,D
 networkservices.cnrm.cloud.google.com,NetworkServicesTLSRoute,False,True,False,DCL,False
 networkservices.cnrm.cloud.google.com,NetworkServicesWasmPlugin,True,False,False,Direct,True
 notebooks.cnrm.cloud.google.com,NotebookInstance,True,True,False,Direct,True
+notebooks.cnrm.cloud.google.com,NotebookInstanceV2,True,False,False,Direct,True
 notebooks.cnrm.cloud.google.com,NotebooksEnvironment,True,False,False,Direct,True
 notebooks.cnrm.cloud.google.com,NotebooksExecution,True,False,False,Direct,True
 notebooks.cnrm.cloud.google.com,NotebooksSchedule,True,False,False,Direct,True
@@ -571,6 +578,7 @@ vertexai.cnrm.cloud.google.com,VertexAIDataset,True,True,False,Terraform,True
 vertexai.cnrm.cloud.google.com,VertexAIDeploymentResourcePool,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAIEndpoint,True,True,False,Terraform,False
 vertexai.cnrm.cloud.google.com,VertexAIExampleStore,True,False,False,Direct,True
+aiplatform.cnrm.cloud.google.com,VertexAIExtension,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAIFeatureGroup,True,False,False,Direct,True
 aiplatform.cnrm.cloud.google.com,VertexAIFeatureOnlineStore,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAIFeaturestoreEntityTypeFeature,True,False,False,Terraform,False
@@ -583,7 +591,8 @@ aiplatform.cnrm.cloud.google.com,VertexAIPipelineJob,True,False,False,Direct,Tru
 aiplatform.cnrm.cloud.google.com,VertexAISchedule,True,False,False,Direct,True
 aiplatform.cnrm.cloud.google.com,VertexAISpecialistPool,True,False,False,Direct,True
 aiplatform.cnrm.cloud.google.com,VertexAIStudy,True,False,False,Direct,True
-vertexai.cnrm.cloud.google.com,VertexAITensorboard,True,False,False,Terraform,False
+vertexai.cnrm.cloud.google.com,VertexAITensorboardExperiment,True,False,False,Direct,True
+vertexai.cnrm.cloud.google.com,VertexAITensorboard,True,False,False,Terraform,True
 aiplatform.cnrm.cloud.google.com,VertexAITrainingPipeline,True,False,False,Direct,True
 aiplatform.cnrm.cloud.google.com,VertexAITuningJob,True,False,False,Direct,True
 videostitcher.cnrm.cloud.google.com,VideoStitcherCDNKey,True,False,False,Direct,True
