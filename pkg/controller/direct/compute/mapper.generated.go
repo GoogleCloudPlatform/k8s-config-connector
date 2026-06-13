@@ -1494,6 +1494,94 @@ func ComputeSecurityPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: UserDefinedFields
 	return out
 }
+func ComputeSharedVPCHostProjectObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.ComputeSharedVPCHostProjectObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSharedVPCHostProjectObservedState{}
+	// MISSING: CloudArmorTier
+	// MISSING: CommonInstanceMetadata
+	// MISSING: CreationTimestamp
+	// MISSING: DefaultNetworkTier
+	// MISSING: DefaultServiceAccount
+	// MISSING: Description
+	// MISSING: EnabledFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Quotas
+	// MISSING: SelfLink
+	// MISSING: UsageExportLocation
+	// MISSING: VMDNSSetting
+	// MISSING: XpnProjectStatus
+	return out
+}
+func ComputeSharedVPCHostProjectObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSharedVPCHostProjectObservedState) *pb.Project {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Project{}
+	// MISSING: CloudArmorTier
+	// MISSING: CommonInstanceMetadata
+	// MISSING: CreationTimestamp
+	// MISSING: DefaultNetworkTier
+	// MISSING: DefaultServiceAccount
+	// MISSING: Description
+	// MISSING: EnabledFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Quotas
+	// MISSING: SelfLink
+	// MISSING: UsageExportLocation
+	// MISSING: VMDNSSetting
+	// MISSING: XpnProjectStatus
+	return out
+}
+func ComputeSharedVPCHostProjectSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.ComputeSharedVPCHostProjectSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSharedVPCHostProjectSpec{}
+	// MISSING: CloudArmorTier
+	// MISSING: CommonInstanceMetadata
+	// MISSING: CreationTimestamp
+	// MISSING: DefaultNetworkTier
+	// MISSING: DefaultServiceAccount
+	// MISSING: Description
+	// MISSING: EnabledFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Quotas
+	// MISSING: SelfLink
+	// MISSING: UsageExportLocation
+	// MISSING: VMDNSSetting
+	// MISSING: XpnProjectStatus
+	return out
+}
+func ComputeSharedVPCHostProjectSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSharedVPCHostProjectSpec) *pb.Project {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Project{}
+	// MISSING: CloudArmorTier
+	// MISSING: CommonInstanceMetadata
+	// MISSING: CreationTimestamp
+	// MISSING: DefaultNetworkTier
+	// MISSING: DefaultServiceAccount
+	// MISSING: Description
+	// MISSING: EnabledFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Quotas
+	// MISSING: SelfLink
+	// MISSING: UsageExportLocation
+	// MISSING: VMDNSSetting
+	// MISSING: XpnProjectStatus
+	return out
+}
 func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krm.ComputeSubnetworkSpec {
 	if in == nil {
 		return nil
