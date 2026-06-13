@@ -899,7 +899,6 @@
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.advancedOptionsConfig.jsonParsing" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.advancedOptionsConfig.logLevel" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.advancedOptionsConfig.userIpRequestHeaders[]" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.recaptchaOptionsConfig.redirectSiteKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].description" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].headerAction.requestHeadersToAdds[].headerName" is not set in unstructured objects

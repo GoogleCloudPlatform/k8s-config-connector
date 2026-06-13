@@ -89,7 +89,8 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouter
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouterinterface
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouterpeer
-pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesecuritypolicy
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesecuritypolicy/computesecuritypolicy-maximal
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesecuritypolicy/computesecuritypolicy-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeserviceattachment
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesharedvpchostproject
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesharedvpcserviceproject/computesharedvpcserviceproject

@@ -116,6 +116,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterFirewallPoliciesServer(grpcServer, &FirewallPoliciesV1{MockService: s})
 
+	pb.RegisterSecurityPoliciesServer(grpcServer, &SecurityPoliciesV1{MockService: s})
+	pb.RegisterRegionSecurityPoliciesServer(grpcServer, &RegionSecurityPoliciesV1{MockService: s})
+
 	pb.RegisterGlobalForwardingRulesServer(grpcServer, &GlobalForwardingRulesV1{MockService: s})
 	pb.RegisterForwardingRulesServer(grpcServer, &RegionalForwardingRulesV1{MockService: s})
 
@@ -239,6 +242,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterFirewallPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterSecurityPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionSecurityPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
