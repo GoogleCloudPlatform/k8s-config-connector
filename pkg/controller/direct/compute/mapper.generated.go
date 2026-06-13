@@ -168,6 +168,192 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
+func BackendBucketCDNPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicy) *krm.BackendBucketCDNPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendBucketCDNPolicy{}
+	out.BypassCacheOnRequestHeaders = direct.Slice_FromProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendBucketCDNPolicyBypassCacheOnRequestHeader_v1beta1_FromProto)
+	out.CacheKeyPolicy = BackendBucketCDNPolicyCacheKeyPolicy_v1beta1_FromProto(mapCtx, in.GetCacheKeyPolicy())
+	out.CacheMode = in.CacheMode
+	out.ClientTTL = in.ClientTtl
+	out.DefaultTTL = in.DefaultTtl
+	out.MaxTTL = in.MaxTtl
+	out.NegativeCaching = in.NegativeCaching
+	out.NegativeCachingPolicy = direct.Slice_FromProto(mapCtx, in.NegativeCachingPolicy, BackendBucketCDNPolicyNegativeCachingPolicy_v1beta1_FromProto)
+	out.RequestCoalescing = in.RequestCoalescing
+	out.ServeWhileStale = in.ServeWhileStale
+	out.SignedURLCacheMaxAgeSec = in.SignedUrlCacheMaxAgeSec
+	// MISSING: SignedURLKeyNames
+	return out
+}
+func BackendBucketCDNPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCDNPolicy) *pb.BackendBucketCdnPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicy{}
+	out.BypassCacheOnRequestHeaders = direct.Slice_ToProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendBucketCDNPolicyBypassCacheOnRequestHeader_v1beta1_ToProto)
+	out.CacheKeyPolicy = BackendBucketCDNPolicyCacheKeyPolicy_v1beta1_ToProto(mapCtx, in.CacheKeyPolicy)
+	out.CacheMode = in.CacheMode
+	out.ClientTtl = in.ClientTTL
+	out.DefaultTtl = in.DefaultTTL
+	out.MaxTtl = in.MaxTTL
+	out.NegativeCaching = in.NegativeCaching
+	out.NegativeCachingPolicy = direct.Slice_ToProto(mapCtx, in.NegativeCachingPolicy, BackendBucketCDNPolicyNegativeCachingPolicy_v1beta1_ToProto)
+	out.RequestCoalescing = in.RequestCoalescing
+	out.ServeWhileStale = in.ServeWhileStale
+	out.SignedUrlCacheMaxAgeSec = in.SignedURLCacheMaxAgeSec
+	// MISSING: SignedURLKeyNames
+	return out
+}
+func BackendBucketCDNPolicyBypassCacheOnRequestHeader_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader) *krm.BackendBucketCDNPolicyBypassCacheOnRequestHeader {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendBucketCDNPolicyBypassCacheOnRequestHeader{}
+	out.HeaderName = in.HeaderName
+	return out
+}
+func BackendBucketCDNPolicyBypassCacheOnRequestHeader_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCDNPolicyBypassCacheOnRequestHeader) *pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader{}
+	out.HeaderName = in.HeaderName
+	return out
+}
+func BackendBucketCDNPolicyCacheKeyPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyCacheKeyPolicy) *krm.BackendBucketCDNPolicyCacheKeyPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendBucketCDNPolicyCacheKeyPolicy{}
+	out.IncludeHTTPHeaders = in.IncludeHttpHeaders
+	out.QueryStringWhitelist = in.QueryStringWhitelist
+	return out
+}
+func BackendBucketCDNPolicyCacheKeyPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCDNPolicyCacheKeyPolicy) *pb.BackendBucketCdnPolicyCacheKeyPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicyCacheKeyPolicy{}
+	out.IncludeHttpHeaders = in.IncludeHTTPHeaders
+	out.QueryStringWhitelist = in.QueryStringWhitelist
+	return out
+}
+func BackendBucketCDNPolicyNegativeCachingPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyNegativeCachingPolicy) *krm.BackendBucketCDNPolicyNegativeCachingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendBucketCDNPolicyNegativeCachingPolicy{}
+	out.Code = in.Code
+	out.TTL = in.Ttl
+	return out
+}
+func BackendBucketCDNPolicyNegativeCachingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCDNPolicyNegativeCachingPolicy) *pb.BackendBucketCdnPolicyNegativeCachingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicyNegativeCachingPolicy{}
+	out.Code = in.Code
+	out.Ttl = in.TTL
+	return out
+}
+
+/* found existing non-generated mapping function "ComputeBackendBucketSpec_v1beta1_FromProto", skipping
+func ComputeBackendBucketSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucket) *krm.ComputeBackendBucketSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeBackendBucketSpec{}
+	// MISSING: BucketName
+	out.CDNPolicy = BackendBucketCDNPolicy_v1beta1_FromProto(mapCtx, in.GetCdnPolicy())
+	out.CompressionMode = in.CompressionMode
+	// MISSING: CreationTimestamp
+	out.CustomResponseHeaders = in.CustomResponseHeaders
+	out.Description = in.Description
+	out.EdgeSecurityPolicy = in.EdgeSecurityPolicy
+	out.EnableCDN = in.EnableCdn
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LoadBalancingScheme
+	// MISSING: Name
+	// MISSING: Params
+	// MISSING: SelfLink
+	// MISSING: UsedBy
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeBackendBucketSpec_v1beta1_ToProto", skipping
+
+	func ComputeBackendBucketSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendBucketSpec) *pb.BackendBucket {
+		if in == nil {
+			return nil
+		}
+		out := &pb.BackendBucket{}
+		// MISSING: BucketName
+		out.CdnPolicy = BackendBucketCDNPolicy_v1beta1_ToProto(mapCtx, in.CDNPolicy)
+		out.CompressionMode = in.CompressionMode
+		// MISSING: CreationTimestamp
+		out.CustomResponseHeaders = in.CustomResponseHeaders
+		out.Description = in.Description
+		out.EdgeSecurityPolicy = in.EdgeSecurityPolicy
+		out.EnableCdn = in.EnableCDN
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: LoadBalancingScheme
+		// MISSING: Name
+		// MISSING: Params
+		// MISSING: SelfLink
+		// MISSING: UsedBy
+		return out
+	}
+*/
+func ComputeBackendBucketStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucket) *krm.ComputeBackendBucketStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeBackendBucketStatus{}
+	// MISSING: BucketName
+	// MISSING: CDNPolicy
+	// MISSING: CompressionMode
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: CustomResponseHeaders
+	// MISSING: Description
+	// MISSING: EdgeSecurityPolicy
+	// MISSING: EnableCDN
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LoadBalancingScheme
+	// MISSING: Name
+	// MISSING: Params
+	out.SelfLink = in.SelfLink
+	// MISSING: UsedBy
+	return out
+}
+func ComputeBackendBucketStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendBucketStatus) *pb.BackendBucket {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucket{}
+	// MISSING: BucketName
+	// MISSING: CDNPolicy
+	// MISSING: CompressionMode
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: CustomResponseHeaders
+	// MISSING: Description
+	// MISSING: EdgeSecurityPolicy
+	// MISSING: EnableCDN
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LoadBalancingScheme
+	// MISSING: Name
+	// MISSING: Params
+	out.SelfLink = in.SelfLink
+	// MISSING: UsedBy
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
