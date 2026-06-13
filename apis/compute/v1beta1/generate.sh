@@ -39,6 +39,7 @@ go run . generate-types \
   --resource ComputeHealthCheck:HealthCheck \
   --resource ComputeNodeGroup:NodeGroup \
   --resource ComputeInstance:Instance \
+  --resource ComputeInstanceGroupManager:InstanceGroupManager \
   --include-skipped-output
 
 go run . generate-mapper \
