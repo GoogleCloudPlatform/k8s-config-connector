@@ -2653,6 +2653,21 @@
 [missing_field] crd=identityplatformtenantinboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spConfig.spCertificates[].x509Certificate" is not set in unstructured objects
 [missing_field] crd=identityplatformtenantinboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spConfig.spEntityId" is not set in unstructured objects
 [missing_field] crd=identityplatformtenantinboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tenant" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactsGCSBucket" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.importExistingResources" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.quotaValidation" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.terraformBlueprint.gcsSource" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.terraformBlueprint.gitSource.directory" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.terraformBlueprint.gitSource.ref" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.terraformBlueprint.gitSource.repo" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.terraformBlueprint.inputValues" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.tfVersionConstraint" is not set in unstructured objects
+[missing_field] crd=inframanagerdeployments.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.workerPoolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=kmscryptokeyversions.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKey" is not set in unstructured objects
 [missing_field] crd=kmscryptokeyversions.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects
 [missing_field] crd=kmskeyringimportjobs.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.importJobId" is not set in unstructured objects
