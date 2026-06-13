@@ -122,7 +122,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeInstance` resource.</p>
+            <p>A reference to an externally managed ComputeInstance resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/instances/{{instanceID}}".</p>
         </td>
     </tr>
     <tr>
@@ -132,7 +132,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -142,7 +142,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -152,8 +152,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. NAT option controlling how IPs are NAT'ed to the instance.
-Currently only NO_NAT (default value) is supported. Default value: "NO_NAT" Possible values: ["NO_NAT"].</p>
+            <p>Immutable. NAT option controlling how IPs are NAT'ed to the instance. Currently only NO_NAT (default value) is supported. Default value: "NO_NAT" Possible values: ["NO_NAT"].</p>
         </td>
     </tr>
     <tr>
@@ -163,9 +162,7 @@ Currently only NO_NAT (default value) is supported. Default value: "NO_NAT" Poss
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The network this target instance uses to forward
-traffic. If not specified, the traffic will be forwarded to the network
-that the default network interface belongs to.</p>
+            <p>The network this target instance uses to forward traffic. If not specified, the traffic will be forwarded to the network that the default network interface belongs to.</p>
         </td>
     </tr>
     <tr>
@@ -175,7 +172,7 @@ that the default network interface belongs to.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -185,7 +182,7 @@ that the default network interface belongs to.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -195,7 +192,7 @@ that the default network interface belongs to.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -225,7 +222,7 @@ that the default network interface belongs to.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSecurityPolicy` resource.</p>
+            <p>A reference to an externally managed ComputeSecurityPolicy resource. Should be in the format "projects/{{projectID}}/global/securityPolicies/{{name}}".</p>
         </td>
     </tr>
     <tr>
@@ -235,7 +232,7 @@ that the default network interface belongs to.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSecurityPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -245,7 +242,7 @@ that the default network interface belongs to.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSecurityPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -286,7 +283,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeTargetInstance's current state.</p>
         </td>
     </tr>
     <tr>

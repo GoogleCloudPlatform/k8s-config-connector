@@ -4421,6 +4421,98 @@ func ComputeTargetHTTPSProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 }
 */
 
+/* found existing non-generated mapping function "ComputeTargetInstanceSpec_v1beta1_FromProto", skipping
+func ComputeTargetInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetInstance) *krm.ComputeTargetInstanceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetInstanceSpec{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	if in.GetInstance() != "" {
+		out.InstanceRef = &krm.InstanceRef{External: in.GetInstance()}
+	}
+	// MISSING: Kind
+	// MISSING: Name
+	out.NATPolicy = in.NatPolicy
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	if in.GetSecurityPolicy() != "" {
+		out.SecurityPolicyRef = &krm.ComputeSecurityPolicyRef{External: in.GetSecurityPolicy()}
+	}
+	// MISSING: SelfLink
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeTargetInstanceSpec_v1beta1_ToProto", skipping
+
+	func ComputeTargetInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetInstanceSpec) *pb.TargetInstance {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TargetInstance{}
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: ID
+		if in.InstanceRef != nil {
+			out.Instance = &in.InstanceRef.External
+		}
+		// MISSING: Kind
+		// MISSING: Name
+		out.NatPolicy = in.NATPolicy
+		if in.NetworkRef != nil {
+			out.Network = &in.NetworkRef.External
+		}
+		if in.SecurityPolicyRef != nil {
+			out.SecurityPolicy = &in.SecurityPolicyRef.External
+		}
+		// MISSING: SelfLink
+		out.Zone = in.Zone
+		return out
+	}
+*/
+func ComputeTargetInstanceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetInstance) *krm.ComputeTargetInstanceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetInstanceStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Instance
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NATPolicy
+	// MISSING: Network
+	// MISSING: SecurityPolicy
+	out.SelfLink = in.SelfLink
+	// MISSING: Zone
+	return out
+}
+func ComputeTargetInstanceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetInstanceStatus) *pb.TargetInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetInstance{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Instance
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NATPolicy
+	// MISSING: Network
+	// MISSING: SecurityPolicy
+	out.SelfLink = in.SelfLink
+	// MISSING: Zone
+	return out
+}
+
 /* found existing non-generated mapping function "ComputeTargetPoolSpec_v1beta1_FromProto", skipping
 func ComputeTargetPoolSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetPool) *krm.ComputeTargetPoolSpec {
 	if in == nil {
