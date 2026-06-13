@@ -16,28 +16,23 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var (
-	ComputeDiskGVK = GroupVersion.WithKind("ComputeDisk")
-)
+var ComputeDiskGVK = GroupVersion.WithKind("ComputeDisk")
 
-var _ refsv1beta1.Ref = &ComputeDiskRef{}
+var _ refs.Ref = &ComputeDiskRef{}
 
-// ComputeDiskRef is a reference to a ComputeDisk resource.
+// ComputeDiskRef is a reference to a ComputeDisk.
 type ComputeDiskRef struct {
-	// A reference to an externally managed ComputeDisk resource.
-	// Should be in the format "projects/{{project}}/zones/{{zone}}/disks/{{name}}".
+	// A reference to an externally managed ComputeDisk resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/disks/{{diskID}}" or "projects/{{projectID}}/regions/{{region}}/disks/{{diskID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeDisk resource.
@@ -45,6 +40,10 @@ type ComputeDiskRef struct {
 
 	// The namespace of a ComputeDisk resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&ComputeDiskRef{})
 }
 
 func (r *ComputeDiskRef) GetGVK() schema.GroupVersionKind {
@@ -69,41 +68,32 @@ func (r *ComputeDiskRef) SetExternal(ref string) {
 }
 
 func (r *ComputeDiskRef) ValidateExternal(ref string) error {
-	// Simple validation for external disk ref formatting
-	if !strings.Contains(ref, "/") {
-		return fmt.Errorf("invalid external format: %s", ref)
+	id := &ComputeDiskIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (r *ComputeDiskRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	err := refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
-	if r.GetExternal() != "" {
-		return err
+func (r *ComputeDiskRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ComputeDiskIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
 	}
+	return id, nil
+}
 
-	key := r.GetNamespacedName()
-	if key.Namespace == "" {
-		key.Namespace = defaultNamespace
-	}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(r.GetGVK())
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+func (r *ComputeDiskRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*ComputeDisk](u)
+		if err != nil {
+			return ""
 		}
-		return fmt.Errorf("reading referenced %s %s: %w", r.GetGVK(), key, err)
-	}
-	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil || externalRef == "" {
-		if externalRef, _, err = unstructured.NestedString(u.Object, "status", "selfLink"); err != nil {
-			return err
+		identity, err := getIdentityFromComputeDiskSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
 		}
-		if externalRef == "" {
-			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-		}
-		externalRef = strings.TrimPrefix(externalRef, "https://www.googleapis.com/compute/v1/")
+		return identity.String()
 	}
-	r.SetExternal(externalRef)
-	return r.ValidateExternal(externalRef)
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
