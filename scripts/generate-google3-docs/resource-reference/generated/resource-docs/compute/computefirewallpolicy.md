@@ -103,7 +103,7 @@ shortName: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The Google Cloud resource name of a `Folder` resource (format: `folders/{{name}}`).</p>
+            <p>The 'name' field of a folder, when not managed by Config Connector. This field must be set when 'name' field is not set.</p>
         </td>
     </tr>
     <tr>
@@ -113,7 +113,7 @@ shortName: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The 'name' field of a 'Folder' resource. This field must be set when 'external' field is not set.</p>
         </td>
     </tr>
     <tr>
@@ -123,7 +123,7 @@ shortName: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The 'namespace' field of a 'Folder' resource. If unset, the namespace is defaulted to the namespace of the referencer resource.</p>
         </td>
     </tr>
     <tr>
@@ -143,7 +143,7 @@ shortName: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The Google Cloud resource name of a Google Cloud Organization (format: `organizations/{{name}}`).</p>
+            <p>The 'name' field of an organization, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -153,8 +153,7 @@ shortName: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
-Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The 'name' field of an 'Organization' resource.</p>
         </td>
     </tr>
     <tr>
@@ -164,7 +163,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The 'namespace' field of an 'Organization' resource.</p>
         </td>
     </tr>
     <tr>
@@ -219,7 +218,7 @@ selfLinkWithId: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>

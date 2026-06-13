@@ -560,6 +560,52 @@ func ComputeDiskStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	// MISSING: Zone
 	return out
 }
+func ComputeFirewallPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ComputeFirewallPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallPolicy{}
+	// MISSING: Associations
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: DisplayName
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	// MISSING: RuleTupleCount
+	// MISSING: Rules
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: ShortName
+	return out
+}
+func ComputeFirewallPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicy) *pb.FirewallPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicy{}
+	// MISSING: Associations
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: DisplayName
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	// MISSING: RuleTupleCount
+	// MISSING: Rules
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: ShortName
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
@@ -657,6 +703,58 @@ func ComputeFirewallPolicyRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: TargetSecureTags
 	// MISSING: TargetServiceAccounts
 	// MISSING: TLSInspect
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeFirewallPolicySpec_v1beta1_FromProto", skipping
+func ComputeFirewallPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ComputeFirewallPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallPolicySpec{}
+	// MISSING: Associations
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: DisplayName
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	// MISSING: RuleTupleCount
+	// MISSING: Rules
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	out.ShortName = in.ShortName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeFirewallPolicySpec_v1beta1_ToProto", skipping
+func ComputeFirewallPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicySpec) *pb.FirewallPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicy{}
+	// MISSING: Associations
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: DisplayName
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	// MISSING: RuleTupleCount
+	// MISSING: Rules
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	out.ShortName = in.ShortName
 	return out
 }
 */

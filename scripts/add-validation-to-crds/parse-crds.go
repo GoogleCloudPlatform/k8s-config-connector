@@ -360,6 +360,12 @@ oneOf:
 - required: [organizationRef]
 - required: [projectRef]
 `
+		} else if kind == "ComputeFirewallPolicy" && fieldPath == ".spec" {
+			ruleYAML = `
+oneOf:
+- required: [folderRef]
+- required: [organizationRef]
+`
 		} else if kind == "ComputeInstance" && fieldPath == ".spec" {
 			ruleYAML = `
 anyOf:

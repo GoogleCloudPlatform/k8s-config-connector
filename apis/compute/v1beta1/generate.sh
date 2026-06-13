@@ -26,6 +26,7 @@ go run . generate-types \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
   --resource ComputeFirewall:Firewall \
+  --resource ComputeFirewallPolicy:FirewallPolicy \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeHTTPHealthCheck:HTTPHealthCheck \
@@ -44,13 +45,14 @@ go run . generate-types \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
+  --api-version compute.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 
 go run . generate-mapper \
-    --multiversion \
-    --service google.cloud.compute.v1 \
-    --api-version compute.cnrm.cloud.google.com/v1beta1 \
-    --include-skipped-output
+  --multiversion \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
