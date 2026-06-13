@@ -217,6 +217,7 @@
 | configcontroller.cnrm.cloud.google.com        | ConfigControllerInstance                        | False        | True        | False  | DCL        | False       |
 | configdelivery.cnrm.cloud.google.com          | ConfigDeliveryFleetPackage                      | True         | False       | False  | Direct     | True        |
 | configdelivery.cnrm.cloud.google.com          | ConfigDeliveryResourceBundle                    | True         | False       | False  | Direct     | True        |
+| config.cnrm.cloud.google.com                  | ConfigDeploymentGroup                           | True         | False       | False  | Direct     | True        |
 | containeranalysis.cnrm.cloud.google.com       | ContainerAnalysisNote                           | False        | True        | False  | DCL        | False       |
 | containeranalysis.cnrm.cloud.google.com       | ContainerAnalysisOccurrence                     | True         | False       | False  | Terraform  | False       |
 | containerattached.cnrm.cloud.google.com       | ContainerAttachedCluster                        | False        | True        | False  | Terraform  | True        |

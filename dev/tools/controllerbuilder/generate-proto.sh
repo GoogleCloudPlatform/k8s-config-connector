@@ -65,6 +65,8 @@ fi
 # Reset to the desired version
 git reset --hard ${GOOGLEAPI_VERSION}
 
+rm -f ${THIRD_PARTY}/googleapis/google/cloud/config/v1/config.proto
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
@@ -89,13 +91,14 @@ fi
 
 protoc --include_imports --include_source_info \
     --experimental_allow_proto3_optional \
-    -I ${THIRD_PARTY}/googleapis/ \
     -I ${REPO_ROOT}/mockgcp/apis \
+    -I ${THIRD_PARTY}/googleapis/ \
     ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/google/cloud/binaryauthorization/*/*.proto \
+    ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/analytics/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/partner/aistreams/*/*.proto \
