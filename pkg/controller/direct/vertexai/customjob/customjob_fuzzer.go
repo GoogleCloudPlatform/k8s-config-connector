@@ -51,5 +51,17 @@ func customJobFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".satisfies_pzs")
 	f.StatusField(".satisfies_pzi")
 
+	f.Unimplemented_NotYetTriaged(".job_spec.worker_pool_specs[].machine_spec.gpu_partition_size")
+	f.Unimplemented_NotYetTriaged(".job_spec.worker_pool_specs[].machine_spec.tpu_topology")
+	f.Unimplemented_NotYetTriaged(".job_spec.worker_pool_specs[].machine_spec.reservation_affinity")
+	f.Unimplemented_NotYetTriaged(".job_spec.worker_pool_specs[].lustre_mounts")
+	f.Unimplemented_NotYetTriaged(".job_spec.worker_pool_specs[].lustre_mounts[].instance_ip")
+	f.Unimplemented_NotYetTriaged(".job_spec.worker_pool_specs[].lustre_mounts[].mount_point")
+	f.Unimplemented_NotYetTriaged(".job_spec.worker_pool_specs[].lustre_mounts[].filesystem")
+	f.Unimplemented_NotYetTriaged(".job_spec.worker_pool_specs[].lustre_mounts[].volume_handle")
+	f.Unimplemented_NotYetTriaged(".error.details")
+	f.Unimplemented_NotYetTriaged(".error.details[].type_url")
+	f.Unimplemented_NotYetTriaged(".error.details[].value")
+
 	return f
 }

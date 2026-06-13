@@ -37,6 +37,8 @@ func vertexAIMetadataStoreFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".dataplex_config")
 
+	f.Unimplemented_NotYetTriaged(".encryption_spec.kms_key_name")
+
 	f.StatusFields.Insert(".name")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
