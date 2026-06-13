@@ -116,7 +116,7 @@ func ComputeTargetHTTPSProxyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	out := &krm.ComputeTargetHTTPSProxyStatus{}
 	out.CreationTimestamp = in.CreationTimestamp
 	if in.Id != nil {
-		id := int(*in.Id)
+		id := int64(*in.Id)
 		out.ProxyId = &id
 	}
 	out.SelfLink = in.SelfLink
