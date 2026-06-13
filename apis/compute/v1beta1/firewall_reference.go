@@ -16,7 +16,6 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -108,48 +107,4 @@ func (r *ComputeFirewallRef) Normalize(ctx context.Context, reader client.Reader
 		return identity.String()
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
-}
-
-func ResolveComputeFirewall(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeFirewallRef) (*ComputeFirewallRef, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.External != "" && ref.Name != "" {
-		return nil, fmt.Errorf("cannot specify both name and external on %s reference", ComputeFirewallGVK.Kind)
-	}
-
-	if ref.External != "" {
-		if err := ref.ValidateExternal(ref.External); err != nil {
-			return nil, err
-		}
-		return ref, nil
-	}
-
-	key := ref.GetNamespacedName()
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	computeFirewall := &unstructured.Unstructured{}
-	computeFirewall.SetGroupVersionKind(ComputeFirewallGVK)
-	if err := reader.Get(ctx, key, computeFirewall); err != nil {
-		return nil, err
-	}
-
-	externalRef, _, _ := unstructured.NestedString(computeFirewall.Object, "status", "externalRef")
-	if externalRef != "" {
-		return &ComputeFirewallRef{
-			External: externalRef,
-		}, nil
-	}
-
-	selfLink, _, _ := unstructured.NestedString(computeFirewall.Object, "status", "selfLink")
-	if selfLink != "" {
-		return &ComputeFirewallRef{
-			External: selfLink,
-		}, nil
-	}
-
-	return nil, fmt.Errorf("ComputeFirewall %v is not ready yet", key)
 }

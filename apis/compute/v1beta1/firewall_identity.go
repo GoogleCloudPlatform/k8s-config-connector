@@ -62,6 +62,7 @@ func (i *FirewallIdentity) Host() string {
 	return ComputeFirewallIdentityFormat.Host()
 }
 
+// Deprecated: ParseComputeFirewallExternal is deprecated and should not be used.
 func ParseComputeFirewallExternal(external string) (*FirewallIdentity, error) {
 	if external == "" {
 		return nil, fmt.Errorf("empty ComputeFirewall external value")
@@ -97,11 +98,11 @@ func (obj *ComputeFirewall) GetIdentity(ctx context.Context, reader client.Reade
 		return nil, err
 	}
 
-	// Cross-check the identity against status.externalRef, if present.
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
+	// Cross-check the identity against status.selfLink, if present.
+	selfLink := common.ValueOf(obj.Status.SelfLink)
+	if selfLink != "" {
 		statusIdentity := &FirewallIdentity{}
-		if err := statusIdentity.FromExternal(externalRef); err != nil {
+		if err := statusIdentity.FromExternal(selfLink); err != nil {
 			return nil, err
 		}
 

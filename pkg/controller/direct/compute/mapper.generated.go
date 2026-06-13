@@ -168,36 +168,6 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
-func ComputeFirewallObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Firewall) *krm.ComputeFirewallObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ComputeFirewallObservedState{}
-	// MISSING: Allowed
-	out.CreationTimestamp = in.CreationTimestamp
-	// MISSING: Denied
-	// MISSING: ID
-	// MISSING: Kind
-	// MISSING: Name
-	// MISSING: Params
-	out.SelfLink = in.SelfLink
-	return out
-}
-func ComputeFirewallObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallObservedState) *pb.Firewall {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Firewall{}
-	// MISSING: Allowed
-	out.CreationTimestamp = in.CreationTimestamp
-	// MISSING: Denied
-	// MISSING: ID
-	// MISSING: Kind
-	// MISSING: Name
-	// MISSING: Params
-	out.SelfLink = in.SelfLink
-	return out
-}
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
@@ -306,6 +276,7 @@ func ComputeFirewallSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Fir
 	}
 	out := &krm.ComputeFirewallSpec{}
 	// MISSING: Allowed
+	// MISSING: CreationTimestamp
 	// MISSING: Denied
 	out.Description = in.Description
 	out.DestinationRanges = in.DestinationRanges
@@ -320,6 +291,7 @@ func ComputeFirewallSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Fir
 	}
 	// MISSING: Params
 	out.Priority = in.Priority
+	// MISSING: SelfLink
 	out.SourceRanges = in.SourceRanges
 	out.SourceServiceAccounts = ComputeFirewallSpec_SourceServiceAccounts_FromProto(mapCtx, in.SourceServiceAccounts)
 	out.SourceTags = in.SourceTags
@@ -336,6 +308,7 @@ func ComputeFirewallSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comp
 	}
 	out := &pb.Firewall{}
 	// MISSING: Allowed
+	// MISSING: CreationTimestamp
 	// MISSING: Denied
 	out.Description = in.Description
 	out.DestinationRanges = in.DestinationRanges
@@ -350,6 +323,7 @@ func ComputeFirewallSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comp
 	}
 	// MISSING: Params
 	out.Priority = in.Priority
+	// MISSING: SelfLink
 	out.SourceRanges = in.SourceRanges
 	out.SourceServiceAccounts = ComputeFirewallSpec_SourceServiceAccounts_ToProto(mapCtx, in.SourceServiceAccounts)
 	out.SourceTags = in.SourceTags
