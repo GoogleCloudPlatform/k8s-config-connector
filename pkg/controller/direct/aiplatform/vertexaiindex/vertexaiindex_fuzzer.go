@@ -16,6 +16,7 @@ package vertexaiindex
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -25,8 +26,8 @@ func init() {
 
 func vertexAIIndexFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Index{},
-		VertexAIIndexSpec_FromProto, VertexAIIndexSpec_ToProto,
-		VertexAIIndexObservedState_FromProto, VertexAIIndexObservedState_ToProto,
+		aiplatform.VertexAIIndexSpec_FromProto, aiplatform.VertexAIIndexSpec_ToProto,
+		aiplatform.VertexAIIndexObservedState_FromProto, aiplatform.VertexAIIndexObservedState_ToProto,
 	)
 
 	f.SpecField(".display_name")

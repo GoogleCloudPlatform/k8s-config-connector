@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package vertexaiindex
+package aiplatform
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
@@ -101,5 +101,65 @@ func VertexAIIndexStatsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.VectorsCount = direct.ValueOf(in.VectorsCount)
 	out.SparseVectorsCount = direct.ValueOf(in.SparseVectorsCount)
 	out.ShardsCount = direct.ValueOf(in.ShardsCount)
+	return out
+}
+
+func VertexAIIndexObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.VertexAIIndexObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIIndexObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DeployedIndexes = direct.Slice_FromProto(mapCtx, in.DeployedIndexes, VertexAIDeployedIndexRefObservedState_FromProto)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.IndexStats = VertexAIIndexStatsObservedState_FromProto(mapCtx, in.GetIndexStats())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+
+func VertexAIIndexObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIIndexObservedState) *pb.Index {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DeployedIndexes = direct.Slice_ToProto(mapCtx, in.DeployedIndexes, VertexAIDeployedIndexRefObservedState_ToProto)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.IndexStats = VertexAIIndexStatsObservedState_ToProto(mapCtx, in.IndexStats)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+
+func VertexAIIndexSpec_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.VertexAIIndexSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIIndexSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
+	out.Metadata = JSON_FromProto(mapCtx, in.GetMetadata())
+	out.Labels = in.Labels
+	out.IndexUpdateMethod = direct.Enum_FromProto(mapCtx, in.GetIndexUpdateMethod())
+	out.EncryptionSpec = VertexAIEncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	return out
+}
+
+func VertexAIIndexSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIIndexSpec) *pb.Index {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
+	out.Metadata = JSON_ToProto(mapCtx, in.Metadata)
+	out.Labels = in.Labels
+	out.IndexUpdateMethod = direct.Enum_ToProto[pb.Index_IndexUpdateMethod](mapCtx, in.IndexUpdateMethod)
+	out.EncryptionSpec = VertexAIEncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }

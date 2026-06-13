@@ -21,6 +21,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
@@ -114,7 +115,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	mapCtx := &direct.MapContext{}
-	observedState := VertexAIIndexObservedState_FromProto(mapCtx, index)
+	observedState := aiplatform.VertexAIIndexObservedState_FromProto(mapCtx, index)
 	if mapCtx.Err() != nil {
 		return false, fmt.Errorf("mapping to observed state: %w", mapCtx.Err())
 	}
@@ -129,7 +130,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := VertexAIIndexSpec_ToProto(mapCtx, &desired.Spec)
+	resource := aiplatform.VertexAIIndexSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -150,7 +151,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("successfully created VertexAIIndex", "name", a.id.String())
 
 	status := &krm.VertexAIIndexStatus{}
-	status.ObservedState = VertexAIIndexObservedState_FromProto(mapCtx, created)
+	status.ObservedState = aiplatform.VertexAIIndexObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -164,7 +165,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := VertexAIIndexSpec_ToProto(mapCtx, &desired.Spec)
+	resource := aiplatform.VertexAIIndexSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -189,7 +190,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("successfully updated VertexAIIndex", "name", a.id.String())
 
 	status := &krm.VertexAIIndexStatus{}
-	status.ObservedState = VertexAIIndexObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = aiplatform.VertexAIIndexObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -202,7 +203,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	}
 	obj := &krm.VertexAIIndex{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(VertexAIIndexSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(aiplatform.VertexAIIndexSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
