@@ -40,8 +40,7 @@ var _ = apiextensionsv1.JSON{}
 
 type CapoolAdditionalExtensions struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
-	// +optional
-	ObjectIdPath []int64 `json:"objectIdPath,omitempty"`
+	ObjectIdPath []int64 `json:"objectIdPath"`
 }
 
 type CapoolAllowedIssuanceModes struct {
@@ -190,12 +189,10 @@ type CapoolExtendedKeyUsage struct {
 
 type CapoolIdentityConstraints struct {
 	/* Required. If this is true, the [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] extension may be copied from a certificate request into the signed certificate. Otherwise, the requested [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] will be discarded. */
-	// +optional
-	AllowSubjectAltNamesPassthrough *bool `json:"allowSubjectAltNamesPassthrough,omitempty"`
+	AllowSubjectAltNamesPassthrough bool `json:"allowSubjectAltNamesPassthrough"`
 
 	/* Required. If this is true, the [Subject][google.cloud.security.privateca.v1.Subject] field may be copied from a certificate request into the signed certificate. Otherwise, the requested [Subject][google.cloud.security.privateca.v1.Subject] will be discarded. */
-	// +optional
-	AllowSubjectPassthrough *bool `json:"allowSubjectPassthrough,omitempty"`
+	AllowSubjectPassthrough bool `json:"allowSubjectPassthrough"`
 
 	/* Optional. A CEL expression that may be used to validate the resolved X.509 Subject and/or Subject Alternative Name before a certificate is signed. To see the full allowed syntax and some examples, see https://cloud.google.com/certificate-authority-service/docs/using-cel */
 	// +optional
@@ -244,8 +241,7 @@ type CapoolKeyUsage struct {
 
 type CapoolObjectId struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
-	// +optional
-	ObjectIdPath []int64 `json:"objectIdPath,omitempty"`
+	ObjectIdPath []int64 `json:"objectIdPath"`
 }
 
 type CapoolPassthroughExtensions struct {
@@ -260,8 +256,7 @@ type CapoolPassthroughExtensions struct {
 
 type CapoolPolicyIds struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
-	// +optional
-	ObjectIdPath []int64 `json:"objectIdPath,omitempty"`
+	ObjectIdPath []int64 `json:"objectIdPath"`
 }
 
 type CapoolPublishingOptions struct {
@@ -286,8 +281,7 @@ type CapoolRsa struct {
 
 type CapoolUnknownExtendedKeyUsages struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
-	// +optional
-	ObjectIdPath []int64 `json:"objectIdPath,omitempty"`
+	ObjectIdPath []int64 `json:"objectIdPath"`
 }
 
 type PrivateCACAPoolSpec struct {
