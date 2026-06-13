@@ -32,6 +32,10 @@ go run . generate-types \
   --resource ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation \
   --include-skipped-output
 
+# ComputeDiskResourcePolicyAttachment is hand-coded in apis/compute/v1alpha1/computediskresourcepolicyattachment_types.go
+# because it is a sub-operation on google_compute_disk (addResourcePolicies/removeResourcePolicies)
+# and does not have a 1:1 upstream proto resource.
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
