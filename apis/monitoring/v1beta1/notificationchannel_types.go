@@ -32,14 +32,17 @@ type MonitoringNotificationChannelSpec struct {
 	// channel. This description may provide additional details, beyond
 	// the display name, for the channel. This may not exceed 1024
 	// Unicode characters.
+	// +optional
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.description
 	Description *string `json:"description,omitempty"`
 
-	// NOTYET: Terraform
-	// // An optional human-readable name for this notification channel. It is
-	// // recommended that you specify a non-empty and unique name in order to
-	// // make it easier to identify the channels in your project, though this is
-	// // not enforced. The display name is limited to 512 Unicode characters.
-	// DisplayName *string `json:"displayName,omitempty"`
+	// An optional human-readable name for this notification channel. It is
+	// recommended that you specify a non-empty and unique name in order to
+	// make it easier to identify the channels in your project, though this is
+	// not enforced. The display name is limited to 512 Unicode characters.
+	// +optional
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 
 	// Whether notifications are forwarded to the described channel. This makes it
 	// possible to disable delivery of notifications to a particular channel
@@ -47,6 +50,8 @@ type MonitoringNotificationChannelSpec struct {
 	// channel. This is a more convenient approach when the change is temporary
 	// and you want to receive notifications from the same set of alerting
 	// policies on the channel at some point in the future.
+	// +optional
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// If true, the notification channel will be deleted regardless
@@ -60,7 +65,17 @@ type MonitoringNotificationChannelSpec struct {
 	// permissible and required labels are specified in the
 	// NotificationChannelDescriptor.labels of the
 	// NotificationChannelDescriptor corresponding to the type field.
+	// +optional
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.labels
 	Labels map[string]string `json:"labels,omitempty"`
+
+	// User-supplied key/value data that does not need to conform to
+	// the corresponding `NotificationChannelDescriptor`'s schema, unlike
+	// the `labels` field. This field is intended to be used for organizing
+	// and identifying the `NotificationChannel` objects.
+	// +optional
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.user_labels
+	UserLabels map[string]string `json:"userLabels,omitempty"`
 
 	// Different notification type behaviors are configured primarily using the the 'labels' field on this
 	// resource. This block contains the labels which contain secrets or passwords so that they can be marked
@@ -74,6 +89,8 @@ type MonitoringNotificationChannelSpec struct {
 	// The type of the notification channel.
 	// This field matches the value of the NotificationChannelDescriptor.type field.
 	// See https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.notificationChannelDescriptors/list to get the list of valid values such as "email", "slack", etc...
+	// +required
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.type
 	Type *string `json:"type"`
 }
 
@@ -99,9 +116,12 @@ type MonitoringNotificationChannelStatus struct {
 	// The full REST resource name for this channel. The syntax is:
 	// projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]
 	// The [CHANNEL_ID] is automatically assigned by the server on creation.
+	// +optional
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.name
 	Name *string `json:"name,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// Indicates whether this channel has been verified or not. On a
@@ -115,6 +135,8 @@ type MonitoringNotificationChannelStatus struct {
 	// verification being required for channels of this type.This field cannot be
 	// modified using a standard UpdateNotificationChannel operation. To change
 	// the value of this field, you must call VerifyNotificationChannel.
+	// +optional
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.verification_status
 	VerificationStatus *string `json:"verificationStatus,omitempty"`
 }
 
