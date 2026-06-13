@@ -330,7 +330,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -340,7 +340,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}" when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeAddress resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}" or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".</p>
         </td>
     </tr>
     <tr>
@@ -350,7 +350,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeAddress` resource.</p>
+            <p>The name of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -360,7 +360,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeAddress` resource.</p>
+            <p>The namespace of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -650,7 +650,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -660,7 +660,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}" when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeAddress resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}" or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".</p>
         </td>
     </tr>
     <tr>
@@ -670,7 +670,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeAddress` resource.</p>
+            <p>The name of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -680,7 +680,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeAddress` resource.</p>
+            <p>The namespace of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -950,7 +950,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -960,7 +960,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}" when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeAddress resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}" or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".</p>
         </td>
     </tr>
     <tr>
@@ -970,7 +970,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeAddress` resource.</p>
+            <p>The name of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -980,7 +980,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeAddress` resource.</p>
+            <p>The namespace of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -1200,7 +1200,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -1210,7 +1210,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}" when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeAddress resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}" or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1220,7 +1220,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeAddress` resource.</p>
+            <p>The name of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -1230,7 +1230,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeAddress` resource.</p>
+            <p>The namespace of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
