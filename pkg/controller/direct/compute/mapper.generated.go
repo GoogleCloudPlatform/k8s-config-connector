@@ -1410,6 +1410,124 @@ found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1
 		return out
 	}
 */
+func ComputeRouterNATObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNat) *krm.ComputeRouterNATObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterNATObservedState{}
+	// MISSING: AutoNetworkTier
+	// MISSING: DrainNATIps
+	// MISSING: EndpointTypes
+	// MISSING: Name
+	// MISSING: Nat64Subnetworks
+	// MISSING: NATIPAllocateOption
+	// MISSING: NATIps
+	// MISSING: SourceSubnetworkIPRangesToNAT
+	// MISSING: SourceSubnetworkIPRangesToNat64
+	// MISSING: Subnetworks
+	// MISSING: TCPEstablishedIdleTimeoutSec
+	// MISSING: TCPTimeWaitTimeoutSec
+	// MISSING: TCPTransitoryIdleTimeoutSec
+	// MISSING: Type
+	// MISSING: UDPIdleTimeoutSec
+	return out
+}
+func ComputeRouterNATObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterNATObservedState) *pb.RouterNat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterNat{}
+	// MISSING: AutoNetworkTier
+	// MISSING: DrainNATIps
+	// MISSING: EndpointTypes
+	// MISSING: Name
+	// MISSING: Nat64Subnetworks
+	// MISSING: NATIPAllocateOption
+	// MISSING: NATIps
+	// MISSING: SourceSubnetworkIPRangesToNAT
+	// MISSING: SourceSubnetworkIPRangesToNat64
+	// MISSING: Subnetworks
+	// MISSING: TCPEstablishedIdleTimeoutSec
+	// MISSING: TCPTimeWaitTimeoutSec
+	// MISSING: TCPTransitoryIdleTimeoutSec
+	// MISSING: Type
+	// MISSING: UDPIdleTimeoutSec
+	return out
+}
+func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNat) *krm.ComputeRouterNATSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterNATSpec{}
+	// MISSING: AutoNetworkTier
+	// MISSING: DrainNATIps
+	// (near miss): "DrainNATIps" vs "DrainNatIps"
+	out.EnableDynamicPortAllocation = in.EnableDynamicPortAllocation
+	out.EnableEndpointIndependentMapping = in.EnableEndpointIndependentMapping
+	// MISSING: EndpointTypes
+	out.IcmpIdleTimeoutSec = in.IcmpIdleTimeoutSec
+	out.LogConfig = RouterNATLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
+	out.MaxPortsPerVM = in.MaxPortsPerVm
+	out.MinPortsPerVM = in.MinPortsPerVm
+	// MISSING: Name
+	// MISSING: Nat64Subnetworks
+	// MISSING: NATIPAllocateOption
+	// (near miss): "NATIPAllocateOption" vs "NatIpAllocateOption"
+	// MISSING: NATIps
+	// (near miss): "NATIps" vs "NatIps"
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, RouterNATRule_v1beta1_FromProto)
+	// MISSING: SourceSubnetworkIPRangesToNAT
+	// (near miss): "SourceSubnetworkIPRangesToNAT" vs "SourceSubnetworkIpRangesToNat"
+	// MISSING: SourceSubnetworkIPRangesToNat64
+	// MISSING: Subnetworks
+	// MISSING: TCPEstablishedIdleTimeoutSec
+	// (near miss): "TCPEstablishedIdleTimeoutSec" vs "TcpEstablishedIdleTimeoutSec"
+	// MISSING: TCPTimeWaitTimeoutSec
+	// (near miss): "TCPTimeWaitTimeoutSec" vs "TcpTimeWaitTimeoutSec"
+	// MISSING: TCPTransitoryIdleTimeoutSec
+	// (near miss): "TCPTransitoryIdleTimeoutSec" vs "TcpTransitoryIdleTimeoutSec"
+	// MISSING: Type
+	// MISSING: UDPIdleTimeoutSec
+	// (near miss): "UDPIdleTimeoutSec" vs "UdpIdleTimeoutSec"
+	return out
+}
+func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterNATSpec) *pb.RouterNat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterNat{}
+	// MISSING: AutoNetworkTier
+	// MISSING: DrainNATIps
+	// (near miss): "DrainNATIps" vs "DrainNatIps"
+	out.EnableDynamicPortAllocation = in.EnableDynamicPortAllocation
+	out.EnableEndpointIndependentMapping = in.EnableEndpointIndependentMapping
+	// MISSING: EndpointTypes
+	out.IcmpIdleTimeoutSec = in.IcmpIdleTimeoutSec
+	out.LogConfig = RouterNATLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+	out.MaxPortsPerVm = in.MaxPortsPerVM
+	out.MinPortsPerVm = in.MinPortsPerVM
+	// MISSING: Name
+	// MISSING: Nat64Subnetworks
+	// MISSING: NATIPAllocateOption
+	// (near miss): "NATIPAllocateOption" vs "NatIpAllocateOption"
+	// MISSING: NATIps
+	// (near miss): "NATIps" vs "NatIps"
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, RouterNATRule_v1beta1_ToProto)
+	// MISSING: SourceSubnetworkIPRangesToNAT
+	// (near miss): "SourceSubnetworkIPRangesToNAT" vs "SourceSubnetworkIpRangesToNat"
+	// MISSING: SourceSubnetworkIPRangesToNat64
+	// MISSING: Subnetworks
+	// MISSING: TCPEstablishedIdleTimeoutSec
+	// (near miss): "TCPEstablishedIdleTimeoutSec" vs "TcpEstablishedIdleTimeoutSec"
+	// MISSING: TCPTimeWaitTimeoutSec
+	// (near miss): "TCPTimeWaitTimeoutSec" vs "TcpTimeWaitTimeoutSec"
+	// MISSING: TCPTransitoryIdleTimeoutSec
+	// (near miss): "TCPTransitoryIdleTimeoutSec" vs "TcpTransitoryIdleTimeoutSec"
+	// MISSING: Type
+	// MISSING: UDPIdleTimeoutSec
+	// (near miss): "UDPIdleTimeoutSec" vs "UdpIdleTimeoutSec"
+	return out
+}
 func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyObservedState {
 	if in == nil {
 		return nil
@@ -2838,6 +2956,92 @@ found existing non-generated mapping function "ResourcePolicySnapshotSchedulePol
 		return out
 	}
 */
+func RouterNATLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatLogConfig) *krm.RouterNATLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouterNATLogConfig{}
+	out.Enable = in.Enable
+	out.Filter = in.Filter
+	return out
+}
+func RouterNATLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouterNATLogConfig) *pb.RouterNatLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterNatLogConfig{}
+	out.Enable = in.Enable
+	out.Filter = in.Filter
+	return out
+}
+func RouterNATRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatRule) *krm.RouterNATRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouterNATRule{}
+	out.Action = RouterNATRuleAction_v1beta1_FromProto(mapCtx, in.GetAction())
+	out.Description = in.Description
+	out.Match = in.Match
+	out.RuleNumber = in.RuleNumber
+	return out
+}
+func RouterNATRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouterNATRule) *pb.RouterNatRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterNatRule{}
+	out.Action = RouterNATRuleAction_v1beta1_ToProto(mapCtx, in.Action)
+	out.Description = in.Description
+	out.Match = in.Match
+	out.RuleNumber = in.RuleNumber
+	return out
+}
+func RouterNATRuleAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatRuleAction) *krm.RouterNATRuleAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouterNATRuleAction{}
+	// MISSING: SourceNATActiveIps
+	// MISSING: SourceNATActiveRanges
+	// MISSING: SourceNATDrainIps
+	// MISSING: SourceNATDrainRanges
+	return out
+}
+func RouterNATRuleAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouterNATRuleAction) *pb.RouterNatRuleAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterNatRuleAction{}
+	// MISSING: SourceNATActiveIps
+	// MISSING: SourceNATActiveRanges
+	// MISSING: SourceNATDrainIps
+	// MISSING: SourceNATDrainRanges
+	return out
+}
+func RouterNATSubnetwork_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatSubnetworkToNat) *krm.RouterNATSubnetwork {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouterNATSubnetwork{}
+	// MISSING: Name
+	// MISSING: SecondaryIPRangeNames
+	// (near miss): "SecondaryIPRangeNames" vs "SecondaryIpRangeNames"
+	// MISSING: SourceIPRangesToNAT
+	// (near miss): "SourceIPRangesToNAT" vs "SourceIpRangesToNat"
+	return out
+}
+func RouterNATSubnetwork_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouterNATSubnetwork) *pb.RouterNatSubnetworkToNat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterNatSubnetworkToNat{}
+	// MISSING: Name
+	// MISSING: SecondaryIPRangeNames
+	// (near miss): "SecondaryIPRangeNames" vs "SecondaryIpRangeNames"
+	// MISSING: SourceIPRangesToNAT
+	// (near miss): "SourceIPRangesToNAT" vs "SourceIpRangesToNat"
+	return out
+}
 func SecurityPolicyAdvancedOptionsConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAdvancedOptionsConfig) *krm.SecurityPolicyAdvancedOptionsConfig {
 	if in == nil {
 		return nil
