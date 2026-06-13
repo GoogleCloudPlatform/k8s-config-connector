@@ -1430,6 +1430,28 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: StatusMessage
 	return out
 }
+func ComputeRegionPerInstanceConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PerInstanceConfig) *krmcomputev1alpha1.ComputeRegionPerInstanceConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeRegionPerInstanceConfigSpec{}
+	// MISSING: Fingerprint
+	// MISSING: Name
+	out.PreservedState = RegionperinstanceconfigPreservedState_v1alpha1_FromProto(mapCtx, in.GetPreservedState())
+	// MISSING: Status
+	return out
+}
+func ComputeRegionPerInstanceConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeRegionPerInstanceConfigSpec) *pb.PerInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PerInstanceConfig{}
+	// MISSING: Fingerprint
+	// MISSING: Name
+	out.PreservedState = RegionperinstanceconfigPreservedState_v1alpha1_ToProto(mapCtx, in.PreservedState)
+	// MISSING: Status
+	return out
+}
 func ComputeReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ComputeReservationSpec {
 	if in == nil {
 		return nil
