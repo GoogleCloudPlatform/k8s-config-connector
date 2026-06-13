@@ -28,8 +28,30 @@ import (
 	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	labelpb "google.golang.org/genproto/googleapis/api/label"
 	monitoredrespb "google.golang.org/genproto/googleapis/api/monitoredres"
 )
+
+func MetricdescriptorLabels_FromProto(mapCtx *direct.MapContext, in *labelpb.LabelDescriptor) *krm.MetricdescriptorLabels {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetricdescriptorLabels{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.ValueType = direct.Enum_FromProto(mapCtx, in.GetValueType())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func MetricdescriptorLabels_ToProto(mapCtx *direct.MapContext, in *krm.MetricdescriptorLabels) *labelpb.LabelDescriptor {
+	if in == nil {
+		return nil
+	}
+	out := &labelpb.LabelDescriptor{}
+	out.Key = direct.ValueOf(in.Key)
+	out.ValueType = direct.Enum_ToProto[labelpb.LabelDescriptor_ValueType](mapCtx, in.ValueType)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 
 /* found existing non-generated mapping function "MonitoredResource_FromProto", skipping
 func MonitoredResource_FromProto(mapCtx *direct.MapContext, in *monitoredrespb.MonitoredResource) *krm.MonitoredResource {
@@ -43,16 +65,100 @@ func MonitoredResource_FromProto(mapCtx *direct.MapContext, in *monitoredrespb.M
 }
 */
 
-/*
-found existing non-generated mapping function "MonitoredResource_ToProto", skipping
+/* found existing non-generated mapping function "MonitoredResource_ToProto", skipping
+func MonitoredResource_ToProto(mapCtx *direct.MapContext, in *krm.MonitoredResource) *monitoredrespb.MonitoredResource {
+	if in == nil {
+		return nil
+	}
+	out := &monitoredrespb.MonitoredResource{}
+	out.Type = direct.ValueOf(in.Type)
+	out.Labels = in.Labels
+	return out
+}
+*/
 
-	func MonitoredResource_ToProto(mapCtx *direct.MapContext, in *krm.MonitoredResource) *monitoredrespb.MonitoredResource {
+/* found existing non-generated mapping function "MonitoringMetricDescriptorSpec_FromProto", skipping
+func MonitoringMetricDescriptorSpec_FromProto(mapCtx *direct.MapContext, in *metricpb.MetricDescriptor) *krm.MonitoringMetricDescriptorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringMetricDescriptorSpec{}
+	// MISSING: Name
+	out.Type = in.GetType()
+	out.Labels = direct.Slice_FromProto(mapCtx, in.Labels, MetricdescriptorLabels_FromProto)
+	out.MetricKind = direct.Enum_FromProto(mapCtx, in.GetMetricKind())
+	out.ValueType = direct.Enum_FromProto(mapCtx, in.GetValueType())
+	out.Unit = direct.LazyPtr(in.GetUnit())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Metadata = MetricdescriptorMetadata_FromProto(mapCtx, in.GetMetadata())
+	out.LaunchStage = direct.Enum_FromProto(mapCtx, in.GetLaunchStage())
+	// MISSING: MonitoredResourceTypes
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "MonitoringMetricDescriptorSpec_ToProto", skipping
+func MonitoringMetricDescriptorSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringMetricDescriptorSpec) *metricpb.MetricDescriptor {
+	if in == nil {
+		return nil
+	}
+	out := &metricpb.MetricDescriptor{}
+	// MISSING: Name
+	out.Type = MonitoringMetricDescriptorSpec_Type_ToProto(mapCtx, in.Type)
+	out.Labels = direct.Slice_ToProto(mapCtx, in.Labels, MetricdescriptorLabels_ToProto)
+	out.MetricKind = direct.Enum_ToProto[metricpb.MetricDescriptor_MetricKind](mapCtx, in.MetricKind)
+	out.ValueType = direct.Enum_ToProto[metricpb.MetricDescriptor_ValueType](mapCtx, in.ValueType)
+	out.Unit = direct.ValueOf(in.Unit)
+	out.Description = direct.ValueOf(in.Description)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Metadata = MetricdescriptorMetadata_ToProto(mapCtx, in.Metadata)
+	out.LaunchStage = direct.Enum_ToProto[apipb.LaunchStage](mapCtx, in.LaunchStage)
+	// MISSING: MonitoredResourceTypes
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "MonitoringMetricDescriptorStatus_FromProto", skipping
+func MonitoringMetricDescriptorStatus_FromProto(mapCtx *direct.MapContext, in *metricpb.MetricDescriptor) *krm.MonitoringMetricDescriptorStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringMetricDescriptorStatus{}
+	// MISSING: Name
+	// MISSING: Type
+	// MISSING: Labels
+	// MISSING: MetricKind
+	// MISSING: ValueType
+	// MISSING: Unit
+	// MISSING: Description
+	// MISSING: DisplayName
+	// MISSING: Metadata
+	// MISSING: LaunchStage
+	out.MonitoredResourceTypes = in.MonitoredResourceTypes
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "MonitoringMetricDescriptorStatus_ToProto", skipping
+
+	func MonitoringMetricDescriptorStatus_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringMetricDescriptorStatus) *metricpb.MetricDescriptor {
 		if in == nil {
 			return nil
 		}
-		out := &monitoredrespb.MonitoredResource{}
-		out.Type = direct.ValueOf(in.Type)
-		out.Labels = in.Labels
+		out := &metricpb.MetricDescriptor{}
+		// MISSING: Name
+		// MISSING: Type
+		// MISSING: Labels
+		// MISSING: MetricKind
+		// MISSING: ValueType
+		// MISSING: Unit
+		// MISSING: Description
+		// MISSING: DisplayName
+		// MISSING: Metadata
+		// MISSING: LaunchStage
+		out.MonitoredResourceTypes = in.MonitoredResourceTypes
 		return out
 	}
 */

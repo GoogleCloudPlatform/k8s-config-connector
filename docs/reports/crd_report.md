@@ -381,7 +381,7 @@
 | monitoring.cnrm.cloud.google.com              | MonitoringAlertPolicy                           | False        | True        | False  | Terraform  | False       |
 | monitoring.cnrm.cloud.google.com              | MonitoringDashboard                             | False        | True        | False  | Direct     | True        |
 | monitoring.cnrm.cloud.google.com              | MonitoringGroup                                 | False        | True        | False  | DCL        | False       |
-| monitoring.cnrm.cloud.google.com              | MonitoringMetricDescriptor                      | False        | True        | False  | DCL        | False       |
+| monitoring.cnrm.cloud.google.com              | MonitoringMetricDescriptor                      | False        | True        | False  | DCL        | True        |
 | monitoring.cnrm.cloud.google.com              | MonitoringMonitoredProject                      | False        | True        | False  | DCL        | False       |
 | monitoring.cnrm.cloud.google.com              | MonitoringNotificationChannel                   | False        | True        | False  | Terraform  | True        |
 | monitoring.cnrm.cloud.google.com              | MonitoringServiceLevelObjective                 | False        | True        | False  | DCL        | False       |
