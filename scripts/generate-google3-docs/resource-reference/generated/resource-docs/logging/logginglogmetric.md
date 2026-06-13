@@ -88,6 +88,7 @@ labelExtractors:
   string: string
 loggingLogBucketRef:
   external: string
+  kind: string
   name: string
   namespace: string
 metricDescriptor:
@@ -297,6 +298,16 @@ valueExtractor: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>A reference to an externally managed LoggingLogBucket resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>loggingLogBucketRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
