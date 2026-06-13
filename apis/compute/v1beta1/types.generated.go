@@ -30,6 +30,7 @@
 // resource: ComputeHealthCheck:HealthCheck
 // resource: ComputeNodeGroup:NodeGroup
 // resource: ComputeInstance:Instance
+// resource: ComputeSSLCertificate:SslCertificate
 
 package v1beta1
 
@@ -3226,6 +3227,100 @@ type ShieldedInstanceIntegrityPolicy struct {
 	// Updates the integrity policy baseline using the measurements from the VM instance's most recent boot.
 	// +kcc:proto:field=google.cloud.compute.v1.ShieldedInstanceIntegrityPolicy.update_auto_learn_policy
 	UpdateAutoLearnPolicy *bool `json:"updateAutoLearnPolicy,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SslCertificate", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SslCertificate
+type SSLCertificate struct {
+	// A value read into memory from a certificate file. The certificate file must be in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.certificate
+	Certificate *string `json:"certificate,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] Expire time of the certificate. RFC3339
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#sslCertificate for SSL certificates.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Configuration and status of a managed SSL certificate.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.managed
+	Managed *SSLCertificateManagedSSLCertificate `json:"managed,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.name
+	Name *string `json:"name,omitempty"`
+
+	// A value read into memory from a write-only private key file. The private key file must be in PEM format. For security, only insert requests include this field.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.private_key
+	PrivateKey *string `json:"privateKey,omitempty"`
+
+	// [Output Only] URL of the region where the regional SSL Certificate resides. This field is not applicable to global SSL Certificate.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Configuration and status of a self-managed SSL certificate.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.self_managed
+	SelfManaged *SSLCertificateSelfManagedSSLCertificate `json:"selfManaged,omitempty"`
+
+	// [Output Only] Domains associated with the certificate via Subject Alternative Name.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.subject_alternative_names
+	SubjectAlternativeNames []string `json:"subjectAlternativeNames,omitempty"`
+
+	// (Optional) Specifies the type of SSL certificate, either "SELF_MANAGED" or "MANAGED". If not specified, the certificate is self-managed and the fields certificate and private_key are used.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* unreachable type SSLCertificateManagedSSLCertificate
+// +kcc:proto=google.cloud.compute.v1.SslCertificateManagedSslCertificate
+type SSLCertificateManagedSSLCertificate struct {
+	// [Output only] Detailed statuses of the domains specified for managed certificate resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateManagedSslCertificate.domain_status
+	DomainStatus map[string]string `json:"domainStatus,omitempty"`
+
+	// The domains for which a managed SSL certificate will be generated. Each Google-managed SSL certificate supports up to the [maximum number of domains per Google-managed SSL certificate](/load-balancing/docs/quotas#ssl_certificates).
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateManagedSslCertificate.domains
+	Domains []string `json:"domains,omitempty"`
+
+	// [Output only] Status of the managed certificate resource.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateManagedSslCertificate.status
+	Status *string `json:"status,omitempty"`
+}
+*/
+
+/* unreachable type SSLCertificateSelfManagedSSLCertificate
+// +kcc:proto=google.cloud.compute.v1.SslCertificateSelfManagedSslCertificate
+type SSLCertificateSelfManagedSSLCertificate struct {
+	// A local certificate file. The certificate must be in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateSelfManagedSslCertificate.certificate
+	Certificate *string `json:"certificate,omitempty"`
+
+	// A write-only private key in PEM format. Only insert requests will include this field.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateSelfManagedSslCertificate.private_key
+	PrivateKey *string `json:"privateKey,omitempty"`
 }
 */
 
