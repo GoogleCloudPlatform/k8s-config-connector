@@ -148,7 +148,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeDisk                                     | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeExternalVPNGateway                       | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeFirewallPolicy                           | False        | True        | False  | DCL        | True        |
-| compute.cnrm.cloud.google.com                 | ComputeFirewallPolicyAssociation                | False        | True        | False  | DCL        | False       |
+| compute.cnrm.cloud.google.com                 | ComputeFirewallPolicyAssociation                | False        | True        | False  | DCL        | True        |
 | compute.cnrm.cloud.google.com                 | ComputeFirewallPolicyRule                       | False        | True        | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeFirewall                                 | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeForwardingRule                           | False        | True        | False  | Terraform  | True        |

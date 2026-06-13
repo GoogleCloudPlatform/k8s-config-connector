@@ -19,6 +19,7 @@
 // proto.service: google.cloud.compute.v1
 // resource: ComputeFirewall:Firewall
 // resource: ComputeFirewallPolicy:FirewallPolicy
+// resource: ComputeFirewallPolicyAssociation:FirewallPolicyAssociation
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
 // resource: ComputeForwardingRule:ForwardingRule
 // resource: ComputeHTTPHealthCheck:HTTPHealthCheck
@@ -931,7 +932,8 @@ type FirewallPolicy struct {
 }
 */
 
-/* unreachable type FirewallPolicyAssociation
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.FirewallPolicyAssociation", skipping
+
 // +kcc:proto=google.cloud.compute.v1.FirewallPolicyAssociation
 type FirewallPolicyAssociation struct {
 	// The target that the firewall policy is attached to.
