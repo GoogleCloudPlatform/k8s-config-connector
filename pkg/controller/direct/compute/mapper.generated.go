@@ -439,54 +439,88 @@ func ComputeForwardingRuleStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeForwardingRuleStatus_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeForwardingRuleStatus_v1beta1_ToProto", skipping
+func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ForwardingRule{}
+	// MISSING: IPAddress
+	// MISSING: IPProtocol
+	// MISSING: AllPorts
+	// MISSING: AllowGlobalAccess
+	// MISSING: AllowPSCGlobalAccess
+	// MISSING: BackendService
+	out.BaseForwardingRule = in.BaseForwardingRule
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ExternalManagedBackendBucketMigrationState
+	// MISSING: ExternalManagedBackendBucketMigrationTestingPercentage
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: IPCollection
+	// MISSING: IPVersion
+	// MISSING: IsMirroringCollector
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LoadBalancingScheme
+	// MISSING: MetadataFilters
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: NetworkTier
+	// MISSING: NoAutomateDNSZone
+	// MISSING: PortRange
+	// MISSING: Ports
+	// MISSING: PSCConnectionID
+	// (near miss): "PSCConnectionID" vs "PscConnectionId"
+	// MISSING: PSCConnectionStatus
+	// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: ServiceDirectoryRegistrations
+	// MISSING: ServiceLabel
+	out.ServiceName = in.ServiceName
+	// MISSING: SourceIPRanges
+	// MISSING: Subnetwork
+	out.Target = in.Target
+	return out
+}
+*/
 
-	func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
+/* found existing non-generated mapping function "ComputeGlobalNetworkEndpointSpec_v1alpha1_FromProto", skipping
+func ComputeGlobalNetworkEndpointSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEndpoint) *krmcomputev1alpha1.ComputeGlobalNetworkEndpointSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeGlobalNetworkEndpointSpec{}
+	// MISSING: Annotations
+	// MISSING: ClientDestinationPort
+	out.FQDN = in.Fqdn
+	// MISSING: Instance
+	out.IPAddress = in.IpAddress
+	// MISSING: IPV6Address
+	// MISSING: Port
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeGlobalNetworkEndpointSpec_v1alpha1_ToProto", skipping
+
+	func ComputeGlobalNetworkEndpointSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeGlobalNetworkEndpointSpec) *pb.NetworkEndpoint {
 		if in == nil {
 			return nil
 		}
-		out := &pb.ForwardingRule{}
-		// MISSING: IPAddress
-		// MISSING: IPProtocol
-		// MISSING: AllPorts
-		// MISSING: AllowGlobalAccess
-		// MISSING: AllowPSCGlobalAccess
-		// MISSING: BackendService
-		out.BaseForwardingRule = in.BaseForwardingRule
-		out.CreationTimestamp = in.CreationTimestamp
-		// MISSING: Description
-		// MISSING: ExternalManagedBackendBucketMigrationState
-		// MISSING: ExternalManagedBackendBucketMigrationTestingPercentage
-		// MISSING: Fingerprint
-		// MISSING: ID
-		// MISSING: IPCollection
-		// MISSING: IPVersion
-		// MISSING: IsMirroringCollector
-		// MISSING: Kind
-		out.LabelFingerprint = in.LabelFingerprint
-		// MISSING: Labels
-		// MISSING: LoadBalancingScheme
-		// MISSING: MetadataFilters
-		// MISSING: Name
-		// MISSING: Network
-		// MISSING: NetworkTier
-		// MISSING: NoAutomateDNSZone
-		// MISSING: PortRange
-		// MISSING: Ports
-		// MISSING: PSCConnectionID
-		// (near miss): "PSCConnectionID" vs "PscConnectionId"
-		// MISSING: PSCConnectionStatus
-		// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
-		// MISSING: Region
-		out.SelfLink = in.SelfLink
-		// MISSING: SelfLinkWithID
-		// MISSING: ServiceDirectoryRegistrations
-		// MISSING: ServiceLabel
-		out.ServiceName = in.ServiceName
-		// MISSING: SourceIPRanges
-		// MISSING: Subnetwork
-		out.Target = in.Target
+		out := &pb.NetworkEndpoint{}
+		// MISSING: Annotations
+		// MISSING: ClientDestinationPort
+		out.Fqdn = in.FQDN
+		// MISSING: Instance
+		out.IpAddress = in.IPAddress
+		// MISSING: IPV6Address
+		// MISSING: Port
 		return out
 	}
 */
