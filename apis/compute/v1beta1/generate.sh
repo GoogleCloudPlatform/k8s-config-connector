@@ -27,6 +27,7 @@ go run . generate-types \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
   --resource ComputeFirewall:Firewall \
   --resource ComputeFirewallPolicy:FirewallPolicy \
+  --resource ComputeFirewallPolicyAssociation:FirewallPolicyAssociation \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeHTTPHealthCheck:HTTPHealthCheck \
