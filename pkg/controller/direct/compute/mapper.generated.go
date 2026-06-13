@@ -905,6 +905,156 @@ func ComputeInterconnectSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 }
 */
 
+/* found existing non-generated mapping function "ComputeManagedSSLCertificateObservedState_v1alpha1_FromProto", skipping
+func ComputeManagedSSLCertificateObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificate) *krmcomputev1alpha1.ComputeManagedSSLCertificateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeManagedSSLCertificateObservedState{}
+	// MISSING: Certificate
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ExpireTime = in.ExpireTime
+	out.ID = in.Id
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PrivateKey
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfManaged
+	out.SubjectAlternativeNames = in.SubjectAlternativeNames
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeManagedSSLCertificateObservedState_v1alpha1_ToProto", skipping
+func ComputeManagedSSLCertificateObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeManagedSSLCertificateObservedState) *pb.SslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificate{}
+	// MISSING: Certificate
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ExpireTime = in.ExpireTime
+	out.Id = in.ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PrivateKey
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfManaged
+	out.SubjectAlternativeNames = in.SubjectAlternativeNames
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeManagedSSLCertificateObservedState_v1beta1_FromProto", skipping
+func ComputeManagedSSLCertificateObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificate) *krm.ComputeManagedSSLCertificateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeManagedSSLCertificateObservedState{}
+	// MISSING: Certificate
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ExpireTime = in.ExpireTime
+	out.ID = in.Id
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PrivateKey
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfManaged
+	out.SubjectAlternativeNames = in.SubjectAlternativeNames
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeManagedSSLCertificateObservedState_v1beta1_ToProto", skipping
+
+	func ComputeManagedSSLCertificateObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeManagedSSLCertificateObservedState) *pb.SslCertificate {
+		if in == nil {
+			return nil
+		}
+		out := &pb.SslCertificate{}
+		// MISSING: Certificate
+		out.CreationTimestamp = in.CreationTimestamp
+		out.ExpireTime = in.ExpireTime
+		out.Id = in.ID
+		// MISSING: Kind
+		// MISSING: Name
+		// MISSING: PrivateKey
+		// MISSING: Region
+		out.SelfLink = in.SelfLink
+		// MISSING: SelfManaged
+		out.SubjectAlternativeNames = in.SubjectAlternativeNames
+		return out
+	}
+*/
+func ComputeManagedSSLCertificateSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificate) *krmcomputev1alpha1.ComputeManagedSSLCertificateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeManagedSSLCertificateSpec{}
+	// MISSING: Certificate
+	out.Description = in.Description
+	// MISSING: Kind
+	out.Managed = ManagedsslcertificateManaged_v1alpha1_FromProto(mapCtx, in.GetManaged())
+	// MISSING: Name
+	// MISSING: PrivateKey
+	// MISSING: Region
+	// MISSING: SelfManaged
+	out.Type = in.Type
+	return out
+}
+func ComputeManagedSSLCertificateSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeManagedSSLCertificateSpec) *pb.SslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificate{}
+	// MISSING: Certificate
+	out.Description = in.Description
+	// MISSING: Kind
+	out.Managed = ManagedsslcertificateManaged_v1alpha1_ToProto(mapCtx, in.Managed)
+	// MISSING: Name
+	// MISSING: PrivateKey
+	// MISSING: Region
+	// MISSING: SelfManaged
+	out.Type = in.Type
+	return out
+}
+func ComputeManagedSSLCertificateSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificate) *krm.ComputeManagedSSLCertificateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeManagedSSLCertificateSpec{}
+	// MISSING: Certificate
+	out.Description = in.Description
+	// MISSING: Kind
+	out.Managed = ManagedsslcertificateManaged_v1beta1_FromProto(mapCtx, in.GetManaged())
+	// MISSING: Name
+	// MISSING: PrivateKey
+	// MISSING: Region
+	// MISSING: SelfManaged
+	out.Type = in.Type
+	return out
+}
+func ComputeManagedSSLCertificateSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeManagedSSLCertificateSpec) *pb.SslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificate{}
+	// MISSING: Certificate
+	out.Description = in.Description
+	// MISSING: Kind
+	out.Managed = ManagedsslcertificateManaged_v1beta1_ToProto(mapCtx, in.Managed)
+	// MISSING: Name
+	// MISSING: PrivateKey
+	// MISSING: Region
+	// MISSING: SelfManaged
+	out.Type = in.Type
+	return out
+}
+
 /* found existing non-generated mapping function "ComputeNetworkAttachmentObservedState_v1alpha1_FromProto", skipping
 func ComputeNetworkAttachmentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkAttachment) *krmcomputev1alpha1.ComputeNetworkAttachmentObservedState {
 	if in == nil {
@@ -2246,6 +2396,46 @@ func InterconnectOutageNotification_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.Source = in.Source
 	out.StartTime = in.StartTime
 	out.State = in.State
+	return out
+}
+func ManagedsslcertificateManaged_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificateManagedSslCertificate) *krmcomputev1alpha1.ManagedsslcertificateManaged {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ManagedsslcertificateManaged{}
+	// MISSING: DomainStatus
+	out.Domains = in.Domains
+	// MISSING: Status
+	return out
+}
+func ManagedsslcertificateManaged_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ManagedsslcertificateManaged) *pb.SslCertificateManagedSslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificateManagedSslCertificate{}
+	// MISSING: DomainStatus
+	out.Domains = in.Domains
+	// MISSING: Status
+	return out
+}
+func ManagedsslcertificateManaged_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificateManagedSslCertificate) *krm.ManagedsslcertificateManaged {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ManagedsslcertificateManaged{}
+	// MISSING: DomainStatus
+	out.Domains = in.Domains
+	// MISSING: Status
+	return out
+}
+func ManagedsslcertificateManaged_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ManagedsslcertificateManaged) *pb.SslCertificateManagedSslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificateManagedSslCertificate{}
+	// MISSING: DomainStatus
+	out.Domains = in.Domains
+	// MISSING: Status
 	return out
 }
 func MetadataFilter_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilter) *krm.MetadataFilter {
