@@ -1,0 +1,5 @@
+### [2026-06-13] ComputeFirewallPolicyRule Direct Migration Verification
+- **Context**: Verifying and documenting the direct KRM types and `generate.sh` configuration for `ComputeFirewallPolicyRule` (GVK: `compute.cnrm.cloud.google.com/v1beta1, Kind: ComputeFirewallPolicyRule`).
+- **Problem**: The resource is already implemented as a direct controller and its types/CRDs are fully scaffolded, but the journal documenting its direct transition was missing.
+- **Solution**: Performed code/script verification of `apis/compute/v1beta1/generate.sh` and type/CRD declarations. Discovered that the types are correctly customized using hand-crafted overrides in `firewallpolicyrule_types.go` to provide first-class references (`ComputeNetworkRef`, `refs.IAMServiceAccountRef`), while the generator seamlessly skips them via `types.generated.go`.
+- **Impact**: Documents the direct-model correctness and ensures compliance with Config Connector engineering standards and the `kcc-agentic-journaler` guidelines.
