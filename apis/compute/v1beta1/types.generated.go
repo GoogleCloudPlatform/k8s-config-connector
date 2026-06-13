@@ -30,6 +30,7 @@
 // resource: ComputeHealthCheck:HealthCheck
 // resource: ComputeNodeGroup:NodeGroup
 // resource: ComputeInstance:Instance
+// resource: ComputeSharedVPCHostProject:Project
 
 package v1beta1
 
@@ -2007,6 +2008,98 @@ type NodeTemplateNodeTypeFlexibility struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Project", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Project
+type Project struct {
+	// [Output Only] The Cloud Armor tier for this project. It can be one of the following values: CA_STANDARD, CA_ENTERPRISE_PAYGO. If this field is not specified, it is assumed to be CA_STANDARD.
+	//  Check the CloudArmorTier enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.cloud_armor_tier
+	CloudArmorTier *string `json:"cloudArmorTier,omitempty"`
+
+	// Metadata key/value pairs available to all instances contained in this project. See Custom metadata for more information.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.common_instance_metadata
+	CommonInstanceMetadata *Metadata `json:"commonInstanceMetadata,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// This signifies the default network tier used for configuring resources of the project and can only take the following values: PREMIUM, STANDARD. Initially the default network tier is PREMIUM.
+	//  Check the DefaultNetworkTier enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.default_network_tier
+	DefaultNetworkTier *string `json:"defaultNetworkTier,omitempty"`
+
+	// [Output Only] Default service account used by VMs running in this project.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.default_service_account
+	DefaultServiceAccount *string `json:"defaultServiceAccount,omitempty"`
+
+	// An optional textual description of the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.description
+	Description *string `json:"description,omitempty"`
+
+	// An optional list of restricted features enabled for use on this project.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.enabled_features
+	EnabledFeatures []string `json:"enabledFeatures,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server. This is *not* the project ID, and is just a unique ID used by Compute Engine to identify resources.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#project for projects.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The project ID. For example: my-example-project. Use the project ID to make requests to Compute Engine.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] Quotas assigned to this project.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.quotas
+	Quotas []Quota `json:"quotas,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// An optional naming prefix for daily usage reports and the Google Cloud Storage bucket where they are stored.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.usage_export_location
+	UsageExportLocation *UsageExportLocation `json:"usageExportLocation,omitempty"`
+
+	// [Output Only] Default internal DNS setting used by VMs running in this project.
+	//  Check the VmDnsSetting enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.vm_dns_setting
+	VMDNSSetting *string `json:"vmDNSSetting,omitempty"`
+
+	// [Output Only] The role this project has in a shared VPC configuration. Currently, only projects with the host role, which is specified by the value HOST, are differentiated.
+	//  Check the XpnProjectStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Project.xpn_project_status
+	XpnProjectStatus *string `json:"xpnProjectStatus,omitempty"`
+}
+*/
+
+/* unreachable type Quota
+// +kcc:proto=google.cloud.compute.v1.Quota
+type Quota struct {
+	// [Output Only] Quota limit for this metric.
+	// +kcc:proto:field=google.cloud.compute.v1.Quota.limit
+	Limit *float64 `json:"limit,omitempty"`
+
+	// [Output Only] Name of the quota metric.
+	//  Check the Metric enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Quota.metric
+	Metric *string `json:"metric,omitempty"`
+
+	// [Output Only] Owning resource. This is the resource on which this quota is applied.
+	// +kcc:proto:field=google.cloud.compute.v1.Quota.owner
+	Owner *string `json:"owner,omitempty"`
+
+	// [Output Only] Current usage of this metric.
+	// +kcc:proto:field=google.cloud.compute.v1.Quota.usage
+	Usage *float64 `json:"usage,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Reservation", skipping
 
 // +kcc:proto=google.cloud.compute.v1.Reservation
@@ -3628,5 +3721,18 @@ type UpcomingMaintenance struct {
 	// The current start time of the maintenance window. This timestamp value is in RFC3339 text format.
 	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_start_time
 	WindowStartTime *string `json:"windowStartTime,omitempty"`
+}
+*/
+
+/* unreachable type UsageExportLocation
+// +kcc:proto=google.cloud.compute.v1.UsageExportLocation
+type UsageExportLocation struct {
+	// The name of an existing bucket in Cloud Storage where the usage report object is stored. The Google Service Account is granted write access to this bucket. This can either be the bucket name by itself, such as example-bucket, or the bucket name with gs:// or https://storage.googleapis.com/ in front of it, such as gs://example-bucket.
+	// +kcc:proto:field=google.cloud.compute.v1.UsageExportLocation.bucket_name
+	BucketName *string `json:"bucketName,omitempty"`
+
+	// An optional prefix for the name of the usage report object stored in bucketName. If not supplied, defaults to usage_gce. The report is stored as a CSV file named report_name_prefix_gce_YYYYMMDD.csv where YYYYMMDD is the day of the usage according to Pacific Time. If you supply a prefix, it should conform to Cloud Storage object naming conventions.
+	// +kcc:proto:field=google.cloud.compute.v1.UsageExportLocation.report_name_prefix
+	ReportNamePrefix *string `json:"reportNamePrefix,omitempty"`
 }
 */
