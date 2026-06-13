@@ -251,13 +251,30 @@ found existing non-generated mapping function "KMSImportJobSpec_ToProto", skippi
 		return out
 	}
 */
+func KMSKeyHandleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyHandle) *krm.KMSKeyHandleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KMSKeyHandleObservedState{}
+	// MISSING: Name
+	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
+	return out
+}
+func KMSKeyHandleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyHandleObservedState) *pb.KeyHandle {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyHandle{}
+	// MISSING: Name
+	out.KmsKey = direct.ValueOf(in.KMSKey)
+	return out
+}
 func KMSKeyHandleSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyHandle) *krm.KMSKeyHandleSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.KMSKeyHandleSpec{}
 	// MISSING: Name
-	// MISSING: KMSKey
 	out.ResourceTypeSelector = direct.LazyPtr(in.GetResourceTypeSelector())
 	return out
 }
@@ -267,7 +284,6 @@ func KMSKeyHandleSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyHandleSpe
 	}
 	out := &pb.KeyHandle{}
 	// MISSING: Name
-	// MISSING: KMSKey
 	out.ResourceTypeSelector = direct.ValueOf(in.ResourceTypeSelector)
 	return out
 }
