@@ -1,5 +1,8 @@
 schema:
+- spec._no_description.field3=true
++ spec._no_description.field4=true
 + spec.field1=boolean
 - spec.field1=string
 - spec.field3[]=string
++ spec.field4._no_description.subfield=true
 + spec.field4.subfield=string

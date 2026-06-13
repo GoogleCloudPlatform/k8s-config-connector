@@ -397,7 +397,19 @@ oneOf:
 			}
 		} else if signature == "external,name,namespace" {
 			ruleYAML = refRuleWithoutKind
-		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ComputeInstance" || kind == "ComputeDisk" || kind == "ComputeSnapshot" || kind == "ComputeVPNTunnel" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig" || kind == "ComputeBackendServiceSignedURLKey" || kind == "KMSSecretCiphertext" || kind == "ComputeSSLCertificate") {
+		} else if signature == "instanceGroupRef,networkEndpointGroupRef" && kind == "ComputeBackendService" {
+			ruleYAML = `
+oneOf:
+- required: [instanceGroupRef]
+- required: [networkEndpointGroupRef]
+`
+		} else if signature == "healthCheckRef,httpHealthCheckRef" && kind == "ComputeBackendService" {
+			ruleYAML = `
+oneOf:
+- required: [healthCheckRef]
+- required: [httpHealthCheckRef]
+`
+		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ComputeInstance" || kind == "ComputeDisk" || kind == "ComputeSnapshot" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig" || kind == "ComputeBackendServiceSignedURLKey" || kind == "KMSSecretCiphertext" || kind == "ComputeSSLCertificate" || kind == "ComputeBackendService") {
 			ruleYAML = legacyRefRule
 		} else {
 			if strings.HasPrefix(signature, "external,") {
