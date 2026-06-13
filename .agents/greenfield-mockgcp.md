@@ -1,7 +1,7 @@
 ---
 name: Greenfield MockGCP Alignment
 description: Identifies greenfield resources that have completed Phase 2 (controller and E2E fixtures) but lack a high fidelity MockGCP implementation or alignment, and creates tracking issues for them.
-schedule: "@daily"
+schedule: "never"
 skipPR: true
 ---
 
