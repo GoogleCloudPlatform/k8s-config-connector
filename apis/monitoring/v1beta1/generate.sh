@@ -27,6 +27,7 @@ go run . generate-types \
   --service google.monitoring.v3 \
   --api-version monitoring.cnrm.cloud.google.com/v1beta1  \
   --include-skipped-output \
+  --resource MonitoringMetricDescriptor:google.api.MetricDescriptor \
   --resource MonitoringNotificationChannel:NotificationChannel \
   --resource MonitoringUptimeCheckConfig:UptimeCheckConfig
 
