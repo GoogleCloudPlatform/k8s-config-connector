@@ -21,6 +21,7 @@
 // resource: ComputeNetworkAttachment:NetworkAttachment
 // resource: ComputeInterconnect:Interconnect
 // resource: ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation
+// resource: ComputeInstanceGroupNamedPort:NamedPort
 
 package v1alpha1
 
@@ -300,6 +301,20 @@ type InterconnectOutageNotification struct {
 	//  Check the State enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectOutageNotification.state
 	State *string `json:"state,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NamedPort", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NamedPort
+type NamedPort struct {
+	// The name for this named port. The name must be 1-63 characters long, and comply with RFC1035.
+	// +kcc:proto:field=google.cloud.compute.v1.NamedPort.name
+	Name *string `json:"name,omitempty"`
+
+	// The port number, which can be a value between 1 and 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.NamedPort.port
+	Port *int32 `json:"port,omitempty"`
 }
 */
 
