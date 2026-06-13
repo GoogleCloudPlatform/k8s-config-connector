@@ -23,4 +23,6 @@ package v1alpha1
 
 type AIPlatformModelExpansion interface{}
 
+type VertexAIFeatureOnlineStoreExpansion interface{}
+
 type VertexAITrainingPipelineExpansion interface{}
