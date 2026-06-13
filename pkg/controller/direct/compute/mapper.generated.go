@@ -168,6 +168,40 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
+func ComputeBackendBucketSignedURLKeyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SignedUrlKey) *krmcomputev1alpha1.ComputeBackendBucketSignedURLKeyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeBackendBucketSignedURLKeyObservedState{}
+	// MISSING: KeyName
+	return out
+}
+func ComputeBackendBucketSignedURLKeyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeBackendBucketSignedURLKeyObservedState) *pb.SignedUrlKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SignedUrlKey{}
+	// MISSING: KeyName
+	return out
+}
+func ComputeBackendBucketSignedURLKeySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SignedUrlKey) *krmcomputev1alpha1.ComputeBackendBucketSignedURLKeySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeBackendBucketSignedURLKeySpec{}
+	// MISSING: KeyName
+	out.KeyValue = in.KeyValue
+	return out
+}
+func ComputeBackendBucketSignedURLKeySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeBackendBucketSignedURLKeySpec) *pb.SignedUrlKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SignedUrlKey{}
+	// MISSING: KeyName
+	out.KeyValue = in.KeyValue
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
