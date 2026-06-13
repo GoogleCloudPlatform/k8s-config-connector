@@ -109,7 +109,6 @@ BLOCKED_KINDS=(
     "VertexAIModelDeploymentMonitoringJob"
     "VertexAIIndexEndpoint"
     "VertexAIIndex"
-    "VertexAIHyperparameterTuningJob"
     "VertexAIFeatureOnlineStore"
     "VertexAIFeatureGroup"
     "SecretManagerRegionalSecret"

@@ -1052,7 +1052,6 @@ func TestCRDObjectTypes(t *testing.T) {
 		"dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com":                   true, // status.observedState is an empty object
 		"billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com":                    true, // spec.amount.lastPeriodAmount is an empty object
 		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":   true, // status.observedState is an empty object
-		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                             true, // status.observedState.supportedExportFormats[] is an empty object
 		"apigeeenvironments.apigee.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
 		"apigeeorganizations.apigee.cnrm.cloud.google.com":                              true, // status.observedState is an empty object
 		"artifactregistryvpcscconfigs.artifactregistry.cnrm.cloud.google.com":           true, // status.observedState is an empty object

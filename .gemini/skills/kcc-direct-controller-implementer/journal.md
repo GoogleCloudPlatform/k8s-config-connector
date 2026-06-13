@@ -17,3 +17,8 @@
 - **Problem**: Enums in `types.generated.go` are generated as `*string` (or a type alias for string), but proto expects a specific enum type (e.g., `pb.ClassificationType`). Using `direct.Enum_ToProto(mapCtx, in.ClassificationType)` results in compilation error `cannot infer U`.
 - **Solution**: Use explicit type instantiation: `direct.Enum_ToProto[pb.ClassificationType](mapCtx, in.ClassificationType)`.
 - **Impact**: Ensures correct type inference and compilation for enum mapping.
+
+### [2026-05-19] Vertex AI REST Clients are in apiv1beta1
+- **Context**: Implementing GCP client for `VertexAIHyperparameterTuningJob`.
+- **Problem**: `cloud.google.com/go/aiplatform/apiv1` does not expose `NewJobRESTClient` (only `NewJobClient` for gRPC). KCC Direct Controllers typically require REST clients.
+- **Solution**: Use `cloud.google.com/go/aiplatform/apiv1beta1` which exports the `NewJobRESTClient` constructor, ensuring that the controller uses REST instead of gRPC.

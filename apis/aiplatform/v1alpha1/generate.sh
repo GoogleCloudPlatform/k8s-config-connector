@@ -25,13 +25,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 go run . generate-types \
-    --service google.cloud.aiplatform.v1 \
-    --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
-    --resource VertexAISpecialistPool:SpecialistPool
+  --service google.cloud.aiplatform.v1 \
+  --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+  --resource AIPlatformModel:Model \
+  --resource VertexAIHyperparameterTuningJob:HyperparameterTuningJob \
+  --resource VertexAISpecialistPool:SpecialistPool
 
-# Revert types.generated.go to avoid deleting types of other resources in the same package
-git checkout HEAD -- "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+cd ${REPO_ROOT}
+python3 apis/aiplatform/v1alpha1/prune_types.py
 
+cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-mapper \
     --service google.cloud.aiplatform.v1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
