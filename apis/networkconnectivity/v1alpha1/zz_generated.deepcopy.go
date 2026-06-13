@@ -457,7 +457,7 @@ func (in *NetworkConnectivityRegionalEndpointSpec) DeepCopyInto(out *NetworkConn
 	}
 	if in.AddressRef != nil {
 		in, out := &in.AddressRef, &out.AddressRef
-		*out = new(v1beta1.ComputeAddressRef)
+		*out = new(computev1beta1.ComputeAddressRef)
 		**out = **in
 	}
 	if in.Description != nil {
