@@ -660,6 +660,11 @@ func (in *MonitoringNotificationChannelSpec) DeepCopyInto(out *MonitoringNotific
 		*out = new(string)
 		**out = **in
 	}
+	if in.DisplayName != nil {
+		in, out := &in.DisplayName, &out.DisplayName
+		*out = new(string)
+		**out = **in
+	}
 	if in.Enabled != nil {
 		in, out := &in.Enabled, &out.Enabled
 		*out = new(bool)
@@ -672,6 +677,13 @@ func (in *MonitoringNotificationChannelSpec) DeepCopyInto(out *MonitoringNotific
 	}
 	if in.Labels != nil {
 		in, out := &in.Labels, &out.Labels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
+	if in.UserLabels != nil {
+		in, out := &in.UserLabels, &out.UserLabels
 		*out = make(map[string]string, len(*in))
 		for key, val := range *in {
 			(*out)[key] = val

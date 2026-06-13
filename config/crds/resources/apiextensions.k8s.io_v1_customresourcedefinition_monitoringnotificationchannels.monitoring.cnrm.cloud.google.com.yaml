@@ -71,6 +71,13 @@ spec:
                   the display name, for the channel. This may not exceed 1024 Unicode
                   characters.
                 type: string
+              displayName:
+                description: An optional human-readable name for this notification
+                  channel. It is recommended that you specify a non-empty and unique
+                  name in order to make it easier to identify the channels in your
+                  project, though this is not enforced. The display name is limited
+                  to 512 Unicode characters.
+                type: string
               enabled:
                 description: Whether notifications are forwarded to the described
                   channel. This makes it possible to disable delivery of notifications
@@ -202,6 +209,14 @@ spec:
                   the value of the NotificationChannelDescriptor.type field. See https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.notificationChannelDescriptors/list
                   to get the list of valid values such as "email", "slack", etc...
                 type: string
+              userLabels:
+                additionalProperties:
+                  type: string
+                description: User-supplied key/value data that does not need to conform
+                  to the corresponding `NotificationChannelDescriptor`'s schema, unlike
+                  the `labels` field. This field is intended to be used for organizing
+                  and identifying the `NotificationChannel` objects.
+                type: object
             required:
             - type
             type: object

@@ -63,10 +63,10 @@ func MonitoringNotificationChannelSpec_FromProto(mapCtx *direct.MapContext, in *
 	out := &krm.MonitoringNotificationChannelSpec{}
 	out.Type = direct.LazyPtr(in.GetType())
 	// MISSING: Name
-	// MISSING: DisplayName
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Labels = in.Labels
-	// MISSING: UserLabels
+	out.UserLabels = in.UserLabels
 	// MISSING: VerificationStatus
 	out.Enabled = direct.BoolValue_FromProto(mapCtx, in.GetEnabled())
 	// MISSING: CreationRecord
@@ -80,10 +80,10 @@ func MonitoringNotificationChannelSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out := &pb.NotificationChannel{}
 	out.Type = direct.ValueOf(in.Type)
 	// MISSING: Name
-	// MISSING: DisplayName
+	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Labels = in.Labels
-	// MISSING: UserLabels
+	out.UserLabels = in.UserLabels
 	// MISSING: VerificationStatus
 	out.Enabled = direct.BoolValue_ToProto(mapCtx, in.Enabled)
 	// MISSING: CreationRecord
