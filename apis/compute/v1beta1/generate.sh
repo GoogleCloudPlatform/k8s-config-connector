@@ -41,6 +41,7 @@ go run . generate-types \
   --resource ComputeNodeGroup:NodeGroup \
   --resource ComputeInstance:Instance \
   --resource ComputeHTTPHealthCheck:HTTPHealthCheck \
+  --resource ComputePacketMirroring:PacketMirroring \
   --include-skipped-output
 
 go run . generate-mapper \
