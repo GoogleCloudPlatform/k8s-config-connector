@@ -19,7 +19,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -69,9 +68,8 @@ func (r *ForwardingRuleRef) SetExternal(ref string) {
 }
 
 func (r *ForwardingRuleRef) ValidateExternal(ref string) error {
-	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
 	id := &ComputeForwardingRuleIdentity{}
-	if err := id.FromExternal(trimmedRef); err != nil {
+	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
@@ -86,18 +84,13 @@ func (r *ForwardingRuleRef) ParseExternalToIdentity() (identity.Identity, error)
 }
 
 func (r *ForwardingRuleRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.External != "" {
-		r.External = apirefs.TrimComputeURIPrefix(r.External)
-	}
-
 	fallback := func(u *unstructured.Unstructured) string {
 		// Get external from status.selfLink. This ensures backward compatibility for TF/DCL-based resources that lack status.externalRef.
 		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
 		if selfLink != "" {
-			trimmed := apirefs.TrimComputeURIPrefix(selfLink)
 			id := &ComputeForwardingRuleIdentity{}
-			if err := id.FromExternal(trimmed); err == nil {
-				return trimmed
+			if err := id.FromExternal(selfLink); err == nil {
+				return id.String()
 			}
 		}
 

@@ -42,8 +42,12 @@ type ComputeForwardingRuleIdentity struct {
 	ForwardingRule string
 }
 
+func (i *ComputeForwardingRuleIdentity) IsGlobal() bool {
+	return i.Region == "" || i.Region == "global"
+}
+
 func (i *ComputeForwardingRuleIdentity) String() string {
-	if i.Region != "" && i.Region != "global" {
+	if !i.IsGlobal() {
 		return ComputeRegionalForwardingRuleIdentityFormat.ToString(*i)
 	}
 	return ComputeGlobalForwardingRuleIdentityFormat.ToString(*i)
@@ -69,7 +73,7 @@ func (i *ComputeForwardingRuleIdentity) Host() string {
 }
 
 func (i *ComputeForwardingRuleIdentity) ParentString() string {
-	if i.Region != "" && i.Region != "global" {
+	if !i.IsGlobal() {
 		return fmt.Sprintf("projects/%s/regions/%s", i.Project, i.Region)
 	}
 	return fmt.Sprintf("projects/%s/global", i.Project)

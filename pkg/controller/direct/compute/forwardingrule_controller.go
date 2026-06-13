@@ -87,15 +87,12 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, op *directba
 		reader:  reader,
 	}
 
-	// Get region
-	region := id.Region
-
 	// Get GCP client
 	gcpClient, err := newGCPClient(m.config)
 	if err != nil {
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
-	if region == "global" {
+	if id.IsGlobal() {
 		globalForwardingRulesClient, err := gcpClient.newGlobalForwardingRuleClient(ctx)
 		if err != nil {
 			return nil, err
@@ -167,7 +164,7 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 
 	// Create forwarding rule(labels are not set during Insert)
 	op := &gcp.Operation{}
-	if a.id.Region == "global" {
+	if a.id.IsGlobal() {
 		req := &computepb.InsertGlobalForwardingRuleRequest{
 			ForwardingRuleResource: forwardingRule,
 			Project:                a.id.Project,
@@ -326,7 +323,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	targetMatchStatus := IsSelfLinkEqual(forwardingRule.Target, a.desired.Status.Target)
 	if !targetMatchSpec || (a.desired.Status.Target != nil && !targetMatchStatus) {
 		report.AddField("target", a.actual.Target, forwardingRule.Target)
-		if a.id.Region == "global" {
+		if a.id.IsGlobal() {
 			setTargetReq := &computepb.SetTargetGlobalForwardingRuleRequest{
 				ForwardingRule:          a.id.ForwardingRule,
 				TargetReferenceResource: &computepb.TargetReference{Target: forwardingRule.Target},
@@ -405,7 +402,7 @@ func (a *forwardingRuleAdapter) Delete(ctx context.Context, deleteOp *directbase
 
 	var err error
 	op := &gcp.Operation{}
-	if a.id.Region == "global" {
+	if a.id.IsGlobal() {
 		req := &computepb.DeleteGlobalForwardingRuleRequest{
 			ForwardingRule: a.id.ForwardingRule,
 			Project:        a.id.Project,
@@ -433,7 +430,7 @@ func (a *forwardingRuleAdapter) Delete(ctx context.Context, deleteOp *directbase
 }
 
 func (a *forwardingRuleAdapter) get(ctx context.Context) (*computepb.ForwardingRule, error) {
-	if a.id.Region == "global" {
+	if a.id.IsGlobal() {
 		getReq := &computepb.GetGlobalForwardingRuleRequest{
 			ForwardingRule: a.id.ForwardingRule,
 			Project:        a.id.Project,
@@ -452,7 +449,7 @@ func (a *forwardingRuleAdapter) get(ctx context.Context) (*computepb.ForwardingR
 func (a *forwardingRuleAdapter) setLabels(ctx context.Context, fingerprint *string, labels map[string]string) (*gcp.Operation, error) {
 	op := &gcp.Operation{}
 	var err error
-	if a.id.Region == "global" {
+	if a.id.IsGlobal() {
 		setLabelsReq := &computepb.SetLabelsGlobalForwardingRuleRequest{
 			Resource:                       a.id.ForwardingRule,
 			GlobalSetLabelsRequestResource: &computepb.GlobalSetLabelsRequest{LabelFingerprint: fingerprint, Labels: labels},
