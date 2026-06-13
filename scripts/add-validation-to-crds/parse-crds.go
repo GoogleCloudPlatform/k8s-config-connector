@@ -397,7 +397,7 @@ oneOf:
 			}
 		} else if signature == "external,name,namespace" {
 			ruleYAML = refRuleWithoutKind
-		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ComputeInstance" || kind == "ComputeDisk" || kind == "ComputeSnapshot" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig" || kind == "ComputeBackendServiceSignedURLKey") {
+		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ComputeInstance" || kind == "ComputeDisk" || kind == "ComputeSnapshot" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig" || kind == "ComputeBackendServiceSignedURLKey" || kind == "KMSSecretCiphertext") {
 			ruleYAML = legacyRefRule
 		} else {
 			if strings.HasPrefix(signature, "external,") {
