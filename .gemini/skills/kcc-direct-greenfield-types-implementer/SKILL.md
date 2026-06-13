@@ -44,3 +44,21 @@ Apply the baseline validations from `kcc-direct-base-types-implementer`, plus th
 
 ### 4. Journaling
 Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
+
+## Greenfield vs. Brownfield (Pre-existing Resources)
+
+While this skill primarily targets new (greenfield) resources, it is also applied when scaffolding direct types for pre-existing (brownfield) resources currently managed by other controllers (e.g., Terraform or DCL). In these cases, you must satisfy additional strict constraints:
+
+### 1. Schema Compatibility (`dev/tasks/diff-crds`)
+- When migrating a pre-existing resource, you **MUST NOT** introduce schema breaking changes or unwanted schema drift.
+- Use the `dev/tasks/diff-crds` script to verify that the generated CRD is strictly compatible with the baseline CRD.
+
+### 2. Reference Fields Compatibility
+- Standard references (e.g., `k8sv1alpha1.ResourceRef`) contain a `kind` property.
+- If the pre-existing/baseline CRD did not define a `kind` property for a reference field, introducing one will trigger validation schema mismatches.
+- To maintain compatibility, you must declare a custom reference type (e.g., `InstanceResourceRef`) that omits the `kind` property, and use it in place of standard reference types for those fields.
+
+### 3. Hand-coded Mapper Stubs
+- Complex custom structures may not automatically map to/from Protobuf types.
+- If the mapper generator (`generate-mapper`) fails or raises type mismatch errors, you must hand-code the mapper functions or stubs in the corresponding direct controller package (e.g., `pkg/controller/direct/<service>/<resource>_mapper.go`) to satisfy signature requirements and keep the build clean.
+
