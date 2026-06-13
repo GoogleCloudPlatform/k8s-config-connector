@@ -164,7 +164,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeNetworkFirewallPolicy                    | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkFirewallPolicyAssociation         | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkFirewallPolicyRule                | True         | False       | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeNetworkPeeringRoutesConfig               | True         | False       | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeNetworkPeeringRoutesConfig               | True         | False       | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkPeering                           | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeNetwork                                  | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeNodeGroup                                | False        | True        | False  | Terraform  | True        |

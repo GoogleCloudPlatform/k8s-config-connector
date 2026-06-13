@@ -1167,6 +1167,58 @@ func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapCo
 }
 */
 
+/* found existing non-generated mapping function "ComputeNetworkPeeringRoutesConfigSpec_v1alpha1_FromProto", skipping
+func ComputeNetworkPeeringRoutesConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeering) *krmcomputev1alpha1.ComputeNetworkPeeringRoutesConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeNetworkPeeringRoutesConfigSpec{}
+	// MISSING: AutoCreateRoutes
+	// MISSING: ConnectionStatus
+	// MISSING: ExchangeSubnetRoutes
+	out.ExportCustomRoutes = in.ExportCustomRoutes
+	// MISSING: ExportSubnetRoutesWithPublicIP
+	out.ImportCustomRoutes = in.ImportCustomRoutes
+	// MISSING: ImportSubnetRoutesWithPublicIP
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: PeerMtu
+	// MISSING: StackType
+	// MISSING: State
+	// MISSING: StateDetails
+	// MISSING: UpdateStrategy
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeNetworkPeeringRoutesConfigSpec_v1alpha1_ToProto", skipping
+func ComputeNetworkPeeringRoutesConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkPeeringRoutesConfigSpec) *pb.NetworkPeering {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPeering{}
+	// MISSING: AutoCreateRoutes
+	// MISSING: ConnectionStatus
+	// MISSING: ExchangeSubnetRoutes
+	out.ExportCustomRoutes = in.ExportCustomRoutes
+	// MISSING: ExportSubnetRoutesWithPublicIP
+	out.ImportCustomRoutes = in.ImportCustomRoutes
+	// MISSING: ImportSubnetRoutesWithPublicIP
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	// MISSING: PeerMtu
+	// MISSING: StackType
+	// MISSING: State
+	// MISSING: StateDetails
+	// MISSING: UpdateStrategy
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeNetworkPeeringSpec_v1beta1_FromProto", skipping
 func ComputeNetworkPeeringSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeering) *krm.ComputeNetworkPeeringSpec {
 	if in == nil {
