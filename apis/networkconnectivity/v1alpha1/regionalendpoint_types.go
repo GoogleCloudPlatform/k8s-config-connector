@@ -44,7 +44,7 @@ type NetworkConnectivityRegionalEndpointSpec struct {
 
 	// Optional. The IP Address of the Regional Endpoint. When no address is provided, an IP from the subnetwork is allocated.
 	// +kubebuilder:validation:Optional
-	AddressRef *refsv1beta1.ComputeAddressRef `json:"addressRef,omitempty"`
+	AddressRef *computev1beta1.ComputeAddressRef `json:"addressRef,omitempty"`
 
 	// Optional. A description of this resource.
 	// +kubebuilder:validation:Optional

@@ -18,7 +18,6 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "google.golang.org/api/dns/v1"
 )
@@ -245,7 +244,7 @@ func RecordsetInternalLoadBalancers_FromAPI(mapCtx *direct.MapContext, in *api.R
 		return nil
 	}
 	out := &krm.RecordsetInternalLoadBalancers{}
-	out.IpAddressRef = refs.ComputeAddressRef{External: in.IpAddress}
+	out.IpAddressRef = computev1beta1.ComputeAddressRef{External: in.IpAddress}
 	out.IpProtocol = in.IpProtocol
 	out.LoadBalancerType = in.LoadBalancerType
 	out.NetworkRef = computev1beta1.ComputeNetworkRef{External: in.NetworkUrl}
