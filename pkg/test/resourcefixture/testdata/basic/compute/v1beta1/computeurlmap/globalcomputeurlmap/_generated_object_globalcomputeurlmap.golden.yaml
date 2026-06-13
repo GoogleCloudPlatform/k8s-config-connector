@@ -1,0 +1,59 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: ${urlMapID}
+  namespace: ${uniqueId}
+spec:
+  defaultCustomErrorResponsePolicy:
+    errorResponseRule:
+    - matchResponseCodes:
+      - 5xx
+      overrideResponseCode: 503
+      path: /5xx-updated.html
+    errorServiceRef:
+      name: ${backendBucketID}
+  defaultService:
+    backendServiceRef:
+      name: ${backendServiceID}
+  description: updated test URLMap
+  hostRule:
+  - hosts:
+    - mysite.com
+    pathMatcher: allpaths
+  location: global
+  pathMatcher:
+  - defaultCustomErrorResponsePolicy:
+      errorResponseRule:
+      - matchResponseCodes:
+        - 4xx
+        overrideResponseCode: 403
+        path: /4xx-updated.html
+      errorServiceRef:
+        name: ${backendBucketID}
+    defaultService:
+      backendBucketRef:
+        name: ${backendBucketID}
+    name: allpaths
+  resourceID: ${urlMapID}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTimestamp: "1970-01-01T00:00:00Z"
+  fingerprint: abcdef0123A=
+  mapId: 1111111111111111
+  observedGeneration: 3
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
