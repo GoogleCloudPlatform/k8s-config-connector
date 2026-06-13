@@ -20,6 +20,7 @@ package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -33,9 +34,46 @@ func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 		ComputeForwardingRuleStatus_v1beta1_FromProto, ComputeForwardingRuleStatus_v1beta1_ToProto,
 	)
 
+	// Field Comparison & Mapping Documentation:
+	//
+	// KRM Spec Fields:
+	// - allPorts                      -> f.SpecField(".all_ports")
+	// - allowGlobalAccess             -> f.SpecField(".allow_global_access")
+	// - allowPscGlobalAccess          -> f.SpecField(".allow_psc_global_access")
+	// - backendServiceRef             -> f.SpecField(".backend_service")
+	// - description                   -> f.SpecField(".description")
+	// - ipAddress                     -> f.SpecField(".I_p_address") (Protobuf field name is I_p_address)
+	// - ipProtocol                    -> f.SpecField(".I_p_protocol") (Protobuf field name is I_p_protocol)
+	// - ipVersion                     -> f.SpecField(".ip_version")
+	// - isMirroringCollector          -> f.SpecField(".is_mirroring_collector")
+	// - loadBalancingScheme           -> f.SpecField(".load_balancing_scheme")
+	// - location                      -> f.Unimplemented_Identity(".region") (part of Resource Identity/URL)
+	// - metadataFilters               -> f.SpecField(".metadata_filters")
+	// - networkRef                    -> f.SpecField(".network")
+	// - networkTier                   -> f.SpecField(".network_tier")
+	// - noAutomateDnsZone             -> f.SpecField(".no_automate_dns_zone")
+	// - portRange                     -> f.SpecField(".port_range")
+	// - ports                         -> f.SpecField(".ports")
+	// - resourceID                    -> f.Unimplemented_Identity(".name") (part of Resource Identity/URL)
+	// - serviceDirectoryRegistrations -> f.SpecField(".service_directory_registrations") (ServiceDirectoryRegion is filtered/cleared because it's not in KRM)
+	// - serviceLabel                  -> f.SpecField(".service_label")
+	// - sourceIpRanges                -> f.SpecField(".source_ip_ranges")
+	// - subnetworkRef                 -> f.SpecField(".subnetwork")
+	// - target                        -> f.SpecField(".target") (fuzzed as SpecField, filtered to valid target URL, ignored in Status to avoid collision)
+	//
+	// KRM Status Fields:
+	// - baseForwardingRule            -> f.StatusField(".base_forwarding_rule")
+	// - creationTimestamp             -> f.StatusField(".creation_timestamp")
+	// - labelFingerprint              -> f.StatusField(".label_fingerprint")
+	// - pscConnectionId               -> f.StatusField(".psc_connection_id")
+	// - pscConnectionStatus           -> f.StatusField(".psc_connection_status")
+	// - selfLink                      -> f.StatusField(".self_link")
+	// - serviceName                   -> f.StatusField(".service_name")
+	// - target                        -> Ignored in Status (listed as f.SpecField to allow correct Spec roundtrip)
+
 	// Spec fields
-	f.SpecField(".ip_address")
-	f.SpecField(".ip_protocol")
+	f.SpecField(".I_p_address")
+	f.SpecField(".I_p_protocol")
 	f.SpecField(".all_ports")
 	f.SpecField(".allow_global_access")
 	f.SpecField(".allow_psc_global_access")
@@ -50,9 +88,11 @@ func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".no_automate_dns_zone")
 	f.SpecField(".port_range")
 	f.SpecField(".ports")
+	f.SpecField(".service_directory_registrations")
 	f.SpecField(".service_label")
 	f.SpecField(".source_ip_ranges")
 	f.SpecField(".subnetwork")
+	f.SpecField(".target")
 
 	// Status fields
 	f.StatusField(".base_forwarding_rule")
@@ -62,7 +102,6 @@ func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".psc_connection_status")
 	f.StatusField(".self_link")
 	f.StatusField(".service_name")
-	f.StatusField(".target")
 
 	// Unimplemented fields
 	f.Unimplemented_Identity(".name")
@@ -70,17 +109,29 @@ func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_Internal(".kind")
 	f.Unimplemented_Internal(".fingerprint")
-	f.Unimplemented_Internal(".I_p_protocol")
-	f.Unimplemented_Internal(".I_p_address")
 
 	f.Unimplemented_LabelsAnnotations(".labels")
 
 	f.Unimplemented_NotYetTriaged(".id")
 	f.Unimplemented_NotYetTriaged(".ip_collection")
-	f.Unimplemented_NotYetTriaged(".service_directory_registrations")
 	f.Unimplemented_NotYetTriaged(".external_managed_backend_bucket_migration_testing_percentage")
 	f.Unimplemented_NotYetTriaged(".self_link_with_id")
-	f.Unimplemented_NotYetTriaged(".target")
 	f.Unimplemented_NotYetTriaged(".external_managed_backend_bucket_migration_state")
+
+	// Fuzzer filters for non-trivial fields
+	f.FilterSpec = func(in *pb.ForwardingRule) {
+		if in.Target != nil {
+			// Set target to a valid target URL so reference mapper doesn't fail
+			in.Target = direct.LazyPtr("projects/p/global/targetHttpProxies/t")
+		}
+		for _, reg := range in.ServiceDirectoryRegistrations {
+			if reg != nil {
+				// Clear field not mapped in KRM
+				reg.ServiceDirectoryRegion = nil
+			}
+		}
+	}
+	f.FilterStatus = f.FilterSpec
+
 	return f
 }
