@@ -27,6 +27,7 @@
 // resource: ComputeInstance:Instance
 // resource: ComputeInstanceGroup:InstanceGroup
 // resource: ComputeNetwork:Network
+// resource: ComputeNetworkFirewallPolicy:FirewallPolicy
 // resource: ComputeNetworkPeering:NetworkPeering
 // resource: ComputeNodeGroup:NodeGroup
 // resource: ComputeNodeTemplate:NodeTemplate
