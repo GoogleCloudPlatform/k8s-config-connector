@@ -244,30 +244,124 @@ func ComputeFirewallPolicyRuleStatus_v1beta1_FromProto(mapCtx *direct.MapContext
 }
 */
 
-/* found existing non-generated mapping function "ComputeFirewallPolicyRuleStatus_v1beta1_ToProto", skipping
-func ComputeFirewallPolicyRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyRuleStatus) *pb.FirewallPolicyRule {
+/*
+found existing non-generated mapping function "ComputeFirewallPolicyRuleStatus_v1beta1_ToProto", skipping
+
+	func ComputeFirewallPolicyRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyRuleStatus) *pb.FirewallPolicyRule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.FirewallPolicyRule{}
+		// MISSING: Action
+		// MISSING: Description
+		// MISSING: Direction
+		// MISSING: Disabled
+		// MISSING: EnableLogging
+		out.Kind = in.Kind
+		// MISSING: Match
+		// MISSING: Priority
+		// MISSING: RuleName
+		out.RuleTupleCount = in.RuleTupleCount
+		// MISSING: SecurityProfileGroup
+		// MISSING: TargetResources
+		// MISSING: TargetSecureTags
+		// MISSING: TargetServiceAccounts
+		// MISSING: TLSInspect
+		return out
+	}
+*/
+func ComputeFirewallPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ComputeFirewallPolicySpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FirewallPolicyRule{}
-	// MISSING: Action
-	// MISSING: Description
-	// MISSING: Direction
-	// MISSING: Disabled
-	// MISSING: EnableLogging
-	out.Kind = in.Kind
-	// MISSING: Match
-	// MISSING: Priority
-	// MISSING: RuleName
-	out.RuleTupleCount = in.RuleTupleCount
-	// MISSING: SecurityProfileGroup
-	// MISSING: TargetResources
-	// MISSING: TargetSecureTags
-	// MISSING: TargetServiceAccounts
-	// MISSING: TLSInspect
+	out := &krm.ComputeFirewallPolicySpec{}
+	// MISSING: Associations
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: DisplayName
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	// MISSING: RuleTupleCount
+	// MISSING: Rules
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	out.ShortName = in.ShortName
 	return out
 }
-*/
+func ComputeFirewallPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicySpec) *pb.FirewallPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicy{}
+	// MISSING: Associations
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: DisplayName
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	// MISSING: RuleTupleCount
+	// MISSING: Rules
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	out.ShortName = in.ShortName
+	return out
+}
+func ComputeFirewallPolicyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ComputeFirewallPolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallPolicyStatus{}
+	// MISSING: Associations
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: DisplayName
+	out.Fingerprint = in.Fingerprint
+	out.ID = in.Id
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	out.RuleTupleCount = in.RuleTupleCount
+	// MISSING: Rules
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	// MISSING: ShortName
+	return out
+}
+func ComputeFirewallPolicyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyStatus) *pb.FirewallPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicy{}
+	// MISSING: Associations
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: DisplayName
+	out.Fingerprint = in.Fingerprint
+	out.Id = in.ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	out.RuleTupleCount = in.RuleTupleCount
+	// MISSING: Rules
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	// MISSING: ShortName
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeForwardingRuleSpec_v1beta1_FromProto", skipping
 func ComputeForwardingRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRule) *krm.ComputeForwardingRuleSpec {
