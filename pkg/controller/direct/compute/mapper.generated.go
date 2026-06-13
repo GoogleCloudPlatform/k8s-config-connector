@@ -521,37 +521,201 @@ func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 }
 */
 
-/* found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_ToProto", skipping
-func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHealthCheckSpec) *pb.HealthCheck {
+/*
+found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_ToProto", skipping
+
+	func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHealthCheckSpec) *pb.HealthCheck {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HealthCheck{}
+		out.CheckIntervalSec = in.CheckIntervalSec
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: GrpcHealthCheck
+		// (near miss): "GrpcHealthCheck" vs "GRPCHealthCheck"
+		out.HealthyThreshold = in.HealthyThreshold
+		// MISSING: Http2HealthCheck
+		// (near miss): "Http2HealthCheck" vs "HTTP2HealthCheck"
+		out.HttpHealthCheck = HealthCheckHTTPHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPHealthCheck)
+		out.HttpsHealthCheck = HealthCheckHTTPSHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPSHealthCheck)
+		// MISSING: ID
+		// MISSING: Kind
+		out.LogConfig = HealthCheckLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+		// MISSING: Name
+		// MISSING: Region
+		// MISSING: SelfLink
+		// MISSING: SourceRegions
+		out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
+		out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
+		out.TimeoutSec = in.TimeoutSec
+		// MISSING: Type
+		out.UnhealthyThreshold = in.UnhealthyThreshold
+		return out
+	}
+*/
+func ComputeInstanceGroupManagerSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManager) *krm.ComputeInstanceGroupManagerSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.HealthCheck{}
-	out.CheckIntervalSec = in.CheckIntervalSec
+	out := &krm.ComputeInstanceGroupManagerSpec{}
+	out.AllInstancesConfig = InstanceGroupManagerAllInstancesConfig_v1beta1_FromProto(mapCtx, in.GetAllInstancesConfig())
+	out.AutoHealingPolicies = direct.Slice_FromProto(mapCtx, in.AutoHealingPolicies, InstanceGroupManagerAutoHealingPolicy_v1beta1_FromProto)
+	out.BaseInstanceName = in.BaseInstanceName
 	// MISSING: CreationTimestamp
+	// MISSING: CurrentActions
 	out.Description = in.Description
-	// MISSING: GrpcHealthCheck
-	// (near miss): "GrpcHealthCheck" vs "GRPCHealthCheck"
-	out.HealthyThreshold = in.HealthyThreshold
-	// MISSING: Http2HealthCheck
-	// (near miss): "Http2HealthCheck" vs "HTTP2HealthCheck"
-	out.HttpHealthCheck = HealthCheckHTTPHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPHealthCheck)
-	out.HttpsHealthCheck = HealthCheckHTTPSHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPSHealthCheck)
+	out.DistributionPolicy = DistributionPolicy_v1beta1_FromProto(mapCtx, in.GetDistributionPolicy())
+	// MISSING: Fingerprint
 	// MISSING: ID
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: InstanceGroup
+	out.InstanceLifecyclePolicy = InstanceGroupManagerInstanceLifecyclePolicy_v1beta1_FromProto(mapCtx, in.GetInstanceLifecyclePolicy())
+	if in.GetInstanceTemplate() != "" {
+		out.InstanceTemplateRef = &krm.InstanceResourceRef{External: in.GetInstanceTemplate()}
+	}
 	// MISSING: Kind
-	out.LogConfig = HealthCheckLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+	// MISSING: ListManagedInstancesResults
 	// MISSING: Name
+	// MISSING: NamedPorts
 	// MISSING: Region
+	// MISSING: ResourcePolicies
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
 	// MISSING: SelfLink
-	// MISSING: SourceRegions
-	out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
-	out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
-	out.TimeoutSec = in.TimeoutSec
-	// MISSING: Type
-	out.UnhealthyThreshold = in.UnhealthyThreshold
+	// MISSING: StandbyPolicy
+	out.StatefulPolicy = StatefulPolicy_v1beta1_FromProto(mapCtx, in.GetStatefulPolicy())
+	// MISSING: Status
+	out.TargetPools = ComputeInstanceGroupManagerSpec_TargetPools_FromProto(mapCtx, in.TargetPools)
+	out.TargetSize = in.TargetSize
+	// MISSING: TargetStoppedSize
+	// MISSING: TargetSuspendedSize
+	out.UpdatePolicy = InstanceGroupManagerUpdatePolicy_v1beta1_FromProto(mapCtx, in.GetUpdatePolicy())
+	out.Versions = direct.Slice_FromProto(mapCtx, in.Versions, InstanceGroupManagerVersion_v1beta1_FromProto)
+	// MISSING: Zone
 	return out
 }
-*/
+func ComputeInstanceGroupManagerSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupManagerSpec) *pb.InstanceGroupManager {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManager{}
+	out.AllInstancesConfig = InstanceGroupManagerAllInstancesConfig_v1beta1_ToProto(mapCtx, in.AllInstancesConfig)
+	out.AutoHealingPolicies = direct.Slice_ToProto(mapCtx, in.AutoHealingPolicies, InstanceGroupManagerAutoHealingPolicy_v1beta1_ToProto)
+	out.BaseInstanceName = in.BaseInstanceName
+	// MISSING: CreationTimestamp
+	// MISSING: CurrentActions
+	out.Description = in.Description
+	out.DistributionPolicy = DistributionPolicy_v1beta1_ToProto(mapCtx, in.DistributionPolicy)
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: InstanceGroup
+	out.InstanceLifecyclePolicy = InstanceGroupManagerInstanceLifecyclePolicy_v1beta1_ToProto(mapCtx, in.InstanceLifecyclePolicy)
+	if in.InstanceTemplateRef != nil {
+		out.InstanceTemplate = &in.InstanceTemplateRef.External
+	}
+	// MISSING: Kind
+	// MISSING: ListManagedInstancesResults
+	// MISSING: Name
+	// MISSING: NamedPorts
+	// MISSING: Region
+	// MISSING: ResourcePolicies
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: StandbyPolicy
+	out.StatefulPolicy = StatefulPolicy_v1beta1_ToProto(mapCtx, in.StatefulPolicy)
+	// MISSING: Status
+	out.TargetPools = ComputeInstanceGroupManagerSpec_TargetPools_ToProto(mapCtx, in.TargetPools)
+	out.TargetSize = in.TargetSize
+	// MISSING: TargetStoppedSize
+	// MISSING: TargetSuspendedSize
+	out.UpdatePolicy = InstanceGroupManagerUpdatePolicy_v1beta1_ToProto(mapCtx, in.UpdatePolicy)
+	out.Versions = direct.Slice_ToProto(mapCtx, in.Versions, InstanceGroupManagerVersion_v1beta1_ToProto)
+	// MISSING: Zone
+	return out
+}
+func ComputeInstanceGroupManagerStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManager) *krm.ComputeInstanceGroupManagerStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInstanceGroupManagerStatus{}
+	// MISSING: AllInstancesConfig
+	// MISSING: AutoHealingPolicies
+	// MISSING: BaseInstanceName
+	out.CreationTimestamp = in.CreationTimestamp
+	out.CurrentActions = InstanceGroupManagerActionsSummary_v1beta1_FromProto(mapCtx, in.GetCurrentActions())
+	// MISSING: Description
+	// MISSING: DistributionPolicy
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// (near miss): "ID" vs "Id"
+	// MISSING: InstanceFlexibilityPolicy
+	out.InstanceGroup = in.InstanceGroup
+	// MISSING: InstanceLifecyclePolicy
+	// MISSING: InstanceTemplate
+	// MISSING: Kind
+	// MISSING: ListManagedInstancesResults
+	// MISSING: Name
+	// MISSING: NamedPorts
+	out.Region = in.Region
+	// MISSING: ResourcePolicies
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	// MISSING: StandbyPolicy
+	// MISSING: StatefulPolicy
+	out.Status = InstanceGroupManagerStatus_v1beta1_FromProto(mapCtx, in.GetStatus())
+	// MISSING: TargetPools
+	// MISSING: TargetSize
+	// MISSING: TargetStoppedSize
+	// MISSING: TargetSuspendedSize
+	// MISSING: UpdatePolicy
+	// MISSING: Versions
+	out.Zone = in.Zone
+	return out
+}
+func ComputeInstanceGroupManagerStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupManagerStatus) *pb.InstanceGroupManager {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManager{}
+	// MISSING: AllInstancesConfig
+	// MISSING: AutoHealingPolicies
+	// MISSING: BaseInstanceName
+	out.CreationTimestamp = in.CreationTimestamp
+	out.CurrentActions = InstanceGroupManagerActionsSummary_v1beta1_ToProto(mapCtx, in.CurrentActions)
+	// MISSING: Description
+	// MISSING: DistributionPolicy
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// (near miss): "ID" vs "Id"
+	// MISSING: InstanceFlexibilityPolicy
+	out.InstanceGroup = in.InstanceGroup
+	// MISSING: InstanceLifecyclePolicy
+	// MISSING: InstanceTemplate
+	// MISSING: Kind
+	// MISSING: ListManagedInstancesResults
+	// MISSING: Name
+	// MISSING: NamedPorts
+	out.Region = in.Region
+	// MISSING: ResourcePolicies
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	// MISSING: StandbyPolicy
+	// MISSING: StatefulPolicy
+	out.Status = InstanceGroupManagerStatus_v1beta1_ToProto(mapCtx, in.Status)
+	// MISSING: TargetPools
+	// MISSING: TargetSize
+	// MISSING: TargetStoppedSize
+	// MISSING: TargetSuspendedSize
+	// MISSING: UpdatePolicy
+	// MISSING: Versions
+	out.Zone = in.Zone
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeInstanceSpec_v1beta1_FromProto", skipping
 func ComputeInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.ComputeInstanceSpec {
@@ -1838,6 +2002,40 @@ found existing non-generated mapping function "ComputeTargetTCPProxyStatus_v1bet
 		return out
 	}
 */
+func DistributionPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DistributionPolicy) *krm.DistributionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DistributionPolicy{}
+	out.TargetShape = in.TargetShape
+	out.Zones = direct.Slice_FromProto(mapCtx, in.Zones, DistributionPolicyZoneConfiguration_v1beta1_FromProto)
+	return out
+}
+func DistributionPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DistributionPolicy) *pb.DistributionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DistributionPolicy{}
+	out.TargetShape = in.TargetShape
+	out.Zones = direct.Slice_ToProto(mapCtx, in.Zones, DistributionPolicyZoneConfiguration_v1beta1_ToProto)
+	return out
+}
+func DistributionPolicyZoneConfiguration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DistributionPolicyZoneConfiguration) *krm.DistributionPolicyZoneConfiguration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DistributionPolicyZoneConfiguration{}
+	out.Zone = in.Zone
+	return out
+}
+func DistributionPolicyZoneConfiguration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DistributionPolicyZoneConfiguration) *pb.DistributionPolicyZoneConfiguration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DistributionPolicyZoneConfiguration{}
+	out.Zone = in.Zone
+	return out
+}
 func Duration_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krmcomputev1alpha1.Duration {
 	if in == nil {
 		return nil
@@ -1926,6 +2124,26 @@ found existing non-generated mapping function "FirewallPolicyRuleMatcherLayer4Co
 		return out
 	}
 */
+func FixedOrPercent_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FixedOrPercent) *krm.FixedOrPercent {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FixedOrPercent{}
+	out.Calculated = in.Calculated
+	out.Fixed = in.Fixed
+	out.Percent = in.Percent
+	return out
+}
+func FixedOrPercent_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FixedOrPercent) *pb.FixedOrPercent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FixedOrPercent{}
+	out.Calculated = in.Calculated
+	out.Fixed = in.Fixed
+	out.Percent = in.Percent
+	return out
+}
 func ForwardingruleServiceDirectoryRegistrations_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRuleServiceDirectoryRegistration) *krm.ForwardingruleServiceDirectoryRegistrations {
 	if in == nil {
 		return nil
@@ -2162,6 +2380,264 @@ found existing non-generated mapping function "HealthCheckTCPHealthCheck_v1beta1
 		return out
 	}
 */
+func InstanceGroupManagerActionsSummary_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerActionsSummary) *krm.InstanceGroupManagerActionsSummary {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGroupManagerActionsSummary{}
+	out.Abandoning = in.Abandoning
+	out.Creating = in.Creating
+	out.CreatingWithoutRetries = in.CreatingWithoutRetries
+	out.Deleting = in.Deleting
+	out.None = in.None
+	out.Recreating = in.Recreating
+	out.Refreshing = in.Refreshing
+	out.Restarting = in.Restarting
+	out.Resuming = in.Resuming
+	out.Starting = in.Starting
+	out.Stopping = in.Stopping
+	out.Suspending = in.Suspending
+	out.Verifying = in.Verifying
+	return out
+}
+func InstanceGroupManagerActionsSummary_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupManagerActionsSummary) *pb.InstanceGroupManagerActionsSummary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerActionsSummary{}
+	out.Abandoning = in.Abandoning
+	out.Creating = in.Creating
+	out.CreatingWithoutRetries = in.CreatingWithoutRetries
+	out.Deleting = in.Deleting
+	out.None = in.None
+	out.Recreating = in.Recreating
+	out.Refreshing = in.Refreshing
+	out.Restarting = in.Restarting
+	out.Resuming = in.Resuming
+	out.Starting = in.Starting
+	out.Stopping = in.Stopping
+	out.Suspending = in.Suspending
+	out.Verifying = in.Verifying
+	return out
+}
+func InstanceGroupManagerAllInstancesConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerAllInstancesConfig) *krm.InstanceGroupManagerAllInstancesConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGroupManagerAllInstancesConfig{}
+	out.Properties = InstancePropertiesPatch_v1beta1_FromProto(mapCtx, in.GetProperties())
+	return out
+}
+func InstanceGroupManagerAllInstancesConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupManagerAllInstancesConfig) *pb.InstanceGroupManagerAllInstancesConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerAllInstancesConfig{}
+	out.Properties = InstancePropertiesPatch_v1beta1_ToProto(mapCtx, in.Properties)
+	return out
+}
+func InstanceGroupManagerAutoHealingPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerAutoHealingPolicy) *krm.InstanceGroupManagerAutoHealingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGroupManagerAutoHealingPolicy{}
+	if in.GetHealthCheck() != "" {
+		out.HealthCheckRef = &krm.InstanceResourceRef{External: in.GetHealthCheck()}
+	}
+	out.InitialDelaySec = in.InitialDelaySec
+	return out
+}
+func InstanceGroupManagerAutoHealingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupManagerAutoHealingPolicy) *pb.InstanceGroupManagerAutoHealingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerAutoHealingPolicy{}
+	if in.HealthCheckRef != nil {
+		out.HealthCheck = &in.HealthCheckRef.External
+	}
+	out.InitialDelaySec = in.InitialDelaySec
+	return out
+}
+func InstanceGroupManagerInstanceLifecyclePolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerInstanceLifecyclePolicy) *krm.InstanceGroupManagerInstanceLifecyclePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGroupManagerInstanceLifecyclePolicy{}
+	out.DefaultActionOnFailure = in.DefaultActionOnFailure
+	out.ForceUpdateOnRepair = in.ForceUpdateOnRepair
+	return out
+}
+func InstanceGroupManagerInstanceLifecyclePolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupManagerInstanceLifecyclePolicy) *pb.InstanceGroupManagerInstanceLifecyclePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerInstanceLifecyclePolicy{}
+	out.DefaultActionOnFailure = in.DefaultActionOnFailure
+	out.ForceUpdateOnRepair = in.ForceUpdateOnRepair
+	return out
+}
+func InstanceGroupManagerStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerStatus) *krm.InstanceGroupManagerStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGroupManagerStatus{}
+	out.AllInstancesConfig = InstanceGroupManagerStatusAllInstancesConfig_v1beta1_FromProto(mapCtx, in.GetAllInstancesConfig())
+	out.Autoscaler = in.Autoscaler
+	out.IsStable = in.IsStable
+	out.Stateful = InstanceGroupManagerStatusStateful_v1beta1_FromProto(mapCtx, in.GetStateful())
+	out.VersionTarget = InstanceGroupManagerStatusVersionTarget_v1beta1_FromProto(mapCtx, in.GetVersionTarget())
+	return out
+}
+func InstanceGroupManagerStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupManagerStatus) *pb.InstanceGroupManagerStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerStatus{}
+	out.AllInstancesConfig = InstanceGroupManagerStatusAllInstancesConfig_v1beta1_ToProto(mapCtx, in.AllInstancesConfig)
+	out.Autoscaler = in.Autoscaler
+	out.IsStable = in.IsStable
+	out.Stateful = InstanceGroupManagerStatusStateful_v1beta1_ToProto(mapCtx, in.Stateful)
+	out.VersionTarget = InstanceGroupManagerStatusVersionTarget_v1beta1_ToProto(mapCtx, in.VersionTarget)
+	return out
+}
+func InstanceGroupManagerStatusAllInstancesConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerStatusAllInstancesConfig) *krm.InstanceGroupManagerStatusAllInstancesConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGroupManagerStatusAllInstancesConfig{}
+	out.CurrentRevision = in.CurrentRevision
+	out.Effective = in.Effective
+	return out
+}
+func InstanceGroupManagerStatusAllInstancesConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupManagerStatusAllInstancesConfig) *pb.InstanceGroupManagerStatusAllInstancesConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerStatusAllInstancesConfig{}
+	out.CurrentRevision = in.CurrentRevision
+	out.Effective = in.Effective
+	return out
+}
+func InstanceGroupManagerStatusStateful_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerStatusStateful) *krm.InstanceGroupManagerStatusStateful {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGroupManagerStatusStateful{}
+	out.HasStatefulConfig = in.HasStatefulConfig
+	out.PerInstanceConfigs = InstanceGroupManagerStatusStatefulPerInstanceConfigs_v1beta1_FromProto(mapCtx, in.GetPerInstanceConfigs())
+	return out
+}
+func InstanceGroupManagerStatusStateful_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupManagerStatusStateful) *pb.InstanceGroupManagerStatusStateful {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerStatusStateful{}
+	out.HasStatefulConfig = in.HasStatefulConfig
+	out.PerInstanceConfigs = InstanceGroupManagerStatusStatefulPerInstanceConfigs_v1beta1_ToProto(mapCtx, in.PerInstanceConfigs)
+	return out
+}
+func InstanceGroupManagerStatusStatefulPerInstanceConfigs_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerStatusStatefulPerInstanceConfigs) *krm.InstanceGroupManagerStatusStatefulPerInstanceConfigs {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGroupManagerStatusStatefulPerInstanceConfigs{}
+	out.AllEffective = in.AllEffective
+	return out
+}
+func InstanceGroupManagerStatusStatefulPerInstanceConfigs_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupManagerStatusStatefulPerInstanceConfigs) *pb.InstanceGroupManagerStatusStatefulPerInstanceConfigs {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerStatusStatefulPerInstanceConfigs{}
+	out.AllEffective = in.AllEffective
+	return out
+}
+func InstanceGroupManagerStatusVersionTarget_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerStatusVersionTarget) *krm.InstanceGroupManagerStatusVersionTarget {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGroupManagerStatusVersionTarget{}
+	out.IsReached = in.IsReached
+	return out
+}
+func InstanceGroupManagerStatusVersionTarget_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupManagerStatusVersionTarget) *pb.InstanceGroupManagerStatusVersionTarget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerStatusVersionTarget{}
+	out.IsReached = in.IsReached
+	return out
+}
+func InstanceGroupManagerUpdatePolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerUpdatePolicy) *krm.InstanceGroupManagerUpdatePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGroupManagerUpdatePolicy{}
+	out.InstanceRedistributionType = in.InstanceRedistributionType
+	out.MaxSurge = FixedOrPercent_v1beta1_FromProto(mapCtx, in.GetMaxSurge())
+	out.MaxUnavailable = FixedOrPercent_v1beta1_FromProto(mapCtx, in.GetMaxUnavailable())
+	out.MinimalAction = in.MinimalAction
+	out.MostDisruptiveAllowedAction = in.MostDisruptiveAllowedAction
+	out.ReplacementMethod = in.ReplacementMethod
+	out.Type = in.Type
+	return out
+}
+func InstanceGroupManagerUpdatePolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupManagerUpdatePolicy) *pb.InstanceGroupManagerUpdatePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerUpdatePolicy{}
+	out.InstanceRedistributionType = in.InstanceRedistributionType
+	out.MaxSurge = FixedOrPercent_v1beta1_ToProto(mapCtx, in.MaxSurge)
+	out.MaxUnavailable = FixedOrPercent_v1beta1_ToProto(mapCtx, in.MaxUnavailable)
+	out.MinimalAction = in.MinimalAction
+	out.MostDisruptiveAllowedAction = in.MostDisruptiveAllowedAction
+	out.ReplacementMethod = in.ReplacementMethod
+	out.Type = in.Type
+	return out
+}
+func InstanceGroupManagerVersion_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManagerVersion) *krm.InstanceGroupManagerVersion {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGroupManagerVersion{}
+	if in.GetInstanceTemplate() != "" {
+		out.InstanceTemplateRef = &krm.InstanceResourceRef{External: in.GetInstanceTemplate()}
+	}
+	out.Name = in.Name
+	out.TargetSize = FixedOrPercent_v1beta1_FromProto(mapCtx, in.GetTargetSize())
+	return out
+}
+func InstanceGroupManagerVersion_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupManagerVersion) *pb.InstanceGroupManagerVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManagerVersion{}
+	if in.InstanceTemplateRef != nil {
+		out.InstanceTemplate = &in.InstanceTemplateRef.External
+	}
+	out.Name = in.Name
+	out.TargetSize = FixedOrPercent_v1beta1_ToProto(mapCtx, in.TargetSize)
+	return out
+}
+func InstancePropertiesPatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstancePropertiesPatch) *krm.InstancePropertiesPatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstancePropertiesPatch{}
+	out.Labels = in.Labels
+	out.Metadata = in.Metadata
+	return out
+}
+func InstancePropertiesPatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstancePropertiesPatch) *pb.InstancePropertiesPatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstancePropertiesPatch{}
+	out.Labels = in.Labels
+	out.Metadata = in.Metadata
+	return out
+}
 func InterconnectCircuitInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectCircuitInfo) *krmcomputev1alpha1.InterconnectCircuitInfo {
 	if in == nil {
 		return nil
@@ -3210,6 +3686,54 @@ func ShareSettingsProjectConfigObservedState_v1alpha1_ToProto(mapCtx *direct.Map
 	}
 	out := &pb.ShareSettingsProjectConfig{}
 	out.ProjectId = in.ProjectID
+	return out
+}
+func StatefulPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.StatefulPolicy) *krm.StatefulPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StatefulPolicy{}
+	out.PreservedState = StatefulPolicyPreservedState_v1beta1_FromProto(mapCtx, in.GetPreservedState())
+	return out
+}
+func StatefulPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.StatefulPolicy) *pb.StatefulPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StatefulPolicy{}
+	out.PreservedState = StatefulPolicyPreservedState_v1beta1_ToProto(mapCtx, in.PreservedState)
+	return out
+}
+func StatefulPolicyPreservedStateDiskDevice_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.StatefulPolicyPreservedStateDiskDevice) *krm.StatefulPolicyPreservedStateDiskDevice {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StatefulPolicyPreservedStateDiskDevice{}
+	out.AutoDelete = in.AutoDelete
+	return out
+}
+func StatefulPolicyPreservedStateDiskDevice_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.StatefulPolicyPreservedStateDiskDevice) *pb.StatefulPolicyPreservedStateDiskDevice {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StatefulPolicyPreservedStateDiskDevice{}
+	out.AutoDelete = in.AutoDelete
+	return out
+}
+func StatefulPolicyPreservedStateNetworkIP_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.StatefulPolicyPreservedStateNetworkIp) *krm.StatefulPolicyPreservedStateNetworkIP {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StatefulPolicyPreservedStateNetworkIP{}
+	out.AutoDelete = in.AutoDelete
+	return out
+}
+func StatefulPolicyPreservedStateNetworkIP_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.StatefulPolicyPreservedStateNetworkIP) *pb.StatefulPolicyPreservedStateNetworkIp {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StatefulPolicyPreservedStateNetworkIp{}
+	out.AutoDelete = in.AutoDelete
 	return out
 }
 func SubnetworkLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkLogConfig) *krm.SubnetworkLogConfig {

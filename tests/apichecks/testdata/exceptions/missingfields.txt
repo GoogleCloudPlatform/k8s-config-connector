@@ -619,21 +619,24 @@
 [missing_field] crd=computeimages.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceImageRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeimages.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceSnapshotRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeimages.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.storageLocations[]" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.allInstancesConfig.properties.labels" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.allInstancesConfig.properties.metadata" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.distributionPolicy.targetShape" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.distributionPolicy.zones[].zone" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.failoverAction" is not set in unstructured objects
-[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.namedPorts[].name" is not set in unstructured objects
-[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.namedPorts[].port" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.instanceLifecyclePolicy.defaultActionOnFailure" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.instanceLifecyclePolicy.forceUpdateOnRepair" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.statefulPolicy.preservedState.externalIps" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.statefulPolicy.preservedState.internalIps" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.targetPools[].external" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.targetPools[].name" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.targetPools[].namespace" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.updatePolicy.maxSurge.calculated" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.updatePolicy.maxSurge.percent" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.updatePolicy.maxUnavailable.calculated" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.updatePolicy.maxUnavailable.percent" is not set in unstructured objects
-[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.updatePolicy.minReadySec" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.updatePolicy.mostDisruptiveAllowedAction" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.updatePolicy.replacementMethod" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.updatePolicy.type" is not set in unstructured objects
