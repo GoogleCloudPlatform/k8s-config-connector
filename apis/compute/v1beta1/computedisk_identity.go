@@ -32,23 +32,20 @@ var (
 	_ identity.Resource   = &ComputeDisk{}
 )
 
-var ZonalComputeDiskIdentityFormat = gcpurls.Template[ComputeDiskIdentity]("compute.googleapis.com", "projects/{project}/zones/{location}/disks/{disk}")
-var RegionalComputeDiskIdentityFormat = gcpurls.Template[ComputeDiskIdentity]("compute.googleapis.com", "projects/{project}/regions/{location}/disks/{disk}")
+var ZonalComputeDiskIdentityFormat = gcpurls.Template[ComputeDiskIdentity]("compute.googleapis.com", "projects/{project}/zones/{zone}/disks/{disk}")
+var RegionalComputeDiskIdentityFormat = gcpurls.Template[ComputeDiskIdentity]("compute.googleapis.com", "projects/{project}/regions/{region}/disks/{disk}")
 
 // ComputeDiskIdentity is the identity of a GCP ComputeDisk resource.
 // +k8s:deepcopy-gen=false
 type ComputeDiskIdentity struct {
-	Project  string
-	Location string
-	Disk     string
-}
-
-func (i *ComputeDiskIdentity) IsZonal() bool {
-	return len(strings.Split(i.Location, "-")) == 3
+	Project string
+	Zone    string
+	Region  string
+	Disk    string
 }
 
 func (i *ComputeDiskIdentity) String() string {
-	if i.IsZonal() {
+	if i.Zone != "" {
 		return ZonalComputeDiskIdentityFormat.ToString(*i)
 	}
 	return RegionalComputeDiskIdentityFormat.ToString(*i)
@@ -72,10 +69,10 @@ func (i *ComputeDiskIdentity) Host() string {
 }
 
 func (i *ComputeDiskIdentity) ParentString() string {
-	if i.IsZonal() {
-		return fmt.Sprintf("projects/%s/zones/%s", i.Project, i.Location)
+	if i.Zone != "" {
+		return fmt.Sprintf("projects/%s/zones/%s", i.Project, i.Zone)
 	}
-	return fmt.Sprintf("projects/%s/regions/%s", i.Project, i.Location)
+	return fmt.Sprintf("projects/%s/regions/%s", i.Project, i.Region)
 }
 
 func ParseComputeDiskExternal(external string) (*ComputeDiskIdentity, error) {
@@ -106,10 +103,16 @@ func getIdentityFromComputeDiskSpec(ctx context.Context, reader client.Reader, o
 	}
 
 	identity := &ComputeDiskIdentity{
-		Project:  projectID,
-		Location: location,
-		Disk:     resourceID,
+		Project: projectID,
+		Disk:    resourceID,
 	}
+
+	if len(strings.Split(location, "-")) == 3 {
+		identity.Zone = location
+	} else {
+		identity.Region = location
+	}
+
 	return identity, nil
 }
 
