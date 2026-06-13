@@ -347,3 +347,30 @@ type ComputeForwardingRuleRef struct {
 	/* The namespace field of a ComputeForwardingRule resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type ComputeRouterRef struct {
+	/* The ComputeRouter selflink in the form "projects/{{project}}/regions/{{region}}/routers/{{name}}" when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The name field of a ComputeRouter resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a ComputeRouter resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeVPNGatewayRef struct {
+	/* The ComputeVPNGateway selflink in the form "projects/{{project}}/regions/{{region}}/vpnGateways/{{name}}" when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The name field of a ComputeVPNGateway resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a ComputeVPNGateway resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeExternalVPNGatewayRef struct {
+	/* The ComputeExternalVPNGateway selflink in the form "projects/{{project}}/global/externalVpnGateways/{{name}}" when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The name field of a ComputeExternalVPNGateway resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a ComputeExternalVPNGateway resource. */
+	Namespace string `json:"namespace,omitempty"`
+}

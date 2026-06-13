@@ -1817,24 +1817,176 @@ func ComputeTargetTCPProxyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeTargetTCPProxyStatus_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeTargetTCPProxyStatus_v1beta1_ToProto", skipping
+func ComputeTargetTCPProxyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetTCPProxyStatus) *pb.TargetTcpProxy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetTcpProxy{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: ProxyBind
+	// MISSING: ProxyHeader
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Service
+	return out
+}
+*/
 
-	func ComputeTargetTCPProxyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetTCPProxyStatus) *pb.TargetTcpProxy {
+/* found existing non-generated mapping function "ComputeVPNTunnelSpec_v1beta1_FromProto", skipping
+func ComputeVPNTunnelSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VpnTunnel) *krm.ComputeVPNTunnelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeVPNTunnelSpec{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: DetailedStatus
+	// MISSING: ID
+	out.IkeVersion = in.IkeVersion
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	out.LocalTrafficSelector = in.LocalTrafficSelector
+	// MISSING: Name
+	if in.GetPeerExternalGateway() != "" {
+		out.PeerExternalGatewayRef = &refsv1beta1.ComputeExternalVPNGatewayRef{External: in.GetPeerExternalGateway()}
+	}
+	out.PeerExternalGatewayInterface = in.PeerExternalGatewayInterface
+	// MISSING: PeerGcpGateway
+	// MISSING: PeerIP
+	// (near miss): "PeerIP" vs "PeerIp"
+	// MISSING: Region
+	out.RemoteTrafficSelector = in.RemoteTrafficSelector
+	if in.GetRouter() != "" {
+		out.RouterRef = &refsv1beta1.ComputeRouterRef{External: in.GetRouter()}
+	}
+	// MISSING: SelfLink
+	out.SharedSecret = in.SharedSecret
+	// MISSING: SharedSecretHash
+	// MISSING: Status
+	if in.GetTargetVpnGateway() != "" {
+		out.TargetVPNGatewayRef = &refsv1beta1.ComputeTargetVPNGatewayRef{External: in.GetTargetVpnGateway()}
+	}
+	// MISSING: VPNGateway
+	// MISSING: VPNGatewayInterface
+	// (near miss): "VPNGatewayInterface" vs "VpnGatewayInterface"
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeVPNTunnelSpec_v1beta1_ToProto", skipping
+func ComputeVPNTunnelSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeVPNTunnelSpec) *pb.VpnTunnel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpnTunnel{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: DetailedStatus
+	// MISSING: ID
+	out.IkeVersion = in.IkeVersion
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	out.LocalTrafficSelector = in.LocalTrafficSelector
+	// MISSING: Name
+	if in.PeerExternalGatewayRef != nil {
+		out.PeerExternalGateway = &in.PeerExternalGatewayRef.External
+	}
+	out.PeerExternalGatewayInterface = in.PeerExternalGatewayInterface
+	// MISSING: PeerGcpGateway
+	// MISSING: PeerIP
+	// (near miss): "PeerIP" vs "PeerIp"
+	// MISSING: Region
+	out.RemoteTrafficSelector = in.RemoteTrafficSelector
+	if in.RouterRef != nil {
+		out.Router = &in.RouterRef.External
+	}
+	// MISSING: SelfLink
+	out.SharedSecret = in.SharedSecret
+	// MISSING: SharedSecretHash
+	// MISSING: Status
+	if in.TargetVPNGatewayRef != nil {
+		out.TargetVpnGateway = &in.TargetVPNGatewayRef.External
+	}
+	// MISSING: VPNGateway
+	// MISSING: VPNGatewayInterface
+	// (near miss): "VPNGatewayInterface" vs "VpnGatewayInterface"
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeVPNTunnelStatus_v1beta1_FromProto", skipping
+func ComputeVPNTunnelStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VpnTunnel) *krm.ComputeVPNTunnelStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeVPNTunnelStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	out.DetailedStatus = in.DetailedStatus
+	// MISSING: ID
+	// MISSING: IkeVersion
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LocalTrafficSelector
+	// MISSING: Name
+	// MISSING: PeerExternalGateway
+	// MISSING: PeerExternalGatewayInterface
+	// MISSING: PeerGcpGateway
+	// MISSING: PeerIP
+	// MISSING: Region
+	// MISSING: RemoteTrafficSelector
+	// MISSING: Router
+	out.SelfLink = in.SelfLink
+	// MISSING: SharedSecret
+	out.SharedSecretHash = in.SharedSecretHash
+	// MISSING: Status
+	// MISSING: TargetVPNGateway
+	// MISSING: VPNGateway
+	// MISSING: VPNGatewayInterface
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeVPNTunnelStatus_v1beta1_ToProto", skipping
+
+	func ComputeVPNTunnelStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeVPNTunnelStatus) *pb.VpnTunnel {
 		if in == nil {
 			return nil
 		}
-		out := &pb.TargetTcpProxy{}
+		out := &pb.VpnTunnel{}
 		out.CreationTimestamp = in.CreationTimestamp
 		// MISSING: Description
+		out.DetailedStatus = in.DetailedStatus
 		// MISSING: ID
+		// MISSING: IkeVersion
 		// MISSING: Kind
+		out.LabelFingerprint = in.LabelFingerprint
+		// MISSING: Labels
+		// MISSING: LocalTrafficSelector
 		// MISSING: Name
-		// MISSING: ProxyBind
-		// MISSING: ProxyHeader
+		// MISSING: PeerExternalGateway
+		// MISSING: PeerExternalGatewayInterface
+		// MISSING: PeerGcpGateway
+		// MISSING: PeerIP
 		// MISSING: Region
+		// MISSING: RemoteTrafficSelector
+		// MISSING: Router
 		out.SelfLink = in.SelfLink
-		// MISSING: Service
+		// MISSING: SharedSecret
+		out.SharedSecretHash = in.SharedSecretHash
+		// MISSING: Status
+		// MISSING: TargetVPNGateway
+		// MISSING: VPNGateway
+		// MISSING: VPNGatewayInterface
 		return out
 	}
 */
