@@ -44,12 +44,7 @@ func (i *MonitoringServiceIdentity) String() string {
 }
 
 func (i *MonitoringServiceIdentity) FromExternal(ref string) error {
-	normalized := ref
-	normalized = strings.TrimPrefix(normalized, "https:")
-	normalized = strings.TrimPrefix(normalized, "http:")
-	normalized = strings.TrimPrefix(normalized, "//")
-	normalized = strings.TrimPrefix(normalized, "monitoring.googleapis.com/")
-	normalized = strings.TrimPrefix(normalized, "v3/")
+	normalized := stripMonitoringPrefixes(ref)
 
 	parsed, match, err := MonitoringServiceIdentityFormat.Parse(normalized)
 	if err != nil {
@@ -61,6 +56,16 @@ func (i *MonitoringServiceIdentity) FromExternal(ref string) error {
 
 	*i = *parsed
 	return nil
+}
+
+func stripMonitoringPrefixes(ref string) string {
+	normalized := ref
+	normalized = strings.TrimPrefix(normalized, "https:")
+	normalized = strings.TrimPrefix(normalized, "http:")
+	normalized = strings.TrimPrefix(normalized, "//")
+	normalized = strings.TrimPrefix(normalized, "monitoring.googleapis.com/")
+	normalized = strings.TrimPrefix(normalized, "v3/")
+	return normalized
 }
 
 func (i *MonitoringServiceIdentity) Host() string {
