@@ -218,49 +218,12 @@ spec:
               enableCdn:
                 description: If true, enable Cloud CDN for this BackendBucket.
                 type: boolean
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               resourceID:
                 description: The ComputeBackendBucket name. If not given, the metadata.name
                   will be used.
                 type: string
             required:
             - bucketRef
-            - location
-            - projectRef
             type: object
           status:
             description: ComputeBackendBucketStatus defines the config connector machine

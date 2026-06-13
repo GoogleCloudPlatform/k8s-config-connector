@@ -168,6 +168,8 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
+
+/* found existing non-generated mapping function "BackendbucketBypassCacheOnRequestHeaders_v1beta1_FromProto", skipping
 func BackendbucketBypassCacheOnRequestHeaders_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader) *krm.BackendbucketBypassCacheOnRequestHeaders {
 	if in == nil {
 		return nil
@@ -176,6 +178,9 @@ func BackendbucketBypassCacheOnRequestHeaders_v1beta1_FromProto(mapCtx *direct.M
 	out.HeaderName = in.HeaderName
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BackendbucketBypassCacheOnRequestHeaders_v1beta1_ToProto", skipping
 func BackendbucketBypassCacheOnRequestHeaders_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendbucketBypassCacheOnRequestHeaders) *pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader {
 	if in == nil {
 		return nil
@@ -184,6 +189,9 @@ func BackendbucketBypassCacheOnRequestHeaders_v1beta1_ToProto(mapCtx *direct.Map
 	out.HeaderName = in.HeaderName
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BackendbucketCacheKeyPolicy_v1beta1_FromProto", skipping
 func BackendbucketCacheKeyPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyCacheKeyPolicy) *krm.BackendbucketCacheKeyPolicy {
 	if in == nil {
 		return nil
@@ -194,6 +202,9 @@ func BackendbucketCacheKeyPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out.QueryStringWhitelist = in.QueryStringWhitelist
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BackendbucketCacheKeyPolicy_v1beta1_ToProto", skipping
 func BackendbucketCacheKeyPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendbucketCacheKeyPolicy) *pb.BackendBucketCdnPolicyCacheKeyPolicy {
 	if in == nil {
 		return nil
@@ -204,6 +215,9 @@ func BackendbucketCacheKeyPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	out.QueryStringWhitelist = in.QueryStringWhitelist
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BackendbucketCdnPolicy_v1beta1_FromProto", skipping
 func BackendbucketCdnPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicy) *krm.BackendbucketCdnPolicy {
 	if in == nil {
 		return nil
@@ -227,6 +241,9 @@ func BackendbucketCdnPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: SignedURLKeyNames
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BackendbucketCdnPolicy_v1beta1_ToProto", skipping
 func BackendbucketCdnPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendbucketCdnPolicy) *pb.BackendBucketCdnPolicy {
 	if in == nil {
 		return nil
@@ -250,6 +267,9 @@ func BackendbucketCdnPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.B
 	// MISSING: SignedURLKeyNames
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BackendbucketNegativeCachingPolicy_v1beta1_FromProto", skipping
 func BackendbucketNegativeCachingPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyNegativeCachingPolicy) *krm.BackendbucketNegativeCachingPolicy {
 	if in == nil {
 		return nil
@@ -260,6 +280,9 @@ func BackendbucketNegativeCachingPolicy_v1beta1_FromProto(mapCtx *direct.MapCont
 	// (near miss): "TTL" vs "Ttl"
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BackendbucketNegativeCachingPolicy_v1beta1_ToProto", skipping
 func BackendbucketNegativeCachingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendbucketNegativeCachingPolicy) *pb.BackendBucketCdnPolicyNegativeCachingPolicy {
 	if in == nil {
 		return nil
@@ -270,6 +293,9 @@ func BackendbucketNegativeCachingPolicy_v1beta1_ToProto(mapCtx *direct.MapContex
 	// (near miss): "TTL" vs "Ttl"
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeBackendBucketSpec_v1beta1_FromProto", skipping
 func ComputeBackendBucketSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucket) *krm.ComputeBackendBucketSpec {
 	if in == nil {
 		return nil
@@ -294,6 +320,9 @@ func ComputeBackendBucketSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: UsedBy
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeBackendBucketSpec_v1beta1_ToProto", skipping
 func ComputeBackendBucketSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendBucketSpec) *pb.BackendBucket {
 	if in == nil {
 		return nil
@@ -318,6 +347,7 @@ func ComputeBackendBucketSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: UsedBy
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {

@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,12 +25,6 @@ var ComputeBackendBucketGVK = GroupVersion.WithKind("ComputeBackendBucket")
 // ComputeBackendBucketSpec defines the desired state of ComputeBackendBucket
 // +kcc:spec:proto=google.cloud.compute.v1.BackendBucket
 type ComputeBackendBucketSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location string `json:"location"`
-
 	// Reference to the bucket.
 	// +required
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucket.bucket_name
