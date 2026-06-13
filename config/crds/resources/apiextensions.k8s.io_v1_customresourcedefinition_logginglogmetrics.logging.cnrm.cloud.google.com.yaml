@@ -438,6 +438,7 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               updateTime:
                 description: Output only. The last update timestamp of the metric.
