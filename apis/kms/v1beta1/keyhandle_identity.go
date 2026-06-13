@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,95 +17,104 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var (
+	_ identity.ServerGeneratedIdentity = &KMSKeyHandleIdentity{}
+	_ identity.Resource                = &KMSKeyHandle{}
+)
+
+var KMSKeyHandleIdentityFormat = gcpurls.Template[KMSKeyHandleIdentity]("cloudkms.googleapis.com", "projects/{project}/locations/{location}/keyHandles/{keyHandle}")
+
+// KMSKeyHandleIdentity is the identity of a GCP KMSKeyHandle resource.
+// +k8s:deepcopy-gen=false
 type KMSKeyHandleIdentity struct {
-	id     string
-	parent *KMSKeyHandleParent
+	Project   string
+	Location  string
+	KeyHandle string
+}
+
+func (i *KMSKeyHandleIdentity) HasIdentitySpecified() bool {
+	return i.KeyHandle != ""
 }
 
 func (i *KMSKeyHandleIdentity) String() string {
-	return i.parent.String() + "/keyHandles/" + i.id
+	return KMSKeyHandleIdentityFormat.ToString(*i)
 }
 
-func (r *KMSKeyHandleIdentity) ID() string {
-	return r.id
+func (i *KMSKeyHandleIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-func (r *KMSKeyHandleIdentity) Parent() *KMSKeyHandleParent {
-	return r.parent
+func (i *KMSKeyHandleIdentity) FromExternal(ref string) error {
+	parsed, match, err := KMSKeyHandleIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of KMSKeyHandle external=%q was not known (use %s): %w", ref, KMSKeyHandleIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of KMSKeyHandle external=%q was not known (use %s)", ref, KMSKeyHandleIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
 }
 
-type KMSKeyHandleParent struct {
-	ProjectID string
-	Location  string
+func (i *KMSKeyHandleIdentity) Host() string {
+	return KMSKeyHandleIdentityFormat.Host()
 }
 
-func (p *KMSKeyHandleParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+func getIdentityFromKMSKeyHandleSpec(ctx context.Context, reader client.Reader, obj *KMSKeyHandle) (*KMSKeyHandleIdentity, error) {
+	// For KMSKeyHandle, resourceID is optional and can be empty.
+	// We retrieve it directly from Spec.ResourceID to avoid falling back to GetName().
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+
+	location := common.ValueOf(obj.Spec.Location)
+	if location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	identity := &KMSKeyHandleIdentity{
+		Project:   projectID,
+		Location:  location,
+		KeyHandle: resourceID,
+	}
+	return identity, nil
 }
 
-func NewKMSKeyHandleIdentity(ctx context.Context, reader client.Reader, obj *KMSKeyHandle) (*KMSKeyHandleIdentity, error) {
-	id := &KMSKeyHandleIdentity{}
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (obj *KMSKeyHandle) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromKMSKeyHandleSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := valueOf(obj.Spec.Location)
-	id.parent = &KMSKeyHandleParent{ProjectID: projectID, Location: location}
 
-	// Get desired ID
-	resourceID := valueOf(obj.Spec.ResourceID)
-
-	// Use approved External
-	externalRef := valueOf(obj.Status.ExternalRef)
+	// Cross-check the identity against the status value, if present.
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		actualParent, actualHandleID, err := ParseKMSKeyHandleExternal(externalRef)
-		if err != nil {
+		// Validate desired with actual
+		statusIdentity := &KMSKeyHandleIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		// Validate desired with actual
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if resourceID != "" && actualHandleID != resourceID {
-			return nil, fmt.Errorf("cannot reset `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualHandleID)
-		}
-		resourceID = actualHandleID
-	}
-	return &KMSKeyHandleIdentity{
-		parent: &KMSKeyHandleParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
-}
 
-func ParseKMSKeyHandleExternal(external string) (parent *KMSKeyHandleParent, resourceID string, err error) {
-	external = strings.TrimPrefix(external, "/")
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "keyHandles" {
-		return nil, "", fmt.Errorf("format of KMSKeyHandle external=%q was not known (use projects/{{projectId}}/locations/{{location}}/keyHandles/{{keyhandleID}})", external)
+		if specIdentity.KeyHandle == "" {
+			specIdentity.KeyHandle = statusIdentity.KeyHandle
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change KMSKeyHandle identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
-	parent = &KMSKeyHandleParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+
+	return specIdentity, nil
 }
