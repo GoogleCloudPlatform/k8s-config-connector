@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -46,7 +47,7 @@ type NetworkSecurityMirroringDeploymentSpec struct {
 	// `projects/123456789/regions/us-central1/forwardingRules/my-rule`. See
 	// https://google.aip.dev/124.
 	// +kubebuilder:validation:Required
-	ForwardingRuleRef *refsv1beta1.ComputeForwardingRuleRef `json:"forwardingRuleRef"`
+	ForwardingRuleRef *computev1beta1.ForwardingRuleRef `json:"forwardingRuleRef"`
 
 	// Required. Immutable. The deployment group that this deployment is a part
 	// of, for example:

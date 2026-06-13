@@ -88,14 +88,15 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The ComputeForwardingRule selflink in the form "projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}"
-                      when not managed by Config Connector.
+                    description: A reference to an externally managed ComputeForwardingRule
+                      resource. Should be in the format "projects/{{projectID}}/global/forwardingRules/{{forwardingRuleID}}"
+                      or "projects/{{projectID}}/regions/{{region}}/forwardingRules/{{forwardingRuleID}}".
                     type: string
                   name:
-                    description: The name field of a ComputeForwardingRule resource.
+                    description: The name of a ComputeForwardingRule resource.
                     type: string
                   namespace:
-                    description: The namespace field of a ComputeForwardingRule resource.
+                    description: The namespace of a ComputeForwardingRule resource.
                     type: string
                 type: object
               labels:
