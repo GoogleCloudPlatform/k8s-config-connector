@@ -15,6 +15,8 @@
 package kms
 
 import (
+	"strings"
+
 	pb "cloud.google.com/go/kms/apiv1/kmspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -45,5 +47,42 @@ func CryptoKeyVersionTemplate_ToProto(mapCtx *direct.MapContext, in *krm.CryptoK
 	out := &pb.CryptoKeyVersionTemplate{}
 	out.ProtectionLevel = direct.Enum_ToProto[pb.ProtectionLevel](mapCtx, in.ProtectionLevel)
 	out.Algorithm = direct.Enum_ToProto[pb.CryptoKeyVersion_CryptoKeyVersionAlgorithm](mapCtx, &in.Algorithm)
+	return out
+}
+
+// KMSImportJobSpec_FromProto converts the protobuf ImportJob to the KRM type KMSImportJobSpec.
+// This is handcoded because it handles specific casing transformations or fields that are not automatically mapped.
+func KMSImportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.ImportJob) *krm.KMSImportJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KMSImportJobSpec{}
+	// MISSING: Name
+	out.ImportMethod = direct.Enum_FromProto(mapCtx, in.GetImportMethod())
+	out.ProtectionLevel = direct.Enum_FromProto(mapCtx, in.GetProtectionLevel())
+	return out
+}
+
+// KMSImportJobSpec_ToProto converts the KRM type KMSImportJobSpec to the protobuf ImportJob representation.
+// This is handcoded to transform enum strings to uppercase to handle mixed-case user input.
+func KMSImportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSImportJobSpec) *pb.ImportJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImportJob{}
+	// MISSING: Name
+
+	if in.ImportMethod != nil {
+		importMethodUpper := strings.ToUpper(*in.ImportMethod)
+		out.ImportMethod = direct.Enum_ToProto[pb.ImportJob_ImportMethod](mapCtx, &importMethodUpper)
+	} else {
+		out.ImportMethod = direct.Enum_ToProto[pb.ImportJob_ImportMethod](mapCtx, in.ImportMethod)
+	}
+	if in.ProtectionLevel != nil {
+		protectionLevelUpper := strings.ToUpper(*in.ProtectionLevel)
+		out.ProtectionLevel = direct.Enum_ToProto[pb.ProtectionLevel](mapCtx, &protectionLevelUpper)
+	} else {
+		out.ProtectionLevel = direct.Enum_ToProto[pb.ProtectionLevel](mapCtx, in.ProtectionLevel)
+	}
 	return out
 }
