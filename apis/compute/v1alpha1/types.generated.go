@@ -21,6 +21,7 @@
 // resource: ComputeNetworkAttachment:NetworkAttachment
 // resource: ComputeInterconnect:Interconnect
 // resource: ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation
+// resource: ComputeResourcePolicy:ResourcePolicy
 
 package v1alpha1
 
@@ -447,6 +448,273 @@ type NetworkEdgeSecurityService struct {
 	// [Output Only] Server-defined URL for this resource with the resource id.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ResourcePolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicy
+type ResourcePolicy struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Resource policy for disk consistency groups.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.disk_consistency_group_policy
+	DiskConsistencyGroupPolicy *ResourcePolicyDiskConsistencyGroupPolicy `json:"diskConsistencyGroupPolicy,omitempty"`
+
+	// Resource policy for instances for placement configuration.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.group_placement_policy
+	GroupPlacementPolicy *ResourcePolicyGroupPlacementPolicy `json:"groupPlacementPolicy,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Resource policy for scheduling instance operations.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.instance_schedule_policy
+	InstanceSchedulePolicy *ResourcePolicyInstanceSchedulePolicy `json:"instanceSchedulePolicy,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#resource_policies for resource policies.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The name of the resource, provided by the client when initially creating the resource. The resource name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] The system status of the resource policy.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.resource_status
+	ResourceStatus *ResourcePolicyResourceStatus `json:"resourceStatus,omitempty"`
+
+	// [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Resource policy for persistent disks for creating snapshots.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.snapshot_schedule_policy
+	SnapshotSchedulePolicy *ResourcePolicySnapshotSchedulePolicy `json:"snapshotSchedulePolicy,omitempty"`
+
+	// [Output Only] The status of resource policy creation.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.status
+	Status *string `json:"status,omitempty"`
+
+	// Resource policy for defining instance placement for MIGs.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.workload_policy
+	WorkloadPolicy *ResourcePolicyWorkloadPolicy `json:"workloadPolicy,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyDailyCycle
+type ResourcePolicyDailyCycle struct {
+	// Defines a schedule with units measured in days. The value determines how many days pass between the start of each cycle.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyDailyCycle.days_in_cycle
+	DaysInCycle *int32 `json:"daysInCycle,omitempty"`
+
+	// [Output only] A predetermined duration for the window, automatically chosen to be the smallest possible in the given scenario.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyDailyCycle.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// Start time of the window. This must be in UTC format that resolves to one of 00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example, both 13:00-5 and 08:00 are valid.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyDailyCycle.start_time
+	StartTime *string `json:"startTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyDiskConsistencyGroupPolicy
+type ResourcePolicyDiskConsistencyGroupPolicy struct {
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyGroupPlacementPolicy
+type ResourcePolicyGroupPlacementPolicy struct {
+	// The number of availability domains to spread instances across. If two instances are in different availability domain, they are not in the same low latency network.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyGroupPlacementPolicy.availability_domain_count
+	AvailabilityDomainCount *int32 `json:"availabilityDomainCount,omitempty"`
+
+	// Specifies network collocation
+	//  Check the Collocation enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyGroupPlacementPolicy.collocation
+	Collocation *string `json:"collocation,omitempty"`
+
+	// Specifies the shape of the GPU slice, in slice based GPU families eg. A4X.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyGroupPlacementPolicy.gpu_topology
+	GpuTopology *string `json:"gpuTopology,omitempty"`
+
+	// Number of VMs in this placement group. Google does not recommend that you use this field unless you use a compact policy and you want your policy to work only if it contains this exact number of VMs.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyGroupPlacementPolicy.vm_count
+	VMCount *int32 `json:"vmCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyHourlyCycle
+type ResourcePolicyHourlyCycle struct {
+	// [Output only] Duration of the time window, automatically chosen to be smallest possible in the given scenario.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyHourlyCycle.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// Defines a schedule with units measured in hours. The value determines how many hours pass between the start of each cycle.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyHourlyCycle.hours_in_cycle
+	HoursInCycle *int32 `json:"hoursInCycle,omitempty"`
+
+	// Time within the window to start the operations. It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyHourlyCycle.start_time
+	StartTime *string `json:"startTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy
+type ResourcePolicyInstanceSchedulePolicy struct {
+	// The expiration time of the schedule. The timestamp is an RFC3339 string.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy.expiration_time
+	ExpirationTime *string `json:"expirationTime,omitempty"`
+
+	// The start time of the schedule. The timestamp is an RFC3339 string.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Specifies the time zone to be used in interpreting Schedule.schedule. The value of this field must be a time zone name from the tz database: https://wikipedia.org/wiki/Tz_database.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy.time_zone
+	TimeZone *string `json:"timeZone,omitempty"`
+
+	// Specifies the schedule for starting instances.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy.vm_start_schedule
+	VMStartSchedule *ResourcePolicyInstanceSchedulePolicySchedule `json:"vmStartSchedule,omitempty"`
+
+	// Specifies the schedule for stopping instances.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy.vm_stop_schedule
+	VMStopSchedule *ResourcePolicyInstanceSchedulePolicySchedule `json:"vmStopSchedule,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicySchedule
+type ResourcePolicyInstanceSchedulePolicySchedule struct {
+	// Specifies the frequency for the operation, using the unix-cron format.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicySchedule.schedule
+	Schedule *string `json:"schedule,omitempty"`
+}
+
+/* unreachable type ResourcePolicyResourceStatus
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyResourceStatus
+type ResourcePolicyResourceStatus struct {
+	// [Output Only] Specifies a set of output values reffering to the instance_schedule_policy system status. This field should have the same name as corresponding policy field.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyResourceStatus.instance_schedule_policy
+	InstanceSchedulePolicy *ResourcePolicyResourceStatusInstanceSchedulePolicyStatus `json:"instanceSchedulePolicy,omitempty"`
+}
+*/
+
+/* unreachable type ResourcePolicyResourceStatusInstanceSchedulePolicyStatus
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus
+type ResourcePolicyResourceStatusInstanceSchedulePolicyStatus struct {
+	// [Output Only] The last time the schedule successfully ran. The timestamp is an RFC3339 string.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus.last_run_start_time
+	LastRunStartTime *string `json:"lastRunStartTime,omitempty"`
+
+	// [Output Only] The next time the schedule is planned to run. The actual time might be slightly different. The timestamp is an RFC3339 string.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus.next_run_start_time
+	NextRunStartTime *string `json:"nextRunStartTime,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicy
+type ResourcePolicySnapshotSchedulePolicy struct {
+	// Retention policy applied to snapshots created by this resource policy.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicy.retention_policy
+	RetentionPolicy *ResourcePolicySnapshotSchedulePolicyRetentionPolicy `json:"retentionPolicy,omitempty"`
+
+	// A Vm Maintenance Policy specifies what kind of infrastructure maintenance we are allowed to perform on this VM and when. Schedule that is applied to disks covered by this policy.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicy.schedule
+	Schedule *ResourcePolicySnapshotSchedulePolicySchedule `json:"schedule,omitempty"`
+
+	// Properties with which snapshots are created such as labels, encryption keys.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicy.snapshot_properties
+	SnapshotProperties *ResourcePolicySnapshotSchedulePolicySnapshotProperties `json:"snapshotProperties,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicyRetentionPolicy
+type ResourcePolicySnapshotSchedulePolicyRetentionPolicy struct {
+	// Maximum age of the snapshot that is allowed to be kept.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicyRetentionPolicy.max_retention_days
+	MaxRetentionDays *int32 `json:"maxRetentionDays,omitempty"`
+
+	// Specifies the behavior to apply to scheduled snapshots when the source disk is deleted.
+	//  Check the OnSourceDiskDelete enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicyRetentionPolicy.on_source_disk_delete
+	OnSourceDiskDelete *string `json:"onSourceDiskDelete,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySchedule
+type ResourcePolicySnapshotSchedulePolicySchedule struct {
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySchedule.daily_schedule
+	DailySchedule *ResourcePolicyDailyCycle `json:"dailySchedule,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySchedule.hourly_schedule
+	HourlySchedule *ResourcePolicyHourlyCycle `json:"hourlySchedule,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySchedule.weekly_schedule
+	WeeklySchedule *ResourcePolicyWeeklyCycle `json:"weeklySchedule,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySnapshotProperties
+type ResourcePolicySnapshotSchedulePolicySnapshotProperties struct {
+	// Chain name that the snapshot is created in.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySnapshotProperties.chain_name
+	ChainName *string `json:"chainName,omitempty"`
+
+	// Indication to perform a 'guest aware' snapshot.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySnapshotProperties.guest_flush
+	GuestFlush *bool `json:"guestFlush,omitempty"`
+
+	// Labels to apply to scheduled snapshots. These can be later modified by the setLabels method. Label values may be empty.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySnapshotProperties.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Cloud Storage bucket storage location of the auto snapshot (regional or multi-regional).
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySnapshotProperties.storage_locations
+	StorageLocations []string `json:"storageLocations,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyWeeklyCycle
+type ResourcePolicyWeeklyCycle struct {
+	// Up to 7 intervals/windows, one for each day of the week.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWeeklyCycle.day_of_weeks
+	DayOfWeeks []ResourcePolicyWeeklyCycleDayOfWeek `json:"dayOfWeeks,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyWeeklyCycleDayOfWeek
+type ResourcePolicyWeeklyCycleDayOfWeek struct {
+	// Defines a schedule that runs on specific days of the week. Specify one or more days. The following options are available: MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY.
+	//  Check the Day enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWeeklyCycleDayOfWeek.day
+	Day *string `json:"day,omitempty"`
+
+	// [Output only] Duration of the time window, automatically chosen to be smallest possible in the given scenario.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWeeklyCycleDayOfWeek.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// Time within the window to start the operations. It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWeeklyCycleDayOfWeek.start_time
+	StartTime *string `json:"startTime,omitempty"`
+}
+
+/* unreachable type ResourcePolicyWorkloadPolicy
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy
+type ResourcePolicyWorkloadPolicy struct {
+	// Specifies the topology required to create a partition for VMs that have interconnected GPUs.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy.accelerator_topology
+	AcceleratorTopology *string `json:"acceleratorTopology,omitempty"`
+
+	// Specifies the maximum distance between instances.
+	//  Check the MaxTopologyDistance enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy.max_topology_distance
+	MaxTopologyDistance *string `json:"maxTopologyDistance,omitempty"`
+
+	// Specifies the intent of the instance placement in the MIG.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy.type
+	Type *string `json:"type,omitempty"`
 }
 */
 
