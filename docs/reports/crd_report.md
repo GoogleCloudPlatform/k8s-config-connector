@@ -155,7 +155,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeInstanceTemplate                         | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeInterconnectAttachment                   | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeInterconnect                             | True         | False       | False  | Direct     | True        |
-| compute.cnrm.cloud.google.com                 | ComputeMachineImage                             | True         | False       | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeMachineImage                             | True         | False       | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeManagedSSLCertificate                    | True         | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkAttachment                        | True         | False       | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkEdgeSecurityService               | True         | False       | False  | Direct     | True        |
