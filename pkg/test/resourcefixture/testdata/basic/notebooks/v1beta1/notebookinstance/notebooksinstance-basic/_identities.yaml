@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: notebooks.cnrm.cloud.google.com
+  kind: NotebookInstance
+  name: notebookinstance-basic-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

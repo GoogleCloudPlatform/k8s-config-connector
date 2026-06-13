@@ -1,0 +1,6 @@
+- caisURL: //cloudtasks.googleapis.com/projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}
+  group: cloudtasks.cnrm.cloud.google.com
+  kind: TasksQueue
+  name: cloudtasksqueue-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

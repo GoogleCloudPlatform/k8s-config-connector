@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: eventarc.cnrm.cloud.google.com
+  kind: EventarcGoogleChannelConfig
+  name: eventarcgooglechannelconfig-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -1,0 +1,8 @@
+- caisURL: unknown
+  error: 'resolving spec.billingAccountRef: format of BillingAccount external="${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES}"
+    was not known (use billingAccounts/{billingAccount})'
+  group: billingbudgets.cnrm.cloud.google.com
+  kind: BillingBudgetsBudget
+  name: billingbudgetsbudget-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

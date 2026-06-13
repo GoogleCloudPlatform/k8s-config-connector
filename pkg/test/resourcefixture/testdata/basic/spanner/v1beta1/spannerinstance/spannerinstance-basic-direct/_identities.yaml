@@ -1,0 +1,6 @@
+- caisURL: //spanner.googleapis.com/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}
+  group: spanner.cnrm.cloud.google.com
+  kind: SpannerInstance
+  name: spannerinstance-sample-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

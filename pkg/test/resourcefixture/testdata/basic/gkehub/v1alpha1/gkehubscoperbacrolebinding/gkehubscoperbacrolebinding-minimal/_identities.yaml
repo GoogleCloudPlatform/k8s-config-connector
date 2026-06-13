@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: gkehub.cnrm.cloud.google.com
+  kind: GKEHubScope
+  name: gkehubscoperbacrolebinding-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //gkehub.googleapis.com/projects/${projectId}/locations/global/scopes/gkehubscoperbacrolebinding-minimal-${uniqueId}/rbacrolebindings/gkehubscoperbacrolebinding-minimal-${uniqueId}
+  group: gkehub.cnrm.cloud.google.com
+  kind: GKEHubScopeRBACRoleBinding
+  name: gkehubscoperbacrolebinding-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

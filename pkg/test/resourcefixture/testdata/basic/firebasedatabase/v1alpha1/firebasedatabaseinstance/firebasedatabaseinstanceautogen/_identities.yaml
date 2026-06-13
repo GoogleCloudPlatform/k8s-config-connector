@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: firebasedatabase.cnrm.cloud.google.com
+  kind: FirebaseDatabaseInstance
+  name: firebasedatabaseinstance-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
