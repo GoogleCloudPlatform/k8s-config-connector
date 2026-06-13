@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -1838,6 +1839,72 @@ found existing non-generated mapping function "ComputeTargetTCPProxyStatus_v1bet
 		return out
 	}
 */
+func ComputeVPNGatewayObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VpnGateway) *krm.ComputeVPNGatewayObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeVPNGatewayObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	out.VPNInterfaces = direct.Slice_FromProto(mapCtx, in.VpnInterfaces, VPNGatewayVPNGatewayInterfaceStatus_v1beta1_FromProto)
+	return out
+}
+func ComputeVPNGatewayObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeVPNGatewayObservedState) *pb.VpnGateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpnGateway{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	out.VpnInterfaces = direct.Slice_ToProto(mapCtx, in.VPNInterfaces, VPNGatewayVPNGatewayInterfaceStatus_v1beta1_ToProto)
+	return out
+}
+func ComputeVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VpnGateway) *krm.ComputeVPNGatewaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeVPNGatewaySpec{}
+	out.Description = in.Description
+	out.GatewayIPVersion = in.GatewayIpVersion
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.StackType = in.StackType
+	out.VPNInterfaces = direct.Slice_FromProto(mapCtx, in.VpnInterfaces, VPNGatewayVPNGatewayInterfaceSpec_v1beta1_FromProto)
+	return out
+}
+func ComputeVPNGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeVPNGatewaySpec) *pb.VpnGateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpnGateway{}
+	out.Description = in.Description
+	out.GatewayIpVersion = in.GatewayIPVersion
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.StackType = in.StackType
+	out.VpnInterfaces = direct.Slice_ToProto(mapCtx, in.VPNInterfaces, VPNGatewayVPNGatewayInterfaceSpec_v1beta1_ToProto)
+	return out
+}
 func Duration_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krmcomputev1alpha1.Duration {
 	if in == nil {
 		return nil
@@ -3256,5 +3323,57 @@ func SubnetworkSecondaryRange_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.IpCidrRange = in.IPCIDRRange
 	out.RangeName = in.RangeName
 	// MISSING: ReservedInternalRange
+	return out
+}
+func VPNGatewayVPNGatewayInterfaceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VpnGatewayVpnGatewayInterface) *krm.VPNGatewayVPNGatewayInterfaceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VPNGatewayVPNGatewayInterfaceSpec{}
+	out.ID = in.Id
+	if in.GetInterconnectAttachment() != "" {
+		out.InterconnectAttachmentRef = &refsv1beta1.ComputeInterconnectAttachmentRef{External: in.GetInterconnectAttachment()}
+	}
+	// MISSING: IPAddress
+	// MISSING: IPV6Address
+	return out
+}
+func VPNGatewayVPNGatewayInterfaceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.VPNGatewayVPNGatewayInterfaceSpec) *pb.VpnGatewayVpnGatewayInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpnGatewayVpnGatewayInterface{}
+	out.Id = in.ID
+	if in.InterconnectAttachmentRef != nil {
+		out.InterconnectAttachment = &in.InterconnectAttachmentRef.External
+	}
+	// MISSING: IPAddress
+	// MISSING: IPV6Address
+	return out
+}
+func VPNGatewayVPNGatewayInterfaceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VpnGatewayVpnGatewayInterface) *krm.VPNGatewayVPNGatewayInterfaceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VPNGatewayVPNGatewayInterfaceStatus{}
+	out.ID = in.Id
+	if in.GetInterconnectAttachment() != "" {
+		out.InterconnectAttachmentRef = &refsv1beta1.ComputeInterconnectAttachmentRef{External: in.GetInterconnectAttachment()}
+	}
+	out.IPAddress = in.IpAddress
+	out.IPV6Address = in.Ipv6Address
+	return out
+}
+func VPNGatewayVPNGatewayInterfaceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.VPNGatewayVPNGatewayInterfaceStatus) *pb.VpnGatewayVpnGatewayInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpnGatewayVpnGatewayInterface{}
+	out.Id = in.ID
+	if in.InterconnectAttachmentRef != nil {
+		out.InterconnectAttachment = &in.InterconnectAttachmentRef.External
+	}
+	out.IpAddress = in.IPAddress
+	out.Ipv6Address = in.IPV6Address
 	return out
 }
