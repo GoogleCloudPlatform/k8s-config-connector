@@ -122,7 +122,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The Forwarding Rule resource of type `loadBalancingScheme=INTERNAL` that will be used as collector for mirrored traffic. The specified forwarding rule must have `isMirroringCollector` set to true.</p>
         </td>
     </tr>
     <tr>
@@ -132,9 +132,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Resource URL to the forwarding rule representing the ILB configured as destination of the mirrored traffic.
-
-Allowed value: The `selfLink` field of a `ComputeForwardingRule` resource.</p>
+            <p>A reference to an externally managed ComputeForwardingRule resource. Should be in the format "projects/{{projectID}}/global/forwardingRules/{{forwardingRuleID}}" or "projects/{{projectID}}/regions/{{region}}/forwardingRules/{{forwardingRuleID}}".</p>
         </td>
     </tr>
     <tr>
@@ -144,7 +142,7 @@ Allowed value: The `selfLink` field of a `ComputeForwardingRule` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeForwardingRule resource.</p>
         </td>
     </tr>
     <tr>
@@ -154,7 +152,7 @@ Allowed value: The `selfLink` field of a `ComputeForwardingRule` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeForwardingRule resource.</p>
         </td>
     </tr>
     <tr>
@@ -294,7 +292,7 @@ Allowed value: The `selfLink` field of a `ComputeForwardingRule` resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>InstanceRef is a reference to a ComputeInstance.</p>
         </td>
     </tr>
     <tr>
@@ -304,9 +302,7 @@ Allowed value: The `selfLink` field of a `ComputeForwardingRule` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Resource URL to the virtual machine instance which is being mirrored.
-
-Allowed value: The `selfLink` field of a `ComputeInstance` resource.</p>
+            <p>A reference to an externally managed ComputeInstance resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".</p>
         </td>
     </tr>
     <tr>
@@ -316,7 +312,7 @@ Allowed value: The `selfLink` field of a `ComputeInstance` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -326,7 +322,7 @@ Allowed value: The `selfLink` field of a `ComputeInstance` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -376,9 +372,7 @@ Allowed value: The `selfLink` field of a `ComputeInstance` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Resource URL to the subnetwork for which traffic from/to all VM instances will be mirrored.
-
-Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -388,7 +382,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -398,7 +392,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -448,9 +442,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>URL of the network resource.
-
-Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -460,7 +452,7 @@ Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -470,7 +462,7 @@ Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -500,9 +492,7 @@ Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -512,7 +502,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -522,7 +512,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -582,7 +572,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputePacketMirroring's current state.</p>
         </td>
     </tr>
     <tr>
