@@ -64,6 +64,7 @@ go run . generate-types \
   --resource ComputeURLMap:UrlMap \
   --resource ComputeVPNGateway:VpnGateway \
   --resource ComputeInterconnectAttachment:InterconnectAttachment \
+  --resource ComputePacketMirroring:PacketMirroring \
   --include-skipped-output
 
 go run . generate-mapper \
