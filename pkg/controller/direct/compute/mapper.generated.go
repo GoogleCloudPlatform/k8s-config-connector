@@ -169,6 +169,30 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	return out
 }
 
+/* found existing non-generated mapping function "ComputeBackendServiceSignedURLKeySpec_v1alpha1_FromProto", skipping
+func ComputeBackendServiceSignedURLKeySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SignedUrlKey) *krmcomputev1alpha1.ComputeBackendServiceSignedURLKeySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeBackendServiceSignedURLKeySpec{}
+	// MISSING: KeyName
+	out.KeyValue = in.KeyValue
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeBackendServiceSignedURLKeySpec_v1alpha1_ToProto", skipping
+func ComputeBackendServiceSignedURLKeySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeBackendServiceSignedURLKeySpec) *pb.SignedUrlKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SignedUrlKey{}
+	// MISSING: KeyName
+	out.KeyValue = in.KeyValue
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
 	if in == nil {
