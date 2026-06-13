@@ -23,6 +23,7 @@
 // resource: ComputeSecurityPolicy:SecurityPolicy
 // resource: ComputeSubnetwork:Subnetwork
 // resource: ComputeNetwork:Network
+// resource: ComputeNetworkEndpointGroup:NetworkEndpointGroup
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
 // resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
 // resource: ComputeNodeTemplate:NodeTemplate
@@ -1566,6 +1567,158 @@ type Network struct {
 	// [Output Only] Server-defined fully-qualified URLs for all subnetworks in this VPC network.
 	// +kcc:proto:field=google.cloud.compute.v1.Network.subnetworks
 	Subnetworks []string `json:"subnetworks,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NetworkEndpointGroup", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NetworkEndpointGroup
+type NetworkEndpointGroup struct {
+	// Optional. Metadata defined as annotations on the network endpoint group.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// Optional. Only valid when networkEndpointType is SERVERLESS. Only one of cloudRun, appEngine or cloudFunction may be set.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.app_engine
+	AppEngine *NetworkEndpointGroupAppEngine `json:"appEngine,omitempty"`
+
+	// Optional. Only valid when networkEndpointType is SERVERLESS. Only one of cloudRun, appEngine or cloudFunction may be set.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.cloud_function
+	CloudFunction *NetworkEndpointGroupCloudFunction `json:"cloudFunction,omitempty"`
+
+	// Optional. Only valid when networkEndpointType is SERVERLESS. Only one of cloudRun, appEngine or cloudFunction may be set.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.cloud_run
+	CloudRun *NetworkEndpointGroupCloudRun `json:"cloudRun,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// The default port used if the port number is not specified in the network endpoint. Optional. If the network endpoint type is either GCE_VM_IP, SERVERLESS or PRIVATE_SERVICE_CONNECT, this field must not be specified.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.default_port
+	DefaultPort *int32 `json:"defaultPort,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#networkEndpointGroup for network endpoint group.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// The URL of the network to which all network endpoints in the NEG belong. Uses default project network if unspecified.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.network
+	Network *string `json:"network,omitempty"`
+
+	// Type of network endpoints in this network endpoint group. Can be one of GCE_VM_IP, GCE_VM_IP_PORT, NON_GCP_PRIVATE_IP_PORT, INTERNET_FQDN_PORT, INTERNET_IP_PORT, SERVERLESS, PRIVATE_SERVICE_CONNECT, GCE_VM_IP_PORTMAP.
+	//  Check the NetworkEndpointType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.network_endpoint_type
+	NetworkEndpointType *string `json:"networkEndpointType,omitempty"`
+
+	// Optional. Only valid when networkEndpointType is PRIVATE_SERVICE_CONNECT.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.psc_data
+	PSCData *NetworkEndpointGroupPSCData `json:"pscData,omitempty"`
+
+	// The target service url used to set up private service connection to a Google API or a PSC Producer Service Attachment. An example value is: asia-northeast3-cloudkms.googleapis.com. Optional. Only valid when networkEndpointType is PRIVATE_SERVICE_CONNECT.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.psc_target_service
+	PSCTargetService *string `json:"pscTargetService,omitempty"`
+
+	// [Output Only] The URL of the region where the network endpoint group is located.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output only] Number of network endpoints in the network endpoint group.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.size
+	Size *int32 `json:"size,omitempty"`
+
+	// Optional URL of the subnetwork to which all network endpoints in the NEG belong.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+
+	// [Output Only] The URL of the zone where the network endpoint group is located.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
+/* unreachable type NetworkEndpointGroupAppEngine
+// +kcc:proto=google.cloud.compute.v1.NetworkEndpointGroupAppEngine
+type NetworkEndpointGroupAppEngine struct {
+	// Optional serving service. The service name is case-sensitive and must be 1-63 characters long. Example value: default, my-service.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupAppEngine.service
+	Service *string `json:"service,omitempty"`
+
+	// An URL mask is one of the main components of the Cloud Function. A template to parse service and version fields from a request URL. URL mask allows for routing to multiple App Engine services without having to create multiple Network Endpoint Groups and backend services. For example, the request URLs foo1-dot-appname.appspot.com/v1 and foo1-dot-appname.appspot.com/v2 can be backed by the same Serverless NEG with URL mask <service>-dot-appname.appspot.com/<version>. The URL mask will parse them to { service = "foo1", version = "v1" } and { service = "foo1", version = "v2" } respectively.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupAppEngine.url_mask
+	URLMask *string `json:"urlMask,omitempty"`
+
+	// Optional serving version. The version name is case-sensitive and must be 1-100 characters long. Example value: v1, v2.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupAppEngine.version
+	Version *string `json:"version,omitempty"`
+}
+*/
+
+/* unreachable type NetworkEndpointGroupCloudFunction
+// +kcc:proto=google.cloud.compute.v1.NetworkEndpointGroupCloudFunction
+type NetworkEndpointGroupCloudFunction struct {
+	// A user-defined name of the Cloud Function. The function name is case-sensitive and must be 1-63 characters long. Example value: func1.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupCloudFunction.function
+	Function *string `json:"function,omitempty"`
+
+	// An URL mask is one of the main components of the Cloud Function. A template to parse function field from a request URL. URL mask allows for routing to multiple Cloud Functions without having to create multiple Network Endpoint Groups and backend services. For example, request URLs mydomain.com/function1 and mydomain.com/function2 can be backed by the same Serverless NEG with URL mask /<function>. The URL mask will parse them to { function = "function1" } and { function = "function2" } respectively.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupCloudFunction.url_mask
+	URLMask *string `json:"urlMask,omitempty"`
+}
+*/
+
+/* unreachable type NetworkEndpointGroupCloudRun
+// +kcc:proto=google.cloud.compute.v1.NetworkEndpointGroupCloudRun
+type NetworkEndpointGroupCloudRun struct {
+	// Cloud Run service is the main resource of Cloud Run. The service must be 1-63 characters long, and comply with RFC1035. Example value: "run-service".
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupCloudRun.service
+	Service *string `json:"service,omitempty"`
+
+	// Optional Cloud Run tag represents the "named-revision" to provide additional fine-grained traffic routing information. The tag must be 1-63 characters long, and comply with RFC1035. Example value: "revision-0010".
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupCloudRun.tag
+	Tag *string `json:"tag,omitempty"`
+
+	// An URL mask is one of the main components of the Cloud Function. A template to parse <service> and <tag> fields from a request URL. URL mask allows for routing to multiple Run services without having to create multiple network endpoint groups and backend services. For example, request URLs foo1.domain.com/bar1 and foo1.domain.com/bar2 can be backed by the same Serverless Network Endpoint Group (NEG) with URL mask <tag>.domain.com/<service>. The URL mask will parse them to { service="bar1", tag="foo1" } and { service="bar2", tag="foo2" } respectively.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupCloudRun.url_mask
+	URLMask *string `json:"urlMask,omitempty"`
+}
+*/
+
+/* unreachable type NetworkEndpointGroupPSCData
+// +kcc:proto=google.cloud.compute.v1.NetworkEndpointGroupPscData
+type NetworkEndpointGroupPSCData struct {
+	// [Output Only] Address allocated from given subnetwork for PSC. This IP address acts as a VIP for a PSC NEG, allowing it to act as an endpoint in L7 PSC-XLB.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupPscData.consumer_psc_address
+	ConsumerPSCAddress *string `json:"consumerPSCAddress,omitempty"`
+
+	// The psc producer port is used to connect PSC NEG with specific port on the PSC Producer side; should only be used for the PRIVATE_SERVICE_CONNECT NEG type
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupPscData.producer_port
+	ProducerPort *int32 `json:"producerPort,omitempty"`
+
+	// [Output Only] The PSC connection id of the PSC Network Endpoint Group Consumer.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupPscData.psc_connection_id
+	PSCConnectionID *uint64 `json:"pscConnectionID,omitempty"`
+
+	// [Output Only] The connection status of the PSC Forwarding Rule.
+	//  Check the PscConnectionStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupPscData.psc_connection_status
+	PSCConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
 }
 */
 
