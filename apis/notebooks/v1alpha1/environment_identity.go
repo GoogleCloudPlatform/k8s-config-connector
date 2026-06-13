@@ -17,49 +17,62 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// EnvironmentIdentity is the identity of a NotebooksEnvironment.
-type EnvironmentIdentity struct {
-	parent *EnvironmentParent
-	id     string
+var (
+	_ identity.IdentityV2 = &NotebooksEnvironmentIdentity{}
+	_ identity.Resource   = &NotebooksEnvironment{}
+)
+
+var NotebooksEnvironmentIdentityFormat = gcpurls.Template[NotebooksEnvironmentIdentity]("notebooks.googleapis.com", "projects/{project}/locations/{location}/environments/{environment}")
+
+// NotebooksEnvironmentIdentity is the identity of a GCP NotebooksEnvironment resource.
+// +k8s:deepcopy-gen=false
+type NotebooksEnvironmentIdentity struct {
+	Project     string
+	Location    string
+	Environment string
 }
 
-func (i *EnvironmentIdentity) String() string {
-	return i.parent.String() + "/environments/" + i.id
+func (i *NotebooksEnvironmentIdentity) String() string {
+	return NotebooksEnvironmentIdentityFormat.ToString(*i)
 }
 
-func (i *EnvironmentIdentity) ParentString() string {
-	return i.parent.String()
+func (i *NotebooksEnvironmentIdentity) FromExternal(ref string) error {
+	parsed, match, err := NotebooksEnvironmentIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of NotebooksEnvironment external=%q was not known (use %s): %w", ref, NotebooksEnvironmentIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of NotebooksEnvironment external=%q was not known (use %s)", ref, NotebooksEnvironmentIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
 }
 
-func (i *EnvironmentIdentity) ID() string {
-	return i.id
+func (i *NotebooksEnvironmentIdentity) Host() string {
+	return NotebooksEnvironmentIdentityFormat.Host()
 }
 
-func (i *EnvironmentIdentity) Parent() *EnvironmentParent {
-	return i.parent
+func (i *NotebooksEnvironmentIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-type EnvironmentParent struct {
-	ProjectID string
-	Location  string
+func (i *NotebooksEnvironmentIdentity) ID() string {
+	return i.Environment
 }
 
-func (p *EnvironmentParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds an EnvironmentIdentity from the Config Connector Environment object.
-func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *NotebooksEnvironment) (*EnvironmentIdentity, error) {
-
+// NewEnvironmentIdentity builds an NotebooksEnvironmentIdentity from the Config Connector NotebooksEnvironment object.
+func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *NotebooksEnvironment) (*NotebooksEnvironmentIdentity, error) {
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -82,39 +95,70 @@ func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *Note
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseEnvironmentExternal(externalRef)
-		if err != nil {
+		actual := &NotebooksEnvironmentIdentity{}
+		if err := actual.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actual.Project != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actual.Project, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actual.Location != location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actual.Location, location)
 		}
-		if actualResourceID != resourceID {
+		if actual.Environment != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+				resourceID, actual.Environment)
 		}
 	}
-	return &EnvironmentIdentity{
-		parent: &EnvironmentParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
+	return &NotebooksEnvironmentIdentity{
+		Project:     projectID,
+		Location:    location,
+		Environment: resourceID,
 	}, nil
 }
 
-func ParseEnvironmentExternal(external string) (parent *EnvironmentParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "environments" {
-		return nil, "", fmt.Errorf("format of NotebooksEnvironment external=%q was not known (use projects/{{projectID}}/locations/{{location}}/environments/{{environmentID}})", external)
+func getIdentityFromNotebooksEnvironmentSpec(ctx context.Context, reader client.Reader, obj *NotebooksEnvironment) (*NotebooksEnvironmentIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
-	parent = &EnvironmentParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &NotebooksEnvironmentIdentity{
+		Project:     projectID,
+		Location:    location,
+		Environment: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *NotebooksEnvironment) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromNotebooksEnvironmentSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		statusIdentity := &NotebooksEnvironmentIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change NotebooksEnvironment identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
 }

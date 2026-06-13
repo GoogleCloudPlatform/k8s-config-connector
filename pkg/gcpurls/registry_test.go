@@ -72,6 +72,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Add known exceptions here.
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
 		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":                         true,
+		"//notebooks.googleapis.com/projects/{}/locations/{}/environments/{}":                       true,
 		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}":                              true,
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}":             true,
 		"//storage.googleapis.com/projects/{}/buckets/{}":                                           true,
