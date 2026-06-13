@@ -25,6 +25,7 @@ import (
 
 var LoggingLogMetricGVK = GroupVersion.WithKind("LoggingLogMetric")
 
+// +kcc:proto=google.api.Distribution.BucketOptions
 type LogmetricBucketOptions struct {
 	/* The explicit buckets. */
 	// +optional
@@ -39,6 +40,7 @@ type LogmetricBucketOptions struct {
 	LinearBuckets *LogmetricLinearBuckets `json:"linearBuckets,omitempty"`
 }
 
+// +kcc:proto=google.api.Distribution.BucketOptions.Explicit
 type LogmetricExplicitBuckets struct {
 	/* The values must be monotonically increasing. */
 	// +optional
@@ -46,6 +48,7 @@ type LogmetricExplicitBuckets struct {
 	Bounds []float64 `json:"bounds,omitempty"`
 }
 
+// +kcc:proto=google.api.Distribution.BucketOptions.Exponential
 type LogmetricExponentialBuckets struct {
 	/* Must be greater than 1. */
 	// +optional
@@ -62,6 +65,7 @@ type LogmetricExponentialBuckets struct {
 	Scale *float64 `json:"scale,omitempty"`
 }
 
+// +kcc:proto=google.api.LabelDescriptor
 type LogmetricLabels struct {
 	/* Immutable. A human-readable description for the label. */
 	// +optional
@@ -76,6 +80,7 @@ type LogmetricLabels struct {
 	ValueType *string `json:"valueType,omitempty"`
 }
 
+// +kcc:proto=google.api.Distribution.BucketOptions.Linear
 type LogmetricLinearBuckets struct {
 	/* Must be greater than 0. */
 	// +optional
@@ -92,6 +97,7 @@ type LogmetricLinearBuckets struct {
 	Width *float64 `json:"width,omitempty"`
 }
 
+// +kcc:proto=google.api.MetricDescriptor.MetricDescriptorMetadata
 type LogmetricMetadata struct {
 	/* The delay of data points caused by ingestion. Data points older than this age are guaranteed to be ingested and available to be read, excluding data loss due to errors. */
 	// +optional
@@ -102,6 +108,7 @@ type LogmetricMetadata struct {
 	SamplePeriod *string `json:"samplePeriod,omitempty"`
 }
 
+// +kcc:proto=google.api.MetricDescriptor
 type LogmetricMetricDescriptor struct {
 	/* A concise name for the metric, which can be displayed in user interfaces. Use sentence case without an ending period, for example "Request count". This field is optional but it is recommended to be set for any metrics associated with user-visible concepts, such as Quota. */
 	// +optional
@@ -132,6 +139,7 @@ type LogmetricMetricDescriptor struct {
 	ValueType *string `json:"valueType,omitempty"`
 }
 
+// +kcc:spec:proto=google.logging.v2.LogMetric
 type LoggingLogMetricSpec struct {
 	// The reference to the Log Bucket that owns
 	// the Log Metric. Only Log Buckets in projects are supported. The
@@ -210,7 +218,7 @@ type LoggingLogMetricStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. The last update timestamp of the metric. This field may not be present for older metrics. */
 	// +optional
