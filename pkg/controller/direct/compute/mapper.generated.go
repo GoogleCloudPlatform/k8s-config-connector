@@ -1268,6 +1268,126 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: StatusMessage
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeRegionNetworkEndpointGroupSpec_v1beta1_FromProto", skipping
+func ComputeRegionNetworkEndpointGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEndpointGroup) *krm.ComputeRegionNetworkEndpointGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRegionNetworkEndpointGroupSpec{}
+	// MISSING: Annotations
+	// MISSING: AppEngine
+	out.CloudFunction = RegionnetworkendpointgroupCloudFunction_v1beta1_FromProto(mapCtx, in.GetCloudFunction())
+	out.CloudRun = RegionnetworkendpointgroupCloudRun_v1beta1_FromProto(mapCtx, in.GetCloudRun())
+	// MISSING: CreationTimestamp
+	// MISSING: DefaultPort
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.NetworkEndpointType = in.NetworkEndpointType
+	// MISSING: PSCData
+	out.PSCTargetService = in.PscTargetService
+	out.Region = in.Region
+	// MISSING: SelfLink
+	// MISSING: Size
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krm.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	// MISSING: Zone
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeRegionNetworkEndpointGroupSpec_v1beta1_ToProto", skipping
+
+	func ComputeRegionNetworkEndpointGroupSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRegionNetworkEndpointGroupSpec) *pb.NetworkEndpointGroup {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NetworkEndpointGroup{}
+		// MISSING: Annotations
+		// MISSING: AppEngine
+		out.CloudFunction = RegionnetworkendpointgroupCloudFunction_v1beta1_ToProto(mapCtx, in.CloudFunction)
+		out.CloudRun = RegionnetworkendpointgroupCloudRun_v1beta1_ToProto(mapCtx, in.CloudRun)
+		// MISSING: CreationTimestamp
+		// MISSING: DefaultPort
+		out.Description = in.Description
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: Name
+		if in.NetworkRef != nil {
+			out.Network = &in.NetworkRef.External
+		}
+		out.NetworkEndpointType = in.NetworkEndpointType
+		// MISSING: PSCData
+		out.PscTargetService = in.PSCTargetService
+		out.Region = in.Region
+		// MISSING: SelfLink
+		// MISSING: Size
+		if in.SubnetworkRef != nil {
+			out.Subnetwork = &in.SubnetworkRef.External
+		}
+		// MISSING: Zone
+		return out
+	}
+*/
+func ComputeRegionNetworkEndpointGroupStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEndpointGroup) *krm.ComputeRegionNetworkEndpointGroupStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRegionNetworkEndpointGroupStatus{}
+	// MISSING: Annotations
+	// MISSING: AppEngine
+	// MISSING: CloudFunction
+	// MISSING: CloudRun
+	// MISSING: CreationTimestamp
+	// MISSING: DefaultPort
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: NetworkEndpointType
+	// MISSING: PSCData
+	// MISSING: PSCTargetService
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Size
+	// MISSING: Subnetwork
+	// MISSING: Zone
+	return out
+}
+func ComputeRegionNetworkEndpointGroupStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRegionNetworkEndpointGroupStatus) *pb.NetworkEndpointGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkEndpointGroup{}
+	// MISSING: Annotations
+	// MISSING: AppEngine
+	// MISSING: CloudFunction
+	// MISSING: CloudRun
+	// MISSING: CreationTimestamp
+	// MISSING: DefaultPort
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: NetworkEndpointType
+	// MISSING: PSCData
+	// MISSING: PSCTargetService
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Size
+	// MISSING: Subnetwork
+	// MISSING: Zone
+	return out
+}
 func ComputeReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ComputeReservationSpec {
 	if in == nil {
 		return nil
@@ -2422,6 +2542,52 @@ func NodeTemplateServerBinding_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	out := &pb.ServerBinding{}
 	out.Type = in.Type
+	return out
+}
+func RegionnetworkendpointgroupCloudFunction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEndpointGroupCloudFunction) *krm.RegionnetworkendpointgroupCloudFunction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RegionnetworkendpointgroupCloudFunction{}
+	if in.GetFunction() != "" {
+		out.FunctionRef = &krm.CloudFunctionsFunctionRef{External: in.GetFunction()}
+	}
+	out.URLMask = in.UrlMask
+	return out
+}
+func RegionnetworkendpointgroupCloudFunction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RegionnetworkendpointgroupCloudFunction) *pb.NetworkEndpointGroupCloudFunction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkEndpointGroupCloudFunction{}
+	if in.FunctionRef != nil {
+		out.Function = &in.FunctionRef.External
+	}
+	out.UrlMask = in.URLMask
+	return out
+}
+func RegionnetworkendpointgroupCloudRun_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEndpointGroupCloudRun) *krm.RegionnetworkendpointgroupCloudRun {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RegionnetworkendpointgroupCloudRun{}
+	if in.GetService() != "" {
+		out.ServiceRef = &krm.RunServiceRef{External: in.GetService()}
+	}
+	out.Tag = in.Tag
+	out.URLMask = in.UrlMask
+	return out
+}
+func RegionnetworkendpointgroupCloudRun_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RegionnetworkendpointgroupCloudRun) *pb.NetworkEndpointGroupCloudRun {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkEndpointGroupCloudRun{}
+	if in.ServiceRef != nil {
+		out.Service = &in.ServiceRef.External
+	}
+	out.Tag = in.Tag
+	out.UrlMask = in.URLMask
 	return out
 }
 func ReservationGuestAccelerators_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krm.ReservationGuestAccelerators {
