@@ -913,6 +913,13 @@ func (h *Harness) GCPHTTPClient() *http.Client {
 }
 
 func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructured) {
+	for _, resource := range resources {
+		gvk := resource.GroupVersionKind()
+		if gvk.Group == "dlp.cnrm.cloud.google.com" && gvk.Kind == "DLPConnection" {
+			t.Skip("skipping DLPConnection as the controller is not implemented yet")
+		}
+	}
+
 	// Note: we don't have the harness yet, we have to look to the env var
 	gcpTarget := os.Getenv("E2E_GCP_TARGET")
 
