@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -1494,6 +1495,156 @@ func ComputeSecurityPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: UserDefinedFields
 	return out
 }
+func ComputeSnapshotObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.ComputeSnapshotObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSnapshotObservedState{}
+	// MISSING: Architecture
+	// MISSING: AutoCreated
+	out.CreationSizeBytes = in.CreationSizeBytes
+	out.CreationTimestamp = in.CreationTimestamp
+	out.DiskSizeGB = in.DiskSizeGb
+	out.DownloadBytes = in.DownloadBytes
+	out.EnableConfidentialCompute = in.EnableConfidentialCompute
+	// MISSING: GuestFlush
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: SnapshotType
+	// MISSING: SourceDiskForRecoveryCheckpoint
+	// MISSING: SourceDiskID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotEncryptionKey
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshotSchedulePolicy
+	// MISSING: SourceSnapshotSchedulePolicyID
+	// MISSING: Status
+	out.StorageBytes = in.StorageBytes
+	out.StorageBytesStatus = in.StorageBytesStatus
+	return out
+}
+func ComputeSnapshotObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSnapshotObservedState) *pb.Snapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Snapshot{}
+	// MISSING: Architecture
+	// MISSING: AutoCreated
+	out.CreationSizeBytes = in.CreationSizeBytes
+	out.CreationTimestamp = in.CreationTimestamp
+	out.DiskSizeGb = in.DiskSizeGB
+	out.DownloadBytes = in.DownloadBytes
+	out.EnableConfidentialCompute = in.EnableConfidentialCompute
+	// MISSING: GuestFlush
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: SnapshotType
+	// MISSING: SourceDiskForRecoveryCheckpoint
+	// MISSING: SourceDiskID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotEncryptionKey
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshotSchedulePolicy
+	// MISSING: SourceSnapshotSchedulePolicyID
+	// MISSING: Status
+	out.StorageBytes = in.StorageBytes
+	out.StorageBytesStatus = in.StorageBytesStatus
+	return out
+}
+func ComputeSnapshotSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.ComputeSnapshotSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSnapshotSpec{}
+	// MISSING: Architecture
+	// MISSING: AutoCreated
+	out.ChainName = in.ChainName
+	out.Description = in.Description
+	// MISSING: GuestFlush
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	out.SnapshotEncryptionKey = CustomerEncryptionKey_v1beta1_FromProto(mapCtx, in.GetSnapshotEncryptionKey())
+	// MISSING: SnapshotType
+	if in.GetSourceDisk() != "" {
+		out.SourceDiskRef = &refsv1beta1.ComputeDiskRef{External: in.GetSourceDisk()}
+	}
+	out.SourceDiskEncryptionKey = CustomerEncryptionKey_v1beta1_FromProto(mapCtx, in.GetSourceDiskEncryptionKey())
+	// MISSING: SourceDiskForRecoveryCheckpoint
+	// MISSING: SourceDiskID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotEncryptionKey
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshotSchedulePolicy
+	// MISSING: SourceSnapshotSchedulePolicyID
+	// MISSING: Status
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+func ComputeSnapshotSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSnapshotSpec) *pb.Snapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Snapshot{}
+	// MISSING: Architecture
+	// MISSING: AutoCreated
+	out.ChainName = in.ChainName
+	out.Description = in.Description
+	// MISSING: GuestFlush
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	out.SnapshotEncryptionKey = CustomerEncryptionKey_v1beta1_ToProto(mapCtx, in.SnapshotEncryptionKey)
+	// MISSING: SnapshotType
+	if in.SourceDiskRef != nil {
+		out.SourceDisk = &in.SourceDiskRef.External
+	}
+	out.SourceDiskEncryptionKey = CustomerEncryptionKey_v1beta1_ToProto(mapCtx, in.SourceDiskEncryptionKey)
+	// MISSING: SourceDiskForRecoveryCheckpoint
+	// MISSING: SourceDiskID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotEncryptionKey
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshotSchedulePolicy
+	// MISSING: SourceSnapshotSchedulePolicyID
+	// MISSING: Status
+	out.StorageLocations = in.StorageLocations
+	return out
+}
 func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krm.ComputeSubnetworkSpec {
 	if in == nil {
 		return nil
@@ -1838,6 +1989,30 @@ found existing non-generated mapping function "ComputeTargetTCPProxyStatus_v1bet
 		return out
 	}
 */
+func CustomerEncryptionKey_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomerEncryptionKey) *krm.CustomerEncryptionKey {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomerEncryptionKey{}
+	// MISSING: KMSKeyName
+	// MISSING: KMSKeyServiceAccount
+	out.RawKey = in.RawKey
+	out.RsaEncryptedKey = in.RsaEncryptedKey
+	out.Sha256 = in.Sha256
+	return out
+}
+func CustomerEncryptionKey_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CustomerEncryptionKey) *pb.CustomerEncryptionKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomerEncryptionKey{}
+	// MISSING: KMSKeyName
+	// MISSING: KMSKeyServiceAccount
+	out.RawKey = in.RawKey
+	out.RsaEncryptedKey = in.RsaEncryptedKey
+	out.Sha256 = in.Sha256
+	return out
+}
 func Duration_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krmcomputev1alpha1.Duration {
 	if in == nil {
 		return nil

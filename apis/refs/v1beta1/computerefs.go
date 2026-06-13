@@ -347,3 +347,12 @@ type ComputeForwardingRuleRef struct {
 	/* The namespace field of a ComputeForwardingRule resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type ComputeDiskRef struct {
+	/* The ComputeDisk selflink in the form "projects/{{project}}/zones/{{zone}}/disks/{{name}}" or "projects/{{project}}/regions/{{region}}/disks/{{name}}" when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The name field of a ComputeDisk resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a ComputeDisk resource. */
+	Namespace string `json:"namespace,omitempty"`
+}

@@ -90,6 +90,12 @@ title: "ComputeSnapshot"
 ```yaml
 chainName: string
 description: string
+location: string
+projectRef:
+  external: string
+  kind: string
+  name: string
+  namespace: string
 resourceID: string
 snapshotEncryptionKey:
   kmsKeyRef:
@@ -100,24 +106,21 @@ snapshotEncryptionKey:
     external: string
     name: string
     namespace: string
-  rawKey:
-    value: string
-    valueFrom:
-      secretKeyRef:
-        key: string
-        name: string
+  rawKey: string
+  rsaEncryptedKey: string
   sha256: string
 sourceDiskEncryptionKey:
+  kmsKeyRef:
+    external: string
+    name: string
+    namespace: string
   kmsKeyServiceAccountRef:
     external: string
     name: string
     namespace: string
-  rawKey:
-    value: string
-    valueFrom:
-      secretKeyRef:
-        key: string
-        name: string
+  rawKey: string
+  rsaEncryptedKey: string
+  sha256: string
 sourceDiskRef:
   external: string
   name: string
@@ -141,12 +144,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Creates the new snapshot in the snapshot chain labeled with the
-specified name. The chain name must be 1-63 characters long and
-comply with RFC1035. This is an uncommon option only for advanced
-service owners who needs to create separate snapshot chains, for
-example, for chargeback tracking.  When you describe your snapshot
-resource, this field is visible only if it has a non-empty value.</p>
+            <p>Immutable. Creates the new snapshot in the snapshot chain labeled with the specified name. The chain name must be 1-63 characters long and comply with RFC1035. This is an uncommon option only for advanced service owners who needs to create separate snapshot chains, for example, for chargeback tracking. When you describe your snapshot resource, this field is visible only if it has a non-empty value.</p>
         </td>
     </tr>
     <tr>
@@ -161,12 +159,72 @@ resource, this field is visible only if it has a non-empty value.</p>
     </tr>
     <tr>
         <td>
+            <p><code>location</code></p>
+            <p><i>Required</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The location of this resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef</code></p>
+            <p><i>Required</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The project that this resource belongs to.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>resourceID</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+            <p>The ComputeSnapshot name. If not given, the metadata.name will be used.</p>
         </td>
     </tr>
     <tr>
@@ -176,19 +234,7 @@ resource, this field is visible only if it has a non-empty value.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Encrypts the snapshot using a customer-supplied encryption key.
-
-After you encrypt a snapshot using a customer-supplied key, you must
-provide the same key if you use the snapshot later. For example, you
-must provide the encryption key when you create a disk from the
-encrypted snapshot in a future request.
-
-Customer-supplied encryption keys do not protect access to metadata of
-the snapshot.
-
-If you do not provide an encryption key when creating the snapshot,
-then the snapshot will be encrypted using an automatically generated
-key and you do not need to provide a key to use the snapshot later.</p>
+            <p>Immutable. Encrypts the snapshot using a customer-supplied encryption key.</p>
         </td>
     </tr>
     <tr>
@@ -198,7 +244,7 @@ key and you do not need to provide a key to use the snapshot later.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The encryption key that is stored in Google Cloud KMS.</p>
+            <p>The name of the encryption key that is stored in Google Cloud KMS.</p>
         </td>
     </tr>
     <tr>
@@ -208,7 +254,7 @@ key and you do not need to provide a key to use the snapshot later.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -218,7 +264,7 @@ key and you do not need to provide a key to use the snapshot later.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -228,7 +274,7 @@ key and you do not need to provide a key to use the snapshot later.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -238,8 +284,7 @@ key and you do not need to provide a key to use the snapshot later.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The service account used for the encryption request for the given KMS key.
-If absent, the Compute Engine Service Agent service account is used.</p>
+            <p>The service account being used for the encryption request for the given KMS key. If absent, the Compute Engine default service account is used.</p>
         </td>
     </tr>
     <tr>
@@ -249,7 +294,7 @@ If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -278,59 +323,18 @@ If absent, the Compute Engine Service Agent service account is used.</p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">object</code></p>
-            <p>Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-RFC 4648 base64 to either encrypt or decrypt this resource.</p>
+            <p><code class="apitype">string</code></p>
+            <p>Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>snapshotEncryptionKey.rawKey.value</code></p>
+            <p><code>snapshotEncryptionKey.rsaEncryptedKey</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Value of the field. Cannot be used if 'valueFrom' is specified.</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>snapshotEncryptionKey.rawKey.valueFrom</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>Source for the field's value. Cannot be used if 'value' is specified.</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>snapshotEncryptionKey.rawKey.valueFrom.secretKeyRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>Reference to a value with the given key in the given Secret in the resource's namespace.</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>snapshotEncryptionKey.rawKey.valueFrom.secretKeyRef.key</code></p>
-            <p><i>Required*</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Key that identifies the value to be extracted.</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>snapshotEncryptionKey.rawKey.valueFrom.secretKeyRef.name</code></p>
-            <p><i>Required*</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Name of the Secret to extract a value from.</p>
+            <p>Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit customer-supplied encryption key to either encrypt or decrypt this resource.</p>
         </td>
     </tr>
     <tr>
@@ -340,8 +344,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
-encryption key that protects this resource.</p>
+            <p>[Output only] The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource.</p>
         </td>
     </tr>
     <tr>
@@ -351,9 +354,47 @@ encryption key that protects this resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The customer-supplied encryption key of the source snapshot. Required
-if the source snapshot is protected by a customer-supplied encryption
-key.</p>
+            <p>Immutable. The customer-supplied encryption key of the source disk. Required if the source disk is protected by a customer-supplied encryption key.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceDiskEncryptionKey.kmsKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The name of the encryption key that is stored in Google Cloud KMS.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceDiskEncryptionKey.kmsKeyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceDiskEncryptionKey.kmsKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceDiskEncryptionKey.kmsKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -363,8 +404,7 @@ key.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The service account used for the encryption request for the given KMS key.
-If absent, the Compute Engine Service Agent service account is used.</p>
+            <p>The service account being used for the encryption request for the given KMS key. If absent, the Compute Engine default service account is used.</p>
         </td>
     </tr>
     <tr>
@@ -374,7 +414,7 @@ If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -403,59 +443,28 @@ If absent, the Compute Engine Service Agent service account is used.</p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">object</code></p>
-            <p>Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-RFC 4648 base64 to either encrypt or decrypt this resource.</p>
+            <p><code class="apitype">string</code></p>
+            <p>Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>sourceDiskEncryptionKey.rawKey.value</code></p>
+            <p><code>sourceDiskEncryptionKey.rsaEncryptedKey</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Value of the field. Cannot be used if 'valueFrom' is specified.</p>
+            <p>Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit customer-supplied encryption key to either encrypt or decrypt this resource.</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>sourceDiskEncryptionKey.rawKey.valueFrom</code></p>
+            <p><code>sourceDiskEncryptionKey.sha256</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">object</code></p>
-            <p>Source for the field's value. Cannot be used if 'value' is specified.</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>sourceDiskEncryptionKey.rawKey.valueFrom.secretKeyRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>Reference to a value with the given key in the given Secret in the resource's namespace.</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>sourceDiskEncryptionKey.rawKey.valueFrom.secretKeyRef.key</code></p>
-            <p><i>Required*</i></p>
-        </td>
-        <td>
             <p><code class="apitype">string</code></p>
-            <p>Key that identifies the value to be extracted.</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>sourceDiskEncryptionKey.rawKey.valueFrom.secretKeyRef.name</code></p>
-            <p><i>Required*</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Name of the Secret to extract a value from.</p>
+            <p>[Output only] The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource.</p>
         </td>
     </tr>
     <tr>
@@ -475,7 +484,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `ComputeDisk` resource.</p>
+            <p>The ComputeDisk selflink in the form "projects/{{project}}/zones/{{zone}}/disks/{{name}}" or "projects/{{project}}/regions/{{region}}/disks/{{name}}" when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -485,7 +494,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name field of a ComputeDisk resource.</p>
         </td>
     </tr>
     <tr>
@@ -495,7 +504,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace field of a ComputeDisk resource.</p>
         </td>
     </tr>
     <tr>
@@ -531,8 +540,6 @@ RFC 4648 base64 to either encrypt or decrypt this resource.</p>
 </tbody>
 </table>
 
-<p>* Field is required when parent field is specified</p>
-
 ### Status
 #### Schema
 ```yaml
@@ -542,15 +549,20 @@ conditions:
   reason: string
   status: string
   type: string
-creationTimestamp: string
-diskSizeGb: integer
-labelFingerprint: string
-licenses:
-- string
+externalRef: string
 observedGeneration: integer
-selfLink: string
-snapshotId: integer
-storageBytes: integer
+observedState:
+  creationSizeBytes: integer
+  creationTimestamp: string
+  diskSizeGb: integer
+  downloadBytes: integer
+  enableConfidentialCompute: boolean
+  labelFingerprint: string
+  licenses:
+  - string
+  snapshotId: integer
+  storageBytes: integer
+  storageBytesStatus: string
 ```
 
 <table class="properties responsive">
@@ -564,7 +576,7 @@ storageBytes: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -610,42 +622,10 @@ storageBytes: integer
         </td>
     </tr>
     <tr>
-        <td><code>creationTimestamp</code></td>
+        <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Creation timestamp in RFC3339 text format.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>diskSizeGb</code></td>
-        <td>
-            <p><code class="apitype">integer</code></p>
-            <p>Size of the snapshot, specified in GB.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>labelFingerprint</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>The fingerprint used for optimistic locking of this resource. Used
-internally during updates.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>licenses</code></td>
-        <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>A list of public visible licenses that apply to this snapshot. This
-can be because the original image had licenses attached (such as a
-Windows image).  snapshotEncryptionKey nested object Encrypts the
-snapshot using a customer-supplied encryption key.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>licenses[]</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>A unique specifier for the ComputeSnapshot resource in GCP.</p>
         </td>
     </tr>
     <tr>
@@ -656,26 +636,87 @@ snapshot using a customer-supplied encryption key.</p>
         </td>
     </tr>
     <tr>
-        <td><code>selfLink</code></td>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.creationSizeBytes</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>[Output Only] Size in bytes of the snapshot at creation time.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.creationTimestamp</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>[Output Only] Creation timestamp in RFC3339 text format.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.diskSizeGb</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>[Output Only] Size of the source disk, specified in GB.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.downloadBytes</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>[Output Only] Number of bytes downloaded to restore a snapshot to a disk.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.enableConfidentialCompute</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Whether this snapshot is created from a confidential compute mode disk. [Output Only]: This field is not set by user, but from source disk.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.labelFingerprint</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A fingerprint for the labels being applied to this snapshot, which is essentially a hash of the labels set used for optimistic locking.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.licenses</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>[Output Only] A list of public visible licenses that apply to this snapshot.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.licenses[]</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p></p>
         </td>
     </tr>
     <tr>
-        <td><code>snapshotId</code></td>
+        <td><code>observedState.snapshotId</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The unique identifier for the resource.</p>
+            <p>[Output Only] The unique identifier for the resource. This identifier is defined by the server.</p>
         </td>
     </tr>
     <tr>
-        <td><code>storageBytes</code></td>
+        <td><code>observedState.storageBytes</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>A size of the storage used by the snapshot. As snapshots share
-storage, this number is expected to change with snapshot
-creation/deletion.</p>
+            <p>[Output Only] A size of the storage used by the snapshot. As snapshots share storage, this number is expected to change with snapshot creation/deletion.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.storageBytesStatus</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>[Output Only] An indicator whether storageBytes is in a stable state or it is being adjusted as a result of shared storage reallocation.</p>
         </td>
     </tr>
 </tbody>
