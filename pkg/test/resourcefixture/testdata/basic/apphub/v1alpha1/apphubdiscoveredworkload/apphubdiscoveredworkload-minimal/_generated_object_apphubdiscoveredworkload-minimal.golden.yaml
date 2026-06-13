@@ -1,0 +1,31 @@
+apiVersion: apphub.cnrm.cloud.google.com/v1alpha1
+kind: AppHubDiscoveredWorkload
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: ahdw-min-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-west2
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-west2/discoveredWorkloads/ahdw-min-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    workloadProperties:
+      gcpProject: ${projectId}
+      location: us-west2
+      zone: us-west2-a
+    workloadReference:
+      uri: //container.googleapis.com/projects/${projectId}/locations/us-west2/clusters/mock-cluster/k8s/namespaces/mock-ns/apps/ahdw-min-${uniqueId}

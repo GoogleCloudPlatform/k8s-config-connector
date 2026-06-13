@@ -50,7 +50,8 @@ func (r *DiscoveredWorkloadRef) NormalizedExternal(ctx context.Context, reader c
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseDiscoveredWorkloadExternal(r.External); err != nil {
+		identity := &DiscoveredWorkloadIdentity{}
+		if err := identity.FromExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil

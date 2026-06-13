@@ -1,0 +1,9 @@
+apiVersion: apphub.cnrm.cloud.google.com/v1alpha1
+kind: AppHubDiscoveredWorkload
+metadata:
+  name: ahdw-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west2
+  resourceID: ahdw-max-resource-${uniqueId}

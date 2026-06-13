@@ -21,6 +21,7 @@ package mockapphub
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 
@@ -70,5 +71,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewAppHubClient(conn))
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
-	return mux, nil
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.Contains(r.URL.Path, "/discoveredworkloads/") {
+			r.URL.Path = strings.ReplaceAll(r.URL.Path, "/discoveredworkloads/", "/discoveredWorkloads/")
+		}
+		mux.ServeHTTP(w, r)
+	})
+
+	return handler, nil
 }

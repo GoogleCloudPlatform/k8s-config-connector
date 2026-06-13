@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,100 +17,99 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// DiscoveredWorkloadIdentity is the identity of an AppHubDiscoveredWorkload.
+var (
+	_ identity.IdentityV2 = &DiscoveredWorkloadIdentity{}
+	_ identity.Resource   = &AppHubDiscoveredWorkload{}
+)
+
+var DiscoveredWorkloadIdentityFormat = gcpurls.Template[DiscoveredWorkloadIdentity]("apphub.googleapis.com", "projects/{project}/locations/{location}/discoveredWorkloads/{discoveredWorkload}")
+
+// +k8s:deepcopy-gen=false
 type DiscoveredWorkloadIdentity struct {
-	parent *DiscoveredWorkloadParent
-	id     string
+	Project            string
+	Location           string
+	DiscoveredWorkload string
 }
 
 func (i *DiscoveredWorkloadIdentity) String() string {
-	return i.parent.String() + "/discoveredworkloads/" + i.id
+	return DiscoveredWorkloadIdentityFormat.ToString(*i)
 }
 
-func (i *DiscoveredWorkloadIdentity) ID() string {
-	return i.id
-}
-
-func (i *DiscoveredWorkloadIdentity) Parent() *DiscoveredWorkloadParent {
-	return i.parent
-}
-
-type DiscoveredWorkloadParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *DiscoveredWorkloadParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds a DiscoveredWorkloadIdentity from the Config Connector DiscoveredWorkload object.
-func NewDiscoveredWorkloadIdentity(ctx context.Context, reader client.Reader, obj *AppHubDiscoveredWorkload) (*DiscoveredWorkloadIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (i *DiscoveredWorkloadIdentity) FromExternal(ref string) error {
+	parsed, match, err := DiscoveredWorkloadIdentityFormat.Parse(ref)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("format of AppHubDiscoveredWorkload external=%q was not known (use %s): %w", ref, DiscoveredWorkloadIdentityFormat.CanonicalForm(), err)
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	if !match {
+		return fmt.Errorf("format of AppHubDiscoveredWorkload external=%q was not known (use %s)", ref, DiscoveredWorkloadIdentityFormat.CanonicalForm())
 	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+	*i = *parsed
+	return nil
+}
+
+func (i *DiscoveredWorkloadIdentity) Host() string {
+	return DiscoveredWorkloadIdentityFormat.Host()
+}
+
+func getIdentityFromDiscoveredWorkloadSpec(ctx context.Context, reader client.Reader, obj client.Object) (*DiscoveredWorkloadIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &DiscoveredWorkloadIdentity{
+		Project:            projectID,
+		Location:           location,
+		DiscoveredWorkload: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *AppHubDiscoveredWorkload) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromDiscoveredWorkloadSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseDiscoveredWorkloadExternal(externalRef)
-		if err != nil {
+		statusIdentity := &DiscoveredWorkloadIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change AppHubDiscoveredWorkload identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
-	return &DiscoveredWorkloadIdentity{
-		parent: &DiscoveredWorkloadParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
+
+	return specIdentity, nil
 }
 
-func ParseDiscoveredWorkloadExternal(external string) (parent *DiscoveredWorkloadParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "discoveredworkloads" {
-		return nil, "", fmt.Errorf("format of AppHubDiscoveredWorkload external=%q was not known (use projects/{{projectID}}/locations/{{location}}/discoveredworkloads/{{discoveredworkloadID}})", external)
+func (obj *AppHubDiscoveredWorkload) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
 	}
-	parent = &DiscoveredWorkloadParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return nil
 }
