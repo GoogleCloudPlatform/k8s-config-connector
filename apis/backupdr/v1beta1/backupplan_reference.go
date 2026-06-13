@@ -42,7 +42,7 @@ type BackupPlanRef struct {
 }
 
 func init() {
-	refs.Register(&BackupPlanRef{})
+	refs.Register(&BackupPlanRef{}, &BackupDRBackupPlan{})
 }
 
 func (r *BackupPlanRef) GetGVK() schema.GroupVersionKind {

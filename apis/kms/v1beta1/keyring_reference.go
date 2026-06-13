@@ -42,7 +42,7 @@ type KMSKeyRingRef struct {
 }
 
 func init() {
-	refs.Register(&KMSKeyRingRef{})
+	refs.Register(&KMSKeyRingRef{}, &KMSKeyRing{})
 }
 
 func (r *KMSKeyRingRef) GetGVK() schema.GroupVersionKind {

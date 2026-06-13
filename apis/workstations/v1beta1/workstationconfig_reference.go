@@ -41,7 +41,7 @@ type WorkstationConfigRef struct {
 }
 
 func init() {
-	refs.Register(&WorkstationConfigRef{})
+	refs.Register(&WorkstationConfigRef{}, &WorkstationConfig{})
 }
 
 func (r *WorkstationConfigRef) GetGVK() schema.GroupVersionKind {

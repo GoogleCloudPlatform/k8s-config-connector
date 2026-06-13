@@ -41,7 +41,7 @@ type GKEHubMembershipBindingRef struct {
 }
 
 func init() {
-	refs.Register(&GKEHubMembershipBindingRef{})
+	refs.Register(&GKEHubMembershipBindingRef{}, &GKEHubMembershipBinding{})
 }
 
 func (r *GKEHubMembershipBindingRef) GetGVK() schema.GroupVersionKind {

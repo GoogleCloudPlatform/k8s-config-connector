@@ -26,7 +26,7 @@ import (
 )
 
 func init() {
-	refs.Register(&DatasetRef{})
+	refs.Register(&DatasetRef{}, &BigQueryDataset{})
 }
 
 var _ refs.Ref = &DatasetRef{}

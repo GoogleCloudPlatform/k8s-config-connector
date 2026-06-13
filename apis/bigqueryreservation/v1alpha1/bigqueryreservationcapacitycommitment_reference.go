@@ -42,7 +42,7 @@ type BigQueryReservationCapacityCommitmentRef struct {
 }
 
 func init() {
-	refs.Register(&BigQueryReservationCapacityCommitmentRef{})
+	refs.Register(&BigQueryReservationCapacityCommitmentRef{}, &BigQueryReservationCapacityCommitment{})
 }
 
 func (r *BigQueryReservationCapacityCommitmentRef) GetGVK() schema.GroupVersionKind {

@@ -44,7 +44,7 @@ type SecurityCenterMuteConfigRef struct {
 var _ refs.Ref = &SecurityCenterMuteConfigRef{}
 
 func init() {
-	refs.Register(&SecurityCenterMuteConfigRef{})
+	refs.Register(&SecurityCenterMuteConfigRef{}, &SecurityCenterMuteConfig{})
 }
 
 func (r *SecurityCenterMuteConfigRef) GetGVK() schema.GroupVersionKind {

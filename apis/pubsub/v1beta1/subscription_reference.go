@@ -47,7 +47,7 @@ type PubSubSubscriptionRef struct {
 }
 
 func init() {
-	refs.Register(&PubSubSubscriptionRef{})
+	refs.Register(&PubSubSubscriptionRef{}, &PubSubSubscription{})
 }
 
 func (r *PubSubSubscriptionRef) GetGVK() schema.GroupVersionKind {

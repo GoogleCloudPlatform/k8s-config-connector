@@ -42,7 +42,7 @@ type MonitoringUptimeCheckConfigRef struct {
 }
 
 func init() {
-	refs.Register(&MonitoringUptimeCheckConfigRef{})
+	refs.Register(&MonitoringUptimeCheckConfigRef{}, &MonitoringUptimeCheckConfig{})
 }
 
 func (r *MonitoringUptimeCheckConfigRef) GetGVK() schema.GroupVersionKind {

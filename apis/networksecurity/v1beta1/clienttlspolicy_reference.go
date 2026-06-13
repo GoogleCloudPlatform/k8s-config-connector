@@ -41,7 +41,7 @@ type NetworkSecurityClientTLSPolicyRef struct {
 }
 
 func init() {
-	refs.Register(&NetworkSecurityClientTLSPolicyRef{})
+	refs.Register(&NetworkSecurityClientTLSPolicyRef{}, &NetworkSecurityClientTLSPolicy{})
 }
 
 func (r *NetworkSecurityClientTLSPolicyRef) GetGVK() schema.GroupVersionKind {

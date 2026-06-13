@@ -42,7 +42,7 @@ type DataflowFlexTemplateJobRef struct {
 }
 
 func init() {
-	refs.Register(&DataflowFlexTemplateJobRef{})
+	refs.Register(&DataflowFlexTemplateJobRef{}, &DataflowFlexTemplateJob{})
 }
 
 func (r *DataflowFlexTemplateJobRef) GetGVK() schema.GroupVersionKind {

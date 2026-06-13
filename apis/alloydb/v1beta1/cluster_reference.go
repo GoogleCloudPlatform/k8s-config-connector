@@ -41,7 +41,7 @@ type ClusterRef struct {
 }
 
 func init() {
-	refs.Register(&ClusterRef{})
+	refs.Register(&ClusterRef{}, &AlloyDBCluster{})
 }
 
 func (r *ClusterRef) GetGVK() schema.GroupVersionKind {

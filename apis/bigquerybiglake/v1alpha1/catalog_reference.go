@@ -42,7 +42,7 @@ type BigQueryBigLakeCatalogRef struct {
 }
 
 func init() {
-	refs.Register(&BigQueryBigLakeCatalogRef{})
+	refs.Register(&BigQueryBigLakeCatalogRef{}, &BigLakeCatalog{})
 }
 
 func (r *BigQueryBigLakeCatalogRef) GetGVK() schema.GroupVersionKind {

@@ -42,7 +42,7 @@ type ComputeNetworkAttachmentRef struct {
 }
 
 func init() {
-	refs.Register(&ComputeNetworkAttachmentRef{})
+	refs.Register(&ComputeNetworkAttachmentRef{}, &ComputeNetworkAttachment{})
 }
 
 func (r *ComputeNetworkAttachmentRef) GetGVK() schema.GroupVersionKind {

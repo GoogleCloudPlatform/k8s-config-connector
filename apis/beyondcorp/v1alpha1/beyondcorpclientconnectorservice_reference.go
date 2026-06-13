@@ -41,7 +41,7 @@ type BeyondCorpClientConnectorServiceRef struct {
 }
 
 func init() {
-	refs.Register(&BeyondCorpClientConnectorServiceRef{})
+	refs.Register(&BeyondCorpClientConnectorServiceRef{}, &BeyondCorpClientConnectorService{})
 }
 
 func (r *BeyondCorpClientConnectorServiceRef) GetGVK() schema.GroupVersionKind {

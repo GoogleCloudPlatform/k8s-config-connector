@@ -42,7 +42,7 @@ type FolderRef struct {
 }
 
 func init() {
-	refs.Register(&FolderRef{})
+	refs.Register(&FolderRef{}, &Folder{})
 }
 
 func (r *FolderRef) GetGVK() schema.GroupVersionKind {

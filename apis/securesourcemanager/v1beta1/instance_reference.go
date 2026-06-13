@@ -44,7 +44,7 @@ type SecureSourceManagerInstanceRef struct {
 }
 
 func init() {
-	refs.Register(&SecureSourceManagerInstanceRef{})
+	refs.Register(&SecureSourceManagerInstanceRef{}, &SecureSourceManagerInstance{})
 }
 
 func (r *SecureSourceManagerInstanceRef) GetGVK() schema.GroupVersionKind {

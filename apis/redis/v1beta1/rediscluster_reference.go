@@ -40,7 +40,7 @@ type RedisClusterRef struct {
 }
 
 func init() {
-	refs.Register(&RedisClusterRef{})
+	refs.Register(&RedisClusterRef{}, &RedisCluster{})
 }
 
 func (r *RedisClusterRef) GetGVK() schema.GroupVersionKind {

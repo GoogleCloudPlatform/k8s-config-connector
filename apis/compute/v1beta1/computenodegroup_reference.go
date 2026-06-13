@@ -28,7 +28,7 @@ import (
 var _ refsv1beta1.Ref = &ComputeNodeGroupRef{}
 
 func init() {
-	refsv1beta1.Register(&ComputeNodeGroupRef{})
+	refsv1beta1.Register(&ComputeNodeGroupRef{}, &ComputeNodeGroup{})
 }
 
 // ComputeNodeGroupRef is a reference to a ComputeNodeGroup.

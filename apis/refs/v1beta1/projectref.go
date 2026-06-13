@@ -38,7 +38,7 @@ var ProjectGVK = schema.GroupVersionKind{
 }
 
 func init() {
-	Register(&ProjectRef{})
+	Register(&ProjectRef{}, nil)
 }
 
 // The Project that this resource belongs to.

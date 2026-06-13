@@ -88,5 +88,5 @@ func (r *NetworkConnectivityRegionalEndpointRef) Normalize(ctx context.Context, 
 }
 
 func init() {
-	refs.Register(&NetworkConnectivityRegionalEndpointRef{})
+	refs.Register(&NetworkConnectivityRegionalEndpointRef{}, &NetworkConnectivityRegionalEndpoint{})
 }

@@ -48,7 +48,7 @@ type DataprocSessionTemplateRef struct {
 }
 
 func init() {
-	refs.Register(&DataprocSessionTemplateRef{})
+	refs.Register(&DataprocSessionTemplateRef{}, &DataprocSessionTemplate{})
 }
 
 func (r *DataprocSessionTemplateRef) GetGVK() schema.GroupVersionKind {

@@ -28,7 +28,7 @@ import (
 var _ refs.Ref = &DeployPolicyRef{}
 
 func init() {
-	refs.Register(&DeployPolicyRef{})
+	refs.Register(&DeployPolicyRef{}, &CloudDeployDeployPolicy{})
 }
 
 // DeployPolicyRef is a reference to a DeployDeployPolicy.

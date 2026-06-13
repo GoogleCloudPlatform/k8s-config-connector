@@ -41,7 +41,7 @@ type MonitoringDashboardRef struct {
 }
 
 func init() {
-	refs.Register(&MonitoringDashboardRef{})
+	refs.Register(&MonitoringDashboardRef{}, &MonitoringDashboard{})
 }
 
 func (r *MonitoringDashboardRef) GetGVK() schema.GroupVersionKind {

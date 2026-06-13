@@ -42,7 +42,7 @@ type CertificateManagerDNSAuthorizationRef struct {
 }
 
 func init() {
-	refs.Register(&CertificateManagerDNSAuthorizationRef{})
+	refs.Register(&CertificateManagerDNSAuthorizationRef{}, &CertificateManagerDNSAuthorization{})
 }
 
 func (r *CertificateManagerDNSAuthorizationRef) GetGVK() schema.GroupVersionKind {

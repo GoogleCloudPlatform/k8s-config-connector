@@ -42,7 +42,7 @@ type MonitoringNotificationChannelRef struct {
 }
 
 func init() {
-	refs.Register(&MonitoringNotificationChannelRef{})
+	refs.Register(&MonitoringNotificationChannelRef{}, &MonitoringNotificationChannel{})
 }
 
 func (r *MonitoringNotificationChannelRef) GetGVK() schema.GroupVersionKind {
