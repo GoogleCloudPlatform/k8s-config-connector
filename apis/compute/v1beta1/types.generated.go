@@ -17,6 +17,8 @@
 // krm.group: compute.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.compute.v1
+// resource: ComputeAddress:Address
+// resource: ComputeDisk:Disk
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
 // resource: ComputeForwardingRule:ForwardingRule
 // resource: ComputeHTTPHealthCheck:HTTPHealthCheck
@@ -24,6 +26,7 @@
 // resource: ComputeInstance:Instance
 // resource: ComputeInstanceGroup:InstanceGroup
 // resource: ComputeNetwork:Network
+// resource: ComputeNetworkPeering:NetworkPeering
 // resource: ComputeNodeGroup:NodeGroup
 // resource: ComputeNodeTemplate:NodeTemplate
 // resource: ComputeReservation:Reservation
