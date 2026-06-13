@@ -39,6 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type InstancegroupmanagerAutoHealingPolicies struct {
+	/* Custom reference structures to match the baseline CRD */
 	// +optional
 	HealthCheckRef *v1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
 
