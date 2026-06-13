@@ -19,6 +19,8 @@
 package compute
 
 import (
+	"strings"
+
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
@@ -93,7 +95,7 @@ func ProjectList_FromProto(mapCtx *direct.MapContext, in []string) []*refs.Proje
 	var out []*refs.ProjectRef
 	for _, i := range in {
 		out = append(out, &refs.ProjectRef{
-			External: i,
+			External: "projects/" + i,
 		})
 	}
 	return out
@@ -111,7 +113,7 @@ func ProjectList_ToProto(mapCtx *direct.MapContext, in []*refs.ProjectRef) []str
 		if i.External == "" {
 			mapCtx.Errorf("reference %s was not pre-resolved", i.Name)
 		}
-		out = append(out, i.External)
+		out = append(out, strings.TrimPrefix(i.External, "projects/"))
 	}
 	return out
 }
