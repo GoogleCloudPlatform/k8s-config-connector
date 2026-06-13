@@ -9,9 +9,9 @@ The `ComputeReservation` resource already had:
 ## Key Observations and Solutions
 
 ### 1. Integer Range Discrepancy (int64 vs. int32)
-- **Problem**: On the GCP proto (`pb.Reservation`), fields like `.specific_reservation.count`, `.specific_reservation.in_use_count`, and `.specific_reservation.instance_properties.local_ssds[].disk_size_gb` are declared as `int64`. In KRM `ComputeReservationSpec`, these map to `int32` pointers.
-- **Symptom**: During random fuzzing, large `int64` inputs exceeded `math.MaxInt32`, causing truncation during round-trip translation. The fuzzer reported mismatches where `p1` (proto input) did not equal `p2` (round-trip proto output).
-- **Solution**: We implemented a custom `FilterSpec` function inside `computereservation_fuzzer.go` to explicitly cast the fuzzed `int64` values to `int32` and back to `int64`. This limits fuzzer-generated inputs to a safe `int32` range and avoids round-trip precision loss.
+- **Investigation**: In KRM `reservation_types.go`, the fields `Count`, `InUseCount`, and `DiskSizeGb` are already defined as `*int32` matching the legacy CRD schema `format: int32` exactly. However, the generated Go types for GCP Compute Engine in the `computepb` package define them as `*int64` (a standard code generator quirk of `computepb` which maps `int32` proto fields to Go `int64` struct fields).
+- **Problem**: In the direct mapper, we use `PtrInt64ToPtrInt32` and `PtrInt32ToPtrInt64` to convert between KRM `*int32` and proto `*int64`. During randomized fuzzing, `int64` inputs exceeded `math.MaxInt32`, causing truncation during round-trip translation. The fuzzer reported mismatches where `p1` (proto input) did not equal `p2` (round-trip proto output).
+- **Solution**: We verified that our Go types are indeed already `int32` (Count, InUseCount, and DiskSizeGb). We then added explanatory comments in the mapper `reservation_mapper.go` and documented in `computereservation_fuzzer.go`'s `FilterSpec` why the truncation normalization is necessary (to constrain the fuzzed proto `int64` values to the safe KRM `int32` range during the lossless round-trip check).
 
 ### 2. Missing Protobuf Fields
 - **Problem**: The proto definition has a field named `.protection_tier` that was not mapped or handled, leading to fuzzer round-trip errors.

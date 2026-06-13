@@ -71,7 +71,11 @@ func computeReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".specific_reservation.source_instance_template")
 	f.Unimplemented_NotYetTriaged(".specific_reservation.instance_properties.location_hint")
 
-	// FilterSpec to handle lossy mapping of int64 to int32 fields
+	// FilterSpec is required because although the KRM schema defines Count, InUseCount, and DiskSizeGb as int32,
+	// the GCP Go client library (computepb) represents these fields as int64.
+	// As a result, the fuzzer (which operates on the pb.Reservation struct) generates random int64 values
+	// that can exceed the int32 range and truncate during round-trip translation. We normalize them to the int32
+	// range here to ensure a lossless round-trip check.
 	f.FilterSpec = func(in *pb.Reservation) {
 		if in.SpecificReservation != nil {
 			if in.SpecificReservation.Count != nil {
