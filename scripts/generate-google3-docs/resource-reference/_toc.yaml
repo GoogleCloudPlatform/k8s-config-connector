@@ -133,6 +133,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/bigtable/bigtablegcpolicy.md
   - title: "BigtableInstance"
     path: /config-connector/docs/reference/resource-docs/bigtable/bigtableinstance.md
+  - title: "BigtableMaterializedView"
+    path: /config-connector/docs/reference/resource-docs/bigtable/bigtablematerializedview.md
   - title: "BigtableTable"
     path: /config-connector/docs/reference/resource-docs/bigtable/bigtabletable.md
 - title: "Cloud Build"

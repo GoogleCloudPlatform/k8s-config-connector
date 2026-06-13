@@ -29,8 +29,8 @@ func init() {
 
 func BigtableMaterializedViewFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.MaterializedView{},
-		BigtableMaterializedViewSpec_v1alpha1_FromProto, BigtableMaterializedViewSpec_v1alpha1_ToProto,
-		BigtableMaterializedViewObservedState_v1alpha1_FromProto, BigtableMaterializedViewObservedState_v1alpha1_ToProto,
+		BigtableMaterializedViewSpec_v1beta1_FromProto, BigtableMaterializedViewSpec_v1beta1_ToProto,
+		BigtableMaterializedViewObservedState_v1beta1_FromProto, BigtableMaterializedViewObservedState_v1beta1_ToProto,
 	)
 
 	f.SpecFields.Insert(".query")
