@@ -1,0 +1,5 @@
+### [2026-06-13] Modeling Global Compute Resources Sharing Common Protos
+- **Context**: Implementing direct KRM types for `ComputeGlobalNetworkEndpointGroup` mapped to `google.cloud.compute.v1.NetworkEndpointGroup`.
+- **Problem**: The GCP Compute API represents both regional/zonal and global network endpoint groups using the same proto message `NetworkEndpointGroup`. However, the global variant must not expose a `location` (zone or region) field in its spec, whereas regional/zonal variants do. The automatic type generator scaffolding included `Location string` by default.
+- **Solution**: In `apis/compute/v1alpha1/networkendpointgroup_types.go`, we removed the generated `Location` field and embedded a custom `ComputeGlobalNetworkEndpointGroupParent` struct that contains only the `ProjectRef` field. This successfully matches the legacy/Terraform CRD specification and ensures backward compatibility while utilizing the direct controller-runtime types.
+- **Impact**: Provides a clear and reusable pattern for modeling other global compute resources that map to a shared regional/zonal proto message in Google APIs.
