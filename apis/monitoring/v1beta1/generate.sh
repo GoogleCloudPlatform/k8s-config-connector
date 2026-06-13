@@ -28,7 +28,8 @@ go run . generate-types \
   --api-version monitoring.cnrm.cloud.google.com/v1beta1  \
   --include-skipped-output \
   --resource MonitoringNotificationChannel:NotificationChannel \
-  --resource MonitoringUptimeCheckConfig:UptimeCheckConfig
+  --resource MonitoringUptimeCheckConfig:UptimeCheckConfig \
+  --resource MonitoringMetricDescriptor:google.api.MetricDescriptor
 
 go run . generate-mapper \
   --service google.monitoring.v3,google.api \

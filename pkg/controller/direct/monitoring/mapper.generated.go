@@ -28,8 +28,32 @@ import (
 	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	apipb "google.golang.org/genproto/googleapis/api"
+	labelpb "google.golang.org/genproto/googleapis/api/label"
+	metricpb "google.golang.org/genproto/googleapis/api/metric"
 	monitoredrespb "google.golang.org/genproto/googleapis/api/monitoredres"
 )
+
+func LabelDescriptor_FromProto(mapCtx *direct.MapContext, in *labelpb.LabelDescriptor) *krm.LabelDescriptor {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LabelDescriptor{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.ValueType = direct.Enum_FromProto(mapCtx, in.GetValueType())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func LabelDescriptor_ToProto(mapCtx *direct.MapContext, in *krm.LabelDescriptor) *labelpb.LabelDescriptor {
+	if in == nil {
+		return nil
+	}
+	out := &labelpb.LabelDescriptor{}
+	out.Key = direct.ValueOf(in.Key)
+	out.ValueType = direct.Enum_ToProto[labelpb.LabelDescriptor_ValueType](mapCtx, in.ValueType)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 
 /* found existing non-generated mapping function "MonitoredResource_FromProto", skipping
 func MonitoredResource_FromProto(mapCtx *direct.MapContext, in *monitoredrespb.MonitoredResource) *krm.MonitoredResource {
@@ -56,6 +80,56 @@ found existing non-generated mapping function "MonitoredResource_ToProto", skipp
 		return out
 	}
 */
+func MonitoringMetricDescriptorObservedState_FromProto(mapCtx *direct.MapContext, in *metricpb.MetricDescriptor) *krm.MonitoringMetricDescriptorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringMetricDescriptorObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.MonitoredResourceTypes = in.MonitoredResourceTypes
+	return out
+}
+func MonitoringMetricDescriptorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringMetricDescriptorObservedState) *metricpb.MetricDescriptor {
+	if in == nil {
+		return nil
+	}
+	out := &metricpb.MetricDescriptor{}
+	out.Name = direct.ValueOf(in.Name)
+	out.MonitoredResourceTypes = in.MonitoredResourceTypes
+	return out
+}
+func MonitoringMetricDescriptorSpec_FromProto(mapCtx *direct.MapContext, in *metricpb.MetricDescriptor) *krm.MonitoringMetricDescriptorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringMetricDescriptorSpec{}
+	out.Type = direct.LazyPtr(in.GetType())
+	out.Labels = direct.Slice_FromProto(mapCtx, in.Labels, LabelDescriptor_FromProto)
+	out.MetricKind = direct.Enum_FromProto(mapCtx, in.GetMetricKind())
+	out.ValueType = direct.Enum_FromProto(mapCtx, in.GetValueType())
+	out.Unit = direct.LazyPtr(in.GetUnit())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Metadata = MetricDescriptor_MetricDescriptorMetadata_FromProto(mapCtx, in.GetMetadata())
+	out.LaunchStage = direct.Enum_FromProto(mapCtx, in.GetLaunchStage())
+	return out
+}
+func MonitoringMetricDescriptorSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringMetricDescriptorSpec) *metricpb.MetricDescriptor {
+	if in == nil {
+		return nil
+	}
+	out := &metricpb.MetricDescriptor{}
+	out.Type = direct.ValueOf(in.Type)
+	out.Labels = direct.Slice_ToProto(mapCtx, in.Labels, LabelDescriptor_ToProto)
+	out.MetricKind = direct.Enum_ToProto[metricpb.MetricDescriptor_MetricKind](mapCtx, in.MetricKind)
+	out.ValueType = direct.Enum_ToProto[metricpb.MetricDescriptor_ValueType](mapCtx, in.ValueType)
+	out.Unit = direct.ValueOf(in.Unit)
+	out.Description = direct.ValueOf(in.Description)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Metadata = MetricDescriptor_MetricDescriptorMetadata_ToProto(mapCtx, in.Metadata)
+	out.LaunchStage = direct.Enum_ToProto[apipb.LaunchStage](mapCtx, in.LaunchStage)
+	return out
+}
 func MonitoringNotificationChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotificationChannel) *krm.MonitoringNotificationChannelSpec {
 	if in == nil {
 		return nil

@@ -1,0 +1,5 @@
+### 2026-06-13 Direct KRM types for MonitoringMetricDescriptor
+- **Context**: Implementing direct KRM types for `MonitoringMetricDescriptor`.
+- **Problem**: `MetricDescriptor` is not defined inside the standard `google.monitoring.v3` package; it is defined inside the shared `google.api` package as `google.api.MetricDescriptor`. Specifying `--resource MonitoringMetricDescriptor:MetricDescriptor` with the `--service google.monitoring.v3` causes the generator to fail to find the proto message.
+- **Solution**: We specified the fully-qualified proto name in the resource flag: `--resource MonitoringMetricDescriptor:google.api.MetricDescriptor` in `generate.sh`. In addition, we manually updated the `+kcc:spec:proto` and `+kcc:observedstate:proto` tags in `metricdescriptor_types.go` to `google.api.MetricDescriptor` to avoid the builder incorrectly prepending the service name as `google.monitoring.v3.google.api.MetricDescriptor`.
+- **Impact**: Ensures that shared protobuf types defined outside the main service package can be cleanly and correctly scaffolded as direct KRM resources.
