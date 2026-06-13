@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -83,7 +84,11 @@ func (r *LoggingLogMetricRef) ParseExternalToIdentity() (identity.Identity, erro
 
 func (r *LoggingLogMetricRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromLoggingLogMetricSpec(ctx, reader, u)
+		obj, err := common.ToStructuredType[*LoggingLogMetric](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromLoggingLogMetricSpec(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}
