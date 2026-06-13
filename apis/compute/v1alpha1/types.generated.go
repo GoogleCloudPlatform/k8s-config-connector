@@ -21,6 +21,7 @@
 // resource: ComputeNetworkAttachment:NetworkAttachment
 // resource: ComputeInterconnect:Interconnect
 // resource: ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation
+// resource: ComputeGlobalNetworkEndpoint:NetworkEndpoint
 
 package v1alpha1
 
@@ -447,6 +448,40 @@ type NetworkEdgeSecurityService struct {
 	// [Output Only] Server-defined URL for this resource with the resource id.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NetworkEndpoint", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NetworkEndpoint
+type NetworkEndpoint struct {
+	// Optional metadata defined as annotations on the network endpoint.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpoint.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// Represents the port number to which PSC consumer sends packets. Optional. Only valid for network endpoint groups created with GCE_VM_IP_PORTMAP endpoint type.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpoint.client_destination_port
+	ClientDestinationPort *int32 `json:"clientDestinationPort,omitempty"`
+
+	// Optional fully qualified domain name of network endpoint. This can only be specified when NetworkEndpointGroup.network_endpoint_type is NON_GCP_FQDN_PORT.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpoint.fqdn
+	FQDN *string `json:"fqdn,omitempty"`
+
+	// The name or a URL of VM instance of this network endpoint. Optional, the field presence depends on the network endpoint type. The field is required for network endpoints of type GCE_VM_IP and GCE_VM_IP_PORT. The instance must be in the same zone of network endpoint group (for zonal NEGs) or in the zone within the region of the NEG (for regional NEGs). If the ipAddress is specified, it must belongs to the VM instance. The name must be 1-63 characters long, and comply with RFC1035 or be a valid URL pointing to an existing instance.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpoint.instance
+	Instance *string `json:"instance,omitempty"`
+
+	// Optional IPv4 address of network endpoint. The IP address must belong to a VM in Compute Engine (either the primary IP or as part of an aliased IP range). If the IP address is not specified, then the primary IP address for the VM instance in the network that the network endpoint group belongs to will be used. This field is redundant and need not be set for network endpoints of type GCE_VM_IP. If set, it must be set to the primary internal IP address of the attached VM instance that matches the subnetwork of the NEG. The primary internal IP address from any NIC of a multi-NIC VM instance can be added to a NEG as long as it matches the NEG subnetwork.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpoint.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// Optional IPv6 address of network endpoint.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpoint.ipv6_address
+	IPV6Address *string `json:"ipv6Address,omitempty"`
+
+	// Optional port number of network endpoint. If not specified, the defaultPort for the network endpoint group will be used. This field can not be set for network endpoints of type GCE_VM_IP.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpoint.port
+	Port *int32 `json:"port,omitempty"`
 }
 */
 
