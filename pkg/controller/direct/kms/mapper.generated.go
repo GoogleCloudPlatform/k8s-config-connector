@@ -26,7 +26,6 @@ package kms
 import (
 	pb "cloud.google.com/go/kms/apiv1/kmspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -91,6 +90,8 @@ func KMSAutokeyConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KM
 	// MISSING: Etag
 	return out
 }
+
+/* found existing non-generated mapping function "KMSAutokeyConfigSpec_FromProto", skipping
 func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *krm.KMSAutokeyConfigSpec {
 	if in == nil {
 		return nil
@@ -103,18 +104,24 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 	// MISSING: Etag
 	return out
 }
-func KMSAutokeyConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSAutokeyConfigSpec) *pb.AutokeyConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "KMSAutokeyConfigSpec_ToProto", skipping
+
+	func KMSAutokeyConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSAutokeyConfigSpec) *pb.AutokeyConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AutokeyConfig{}
+		// MISSING: Name
+		if in.KeyProjectRef != nil {
+			out.KeyProject = in.KeyProjectRef.External
+		}
+		// MISSING: Etag
+		return out
 	}
-	out := &pb.AutokeyConfig{}
-	// MISSING: Name
-	if in.KeyProjectRef != nil {
-		out.KeyProject = in.KeyProjectRef.External
-	}
-	// MISSING: Etag
-	return out
-}
+*/
 func KMSCryptoKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.CryptoKey) *krm.KMSCryptoKeySpec {
 	if in == nil {
 		return nil

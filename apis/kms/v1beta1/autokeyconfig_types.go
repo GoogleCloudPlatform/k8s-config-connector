@@ -41,9 +41,11 @@ type KMSAutokeyConfigSpec struct {
 	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
 
 	// +optional
+	// +kcc:proto:field=google.cloud.kms.v1.AutokeyConfig.key_project
 	KeyProjectRef *refs.ProjectRef `json:"keyProject,omitempty"`
 
 	// +optional
+	// +kcc:proto:field=google.cloud.kms.v1.AutokeyConfig.key_project_resolution_mode
 	KeyProjectResolutionMode *string `json:"keyProjectResolutionMode,omitempty"`
 }
 
@@ -68,6 +70,7 @@ type KMSAutokeyConfigStatus struct {
 type KMSAutokeyConfigObservedState struct {
 	// Output only. Current state of this AutokeyConfig.
 	// +optional
+	// +kcc:proto:field=google.cloud.kms.v1.AutokeyConfig.state
 	State *string `json:"state,omitempty"`
 }
 
