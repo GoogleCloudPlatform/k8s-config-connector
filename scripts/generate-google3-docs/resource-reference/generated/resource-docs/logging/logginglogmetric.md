@@ -88,7 +88,6 @@ labelExtractors:
   string: string
 loggingLogBucketRef:
   external: string
-  kind: string
   name: string
   namespace: string
 metricDescriptor:
@@ -297,17 +296,7 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The external name of the referenced resource</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>loggingLogBucketRef.kind</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Kind of the referent.</p>
+            <p>A reference to an externally managed LoggingLogBucket resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>
@@ -317,7 +306,7 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -327,7 +316,7 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
