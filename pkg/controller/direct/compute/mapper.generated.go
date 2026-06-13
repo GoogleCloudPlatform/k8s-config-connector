@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -1410,6 +1411,58 @@ found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1
 		return out
 	}
 */
+func ComputeRouterInterfaceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterInterface) *krm.ComputeRouterInterfaceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterInterfaceSpec{}
+	out.IPRange = in.IpRange
+	// MISSING: IPVersion
+	if in.GetLinkedInterconnectAttachment() != "" {
+		out.LinkedInterconnectAttachmentRef = &krm.ComputeInterconnectAttachmentRef{External: in.GetLinkedInterconnectAttachment()}
+	}
+	if in.GetLinkedVpnTunnel() != "" {
+		out.LinkedVPNTunnelRef = &krm.ComputeVPNTunnelRef{External: in.GetLinkedVpnTunnel()}
+	}
+	// MISSING: ManagementType
+	out.Name = in.Name
+	if in.GetPrivateIpAddress() != "" {
+		out.PrivateIPAddressRef = &refsv1beta1.ComputeAddressRef{External: in.GetPrivateIpAddress()}
+	}
+	if in.GetRedundantInterface() != "" {
+		out.RedundantInterfaceRef = &krm.ComputeRouterInterfaceRef{External: in.GetRedundantInterface()}
+	}
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krm.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	return out
+}
+func ComputeRouterInterfaceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterInterfaceSpec) *pb.RouterInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterInterface{}
+	out.IpRange = in.IPRange
+	// MISSING: IPVersion
+	if in.LinkedInterconnectAttachmentRef != nil {
+		out.LinkedInterconnectAttachment = &in.LinkedInterconnectAttachmentRef.External
+	}
+	if in.LinkedVPNTunnelRef != nil {
+		out.LinkedVpnTunnel = &in.LinkedVPNTunnelRef.External
+	}
+	// MISSING: ManagementType
+	out.Name = in.Name
+	if in.PrivateIPAddressRef != nil {
+		out.PrivateIpAddress = &in.PrivateIPAddressRef.External
+	}
+	if in.RedundantInterfaceRef != nil {
+		out.RedundantInterface = &in.RedundantInterfaceRef.External
+	}
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = &in.SubnetworkRef.External
+	}
+	return out
+}
 func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyObservedState {
 	if in == nil {
 		return nil

@@ -62,6 +62,7 @@ type ComputeRouterInterfaceSpec struct {
 
 	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
 
+	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
