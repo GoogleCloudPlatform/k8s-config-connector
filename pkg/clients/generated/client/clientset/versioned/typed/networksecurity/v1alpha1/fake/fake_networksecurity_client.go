@@ -47,6 +47,10 @@ func (c *FakeNetworksecurityV1alpha1) NetworkSecurityInterceptEndpointGroups(nam
 	return newFakeNetworkSecurityInterceptEndpointGroups(c, namespace)
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityInterceptEndpointGroupAssociations(namespace string) v1alpha1.NetworkSecurityInterceptEndpointGroupAssociationInterface {
+	return newFakeNetworkSecurityInterceptEndpointGroupAssociations(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringDeployments(namespace string) v1alpha1.NetworkSecurityMirroringDeploymentInterface {
 	return newFakeNetworkSecurityMirroringDeployments(c, namespace)
 }
