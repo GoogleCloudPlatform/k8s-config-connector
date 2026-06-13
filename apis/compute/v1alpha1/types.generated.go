@@ -21,6 +21,7 @@
 // resource: ComputeNetworkAttachment:NetworkAttachment
 // resource: ComputeInterconnect:Interconnect
 // resource: ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation
+// resource: ComputePerInstanceConfig:PerInstanceConfig
 
 package v1alpha1
 
@@ -447,6 +448,98 @@ type NetworkEdgeSecurityService struct {
 	// [Output Only] Server-defined URL for this resource with the resource id.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PerInstanceConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PerInstanceConfig
+type PerInstanceConfig struct {
+	// Fingerprint of this per-instance config. This field can be used in optimistic locking. It is ignored when inserting a per-instance config. An up-to-date fingerprint must be provided in order to update an existing per-instance configuration or the field needs to be unset.
+	// +kcc:proto:field=google.cloud.compute.v1.PerInstanceConfig.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// The name of a per-instance configuration and its corresponding instance. Serves as a merge key during UpdatePerInstanceConfigs operations, that is, if a per-instance configuration with the same name exists then it will be updated, otherwise a new one will be created for the VM instance with the same name. An attempt to create a per-instance configuration for a VM instance that either doesn't exist or is not part of the group will result in an error.
+	// +kcc:proto:field=google.cloud.compute.v1.PerInstanceConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// The intended preserved state for the given instance. Does not contain preserved state generated from a stateful policy.
+	// +kcc:proto:field=google.cloud.compute.v1.PerInstanceConfig.preserved_state
+	PreservedState *PreservedState `json:"preservedState,omitempty"`
+
+	// The status of applying this per-instance configuration on the corresponding managed instance.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PerInstanceConfig.status
+	Status *string `json:"status,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PreservedState", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PreservedState
+type PreservedState struct {
+
+	// TODO: unsupported map type with key string and value message
+
+
+	// TODO: unsupported map type with key string and value message
+
+
+	// TODO: unsupported map type with key string and value message
+
+
+	// Preserved metadata defined for this instance.
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedState.metadata
+	Metadata map[string]string `json:"metadata,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PreservedStatePreservedDisk", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PreservedStatePreservedDisk
+type PreservedStatePreservedDisk struct {
+	// These stateful disks will never be deleted during autohealing, update, instance recreate operations. This flag is used to configure if the disk should be deleted after it is no longer used by the group, e.g. when the given instance or the whole MIG is deleted. Note: disks attached in READ_ONLY mode cannot be auto-deleted.
+	//  Check the AutoDelete enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedDisk.auto_delete
+	AutoDelete *string `json:"autoDelete,omitempty"`
+
+	// The mode in which to attach this disk, either READ_WRITE or READ_ONLY. If not specified, the default is to attach the disk in READ_WRITE mode.
+	//  Check the Mode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedDisk.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// The URL of the disk resource that is stateful and should be attached to the VM instance.
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedDisk.source
+	Source *string `json:"source,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PreservedStatePreservedNetworkIp", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PreservedStatePreservedNetworkIp
+type PreservedStatePreservedNetworkIP struct {
+	// These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted.
+	//  Check the AutoDelete enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIp.auto_delete
+	AutoDelete *string `json:"autoDelete,omitempty"`
+
+	// Ip address representation
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIp.ip_address
+	IPAddress *PreservedStatePreservedNetworkIPIPAddress `json:"ipAddress,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PreservedStatePreservedNetworkIpIpAddress", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PreservedStatePreservedNetworkIpIpAddress
+type PreservedStatePreservedNetworkIPIPAddress struct {
+	// The URL of the reservation for this IP address.
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIpIpAddress.address
+	Address *string `json:"address,omitempty"`
+
+	// An IPv4 internal network address to assign to the instance for this network interface.
+	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIpIpAddress.literal
+	Literal *string `json:"literal,omitempty"`
 }
 */
 
