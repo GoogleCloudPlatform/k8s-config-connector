@@ -1,0 +1,5 @@
+### 2026-06-13 Implement direct KRM types and generate.sh for ComputeTargetHTTPProxy
+- **Context**: Implementing direct KRM types for `ComputeTargetHTTPProxy` under `apis/compute/v1alpha1`.
+- **Problem**: When generating types for compute resources, GCE APIs use a massive single protobuf definition file (`compute.proto`). By default, `generate-types` assumed `ComputeTargetHTTPProxy` should map to the standard package unless instructed, and `types.generated.go` commented it out as an unreachable type since no KRM types referenced it yet.
+- **Solution**: Added `ComputeTargetHTTPProxy:TargetHttpProxy` resource mapping under `apis/compute/v1alpha1/generate.sh` and hand-wrote the Spec/Status and ObservedState in `apis/compute/v1alpha1/targethttpproxy_types.go`, correctly using references like `computev1beta1.ComputeURLMapRef` for `urlMap` and `refsv1beta1.ProjectRef` for parent reference. This made `TargetHttpProxy` a reachable type, automatically generating all types.
+- **Impact**: Demonstrates a streamlined process for adding new compute resources under the GCE proto ecosystem without experiencing `types.generated.go` pruning issues.
