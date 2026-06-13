@@ -239,10 +239,11 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	log.V(2).Info("successfully updated Instance", "name", a.id)
 
+	latest := a.actual
 	if updated != nil {
-		return a.updateStatus(ctx, updateOp, updated)
+		latest = updated
 	}
-	return a.updateStatus(ctx, updateOp, a.actual)
+	return a.updateStatus(ctx, updateOp, latest)
 }
 
 func compareNotebooks(ctx context.Context, actual, desired *notebookspb.Instance) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
@@ -255,7 +256,6 @@ func compareNotebooks(ctx context.Context, actual, desired *notebookspb.Instance
 	clonedDesired := proto.Clone(desired).(*notebookspb.Instance)
 
 	populateDefaults := func(obj *notebookspb.Instance) {
-		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
 		if obj.ShieldedInstanceConfig == nil {
 			obj.ShieldedInstanceConfig = &notebookspb.Instance_ShieldedInstanceConfig{
 				EnableSecureBoot:          false,
