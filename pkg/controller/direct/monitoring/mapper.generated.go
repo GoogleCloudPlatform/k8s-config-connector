@@ -21,6 +21,7 @@
 // krm.version: v1beta1
 // proto.service: google.monitoring.v3
 // proto.service: google.api
+// proto.service: google.monitoring.metricsscope.v1
 
 package monitoring
 
@@ -140,25 +141,49 @@ func MonitoringMetricDescriptorStatus_FromProto(mapCtx *direct.MapContext, in *m
 }
 */
 
-/*
-found existing non-generated mapping function "MonitoringMetricDescriptorStatus_ToProto", skipping
+/* found existing non-generated mapping function "MonitoringMetricDescriptorStatus_ToProto", skipping
+func MonitoringMetricDescriptorStatus_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringMetricDescriptorStatus) *metricpb.MetricDescriptor {
+	if in == nil {
+		return nil
+	}
+	out := &metricpb.MetricDescriptor{}
+	// MISSING: Name
+	// MISSING: Type
+	// MISSING: Labels
+	// MISSING: MetricKind
+	// MISSING: ValueType
+	// MISSING: Unit
+	// MISSING: Description
+	// MISSING: DisplayName
+	// MISSING: Metadata
+	// MISSING: LaunchStage
+	out.MonitoredResourceTypes = in.MonitoredResourceTypes
+	return out
+}
+*/
 
-	func MonitoringMetricDescriptorStatus_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringMetricDescriptorStatus) *metricpb.MetricDescriptor {
+/* found existing non-generated mapping function "MonitoringMonitoredProjectSpec_FromProto", skipping
+func MonitoringMonitoredProjectSpec_FromProto(mapCtx *direct.MapContext, in *metricsscopepb.MonitoredProject) *krm.MonitoringMonitoredProjectSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringMonitoredProjectSpec{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "MonitoringMonitoredProjectSpec_ToProto", skipping
+
+	func MonitoringMonitoredProjectSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringMonitoredProjectSpec) *metricsscopepb.MonitoredProject {
 		if in == nil {
 			return nil
 		}
-		out := &metricpb.MetricDescriptor{}
+		out := &metricsscopepb.MonitoredProject{}
 		// MISSING: Name
-		// MISSING: Type
-		// MISSING: Labels
-		// MISSING: MetricKind
-		// MISSING: ValueType
-		// MISSING: Unit
-		// MISSING: Description
-		// MISSING: DisplayName
-		// MISSING: Metadata
-		// MISSING: LaunchStage
-		out.MonitoredResourceTypes = in.MonitoredResourceTypes
+		// MISSING: CreateTime
 		return out
 	}
 */

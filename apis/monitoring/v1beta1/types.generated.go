@@ -16,11 +16,12 @@
 // +generated:types
 // krm.group: monitoring.cnrm.cloud.google.com
 // krm.version: v1beta1
-// proto.service: google.monitoring.v3
+// proto.service: google.monitoring.v3,google.monitoring.metricsscope.v1
 // resource: MonitoringMetricDescriptor:google.api.MetricDescriptor
 // resource: MonitoringNotificationChannel:NotificationChannel
 // resource: MonitoringUptimeCheckConfig:UptimeCheckConfig
 // resource: MonitoringService:Service
+// resource: MonitoringMonitoredProject:MonitoredProject
 
 package v1beta1
 
@@ -263,6 +264,20 @@ type MonitoredResource struct {
 	//  labels `"project_id"`, `"instance_id"`, and `"zone"`.
 	// +kcc:proto:field=google.api.MonitoredResource.labels
 	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.metricsscope.v1.MonitoredProject", skipping
+
+// +kcc:proto=google.monitoring.metricsscope.v1.MonitoredProject
+type MonitoredProject struct {
+	// Immutable. The resource name of the `MonitoredProject`. On input, the resource name
+	//  includes the scoping project ID and monitored project ID. On output, it
+	//  contains the equivalent project numbers.
+	//  Example:
+	//  `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}/projects/{MONITORED_PROJECT_ID_OR_NUMBER}`
+	// +kcc:proto:field=google.monitoring.metricsscope.v1.MonitoredProject.name
+	Name *string `json:"name,omitempty"`
 }
 */
 
@@ -1053,6 +1068,16 @@ type UptimeCheckConfig_TCPCheck struct {
 	// Contains information needed to add pings to a TCP check.
 	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.TcpCheck.ping_config
 	PingConfig *UptimeCheckConfig_PingConfig `json:"pingConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.metricsscope.v1.MonitoredProject", skipping
+
+// +kcc:observedstate:proto=google.monitoring.metricsscope.v1.MonitoredProject
+type MonitoredProjectObservedState struct {
+	// Output only. The time when this `MonitoredProject` was created.
+	// +kcc:proto:field=google.monitoring.metricsscope.v1.MonitoredProject.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
 */
 
