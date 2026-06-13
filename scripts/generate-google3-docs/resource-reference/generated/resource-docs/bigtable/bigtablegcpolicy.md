@@ -27,7 +27,7 @@ Instead, you must first un-replicate the instance by updating the instance to ha
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/bigtable/docs/">/bigtable/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/bigtable/docs/">https://docs.cloud.google.com/bigtable/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -35,7 +35,7 @@ Instead, you must first un-replicate the instance by updating the instance to ha
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/bigtable/docs/reference/admin/rest/v2/projects.instances.tables/modifyColumnFamilies#gcrule">/bigtable/docs/reference/admin/rest/v2/projects.instances.tables/modifyColumnFamilies#gcrule</a></td>
+<td><a href="https://docs.cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.tables/modifyColumnFamilies#gcrule">https://docs.cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.tables/modifyColumnFamilies#gcrule</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -442,4 +442,4 @@ spec:
   - a
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

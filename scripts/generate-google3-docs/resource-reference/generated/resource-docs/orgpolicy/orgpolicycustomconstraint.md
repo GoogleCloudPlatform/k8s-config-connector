@@ -16,7 +16,7 @@ title: "OrgPolicyCustomConstraint"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/resource-manager/docs/organization-policy/overview">/resource-manager/docs/organization-policy/overview</a></td>
+<td><a href="https://docs.cloud.google.com/resource-manager/docs/organization-policy/overview">https://docs.cloud.google.com/resource-manager/docs/organization-policy/overview</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "OrgPolicyCustomConstraint"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/resource-manager/docs/reference/orgpolicy/rest/v2/organizations.customConstraints">/resource-manager/docs/reference/orgpolicy/rest/v2/organizations.customConstraints</a></td>
+<td><a href="https://docs.cloud.google.com/resource-manager/docs/reference/orgpolicy/rest/v2/organizations.customConstraints">https://docs.cloud.google.com/resource-manager/docs/reference/orgpolicy/rest/v2/organizations.customConstraints</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -300,4 +300,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

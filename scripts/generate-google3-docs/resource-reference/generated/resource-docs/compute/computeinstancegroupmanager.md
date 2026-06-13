@@ -16,7 +16,7 @@ title: "ComputeInstanceGroupManager"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ComputeInstanceGroupManager"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/beta/instanceGroupManagers">/compute/docs/reference/rest/beta/instanceGroupManagers</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/reference/rest/beta/instanceGroupManagers">https://docs.cloud.google.com/compute/docs/reference/rest/beta/instanceGroupManagers</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -270,7 +270,7 @@ Allowed value: The `selfLink` field of a `ComputeHealthCheck` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The URL of the [zone](/compute/docs/regions-zones/#available). The zone must exist in the region where the managed instance group is located.</p>
+            <p>Immutable. The URL of the [zone](https://docs.cloud.google.com/compute/docs/regions-zones/#available). The zone must exist in the region where the managed instance group is located.</p>
         </td>
     </tr>
     <tr>
@@ -596,7 +596,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The [instance redistribution policy](/compute/docs/instance-groups/regional-migs#proactive_instance_redistribution) for regional managed instance groups. Valid values are: - `PROACTIVE` (default): The group attempts to maintain an even distribution of VM instances across zones in the region. - `NONE`: For non-autoscaled groups, proactive redistribution is disabled.</p>
+            <p>The [instance redistribution policy](https://docs.cloud.google.com/compute/docs/instance-groups/regional-migs#proactive_instance_redistribution) for regional managed instance groups. Valid values are: - `PROACTIVE` (default): The group attempts to maintain an even distribution of VM instances across zones in the region. - `NONE`: For non-autoscaled groups, proactive redistribution is disabled.</p>
         </td>
     </tr>
     <tr>
@@ -606,7 +606,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The maximum number of instances that can be created above the specified `targetSize` during the update process. This value can be either a fixed number or, if the group has 10 or more instances, a percentage. If you set a percentage, the number of instances is rounded if necessary. The default value for `maxSurge` is a fixed value equal to the number of zones in which the managed instance group operates. At least one of either `maxSurge` or `maxUnavailable` must be greater than 0. Learn more about [`maxSurge`](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#max_surge).</p>
+            <p>The maximum number of instances that can be created above the specified `targetSize` during the update process. This value can be either a fixed number or, if the group has 10 or more instances, a percentage. If you set a percentage, the number of instances is rounded if necessary. The default value for `maxSurge` is a fixed value equal to the number of zones in which the managed instance group operates. At least one of either `maxSurge` or `maxUnavailable` must be greater than 0. Learn more about [`maxSurge`](https://docs.cloud.google.com/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#max_surge).</p>
         </td>
     </tr>
     <tr>
@@ -636,7 +636,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The maximum number of instances that can be unavailable during the update process. An instance is considered available if all of the following conditions are satisfied: - The instance's [status](/compute/docs/instances/checking-instance-status) is `RUNNING`. - If there is a [health check](/compute/docs/instance-groups/autohealing-instances-in-migs) on the instance group, the instance's health check status must be `HEALTHY` at least once. If there is no health check on the group, then the instance only needs to have a status of `RUNNING` to be considered available. This value can be either a fixed number or, if the group has 10 or more instances, a percentage. If you set a percentage, the number of instances is rounded if necessary. The default value for `maxUnavailable` is a fixed value equal to the number of zones in which the managed instance group operates. At least one of either `maxSurge` or `maxUnavailable` must be greater than 0. Learn more about [`maxUnavailable`](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#max_unavailable).</p>
+            <p>The maximum number of instances that can be unavailable during the update process. An instance is considered available if all of the following conditions are satisfied: - The instance's [status](https://docs.cloud.google.com/compute/docs/instances/checking-instance-status) is `RUNNING`. - If there is a [health check](https://docs.cloud.google.com/compute/docs/instance-groups/autohealing-instances-in-migs) on the instance group, the instance's health check status must be `HEALTHY` at least once. If there is no health check on the group, then the instance only needs to have a status of `RUNNING` to be considered available. This value can be either a fixed number or, if the group has 10 or more instances, a percentage. If you set a percentage, the number of instances is rounded if necessary. The default value for `maxUnavailable` is a fixed value equal to the number of zones in which the managed instance group operates. At least one of either `maxSurge` or `maxUnavailable` must be greater than 0. Learn more about [`maxUnavailable`](https://docs.cloud.google.com/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#max_unavailable).</p>
         </td>
     </tr>
     <tr>
@@ -716,7 +716,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Specifies the instance templates used by this managed instance group to create instances. Each version is defined by an `instanceTemplate` and a `name`. Every version can appear at most once per instance group. This field overrides the top-level `instanceTemplate` field. Read more about the [relationships between these fields](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#relationship_between_versions_and_instancetemplate_properties_for_a_managed_instance_group). Exactly one `version` must leave the `targetSize` field unset. That version will be applied to all remaining instances. For more information, read about [canary updates](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update).</p>
+            <p>Specifies the instance templates used by this managed instance group to create instances. Each version is defined by an `instanceTemplate` and a `name`. Every version can appear at most once per instance group. This field overrides the top-level `instanceTemplate` field. Read more about the [relationships between these fields](https://docs.cloud.google.com/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#relationship_between_versions_and_instancetemplate_properties_for_a_managed_instance_group). Exactly one `version` must leave the `targetSize` field unset. That version will be applied to all remaining instances. For more information, read about [canary updates](https://docs.cloud.google.com/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update).</p>
         </td>
     </tr>
     <tr>
@@ -788,7 +788,7 @@ Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies the intended number of instances to be created from the `instanceTemplate`. The final number of instances created from the template will be equal to: - If expressed as a fixed number, the minimum of either `targetSize.fixed` or `instanceGroupManager.targetSize` is used. - if expressed as a `percent`, the `targetSize` would be `(targetSize.percent/100 * InstanceGroupManager.targetSize)` If there is a remainder, the number is rounded. If unset, this version will update any remaining instances not updated by another `version`. Read [Starting a canary update](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update) for more information.</p>
+            <p>Specifies the intended number of instances to be created from the `instanceTemplate`. The final number of instances created from the template will be equal to: - If expressed as a fixed number, the minimum of either `targetSize.fixed` or `instanceGroupManager.targetSize` is used. - if expressed as a `percent`, the `targetSize` would be `(targetSize.percent/100 * InstanceGroupManager.targetSize)` If there is a remainder, the number is rounded. If unset, this version will update any remaining instances not updated by another `version`. Read [Starting a canary update](https://docs.cloud.google.com/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update) for more information.</p>
         </td>
     </tr>
     <tr>
@@ -1033,7 +1033,7 @@ zone: string
         <td><code>region</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[Output Only] The URL of the [region](/compute/docs/regions-zones/#available) where the managed instance group resides (for regional resources).</p>
+            <p>[Output Only] The URL of the [region](https://docs.cloud.google.com/compute/docs/regions-zones/#available) where the managed instance group resides (for regional resources).</p>
         </td>
     </tr>
     <tr>
@@ -1054,7 +1054,7 @@ zone: string
         <td><code>status.autoscaler</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[Output Only] The URL of the [Autoscaler](/compute/docs/autoscaler/) that targets this instance group manager.</p>
+            <p>[Output Only] The URL of the [Autoscaler](https://docs.cloud.google.com/compute/docs/autoscaler/) that targets this instance group manager.</p>
         </td>
     </tr>
     <tr>
@@ -1152,7 +1152,7 @@ zone: string
         <td><code>zone</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[Output Only] The URL of a [zone](/compute/docs/regions-zones/#available) where the managed instance group is located (for zonal resources).</p>
+            <p>[Output Only] The URL of a [zone](https://docs.cloud.google.com/compute/docs/regions-zones/#available) where the managed instance group is located (for zonal resources).</p>
         </td>
     </tr>
 </tbody>
@@ -1319,4 +1319,4 @@ spec:
     name: computeinstancegroupmanager-dep-zonal
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -16,7 +16,7 @@ title: "SecureSourceManagerInstance"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/secure-source-manager/docs/">/secure-source-manager/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/secure-source-manager/docs/">https://docs.cloud.google.com/secure-source-manager/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "SecureSourceManagerInstance"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/secure-source-manager/docs/reference/rest/v1/projects.locations.instances">/secure-source-manager/docs/reference/rest/v1/projects.locations.instances</a></td>
+<td><a href="https://docs.cloud.google.com/secure-source-manager/docs/reference/rest/v1/projects.locations.instances">https://docs.cloud.google.com/secure-source-manager/docs/reference/rest/v1/projects.locations.instances</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -520,4 +520,4 @@ spec:
   location: us-central1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -16,7 +16,7 @@ title: "LoggingLogView"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/logging/docs/">/logging/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/logging/docs/">https://docs.cloud.google.com/logging/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -30,10 +30,10 @@ title: "LoggingLogView"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/logging/docs/reference/v2/rest/v2/billingAccounts.locations.buckets.views">/logging/docs/reference/v2/rest/v2/billingAccounts.locations.buckets.views</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/folders.locations.buckets.views">/logging/docs/reference/v2/rest/v2/folders.locations.buckets.views</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/organizations.locations.buckets.views">/logging/docs/reference/v2/rest/v2/organizations.locations.buckets.views</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/projects.locations.buckets.views">/logging/docs/reference/v2/rest/v2/projects.locations.buckets.views</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/billingAccounts.locations.buckets.views">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/billingAccounts.locations.buckets.views</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/folders.locations.buckets.views">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/folders.locations.buckets.views</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/organizations.locations.buckets.views">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/organizations.locations.buckets.views</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.locations.buckets.views">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.locations.buckets.views</a></pre>
 </td>
 </tr>
 <tr>
@@ -480,4 +480,4 @@ spec:
   retentionDays: 30
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

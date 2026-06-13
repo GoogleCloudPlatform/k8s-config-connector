@@ -16,7 +16,7 @@ title: "MetastoreBackup"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/dataproc-metastore/docs/">/dataproc-metastore/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/dataproc-metastore/docs/">https://docs.cloud.google.com/dataproc-metastore/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "MetastoreBackup"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/dataproc-metastore/docs/reference/rest/v1/projects.locations.services.backups">/dataproc-metastore/docs/reference/rest/v1/projects.locations.services.backups</a></td>
+<td><a href="https://docs.cloud.google.com/dataproc-metastore/docs/reference/rest/v1/projects.locations.services.backups">https://docs.cloud.google.com/dataproc-metastore/docs/reference/rest/v1/projects.locations.services.backups</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -278,4 +278,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

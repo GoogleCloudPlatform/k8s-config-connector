@@ -16,7 +16,7 @@ title: "AssetSavedQuery"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/asset-inventory/docs/">/asset-inventory/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/asset-inventory/docs/">https://docs.cloud.google.com/asset-inventory/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "AssetSavedQuery"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/asset-inventory/docs/reference/rest/v1/savedQueries">/asset-inventory/docs/reference/rest/v1/savedQueries</a></td>
+<td><a href="https://docs.cloud.google.com/asset-inventory/docs/reference/rest/v1/savedQueries">https://docs.cloud.google.com/asset-inventory/docs/reference/rest/v1/savedQueries</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -685,4 +685,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -16,7 +16,7 @@ title: "SourceRepoRepository"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/source-repositories/docs/">/source-repositories/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/source-repositories/docs/">https://docs.cloud.google.com/source-repositories/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "SourceRepoRepository"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/source-repositories/docs/reference/rest/v1/projects.repos">/source-repositories/docs/reference/rest/v1/projects.repos</a></td>
+<td><a href="https://docs.cloud.google.com/source-repositories/docs/reference/rest/v1/projects.repos">https://docs.cloud.google.com/source-repositories/docs/reference/rest/v1/projects.repos</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -362,4 +362,4 @@ metadata:
   name: sourcereporepository-dep
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -11,9 +11,9 @@ IAM member and role to the associated
 Google Cloud resource's IAM policy.
 
 If you want to manage multiple bindings, use
-<a href="/config-connector/docs/reference/resource-docs/iam/iampartialpolicy">IAMPartialPolicy</a>.
+<a href="https://docs.cloud.google.com/config-connector/docs/reference/resource-docs/iam/iampartialpolicy">IAMPartialPolicy</a>.
 If you want authoritative control over bindings, use
-<a href="/config-connector/docs/reference/resource-docs/iam/iampolicy">IAMPolicy</a>.
+<a href="https://docs.cloud.google.com/config-connector/docs/reference/resource-docs/iam/iampolicy">IAMPolicy</a>.
 
 Warning: <code>IAMPolicyMember</code> **should not** be used in conjunction with
 <code>IAMPolicy</code> for the same resource.
@@ -38,7 +38,7 @@ Note: Updating <code>spec</code> is not allowed.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/iam/docs/">/iam/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/iam/docs/">https://docs.cloud.google.com/iam/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -46,7 +46,7 @@ Note: Updating <code>spec</code> is not allowed.
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/iam/docs/reference/rest/v1/iamPolicies">/iam/docs/reference/rest/v1/iamPolicies</a></td>
+<td><a href="https://docs.cloud.google.com/iam/docs/reference/rest/v1/iamPolicies">https://docs.cloud.google.com/iam/docs/reference/rest/v1/iamPolicies</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1159,4 +1159,4 @@ metadata:
   name: iampolicymember-dep-pubsubadmin
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -16,7 +16,7 @@ title: "ContainerNodePool"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/kubernetes-engine/docs/">/kubernetes-engine/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/kubernetes-engine/docs/">https://docs.cloud.google.com/kubernetes-engine/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ContainerNodePool"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools">/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools</a></td>
+<td><a href="https://docs.cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools">https://docs.cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -2110,4 +2110,4 @@ spec:
   initialNodeCount: 1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
