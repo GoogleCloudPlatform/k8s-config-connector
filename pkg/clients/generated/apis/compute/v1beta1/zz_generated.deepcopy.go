@@ -6623,7 +6623,7 @@ func (in *ComputeRouteSpec) DeepCopyInto(out *ComputeRouteSpec) {
 	}
 	if in.Priority != nil {
 		in, out := &in.Priority, &out.Priority
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.ResourceID != nil {

@@ -186,7 +186,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeRouterNAT                                | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRouterPeer                               | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRouter                                   | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeRoute                                    | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeRoute                                    | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeSecurityPolicy                           | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeServiceAttachment                        | False        | True        | False  | DCL        | False       |
 | compute.cnrm.cloud.google.com                 | ComputeSharedVPCHostProject                     | False        | True        | False  | Terraform  | False       |

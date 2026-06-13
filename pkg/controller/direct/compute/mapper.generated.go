@@ -1388,28 +1388,180 @@ func ComputeResourcePolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
+func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicy{}
+	out.Description = in.Description
+	out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
+	out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
+	out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+	// MISSING: Kind
+	// MISSING: Name
+	out.Region = in.Region
+	// MISSING: ResourceStatus
+	// MISSING: SelfLink
+	out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
+	// MISSING: WorkloadPolicy
+	return out
+}
+*/
 
-	func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+/* found existing non-generated mapping function "ComputeRouteSpec_v1beta1_FromProto", skipping
+func ComputeRouteSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Route) *krm.ComputeRouteSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouteSpec{}
+	// MISSING: AsPaths
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DestRange = in.DestRange
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeRouteNetworkRef{External: in.GetNetwork()}
+	}
+	out.NextHopGateway = in.NextHopGateway
+	// MISSING: NextHopHub
+	// MISSING: NextHopIlb
+	if in.GetNextHopInstance() != "" {
+		out.NextHopInstanceRef = &krm.ComputeRouteNextHopInstanceRef{External: in.GetNextHopInstance()}
+	}
+	// MISSING: NextHopInterRegionCost
+	// MISSING: NextHopIP
+	// (near miss): "NextHopIP" vs "NextHopIp"
+	// MISSING: NextHopMed
+	// MISSING: NextHopNetwork
+	// MISSING: NextHopOrigin
+	// MISSING: NextHopPeering
+	if in.GetNextHopVpnTunnel() != "" {
+		out.NextHopVPNTunnelRef = &krm.ComputeRouteNextHopVPNTunnelRef{External: in.GetNextHopVpnTunnel()}
+	}
+	// MISSING: Params
+	out.Priority = in.Priority
+	// MISSING: RouteStatus
+	// MISSING: RouteType
+	// MISSING: SelfLink
+	out.Tags = in.Tags
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeRouteSpec_v1beta1_ToProto", skipping
+
+	func ComputeRouteSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouteSpec) *pb.Route {
 		if in == nil {
 			return nil
 		}
-		out := &pb.ResourcePolicy{}
+		out := &pb.Route{}
+		// MISSING: AsPaths
+		// MISSING: CreationTimestamp
 		out.Description = in.Description
-		out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
-		out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
-		out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+		out.DestRange = in.DestRange
+		// MISSING: ID
 		// MISSING: Kind
 		// MISSING: Name
-		out.Region = in.Region
-		// MISSING: ResourceStatus
+		if in.NetworkRef != nil {
+			out.Network = &in.NetworkRef.External
+		}
+		out.NextHopGateway = in.NextHopGateway
+		// MISSING: NextHopHub
+		// MISSING: NextHopIlb
+		if in.NextHopInstanceRef != nil {
+			out.NextHopInstance = &in.NextHopInstanceRef.External
+		}
+		// MISSING: NextHopInterRegionCost
+		// MISSING: NextHopIP
+		// (near miss): "NextHopIP" vs "NextHopIp"
+		// MISSING: NextHopMed
+		// MISSING: NextHopNetwork
+		// MISSING: NextHopOrigin
+		// MISSING: NextHopPeering
+		if in.NextHopVPNTunnelRef != nil {
+			out.NextHopVpnTunnel = &in.NextHopVPNTunnelRef.External
+		}
+		// MISSING: Params
+		out.Priority = in.Priority
+		// MISSING: RouteStatus
+		// MISSING: RouteType
 		// MISSING: SelfLink
-		out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
-		// MISSING: WorkloadPolicy
+		out.Tags = in.Tags
+		// MISSING: Warnings
 		return out
 	}
 */
+func ComputeRouteStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Route) *krm.ComputeRouteStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouteStatus{}
+	// MISSING: AsPaths
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: DestRange
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: NextHopGateway
+	// MISSING: NextHopHub
+	// MISSING: NextHopIlb
+	// MISSING: NextHopInstance
+	// MISSING: NextHopInterRegionCost
+	// MISSING: NextHopIP
+	// MISSING: NextHopMed
+	out.NextHopNetwork = in.NextHopNetwork
+	// MISSING: NextHopOrigin
+	// MISSING: NextHopPeering
+	// MISSING: NextHopVPNTunnel
+	// MISSING: Params
+	// MISSING: Priority
+	// MISSING: RouteStatus
+	// MISSING: RouteType
+	out.SelfLink = in.SelfLink
+	// MISSING: Tags
+	// MISSING: Warnings
+	return out
+}
+func ComputeRouteStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouteStatus) *pb.Route {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Route{}
+	// MISSING: AsPaths
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: DestRange
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: NextHopGateway
+	// MISSING: NextHopHub
+	// MISSING: NextHopIlb
+	// MISSING: NextHopInstance
+	// MISSING: NextHopInterRegionCost
+	// MISSING: NextHopIP
+	// MISSING: NextHopMed
+	out.NextHopNetwork = in.NextHopNetwork
+	// MISSING: NextHopOrigin
+	// MISSING: NextHopPeering
+	// MISSING: NextHopVPNTunnel
+	// MISSING: Params
+	// MISSING: Priority
+	// MISSING: RouteStatus
+	// MISSING: RouteType
+	out.SelfLink = in.SelfLink
+	// MISSING: Tags
+	// MISSING: Warnings
+	return out
+}
 func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyObservedState {
 	if in == nil {
 		return nil

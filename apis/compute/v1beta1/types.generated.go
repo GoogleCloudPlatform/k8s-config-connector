@@ -30,6 +30,7 @@
 // resource: ComputeHealthCheck:HealthCheck
 // resource: ComputeNodeGroup:NodeGroup
 // resource: ComputeInstance:Instance
+// resource: ComputeRoute:Route
 
 package v1beta1
 
@@ -512,6 +513,19 @@ type CustomerEncryptionKey struct {
 	// [Output only] The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource.
 	// +kcc:proto:field=google.cloud.compute.v1.CustomerEncryptionKey.sha256
 	Sha256 *string `json:"sha256,omitempty"`
+}
+*/
+
+/* unreachable type Data
+// +kcc:proto=google.cloud.compute.v1.Data
+type Data struct {
+	// [Output Only] A key that provides more detail on the warning being returned. For example, for warnings where there are no results in a list request for a particular zone, this key might be scope and the key value might be the zone name. Other examples might be a key indicating a deprecated resource and a suggested replacement, or a warning about invalid network settings (for example, if an instance attempts to perform IP forwarding but is not enabled for IP forwarding).
+	// +kcc:proto:field=google.cloud.compute.v1.Data.key
+	Key *string `json:"key,omitempty"`
+
+	// [Output Only] A warning data value corresponding to the key.
+	// +kcc:proto:field=google.cloud.compute.v1.Data.value
+	Value *string `json:"value,omitempty"`
 }
 */
 
@@ -2492,6 +2506,142 @@ type ResourceStatusScheduling struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Route", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Route
+type Route struct {
+	// [Output Only] AS path.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.as_paths
+	AsPaths []RouteAsPath `json:"asPaths,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this field when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.description
+	Description *string `json:"description,omitempty"`
+
+	// The destination range of outgoing packets that this route applies to. Both IPv4 and IPv6 are supported. Must specify an IPv4 range (e.g. 192.0.2.0/24) or an IPv6 range in RFC 4291 format (e.g. 2001:db8::/32). IPv6 range will be displayed using RFC 5952 compressed format.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.dest_range
+	DestRange *string `json:"destRange,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of this resource. Always compute#routes for Route resources.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`. The first character must be a lowercase letter, and all following characters (except for the last character) must be a dash, lowercase letter, or digit. The last character must be a lowercase letter or digit.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.name
+	Name *string `json:"name,omitempty"`
+
+	// Fully-qualified URL of the network that this route applies to.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.network
+	Network *string `json:"network,omitempty"`
+
+	// The URL to a gateway that should handle matching packets. You can only specify the internet gateway using a full or partial valid URL: projects/ project/global/gateways/default-internet-gateway
+	// +kcc:proto:field=google.cloud.compute.v1.Route.next_hop_gateway
+	NextHopGateway *string `json:"nextHopGateway,omitempty"`
+
+	// [Output Only] The full resource name of the Network Connectivity Center hub that will handle matching packets.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.next_hop_hub
+	NextHopHub *string `json:"nextHopHub,omitempty"`
+
+	// The URL to a forwarding rule of type loadBalancingScheme=INTERNAL that should handle matching packets or the IP address of the forwarding Rule. For example, the following are all valid URLs: - https://www.googleapis.com/compute/v1/projects/project/regions/region /forwardingRules/forwardingRule - regions/region/forwardingRules/forwardingRule If an IP address is provided, must specify an IPv4 address in dot-decimal notation or an IPv6 address in RFC 4291 format. For example, the following are all valid IP addresses: - 10.128.0.56 - 2001:db8::2d9:51:0:0 - 2001:db8:0:0:2d9:51:0:0 IPv6 addresses will be displayed using RFC 5952 compressed format (e.g. 2001:db8::2d9:51:0:0). Should never be an IPv4-mapped IPv6 address.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.next_hop_ilb
+	NextHopIlb *string `json:"nextHopIlb,omitempty"`
+
+	// The URL to an instance that should handle matching packets. You can specify this as a full or partial URL. For example: https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/
+	// +kcc:proto:field=google.cloud.compute.v1.Route.next_hop_instance
+	NextHopInstance *string `json:"nextHopInstance,omitempty"`
+
+	// [Output only] Internal fixed region-to-region cost that Google Cloud calculates based on factors such as network performance, distance, and available bandwidth between regions.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.next_hop_inter_region_cost
+	NextHopInterRegionCost *uint32 `json:"nextHopInterRegionCost,omitempty"`
+
+	// The network IP address of an instance that should handle matching packets. Both IPv6 address and IPv4 addresses are supported. Must specify an IPv4 address in dot-decimal notation (e.g. 192.0.2.99) or an IPv6 address in RFC 4291 format (e.g. 2001:db8::2d9:51:0:0 or 2001:db8:0:0:2d9:51:0:0). IPv6 addresses will be displayed using RFC 5952 compressed format (e.g. 2001:db8::2d9:51:0:0). Should never be an IPv4-mapped IPv6 address.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.next_hop_ip
+	NextHopIP *string `json:"nextHopIP,omitempty"`
+
+	// [Output Only] Multi-Exit Discriminator, a BGP route metric that indicates the desirability of a particular route in a network.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.next_hop_med
+	NextHopMed *uint32 `json:"nextHopMed,omitempty"`
+
+	// The URL of the local network if it should handle matching packets.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.next_hop_network
+	NextHopNetwork *string `json:"nextHopNetwork,omitempty"`
+
+	// [Output Only] Indicates the origin of the route. Can be IGP (Interior Gateway Protocol), EGP (Exterior Gateway Protocol), or INCOMPLETE.
+	//  Check the NextHopOrigin enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.next_hop_origin
+	NextHopOrigin *string `json:"nextHopOrigin,omitempty"`
+
+	// [Output Only] The network peering name that should handle matching packets, which should conform to RFC1035.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.next_hop_peering
+	NextHopPeering *string `json:"nextHopPeering,omitempty"`
+
+	// The URL to a VpnTunnel that should handle matching packets.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.next_hop_vpn_tunnel
+	NextHopVPNTunnel *string `json:"nextHopVPNTunnel,omitempty"`
+
+	// Input only. [Input Only] Additional params passed with the request, but not persisted as part of resource payload.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.params
+	Params *RouteParams `json:"params,omitempty"`
+
+	// The priority of this route. Priority is used to break ties in cases where there is more than one matching route of equal prefix length. In cases where multiple routes have equal prefix length, the one with the lowest-numbered priority value wins. The default value is `1000`. The priority value must be from `0` to `65535`, inclusive.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.priority
+	Priority *uint32 `json:"priority,omitempty"`
+
+	// [Output only] The status of the route.
+	//  Check the RouteStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.route_status
+	RouteStatus *string `json:"routeStatus,omitempty"`
+
+	// [Output Only] The type of this route, which can be one of the following values: - 'TRANSIT' for a transit route that this router learned from another Cloud Router and will readvertise to one of its BGP peers - 'SUBNET' for a route from a subnet of the VPC - 'BGP' for a route learned from a BGP peer of this router - 'STATIC' for a static route
+	//  Check the RouteType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.route_type
+	RouteType *string `json:"routeType,omitempty"`
+
+	// [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// A list of instance tags to which this route applies.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.tags
+	Tags []string `json:"tags,omitempty"`
+
+	// [Output Only] If potential misconfigurations are detected for this route, this field will be populated with warning messages.
+	// +kcc:proto:field=google.cloud.compute.v1.Route.warnings
+	Warnings []Warnings `json:"warnings,omitempty"`
+}
+*/
+
+/* unreachable type RouteAsPath
+// +kcc:proto=google.cloud.compute.v1.RouteAsPath
+type RouteAsPath struct {
+	// [Output Only] The AS numbers of the AS Path.
+	// +kcc:proto:field=google.cloud.compute.v1.RouteAsPath.as_lists
+	AsLists []uint32 `json:"asLists,omitempty"`
+
+	// [Output Only] The type of the AS Path, which can be one of the following values: - 'AS_SET': unordered set of autonomous systems that the route in has traversed - 'AS_SEQUENCE': ordered set of autonomous systems that the route has traversed - 'AS_CONFED_SEQUENCE': ordered set of Member Autonomous Systems in the local confederation that the route has traversed - 'AS_CONFED_SET': unordered set of Member Autonomous Systems in the local confederation that the route has traversed
+	//  Check the PathSegmentType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.RouteAsPath.path_segment_type
+	PathSegmentType *string `json:"pathSegmentType,omitempty"`
+}
+*/
+
+/* unreachable type RouteParams
+// +kcc:proto=google.cloud.compute.v1.RouteParams
+type RouteParams struct {
+	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
+	// +kcc:proto:field=google.cloud.compute.v1.RouteParams.resource_manager_tags
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.SSLHealthCheck", skipping
 
 // +kcc:proto=google.cloud.compute.v1.SSLHealthCheck
@@ -3628,5 +3778,23 @@ type UpcomingMaintenance struct {
 	// The current start time of the maintenance window. This timestamp value is in RFC3339 text format.
 	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_start_time
 	WindowStartTime *string `json:"windowStartTime,omitempty"`
+}
+*/
+
+/* unreachable type Warnings
+// +kcc:proto=google.cloud.compute.v1.Warnings
+type Warnings struct {
+	// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
+	//  Check the Code enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Warnings.code
+	Code *string `json:"code,omitempty"`
+
+	// [Output Only] Metadata about this warning in key: value format. For example: "data": [ { "key": "scope", "value": "zones/us-east1-d" }
+	// +kcc:proto:field=google.cloud.compute.v1.Warnings.data
+	Data []Data `json:"data,omitempty"`
+
+	// [Output Only] A human-readable description of the warning code.
+	// +kcc:proto:field=google.cloud.compute.v1.Warnings.message
+	Message *string `json:"message,omitempty"`
 }
 */
