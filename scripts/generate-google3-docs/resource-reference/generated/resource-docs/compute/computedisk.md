@@ -207,7 +207,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed ComputeDisk resource. Should be in the format "projects/{{project}}/zones/{{zone}}/disks/{{name}}".</p>
+            <p>A reference to an externally managed ComputeDisk resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/disks/{{diskID}}" or "projects/{{projectID}}/regions/{{region}}/disks/{{diskID}}".</p>
         </td>
     </tr>
     <tr>
@@ -828,7 +828,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed ComputeDisk resource. Should be in the format "projects/{{project}}/zones/{{zone}}/disks/{{name}}".</p>
+            <p>A reference to an externally managed ComputeDisk resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/disks/{{diskID}}" or "projects/{{projectID}}/regions/{{region}}/disks/{{diskID}}".</p>
         </td>
     </tr>
     <tr>
