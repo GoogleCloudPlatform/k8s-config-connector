@@ -32,6 +32,7 @@
 // resource: ComputeResourcePolicy:ResourcePolicy
 // resource: ComputeSecurityPolicy:SecurityPolicy
 // resource: ComputeSnapshot:Snapshot
+// resource: ComputeSSLPolicy:SslPolicy
 // resource: ComputeSubnetwork:Subnetwork
 // resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
@@ -532,6 +533,19 @@ type CustomerEncryptionKey struct {
 	// [Output only] The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource.
 	// +kcc:proto:field=google.cloud.compute.v1.CustomerEncryptionKey.sha256
 	Sha256 *string `json:"sha256,omitempty"`
+}
+*/
+
+/* unreachable type Data
+// +kcc:proto=google.cloud.compute.v1.Data
+type Data struct {
+	// [Output Only] A key that provides more detail on the warning being returned. For example, for warnings where there are no results in a list request for a particular zone, this key might be scope and the key value might be the zone name. Other examples might be a key indicating a deprecated resource and a suggested replacement, or a warning about invalid network settings (for example, if an instance attempts to perform IP forwarding but is not enabled for IP forwarding).
+	// +kcc:proto:field=google.cloud.compute.v1.Data.key
+	Key *string `json:"key,omitempty"`
+
+	// [Output Only] A warning data value corresponding to the key.
+	// +kcc:proto:field=google.cloud.compute.v1.Data.value
+	Value *string `json:"value,omitempty"`
 }
 */
 
@@ -3605,6 +3619,66 @@ type Snapshot struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SslPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SslPolicy
+type SSLPolicy struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// A list of features enabled when the selected profile is CUSTOM. The method returns the set of features that can be specified in this list. This field must be empty if the profile is not CUSTOM.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.custom_features
+	CustomFeatures []string `json:"customFeatures,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] The list of features enabled in the SSL policy.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.enabled_features
+	EnabledFeatures []string `json:"enabledFeatures,omitempty"`
+
+	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a SslPolicy. An up-to-date fingerprint must be provided in order to update the SslPolicy, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve an SslPolicy.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output only] Type of the resource. Always compute#sslPolicyfor SSL policies.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The minimum version of SSL protocol that can be used by the clients to establish a connection with the load balancer. This can be one of TLS_1_0, TLS_1_1, TLS_1_2.
+	//  Check the MinTlsVersion enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.min_tls_version
+	MinTLSVersion *string `json:"minTLSVersion,omitempty"`
+
+	// Name of the resource. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Profile specifies the set of SSL features that can be used by the load balancer when negotiating SSL with clients. This can be one of COMPATIBLE, MODERN, RESTRICTED, or CUSTOM. If using CUSTOM, the set of SSL features to enable must be specified in the customFeatures field.
+	//  Check the Profile enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.profile
+	Profile *string `json:"profile,omitempty"`
+
+	// [Output Only] URL of the region where the regional SSL policy resides. This field is not applicable to global SSL policies.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] If potential misconfigurations are detected for this SSL policy, this field will be populated with warning messages.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.warnings
+	Warnings []Warnings `json:"warnings,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Subnetwork", skipping
 
 // +kcc:proto=google.cloud.compute.v1.Subnetwork
@@ -4004,5 +4078,23 @@ type UpcomingMaintenance struct {
 	// The current start time of the maintenance window. This timestamp value is in RFC3339 text format.
 	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_start_time
 	WindowStartTime *string `json:"windowStartTime,omitempty"`
+}
+*/
+
+/* unreachable type Warnings
+// +kcc:proto=google.cloud.compute.v1.Warnings
+type Warnings struct {
+	// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
+	//  Check the Code enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Warnings.code
+	Code *string `json:"code,omitempty"`
+
+	// [Output Only] Metadata about this warning in key: value format. For example: "data": [ { "key": "scope", "value": "zones/us-east1-d" }
+	// +kcc:proto:field=google.cloud.compute.v1.Warnings.data
+	Data []Data `json:"data,omitempty"`
+
+	// [Output Only] A human-readable description of the warning code.
+	// +kcc:proto:field=google.cloud.compute.v1.Warnings.message
+	Message *string `json:"message,omitempty"`
 }
 */
