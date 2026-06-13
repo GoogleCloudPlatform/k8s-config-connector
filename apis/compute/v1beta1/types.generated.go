@@ -23,6 +23,7 @@
 // resource: ComputeSecurityPolicy:SecurityPolicy
 // resource: ComputeSubnetwork:Subnetwork
 // resource: ComputeNetwork:Network
+// resource: ComputeNetworkPeering:NetworkPeering
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
 // resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
 // resource: ComputeNodeTemplate:NodeTemplate
@@ -1651,7 +1652,8 @@ type NetworkParams struct {
 }
 */
 
-/* unreachable type NetworkPeering
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NetworkPeering", skipping
+
 // +kcc:proto=google.cloud.compute.v1.NetworkPeering
 type NetworkPeering struct {
 	// This field will be deprecated soon. Use the exchange_subnet_routes field instead. Indicates whether full mesh connectivity is created and managed automatically between peered networks. Currently this field should always be true since Google Compute Engine will automatically create and manage subnetwork routes between two networks when peering state is ACTIVE.
