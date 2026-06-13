@@ -90,3 +90,36 @@ func (s *MockService) parseNodePoolName(name string) (*nodePoolName, error) {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type machineName struct {
+	Project  *projects.ProjectData
+	Location string
+	Name     string
+}
+
+func (n *machineName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/machines/" + n.Name
+}
+
+// parseMachineName parses a string into a machineName.
+// The expected form is projects/<projectID>/locations/<region>/machines/<name>
+func (s *MockService) parseMachineName(name string) (*machineName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "machines" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &machineName{
+			Project:  project,
+			Location: tokens[3],
+			Name:     tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}

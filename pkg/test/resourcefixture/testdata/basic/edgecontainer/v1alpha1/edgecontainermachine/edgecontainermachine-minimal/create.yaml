@@ -1,0 +1,11 @@
+apiVersion: edgecontainer.cnrm.cloud.google.com/v1alpha1
+kind: EdgeContainerMachine
+metadata:
+  name: machine-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  zone: us-central1-a
+  labels:
+    mock-label: mock-value

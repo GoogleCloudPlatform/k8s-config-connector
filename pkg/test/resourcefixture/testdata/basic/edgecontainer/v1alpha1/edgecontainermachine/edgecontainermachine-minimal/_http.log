@@ -1,0 +1,60 @@
+GRPC /google.cloud.edgecontainer.v1.EdgeContainer/GetMachine
+
+{
+  "name": "projects/${projectId}/locations/us-central1/machines/machine-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "mock-label": "mock-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/machines/machine-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "version": "1.0.0",
+  "zone": "us-central1-a"
+}
+
+---
+
+GRPC /google.cloud.edgecontainer.v1.EdgeContainer/GetMachine
+
+{
+  "name": "projects/${projectId}/locations/us-central1/machines/machine-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "mock-label": "mock-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/machines/machine-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "version": "1.0.0",
+  "zone": "us-central1-a"
+}
+
+---
+
+GRPC /google.cloud.edgecontainer.v1.EdgeContainer/GetMachine
+
+{
+  "name": "projects/${projectId}/locations/us-central1/machines/machine-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "mock-label": "mock-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/machines/machine-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "version": "1.0.0",
+  "zone": "us-central1-a"
+}
