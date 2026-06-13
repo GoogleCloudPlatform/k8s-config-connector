@@ -175,6 +175,101 @@ func (s *GlobalBackendServicesV1) Delete(ctx context.Context, req *pb.DeleteBack
 	})
 }
 
+func (s *GlobalBackendServicesV1) AddSignedUrlKey(ctx context.Context, req *pb.AddSignedUrlKeyBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendService()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	key := req.GetSignedUrlKeyResource()
+	keyName := key.GetKeyName()
+	if keyName == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "KeyName must not be empty")
+	}
+
+	if obj.CdnPolicy == nil {
+		obj.CdnPolicy = &pb.BackendServiceCdnPolicy{}
+	}
+
+	// Check if key already exists, to avoid duplicates
+	found := false
+	for _, name := range obj.CdnPolicy.SignedUrlKeyNames {
+		if name == keyName {
+			found = true
+			break
+		}
+	}
+	if !found {
+		obj.CdnPolicy.SignedUrlKeyNames = append(obj.CdnPolicy.SignedUrlKeyNames, keyName)
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("addSignedUrlKey"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) DeleteSignedUrlKey(ctx context.Context, req *pb.DeleteSignedUrlKeyBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendService()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	keyName := req.GetKeyName()
+	found := false
+	if obj.CdnPolicy != nil {
+		var newNames []string
+		for _, n := range obj.CdnPolicy.SignedUrlKeyNames {
+			if n == keyName {
+				found = true
+			} else {
+				newNames = append(newNames, n)
+			}
+		}
+		obj.CdnPolicy.SignedUrlKeyNames = newNames
+	}
+	if !found {
+		return nil, status.Errorf(codes.NotFound, "Signed URL key %q not found on backend service %q", keyName, req.GetBackendService())
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("deleteSignedUrlKey"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
 type globalBackendServiceName struct {
 	Project *projects.ProjectData
 	Name    string
