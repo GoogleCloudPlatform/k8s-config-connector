@@ -1726,36 +1726,150 @@ func ComputeTargetHTTPSProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/* found existing non-generated mapping function "ComputeTargetHTTPSProxySpec_v1beta1_ToProto", skipping
-func ComputeTargetHTTPSProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetHTTPSProxySpec) *pb.TargetHttpsProxy {
+/*
+found existing non-generated mapping function "ComputeTargetHTTPSProxySpec_v1beta1_ToProto", skipping
+
+	func ComputeTargetHTTPSProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetHTTPSProxySpec) *pb.TargetHttpsProxy {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TargetHttpsProxy{}
+		// MISSING: AuthorizationPolicy
+		if in.CertificateMapRef != nil {
+			out.CertificateMap = &in.CertificateMapRef.External
+		}
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: HTTPKeepAliveTimeoutSec
+		// (near miss): "HTTPKeepAliveTimeoutSec" vs "HttpKeepAliveTimeoutSec"
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: Name
+		out.ProxyBind = in.ProxyBind
+		out.QuicOverride = in.QuicOverride
+		// MISSING: Region
+		// MISSING: SelfLink
+		// MISSING: ServerTLSPolicy
+		// MISSING: SSLCertificates
+		// (near miss): "SSLCertificates" vs "SslCertificates"
+		// MISSING: SSLPolicy
+		// MISSING: TLSEarlyData
+		// MISSING: URLMap
+		return out
+	}
+*/
+func ComputeTargetInstanceObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetInstance) *krm.ComputeTargetInstanceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.TargetHttpsProxy{}
-	// MISSING: AuthorizationPolicy
-	if in.CertificateMapRef != nil {
-		out.CertificateMap = &in.CertificateMapRef.External
-	}
+	out := &krm.ComputeTargetInstanceObservedState{}
 	// MISSING: CreationTimestamp
-	out.Description = in.Description
-	// MISSING: HTTPKeepAliveTimeoutSec
-	// (near miss): "HTTPKeepAliveTimeoutSec" vs "HttpKeepAliveTimeoutSec"
 	// MISSING: ID
 	// MISSING: Kind
 	// MISSING: Name
-	out.ProxyBind = in.ProxyBind
-	out.QuicOverride = in.QuicOverride
-	// MISSING: Region
+	// MISSING: NATPolicy
 	// MISSING: SelfLink
-	// MISSING: ServerTLSPolicy
-	// MISSING: SSLCertificates
-	// (near miss): "SSLCertificates" vs "SslCertificates"
-	// MISSING: SSLPolicy
-	// MISSING: TLSEarlyData
-	// MISSING: URLMap
 	return out
 }
-*/
+func ComputeTargetInstanceObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetInstanceObservedState) *pb.TargetInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetInstance{}
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NATPolicy
+	// MISSING: SelfLink
+	return out
+}
+func ComputeTargetInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetInstance) *krm.ComputeTargetInstanceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetInstanceSpec{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	if in.GetInstance() != "" {
+		out.InstanceRef = &krm.InstanceRef{External: in.GetInstance()}
+	}
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NATPolicy
+	// (near miss): "NATPolicy" vs "NatPolicy"
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	if in.GetSecurityPolicy() != "" {
+		out.SecurityPolicyRef = &krm.ComputeSecurityPolicyRef{External: in.GetSecurityPolicy()}
+	}
+	// MISSING: SelfLink
+	out.Zone = in.Zone
+	return out
+}
+func ComputeTargetInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetInstanceSpec) *pb.TargetInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetInstance{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	if in.InstanceRef != nil {
+		out.Instance = &in.InstanceRef.External
+	}
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NATPolicy
+	// (near miss): "NATPolicy" vs "NatPolicy"
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	if in.SecurityPolicyRef != nil {
+		out.SecurityPolicy = &in.SecurityPolicyRef.External
+	}
+	// MISSING: SelfLink
+	out.Zone = in.Zone
+	return out
+}
+func ComputeTargetInstanceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetInstance) *krm.ComputeTargetInstanceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetInstanceStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Instance
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NATPolicy
+	// MISSING: Network
+	// MISSING: SecurityPolicy
+	out.SelfLink = in.SelfLink
+	// MISSING: Zone
+	return out
+}
+func ComputeTargetInstanceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetInstanceStatus) *pb.TargetInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetInstance{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Instance
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NATPolicy
+	// MISSING: Network
+	// MISSING: SecurityPolicy
+	out.SelfLink = in.SelfLink
+	// MISSING: Zone
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeTargetTCPProxySpec_v1beta1_FromProto", skipping
 func ComputeTargetTCPProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetTcpProxy) *krm.ComputeTargetTCPProxySpec {
