@@ -1124,7 +1124,7 @@ func (in *ComputeAddressSpec) DeepCopyInto(out *ComputeAddressSpec) {
 	}
 	if in.PrefixLength != nil {
 		in, out := &in.PrefixLength, &out.PrefixLength
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Purpose != nil {

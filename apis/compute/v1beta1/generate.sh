@@ -42,6 +42,7 @@ go run . generate-types \
   --resource ComputeInstance:Instance \
   --resource ComputeHTTPHealthCheck:HTTPHealthCheck \
   --resource ComputeDisk:Disk \
+  --resource ComputeAddress:Address \
   --include-skipped-output
 
 go run . generate-mapper \

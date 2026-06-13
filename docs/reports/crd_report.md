@@ -127,7 +127,7 @@
 | colab.cnrm.cloud.google.com                   | ColabRuntime                                    | True         | False       | False  | Direct     | True        |
 | colab.cnrm.cloud.google.com                   | ColabRuntimeTemplate                            | True         | False       | False  | Direct     | True        |
 | composer.cnrm.cloud.google.com                | ComposerEnvironment                             | True         | True        | False  | Direct     | True        |
-| compute.cnrm.cloud.google.com                 | ComputeAddress                                  | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeAddress                                  | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeAutoscaler                               | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeBackendBucket                            | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeBackendBucketSignedURLKey                | True         | False       | False  | Terraform  | False       |
