@@ -439,55 +439,107 @@ func ComputeForwardingRuleStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/* found existing non-generated mapping function "ComputeForwardingRuleStatus_v1beta1_ToProto", skipping
-func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
+/*
+found existing non-generated mapping function "ComputeForwardingRuleStatus_v1beta1_ToProto", skipping
+
+	func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ForwardingRule{}
+		// MISSING: IPAddress
+		// MISSING: IPProtocol
+		// MISSING: AllPorts
+		// MISSING: AllowGlobalAccess
+		// MISSING: AllowPSCGlobalAccess
+		// MISSING: BackendService
+		out.BaseForwardingRule = in.BaseForwardingRule
+		out.CreationTimestamp = in.CreationTimestamp
+		// MISSING: Description
+		// MISSING: ExternalManagedBackendBucketMigrationState
+		// MISSING: ExternalManagedBackendBucketMigrationTestingPercentage
+		// MISSING: Fingerprint
+		// MISSING: ID
+		// MISSING: IPCollection
+		// MISSING: IPVersion
+		// MISSING: IsMirroringCollector
+		// MISSING: Kind
+		out.LabelFingerprint = in.LabelFingerprint
+		// MISSING: Labels
+		// MISSING: LoadBalancingScheme
+		// MISSING: MetadataFilters
+		// MISSING: Name
+		// MISSING: Network
+		// MISSING: NetworkTier
+		// MISSING: NoAutomateDNSZone
+		// MISSING: PortRange
+		// MISSING: Ports
+		// MISSING: PSCConnectionID
+		// (near miss): "PSCConnectionID" vs "PscConnectionId"
+		// MISSING: PSCConnectionStatus
+		// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
+		// MISSING: Region
+		out.SelfLink = in.SelfLink
+		// MISSING: SelfLinkWithID
+		// MISSING: ServiceDirectoryRegistrations
+		// MISSING: ServiceLabel
+		out.ServiceName = in.ServiceName
+		// MISSING: SourceIPRanges
+		// MISSING: Subnetwork
+		out.Target = in.Target
+		return out
+	}
+*/
+func ComputeHTTPHealthCheckObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HTTPHealthCheck) *krm.ComputeHTTPHealthCheckObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ForwardingRule{}
-	// MISSING: IPAddress
-	// MISSING: IPProtocol
-	// MISSING: AllPorts
-	// MISSING: AllowGlobalAccess
-	// MISSING: AllowPSCGlobalAccess
-	// MISSING: BackendService
-	out.BaseForwardingRule = in.BaseForwardingRule
-	out.CreationTimestamp = in.CreationTimestamp
-	// MISSING: Description
-	// MISSING: ExternalManagedBackendBucketMigrationState
-	// MISSING: ExternalManagedBackendBucketMigrationTestingPercentage
-	// MISSING: Fingerprint
-	// MISSING: ID
-	// MISSING: IPCollection
-	// MISSING: IPVersion
-	// MISSING: IsMirroringCollector
-	// MISSING: Kind
-	out.LabelFingerprint = in.LabelFingerprint
-	// MISSING: Labels
-	// MISSING: LoadBalancingScheme
-	// MISSING: MetadataFilters
-	// MISSING: Name
-	// MISSING: Network
-	// MISSING: NetworkTier
-	// MISSING: NoAutomateDNSZone
-	// MISSING: PortRange
-	// MISSING: Ports
-	// MISSING: PSCConnectionID
-	// (near miss): "PSCConnectionID" vs "PscConnectionId"
-	// MISSING: PSCConnectionStatus
-	// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
-	// MISSING: Region
-	out.SelfLink = in.SelfLink
-	// MISSING: SelfLinkWithID
-	// MISSING: ServiceDirectoryRegistrations
-	// MISSING: ServiceLabel
-	out.ServiceName = in.ServiceName
-	// MISSING: SourceIPRanges
-	// MISSING: Subnetwork
-	out.Target = in.Target
+	out := &krm.ComputeHTTPHealthCheckObservedState{}
+	// MISSING: PortName
+	// MISSING: PortSpecification
+	// MISSING: ProxyHeader
+	// MISSING: Response
 	return out
 }
-*/
+func ComputeHTTPHealthCheckObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHTTPHealthCheckObservedState) *pb.HTTPHealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HTTPHealthCheck{}
+	// MISSING: PortName
+	// MISSING: PortSpecification
+	// MISSING: ProxyHeader
+	// MISSING: Response
+	return out
+}
+func ComputeHTTPHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HTTPHealthCheck) *krm.ComputeHTTPHealthCheckSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeHTTPHealthCheckSpec{}
+	out.Host = in.Host
+	out.Port = in.Port
+	// MISSING: PortName
+	// MISSING: PortSpecification
+	// MISSING: ProxyHeader
+	out.RequestPath = in.RequestPath
+	// MISSING: Response
+	return out
+}
+func ComputeHTTPHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHTTPHealthCheckSpec) *pb.HTTPHealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HTTPHealthCheck{}
+	out.Host = in.Host
+	out.Port = in.Port
+	// MISSING: PortName
+	// MISSING: PortSpecification
+	// MISSING: ProxyHeader
+	out.RequestPath = in.RequestPath
+	// MISSING: Response
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_FromProto", skipping
 func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHealthCheckSpec {
