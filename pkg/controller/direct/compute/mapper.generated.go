@@ -168,6 +168,212 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
+func ComputeDiskObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Disk) *krm.ComputeDiskObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeDiskObservedState{}
+	// MISSING: AccessMode
+	// MISSING: Architecture
+	// MISSING: AsyncSecondaryDisks
+	// MISSING: CreationTimestamp
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastAttachTimestamp
+	// MISSING: LastDetachTimestamp
+	// MISSING: LicenseCodes
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: Options
+	// MISSING: Params
+	// MISSING: Region
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: SizeGB
+	// MISSING: SourceConsistencyGroupPolicy
+	// MISSING: SourceConsistencyGroupPolicyID
+	// MISSING: SourceDiskID
+	// MISSING: SourceImage
+	// MISSING: SourceImageID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshot
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceStorageObject
+	// MISSING: Status
+	// MISSING: StoragePool
+	// MISSING: Users
+	// MISSING: Zone
+	return out
+}
+func ComputeDiskObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeDiskObservedState) *pb.Disk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Disk{}
+	// MISSING: AccessMode
+	// MISSING: Architecture
+	// MISSING: AsyncSecondaryDisks
+	// MISSING: CreationTimestamp
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastAttachTimestamp
+	// MISSING: LastDetachTimestamp
+	// MISSING: LicenseCodes
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: Options
+	// MISSING: Params
+	// MISSING: Region
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: SizeGB
+	// MISSING: SourceConsistencyGroupPolicy
+	// MISSING: SourceConsistencyGroupPolicyID
+	// MISSING: SourceDiskID
+	// MISSING: SourceImage
+	// MISSING: SourceImageID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshot
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceStorageObject
+	// MISSING: Status
+	// MISSING: StoragePool
+	// MISSING: Users
+	// MISSING: Zone
+	return out
+}
+func ComputeDiskSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Disk) *krm.ComputeDiskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeDiskSpec{}
+	// MISSING: AccessMode
+	// MISSING: Architecture
+	out.AsyncPrimaryDisk = DiskAsyncPrimaryDisk_v1beta1_FromProto(mapCtx, in.GetAsyncPrimaryDisk())
+	// MISSING: AsyncSecondaryDisks
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DiskEncryptionKey = DiskDiskEncryptionKey_v1beta1_FromProto(mapCtx, in.GetDiskEncryptionKey())
+	out.EnableConfidentialCompute = in.EnableConfidentialCompute
+	// MISSING: GuestOSFeatures
+	// (near miss): "GuestOSFeatures" vs "GuestOsFeatures"
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastAttachTimestamp
+	// MISSING: LastDetachTimestamp
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: Options
+	// MISSING: Params
+	out.PhysicalBlockSizeBytes = in.PhysicalBlockSizeBytes
+	out.ProvisionedIops = in.ProvisionedIops
+	out.ProvisionedThroughput = in.ProvisionedThroughput
+	// MISSING: Region
+	out.ReplicaZones = in.ReplicaZones
+	out.ResourcePolicies = ComputeDiskSpec_ResourcePolicies_FromProto(mapCtx, in.ResourcePolicies)
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: SizeGB
+	// MISSING: SourceConsistencyGroupPolicy
+	// MISSING: SourceConsistencyGroupPolicyID
+	if in.GetSourceDisk() != "" {
+		out.SourceDiskRef = &krm.ComputeDiskRef{External: in.GetSourceDisk()}
+	}
+	// MISSING: SourceDiskID
+	// MISSING: SourceImage
+	out.SourceImageEncryptionKey = DiskSourceImageEncryptionKey_v1beta1_FromProto(mapCtx, in.GetSourceImageEncryptionKey())
+	// MISSING: SourceImageID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshot
+	out.SourceSnapshotEncryptionKey = DiskSourceSnapshotEncryptionKey_v1beta1_FromProto(mapCtx, in.GetSourceSnapshotEncryptionKey())
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceStorageObject
+	// MISSING: Status
+	// MISSING: StoragePool
+	out.Type = in.Type
+	// MISSING: Users
+	// MISSING: Zone
+	return out
+}
+func ComputeDiskSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeDiskSpec) *pb.Disk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Disk{}
+	// MISSING: AccessMode
+	// MISSING: Architecture
+	out.AsyncPrimaryDisk = DiskAsyncPrimaryDisk_v1beta1_ToProto(mapCtx, in.AsyncPrimaryDisk)
+	// MISSING: AsyncSecondaryDisks
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DiskEncryptionKey = DiskDiskEncryptionKey_v1beta1_ToProto(mapCtx, in.DiskEncryptionKey)
+	out.EnableConfidentialCompute = in.EnableConfidentialCompute
+	// MISSING: GuestOSFeatures
+	// (near miss): "GuestOSFeatures" vs "GuestOsFeatures"
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastAttachTimestamp
+	// MISSING: LastDetachTimestamp
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: Options
+	// MISSING: Params
+	out.PhysicalBlockSizeBytes = in.PhysicalBlockSizeBytes
+	out.ProvisionedIops = in.ProvisionedIops
+	out.ProvisionedThroughput = in.ProvisionedThroughput
+	// MISSING: Region
+	out.ReplicaZones = in.ReplicaZones
+	out.ResourcePolicies = ComputeDiskSpec_ResourcePolicies_ToProto(mapCtx, in.ResourcePolicies)
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: SizeGB
+	// MISSING: SourceConsistencyGroupPolicy
+	// MISSING: SourceConsistencyGroupPolicyID
+	if in.SourceDiskRef != nil {
+		out.SourceDisk = &in.SourceDiskRef.External
+	}
+	// MISSING: SourceDiskID
+	// MISSING: SourceImage
+	out.SourceImageEncryptionKey = DiskSourceImageEncryptionKey_v1beta1_ToProto(mapCtx, in.SourceImageEncryptionKey)
+	// MISSING: SourceImageID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshot
+	out.SourceSnapshotEncryptionKey = DiskSourceSnapshotEncryptionKey_v1beta1_ToProto(mapCtx, in.SourceSnapshotEncryptionKey)
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceStorageObject
+	// MISSING: Status
+	// MISSING: StoragePool
+	out.Type = in.Type
+	// MISSING: Users
+	// MISSING: Zone
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
