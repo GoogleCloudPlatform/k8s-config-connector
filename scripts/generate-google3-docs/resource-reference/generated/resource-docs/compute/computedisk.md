@@ -16,7 +16,7 @@ title: "ComputeDisk"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -28,8 +28,8 @@ title: "ComputeDisk"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/compute/docs/reference/rest/v1/disks">/compute/docs/reference/rest/v1/disks</a></pre>
-<pre><a href="/compute/docs/reference/rest/v1/regionDisks">/compute/docs/reference/rest/v1/regionDisks</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/disks">https://docs.cloud.google.com/compute/docs/reference/rest/v1/disks</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/regionDisks">https://docs.cloud.google.com/compute/docs/reference/rest/v1/regionDisks</a></pre>
 </td>
 </tr>
 <tr>
@@ -1341,4 +1341,4 @@ stringData:
   sharedSecret: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

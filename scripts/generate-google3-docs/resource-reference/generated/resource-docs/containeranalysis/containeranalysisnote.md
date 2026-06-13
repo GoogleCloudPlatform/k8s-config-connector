@@ -16,7 +16,7 @@ title: "ContainerAnalysisNote"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/container-analysis/docs/">/container-analysis/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/container-analysis/docs/">https://docs.cloud.google.com/container-analysis/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ContainerAnalysisNote"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/container-analysis/docs/reference/rest/v1/projects.notes">/container-analysis/docs/reference/rest/v1/projects.notes</a></td>
+<td><a href="https://docs.cloud.google.com/container-analysis/docs/reference/rest/v1/projects.notes">https://docs.cloud.google.com/container-analysis/docs/reference/rest/v1/projects.notes</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1295,4 +1295,4 @@ spec:
       humanReadableName: "Attestor Note"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

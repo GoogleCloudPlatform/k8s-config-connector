@@ -16,7 +16,7 @@ title: "StorageTransferJob"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/storage-transfer/docs/">/storage-transfer/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/storage-transfer/docs/">https://docs.cloud.google.com/storage-transfer/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "StorageTransferJob"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/storage-transfer/docs/reference/rest/v1/transferJobs">/storage-transfer/docs/reference/rest/v1/transferJobs</a></td>
+<td><a href="https://docs.cloud.google.com/storage-transfer/docs/reference/rest/v1/transferJobs">https://docs.cloud.google.com/storage-transfer/docs/reference/rest/v1/transferJobs</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1249,4 +1249,4 @@ metadata:
   name: ${PROJECT_ID?}-storagetransferjob-dep2
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

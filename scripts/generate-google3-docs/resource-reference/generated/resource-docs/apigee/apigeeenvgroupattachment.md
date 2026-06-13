@@ -16,7 +16,7 @@ title: "ApigeeEnvgroupAttachment"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/apigee/docs/">/apigee/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/apigee/docs/">https://docs.cloud.google.com/apigee/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -27,7 +27,7 @@ organizations.envgroups.attachments
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<a href="/apigee/docs/reference/apis/apigee/rest/v1/organizations.envgroups.attachments">/apigee/docs/reference/apis/apigee/rest/v1/organizations.envgroups.attachments</a>
+<a href="https://docs.cloud.google.com/apigee/docs/reference/apis/apigee/rest/v1/organizations.envgroups.attachments">https://docs.cloud.google.com/apigee/docs/reference/apis/apigee/rest/v1/organizations.envgroups.attachments</a>
 </td>
 </tr>
 <tr>
@@ -306,4 +306,4 @@ spec:
     external: organizations/${PROJECT_ID?}
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

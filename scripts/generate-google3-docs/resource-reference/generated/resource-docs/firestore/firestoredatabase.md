@@ -16,7 +16,7 @@ title: "FirestoreDatabase"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/firestore/docs/">/firestore/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/firestore/docs/">https://docs.cloud.google.com/firestore/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "FirestoreDatabase"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/firestore/docs/reference/rest/v1/projects.databases">/firestore/docs/reference/rest/v1/projects.databases</a></td>
+<td><a href="https://docs.cloud.google.com/firestore/docs/reference/rest/v1/projects.databases">https://docs.cloud.google.com/firestore/docs/reference/rest/v1/projects.databases</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -368,4 +368,4 @@ spec:
   pointInTimeRecoveryEnablement: POINT_IN_TIME_RECOVERY_ENABLED
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

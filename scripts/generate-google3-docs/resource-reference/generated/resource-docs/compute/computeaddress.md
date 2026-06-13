@@ -16,7 +16,7 @@ title: "ComputeAddress"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -28,8 +28,8 @@ title: "ComputeAddress"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/compute/docs/reference/rest/v1/globalAddresses">/compute/docs/reference/rest/v1/globalAddresses</a></pre>
-<pre><a href="/compute/docs/reference/rest/v1/addresses">/compute/docs/reference/rest/v1/addresses</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/globalAddresses">https://docs.cloud.google.com/compute/docs/reference/rest/v1/globalAddresses</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/addresses">https://docs.cloud.google.com/compute/docs/reference/rest/v1/addresses</a></pre>
 </td>
 </tr>
 <tr>
@@ -521,4 +521,4 @@ spec:
     name: computeaddress-dep-regional
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

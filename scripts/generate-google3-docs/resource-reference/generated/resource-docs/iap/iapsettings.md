@@ -16,11 +16,11 @@ title: "IAPSettings"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/iap/docs/">/iap/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/iap/docs/">https://docs.cloud.google.com/iap/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/iap/docs/reference/rest/v1/IapSettings">/iap/docs/reference/rest/v1/IapSettings</a></td>
+<td><a href="https://docs.cloud.google.com/iap/docs/reference/rest/v1/IapSettings">https://docs.cloud.google.com/iap/docs/reference/rest/v1/IapSettings</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1053,4 +1053,4 @@ spec:
   location: us-central1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

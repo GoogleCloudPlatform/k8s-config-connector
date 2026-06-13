@@ -20,7 +20,7 @@ organization. The parent resource is configured by setting one of
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/logging/docs/">/logging/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/logging/docs/">https://docs.cloud.google.com/logging/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -33,9 +33,9 @@ organization. The parent resource is configured by setting one of
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/logging/docs/reference/v2/rest/v2/folders.sinks">/logging/docs/reference/v2/rest/v2/folders.sinks</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/organizations.sinks">/logging/docs/reference/v2/rest/v2/organizations.sinks</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/projects.sinks">/logging/docs/reference/v2/rest/v2/projects.sinks</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/folders.sinks">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/folders.sinks</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/organizations.sinks">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/organizations.sinks</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks</a></pre>
 </td>
 </tr>
 <tr>
@@ -733,4 +733,4 @@ spec:
     external: "${BILLING_ACCOUNT_ID?}"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

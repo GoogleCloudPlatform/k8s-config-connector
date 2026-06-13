@@ -16,7 +16,7 @@ title: "PubSubLiteReservation"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/pubsub/lite/docs/">/pubsub/lite/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/pubsub/lite/docs/">https://docs.cloud.google.com/pubsub/lite/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "PubSubLiteReservation"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/pubsub/lite/docs/reference/rest/v1/admin.projects.locations.reservations">/pubsub/lite/docs/reference/rest/v1/admin.projects.locations.reservations</a></td>
+<td><a href="https://docs.cloud.google.com/pubsub/lite/docs/reference/rest/v1/admin.projects.locations.reservations">https://docs.cloud.google.com/pubsub/lite/docs/reference/rest/v1/admin.projects.locations.reservations</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -240,4 +240,4 @@ spec:
     external: ${PROJECT_ID?}
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

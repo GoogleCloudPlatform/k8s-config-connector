@@ -16,7 +16,7 @@ title: "FirestoreIndex"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/firestore/docs/">/firestore/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/firestore/docs/">https://docs.cloud.google.com/firestore/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "FirestoreIndex"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/firestore/docs/reference/rest/v1/projects.databases.collectionGroups.indexes">/firestore/docs/reference/rest/v1/projects.databases.collectionGroups.indexes</a></td>
+<td><a href="https://docs.cloud.google.com/firestore/docs/reference/rest/v1/projects.databases.collectionGroups.indexes">https://docs.cloud.google.com/firestore/docs/reference/rest/v1/projects.databases.collectionGroups.indexes</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -275,4 +275,4 @@ spec:
   queryScope: COLLECTION
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

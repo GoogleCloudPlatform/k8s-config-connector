@@ -13,7 +13,7 @@ basic role format (e.g. `OWNER`) instead of the (newer) predefined role format
 always return the basic format which results in Config Connector
 repeatedly detecting drift and updating the BigQueryDataset resource. See a complete
 list of basic roles with equivalent predefined roles at
-<a href="/bigquery/docs/access-control-basic-roles#dataset-basic-roles">Basic roles for datasets</a>.
+<a href="https://docs.cloud.google.com/bigquery/docs/access-control-basic-roles#dataset-basic-roles">Basic roles for datasets</a>.
 
 <table>
 <thead>
@@ -29,7 +29,7 @@ list of basic roles with equivalent predefined roles at
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/bigquery/docs/">/bigquery/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/">https://docs.cloud.google.com/bigquery/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -37,7 +37,7 @@ list of basic roles with equivalent predefined roles at
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/bigquery/docs/reference/rest/v2/datasets">/bigquery/docs/reference/rest/v2/datasets</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/reference/rest/v2/datasets">https://docs.cloud.google.com/bigquery/docs/reference/rest/v2/datasets</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -762,4 +762,4 @@ metadata:
   name: bigquerydataset-dep
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

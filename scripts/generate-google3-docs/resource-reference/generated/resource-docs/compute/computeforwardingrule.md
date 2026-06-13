@@ -16,7 +16,7 @@ title: "ComputeForwardingRule"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -28,8 +28,8 @@ title: "ComputeForwardingRule"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/compute/docs/reference/rest/v1/forwardingRules">/compute/docs/reference/rest/v1/forwardingRules</a></pre>
-<pre><a href="/compute/docs/reference/rest/v1/globalForwardingRules">/compute/docs/reference/rest/v1/globalForwardingRules</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/forwardingRules">https://docs.cloud.google.com/compute/docs/reference/rest/v1/forwardingRules</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/globalForwardingRules">https://docs.cloud.google.com/compute/docs/reference/rest/v1/globalForwardingRules</a></pre>
 </td>
 </tr>
 <tr>
@@ -1881,4 +1881,4 @@ spec:
   purpose: "PRIVATE_SERVICE_CONNECT"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -16,7 +16,7 @@ title: "DataFusionInstance"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/data-fusion/docs/">/data-fusion/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/data-fusion/docs/">https://docs.cloud.google.com/data-fusion/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "DataFusionInstance"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/data-fusion/docs/reference/rest/v1beta1/projects.locations.instances">/data-fusion/docs/reference/rest/v1beta1/projects.locations.instances</a></td>
+<td><a href="https://docs.cloud.google.com/data-fusion/docs/reference/rest/v1beta1/projects.locations.instances">https://docs.cloud.google.com/data-fusion/docs/reference/rest/v1beta1/projects.locations.instances</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -556,4 +556,4 @@ spec:
   displayName: DataFusionInstance Service Account
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

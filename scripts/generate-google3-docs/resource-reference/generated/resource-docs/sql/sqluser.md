@@ -20,7 +20,7 @@ referencing is a PostgreSQL instance.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/sql/docs/">/sql/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/sql/docs/">https://docs.cloud.google.com/sql/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -28,7 +28,7 @@ referencing is a PostgreSQL instance.
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/sql/docs/postgres/admin-api/v1beta4/users">/sql/docs/postgres/admin-api/v1beta4/users</a></td>
+<td><a href="https://docs.cloud.google.com/sql/docs/postgres/admin-api/v1beta4/users">https://docs.cloud.google.com/sql/docs/postgres/admin-api/v1beta4/users</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -486,4 +486,4 @@ spec:
     tier: db-n1-standard-1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

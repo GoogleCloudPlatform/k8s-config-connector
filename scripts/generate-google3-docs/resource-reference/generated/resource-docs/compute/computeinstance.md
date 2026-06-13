@@ -16,7 +16,7 @@ title: "ComputeInstance"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ComputeInstance"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/v1/instances">/compute/docs/reference/rest/v1/instances</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/instances">https://docs.cloud.google.com/compute/docs/reference/rest/v1/instances</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -2422,4 +2422,4 @@ stringData:
   diskEncryptionKey: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

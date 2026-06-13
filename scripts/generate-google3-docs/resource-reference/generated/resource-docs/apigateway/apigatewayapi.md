@@ -18,7 +18,7 @@ title: "APIGatewayAPI"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/api-gateway/docs/">/api-gateway/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/api-gateway/docs/">https://docs.cloud.google.com/api-gateway/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -26,7 +26,7 @@ title: "APIGatewayAPI"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/api-gateway/docs/reference/rest/v1/projects.locations.apis">/api-gateway/docs/reference/rest/v1/projects.locations.apis</a></td>
+<td><a href="https://docs.cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations.apis">https://docs.cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations.apis</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -312,4 +312,4 @@ spec:
   displayName: "Initial displayName"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

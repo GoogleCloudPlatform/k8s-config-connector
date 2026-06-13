@@ -3,7 +3,7 @@
 title: "StorageBucket"
 ---
 Note: The StorageBucket annotation can include
-<a href="/config-connector/docs/concepts/resources#object_metadata">directives</a>.
+<a href="https://docs.cloud.google.com/config-connector/docs/concepts/resources#object_metadata">directives</a>.
 If set to <code>true</code>, the <code>force-destroy</code> directive cleans up
 the objects within a storage bucket before issuing the delete command.
 
@@ -21,7 +21,7 @@ the objects within a storage bucket before issuing the delete command.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/storage/docs/">/storage/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/storage/docs/">https://docs.cloud.google.com/storage/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -29,7 +29,7 @@ the objects within a storage bucket before issuing the delete command.
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/storage/docs/json_api/v1/buckets">/storage/docs/json_api/v1/buckets</a></td>
+<td><a href="https://docs.cloud.google.com/storage/docs/json_api/v1/buckets">https://docs.cloud.google.com/storage/docs/json_api/v1/buckets</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1090,4 +1090,4 @@ spec:
     retentionDurationSeconds: 604800
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

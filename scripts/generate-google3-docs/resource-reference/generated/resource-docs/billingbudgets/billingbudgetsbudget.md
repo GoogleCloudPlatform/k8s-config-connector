@@ -16,7 +16,7 @@ title: "BillingBudgetsBudget"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/billing/docs/">/billing/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/billing/docs/">https://docs.cloud.google.com/billing/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BillingBudgetsBudget"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/billing/docs/reference/budget/rest/v1beta1/billingAccounts.budgets">/billing/docs/reference/budget/rest/v1beta1/billingAccounts.budgets</a></td>
+<td><a href="https://docs.cloud.google.com/billing/docs/reference/budget/rest/v1beta1/billingAccounts.budgets">https://docs.cloud.google.com/billing/docs/reference/budget/rest/v1beta1/billingAccounts.budgets</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -859,4 +859,4 @@ spec:
       nanos: 0
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

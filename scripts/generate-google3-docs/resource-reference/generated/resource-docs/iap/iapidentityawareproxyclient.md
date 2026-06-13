@@ -16,7 +16,7 @@ title: "IAPIdentityAwareProxyClient"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/iap/docs/">/iap/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/iap/docs/">https://docs.cloud.google.com/iap/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "IAPIdentityAwareProxyClient"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/iap/docs/reference/rest/v1/projects.brands.identityAwareProxyClients">/iap/docs/reference/rest/v1/projects.brands.identityAwareProxyClients</a></td>
+<td><a href="https://docs.cloud.google.com/iap/docs/reference/rest/v1/projects.brands.identityAwareProxyClients">https://docs.cloud.google.com/iap/docs/reference/rest/v1/projects.brands.identityAwareProxyClients</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -258,4 +258,4 @@ spec:
   supportEmail: "support@example.com"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -16,7 +16,7 @@ title: "ServiceDirectoryEndpoint"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/service-directory/docs/">/service-directory/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/service-directory/docs/">https://docs.cloud.google.com/service-directory/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ServiceDirectoryEndpoint"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces.services.endpoints">/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces.services.endpoints</a></td>
+<td><a href="https://docs.cloud.google.com/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces.services.endpoints">https://docs.cloud.google.com/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces.services.endpoints</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -373,4 +373,4 @@ spec:
     name: servicedirectoryendpoint-dep
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -16,7 +16,7 @@ title: "ComputeInstanceGroup"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ComputeInstanceGroup"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/v1/instanceGroups">/compute/docs/reference/rest/v1/instanceGroups</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/instanceGroups">https://docs.cloud.google.com/compute/docs/reference/rest/v1/instanceGroups</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -424,4 +424,4 @@ spec:
     name: computeinstancegroup-dep
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
