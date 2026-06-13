@@ -420,5 +420,17 @@ def main():
         print(f"  - {m}")
         print(f"    Patterns: {patterns}")
 
+    print(f"\n--- Next Layer Targets (1 Parent) ---")
+    for m in sorted(list(missing_next_layer)):
+        patterns = ", ".join(gcp_resources[m]['patterns'])
+        print(f"  - {m}")
+        print(f"    Patterns: {patterns}")
+
+    print(f"\n--- Next Next Layer Targets (2 Parents) ---")
+    for m in sorted(list(missing_next_next_layer)):
+        patterns = ", ".join(gcp_resources[m]['patterns'])
+        print(f"  - {m}")
+        print(f"    Patterns: {patterns}")
+
 if __name__ == "__main__":
     main()

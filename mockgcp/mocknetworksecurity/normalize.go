@@ -22,7 +22,8 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	replacements.RemovePath(".error.details")
-
+	replacements.ReplacePath(".pairingKey.expireTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.pairingKey.expireTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

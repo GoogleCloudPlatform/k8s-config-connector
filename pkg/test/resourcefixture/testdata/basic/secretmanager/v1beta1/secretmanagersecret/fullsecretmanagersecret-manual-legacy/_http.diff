@@ -1,0 +1,77 @@
+616c616
+< GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+---
+> GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+639c639
+< POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=secretmanagersecret-${uniqueId}
+---
+> POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?%24alt=json%3Benum-encoding%3Dint&secretId=secretmanagersecret-${uniqueId}
+723c723
+< GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+---
+> GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+774c774
+< PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json&updateMask=labels%2Cannotations%2Ctopics%2Crotation
+---
+> PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2CexpireTime%2Clabels%2Crotation.nextRotationTime%2Ctopics
+781a782
+>   "etag": "abcdef0123A=",
+788a790
+>   "name": "projects/${projectId}/secrets/secretmanagersecret-${uniqueId}",
+915c917,970
+< DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+---
+> GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "annotations": {
+>     "bar": "secretmanagersecret-bar",
+>     "foo": "secretmanagersecret"
+>   },
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "etag": "abcdef0123A=",
+>   "expireTime": "2024-04-01T12:34:56.123456Z",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "label-one": "value-one",
+>     "label-two": "value-two",
+>     "managed-by-cnrm": "true"
+>   },
+>   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
+>   "replication": {
+>     "userManaged": {
+>       "replicas": [
+>         {
+>           "customerManagedEncryption": {
+>             "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+>           },
+>           "location": "us-central1"
+>         }
+>       ]
+>     }
+>   },
+>   "rotation": {
+>     "nextRotationTime": "2025-10-03T15:01:23Z",
+>     "rotationPeriod": "3600s"
+>   },
+>   "topics": [
+>     {
+>       "name": "projects/${projectId}/topics/topic-2-${uniqueId}"
+>     }
+>   ]
+> }
+> 
+> ---
+> 
+> DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

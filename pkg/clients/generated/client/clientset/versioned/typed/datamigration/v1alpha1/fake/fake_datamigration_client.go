@@ -35,6 +35,14 @@ func (c *FakeDatamigrationV1alpha1) DatabaseMigrationConversionWorkspaces(namesp
 	return newFakeDatabaseMigrationConversionWorkspaces(c, namespace)
 }
 
+func (c *FakeDatamigrationV1alpha1) DatabaseMigrationMigrationJobs(namespace string) v1alpha1.DatabaseMigrationMigrationJobInterface {
+	return newFakeDatabaseMigrationMigrationJobs(c, namespace)
+}
+
+func (c *FakeDatamigrationV1alpha1) DatabaseMigrationPrivateConnections(namespace string) v1alpha1.DatabaseMigrationPrivateConnectionInterface {
+	return newFakeDatabaseMigrationPrivateConnections(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeDatamigrationV1alpha1) RESTClient() rest.Interface {

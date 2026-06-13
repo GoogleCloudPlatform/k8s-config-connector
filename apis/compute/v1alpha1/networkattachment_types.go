@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -61,7 +62,7 @@ type ComputeNetworkAttachmentSpec struct {
 
 	// An array of URLs where each entry is the URL of a subnet provided by the service consumer to use for endpoints in the producers that connect to this network attachment.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.subnetworks
-	SubnetworkRefs []*refv1beta1.ComputeSubnetworkRef `json:"subnetworkRefs,omitempty"`
+	SubnetworkRefs []*computev1beta1.ComputeSubnetworkRef `json:"subnetworkRefs,omitempty"`
 }
 
 // ComputeNetworkAttachmentStatus defines the config connector machine state of ComputeNetworkAttachment

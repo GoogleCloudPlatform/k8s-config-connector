@@ -282,6 +282,10 @@ type ClusterObservedStateStatus struct {
 	// +optional
 	PscConnections []ClusterPscConnectionsStatus `json:"pscConnections,omitempty"`
 
+	/* Output only. Service attachment details to configure Psc connections. */
+	// +optional
+	PscServiceAttachments []ClusterPscServiceAttachmentsStatus `json:"pscServiceAttachments,omitempty"`
+
 	/* Output only. Redis memory size in GB for the entire cluster rounded up to the next integer. */
 	// +optional
 	SizeGb *int32 `json:"sizeGb,omitempty"`
@@ -327,6 +331,16 @@ type ClusterPscConnectionsStatus struct {
 	PscConnectionID *string `json:"pscConnectionID,omitempty"`
 
 	/* Required. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}. */
+	// +optional
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+}
+
+type ClusterPscServiceAttachmentsStatus struct {
+	/* Output only. Type of a PSC connection targeting this service attachment. */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	/* Output only. Service attachment URI which your self-created PscConnection should use as target */
 	// +optional
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }

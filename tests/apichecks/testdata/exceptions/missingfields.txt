@@ -2203,7 +2203,6 @@
 [missing_field] crd=kmsautokeyconfigs.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.keyProject.external" is not set in unstructured objects
 [missing_field] crd=kmsautokeyconfigs.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.keyProject.namespace" is not set in unstructured objects
 [missing_field] crd=kmscryptokeys.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.destroyScheduledDuration" is not set in unstructured objects
-[missing_field] crd=kmscryptokeys.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.rotationPeriod" is not set in unstructured objects
 [missing_field] crd=kmscryptokeys.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.skipInitialVersionCreation" is not set in unstructured objects
 [missing_field] crd=logginglogbuckets.logging.cnrm.cloud.google.com version=v1beta1: field ".spec.billingAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=logginglogbuckets.logging.cnrm.cloud.google.com version=v1beta1: field ".spec.enableAnalytics" is not set in unstructured objects
@@ -3187,7 +3186,6 @@
 [missing_field] crd=privatecacertificatetemplates.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=projects.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.billingAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.messageStoragePolicy.allowedPersistenceRegions[]" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com version=v1beta1: field ".spec.wafSettings.wafFeature" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com version=v1beta1: field ".spec.wafSettings.wafService" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.alternativeLocationId" is not set in unstructured objects

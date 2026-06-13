@@ -39,15 +39,13 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type DatasetEncryptionSpec struct {
-	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource.
-	Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key.
-	The key needs to be in the same region as where the compute resource is created. */
+	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
 	KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
 }
 
 type VertexAIDatasetSpec struct {
-	/* The user-defined name of the Dataset. The name can be up to 128 characters long and can be consist of any UTF-8 characters. */
+	/* The user-defined name of the Dataset. The name can be up to 128 characters long and can consist of any UTF-8 characters. */
 	DisplayName string `json:"displayName"`
 
 	/* Immutable. Customer-managed encryption key spec for a Dataset. If set, this Dataset and all sub-resources of this Dataset will be secured by this key. */
@@ -70,11 +68,11 @@ type VertexAIDatasetSpec struct {
 }
 
 type DatasetObservedStateStatus struct {
-	/* The timestamp of when the dataset was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+	/* Output only. Timestamp when this Dataset was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* The resource name of the Dataset. This value is set by Google. */
+	/* Output only. The resource name of the Dataset instance. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 }
@@ -87,7 +85,7 @@ type VertexAIDatasetStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The observed state of the underlying GCP resource. */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
 	ObservedState *DatasetObservedStateStatus `json:"observedState,omitempty"`
 }

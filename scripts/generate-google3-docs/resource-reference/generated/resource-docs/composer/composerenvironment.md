@@ -535,7 +535,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetworkAttachment resource in the form "projects/{{project}}/regions/{{region}}/networkAttachments/{{name}}".</p>
+            <p>A reference to an externally managed ComputeNetworkAttachment resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/networkAttachments/{{networkattachmentID}}".</p>
         </td>
     </tr>
     <tr>
@@ -776,7 +776,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -889,7 +889,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -899,7 +899,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -909,7 +909,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -973,7 +973,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -983,7 +983,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -993,7 +993,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -1831,7 +1831,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally-managed StorageBucket resource.</p>
+            <p>A reference to an externally managed StorageBucket resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>

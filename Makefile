@@ -130,7 +130,7 @@ lint:
 	docker run --rm -v $(shell pwd):/app \
 		-v ${GOLANGCI_LINT_CACHE}:/root/.cache/golangci-lint \
 		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
-		golangci-lint run -v --timeout=10m && echo "✅ Linting passed successfully!" || (echo "❌ Linting failed! Please fix the errors above."; exit 1)
+		golangci-lint run -v --timeout=20m && echo "✅ Linting passed successfully!" || (echo "❌ Linting failed! Please fix the errors above."; exit 1)
 
 .PHONY: lint-custom
 lint-custom:

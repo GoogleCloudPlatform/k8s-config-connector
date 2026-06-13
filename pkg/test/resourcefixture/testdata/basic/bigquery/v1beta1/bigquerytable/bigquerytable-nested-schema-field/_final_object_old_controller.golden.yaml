@@ -1,0 +1,123 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: bigquerytablesample${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  datasetRef:
+    name: bigquerydatasetsample${uniqueId}
+  description: Table containing policy history updated
+  friendlyName: bigquerytable-sample-updated
+  resourceID: bigquerytablesample${uniqueId}
+  schema: |-
+    [
+      {
+        "name": "qualified_name",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "Fully qualified name of the entity"
+      },
+      {
+        "name": "name",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "Name of the entity"
+      },
+      {
+        "name": "guid",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "Unique identifier of the entity"
+      },
+        {
+        "name": "atlan_tags",
+        "type": "RECORD",
+        "mode": "REPEATED",
+          "description": "List of Atlan Tags associated with the entity",
+          "fields":[
+          {
+            "name": "type_name",
+            "type": "STRING",
+            "mode": "NULLABLE",
+            "description": "Name of Atlan Tag"
+            },
+            {
+            "name":"entity_guid",
+            "type":"STRING",
+            "mode":"NULLABLE",
+            "description":"GUID of the entity for this tag"
+            },
+            {
+            "name":"entity_status",
+            "type":"STRING",
+            "mode": "NULLABLE",
+              "description": "Status of the entity"
+          }
+          ]
+      },
+      {
+        "name": "labels",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields":[
+          {
+            "name": "key",
+            "type": "STRING",
+            "mode": "NULLABLE",
+            "description": "key"
+            },
+            {
+            "name":"value",
+            "type":"STRING",
+            "mode":"NULLABLE",
+            "description":"values"
+            }],
+        "description": "atlan BQ labels"
+      },
+      {
+        "name": "type_resource",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "Name of the entity"
+      },
+      {
+        "name": "update_time",
+        "type": "TIMESTAMP",
+        "mode": "REQUIRED",
+        "description": "Last update time of the entity"
+      },
+      {
+        "name": "atlan_get_time",
+        "type": "TIMESTAMP",
+        "mode": "REQUIRED",
+        "description": "time when cdp get data"
+      }
+    ]
+  timePartitioning:
+    field: atlan_get_time
+    requirePartitionFilter: false
+    type: DAY
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTime: "1970-01-01T00:00:00Z"
+  etag: abcdef123456
+  lastModifiedTime: "1970-01-01T00:00:00Z"
+  location: us-central1
+  observedGeneration: 3
+  selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}
+  type: TABLE

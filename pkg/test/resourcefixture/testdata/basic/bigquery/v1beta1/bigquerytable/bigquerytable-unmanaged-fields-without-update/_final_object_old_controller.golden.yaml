@@ -1,0 +1,70 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/unmanaged: spec.schema.fields.policyTags,spec.schema.fields.dataPolicies
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    key1: value1
+    key2: value2
+  name: bigquerytable-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  datasetRef:
+    name: bigquerydataset${uniqueId}
+  description: Description of BQ Table
+  friendlyName: BigQueryTable Example
+  schema: |-
+    [
+      {
+        "name": "name",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "Name of the entity",
+        "dataPolicies": [{"name": "mock dataPolicies"}],
+        "policyTags": {"names": ["mock policytags"]}
+      },
+      {
+        "name": "labels",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "name": "key",
+            "type": "STRING",
+            "mode": "NULLABLE",
+            "description": "key",
+            "dataPolicies": [{"name": "mock dataPolicies"}],
+            "policyTags": {"names": ["mock policytags"]}
+          },
+          {
+            "name":"value",
+            "type":"STRING",
+            "mode":"NULLABLE",
+            "description":"values"
+          }
+        ],
+        "description": "atlan BQ labels"
+      }
+    ]
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTime: "1970-01-01T00:00:00Z"
+  etag: abcdef123456
+  externalRef: projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}
+  lastModifiedTime: "1970-01-01T00:00:00Z"
+  location: us-central1
+  observedGeneration: 2
+  selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}
+  type: TABLE

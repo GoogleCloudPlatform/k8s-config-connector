@@ -159,6 +159,19 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 		}
 	}
 
+	if obj.PscServiceAttachments == nil {
+		suffix := "abcdef0123456789"
+		obj.PscServiceAttachments = []*pb.PscServiceAttachment{
+			{
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-%s-psc-sa", name.Project.Number, name.Location, suffix),
+				ConnectionType:    pb.ConnectionType_CONNECTION_TYPE_DISCOVERY,
+			},
+			{
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-%s-psc-sa-2", name.Project.Number, name.Location, suffix),
+			},
+		}
+	}
+
 	if obj.PersistenceConfig == nil {
 		obj.PersistenceConfig = &pb.ClusterPersistenceConfig{}
 	}
@@ -206,6 +219,8 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 			obj.AutomatedBackupConfig.Schedule = nil
 			obj.AutomatedBackupConfig.Retention = nil
 		}
+	} else {
+		obj.AutomatedBackupConfig = &pb.AutomatedBackupConfig{AutomatedBackupMode: pb.AutomatedBackupConfig_DISABLED}
 	}
 
 	if obj.GetKmsKey() != "" {

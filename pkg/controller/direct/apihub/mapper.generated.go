@@ -54,6 +54,48 @@ func APIHubDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AP
 	// MISSING: Attributes
 	return out
 }
+func APIHubPluginObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.APIHubPluginObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubPluginObservedState{}
+	// MISSING: Name
+	out.Type = AttributeValuesObservedState_FromProto(mapCtx, in.GetType())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func APIHubPluginObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubPluginObservedState) *pb.Plugin {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Plugin{}
+	// MISSING: Name
+	out.Type = AttributeValuesObservedState_ToProto(mapCtx, in.Type)
+	out.State = direct.Enum_ToProto[pb.Plugin_State](mapCtx, in.State)
+	return out
+}
+func APIHubPluginSpec_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.APIHubPluginSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubPluginSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Type = AttributeValues_FromProto(mapCtx, in.GetType())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func APIHubPluginSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubPluginSpec) *pb.Plugin {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Plugin{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Type = AttributeValues_ToProto(mapCtx, in.Type)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 func APIHubRuntimeProjectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.APIHubRuntimeProjectAttachmentObservedState {
 	if in == nil {
 		return nil

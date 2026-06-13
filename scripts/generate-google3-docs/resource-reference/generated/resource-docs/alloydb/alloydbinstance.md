@@ -166,7 +166,7 @@ Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a AlloyDBCluster resource.</p>
+            <p>The name of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -176,7 +176,7 @@ Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a AlloyDBCluster resource.</p>
+            <p>The namespace of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>

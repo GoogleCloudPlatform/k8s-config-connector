@@ -30,6 +30,31 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+/* found existing non-generated mapping function "CryptoKeyVersionTemplate_FromProto", skipping
+func CryptoKeyVersionTemplate_FromProto(mapCtx *direct.MapContext, in *pb.CryptoKeyVersionTemplate) *krm.CryptoKeyVersionTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CryptoKeyVersionTemplate{}
+	out.ProtectionLevel = direct.Enum_FromProto(mapCtx, in.GetProtectionLevel())
+	out.Algorithm = direct.Enum_FromProto(mapCtx, in.GetAlgorithm())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "CryptoKeyVersionTemplate_ToProto", skipping
+
+	func CryptoKeyVersionTemplate_ToProto(mapCtx *direct.MapContext, in *krm.CryptoKeyVersionTemplate) *pb.CryptoKeyVersionTemplate {
+		if in == nil {
+			return nil
+		}
+		out := &pb.CryptoKeyVersionTemplate{}
+		out.ProtectionLevel = direct.Enum_ToProto[pb.ProtectionLevel](mapCtx, in.ProtectionLevel)
+		out.Algorithm = direct.Enum_ToProto[pb.CryptoKeyVersion_CryptoKeyVersionAlgorithm](mapCtx, in.Algorithm)
+		return out
+	}
+*/
 func ImportJob_WrappingPublicKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ImportJob_WrappingPublicKey) *krm.ImportJob_WrappingPublicKeyObservedState {
 	if in == nil {
 		return nil
@@ -88,6 +113,84 @@ func KMSAutokeyConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSAutokeyC
 		out.KeyProject = in.KeyProjectRef.External
 	}
 	// MISSING: Etag
+	return out
+}
+func KMSCryptoKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.CryptoKey) *krm.KMSCryptoKeySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KMSCryptoKeySpec{}
+	// MISSING: Name
+	// MISSING: Primary
+	out.Purpose = direct.Enum_FromProto(mapCtx, in.GetPurpose())
+	// MISSING: CreateTime
+	// MISSING: NextRotationTime
+	out.RotationPeriod = direct.StringDuration_FromProto(mapCtx, in.GetRotationPeriod())
+	out.VersionTemplate = CryptoKeyVersionTemplate_FromProto(mapCtx, in.GetVersionTemplate())
+	// MISSING: Labels
+	out.ImportOnly = direct.LazyPtr(in.GetImportOnly())
+	out.DestroyScheduledDuration = direct.StringDuration_FromProto(mapCtx, in.GetDestroyScheduledDuration())
+	// MISSING: CryptoKeyBackend
+	// MISSING: KeyAccessJustificationsPolicy
+	return out
+}
+func KMSCryptoKeySpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSCryptoKeySpec) *pb.CryptoKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CryptoKey{}
+	// MISSING: Name
+	// MISSING: Primary
+	out.Purpose = direct.Enum_ToProto[pb.CryptoKey_CryptoKeyPurpose](mapCtx, in.Purpose)
+	// MISSING: CreateTime
+	// MISSING: NextRotationTime
+	if oneof := direct.StringDuration_ToProto(mapCtx, in.RotationPeriod); oneof != nil {
+		out.RotationSchedule = &pb.CryptoKey_RotationPeriod{RotationPeriod: oneof}
+	}
+	out.VersionTemplate = CryptoKeyVersionTemplate_ToProto(mapCtx, in.VersionTemplate)
+	// MISSING: Labels
+	out.ImportOnly = direct.ValueOf(in.ImportOnly)
+	out.DestroyScheduledDuration = direct.StringDuration_ToProto(mapCtx, in.DestroyScheduledDuration)
+	// MISSING: CryptoKeyBackend
+	// MISSING: KeyAccessJustificationsPolicy
+	return out
+}
+func KMSCryptoKeyStatus_FromProto(mapCtx *direct.MapContext, in *pb.CryptoKey) *krm.KMSCryptoKeyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KMSCryptoKeyStatus{}
+	// MISSING: Name
+	// MISSING: Primary
+	// MISSING: Purpose
+	// MISSING: CreateTime
+	// MISSING: NextRotationTime
+	// MISSING: RotationPeriod
+	// MISSING: VersionTemplate
+	// MISSING: Labels
+	// MISSING: ImportOnly
+	// MISSING: DestroyScheduledDuration
+	// MISSING: CryptoKeyBackend
+	// MISSING: KeyAccessJustificationsPolicy
+	return out
+}
+func KMSCryptoKeyStatus_ToProto(mapCtx *direct.MapContext, in *krm.KMSCryptoKeyStatus) *pb.CryptoKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CryptoKey{}
+	// MISSING: Name
+	// MISSING: Primary
+	// MISSING: Purpose
+	// MISSING: CreateTime
+	// MISSING: NextRotationTime
+	// MISSING: RotationPeriod
+	// MISSING: VersionTemplate
+	// MISSING: Labels
+	// MISSING: ImportOnly
+	// MISSING: DestroyScheduledDuration
+	// MISSING: CryptoKeyBackend
+	// MISSING: KeyAccessJustificationsPolicy
 	return out
 }
 func KMSImportJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ImportJob) *krm.KMSImportJobObservedState {
@@ -168,6 +271,8 @@ func KMSKeyHandleSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyHandleSpe
 	out.ResourceTypeSelector = direct.ValueOf(in.ResourceTypeSelector)
 	return out
 }
+
+/* found existing non-generated mapping function "KMSKeyRingSpec_FromProto", skipping
 func KMSKeyRingSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyRing) *krm.KMSKeyRingSpec {
 	if in == nil {
 		return nil
@@ -177,6 +282,9 @@ func KMSKeyRingSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyRing) *krm.KM
 	// MISSING: CreateTime
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "KMSKeyRingSpec_ToProto", skipping
 func KMSKeyRingSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyRingSpec) *pb.KeyRing {
 	if in == nil {
 		return nil
@@ -186,6 +294,9 @@ func KMSKeyRingSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyRingSpec) *
 	// MISSING: CreateTime
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "KMSKeyRingStatus_FromProto", skipping
 func KMSKeyRingStatus_FromProto(mapCtx *direct.MapContext, in *pb.KeyRing) *krm.KMSKeyRingStatus {
 	if in == nil {
 		return nil
@@ -195,15 +306,21 @@ func KMSKeyRingStatus_FromProto(mapCtx *direct.MapContext, in *pb.KeyRing) *krm.
 	// MISSING: CreateTime
 	return out
 }
-func KMSKeyRingStatus_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyRingStatus) *pb.KeyRing {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "KMSKeyRingStatus_ToProto", skipping
+
+	func KMSKeyRingStatus_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyRingStatus) *pb.KeyRing {
+		if in == nil {
+			return nil
+		}
+		out := &pb.KeyRing{}
+		// MISSING: Name
+		// MISSING: CreateTime
+		return out
 	}
-	out := &pb.KeyRing{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	return out
-}
+*/
 func KeyOperationAttestationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyOperationAttestation) *krm.KeyOperationAttestationObservedState {
 	if in == nil {
 		return nil

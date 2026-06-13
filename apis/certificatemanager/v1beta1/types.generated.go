@@ -19,6 +19,8 @@
 // proto.service: google.cloud.certificatemanager.v1
 // resource: CertificateManagerDNSAuthorization:DnsAuthorization
 // resource: CertificateManagerCertificate:Certificate
+// resource: CertificateManagerCertificateMap:CertificateMap
+// resource: CertificateManagerCertificateMapEntry:CertificateMapEntry
 
 package v1beta1
 
@@ -109,6 +111,76 @@ type Certificate_SelfManagedCertificate struct {
 	// Input only. The PEM-encoded private key of the leaf certificate.
 	// +kcc:proto:field=google.cloud.certificatemanager.v1.Certificate.SelfManagedCertificate.pem_private_key
 	PemPrivateKey *string `json:"pemPrivateKey,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.certificatemanager.v1.CertificateMap", skipping
+
+// +kcc:proto=google.cloud.certificatemanager.v1.CertificateMap
+type CertificateMap struct {
+	// A user-defined name of the Certificate Map. Certificate Map names must be
+	//  unique globally and match pattern
+	//  `projects/* /locations/* /certificateMaps/*`.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMap.name
+	Name *string `json:"name,omitempty"`
+
+	// One or more paragraphs of text description of a certificate map.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMap.description
+	Description *string `json:"description,omitempty"`
+
+	// Set of labels associated with a Certificate Map.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMap.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.certificatemanager.v1.CertificateMap.GclbTarget", skipping
+
+// +kcc:proto=google.cloud.certificatemanager.v1.CertificateMap.GclbTarget
+type CertificateMap_GclbTarget struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.certificatemanager.v1.CertificateMap.GclbTarget.IpConfig", skipping
+
+// +kcc:proto=google.cloud.certificatemanager.v1.CertificateMap.GclbTarget.IpConfig
+type CertificateMap_GclbTarget_IPConfig struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.certificatemanager.v1.CertificateMapEntry", skipping
+
+// +kcc:proto=google.cloud.certificatemanager.v1.CertificateMapEntry
+type CertificateMapEntry struct {
+	// A user-defined name of the Certificate Map Entry. Certificate Map Entry
+	//  names must be unique globally and match pattern
+	//  `projects/* /locations/* /certificateMaps/* /certificateMapEntries/*`.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.name
+	Name *string `json:"name,omitempty"`
+
+	// One or more paragraphs of text description of a certificate map entry.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.description
+	Description *string `json:"description,omitempty"`
+
+	// Set of labels associated with a Certificate Map Entry.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// A Hostname (FQDN, e.g. `example.com`) or a wildcard hostname expression
+	//  (`*.example.com`) for a set of hostnames with common suffix. Used as
+	//  Server Name Indication (SNI) for selecting a proper certificate.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.hostname
+	Hostname *string `json:"hostname,omitempty"`
+
+	// A predefined matcher for particular cases, other than SNI selection.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.matcher
+	Matcher *string `json:"matcher,omitempty"`
+
+	// A set of Certificates defines for the given `hostname`. There can be
+	//  defined up to four certificates in each Certificate Map Entry. Each
+	//  certificate must match pattern `projects/* /locations/* /certificates/*`.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.certificates
+	Certificates []string `json:"certificates,omitempty"`
 }
 */
 
@@ -242,6 +314,81 @@ type Certificate_ManagedCertificate_ProvisioningIssueObservedState struct {
 	//  programmatic access use Reason enum.
 	// +kcc:proto:field=google.cloud.certificatemanager.v1.Certificate.ManagedCertificate.ProvisioningIssue.details
 	Details *string `json:"details,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.certificatemanager.v1.CertificateMap", skipping
+
+// +kcc:observedstate:proto=google.cloud.certificatemanager.v1.CertificateMap
+type CertificateMapObservedState struct {
+	// Output only. The creation timestamp of a Certificate Map.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMap.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The update timestamp of a Certificate Map.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMap.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. A list of GCLB targets that use this Certificate Map.
+	//  A Target Proxy is only present on this list if it's attached to a
+	//  Forwarding Rule.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMap.gclb_targets
+	GclbTargets []CertificateMap_GclbTargetObservedState `json:"gclbTargets,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "CertificateMap_GclbTargetObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.certificatemanager.v1.CertificateMap.GclbTarget
+type CertificateMap_GclbTargetObservedState struct {
+	// Output only. This field returns the resource name in the following
+	//  format:
+	//  `//compute.googleapis.com/projects/* /global/targetHttpsProxies/*`.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMap.GclbTarget.target_https_proxy
+	TargetHTTPSProxy *string `json:"targetHTTPSProxy,omitempty"`
+
+	// Output only. This field returns the resource name in the following
+	//  format:
+	//  `//compute.googleapis.com/projects/* /global/targetSslProxies/*`.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMap.GclbTarget.target_ssl_proxy
+	TargetSSLProxy *string `json:"targetSSLProxy,omitempty"`
+
+	// Output only. IP configurations for this Target Proxy where the
+	//  Certificate Map is serving.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMap.GclbTarget.ip_configs
+	IPConfigs []CertificateMap_GclbTarget_IPConfigObservedState `json:"ipConfigs,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "CertificateMap_GclbTarget_IPConfigObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.certificatemanager.v1.CertificateMap.GclbTarget.IpConfig
+type CertificateMap_GclbTarget_IPConfigObservedState struct {
+	// Output only. An external IP address.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMap.GclbTarget.IpConfig.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// Output only. Ports.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMap.GclbTarget.IpConfig.ports
+	Ports []uint32 `json:"ports,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.certificatemanager.v1.CertificateMapEntry", skipping
+
+// +kcc:observedstate:proto=google.cloud.certificatemanager.v1.CertificateMapEntry
+type CertificateMapEntryObservedState struct {
+	// Output only. The creation timestamp of a Certificate Map Entry.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The update timestamp of a Certificate Map Entry.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. A serving state of this Certificate Map Entry.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.state
+	State *string `json:"state,omitempty"`
 }
 */
 

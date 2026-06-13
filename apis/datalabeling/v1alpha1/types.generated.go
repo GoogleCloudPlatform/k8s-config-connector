@@ -17,24 +17,18 @@
 // krm.group: datalabeling.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.datalabeling.v1beta1
-// resource: DataLabelingInstruction:Instruction
+// resource: DataLabelingAnnotationSpecSet:AnnotationSpecSet
 
 package v1alpha1
 
-/* unreachable type CsvInstruction
-// +kcc:proto=google.cloud.datalabeling.v1beta1.CsvInstruction
-type CsvInstruction struct {
-	// CSV file for the instruction. Only gcs path is allowed.
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.CsvInstruction.gcs_file_uri
-	GCSFileURI *string `json:"gcsFileURI,omitempty"`
-}
-*/
+// +kcc:proto=google.cloud.datalabeling.v1beta1.AnnotationSpec
+type AnnotationSpec struct {
+	// Required. The display name of the AnnotationSpec. Maximum of 64 characters.
+	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.AnnotationSpec.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* unreachable type PdfInstruction
-// +kcc:proto=google.cloud.datalabeling.v1beta1.PdfInstruction
-type PdfInstruction struct {
-	// PDF file for the instruction. Only gcs path is allowed.
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.PdfInstruction.gcs_file_uri
-	GCSFileURI *string `json:"gcsFileURI,omitempty"`
+	// Optional. User-provided description of the annotation specification.
+	//  The description can be up to 10,000 characters long.
+	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.AnnotationSpec.description
+	Description *string `json:"description,omitempty"`
 }
-*/

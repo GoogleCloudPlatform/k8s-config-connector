@@ -122,9 +122,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}`,
-                      where {{value}} is the `name` field of a `CertificateManagerCertificateMap`
-                      resource.'
+                    description: A reference to an externally managed CertificateManagerCertificateMap
+                      resource. Should be in the format "projects/{{projectID}}/locations/global/certificateMaps/{{certificateMapID}}".
                     type: string
                   name:
                     description: The name of a CertificateManagerCertificateMap resource.

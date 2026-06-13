@@ -18,8 +18,52 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.clouddms.v1
 // resource: DatabaseMigrationConversionWorkspace:ConversionWorkspace
+// resource: DatabaseMigrationMigrationJob:MigrationJob
+// resource: DatabaseMigrationPrivateConnection:PrivateConnection
 
 package v1alpha1
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.ConversionWorkspace", skipping
+
+// +kcc:proto=google.cloud.clouddms.v1.ConversionWorkspace
+type ConversionWorkspace struct {
+	// Full name of the workspace resource, in the form of:
+	//  projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The source engine details.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.source
+	Source *DatabaseEngineInfo `json:"source,omitempty"`
+
+	// Required. The destination engine details.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.destination
+	Destination *DatabaseEngineInfo `json:"destination,omitempty"`
+
+	// Optional. A generic list of settings for the workspace.
+	//  The settings are database pair dependant and can indicate default behavior
+	//  for the mapping rules engine or turn on or off specific features.
+	//  Such examples can be: convert_foreign_key_to_interleave=true,
+	//  skip_triggers=false, ignore_non_table_synonyms=true
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.global_settings
+	GlobalSettings map[string]string `json:"globalSettings,omitempty"`
+
+	// Optional. The display name for the workspace.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.clouddms.v1.ConversionWorkspaceInfo
+type ConversionWorkspaceInfo struct {
+	// The resource name (URI) of the conversion workspace.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspaceInfo.name
+	Name *string `json:"name,omitempty"`
+
+	// The commit ID of the conversion workspace.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspaceInfo.commit_id
+	CommitID *string `json:"commitID,omitempty"`
+}
 
 // +kcc:proto=google.cloud.clouddms.v1.DatabaseEngineInfo
 type DatabaseEngineInfo struct {
@@ -31,3 +75,310 @@ type DatabaseEngineInfo struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.DatabaseEngineInfo.version
 	Version *string `json:"version,omitempty"`
 }
+
+// +kcc:proto=google.cloud.clouddms.v1.DatabaseType
+type DatabaseType struct {
+	// The database provider.
+	// +kcc:proto:field=google.cloud.clouddms.v1.DatabaseType.provider
+	Provider *string `json:"provider,omitempty"`
+
+	// The database engine.
+	// +kcc:proto:field=google.cloud.clouddms.v1.DatabaseType.engine
+	Engine *string `json:"engine,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.MigrationJob", skipping
+
+// +kcc:proto=google.cloud.clouddms.v1.MigrationJob
+type MigrationJob struct {
+	// The name (URI) of this migration job resource, in the form of:
+	//  projects/{project}/locations/{location}/migrationJobs/{migrationJob}.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.name
+	Name *string `json:"name,omitempty"`
+
+	// The resource labels for migration job to use to annotate any related
+	//  underlying resources such as Compute Engine VMs. An object containing a
+	//  list of "key": "value" pairs.
+	//
+	//  Example: `{ "name": "wrench", "mass": "1.3kg", "count": "3" }`.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// The migration job display name.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The current migration job state.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.state
+	State *string `json:"state,omitempty"`
+
+	// Required. The migration job type.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.type
+	Type *string `json:"type,omitempty"`
+
+	// The path to the dump file in Google Cloud Storage,
+	//  in the format: (gs://[BUCKET_NAME]/[OBJECT_NAME]).
+	//  This field and the "dump_flags" field are mutually exclusive.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.dump_path
+	DumpPath *string `json:"dumpPath,omitempty"`
+
+	// The initial dump flags.
+	//  This field and the "dump_path" field are mutually exclusive.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.dump_flags
+	DumpFlags *MigrationJob_DumpFlags `json:"dumpFlags,omitempty"`
+
+	// Required. The resource name (URI) of the source connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.source
+	Source *string `json:"source,omitempty"`
+
+	// Required. The resource name (URI) of the destination connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.destination
+	Destination *string `json:"destination,omitempty"`
+
+	// The details needed to communicate to the source over Reverse SSH
+	//  tunnel connectivity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.reverse_ssh_connectivity
+	ReverseSSHConnectivity *ReverseSSHConnectivity `json:"reverseSSHConnectivity,omitempty"`
+
+	// The details of the VPC network that the source database is located in.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.vpc_peering_connectivity
+	VPCPeeringConnectivity *VPCPeeringConnectivity `json:"vpcPeeringConnectivity,omitempty"`
+
+	// static ip connectivity data (default, no additional details needed).
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.static_ip_connectivity
+	StaticIPConnectivity *StaticIPConnectivity `json:"staticIPConnectivity,omitempty"`
+
+	// The database engine type and provider of the source.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.source_database
+	SourceDatabase *DatabaseType `json:"sourceDatabase,omitempty"`
+
+	// The database engine type and provider of the destination.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.destination_database
+	DestinationDatabase *DatabaseType `json:"destinationDatabase,omitempty"`
+
+	// The conversion workspace used by the migration.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.conversion_workspace
+	ConversionWorkspace *ConversionWorkspaceInfo `json:"conversionWorkspace,omitempty"`
+
+	// This field can be used to select the entities to migrate as part of
+	//  the migration job. It uses AIP-160 notation to select a subset of the
+	//  entities configured on the associated conversion-workspace. This field
+	//  should not be set on migration-jobs that are not associated with a
+	//  conversion workspace.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// The CMEK (customer-managed encryption key) fully qualified key name used
+	//  for the migration job.
+	//  This field supports all migration jobs types except for:
+	//  * Mysql to Mysql (use the cmek field in the cloudsql connection profile
+	//  instead).
+	//  * PostrgeSQL to PostgreSQL (use the cmek field in the cloudsql
+	//  connection profile instead).
+	//  * PostgreSQL to AlloyDB (use the kms_key_name field in the alloydb
+	//  connection profile instead).
+	//  Each Cloud CMEK key has the following format:
+	//  projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.cmek_key_name
+	CmekKeyName *string `json:"cmekKeyName,omitempty"`
+
+	// Optional. Data dump parallelism settings used by the migration.
+	//  Currently applicable only for MySQL to Cloud SQL for MySQL migrations only.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.performance_config
+	PerformanceConfig *MigrationJob_PerformanceConfig `json:"performanceConfig,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.clouddms.v1.MigrationJob.DumpFlag
+type MigrationJob_DumpFlag struct {
+	// The name of the flag
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.DumpFlag.name
+	Name *string `json:"name,omitempty"`
+
+	// The value of the flag.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.DumpFlag.value
+	Value *string `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.MigrationJob.DumpFlags
+type MigrationJob_DumpFlags struct {
+	// The flags for the initial dump.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.DumpFlags.dump_flags
+	DumpFlags []MigrationJob_DumpFlag `json:"dumpFlags,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.MigrationJob.PerformanceConfig
+type MigrationJob_PerformanceConfig struct {
+	// Initial dump parallelism level.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.PerformanceConfig.dump_parallel_level
+	DumpParallelLevel *string `json:"dumpParallelLevel,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.PrivateConnection", skipping
+
+// +kcc:proto=google.cloud.clouddms.v1.PrivateConnection
+type PrivateConnection struct {
+	// The name of the resource.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.name
+	Name *string `json:"name,omitempty"`
+
+	// The resource labels for private connections to use to annotate any related
+	//  underlying resources such as Compute Engine VMs. An object containing a
+	//  list of "key": "value" pairs.
+	//
+	//  Example: `{ "name": "wrench", "mass": "1.3kg", "count": "3" }`.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// The private connection display name.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// VPC peering configuration.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.vpc_peering_config
+	VPCPeeringConfig *VPCPeeringConfig `json:"vpcPeeringConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ReverseSSHConnectivity", skipping
+
+// +kcc:proto=google.cloud.clouddms.v1.ReverseSshConnectivity
+type ReverseSSHConnectivity struct {
+	// Required. The IP of the virtual machine (Compute Engine) used as the
+	//  bastion server for the SSH tunnel.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vm_ip
+	VMIP *string `json:"vmIP,omitempty"`
+
+	// Required. The forwarding port of the virtual machine (Compute Engine) used
+	//  as the bastion server for the SSH tunnel.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vm_port
+	VMPort *int32 `json:"vmPort,omitempty"`
+
+	// The name of the virtual machine (Compute Engine) used as the bastion server
+	//  for the SSH tunnel.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vm
+	VM *string `json:"vm,omitempty"`
+
+	// The name of the VPC to peer with the Cloud SQL private network.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vpc
+	VPC *string `json:"vpc,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "StaticIPConnectivity", skipping
+
+// +kcc:proto=google.cloud.clouddms.v1.StaticIpConnectivity
+type StaticIPConnectivity struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.VpcPeeringConfig", skipping
+
+// +kcc:proto=google.cloud.clouddms.v1.VpcPeeringConfig
+type VPCPeeringConfig struct {
+	// Required. Fully qualified name of the VPC that Database Migration Service
+	//  will peer to.
+	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConfig.vpc_name
+	VPCName *string `json:"vpcName,omitempty"`
+
+	// Required. A free subnet for peering. (CIDR of /29)
+	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConfig.subnet
+	Subnet *string `json:"subnet,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "VPCPeeringConnectivity", skipping
+
+// +kcc:proto=google.cloud.clouddms.v1.VpcPeeringConnectivity
+type VPCPeeringConnectivity struct {
+	// The name of the VPC network to peer with the Cloud SQL private network.
+	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConnectivity.vpc
+	VPC *string `json:"vpc,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.ConversionWorkspace", skipping
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.ConversionWorkspace
+type ConversionWorkspaceObservedState struct {
+	// Output only. Whether the workspace has uncommitted changes (changes which
+	//  were made after the workspace was committed).
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.has_uncommitted_changes
+	HasUncommittedChanges *bool `json:"hasUncommittedChanges,omitempty"`
+
+	// Output only. The latest commit ID.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.latest_commit_id
+	LatestCommitID *string `json:"latestCommitID,omitempty"`
+
+	// Output only. The timestamp when the workspace was committed.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.latest_commit_time
+	LatestCommitTime *string `json:"latestCommitTime,omitempty"`
+
+	// Output only. The timestamp when the workspace resource was created.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the workspace resource was last updated.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.MigrationJob", skipping
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.MigrationJob
+type MigrationJobObservedState struct {
+	// Output only. The timestamp when the migration job resource was created.
+	//  A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds.
+	//  Example: "2014-10-02T15:01:23.045123456Z".
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the migration job resource was last
+	//  updated. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds.
+	//  Example: "2014-10-02T15:01:23.045123456Z".
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The current migration job phase.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.phase
+	Phase *string `json:"phase,omitempty"`
+
+	// Output only. The duration of the migration job (in seconds). A duration in
+	//  seconds with up to nine fractional digits, terminated by 's'. Example:
+	//  "3.5s".
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// Output only. The error details in case of state FAILED.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.error
+	Error *common.Status `json:"error,omitempty"`
+
+	// Output only. If the migration job is completed, the time when it was
+	//  completed.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.PrivateConnection", skipping
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.PrivateConnection
+type PrivateConnectionObservedState struct {
+	// Output only. The create time of the resource.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last update time of the resource.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The state of the private connection.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The error details in case of state FAILED.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.error
+	Error *common.Status `json:"error,omitempty"`
+}
+*/

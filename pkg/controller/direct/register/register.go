@@ -15,8 +15,8 @@
 package register
 
 import (
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/accesscontextmanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform/vertexaifeatureonlinestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aistreams"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigateway"
@@ -27,9 +27,11 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/asset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/backupdr"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/batch"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/beyondcorp/beyondcorpclientgateway"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquery"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryanalyticshub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerybiglake"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerybiglake/biglakecatalog"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerybiglake/biglakedatabase"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryconnection"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerydataset"
@@ -51,6 +53,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/colab"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/composer"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/container"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datacatalog"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataflow"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataform"
@@ -103,6 +106,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/spanner"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/speech"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/sql"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/storage"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/storage/control"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tpu"

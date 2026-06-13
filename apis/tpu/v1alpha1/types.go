@@ -55,7 +55,7 @@ type NetworkConfig struct {
 	//  Google Compute Engine subnetwork. If none is provided, "default" will be
 	//  used.
 	// +kcc:proto:field=google.cloud.tpu.v2.NetworkConfig.subnetwork
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	// Indicates that external IP addresses would be associated with the TPU
 	//  workers. If set to false, the specified subnetwork or network should have

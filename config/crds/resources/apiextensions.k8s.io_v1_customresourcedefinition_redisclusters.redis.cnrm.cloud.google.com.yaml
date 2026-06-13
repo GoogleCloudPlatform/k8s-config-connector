@@ -496,6 +496,21 @@ spec:
                           type: string
                       type: object
                     type: array
+                  pscServiceAttachments:
+                    description: Output only. Service attachment details to configure
+                      Psc connections.
+                    items:
+                      properties:
+                        connectionType:
+                          description: Output only. Type of a PSC connection targeting
+                            this service attachment.
+                          type: string
+                        serviceAttachment:
+                          description: Output only. Service attachment URI which your
+                            self-created PscConnection should use as target
+                          type: string
+                      type: object
+                    type: array
                   sizeGb:
                     description: Output only. Redis memory size in GB for the entire
                       cluster rounded up to the next integer.
@@ -1001,6 +1016,21 @@ spec:
                         serviceAttachment:
                           description: Required. The service attachment which is the
                             target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                          type: string
+                      type: object
+                    type: array
+                  pscServiceAttachments:
+                    description: Output only. Service attachment details to configure
+                      Psc connections.
+                    items:
+                      properties:
+                        connectionType:
+                          description: Output only. Type of a PSC connection targeting
+                            this service attachment.
+                          type: string
+                        serviceAttachment:
+                          description: Output only. Service attachment URI which your
+                            self-created PscConnection should use as target
                           type: string
                       type: object
                     type: array

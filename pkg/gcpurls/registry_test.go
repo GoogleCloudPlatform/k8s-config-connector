@@ -71,12 +71,14 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	ignoredTemplates := map[string]bool{
 		// Add known exceptions here.
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
+		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":                         true,
 		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}":                              true,
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}":             true,
 		"//storage.googleapis.com/projects/{}/buckets/{}":                                           true,
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                         true,
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}":   true,
 		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":                       true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/dataTaxonomies/{}":                      true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                         true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                          true,
 		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}":                    true,
@@ -90,6 +92,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}":                    true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
 		"//iam.googleapis.com/policies/{}/denypolicies/{}":                                          true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/sacRealms/{}":                    true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":                    true,
 		"//logging.googleapis.com/projects/{}/exclusions/{}":                                        true,
 		"//logging.googleapis.com/folders/{}/exclusions/{}":                                         true,
@@ -102,6 +105,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//privilegedaccessmanager.googleapis.com/organizations/{}/locations/{}/entitlements/{}":    true,
 		"//biglake.googleapis.com/projects/{}/locations/{}/catalogs/{}":                             true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":                        true,
+		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}":                                true,
+		"//dns.googleapis.com/projects/{}/responsePolicies/{}":                                      true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()

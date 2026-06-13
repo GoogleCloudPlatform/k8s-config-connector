@@ -438,7 +438,7 @@ func NetworkConfig_Consumer_FromProto(mapCtx *direct.MapContext, in *pb.NetworkC
 		return nil
 	}
 	out := &krmv1alpha1.NetworkConfig_Consumer{}
-	out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	// MISSING: EndpointURI
 	// MISSING: EndpointLocation
 	return out

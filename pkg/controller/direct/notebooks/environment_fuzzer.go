@@ -33,15 +33,15 @@ func notebooksEnvironmentFuzzer() fuzztesting.KRMFuzzer {
 		NotebooksEnvironmentObservedState_v1alpha1_FromProto, NotebooksEnvironmentObservedState_v1alpha1_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.Unimplemented_Identity(".name")
 
-	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".vm_image")
-	f.SpecFields.Insert(".container_image")
-	f.SpecFields.Insert(".post_startup_script")
+	f.SpecField(".display_name")
+	f.SpecField(".description")
+	f.SpecField(".vm_image")
+	f.SpecField(".container_image")
+	f.SpecField(".post_startup_script")
 
-	f.StatusFields.Insert(".create_time")
+	f.StatusField(".create_time")
 
 	return f
 }

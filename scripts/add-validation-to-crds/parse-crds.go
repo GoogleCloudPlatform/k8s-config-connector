@@ -360,6 +360,18 @@ oneOf:
 - required: [organizationRef]
 - required: [projectRef]
 `
+		} else if kind == "ComputeInstance" && fieldPath == ".spec" {
+			ruleYAML = `
+anyOf:
+- required:
+  - bootDisk
+  - machineType
+  - networkInterface
+  - zone
+- required:
+  - instanceTemplateRef
+  - zone
+`
 		} else if signature == "bigQueryDatasetRef,loggingLogBucketRef,pubSubTopicRef,storageBucketRef" && kind == "LoggingLogSink" {
 			ruleYAML = `
 oneOf:
@@ -379,7 +391,7 @@ oneOf:
 			}
 		} else if signature == "external,name,namespace" {
 			ruleYAML = refRuleWithoutKind
-		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig") {
+		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ComputeInstance" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig") {
 			ruleYAML = legacyRefRule
 		} else {
 			if strings.HasPrefix(signature, "external,") {
@@ -397,6 +409,7 @@ oneOf:
 		return err
 	}
 	props.OneOf = rule.OneOf
+	props.AnyOf = rule.AnyOf
 
 	return nil
 }

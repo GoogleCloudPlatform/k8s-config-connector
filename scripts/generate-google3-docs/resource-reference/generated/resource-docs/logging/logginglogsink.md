@@ -126,7 +126,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Options that affect sinks exporting data to BigQuery.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -166,7 +166,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>DatasetRef is a reference to a BigQueryDataset.</p>
         </td>
     </tr>
     <tr>
@@ -176,7 +176,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `bigquery.googleapis.com/projects/{{project}}/datasets/{{value}}`, where {{value}} is the `name` field of a `BigQueryDataset` resource.</p>
+            <p>A reference to an externally-managed BigQueryDataset resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".</p>
         </td>
     </tr>
     <tr>
@@ -186,7 +186,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a BigQueryDataset resource.</p>
         </td>
     </tr>
     <tr>
@@ -196,7 +196,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a BigQueryDataset resource.</p>
         </td>
     </tr>
     <tr>
@@ -206,7 +206,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Only `external` field is supported to configure the reference.</p>
+            <p>LoggingLogBucketRef is a reference to a LoggingLogBucket.</p>
         </td>
     </tr>
     <tr>
@@ -216,7 +216,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `logging.googleapis.com/projects/{{project}}/locations/{{location}}/buckets/{{value}}`, where {{value}} is the `name` field of a `LoggingLogBucket` resource.</p>
+            <p>A reference to an externally managed LoggingLogBucket resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>
@@ -226,7 +226,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -236,7 +236,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -246,7 +246,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>PubSubTopicRef is a reference to a PubSubTopic.</p>
         </td>
     </tr>
     <tr>
@@ -256,7 +256,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `pubsub.googleapis.com/projects/{{project}}/topics/{{value}}`, where {{value}} is the `name` field of a `PubSubTopic` resource.</p>
+            <p>A reference to an externally managed PubSubTopic resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".</p>
         </td>
     </tr>
     <tr>
@@ -266,7 +266,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a PubSubTopic resource.</p>
         </td>
     </tr>
     <tr>
@@ -276,7 +276,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a PubSubTopic resource.</p>
         </td>
     </tr>
     <tr>
@@ -286,7 +286,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>StorageBucketRef is a reference to a GCP StorageBucket.</p>
         </td>
     </tr>
     <tr>
@@ -296,7 +296,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `storage.googleapis.com/{{value}}`, where {{value}} is the `name` field of a `StorageBucket` resource.</p>
+            <p>A reference to an externally managed StorageBucket resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>
@@ -306,7 +306,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a StorageBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -316,7 +316,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a StorageBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -406,8 +406,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The folder in which to create the sink. Only one of projectRef,
-folderRef, or organizationRef may be specified.</p>
+            <p>Immutable. The folder in which to create the sink. Only one of projectRef, folderRef, or organizationRef may be specified.</p>
         </td>
     </tr>
     <tr>
@@ -417,7 +416,7 @@ folderRef, or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `folderId` field of a `Folder` resource.</p>
+            <p>The 'name' field of a folder, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -427,7 +426,7 @@ folderRef, or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The 'name' field of a 'Folder' resource.</p>
         </td>
     </tr>
     <tr>
@@ -437,7 +436,7 @@ folderRef, or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The 'namespace' field of a 'Folder' resource.</p>
         </td>
     </tr>
     <tr>
@@ -457,8 +456,7 @@ folderRef, or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The organization in which to create the sink. Only one of projectRef,
-folderRef, or organizationRef may be specified.</p>
+            <p>Immutable. The organization in which to create the sink. Only one of projectRef, folderRef, or organizationRef may be specified.</p>
         </td>
     </tr>
     <tr>
@@ -468,7 +466,7 @@ folderRef, or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of an `Organization` resource.</p>
+            <p>The 'name' field of an organization, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -478,7 +476,7 @@ folderRef, or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The 'name' field of an 'Organization' resource.</p>
         </td>
     </tr>
     <tr>
@@ -488,7 +486,7 @@ folderRef, or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The 'namespace' field of an 'Organization' resource.</p>
         </td>
     </tr>
     <tr>
@@ -498,8 +496,7 @@ folderRef, or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The project in which to create the sink. Only one of projectRef,
-folderRef, or organizationRef may be specified.</p>
+            <p>Immutable. The project in which to create the sink. Only one of projectRef, folderRef, or organizationRef may be specified.</p>
         </td>
     </tr>
     <tr>
@@ -509,7 +506,7 @@ folderRef, or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -519,7 +516,7 @@ folderRef, or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -529,7 +526,7 @@ folderRef, or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -581,7 +578,7 @@ writerIdentity: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>

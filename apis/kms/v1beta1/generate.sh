@@ -27,6 +27,7 @@ go run . generate-types \
   --api-version kms.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
   --resource KMSAutokeyConfig:AutokeyConfig \
+  --resource KMSCryptoKey:CryptoKey \
   --resource KMSImportJob:ImportJob \
   --resource KMSKeyHandle:KeyHandle \
   --resource KMSKeyRing:KeyRing

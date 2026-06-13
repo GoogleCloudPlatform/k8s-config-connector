@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -27,12 +26,14 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.clouddms.v1 \
     --api-version datamigration.cnrm.cloud.google.com/v1alpha1 \
-    --resource DatabaseMigrationConversionWorkspace:ConversionWorkspace
+    --include-skipped-output \
+    --resource DatabaseMigrationConversionWorkspace:ConversionWorkspace \
+    --resource DatabaseMigrationMigrationJob:MigrationJob \
+    --resource DatabaseMigrationPrivateConnection:PrivateConnection
 
 go run . generate-mapper \
     --service google.cloud.clouddms.v1 \
     --api-version datamigration.cnrm.cloud.google.com/v1alpha1
-
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

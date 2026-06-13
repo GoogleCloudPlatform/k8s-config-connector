@@ -149,6 +149,10 @@ type RedisClusterObservedState struct {
 	// Output only. ClusterMaintenanceSchedule Output only Published maintenance schedule.
 	MaintenanceSchedule *ClusterMaintenanceScheduleObservedState `json:"maintenanceSchedule,omitempty"`
 
+	// Output only. Service attachment details to configure Psc connections.
+	// +optional
+	PSCServiceAttachments []PSCServiceAttachmentObservedState `json:"pscServiceAttachments,omitempty"`
+
 	// Output only. Encryption information for the client to retrieve.
 	EncryptionInfo *EncryptionInfoObservedState `json:"encryptionInfo,omitempty"`
 }

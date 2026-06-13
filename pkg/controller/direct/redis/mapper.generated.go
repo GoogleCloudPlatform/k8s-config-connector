@@ -322,6 +322,24 @@ func PSCConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnection) *pb
 	// MISSING: ConnectionType
 	return out
 }
+func PSCServiceAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscServiceAttachment) *krm.PSCServiceAttachmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCServiceAttachmentObservedState{}
+	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	out.ConnectionType = direct.Enum_FromProto(mapCtx, in.GetConnectionType())
+	return out
+}
+func PSCServiceAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PSCServiceAttachmentObservedState) *pb.PscServiceAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscServiceAttachment{}
+	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
+	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
+	return out
+}
 func RedisClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.RedisClusterObservedState {
 	if in == nil {
 		return nil
@@ -341,7 +359,7 @@ func RedisClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clust
 	// MISSING: CrossClusterReplicationConfig
 	out.MaintenancePolicy = ClusterMaintenancePolicyObservedState_FromProto(mapCtx, in.GetMaintenancePolicy())
 	out.MaintenanceSchedule = ClusterMaintenanceScheduleObservedState_FromProto(mapCtx, in.GetMaintenanceSchedule())
-	// MISSING: PSCServiceAttachments
+	out.PSCServiceAttachments = direct.Slice_FromProto(mapCtx, in.PscServiceAttachments, PSCServiceAttachmentObservedState_FromProto)
 	// MISSING: ClusterEndpoints
 	// MISSING: BackupCollection
 	out.EncryptionInfo = EncryptionInfoObservedState_FromProto(mapCtx, in.GetEncryptionInfo())
@@ -366,7 +384,7 @@ func RedisClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RedisC
 	// MISSING: CrossClusterReplicationConfig
 	out.MaintenancePolicy = ClusterMaintenancePolicyObservedState_ToProto(mapCtx, in.MaintenancePolicy)
 	out.MaintenanceSchedule = ClusterMaintenanceScheduleObservedState_ToProto(mapCtx, in.MaintenanceSchedule)
-	// MISSING: PSCServiceAttachments
+	out.PscServiceAttachments = direct.Slice_ToProto(mapCtx, in.PSCServiceAttachments, PSCServiceAttachmentObservedState_ToProto)
 	// MISSING: ClusterEndpoints
 	// MISSING: BackupCollection
 	out.EncryptionInfo = EncryptionInfoObservedState_ToProto(mapCtx, in.EncryptionInfo)
@@ -394,7 +412,6 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	// MISSING: CrossClusterReplicationConfig
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.MaintenancePolicy = ClusterMaintenancePolicy_FromProto(mapCtx, in.GetMaintenancePolicy())
-	// MISSING: PSCServiceAttachments
 	// MISSING: ClusterEndpoints
 	// MISSING: BackupCollection
 	if in.GetKmsKey() != "" {
@@ -428,7 +445,6 @@ found existing non-generated mapping function "RedisClusterSpec_ToProto", skippi
 		// MISSING: CrossClusterReplicationConfig
 		out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 		out.MaintenancePolicy = ClusterMaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
-		// MISSING: PSCServiceAttachments
 		// MISSING: ClusterEndpoints
 		// MISSING: BackupCollection
 		if in.KMSKeyRef != nil {

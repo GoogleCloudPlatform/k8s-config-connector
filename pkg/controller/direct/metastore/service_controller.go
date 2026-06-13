@@ -143,11 +143,9 @@ func (a *MetastoreServiceAdapter) resolveReferences(ctx context.Context) error {
 		for i := range obj.Spec.NetworkConfig.Consumers {
 			consumer := &obj.Spec.NetworkConfig.Consumers[i]
 			if consumer.SubnetworkRef != nil {
-				resolvedRef, err := refs.ResolveComputeSubnetwork(ctx, a.reader, obj, consumer.SubnetworkRef)
-				if err != nil {
+				if err := consumer.SubnetworkRef.Normalize(ctx, a.reader, obj.Namespace); err != nil {
 					return fmt.Errorf("resolving networkConfig.consumers[%d].subnetworkRef: %w", i, err)
 				}
-				consumer.SubnetworkRef = resolvedRef
 			}
 		}
 	}

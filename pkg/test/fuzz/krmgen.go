@@ -51,6 +51,9 @@ func (rf *RandomFiller) Fill(t *testing.T, obj interface{}) {
 }
 
 func (rf *RandomFiller) fillWithRandom(t *testing.T, fieldName string, field reflect.Value) {
+	if !field.CanSet() {
+		return
+	}
 	if field.Kind() == reflect.Ptr {
 		if field.IsNil() {
 			field.Set(reflect.New(field.Type().Elem()))
@@ -87,7 +90,7 @@ func (rf *RandomFiller) fillWithRandom(t *testing.T, fieldName string, field ref
 		slice := reflect.MakeSlice(field.Type(), count, count)
 		for j := 0; j < count; j++ {
 			element := reflect.New(field.Type().Elem()).Elem()
-			rf.fillWithRandom(t, "", element) // don't need to pass in a field name for slice elements
+			rf.fillWithRandom(t, fieldName+"[]", element)
 			slice.Index(j).Set(element)
 		}
 		field.Set(slice)
@@ -107,6 +110,9 @@ func (rf *RandomFiller) fillWithRandom(t *testing.T, fieldName string, field ref
 	case reflect.Struct:
 		for i := 0; i < field.NumField(); i++ {
 			structFieldName := field.Type().Field(i).Name
+			if structFieldName == "ForceSendFields" || structFieldName == "NullFields" || structFieldName == "ServerResponse" || structFieldName == "Kind" {
+				continue
+			}
 			nestedStructFieldname := fieldName + "." + structFieldName
 
 			rf.fillWithRandom(t, nestedStructFieldname, field.Field(i))
@@ -132,6 +138,9 @@ func (rf *ClearNonProtoFields) Fill(t *testing.T, obj interface{}) {
 }
 
 func (rf *ClearNonProtoFields) fillWithClear(t *testing.T, fieldName string, field reflect.Value) {
+	if !field.CanSet() {
+		return
+	}
 	if rf.fieldOverrides != nil {
 		if override, ok := rf.fieldOverrides[fieldName]; ok {
 			override(t, fieldName, field)
@@ -154,7 +163,7 @@ func (rf *ClearNonProtoFields) fillWithClear(t *testing.T, fieldName string, fie
 
 	case reflect.Slice:
 		for j := 0; j < field.Len(); j++ {
-			rf.fillWithClear(t, "", field.Index(j))
+			rf.fillWithClear(t, fieldName+"[]", field.Index(j))
 		}
 
 	case reflect.Map:
@@ -165,6 +174,10 @@ func (rf *ClearNonProtoFields) fillWithClear(t *testing.T, fieldName string, fie
 	case reflect.Struct:
 		for i := 0; i < field.NumField(); i++ {
 			structFieldName := field.Type().Field(i).Name
+			if structFieldName == "ForceSendFields" || structFieldName == "NullFields" || structFieldName == "ServerResponse" || structFieldName == "Kind" {
+				field.Field(i).Set(reflect.Zero(field.Field(i).Type()))
+				continue
+			}
 			nestedStructFieldname := fieldName + "." + structFieldName
 
 			rf.fillWithClear(t, nestedStructFieldname, field.Field(i))

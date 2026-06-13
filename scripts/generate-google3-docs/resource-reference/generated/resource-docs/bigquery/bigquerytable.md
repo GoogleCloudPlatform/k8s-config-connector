@@ -215,7 +215,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>DatasetRef defines the resource reference to BigQueryDataset, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>DatasetRef is a reference to a BigQueryDataset.</p>
         </td>
     </tr>
     <tr>

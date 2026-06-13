@@ -31,12 +31,22 @@ import (
 
 type ContactcenterinsightsV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	CCInsightsIssueModelsGetter
+	CCInsightsPhraseMatchersGetter
 	CCInsightsViewsGetter
 }
 
 // ContactcenterinsightsV1alpha1Client is used to interact with features provided by the contactcenterinsights.cnrm.cloud.google.com group.
 type ContactcenterinsightsV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *ContactcenterinsightsV1alpha1Client) CCInsightsIssueModels(namespace string) CCInsightsIssueModelInterface {
+	return newCCInsightsIssueModels(c, namespace)
+}
+
+func (c *ContactcenterinsightsV1alpha1Client) CCInsightsPhraseMatchers(namespace string) CCInsightsPhraseMatcherInterface {
+	return newCCInsightsPhraseMatchers(c, namespace)
 }
 
 func (c *ContactcenterinsightsV1alpha1Client) CCInsightsViews(namespace string) CCInsightsViewInterface {

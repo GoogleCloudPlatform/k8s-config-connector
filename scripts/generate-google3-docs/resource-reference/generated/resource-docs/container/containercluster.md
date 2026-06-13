@@ -164,6 +164,7 @@ clusterIpv4Cidr: string
 clusterTelemetry:
   type: string
 confidentialNodes:
+  confidentialInstanceType: string
   enabled: boolean
 controlPlaneEndpointsConfig:
   dnsEndpointConfig:
@@ -289,6 +290,7 @@ nodeConfig:
     name: string
     namespace: string
   confidentialNodes:
+    confidentialInstanceType: string
     enabled: boolean
   diskSizeGb: integer
   diskType: string
@@ -1260,6 +1262,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     </tr>
     <tr>
         <td>
+            <p><code>confidentialNodes.confidentialInstanceType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. Defines the type of technology used by the confidential node.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>confidentialNodes.enabled</code></p>
             <p><i>Required*</i></p>
         </td>
@@ -1735,7 +1747,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1745,7 +1757,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -1755,7 +1767,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -2415,7 +2427,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -2425,7 +2437,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -2546,6 +2558,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">object</code></p>
             <p>Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.confidentialNodes.confidentialInstanceType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. Defines the type of technology used by the confidential node.</p>
         </td>
     </tr>
     <tr>
@@ -3715,7 +3737,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -3725,7 +3747,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -3735,7 +3757,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -3935,7 +3957,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.</p>
         </td>
     </tr>
     <tr>
@@ -3945,7 +3967,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -3955,7 +3977,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -3965,7 +3987,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
