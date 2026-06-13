@@ -1,0 +1,4 @@
+### 2026-06-13 Journal: ComputeRegionSSLPolicy Type Implementation
+- **Context**: Greenfield scaffolding of `ComputeRegionSSLPolicy` (mapping to GCP's regional `SslPolicy`).
+- **Discovery / Shortcoming**: The automatic generator `generate-types` creates empty skeleton structs for `Spec` and `ObservedState` if no fields are hand-written initially. However, the generator does parse the entire proto message and leaves the complete structure under `unreachable type ...` comments in `types.generated.go`.
+- **Action / Workaround**: By reading `types.generated.go` for the unreachable definitions of `SSLPolicy`, we obtained the exact JSON field tags, descriptions, and structures (like `minTLSVersion`, `profile`, `customFeatures`). This allowed us to quickly and accurately populate the `_types.go` file with correct annotations and custom non-conflicting types for output structures (e.g., warnings).
