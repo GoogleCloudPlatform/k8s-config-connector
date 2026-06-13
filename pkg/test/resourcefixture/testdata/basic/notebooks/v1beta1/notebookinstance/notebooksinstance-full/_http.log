@@ -698,6 +698,7 @@ GRPC /google.cloud.notebooks.v1.NotebookService/CreateInstance
     "metadata": {
       "enable-os-config": "true"
     },
+    "network": "projects/${projectId}/global/networks/${networkID}",
     "noProxyAccess": true,
     "noPublicIp": true,
     "noRemoveDataDisk": true,
@@ -715,6 +716,7 @@ GRPC /google.cloud.notebooks.v1.NotebookService/CreateInstance
       "enableIntegrityMonitoring": true,
       "enableVtpm": true
     },
+    "subnet": "projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
     "tags": [
       "tag1",
       "tag2"
