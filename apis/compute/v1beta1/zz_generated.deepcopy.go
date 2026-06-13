@@ -2450,7 +2450,7 @@ func (in *ComputeTargetHTTPSProxyStatus) DeepCopyInto(out *ComputeTargetHTTPSPro
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ExternalRef != nil {
@@ -2465,7 +2465,7 @@ func (in *ComputeTargetHTTPSProxyStatus) DeepCopyInto(out *ComputeTargetHTTPSPro
 	}
 	if in.ProxyId != nil {
 		in, out := &in.ProxyId, &out.ProxyId
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {

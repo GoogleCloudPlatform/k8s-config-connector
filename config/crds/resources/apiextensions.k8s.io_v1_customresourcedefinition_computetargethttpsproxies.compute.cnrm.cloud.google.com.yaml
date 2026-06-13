@@ -347,6 +347,7 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
@@ -359,6 +360,7 @@ spec:
                 type: object
               proxyId:
                 description: The unique identifier for the resource.
+                format: int64
                 type: integer
               selfLink:
                 description: The SelfLink for the resource.
