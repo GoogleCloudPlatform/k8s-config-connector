@@ -168,6 +168,36 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
+func ComputeFirewallObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Firewall) *krm.ComputeFirewallObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallObservedState{}
+	// MISSING: Allowed
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Denied
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Params
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeFirewallObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallObservedState) *pb.Firewall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Firewall{}
+	// MISSING: Allowed
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Denied
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Params
+	out.SelfLink = in.SelfLink
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
@@ -265,6 +295,66 @@ func ComputeFirewallPolicyRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: TargetSecureTags
 	// MISSING: TargetServiceAccounts
 	// MISSING: TLSInspect
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeFirewallSpec_v1beta1_FromProto", skipping
+func ComputeFirewallSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Firewall) *krm.ComputeFirewallSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallSpec{}
+	// MISSING: Allowed
+	// MISSING: Denied
+	out.Description = in.Description
+	out.DestinationRanges = in.DestinationRanges
+	out.Direction = in.Direction
+	out.Disabled = in.Disabled
+	// MISSING: ID
+	// MISSING: Kind
+	out.LogConfig = FirewallLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: Params
+	out.Priority = in.Priority
+	out.SourceRanges = in.SourceRanges
+	out.SourceServiceAccounts = ComputeFirewallSpec_SourceServiceAccounts_FromProto(mapCtx, in.SourceServiceAccounts)
+	out.SourceTags = in.SourceTags
+	out.TargetServiceAccounts = ComputeFirewallSpec_TargetServiceAccounts_FromProto(mapCtx, in.TargetServiceAccounts)
+	out.TargetTags = in.TargetTags
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeFirewallSpec_v1beta1_ToProto", skipping
+func ComputeFirewallSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallSpec) *pb.Firewall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Firewall{}
+	// MISSING: Allowed
+	// MISSING: Denied
+	out.Description = in.Description
+	out.DestinationRanges = in.DestinationRanges
+	out.Direction = in.Direction
+	out.Disabled = in.Disabled
+	// MISSING: ID
+	// MISSING: Kind
+	out.LogConfig = FirewallLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	// MISSING: Params
+	out.Priority = in.Priority
+	out.SourceRanges = in.SourceRanges
+	out.SourceServiceAccounts = ComputeFirewallSpec_SourceServiceAccounts_ToProto(mapCtx, in.SourceServiceAccounts)
+	out.SourceTags = in.SourceTags
+	out.TargetServiceAccounts = ComputeFirewallSpec_TargetServiceAccounts_ToProto(mapCtx, in.TargetServiceAccounts)
+	out.TargetTags = in.TargetTags
 	return out
 }
 */
@@ -1856,6 +1946,68 @@ func Duration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1
 	out.Seconds = in.Seconds
 	return out
 }
+func FirewallAllow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Allowed) *krm.FirewallAllow {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallAllow{}
+	// MISSING: IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+func FirewallAllow_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAllow) *pb.Allowed {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Allowed{}
+	// MISSING: IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+func FirewallDeny_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Denied) *krm.FirewallDeny {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallDeny{}
+	// MISSING: IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+func FirewallDeny_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallDeny) *pb.Denied {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Denied{}
+	// MISSING: IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+
+/* found existing non-generated mapping function "FirewallLogConfig_v1beta1_FromProto", skipping
+func FirewallLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallLogConfig) *krm.FirewallLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallLogConfig{}
+	// MISSING: Enable
+	out.Metadata = in.Metadata
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "FirewallLogConfig_v1beta1_ToProto", skipping
+
+	func FirewallLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallLogConfig) *pb.FirewallLogConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.FirewallLogConfig{}
+		// MISSING: Enable
+		out.Metadata = in.Metadata
+		return out
+	}
+*/
 func FirewallPolicyRuleMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
 	if in == nil {
 		return nil
