@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,12 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:mapper
-// krm.group: apphub.cnrm.cloud.google.com
-// krm.version: v1alpha1
-// proto.service: google.cloud.apphub.v1
-
-package apphub
+package apphubdiscoveredservice
 
 import (
 	pb "cloud.google.com/go/apphub/apiv1/apphubpb"
@@ -30,57 +25,53 @@ func AppHubDiscoveredServiceObservedState_FromProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &krm.AppHubDiscoveredServiceObservedState{}
-	// MISSING: Name
 	out.ServiceReference = ServiceReferenceObservedState_FromProto(mapCtx, in.GetServiceReference())
 	out.ServiceProperties = ServicePropertiesObservedState_FromProto(mapCtx, in.GetServiceProperties())
 	return out
 }
+
 func AppHubDiscoveredServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppHubDiscoveredServiceObservedState) *pb.DiscoveredService {
 	if in == nil {
 		return nil
 	}
 	out := &pb.DiscoveredService{}
-	// MISSING: Name
 	out.ServiceReference = ServiceReferenceObservedState_ToProto(mapCtx, in.ServiceReference)
 	out.ServiceProperties = ServicePropertiesObservedState_ToProto(mapCtx, in.ServiceProperties)
 	return out
 }
+
 func AppHubDiscoveredServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krm.AppHubDiscoveredServiceSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.AppHubDiscoveredServiceSpec{}
-	// MISSING: Name
 	return out
 }
+
 func AppHubDiscoveredServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppHubDiscoveredServiceSpec) *pb.DiscoveredService {
 	if in == nil {
 		return nil
 	}
 	out := &pb.DiscoveredService{}
-	// MISSING: Name
 	return out
 }
+
 func ServiceProperties_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProperties) *krm.ServiceProperties {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ServiceProperties{}
-	// MISSING: GcpProject
-	// MISSING: Location
-	// MISSING: Zone
 	return out
 }
+
 func ServiceProperties_ToProto(mapCtx *direct.MapContext, in *krm.ServiceProperties) *pb.ServiceProperties {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ServiceProperties{}
-	// MISSING: GcpProject
-	// MISSING: Location
-	// MISSING: Zone
 	return out
 }
+
 func ServicePropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProperties) *krm.ServicePropertiesObservedState {
 	if in == nil {
 		return nil
@@ -91,6 +82,7 @@ func ServicePropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Zone = direct.LazyPtr(in.GetZone())
 	return out
 }
+
 func ServicePropertiesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServicePropertiesObservedState) *pb.ServiceProperties {
 	if in == nil {
 		return nil
@@ -101,22 +93,23 @@ func ServicePropertiesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.S
 	out.Zone = direct.ValueOf(in.Zone)
 	return out
 }
+
 func ServiceReference_FromProto(mapCtx *direct.MapContext, in *pb.ServiceReference) *krm.ServiceReference {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ServiceReference{}
-	// MISSING: URI
 	return out
 }
+
 func ServiceReference_ToProto(mapCtx *direct.MapContext, in *krm.ServiceReference) *pb.ServiceReference {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ServiceReference{}
-	// MISSING: URI
 	return out
 }
+
 func ServiceReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceReference) *krm.ServiceReferenceObservedState {
 	if in == nil {
 		return nil
@@ -125,6 +118,7 @@ func ServiceReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.S
 	out.URI = direct.LazyPtr(in.GetUri())
 	return out
 }
+
 func ServiceReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceReferenceObservedState) *pb.ServiceReference {
 	if in == nil {
 		return nil
