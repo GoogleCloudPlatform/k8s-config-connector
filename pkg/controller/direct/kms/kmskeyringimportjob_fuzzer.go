@@ -47,6 +47,10 @@ func KMSKeyRingImportJobFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Internal(".generate_time")
 	f.Unimplemented_Internal(".expire_event_time")
 	f.Unimplemented_NotYetTriaged(".crypto_key_backend")
+	f.Unimplemented_NotYetTriaged(".attestation.cert_chains")
+	f.Unimplemented_NotYetTriaged(".attestation.cert_chains.cavium_certs")
+	f.Unimplemented_NotYetTriaged(".attestation.cert_chains.google_card_certs")
+	f.Unimplemented_NotYetTriaged(".attestation.cert_chains.google_partition_certs")
 
 	return f
 }
