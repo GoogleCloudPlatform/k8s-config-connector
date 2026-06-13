@@ -94,7 +94,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 }
 ```
 
-### 5. Implement the Resource Controller
+### 5. Implement Mock for the resource
 
 Create `mockgcp/mock<servicename>/<resource>.go`. Implement the CRUD methods defined in the proto.
 *   Use `s.storage` for persistence.
@@ -135,8 +135,8 @@ If the resource has KRM tests, add it to `config/tests/samples/create/harness.go
 
 ### 10. Verify and Align Logs
 
-1.  Run `dev/tools/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior.
-2.  Run `dev/tools/compare-mock "fixtures/^<testname>$"` to check mock behavior.
+1.  Run `hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior.
+2.  Run `hack/compare-mock "fixtures/^<testname>$"` to check mock behavior.
 3.  Iteratively fix discrepancies in the mock implementation or `normalize.go`.
 
 ## Tips
