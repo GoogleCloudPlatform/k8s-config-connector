@@ -50,6 +50,7 @@
 // resource: ComputeSubnetwork:Subnetwork
 // resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
 // resource: ComputeTargetHTTPProxy:TargetHttpProxy
+// resource: ComputeTargetInstance:TargetInstance
 // resource: ComputeTargetPool:TargetPool
 // resource: ComputeTargetSSLProxy:TargetSslProxy
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
@@ -6483,6 +6484,57 @@ type TargetHTTPSProxy struct {
 	// A fully-qualified or valid partial URL to the UrlMap resource that defines the mapping from URL to the BackendService. For example, the following are all valid URLs for specifying a URL map: - https://www.googleapis.compute/v1/projects/project/global/urlMaps/ url-map - projects/project/global/urlMaps/url-map - global/urlMaps/url-map
 	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.url_map
 	URLMap *string `json:"urlMap,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.TargetInstance", skipping
+
+// +kcc:proto=google.cloud.compute.v1.TargetInstance
+type TargetInstance struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetInstance.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetInstance.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetInstance.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// A URL to the virtual machine instance that handles traffic for this target instance. When creating a target instance, you can provide the fully-qualified URL or a valid partial URL to the desired virtual machine. For example, the following are all valid URLs: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /instances/instance - projects/project/zones/zone/instances/instance - zones/zone/instances/instance
+	// +kcc:proto:field=google.cloud.compute.v1.TargetInstance.instance
+	Instance *string `json:"instance,omitempty"`
+
+	// [Output Only] The type of the resource. Always compute#targetInstance for target instances.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetInstance.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetInstance.name
+	Name *string `json:"name,omitempty"`
+
+	// Must have a value of NO_NAT. Protocol forwarding delivers packets while preserving the destination IP address of the forwarding rule referencing the target instance.
+	//  Check the NatPolicy enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetInstance.nat_policy
+	NATPolicy *string `json:"natPolicy,omitempty"`
+
+	// The URL of the network this target instance uses to forward traffic. If not specified, the traffic will be forwarded to the network that the default network interface belongs to.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetInstance.network
+	Network *string `json:"network,omitempty"`
+
+	// [Output Only] The resource URL for the security policy associated with this target instance.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetInstance.security_policy
+	SecurityPolicy *string `json:"securityPolicy,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetInstance.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] URL of the zone where the target instance resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetInstance.zone
+	Zone *string `json:"zone,omitempty"`
 }
 */
 
