@@ -13,6 +13,7 @@ metadata:
     cnrm-test: "true"
   name: ${healthCheckID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computehealthchecks/${healthCheckID}
 spec:
   checkIntervalSec: 15
   location: global

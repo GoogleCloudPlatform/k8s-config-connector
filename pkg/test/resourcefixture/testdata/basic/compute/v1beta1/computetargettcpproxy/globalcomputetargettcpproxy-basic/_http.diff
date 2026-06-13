@@ -1,54 +1,54 @@
-429c429
+435c435
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-458c458
+464c464
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies
-464c464
+470c470
 <   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
 ---
 >   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
-494c494,495
+500c500,501
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-524c525
+530c531
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-544c545
-<   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
+550c551
+<   "service": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}"
 ---
 >   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
-549c550
+555c556
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}/setBackendService?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}/setBackendService
-553c554
+559c560
 <   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
 ---
 >   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
-583c584,585
+589c590,591
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-613c615
+619c621
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-633c635
-<   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
+639c641
+<   "service": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}"
 ---
 >   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
-638c640
+644c646
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-668c670,671
+674c676,677
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}

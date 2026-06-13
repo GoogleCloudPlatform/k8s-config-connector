@@ -12,13 +12,14 @@ metadata:
   labels:
     cnrm-test: "true"
     label-one: value-one
-  name: computeimage-test-${uniqueId}
+  name: ${imageID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeimages/${imageID}
 spec:
   diskRef:
-    name: computedisk-${uniqueId}
+    name: ${diskID}
   diskSizeGb: 500
-  resourceID: computeimage-test-${uniqueId}
+  resourceID: ${imageID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -27,5 +28,6 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
+  labelFingerprint: abcdef0123A=
   observedGeneration: 3
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/computeimage-test-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}

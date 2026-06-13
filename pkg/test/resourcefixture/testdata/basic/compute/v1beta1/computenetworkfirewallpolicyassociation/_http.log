@@ -1,0 +1,684 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": true,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "mtu": 1460,
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/us-central1-subnet",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east7/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west8/subnetworks/${networkID}"
+  ]
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/firewallPolicies/${firewallPolicyID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/firewallPolicies/${firewallPolicyID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "description": "A sample network firewall policy",
+  "name": "${firewallPolicyID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkFirewallPolicy.insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkFirewallPolicy.insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A sample network firewall policy",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#firewallPolicy",
+  "name": "${firewallPolicyID}",
+  "policySource": "USER_DEFINED",
+  "ruleTupleCount": 8,
+  "rules": [
+    {
+      "action": "goto_next",
+      "description": "${networkID} egress rule",
+      "direction": "EGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "destIpRanges": [
+          "::/0"
+        ],
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ]
+      },
+      "priority": 2147483644,
+      "ruleTupleCount": 2,
+      "targetType": "INSTANCES"
+    },
+    {
+      "action": "goto_next",
+      "description": "${networkID} ingress rule",
+      "direction": "INGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ],
+        "srcIpRanges": [
+          "::/0"
+        ]
+      },
+      "priority": 2147483645,
+      "ruleTupleCount": 2,
+      "targetType": "INSTANCES"
+    },
+    {
+      "action": "goto_next",
+      "description": "${networkID} egress rule",
+      "direction": "EGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "destIpRanges": [
+          "0.0.0.0/0"
+        ],
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ]
+      },
+      "priority": 2147483646,
+      "ruleTupleCount": 2,
+      "targetType": "INSTANCES"
+    },
+    {
+      "action": "goto_next",
+      "description": "${networkID} ingress rule",
+      "direction": "INGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ],
+        "srcIpRanges": [
+          "0.0.0.0/0"
+        ]
+      },
+      "priority": 2147483647,
+      "ruleTupleCount": 2,
+      "targetType": "INSTANCES"
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/getAssociation?alt=json&name=computenetworkfirewallpolicyassociation-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Invalid value for field 'name': 'computenetworkfirewallpolicyassociation-${uniqueId}'. An association with that name does not exist.",
+        "reason": "invalid"
+      }
+    ],
+    "message": "Invalid value for field 'name': 'computenetworkfirewallpolicyassociation-${uniqueId}'. An association with that name does not exist."
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/addAssociation?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "attachmentTarget": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "firewallPolicyId": "${firewallPolicyID}",
+  "name": "computenetworkfirewallpolicyassociation-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkFirewallPolicy.attach",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkFirewallPolicy.attach",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/getAssociation?alt=json&name=computenetworkfirewallpolicyassociation-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "attachmentTarget": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "name": "computenetworkfirewallpolicyassociation-${uniqueId}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/removeAssociation?alt=json&name=computenetworkfirewallpolicyassociation-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkFirewallPolicy.detach",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkFirewallPolicy.detach",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/getAssociation?alt=json&name=computenetworkfirewallpolicyassociation-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Invalid value for field 'name': 'computenetworkfirewallpolicyassociation-${uniqueId}'. An association with that name does not exist.",
+        "reason": "invalid"
+      }
+    ],
+    "message": "Invalid value for field 'name': 'computenetworkfirewallpolicyassociation-${uniqueId}'. An association with that name does not exist."
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A sample network firewall policy",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#firewallPolicy",
+  "name": "${firewallPolicyID}",
+  "policySource": "USER_DEFINED",
+  "ruleTupleCount": 8,
+  "rules": [
+    {
+      "action": "goto_next",
+      "description": "${networkID} egress rule",
+      "direction": "EGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "destIpRanges": [
+          "::/0"
+        ],
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ]
+      },
+      "priority": 2147483644,
+      "ruleTupleCount": 2,
+      "targetType": "INSTANCES"
+    },
+    {
+      "action": "goto_next",
+      "description": "${networkID} ingress rule",
+      "direction": "INGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ],
+        "srcIpRanges": [
+          "::/0"
+        ]
+      },
+      "priority": 2147483645,
+      "ruleTupleCount": 2,
+      "targetType": "INSTANCES"
+    },
+    {
+      "action": "goto_next",
+      "description": "${networkID} egress rule",
+      "direction": "EGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "destIpRanges": [
+          "0.0.0.0/0"
+        ],
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ]
+      },
+      "priority": 2147483646,
+      "ruleTupleCount": 2,
+      "targetType": "INSTANCES"
+    },
+    {
+      "action": "goto_next",
+      "description": "${networkID} ingress rule",
+      "direction": "INGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ],
+        "srcIpRanges": [
+          "0.0.0.0/0"
+        ]
+      },
+      "priority": 2147483647,
+      "ruleTupleCount": 2,
+      "targetType": "INSTANCES"
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkFirewallPolicy.delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkFirewallPolicy.delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/firewallPolicies/${firewallPolicyID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/firewallPolicies/${firewallPolicyID}' was not found"
+  }
+}

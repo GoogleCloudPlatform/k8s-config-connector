@@ -1,0 +1,59 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputePacketMirroring
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: ${packetMirroringID}
+  namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computepacketmirrorings/${packetMirroringID}
+spec:
+  collectorIlb:
+    urlRef:
+      name: ${forwardingRuleID}
+  description: An updated sample packet mirroring
+  enable: "FALSE"
+  filter:
+    cidrRanges:
+    - 192.168.0.0/22
+    direction: EGRESS
+    ipProtocols:
+    - udp
+  location: us-west2
+  mirroredResources:
+    instances:
+    - urlRef:
+        name: ${instanceID}
+    subnetworks:
+    - urlRef:
+        name: default
+    tags:
+    - tag-two
+  network:
+    urlRef:
+      name: default
+  priority: 1001
+  projectRef:
+    external: projects/${projectId}
+  resourceID: ${packetMirroringID}
+status:
+  collectorIlb:
+    canonicalUrl: https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west2/forwardingRules/${forwardingRuleID}
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  id: 1111111111111111
+  network:
+    canonicalUrl: https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/3911336993397569248
+  observedGeneration: 3
+  region: https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west2
+  selfLink: https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west2/packetMirrorings/${packetMirroringID}

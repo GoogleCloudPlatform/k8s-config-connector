@@ -1,0 +1,44 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeNetworkFirewallPolicyRule
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: nfpr-${uniqueId}
+  namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/computenetworkfirewallpolicyrules/nfpr-${uniqueId}
+spec:
+  action: deny
+  description: A Firewall Policy Rule
+  direction: INGRESS
+  disabled: false
+  enableLogging: false
+  firewallPolicyRef:
+    name: ${firewallPolicyID}
+  match:
+    layer4Configs:
+    - ipProtocol: tcp
+    srcIpRanges:
+    - 10.100.0.1/32
+    - 172.20.0.0/16
+  projectRef:
+    external: ${projectId}
+  resourceID: "1000"
+  targetServiceAccountRefs:
+  - name: gsa-2-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  kind: compute#firewallPolicyRule
+  observedGeneration: 2
+  ruleTupleCount: 3

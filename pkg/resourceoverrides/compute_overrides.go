@@ -198,3 +198,25 @@ func keepOauth2ClientIDField() ResourceOverride {
 	}
 	return o
 }
+
+func GetComputeNetworkResourceOverrides() ResourceOverrides {
+	ro := ResourceOverrides{
+		Kind: "ComputeNetwork",
+	}
+	ro.Overrides = append(ro.Overrides, normalizeDefaultNetworkDescription())
+	return ro
+}
+
+func normalizeDefaultNetworkDescription() ResourceOverride {
+	o := ResourceOverride{}
+	o.PreTerraformApply = func(ctx context.Context, op *operations.PreTerraformApply) error {
+		if op.LiveState != nil && !op.LiveState.Empty() {
+			if op.KRMResource.GetName() == "default" {
+				liveDesc := op.LiveState.Attributes["description"]
+				op.TerraformConfig.Config["description"] = liveDesc
+			}
+		}
+		return nil
+	}
+	return o
+}
