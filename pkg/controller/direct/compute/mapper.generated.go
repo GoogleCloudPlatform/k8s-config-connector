@@ -2165,6 +2165,102 @@ func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 }
 */
 
+/* found existing non-generated mapping function "ComputeRouterSpec_v1beta1_FromProto", skipping
+func ComputeRouterSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Router) *krm.ComputeRouterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterSpec{}
+	out.BGP = RouterBGP_v1beta1_FromProto(mapCtx, in.GetBgp())
+	// MISSING: BGPPeers
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.EncryptedInterconnectRouter = in.EncryptedInterconnectRouter
+	// MISSING: ID
+	// MISSING: Interfaces
+	// MISSING: Kind
+	// MISSING: Md5AuthenticationKeys
+	// MISSING: Name
+	// MISSING: Nats
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.Region = in.Region
+	// MISSING: SelfLink
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeRouterSpec_v1beta1_ToProto", skipping
+
+	func ComputeRouterSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterSpec) *pb.Router {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Router{}
+		out.Bgp = RouterBGP_v1beta1_ToProto(mapCtx, in.BGP)
+		// MISSING: BGPPeers
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		out.EncryptedInterconnectRouter = in.EncryptedInterconnectRouter
+		// MISSING: ID
+		// MISSING: Interfaces
+		// MISSING: Kind
+		// MISSING: Md5AuthenticationKeys
+		// MISSING: Name
+		// MISSING: Nats
+		if in.NetworkRef != nil {
+			out.Network = &in.NetworkRef.External
+		}
+		out.Region = in.Region
+		// MISSING: SelfLink
+		return out
+	}
+*/
+func ComputeRouterStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Router) *krm.ComputeRouterStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterStatus{}
+	// MISSING: BGP
+	// MISSING: BGPPeers
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: EncryptedInterconnectRouter
+	// MISSING: ID
+	// MISSING: Interfaces
+	// MISSING: Kind
+	// MISSING: Md5AuthenticationKeys
+	// MISSING: Name
+	// MISSING: Nats
+	// MISSING: Network
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeRouterStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterStatus) *pb.Router {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Router{}
+	// MISSING: BGP
+	// MISSING: BGPPeers
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: EncryptedInterconnectRouter
+	// MISSING: ID
+	// MISSING: Interfaces
+	// MISSING: Kind
+	// MISSING: Md5AuthenticationKeys
+	// MISSING: Name
+	// MISSING: Nats
+	// MISSING: Network
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	return out
+}
+
 /* found existing non-generated mapping function "ComputeSSLPolicySpec_v1beta1_FromProto", skipping
 func ComputeSSLPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslPolicy) *krm.ComputeSSLPolicySpec {
 	if in == nil {
@@ -3953,18 +4049,74 @@ func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_FromProto(ma
 }
 */
 
-/*
-found existing non-generated mapping function "ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto", skipping
+func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicySnapshotSchedulePolicySnapshotProperties) *pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties{}
+	out.ChainName = in.ChainName
+	out.GuestFlush = in.GuestFlush
+	out.Labels = in.Labels
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+*/
 
-	func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicySnapshotSchedulePolicySnapshotProperties) *pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties {
+/* found existing non-generated mapping function "RouterAdvertisedIPRange_v1beta1_FromProto", skipping
+func RouterAdvertisedIPRange_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterAdvertisedIpRange) *krm.RouterAdvertisedIPRange {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouterAdvertisedIPRange{}
+	out.Description = in.Description
+	out.Range = in.Range
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RouterAdvertisedIPRange_v1beta1_ToProto", skipping
+func RouterAdvertisedIPRange_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouterAdvertisedIPRange) *pb.RouterAdvertisedIpRange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterAdvertisedIpRange{}
+	out.Description = in.Description
+	out.Range = in.Range
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RouterBGP_v1beta1_FromProto", skipping
+func RouterBGP_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterBgp) *krm.RouterBGP {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouterBGP{}
+	out.AdvertiseMode = in.AdvertiseMode
+	out.AdvertisedGroups = in.AdvertisedGroups
+	out.AdvertisedIPRanges = direct.Slice_FromProto(mapCtx, in.AdvertisedIpRanges, RouterAdvertisedIPRange_v1beta1_FromProto)
+	out.Asn = in.Asn
+	// MISSING: IdentifierRange
+	out.KeepaliveInterval = in.KeepaliveInterval
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "RouterBGP_v1beta1_ToProto", skipping
+
+	func RouterBGP_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouterBGP) *pb.RouterBgp {
 		if in == nil {
 			return nil
 		}
-		out := &pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties{}
-		out.ChainName = in.ChainName
-		out.GuestFlush = in.GuestFlush
-		out.Labels = in.Labels
-		out.StorageLocations = in.StorageLocations
+		out := &pb.RouterBgp{}
+		out.AdvertiseMode = in.AdvertiseMode
+		out.AdvertisedGroups = in.AdvertisedGroups
+		out.AdvertisedIpRanges = direct.Slice_ToProto(mapCtx, in.AdvertisedIPRanges, RouterAdvertisedIPRange_v1beta1_ToProto)
+		out.Asn = in.Asn
+		// MISSING: IdentifierRange
+		out.KeepaliveInterval = in.KeepaliveInterval
 		return out
 	}
 */

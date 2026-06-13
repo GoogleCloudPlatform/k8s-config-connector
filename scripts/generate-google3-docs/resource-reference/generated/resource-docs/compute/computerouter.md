@@ -149,11 +149,7 @@ This enum field has the one valid value: ALL_SUBNETS.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>User-specified list of individual IP ranges to advertise in
-custom mode. This field can only be populated if advertiseMode
-is CUSTOM and is advertised to all peers of the router. These IP
-ranges will be advertised in addition to any specified groups.
-Leave this field blank to advertise no custom IP ranges.</p>
+            <p>User-specified list of individual IP ranges to advertise in custom mode. This field can only be populated if advertiseMode is CUSTOM and is advertised to all peers of the router. These IP ranges will be advertised in addition to any specified groups. Leave this field blank to advertise no custom IP ranges.</p>
         </td>
     </tr>
     <tr>
@@ -183,8 +179,7 @@ Leave this field blank to advertise no custom IP ranges.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The IP range to advertise. The value must be a
-CIDR-formatted string.</p>
+            <p>The IP range to advertise. The value must be a CIDR-formatted string.</p>
         </td>
     </tr>
     <tr>
@@ -194,10 +189,7 @@ CIDR-formatted string.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Local BGP Autonomous System Number (ASN). Must be an RFC6996
-private ASN, either 16-bit or 32-bit. The value will be fixed for
-this router resource. All VPN tunnels that link to this router
-will have the same local ASN.</p>
+            <p>Local BGP Autonomous System Number (ASN). Must be an RFC6996 private ASN, either 16-bit or 32-bit. The value will be fixed for this router resource. All VPN tunnels that link to this router will have the same local ASN.</p>
         </td>
     </tr>
     <tr>
@@ -236,8 +228,7 @@ The default is 20.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Indicates if a router is dedicated for use with encrypted VLAN
-attachments (interconnectAttachments).</p>
+            <p>Immutable. Indicates if a router is dedicated for use with encrypted VLAN attachments (interconnectAttachments).</p>
         </td>
     </tr>
     <tr>
@@ -257,7 +248,7 @@ attachments (interconnectAttachments).</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -267,7 +258,7 @@ attachments (interconnectAttachments).</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -277,7 +268,7 @@ attachments (interconnectAttachments).</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -330,7 +321,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeRouter's current state.</p>
         </td>
     </tr>
     <tr>
