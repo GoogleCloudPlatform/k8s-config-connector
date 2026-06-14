@@ -1671,6 +1671,41 @@
 [missing_field] crd=devconnectaccountconnectors.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=devconnectaccountconnectors.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.providerOauthConfig.scopes[]" is not set in unstructured objects
 [missing_field] crd=devconnectaccountconnectors.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.providerOauthConfig.systemProviderID" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketCloudConfig.authorizerCredential.userTokenSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketCloudConfig.readAuthorizerCredential.userTokenSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketCloudConfig.webhookSecretSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketCloudConfig.workspace" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketDataCenterConfig.authorizerCredential.userTokenSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketDataCenterConfig.hostURI" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketDataCenterConfig.readAuthorizerCredential.userTokenSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketDataCenterConfig.serviceDirectoryConfig.serviceRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketDataCenterConfig.sslCACertificate" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketDataCenterConfig.webhookSecretSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKeyConfig.keyReference" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.disabled" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitProxyConfig.enabled" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.githubConfig.appInstallationID" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.githubConfig.authorizerCredential.oauthTokenSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.githubConfig.githubApp" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.githubEnterpriseConfig.appID" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.githubEnterpriseConfig.appInstallationID" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.githubEnterpriseConfig.hostURI" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.githubEnterpriseConfig.privateKeySecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.githubEnterpriseConfig.serviceDirectoryConfig.serviceRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.githubEnterpriseConfig.sslCACertificate" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.githubEnterpriseConfig.webhookSecretSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitlabConfig.authorizerCredential.userTokenSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitlabConfig.readAuthorizerCredential.userTokenSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitlabConfig.webhookSecretSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitlabEnterpriseConfig.authorizerCredential.userTokenSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitlabEnterpriseConfig.hostURI" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitlabEnterpriseConfig.readAuthorizerCredential.userTokenSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitlabEnterpriseConfig.serviceDirectoryConfig.serviceRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitlabEnterpriseConfig.sslCACertificate" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitlabEnterpriseConfig.webhookSecretSecretVersion" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.appHubApplicationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactConfigs[].googleArtifactAnalysis.projectID" is not set in unstructured objects
 [missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactConfigs[].googleArtifactRegistry.artifactRegistryPackage" is not set in unstructured objects

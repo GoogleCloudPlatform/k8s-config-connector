@@ -17,6 +17,7 @@
 // krm.group: developerconnect.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.developerconnect.v1
+// resource: DevConnectConnection:Connection
 // resource: DevConnectInsightsConfig:InsightsConfig
 // resource: DevConnectAccountConnector:AccountConnector
 
@@ -44,6 +45,80 @@ type ArtifactConfig struct {
 	URI *string `json:"uri,omitempty"`
 }
 
+// +kcc:proto=google.cloud.developerconnect.v1.BitbucketCloudConfig
+type BitbucketCloudConfig struct {
+	// Required. The Bitbucket Cloud Workspace ID to be connected to Google Cloud
+	//  Platform.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketCloudConfig.workspace
+	Workspace *string `json:"workspace,omitempty"`
+
+	// Required. Immutable. SecretManager resource containing the webhook secret
+	//  used to verify webhook events, formatted as
+	//  `projects/*/secrets/*/versions/*`. This is used to validate and create
+	//  webhooks.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketCloudConfig.webhook_secret_secret_version
+	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
+
+	// Required. An access token with the minimum `repository` access.
+	//  It can either be a workspace, project or repository access token.
+	//  It's recommended to use a system account to generate the credentials.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketCloudConfig.read_authorizer_credential
+	ReadAuthorizerCredential *UserCredential `json:"readAuthorizerCredential,omitempty"`
+
+	// Required. An access token with the minimum `repository`, `pullrequest` and
+	//  `webhook` scope access. It can either be a workspace, project or repository
+	//  access token. This is needed to create webhooks. It's recommended to use a
+	//  system account to generate these credentials.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketCloudConfig.authorizer_credential
+	AuthorizerCredential *UserCredential `json:"authorizerCredential,omitempty"`
+}
+
+// +kcc:proto=google.cloud.developerconnect.v1.BitbucketDataCenterConfig
+type BitbucketDataCenterConfig struct {
+	// Required. The URI of the Bitbucket Data Center host this connection is for.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketDataCenterConfig.host_uri
+	HostURI *string `json:"hostURI,omitempty"`
+
+	// Required. Immutable. SecretManager resource containing the webhook secret
+	//  used to verify webhook events, formatted as
+	//  `projects/*/secrets/*/versions/*`. This is used to validate webhooks.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketDataCenterConfig.webhook_secret_secret_version
+	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
+
+	// Required. An http access token with the minimum `Repository read` access.
+	//  It's recommended to use a system account to generate the credentials.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketDataCenterConfig.read_authorizer_credential
+	ReadAuthorizerCredential *UserCredential `json:"readAuthorizerCredential,omitempty"`
+
+	// Required. An http access token with the minimum `Repository admin` scope
+	//  access. This is needed to create webhooks. It's recommended to use a system
+	//  account to generate these credentials.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketDataCenterConfig.authorizer_credential
+	AuthorizerCredential *UserCredential `json:"authorizerCredential,omitempty"`
+
+	// Optional. Configuration for using Service Directory to privately connect to
+	//  a Bitbucket Data Center instance. This should only be set if the Bitbucket
+	//  Data Center is hosted on-premises and not reachable by public internet. If
+	//  this field is left empty, calls to the Bitbucket Data Center will be made
+	//  over the public internet.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketDataCenterConfig.service_directory_config
+	ServiceDirectoryConfig *ServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
+
+	// Optional. SSL certificate authority to trust when making requests to
+	//  Bitbucket Data Center.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketDataCenterConfig.ssl_ca_certificate
+	SSLCACertificate *string `json:"sslCACertificate,omitempty"`
+}
+
+// +kcc:proto=google.cloud.developerconnect.v1.CryptoKeyConfig
+type CryptoKeyConfig struct {
+	// Required. The name of the key which is used to encrypt/decrypt customer
+	//  data. For key in Cloud KMS, the key should be in the format of
+	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.CryptoKeyConfig.key_reference
+	KeyReference *string `json:"keyReference,omitempty"`
+}
+
 // +kcc:proto=google.cloud.developerconnect.v1.GKEWorkload
 type GKEWorkload struct {
 	// Required. Immutable. The name of the GKE cluster.
@@ -51,6 +126,132 @@ type GKEWorkload struct {
 	//  `projects/{project}/locations/{location}/clusters/{cluster}`.
 	// +kcc:proto:field=google.cloud.developerconnect.v1.GKEWorkload.cluster
 	Cluster *string `json:"cluster,omitempty"`
+}
+
+// +kcc:proto=google.cloud.developerconnect.v1.GitHubConfig
+type GitHubConfig struct {
+	// Required. Immutable. The GitHub Application that was installed to the
+	//  GitHub user or organization.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubConfig.github_app
+	GithubApp *string `json:"githubApp,omitempty"`
+
+	// Optional. OAuth credential of the account that authorized the GitHub App.
+	//  It is recommended to use a robot account instead of a human user account.
+	//  The OAuth token must be tied to the GitHub App of this config.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubConfig.authorizer_credential
+	AuthorizerCredential *OAuthCredential `json:"authorizerCredential,omitempty"`
+
+	// Optional. GitHub App installation id.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubConfig.app_installation_id
+	AppInstallationID *int64 `json:"appInstallationID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.developerconnect.v1.GitHubEnterpriseConfig
+type GitHubEnterpriseConfig struct {
+	// Required. The URI of the GitHub Enterprise host this connection is for.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.host_uri
+	HostURI *string `json:"hostURI,omitempty"`
+
+	// Optional. ID of the GitHub App created from the manifest.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.app_id
+	AppID *int64 `json:"appID,omitempty"`
+
+	// Optional. SecretManager resource containing the private key of the GitHub
+	//  App, formatted as `projects/*/secrets/*/versions/*`.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.private_key_secret_version
+	PrivateKeySecretVersion *string `json:"privateKeySecretVersion,omitempty"`
+
+	// Optional. SecretManager resource containing the webhook secret of the
+	//  GitHub App, formatted as `projects/*/secrets/*/versions/*`.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.webhook_secret_secret_version
+	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
+
+	// Optional. ID of the installation of the GitHub App.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.app_installation_id
+	AppInstallationID *int64 `json:"appInstallationID,omitempty"`
+
+	// Optional. Configuration for using Service Directory to privately connect to
+	//  a GitHub Enterprise server. This should only be set if the GitHub
+	//  Enterprise server is hosted on-premises and not reachable by public
+	//  internet. If this field is left empty, calls to the GitHub Enterprise
+	//  server will be made over the public internet.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.service_directory_config
+	ServiceDirectoryConfig *ServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
+
+	// Optional. SSL certificate to use for requests to GitHub Enterprise.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.ssl_ca_certificate
+	SSLCACertificate *string `json:"sslCACertificate,omitempty"`
+}
+
+// +kcc:proto=google.cloud.developerconnect.v1.GitLabConfig
+type GitLabConfig struct {
+	// Required. Immutable. SecretManager resource containing the webhook secret
+	//  of a GitLab project, formatted as `projects/*/secrets/*/versions/*`. This
+	//  is used to validate webhooks.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabConfig.webhook_secret_secret_version
+	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
+
+	// Required. A GitLab personal access token with the minimum `read_api` scope
+	//  access and a minimum role of `reporter`. The GitLab Projects visible to
+	//  this Personal Access Token will control which Projects Developer Connect
+	//  has access to.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabConfig.read_authorizer_credential
+	ReadAuthorizerCredential *UserCredential `json:"readAuthorizerCredential,omitempty"`
+
+	// Required. A GitLab personal access token with the minimum `api` scope
+	//  access and a minimum role of `maintainer`. The GitLab Projects visible to
+	//  this Personal Access Token will control which Projects Developer Connect
+	//  has access to.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabConfig.authorizer_credential
+	AuthorizerCredential *UserCredential `json:"authorizerCredential,omitempty"`
+}
+
+// +kcc:proto=google.cloud.developerconnect.v1.GitLabEnterpriseConfig
+type GitLabEnterpriseConfig struct {
+	// Required. The URI of the GitLab Enterprise host this connection is for.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabEnterpriseConfig.host_uri
+	HostURI *string `json:"hostURI,omitempty"`
+
+	// Required. Immutable. SecretManager resource containing the webhook secret
+	//  of a GitLab project, formatted as `projects/*/secrets/*/versions/*`. This
+	//  is used to validate webhooks.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabEnterpriseConfig.webhook_secret_secret_version
+	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
+
+	// Required. A GitLab personal access token with the minimum `read_api` scope
+	//  access and a minimum role of `reporter`. The GitLab Projects visible to
+	//  this Personal Access Token will control which Projects Developer Connect
+	//  has access to.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabEnterpriseConfig.read_authorizer_credential
+	ReadAuthorizerCredential *UserCredential `json:"readAuthorizerCredential,omitempty"`
+
+	// Required. A GitLab personal access token with the minimum `api` scope
+	//  access and a minimum role of `maintainer`. The GitLab Projects visible to
+	//  this Personal Access Token will control which Projects Developer Connect
+	//  has access to.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabEnterpriseConfig.authorizer_credential
+	AuthorizerCredential *UserCredential `json:"authorizerCredential,omitempty"`
+
+	// Optional. Configuration for using Service Directory to privately connect to
+	//  a GitLab Enterprise instance. This should only be set if the GitLab
+	//  Enterprise server is hosted on-premises and not reachable by public
+	//  internet. If this field is left empty, calls to the GitLab Enterprise
+	//  server will be made over the public internet.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabEnterpriseConfig.service_directory_config
+	ServiceDirectoryConfig *ServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
+
+	// Optional. SSL Certificate Authority certificate to use for requests to
+	//  GitLab Enterprise instance.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabEnterpriseConfig.ssl_ca_certificate
+	SSLCACertificate *string `json:"sslCACertificate,omitempty"`
+}
+
+// +kcc:proto=google.cloud.developerconnect.v1.GitProxyConfig
+type GitProxyConfig struct {
+	// Optional. Setting this to true allows the git proxy to be used for
+	//  performing git operations on the repositories linked in the connection.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitProxyConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.developerconnect.v1.GoogleArtifactAnalysis
@@ -71,6 +272,18 @@ type GoogleArtifactRegistry struct {
 	ArtifactRegistryPackage *string `json:"artifactRegistryPackage,omitempty"`
 }
 
+// +kcc:proto=google.cloud.developerconnect.v1.InstallationState
+type InstallationState struct {
+}
+
+// +kcc:proto=google.cloud.developerconnect.v1.OAuthCredential
+type OAuthCredential struct {
+	// Required. A SecretManager resource containing the OAuth token that
+	//  authorizes the connection. Format: `projects/*/secrets/*/versions/*`.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.OAuthCredential.oauth_token_secret_version
+	OauthTokenSecretVersion *string `json:"oauthTokenSecretVersion,omitempty"`
+}
+
 // +kcc:proto=google.cloud.developerconnect.v1.RuntimeConfig
 type RuntimeConfig struct {
 
@@ -79,6 +292,15 @@ type RuntimeConfig struct {
 	//  For Cloud Run, this is the service name.
 	// +kcc:proto:field=google.cloud.developerconnect.v1.RuntimeConfig.uri
 	URI *string `json:"uri,omitempty"`
+}
+
+// +kcc:proto=google.cloud.developerconnect.v1.UserCredential
+type UserCredential struct {
+	// Required. A SecretManager resource containing the user token that
+	//  authorizes the Developer Connect connection. Format:
+	//  `projects/*/secrets/*/versions/*`.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.UserCredential.user_token_secret_version
+	UserTokenSecretVersion *string `json:"userTokenSecretVersion,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.developerconnect.v1.AppHubWorkload
@@ -98,6 +320,41 @@ type AppHubWorkloadObservedState struct {
 	Environment *string `json:"environment,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.developerconnect.v1.BitbucketCloudConfig
+type BitbucketCloudConfigObservedState struct {
+	// Required. An access token with the minimum `repository` access.
+	//  It can either be a workspace, project or repository access token.
+	//  It's recommended to use a system account to generate the credentials.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketCloudConfig.read_authorizer_credential
+	ReadAuthorizerCredential *UserCredentialObservedState `json:"readAuthorizerCredential,omitempty"`
+
+	// Required. An access token with the minimum `repository`, `pullrequest` and
+	//  `webhook` scope access. It can either be a workspace, project or repository
+	//  access token. This is needed to create webhooks. It's recommended to use a
+	//  system account to generate these credentials.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketCloudConfig.authorizer_credential
+	AuthorizerCredential *UserCredentialObservedState `json:"authorizerCredential,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.developerconnect.v1.BitbucketDataCenterConfig
+type BitbucketDataCenterConfigObservedState struct {
+	// Required. An http access token with the minimum `Repository read` access.
+	//  It's recommended to use a system account to generate the credentials.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketDataCenterConfig.read_authorizer_credential
+	ReadAuthorizerCredential *UserCredentialObservedState `json:"readAuthorizerCredential,omitempty"`
+
+	// Required. An http access token with the minimum `Repository admin` scope
+	//  access. This is needed to create webhooks. It's recommended to use a system
+	//  account to generate these credentials.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketDataCenterConfig.authorizer_credential
+	AuthorizerCredential *UserCredentialObservedState `json:"authorizerCredential,omitempty"`
+
+	// Output only. Version of the Bitbucket Data Center server running on the
+	//  `host_uri`.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketDataCenterConfig.server_version
+	ServerVersion *string `json:"serverVersion,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.developerconnect.v1.GKEWorkload
 type GKEWorkloadObservedState struct {
 	// Required. Immutable. The name of the GKE cluster.
@@ -111,6 +368,99 @@ type GKEWorkloadObservedState struct {
 	//  `projects/{project}/locations/{location}/clusters/{cluster}/namespaces/{namespace}/deployments/{deployment}`.
 	// +kcc:proto:field=google.cloud.developerconnect.v1.GKEWorkload.deployment
 	Deployment *string `json:"deployment,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.developerconnect.v1.GitHubConfig
+type GitHubConfigObservedState struct {
+	// Optional. OAuth credential of the account that authorized the GitHub App.
+	//  It is recommended to use a robot account instead of a human user account.
+	//  The OAuth token must be tied to the GitHub App of this config.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubConfig.authorizer_credential
+	AuthorizerCredential *OAuthCredentialObservedState `json:"authorizerCredential,omitempty"`
+
+	// Output only. The URI to navigate to in order to manage the installation
+	//  associated with this GitHubConfig.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubConfig.installation_uri
+	InstallationURI *string `json:"installationURI,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.developerconnect.v1.GitHubEnterpriseConfig
+type GitHubEnterpriseConfigObservedState struct {
+	// Output only. The URL-friendly name of the GitHub App.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.app_slug
+	AppSlug *string `json:"appSlug,omitempty"`
+
+	// Output only. The URI to navigate to in order to manage the installation
+	//  associated with this GitHubEnterpriseConfig.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.installation_uri
+	InstallationURI *string `json:"installationURI,omitempty"`
+
+	// Output only. GitHub Enterprise version installed at the host_uri.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.server_version
+	ServerVersion *string `json:"serverVersion,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.developerconnect.v1.GitLabConfig
+type GitLabConfigObservedState struct {
+	// Required. A GitLab personal access token with the minimum `read_api` scope
+	//  access and a minimum role of `reporter`. The GitLab Projects visible to
+	//  this Personal Access Token will control which Projects Developer Connect
+	//  has access to.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabConfig.read_authorizer_credential
+	ReadAuthorizerCredential *UserCredentialObservedState `json:"readAuthorizerCredential,omitempty"`
+
+	// Required. A GitLab personal access token with the minimum `api` scope
+	//  access and a minimum role of `maintainer`. The GitLab Projects visible to
+	//  this Personal Access Token will control which Projects Developer Connect
+	//  has access to.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabConfig.authorizer_credential
+	AuthorizerCredential *UserCredentialObservedState `json:"authorizerCredential,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.developerconnect.v1.GitLabEnterpriseConfig
+type GitLabEnterpriseConfigObservedState struct {
+	// Required. A GitLab personal access token with the minimum `read_api` scope
+	//  access and a minimum role of `reporter`. The GitLab Projects visible to
+	//  this Personal Access Token will control which Projects Developer Connect
+	//  has access to.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabEnterpriseConfig.read_authorizer_credential
+	ReadAuthorizerCredential *UserCredentialObservedState `json:"readAuthorizerCredential,omitempty"`
+
+	// Required. A GitLab personal access token with the minimum `api` scope
+	//  access and a minimum role of `maintainer`. The GitLab Projects visible to
+	//  this Personal Access Token will control which Projects Developer Connect
+	//  has access to.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabEnterpriseConfig.authorizer_credential
+	AuthorizerCredential *UserCredentialObservedState `json:"authorizerCredential,omitempty"`
+
+	// Output only. Version of the GitLab Enterprise server running on the
+	//  `host_uri`.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabEnterpriseConfig.server_version
+	ServerVersion *string `json:"serverVersion,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.developerconnect.v1.InstallationState
+type InstallationStateObservedState struct {
+	// Output only. Current step of the installation process.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.InstallationState.stage
+	Stage *string `json:"stage,omitempty"`
+
+	// Output only. Message of what the user should do next to continue the
+	//  installation. Empty string if the installation is already complete.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.InstallationState.message
+	Message *string `json:"message,omitempty"`
+
+	// Output only. Link to follow for next action. Empty string if the
+	//  installation is already complete.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.InstallationState.action_uri
+	ActionURI *string `json:"actionURI,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.developerconnect.v1.OAuthCredential
+type OAuthCredentialObservedState struct {
+	// Output only. The username associated with this token.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.OAuthCredential.username
+	Username *string `json:"username,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.developerconnect.v1.RuntimeConfig
@@ -132,4 +482,11 @@ type RuntimeConfigObservedState struct {
 	// Output only. The state of the Runtime.
 	// +kcc:proto:field=google.cloud.developerconnect.v1.RuntimeConfig.state
 	State *string `json:"state,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.developerconnect.v1.UserCredential
+type UserCredentialObservedState struct {
+	// Output only. The username associated with this token.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.UserCredential.username
+	Username *string `json:"username,omitempty"`
 }
