@@ -53,6 +53,8 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".explanation_spec.metadata.outputs")
 	f.UnimplementedFields.Insert(".explanation_spec.parameters.output_indices.values")
 	f.UnimplementedFields.Insert(".metadata")
+	f.UnimplementedFields.Insert(".explanation_spec.parameters.examples.nearest_neighbor_search_config.list_value")
+	f.UnimplementedFields.Insert(".explanation_spec.parameters.examples.presets.query")
 
 	f.SpecFields.Insert(".version_aliases")
 	f.SpecFields.Insert(".display_name")
