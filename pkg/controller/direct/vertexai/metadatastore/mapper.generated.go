@@ -138,7 +138,11 @@ func EncryptionSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Encrypti
 		return nil
 	}
 	out := &krm.EncryptionSpec{}
-	// MISSING: KMSKeyName
+	if in.KmsKeyName != "" {
+		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{
+			External: in.KmsKeyName,
+		}
+	}
 	return out
 }
 func EncryptionSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
@@ -146,7 +150,9 @@ func EncryptionSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Encryptio
 		return nil
 	}
 	out := &pb.EncryptionSpec{}
-	// MISSING: KMSKeyName
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
+	}
 	return out
 }
 func ExampleStoreConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExampleStoreConfig) *krmvertexaiv1alpha1.ExampleStoreConfig {
