@@ -79,10 +79,11 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewKMSKeyHandleIdentity(ctx, reader, obj)
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := identity.(*krm.KMSKeyHandleIdentity)
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -116,7 +117,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	// Check whether Config Connector knows the resource identity.
 	// If not, Config Connector saves one GCP GET call, and starts the CREATE call directly.
 	// This is mostly for GCP services that do not allow user to specify ID, but assign an ID when creating the object.
-	if a.id.ID() == "" {
+	if a.id.KeyHandle == "" {
 		return false, nil
 	}
 
@@ -144,17 +145,17 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return mapCtx.Err()
 	}
 
-	parent := a.id.Parent()
+	parent := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
 
 	req := &kmspb.CreateKeyHandleRequest{}
-	if a.id.ID() != "" {
+	if a.id.KeyHandle != "" {
 		// Optional. Id of the [KeyHandle][google.cloud.kms.v1.KeyHandle]. Must be
 		// unique to the resource project and location. If not provided by the caller,
 		// a new UUID is used.
 		resource.Name = a.id.String()
-		req.KeyHandleId = a.id.ID()
+		req.KeyHandleId = a.id.KeyHandle
 	}
-	req.Parent = parent.String()
+	req.Parent = parent
 	req.KeyHandle = resource
 
 	op, err := a.gcpClient.CreateKeyHandle(ctx, req)
@@ -227,9 +228,8 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	parent := a.id.Parent()
-	obj.Spec.ProjectRef = &refs.ProjectRef{Name: parent.ProjectID}
-	obj.Spec.Location = direct.LazyPtr(parent.Location)
+	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
+	obj.Spec.Location = direct.LazyPtr(a.id.Location)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

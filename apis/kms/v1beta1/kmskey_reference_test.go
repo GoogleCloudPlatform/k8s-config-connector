@@ -42,7 +42,7 @@ func TestValidateOneOf(t *testing.T) {
 		{
 			name: "only keyHandleRef is set",
 			input: &KMSKeyRef_OneOf{
-				KMSKeyHandleRef: &kmsKeyHandleRef{Name: "auto-key"},
+				KMSKeyHandleRef: &KMSKeyHandleRef{Name: "auto-key"},
 			},
 			expectedError: "",
 		},
@@ -54,10 +54,10 @@ func TestValidateOneOf(t *testing.T) {
 			expectedError: "",
 		},
 		{
-			name: "kmsCryptoKeyRef and kmsKeyHandleRef are set",
+			name: "kmsCryptoKeyRef and KMSKeyHandleRef are set",
 			input: &KMSKeyRef_OneOf{
 				kmsCryptoKeyRef: &kmsCryptoKeyRef{Name: "test-key"},
-				KMSKeyHandleRef: &kmsKeyHandleRef{Name: "auto-key"},
+				KMSKeyHandleRef: &KMSKeyHandleRef{Name: "auto-key"},
 			},
 			expectedError: "exactly one of '.name', '.keyHandleRef.name' or '.external' must be specified, but 2 were found",
 		},
@@ -70,9 +70,9 @@ func TestValidateOneOf(t *testing.T) {
 			expectedError: "exactly one of '.name', '.keyHandleRef.name' or '.external' must be specified, but 2 were found",
 		},
 		{
-			name: "kmsKeyHandleRef and External are set",
+			name: "KMSKeyHandleRef and External are set",
 			input: &KMSKeyRef_OneOf{
-				KMSKeyHandleRef: &kmsKeyHandleRef{Name: "auto-key"},
+				KMSKeyHandleRef: &KMSKeyHandleRef{Name: "auto-key"},
 				External:        "external-key",
 			},
 			expectedError: "exactly one of '.name', '.keyHandleRef.name' or '.external' must be specified, but 2 were found",
@@ -81,7 +81,7 @@ func TestValidateOneOf(t *testing.T) {
 			name: "all three fields are set",
 			input: &KMSKeyRef_OneOf{
 				kmsCryptoKeyRef: &kmsCryptoKeyRef{Name: "test-key"},
-				KMSKeyHandleRef: &kmsKeyHandleRef{Name: "auto-key"},
+				KMSKeyHandleRef: &KMSKeyHandleRef{Name: "auto-key"},
 				External:        "external-key",
 			},
 			expectedError: "exactly one of '.name', '.keyHandleRef.name' or '.external' must be specified, but 3 were found",
@@ -90,7 +90,7 @@ func TestValidateOneOf(t *testing.T) {
 			name: "all three fields are set2",
 			input: &KMSKeyRef_OneOf{
 				kmsCryptoKeyRef: &kmsCryptoKeyRef{Name: "test-key"},
-				KMSKeyHandleRef: &kmsKeyHandleRef{Namespace: "auto-key-namespace"},
+				KMSKeyHandleRef: &KMSKeyHandleRef{Namespace: "auto-key-namespace"},
 				External:        "",
 			},
 			expectedError: "exactly one of '.name', '.keyHandleRef.name' or '.external' must be specified, but 2 were found",
