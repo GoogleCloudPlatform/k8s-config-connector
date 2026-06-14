@@ -59,6 +59,10 @@ func (c *FakeDialogflowV1alpha1) DialogflowKnowledgeBases(namespace string) v1al
 	return newFakeDialogflowKnowledgeBases(c, namespace)
 }
 
+func (c *FakeDialogflowV1alpha1) DialogflowSecuritySettingses(namespace string) v1alpha1.DialogflowSecuritySettingsInterface {
+	return newFakeDialogflowSecuritySettingses(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeDialogflowV1alpha1) RESTClient() rest.Interface {
