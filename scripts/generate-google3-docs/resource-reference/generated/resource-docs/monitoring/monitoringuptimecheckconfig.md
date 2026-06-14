@@ -446,7 +446,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The group of resources being monitored. Should be only the `[GROUP_ID]`, and not the full-path `projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]`.</p>
+            <p>A reference to an externally managed MonitoringGroup resource. Should be in the format "projects/{{projectID}}/groups/{{groupID}}".</p>
         </td>
     </tr>
     <tr>
@@ -456,7 +456,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a MonitoringGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -466,7 +466,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a MonitoringGroup resource.</p>
         </td>
     </tr>
     <tr>

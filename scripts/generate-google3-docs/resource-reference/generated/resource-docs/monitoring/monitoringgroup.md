@@ -114,7 +114,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>MonitoringGroupRef is a reference to a GCP MonitoringGroup.</p>
         </td>
     </tr>
     <tr>
@@ -124,9 +124,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of the group's parent, if it has one. The format is: projects/ For groups with no parent, `parent_name` is the empty string, ``.
-
-Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (format: `projects/{{project}}/groups/{{name}}`).</p>
+            <p>A reference to an externally managed MonitoringGroup resource. Should be in the format "projects/{{projectID}}/groups/{{groupID}}".</p>
         </td>
     </tr>
     <tr>
@@ -136,7 +134,7 @@ Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a MonitoringGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -146,7 +144,7 @@ Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a MonitoringGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -166,9 +164,7 @@ Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project of the group
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -178,7 +174,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -188,7 +184,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -227,7 +223,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>

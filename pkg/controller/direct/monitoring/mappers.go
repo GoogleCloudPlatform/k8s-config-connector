@@ -39,3 +39,36 @@ func ServiceTelemetry_ToProto(mapCtx *direct.MapContext, in *krm.ServiceTelemetr
 	out.ResourceName = direct.ValueOf(in.ResourceName)
 	return out
 }
+
+// MonitoringGroupSpec is hand-coded because the ParentRef field of type *MonitoringGroupRef
+// is a reference field that maps to a proto string parent_name, and the ProjectRef field
+// represents the parent project which does not map to a proto field in the Group message itself.
+func MonitoringGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.Group) *krm.MonitoringGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringGroupSpec{}
+	out.DisplayName = in.GetDisplayName()
+	out.Filter = in.GetFilter()
+	out.IsCluster = direct.LazyPtr(in.GetIsCluster())
+	if in.GetParentName() != "" {
+		out.ParentRef = &krm.MonitoringGroupRef{
+			External: in.GetParentName(),
+		}
+	}
+	return out
+}
+
+func MonitoringGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringGroupSpec) *pb.Group {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Group{}
+	out.DisplayName = in.DisplayName
+	out.Filter = in.Filter
+	out.IsCluster = direct.ValueOf(in.IsCluster)
+	if in.ParentRef != nil {
+		out.ParentName = in.ParentRef.External
+	}
+	return out
+}
