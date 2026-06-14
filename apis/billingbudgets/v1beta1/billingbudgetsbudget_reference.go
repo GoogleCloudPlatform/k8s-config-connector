@@ -42,7 +42,7 @@ type BillingBudgetsBudgetRef struct {
 }
 
 func init() {
-	refsv1beta1.Register(&BillingBudgetsBudgetRef{})
+	refsv1beta1.Register(&BillingBudgetsBudgetRef{}, &BillingBudgetsBudget{})
 }
 
 func (r *BillingBudgetsBudgetRef) GetGVK() schema.GroupVersionKind {

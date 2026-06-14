@@ -42,7 +42,7 @@ type LoggingLogExclusionRef struct {
 }
 
 func init() {
-	refs.Register(&LoggingLogExclusionRef{})
+	refs.Register(&LoggingLogExclusionRef{}, &LoggingLogExclusion{})
 }
 
 func (r *LoggingLogExclusionRef) GetGVK() schema.GroupVersionKind {

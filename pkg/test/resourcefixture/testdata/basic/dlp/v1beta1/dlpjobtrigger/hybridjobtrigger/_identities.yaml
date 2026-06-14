@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: dlp.cnrm.cloud.google.com
+  kind: DLPJobTrigger
+  name: dlpjobtrigger-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

@@ -41,7 +41,7 @@ type EntryGroupRef struct {
 }
 
 func init() {
-	refs.Register(&EntryGroupRef{})
+	refs.Register(&EntryGroupRef{}, &DataplexEntryGroup{})
 }
 
 func (r *EntryGroupRef) GetGVK() schema.GroupVersionKind {

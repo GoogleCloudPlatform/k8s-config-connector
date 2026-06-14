@@ -43,7 +43,7 @@ type ComputeSubnetworkRef struct {
 }
 
 func init() {
-	refs.Register(&ComputeSubnetworkRef{})
+	refs.Register(&ComputeSubnetworkRef{}, &ComputeSubnetwork{})
 }
 
 func (r *ComputeSubnetworkRef) GetGVK() schema.GroupVersionKind {

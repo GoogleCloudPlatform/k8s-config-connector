@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: oslogin.cnrm.cloud.google.com
+  kind: OSLoginSSHPublicKey
+  name: osloginsshpublickey-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

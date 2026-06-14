@@ -41,7 +41,7 @@ type FirestoreBackupScheduleRef struct {
 }
 
 func init() {
-	refs.Register(&FirestoreBackupScheduleRef{})
+	refs.Register(&FirestoreBackupScheduleRef{}, &FirestoreBackupSchedule{})
 }
 
 func (r *FirestoreBackupScheduleRef) GetGVK() schema.GroupVersionKind {

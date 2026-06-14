@@ -47,7 +47,7 @@ type LoggingLinkRef struct {
 }
 
 func init() {
-	refs.Register(&LoggingLinkRef{})
+	refs.Register(&LoggingLinkRef{}, &LoggingLink{})
 }
 
 func (r *LoggingLinkRef) GetGVK() schema.GroupVersionKind {

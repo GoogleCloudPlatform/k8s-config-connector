@@ -42,7 +42,7 @@ type LoggingLogSinkRef struct {
 }
 
 func init() {
-	refs.Register(&LoggingLogSinkRef{})
+	refs.Register(&LoggingLogSinkRef{}, &LoggingLogSink{})
 }
 
 func (r *LoggingLogSinkRef) GetGVK() schema.GroupVersionKind {

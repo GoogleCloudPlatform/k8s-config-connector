@@ -48,7 +48,7 @@ type ComputeSecurityPolicyRef struct {
 }
 
 func init() {
-	refsv1beta1.Register(&ComputeSecurityPolicyRef{})
+	refsv1beta1.Register(&ComputeSecurityPolicyRef{}, &ComputeSecurityPolicy{})
 }
 
 func (r *ComputeSecurityPolicyRef) GetGVK() schema.GroupVersionKind {

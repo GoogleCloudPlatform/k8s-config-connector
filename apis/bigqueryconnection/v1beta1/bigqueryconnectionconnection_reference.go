@@ -46,7 +46,7 @@ type BigQueryConnectionConnectionRef struct {
 }
 
 func init() {
-	refs.Register(&BigQueryConnectionConnectionRef{})
+	refs.Register(&BigQueryConnectionConnectionRef{}, &BigQueryConnectionConnection{})
 }
 
 func (r *BigQueryConnectionConnectionRef) GetGVK() schema.GroupVersionKind {

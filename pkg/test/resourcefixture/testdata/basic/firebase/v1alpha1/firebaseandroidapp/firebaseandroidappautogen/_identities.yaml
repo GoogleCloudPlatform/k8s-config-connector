@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: firebase.cnrm.cloud.google.com
+  kind: FirebaseAndroidApp
+  name: firebaseandroidapp-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

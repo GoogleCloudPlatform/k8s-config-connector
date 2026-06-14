@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: gkehub.cnrm.cloud.google.com
+  kind: GKEHubScope
+  name: gkh-rb-group-dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //gkehub.googleapis.com/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}
+  group: gkehub.cnrm.cloud.google.com
+  kind: GKEHubScopeRBACRoleBinding
+  name: gkh-rb-group-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

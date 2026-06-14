@@ -47,7 +47,7 @@ type CertificateManagerCertificateMapRef struct {
 }
 
 func init() {
-	refs.Register(&CertificateManagerCertificateMapRef{})
+	refs.Register(&CertificateManagerCertificateMapRef{}, &CertificateManagerCertificateMap{})
 }
 
 func (r *CertificateManagerCertificateMapRef) GetGVK() schema.GroupVersionKind {

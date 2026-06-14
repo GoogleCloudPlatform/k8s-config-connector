@@ -30,7 +30,7 @@ var _ refsv1beta1.Ref = &ContainerClusterRef{}
 var ContainerClusterGVK = GroupVersion.WithKind("ContainerCluster")
 
 func init() {
-	refsv1beta1.Register(&ContainerClusterRef{})
+	refsv1beta1.Register(&ContainerClusterRef{}, &ContainerCluster{})
 }
 
 type ContainerClusterRef struct {

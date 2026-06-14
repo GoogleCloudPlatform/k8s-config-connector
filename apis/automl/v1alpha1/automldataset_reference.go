@@ -40,7 +40,7 @@ type AutoMLDatasetRef struct {
 }
 
 func init() {
-	refs.Register(&AutoMLDatasetRef{})
+	refs.Register(&AutoMLDatasetRef{}, &AutoMLDataset{})
 }
 
 func (r *AutoMLDatasetRef) GetGVK() schema.GroupVersionKind {

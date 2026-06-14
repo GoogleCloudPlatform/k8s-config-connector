@@ -40,7 +40,7 @@ type ConfigDeliveryResourceBundleRef struct {
 }
 
 func init() {
-	refs.Register(&ConfigDeliveryResourceBundleRef{})
+	refs.Register(&ConfigDeliveryResourceBundleRef{}, &ConfigDeliveryResourceBundle{})
 }
 
 func (r *ConfigDeliveryResourceBundleRef) GetGVK() schema.GroupVersionKind {

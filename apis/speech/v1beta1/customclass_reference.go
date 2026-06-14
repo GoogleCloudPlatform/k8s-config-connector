@@ -40,7 +40,7 @@ type CustomClassRef struct {
 }
 
 func init() {
-	refs.Register(&CustomClassRef{})
+	refs.Register(&CustomClassRef{}, &SpeechCustomClass{})
 }
 
 func (r *CustomClassRef) GetGVK() schema.GroupVersionKind {

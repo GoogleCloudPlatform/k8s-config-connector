@@ -47,7 +47,7 @@ type CloudSecurityComplianceCloudControlRef struct {
 }
 
 func init() {
-	refs.Register(&CloudSecurityComplianceCloudControlRef{})
+	refs.Register(&CloudSecurityComplianceCloudControlRef{}, &CloudSecurityComplianceCloudControl{})
 }
 
 func (r *CloudSecurityComplianceCloudControlRef) GetGVK() schema.GroupVersionKind {

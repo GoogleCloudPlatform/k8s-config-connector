@@ -1,0 +1,13 @@
+- caisURL: unknown
+  error: not yet supported
+  group: logging.cnrm.cloud.google.com
+  kind: LoggingLogBucket
+  name: logginglogbucket-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //logging.googleapis.com/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}
+  group: logging.cnrm.cloud.google.com
+  kind: LoggingLogView
+  name: logginglogview-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

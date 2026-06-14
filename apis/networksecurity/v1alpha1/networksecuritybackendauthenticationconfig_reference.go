@@ -41,7 +41,7 @@ type NetworkSecurityBackendAuthenticationConfigRef struct {
 }
 
 func init() {
-	refs.Register(&NetworkSecurityBackendAuthenticationConfigRef{})
+	refs.Register(&NetworkSecurityBackendAuthenticationConfigRef{}, &NetworkSecurityBackendAuthenticationConfig{})
 }
 
 func (r *NetworkSecurityBackendAuthenticationConfigRef) GetGVK() schema.GroupVersionKind {

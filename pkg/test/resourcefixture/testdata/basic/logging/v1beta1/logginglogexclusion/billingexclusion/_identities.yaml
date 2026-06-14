@@ -1,0 +1,6 @@
+- caisURL: //logging.googleapis.com/billingAccounts/${TEST_BILLING_ACCOUNT_ID}/exclusions/exclusion-${uniqueId}
+  group: logging.cnrm.cloud.google.com
+  kind: LoggingLogExclusion
+  name: exclusion-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

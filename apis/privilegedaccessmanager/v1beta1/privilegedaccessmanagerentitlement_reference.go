@@ -42,7 +42,7 @@ type PrivilegedAccessManagerEntitlementRef struct {
 }
 
 func init() {
-	refs.Register(&PrivilegedAccessManagerEntitlementRef{})
+	refs.Register(&PrivilegedAccessManagerEntitlementRef{}, &PrivilegedAccessManagerEntitlement{})
 }
 
 func (r *PrivilegedAccessManagerEntitlementRef) GetGVK() schema.GroupVersionKind {

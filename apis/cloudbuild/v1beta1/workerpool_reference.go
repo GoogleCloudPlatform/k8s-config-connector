@@ -48,7 +48,7 @@ type CloudBuildWorkerPoolRef struct {
 }
 
 func init() {
-	refs.Register(&CloudBuildWorkerPoolRef{})
+	refs.Register(&CloudBuildWorkerPoolRef{}, &CloudBuildWorkerPool{})
 }
 
 func (r *CloudBuildWorkerPoolRef) GetGVK() schema.GroupVersionKind {

@@ -1,0 +1,6 @@
+- caisURL: //batch.googleapis.com/projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}
+  group: batch.cnrm.cloud.google.com
+  kind: CloudBatchResourceAllowance
+  name: batchallow-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
