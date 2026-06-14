@@ -1,6 +1,0 @@
-- caisURL: //backupdr.googleapis.com/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-labels
-  group: backupdr.cnrm.cloud.google.com
-  kind: BackupDRBackupVault
-  name: backupdrbackupvault-labels
-  namespace: ${uniqueId}
-  version: v1beta1
