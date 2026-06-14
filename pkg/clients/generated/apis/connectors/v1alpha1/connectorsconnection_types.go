@@ -53,7 +53,7 @@ type ConnectionAdditionalVariables struct {
 
 	/* Value is a secret. */
 	// +optional
-	SecretValue *v1alpha1.ResourceRef `json:"secretValue,omitempty"`
+	SecretValueRef *v1alpha1.ResourceRef `json:"secretValueRef,omitempty"`
 
 	/* Value is a string. */
 	// +optional
@@ -101,7 +101,7 @@ type ConnectionConfigVariables struct {
 
 	/* Value is a secret. */
 	// +optional
-	SecretValue *v1alpha1.ResourceRef `json:"secretValue,omitempty"`
+	SecretValueRef *v1alpha1.ResourceRef `json:"secretValueRef,omitempty"`
 
 	/* Value is a string. */
 	// +optional
@@ -173,13 +173,13 @@ type ConnectionOauth2ClientCredentials struct {
 
 	/* Secret version reference containing the client secret. */
 	// +optional
-	ClientSecret *v1alpha1.ResourceRef `json:"clientSecret,omitempty"`
+	ClientSecretRef *v1alpha1.ResourceRef `json:"clientSecretRef,omitempty"`
 }
 
 type ConnectionOauth2JwtBearer struct {
 	/* Secret version reference containing a PKCS#8 PEM-encoded private key associated with the Client Certificate. This private key will be used to sign JWTs used for the jwt-bearer authorization grant. Specified in the form as: `projects/* /secrets/* /versions/*`. */
 	// +optional
-	ClientKey *v1alpha1.ResourceRef `json:"clientKey,omitempty"`
+	ClientKeyRef *v1alpha1.ResourceRef `json:"clientKeyRef,omitempty"`
 
 	/* JwtClaims providers fields to generate the token. */
 	// +optional
@@ -191,13 +191,13 @@ type ConnectionSshPublicKey struct {
 	// +optional
 	CertType *string `json:"certType,omitempty"`
 
-	/* SSH Client Cert. It should contain both public and private key. */
-	// +optional
-	SshClientCert *v1alpha1.ResourceRef `json:"sshClientCert,omitempty"`
-
 	/* Password (passphrase) for ssh client certificate if it has one. */
 	// +optional
-	SshClientCertPass *v1alpha1.ResourceRef `json:"sshClientCertPass,omitempty"`
+	SshClientCertPassRef *v1alpha1.ResourceRef `json:"sshClientCertPassRef,omitempty"`
+
+	/* SSH Client Cert. It should contain both public and private key. */
+	// +optional
+	SshClientCertRef *v1alpha1.ResourceRef `json:"sshClientCertRef,omitempty"`
 
 	/* The user account used to authenticate. */
 	// +optional
@@ -215,19 +215,19 @@ type ConnectionSslConfig struct {
 
 	/* Client Certificate */
 	// +optional
-	ClientCertificate *v1alpha1.ResourceRef `json:"clientCertificate,omitempty"`
-
-	/* Client Private Key */
-	// +optional
-	ClientPrivateKey *v1alpha1.ResourceRef `json:"clientPrivateKey,omitempty"`
+	ClientCertificateRef *v1alpha1.ResourceRef `json:"clientCertificateRef,omitempty"`
 
 	/* Secret containing the passphrase protecting the Client Private Key */
 	// +optional
-	ClientPrivateKeyPass *v1alpha1.ResourceRef `json:"clientPrivateKeyPass,omitempty"`
+	ClientPrivateKeyPassRef *v1alpha1.ResourceRef `json:"clientPrivateKeyPassRef,omitempty"`
+
+	/* Client Private Key */
+	// +optional
+	ClientPrivateKeyRef *v1alpha1.ResourceRef `json:"clientPrivateKeyRef,omitempty"`
 
 	/* Private Server Certificate. Needs to be specified if trust model is `PRIVATE`. */
 	// +optional
-	PrivateServerCertificate *v1alpha1.ResourceRef `json:"privateServerCertificate,omitempty"`
+	PrivateServerCertificateRef *v1alpha1.ResourceRef `json:"privateServerCertificateRef,omitempty"`
 
 	/* Type of Server Cert (PEM/JKS/.. etc.) */
 	// +optional

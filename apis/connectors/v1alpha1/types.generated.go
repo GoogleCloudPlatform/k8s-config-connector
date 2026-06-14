@@ -21,10 +21,6 @@
 
 package v1alpha1
 
-import (
-	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
-)
-
 // +kcc:proto=google.cloud.connectors.v1.AuthConfig
 type AuthConfig struct {
 	// The type of authentication configured.
@@ -52,31 +48,6 @@ type AuthConfig struct {
 	AdditionalVariables []ConfigVariable `json:"additionalVariables,omitempty"`
 }
 
-// +kcc:proto=google.cloud.connectors.v1.AuthConfig.Oauth2ClientCredentials
-type AuthConfig_OAUTH2ClientCredentials struct {
-	// The client identifier.
-	// +kcc:proto:field=google.cloud.connectors.v1.AuthConfig.Oauth2ClientCredentials.client_id
-	ClientID *string `json:"clientID,omitempty"`
-
-	// Secret version reference containing the client secret.
-	// +kcc:proto:field=google.cloud.connectors.v1.AuthConfig.Oauth2ClientCredentials.client_secret
-	ClientSecret *secretmanagerv1beta1.SecretRef `json:"clientSecret,omitempty"`
-}
-
-// +kcc:proto=google.cloud.connectors.v1.AuthConfig.Oauth2JwtBearer
-type AuthConfig_OAUTH2JwtBearer struct {
-	// Secret version reference containing a PKCS#8 PEM-encoded private
-	//  key associated with the Client Certificate. This private key will be
-	//  used to sign JWTs used for the jwt-bearer authorization grant.
-	//  Specified in the form as: `projects/*/secrets/*/versions/*`.
-	// +kcc:proto:field=google.cloud.connectors.v1.AuthConfig.Oauth2JwtBearer.client_key
-	ClientKey *secretmanagerv1beta1.SecretRef `json:"clientKey,omitempty"`
-
-	// JwtClaims providers fields to generate the token.
-	// +kcc:proto:field=google.cloud.connectors.v1.AuthConfig.Oauth2JwtBearer.jwt_claims
-	JwtClaims *AuthConfig_OAUTH2JwtBearer_JwtClaims `json:"jwtClaims,omitempty"`
-}
-
 // +kcc:proto=google.cloud.connectors.v1.AuthConfig.Oauth2JwtBearer.JwtClaims
 type AuthConfig_OAUTH2JwtBearer_JwtClaims struct {
 	// Value for the "iss" claim.
@@ -90,48 +61,6 @@ type AuthConfig_OAUTH2JwtBearer_JwtClaims struct {
 	// Value for the "aud" claim.
 	// +kcc:proto:field=google.cloud.connectors.v1.AuthConfig.Oauth2JwtBearer.JwtClaims.audience
 	Audience *string `json:"audience,omitempty"`
-}
-
-// +kcc:proto=google.cloud.connectors.v1.AuthConfig.SshPublicKey
-type AuthConfig_SSHPublicKey struct {
-	// The user account used to authenticate.
-	// +kcc:proto:field=google.cloud.connectors.v1.AuthConfig.SshPublicKey.username
-	Username *string `json:"username,omitempty"`
-
-	// SSH Client Cert. It should contain both public and private key.
-	// +kcc:proto:field=google.cloud.connectors.v1.AuthConfig.SshPublicKey.ssh_client_cert
-	SSHClientCert *secretmanagerv1beta1.SecretRef `json:"sshClientCert,omitempty"`
-
-	// Format of SSH Client cert.
-	// +kcc:proto:field=google.cloud.connectors.v1.AuthConfig.SshPublicKey.cert_type
-	CertType *string `json:"certType,omitempty"`
-
-	// Password (passphrase) for ssh client certificate if it has one.
-	// +kcc:proto:field=google.cloud.connectors.v1.AuthConfig.SshPublicKey.ssh_client_cert_pass
-	SSHClientCertPass *secretmanagerv1beta1.SecretRef `json:"sshClientCertPass,omitempty"`
-}
-
-// +kcc:proto=google.cloud.connectors.v1.ConfigVariable
-type ConfigVariable struct {
-	// Key of the config variable.
-	// +kcc:proto:field=google.cloud.connectors.v1.ConfigVariable.key
-	Key *string `json:"key,omitempty"`
-
-	// Value is an integer
-	// +kcc:proto:field=google.cloud.connectors.v1.ConfigVariable.int_value
-	IntValue *int64 `json:"intValue,omitempty"`
-
-	// Value is a bool.
-	// +kcc:proto:field=google.cloud.connectors.v1.ConfigVariable.bool_value
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	// Value is a string.
-	// +kcc:proto:field=google.cloud.connectors.v1.ConfigVariable.string_value
-	StringValue *string `json:"stringValue,omitempty"`
-
-	// Value is a secret.
-	// +kcc:proto:field=google.cloud.connectors.v1.ConfigVariable.secret_value
-	SecretValue *secretmanagerv1beta1.SecretRef `json:"secretValue,omitempty"`
 }
 
 // +kcc:proto=google.cloud.connectors.v1.ConnectionStatus
@@ -180,48 +109,4 @@ type NodeConfig struct {
 	// Maximum number of nodes in the runtime nodes.
 	// +kcc:proto:field=google.cloud.connectors.v1.NodeConfig.max_node_count
 	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
-}
-
-// +kcc:proto=google.cloud.connectors.v1.SslConfig
-type SSLConfig struct {
-	// Controls the ssl type for the given connector version.
-	// +kcc:proto:field=google.cloud.connectors.v1.SslConfig.type
-	Type *string `json:"type,omitempty"`
-
-	// Trust Model of the SSL connection
-	// +kcc:proto:field=google.cloud.connectors.v1.SslConfig.trust_model
-	TrustModel *string `json:"trustModel,omitempty"`
-
-	// Private Server Certificate. Needs to be specified if trust model is
-	//  `PRIVATE`.
-	// +kcc:proto:field=google.cloud.connectors.v1.SslConfig.private_server_certificate
-	PrivateServerCertificate *secretmanagerv1beta1.SecretRef `json:"privateServerCertificate,omitempty"`
-
-	// Client Certificate
-	// +kcc:proto:field=google.cloud.connectors.v1.SslConfig.client_certificate
-	ClientCertificate *secretmanagerv1beta1.SecretRef `json:"clientCertificate,omitempty"`
-
-	// Client Private Key
-	// +kcc:proto:field=google.cloud.connectors.v1.SslConfig.client_private_key
-	ClientPrivateKey *secretmanagerv1beta1.SecretRef `json:"clientPrivateKey,omitempty"`
-
-	// Secret containing the passphrase protecting the Client Private Key
-	// +kcc:proto:field=google.cloud.connectors.v1.SslConfig.client_private_key_pass
-	ClientPrivateKeyPass *secretmanagerv1beta1.SecretRef `json:"clientPrivateKeyPass,omitempty"`
-
-	// Type of Server Cert (PEM/JKS/.. etc.)
-	// +kcc:proto:field=google.cloud.connectors.v1.SslConfig.server_cert_type
-	ServerCertType *string `json:"serverCertType,omitempty"`
-
-	// Type of Client Cert (PEM/JKS/.. etc.)
-	// +kcc:proto:field=google.cloud.connectors.v1.SslConfig.client_cert_type
-	ClientCertType *string `json:"clientCertType,omitempty"`
-
-	// Bool for enabling SSL
-	// +kcc:proto:field=google.cloud.connectors.v1.SslConfig.use_ssl
-	UseSSL *bool `json:"useSSL,omitempty"`
-
-	// Additional SSL related field values
-	// +kcc:proto:field=google.cloud.connectors.v1.SslConfig.additional_variables
-	AdditionalVariables []ConfigVariable `json:"additionalVariables,omitempty"`
 }

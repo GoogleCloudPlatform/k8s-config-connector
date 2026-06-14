@@ -80,7 +80,7 @@ spec:
                         key:
                           description: Key of the config variable.
                           type: string
-                        secretValue:
+                        secretValueRef:
                           description: Value is a secret.
                           oneOf:
                           - not:
@@ -123,7 +123,7 @@ spec:
                       clientID:
                         description: The client identifier.
                         type: string
-                      clientSecret:
+                      clientSecretRef:
                         description: Secret version reference containing the client
                           secret.
                         oneOf:
@@ -156,7 +156,7 @@ spec:
                   oauth2JwtBearer:
                     description: Oauth2JwtBearer.
                     properties:
-                      clientKey:
+                      clientKeyRef:
                         description: 'Secret version reference containing a PKCS#8
                           PEM-encoded private key associated with the Client Certificate.
                           This private key will be used to sign JWTs used for the
@@ -208,9 +208,9 @@ spec:
                       certType:
                         description: Format of SSH Client cert.
                         type: string
-                      sshClientCert:
-                        description: SSH Client Cert. It should contain both public
-                          and private key.
+                      sshClientCertPassRef:
+                        description: Password (passphrase) for ssh client certificate
+                          if it has one.
                         oneOf:
                         - not:
                             required:
@@ -237,9 +237,9 @@ spec:
                             description: The namespace of a SecretManagerSecret resource.
                             type: string
                         type: object
-                      sshClientCertPass:
-                        description: Password (passphrase) for ssh client certificate
-                          if it has one.
+                      sshClientCertRef:
+                        description: SSH Client Cert. It should contain both public
+                          and private key.
                         oneOf:
                         - not:
                             required:
@@ -321,7 +321,7 @@ spec:
                     key:
                       description: Key of the config variable.
                       type: string
-                    secretValue:
+                    secretValueRef:
                       description: Value is a secret.
                       oneOf:
                       - not:
@@ -557,7 +557,7 @@ spec:
                         key:
                           description: Key of the config variable.
                           type: string
-                        secretValue:
+                        secretValueRef:
                           description: Value is a secret.
                           oneOf:
                           - not:
@@ -594,7 +594,7 @@ spec:
                   clientCertType:
                     description: Type of Client Cert (PEM/JKS/.. etc.)
                     type: string
-                  clientCertificate:
+                  clientCertificateRef:
                     description: Client Certificate
                     oneOf:
                     - not:
@@ -622,35 +622,7 @@ spec:
                         description: The namespace of a SecretManagerSecret resource.
                         type: string
                     type: object
-                  clientPrivateKey:
-                    description: Client Private Key
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: A reference to an externally managed SecretManagerSecret
-                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
-                        type: string
-                      name:
-                        description: The name of a SecretManagerSecret resource.
-                        type: string
-                      namespace:
-                        description: The namespace of a SecretManagerSecret resource.
-                        type: string
-                    type: object
-                  clientPrivateKeyPass:
+                  clientPrivateKeyPassRef:
                     description: Secret containing the passphrase protecting the Client
                       Private Key
                     oneOf:
@@ -679,7 +651,35 @@ spec:
                         description: The namespace of a SecretManagerSecret resource.
                         type: string
                     type: object
-                  privateServerCertificate:
+                  clientPrivateKeyRef:
+                    description: Client Private Key
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed SecretManagerSecret
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                        type: string
+                      name:
+                        description: The name of a SecretManagerSecret resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a SecretManagerSecret resource.
+                        type: string
+                    type: object
+                  privateServerCertificateRef:
                     description: Private Server Certificate. Needs to be specified
                       if trust model is `PRIVATE`.
                     oneOf:
