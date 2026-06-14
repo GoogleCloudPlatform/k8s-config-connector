@@ -119,6 +119,12 @@ def match_resources(gcp_resources, kcc_resources):
         "container": ["container", "gke"],
         "sqladmin": ["sql"],
         "cloudquota": ["cloudquotas"],
+        "cloudids": ["ids"],
+        "file": ["filestore"],
+        "bigtableadmin": ["bigtable"],
+        "cloudbilling": ["billing"],
+        "cloudkms": ["kms"],
+        "aiplatform": ["aiplatform", "vertexai"],
     }
 
     for gcp_type, info in gcp_resources.items():
@@ -296,6 +302,12 @@ def main():
         "container": ["container", "gke"],
         "sqladmin": ["sql"],
         "cloudquota": ["cloudquotas"],
+        "cloudids": ["ids"],
+        "file": ["filestore"],
+        "bigtableadmin": ["bigtable"],
+        "cloudbilling": ["billing"],
+        "cloudkms": ["kms"],
+        "aiplatform": ["aiplatform", "vertexai"],
     }
 
     for key, info in gcp_resources.items():

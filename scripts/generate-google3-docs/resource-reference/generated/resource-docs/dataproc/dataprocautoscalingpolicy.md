@@ -16,7 +16,7 @@ title: "DataprocAutoscalingPolicy"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/dataproc/docs/">/dataproc/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/dataproc/docs/">https://docs.cloud.google.com/dataproc/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "DataprocAutoscalingPolicy"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/dataproc/docs/reference/rest/v1/projects.locations.autoscalingPolicies">/dataproc/docs/reference/rest/v1/projects.locations.autoscalingPolicies</a></td>
+<td><a href="https://docs.cloud.google.com/dataproc/docs/reference/rest/v1/projects.locations.autoscalingPolicies">https://docs.cloud.google.com/dataproc/docs/reference/rest/v1/projects.locations.autoscalingPolicies</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -505,4 +505,4 @@ spec:
       scaleUpFactor: 0.5
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

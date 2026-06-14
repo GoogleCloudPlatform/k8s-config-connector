@@ -20,7 +20,7 @@ one of `projectRef`, `folderRef`, `organizationRef`, or `billingAccountRef`.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/logging/docs/">/logging/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/logging/docs/">https://docs.cloud.google.com/logging/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -34,10 +34,10 @@ one of `projectRef`, `folderRef`, `organizationRef`, or `billingAccountRef`.
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/logging/docs/reference/v2/rest/v2/billingAccounts.exclusions">/logging/docs/reference/v2/rest/v2/billingAccounts.exclusions</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/folders.exclusions">/logging/docs/reference/v2/rest/v2/folders.exclusions</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/organizations.exclusions">/logging/docs/reference/v2/rest/v2/organizations.exclusions</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/projects.exclusions">/logging/docs/reference/v2/rest/v2/projects.exclusions</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/billingAccounts.exclusions">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/billingAccounts.exclusions</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/folders.exclusions">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/folders.exclusions</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/organizations.exclusions">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/organizations.exclusions</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.exclusions">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.exclusions</a></pre>
 </td>
 </tr>
 <tr>
@@ -475,4 +475,4 @@ spec:
     external: "${BILLING_ACCOUNT_ID?}"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

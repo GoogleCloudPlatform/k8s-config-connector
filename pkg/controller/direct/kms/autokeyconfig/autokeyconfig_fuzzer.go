@@ -35,6 +35,7 @@ func KMSAutokeyConfigFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecField(".key_project")
+	f.SpecField(".key_project_resolution_mode")
 
 	f.StatusField(".state")
 
@@ -42,9 +43,6 @@ func KMSAutokeyConfigFuzzer() fuzztesting.KRMFuzzer {
 
 	// Etag is not currently mapped in KCC for KMSAutokeyConfig
 	f.Unimplemented_NotYetTriaged(".etag")
-
-	// key_project_resolution_mode is not currently mapped in KCC for KMSAutokeyConfig
-	f.Unimplemented_NotYetTriaged(".key_project_resolution_mode")
 
 	return f
 }

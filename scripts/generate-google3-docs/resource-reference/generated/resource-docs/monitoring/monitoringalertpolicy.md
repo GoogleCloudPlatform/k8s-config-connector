@@ -16,7 +16,7 @@ title: "MonitoringAlertPolicy"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/monitoring/docs/">/monitoring/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/monitoring/docs/">https://docs.cloud.google.com/monitoring/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "MonitoringAlertPolicy"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/monitoring/api/ref_v3/rest/v3/projects.alertPolicies">/monitoring/api/ref_v3/rest/v3/projects.alertPolicies</a></td>
+<td><a href="https://docs.cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies">https://docs.cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1741,4 +1741,4 @@ spec:
     email_address: dev@example.com
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

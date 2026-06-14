@@ -16,7 +16,7 @@ title: "PrivateCACertificateTemplate"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/certificate-authority-service/docs/">/certificate-authority-service/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/certificate-authority-service/docs/">https://docs.cloud.google.com/certificate-authority-service/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -27,7 +27,7 @@ title: "PrivateCACertificateTemplate"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/certificate-authority-service/docs/reference/rest/v1/projects.locations.certificateTemplates">/certificate-authority-service/docs/reference/rest/v1/projects.locations.certificateTemplates</a></pre>
+<pre><a href="https://docs.cloud.google.com/certificate-authority-service/docs/reference/rest/v1/projects.locations.certificateTemplates">https://docs.cloud.google.com/certificate-authority-service/docs/reference/rest/v1/projects.locations.certificateTemplates</a></pre>
 </td>
 </tr>
 <tr>
@@ -909,4 +909,4 @@ spec:
   description: An basic sample certificate template
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

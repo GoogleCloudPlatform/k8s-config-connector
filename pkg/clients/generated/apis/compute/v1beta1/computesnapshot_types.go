@@ -53,30 +53,25 @@ type SnapshotSnapshotEncryptionKey struct {
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	/* The service account used for the encryption request for the given KMS key.
-	If absent, the Compute Engine Service Agent service account is used. */
+	/* The service account used for the encryption request for the given KMS key. If absent, the Compute Engine Service Agent service account is used. */
 	// +optional
 	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 
-	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-	RFC 4648 base64 to either encrypt or decrypt this resource. */
+	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource. */
 	// +optional
 	RawKey *SnapshotRawKey `json:"rawKey,omitempty"`
 
-	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
-	encryption key that protects this resource. */
+	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource. */
 	// +optional
 	Sha256 *string `json:"sha256,omitempty"`
 }
 
 type SnapshotSourceDiskEncryptionKey struct {
-	/* The service account used for the encryption request for the given KMS key.
-	If absent, the Compute Engine Service Agent service account is used. */
+	/* The service account used for the encryption request for the given KMS key. If absent, the Compute Engine Service Agent service account is used. */
 	// +optional
 	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 
-	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-	RFC 4648 base64 to either encrypt or decrypt this resource. */
+	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource. */
 	// +optional
 	RawKey *SnapshotRawKey `json:"rawKey,omitempty"`
 }
@@ -88,12 +83,7 @@ type SnapshotValueFrom struct {
 }
 
 type ComputeSnapshotSpec struct {
-	/* Immutable. Creates the new snapshot in the snapshot chain labeled with the
-	specified name. The chain name must be 1-63 characters long and
-	comply with RFC1035. This is an uncommon option only for advanced
-	service owners who needs to create separate snapshot chains, for
-	example, for chargeback tracking.  When you describe your snapshot
-	resource, this field is visible only if it has a non-empty value. */
+	/* Immutable. Creates the new snapshot in the snapshot chain labeled with the specified name. The chain name must be 1-63 characters long and comply with RFC1035. This is an uncommon option only for advanced service owners who needs to create separate snapshot chains, for example, for chargeback tracking.  When you describe your snapshot resource, this field is visible only if it has a non-empty value. */
 	// +optional
 	ChainName *string `json:"chainName,omitempty"`
 
@@ -121,9 +111,7 @@ type ComputeSnapshotSpec struct {
 	// +optional
 	SnapshotEncryptionKey *SnapshotSnapshotEncryptionKey `json:"snapshotEncryptionKey,omitempty"`
 
-	/* Immutable. The customer-supplied encryption key of the source snapshot. Required
-	if the source snapshot is protected by a customer-supplied encryption
-	key. */
+	/* Immutable. The customer-supplied encryption key of the source snapshot. Required if the source snapshot is protected by a customer-supplied encryption key. */
 	// +optional
 	SourceDiskEncryptionKey *SnapshotSourceDiskEncryptionKey `json:"sourceDiskEncryptionKey,omitempty"`
 
@@ -151,15 +139,11 @@ type ComputeSnapshotStatus struct {
 	// +optional
 	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
 
-	/* The fingerprint used for optimistic locking of this resource. Used
-	internally during updates. */
+	/* The fingerprint used for optimistic locking of this resource. Used internally during updates. */
 	// +optional
 	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
 
-	/* A list of public visible licenses that apply to this snapshot. This
-	can be because the original image had licenses attached (such as a
-	Windows image).  snapshotEncryptionKey nested object Encrypts the
-	snapshot using a customer-supplied encryption key. */
+	/* A list of public visible licenses that apply to this snapshot. This can be because the original image had licenses attached (such as a Windows image).  snapshotEncryptionKey nested object Encrypts the snapshot using a customer-supplied encryption key. */
 	// +optional
 	Licenses []string `json:"licenses,omitempty"`
 
@@ -174,9 +158,7 @@ type ComputeSnapshotStatus struct {
 	// +optional
 	SnapshotId *int64 `json:"snapshotId,omitempty"`
 
-	/* A size of the storage used by the snapshot. As snapshots share
-	storage, this number is expected to change with snapshot
-	creation/deletion. */
+	/* A size of the storage used by the snapshot. As snapshots share storage, this number is expected to change with snapshot creation/deletion. */
 	// +optional
 	StorageBytes *int64 `json:"storageBytes,omitempty"`
 }

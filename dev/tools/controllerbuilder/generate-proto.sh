@@ -117,6 +117,7 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/iam/admin/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/logging/v2/*.proto \
     ${THIRD_PARTY}/googleapis/google/monitoring/v3/*.proto \
+    ${THIRD_PARTY}/googleapis/google/monitoring/metricsscope/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/monitoring/dashboard/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/devtools/cloudbuild/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/devtools/artifactregistry/*/*.proto \

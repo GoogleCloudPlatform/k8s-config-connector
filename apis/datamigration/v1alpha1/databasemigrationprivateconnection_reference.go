@@ -42,7 +42,7 @@ type DatabaseMigrationPrivateConnectionRef struct {
 }
 
 func init() {
-	refs.Register(&DatabaseMigrationPrivateConnectionRef{})
+	refs.Register(&DatabaseMigrationPrivateConnectionRef{}, &DatabaseMigrationPrivateConnection{})
 }
 
 func (r *DatabaseMigrationPrivateConnectionRef) GetGVK() schema.GroupVersionKind {

@@ -16,7 +16,7 @@ title: "BigQueryDataTransferConfig"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/bigquery/docs/">/bigquery/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/">https://docs.cloud.google.com/bigquery/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BigQueryDataTransferConfig"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/bigquery/docs/reference/datatransfer/rest/v1/projects.locations.transferConfigs">/bigquery/docs/reference/datatransfer/rest/v1/projects.locations.transferConfigs</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/reference/datatransfer/rest/v1/projects.locations.transferConfigs">https://docs.cloud.google.com/bigquery/docs/reference/datatransfer/rest/v1/projects.locations.transferConfigs</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -834,4 +834,4 @@ metadata:
   name: gsa-dep-scheduledquery
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

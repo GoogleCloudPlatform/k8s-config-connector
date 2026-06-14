@@ -16,7 +16,7 @@ title: "ServiceNetworkingConnection"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/service-infrastructure/docs/service-networking/reference/rest/">service-infrastructure/docs/service-networking/reference/rest/</a></td>
+<td><a href="https://docs.cloud.google.com/service-infrastructure/docs/service-networking/reference/rest/">service-infrastructure/docs/service-networking/reference/rest/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ServiceNetworkingConnection"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/service-infrastructure/docs/service-networking/reference/rest/v1/services.connections">/service-infrastructure/docs/service-networking/reference/rest/v1/services.connections</a></td>
+<td><a href="https://docs.cloud.google.com/service-infrastructure/docs/service-networking/reference/rest/v1/services.connections">https://docs.cloud.google.com/service-infrastructure/docs/service-networking/reference/rest/v1/services.connections</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -325,4 +325,4 @@ spec:
   autoCreateSubnetworks: false
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

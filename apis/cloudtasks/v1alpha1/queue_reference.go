@@ -41,7 +41,7 @@ type TasksQueueRef struct {
 }
 
 func init() {
-	refs.Register(&TasksQueueRef{})
+	refs.Register(&TasksQueueRef{}, &TasksQueue{})
 }
 
 func (r *TasksQueueRef) GetGVK() schema.GroupVersionKind {

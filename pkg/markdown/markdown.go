@@ -54,6 +54,11 @@ func ConvertToGithubMarkdown(content string) string {
 	// Remove excessive newlines
 	s = regexp.MustCompile(`\n{3,}`).ReplaceAllString(s, "\n\n")
 
+	// Convert links starting with / to use the https://docs.cloud.google.com/ prefix
+	s = regexp.MustCompile(`href="/([^/][^"]*)"`).ReplaceAllString(s, `href="https://docs.cloud.google.com/$1"`)
+	s = regexp.MustCompile(`\]\(/([^/][^)]*)\)`).ReplaceAllString(s, `](https://docs.cloud.google.com/$1)`)
+	s = regexp.MustCompile(`(<a\s+[^>]*href="https://docs\.cloud\.google\.com/[^"]*"[^>]*>)/([^<]*)(</a>)`).ReplaceAllString(s, `${1}https://docs.cloud.google.com/${2}${3}`)
+
 	s = strings.TrimSpace(s) + "\n"
 
 	// Prepend front matter

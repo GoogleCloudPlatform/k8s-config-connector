@@ -42,7 +42,7 @@ type DNSRecordSetRef struct {
 }
 
 func init() {
-	refs.Register(&DNSRecordSetRef{})
+	refs.Register(&DNSRecordSetRef{}, &DNSRecordSet{})
 }
 
 func (r *DNSRecordSetRef) GetGVK() schema.GroupVersionKind {

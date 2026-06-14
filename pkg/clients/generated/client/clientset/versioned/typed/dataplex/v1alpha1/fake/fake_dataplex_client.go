@@ -43,6 +43,10 @@ func (c *FakeDataplexV1alpha1) DataplexEntryTypes(namespace string) v1alpha1.Dat
 	return newFakeDataplexEntryTypes(c, namespace)
 }
 
+func (c *FakeDataplexV1alpha1) DataplexGlossaries(namespace string) v1alpha1.DataplexGlossaryInterface {
+	return newFakeDataplexGlossaries(c, namespace)
+}
+
 func (c *FakeDataplexV1alpha1) DataplexLakes(namespace string) v1alpha1.DataplexLakeInterface {
 	return newFakeDataplexLakes(c, namespace)
 }

@@ -42,7 +42,7 @@ type NetworkEdgeSecurityServiceRef struct {
 }
 
 func init() {
-	refs.Register(&NetworkEdgeSecurityServiceRef{})
+	refs.Register(&NetworkEdgeSecurityServiceRef{}, &ComputeNetworkEdgeSecurityService{})
 }
 
 func (r *NetworkEdgeSecurityServiceRef) GetGVK() schema.GroupVersionKind {

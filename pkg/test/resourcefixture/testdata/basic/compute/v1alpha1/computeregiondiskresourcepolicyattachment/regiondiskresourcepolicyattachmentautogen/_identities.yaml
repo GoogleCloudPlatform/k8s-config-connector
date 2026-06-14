@@ -1,0 +1,32 @@
+- caisURL: unknown
+  error: 'failed to convert unstructured object to *v1beta1.ComputeResourcePolicy:
+    cannot restore struct from: slice'
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeResourcePolicy
+  name: computeresourcepolicy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeDisk
+  name: computedisk-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeSnapshot
+  name: computesnapshot-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeDisk
+  name: computedisk-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeRegionDiskResourcePolicyAttachment
+  name: computeregiondiskresourcepolicyattachment-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

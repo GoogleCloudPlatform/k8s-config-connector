@@ -48,7 +48,7 @@ type ArtifactRegistryRepositoryRef struct {
 }
 
 func init() {
-	refs.Register(&ArtifactRegistryRepositoryRef{})
+	refs.Register(&ArtifactRegistryRepositoryRef{}, &ArtifactRegistryRepository{})
 }
 
 func (r *ArtifactRegistryRepositoryRef) GetGVK() schema.GroupVersionKind {

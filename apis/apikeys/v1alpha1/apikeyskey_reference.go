@@ -41,7 +41,7 @@ type APIKeysKeyRef struct {
 }
 
 func init() {
-	refs.Register(&APIKeysKeyRef{})
+	refs.Register(&APIKeysKeyRef{}, &APIKeysKey{})
 }
 
 func (r *APIKeysKeyRef) GetGVK() schema.GroupVersionKind {

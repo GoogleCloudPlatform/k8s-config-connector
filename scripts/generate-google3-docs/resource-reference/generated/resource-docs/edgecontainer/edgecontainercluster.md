@@ -16,7 +16,7 @@ title: "EdgeContainerCluster"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/distributed-cloud/edge/latest/docs">/distributed-cloud/edge/latest/docs</a></td>
+<td><a href="https://docs.cloud.google.com/distributed-cloud/edge/latest/docs">https://docs.cloud.google.com/distributed-cloud/edge/latest/docs</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "EdgeContainerCluster"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/distributed-cloud/edge/latest/docs/reference/container/rest/v1/projects.locations.clusters">/distributed-cloud/edge/latest/docs/reference/container/rest/v1/projects.locations.clusters</a></td>
+<td><a href="https://docs.cloud.google.com/distributed-cloud/edge/latest/docs/reference/container/rest/v1/projects.locations.clusters">https://docs.cloud.google.com/distributed-cloud/edge/latest/docs/reference/container/rest/v1/projects.locations.clusters</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1118,4 +1118,4 @@ spec:
   
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

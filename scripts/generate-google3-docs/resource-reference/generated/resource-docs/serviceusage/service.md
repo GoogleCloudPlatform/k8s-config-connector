@@ -22,7 +22,7 @@ do so using <code>kubectl get gcpservice</code>.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/service-usage/docs/">/service-usage/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/service-usage/docs/">https://docs.cloud.google.com/service-usage/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -30,7 +30,7 @@ do so using <code>kubectl get gcpservice</code>.
 </tr>
 <tr>
 <td>Google Cloud Rest Resource Documentation</td>
-<td><a href="/service-usage/docs/reference/rest/v1/services">/service-usage/docs/reference/rest/v1/services</a></td>
+<td><a href="https://docs.cloud.google.com/service-usage/docs/reference/rest/v1/services">https://docs.cloud.google.com/service-usage/docs/reference/rest/v1/services</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -241,4 +241,4 @@ spec:
   resourceID: pubsub.googleapis.com
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

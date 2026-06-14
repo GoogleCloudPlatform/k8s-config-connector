@@ -1,0 +1,12 @@
+- caisURL: //pubsub.googleapis.com/projects/${projectId}/topics/pubsubtopic-${uniqueId}
+  group: pubsub.cnrm.cloud.google.com
+  kind: PubSubTopic
+  name: pubsubtopic-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: cloudscheduler.cnrm.cloud.google.com
+  kind: CloudSchedulerJob
+  name: cloudschedulerjob-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

@@ -16,7 +16,7 @@ title: "RunJob"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/run/docs/">/run/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/run/docs/">https://docs.cloud.google.com/run/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "RunJob"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/run/docs/reference/rest/v2/projects.locations.jobs">/run/docs/reference/rest/v2/projects.locations.jobs</a></td>
+<td><a href="https://docs.cloud.google.com/run/docs/reference/rest/v2/projects.locations.jobs">https://docs.cloud.google.com/run/docs/reference/rest/v2/projects.locations.jobs</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>

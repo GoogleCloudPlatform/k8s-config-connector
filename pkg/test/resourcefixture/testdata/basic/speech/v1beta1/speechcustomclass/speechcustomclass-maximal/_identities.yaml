@@ -1,0 +1,6 @@
+- caisURL: //speech.googleapis.com/projects/${projectId}/locations/global/customClasses/speechcustomclass-maximal-${uniqueId}
+  group: speech.cnrm.cloud.google.com
+  kind: SpeechCustomClass
+  name: speechcustomclass-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

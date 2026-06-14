@@ -42,7 +42,7 @@ type AlloyDBUserRef struct {
 }
 
 func init() {
-	refs.Register(&AlloyDBUserRef{})
+	refs.Register(&AlloyDBUserRef{}, &AlloyDBUser{})
 }
 
 func (r *AlloyDBUserRef) GetGVK() schema.GroupVersionKind {

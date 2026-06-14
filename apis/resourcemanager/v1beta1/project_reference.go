@@ -42,7 +42,7 @@ type ProjectRef struct {
 }
 
 func init() {
-	refs.Register(&ProjectRef{})
+	refs.Register(&ProjectRef{}, &Project{})
 }
 
 func (r *ProjectRef) GetGVK() schema.GroupVersionKind {

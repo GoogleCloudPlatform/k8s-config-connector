@@ -47,6 +47,7 @@ type ForwardingruleFilterLabels struct {
 }
 
 type ForwardingruleIpAddress struct {
+	/* ComputeAddressRef is a reference to a GCP ComputeAddress. */
 	// +optional
 	AddressRef *v1alpha1.ResourceRef `json:"addressRef,omitempty"`
 

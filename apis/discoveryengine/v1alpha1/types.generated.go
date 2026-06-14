@@ -17,6 +17,7 @@
 // krm.group: discoveryengine.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.discoveryengine.v1
+// resource: DiscoveryEngineControl:Control
 // resource: DiscoveryEngineDataStore:DataStore
 // resource: DiscoveryEngineEngine:Engine
 // resource: DiscoveryEngineIdentityMappingStore:IdentityMappingStore
@@ -59,6 +60,129 @@ type CmekConfig struct {
 	// Optional. Single-regional CMEKs that are required for some VAIS features.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
 	SingleRegionKeys []SingleRegionKey `json:"singleRegionKeys,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Condition
+type Condition struct {
+	// Search only
+	//  A list of terms to match the query on.
+	//  Cannot be set when
+	//  [Condition.query_regex][google.cloud.discoveryengine.v1.Condition.query_regex]
+	//  is set.
+	//
+	//  Maximum of 10 query terms.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.query_terms
+	QueryTerms []Condition_QueryTerm `json:"queryTerms,omitempty"`
+
+	// Range of time(s) specifying when condition is active.
+	//
+	//  Maximum of 10 time ranges.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.active_time_range
+	ActiveTimeRange []Condition_TimeRange `json:"activeTimeRange,omitempty"`
+
+	// Optional. Query regex to match the whole search query.
+	//  Cannot be set when
+	//  [Condition.query_terms][google.cloud.discoveryengine.v1.Condition.query_terms]
+	//  is set. Only supported for Basic Site Search promotion serving controls.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.query_regex
+	QueryRegex *string `json:"queryRegex,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Condition.QueryTerm
+type Condition_QueryTerm struct {
+	// The specific query value to match against
+	//
+	//  Must be lowercase, must be UTF-8.
+	//  Can have at most 3 space separated terms if full_match is true.
+	//  Cannot be an empty string.
+	//  Maximum length of 5000 characters.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.QueryTerm.value
+	Value *string `json:"value,omitempty"`
+
+	// Whether the search query needs to exactly match the query term.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.QueryTerm.full_match
+	FullMatch *bool `json:"fullMatch,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Condition.TimeRange
+type Condition_TimeRange struct {
+	// Start of time range.
+	//
+	//  Range is inclusive.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.TimeRange.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// End of time range.
+	//
+	//  Range is inclusive.
+	//  Must be in the future.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.TimeRange.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec
+type Control_BoostAction_InterpolationBoostSpec struct {
+	// Optional. The name of the field whose value will be used to determine
+	//  the boost amount.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.field_name
+	FieldName *string `json:"fieldName,omitempty"`
+
+	// Optional. The attribute type to be used to determine the boost amount.
+	//  The attribute value can be derived from the field value of the
+	//  specified field_name. In the case of numerical it is straightforward
+	//  i.e. attribute_value = numerical_field_value. In the case of freshness
+	//  however, attribute_value = (time.now() - datetime_field_value).
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.attribute_type
+	AttributeType *string `json:"attributeType,omitempty"`
+
+	// Optional. The interpolation type to be applied to connect the control
+	//  points listed below.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.interpolation_type
+	InterpolationType *string `json:"interpolationType,omitempty"`
+
+	// Optional. The control points used to define the curve. The monotonic
+	//  function (defined through the interpolation_type above) passes through
+	//  the control points listed here.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.control_points
+	ControlPoints []Control_BoostAction_InterpolationBoostSpec_ControlPoint `json:"controlPoints,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.ControlPoint
+type Control_BoostAction_InterpolationBoostSpec_ControlPoint struct {
+	// Optional. Can be one of:
+	//  1. The numerical field value.
+	//  2. The duration spec for freshness:
+	//  The value must be formatted as an XSD `dayTimeDuration` value (a
+	//  restricted subset of an ISO 8601 duration value). The pattern for
+	//  this is: `[nD][T[nH][nM][nS]]`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.ControlPoint.attribute_value
+	AttributeValue *string `json:"attributeValue,omitempty"`
+
+	// Optional. The value between -1 to 1 by which to boost the score if
+	//  the attribute_value evaluates to the value specified above.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.ControlPoint.boost_amount
+	BoostAmount *float32 `json:"boostAmount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Control.RedirectAction
+type Control_RedirectAction struct {
+	// Required. The URI to which the shopper will be redirected.
+	//
+	//  Required.
+	//  URI must have length equal or less than 2000 characters.
+	//  Otherwise an INVALID ARGUMENT error is thrown.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.RedirectAction.redirect_uri
+	RedirectURI *string `json:"redirectURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Control.SynonymsAction
+type Control_SynonymsAction struct {
+	// Defines a set of synonyms.
+	//  Can specify up to 100 synonyms.
+	//  Must specify at least 2 synonyms. Otherwise an INVALID ARGUMENT error is
+	//  thrown.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.SynonymsAction.synonyms
+	Synonyms []string `json:"synonyms,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1.ConversationContext
@@ -514,6 +638,41 @@ type Schema struct {
 	Name *string `json:"name,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchLinkPromotion
+type SearchLinkPromotion struct {
+	// Required. The title of the promotion.
+	//  Maximum length: 160 characters.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchLinkPromotion.title
+	Title *string `json:"title,omitempty"`
+
+	// Optional. The URL for the page the user wants to promote. Must be set for
+	//  site search. For other verticals, this is optional.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchLinkPromotion.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. The [Document][google.cloud.discoveryengine.v1.Document] the user
+	//  wants to promote. For site search, leave unset and only populate uri. Can
+	//  be set along with uri.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchLinkPromotion.document
+	Document *string `json:"document,omitempty"`
+
+	// Optional. The promotion thumbnail image url.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchLinkPromotion.image_uri
+	ImageURI *string `json:"imageURI,omitempty"`
+
+	// Optional. The Promotion description.
+	//  Maximum length: 200 characters.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchLinkPromotion.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The enabled promotion will be returned for any serving configs
+	//  associated with the parent of the control this promotion is attached to.
+	//
+	//  This flag is used for basic site search only.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchLinkPromotion.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
 
 // +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary
 type SearchResponse_Summary struct {

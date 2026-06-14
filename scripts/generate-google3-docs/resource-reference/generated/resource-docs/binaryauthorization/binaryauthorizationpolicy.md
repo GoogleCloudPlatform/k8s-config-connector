@@ -16,7 +16,7 @@ title: "BinaryAuthorizationPolicy"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/binary-authorization/docs/">/binary-authorization/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/binary-authorization/docs/">https://docs.cloud.google.com/binary-authorization/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BinaryAuthorizationPolicy"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/binary-authorization/docs/reference/rest/v1beta1/projects.policy">/binary-authorization/docs/reference/rest/v1beta1/projects.policy</a></td>
+<td><a href="https://docs.cloud.google.com/binary-authorization/docs/reference/rest/v1beta1/projects.policy">https://docs.cloud.google.com/binary-authorization/docs/reference/rest/v1beta1/projects.policy</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -798,4 +798,4 @@ spec:
   resourceID: binaryauthorization.googleapis.com
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

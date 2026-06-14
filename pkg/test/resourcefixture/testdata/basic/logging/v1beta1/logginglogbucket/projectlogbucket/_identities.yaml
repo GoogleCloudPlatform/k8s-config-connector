@@ -1,0 +1,7 @@
+- caisURL: unknown
+  error: not yet supported
+  group: logging.cnrm.cloud.google.com
+  kind: LoggingLogBucket
+  name: logginglogbucket-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

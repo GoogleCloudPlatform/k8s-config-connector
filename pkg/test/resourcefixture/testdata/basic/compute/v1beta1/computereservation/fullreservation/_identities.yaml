@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeReservation
+  name: computereservation-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

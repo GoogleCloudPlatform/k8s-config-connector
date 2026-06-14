@@ -59,6 +59,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais/caistesting"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
@@ -726,6 +728,65 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					// Note that this does introduce a dependency that objects are ordered correctly for deletion.
 					opt.DeleteInOrder = true
 				}
+
+				// CAIS Mapper Golden File Checks
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+					h.Events.Pause()
+
+					var kccObjects []*unstructured.Unstructured
+					for _, obj := range opt.Create {
+						group := obj.GroupVersionKind().Group
+						if strings.HasSuffix(group, ".cnrm.cloud.google.com") && group != "core.cnrm.cloud.google.com" {
+							u := &unstructured.Unstructured{}
+							u.SetGroupVersionKind(obj.GroupVersionKind())
+							id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
+							if err := h.GetClient().Get(ctx, id, u); err == nil {
+								kccObjects = append(kccObjects, u)
+							} else {
+								kccObjects = append(kccObjects, obj)
+							}
+						}
+					}
+
+					if len(kccObjects) > 0 {
+						caisScheme := cais.NewScheme()
+						caisResults, err := cais.GetCAISIdentities(ctx, caisScheme, h.GetClient(), kccObjects)
+						if err != nil {
+							t.Fatalf("FAIL: error mapping CAIS identities: %v", err)
+						}
+
+						if len(caisResults) > 0 {
+							caisYAML, err := yaml.Marshal(caisResults)
+							if err != nil {
+								t.Fatalf("FAIL: error marshaling CAIS identities to YAML: %v", err)
+							}
+
+							caisYAMLStr := string(caisYAML)
+							caisYAMLStr = strings.ReplaceAll(caisYAMLStr, uniqueID, "puxvndidajatl5i")
+							caisYAMLStr = strings.ReplaceAll(caisYAMLStr, project.ProjectID, "mock-project")
+							if project.ProjectNumber != 0 {
+								caisYAMLStr = strings.ReplaceAll(caisYAMLStr, strconv.FormatUint(uint64(project.ProjectNumber), 10), "1234567890")
+							}
+
+							caisYAMLStr = caistesting.ReplacePlaceholdersInCAIS(caisYAMLStr, fixture.AbsoluteSourceDir, fixture.Create, fixture.Dependencies)
+
+							expectedPath := filepath.Join(fixture.AbsoluteSourceDir, "_identities.yaml")
+							h.CompareGoldenFile(expectedPath, caisYAMLStr, caistesting.NormalizeDynamicIDs)
+						} else {
+							expectedPath := filepath.Join(fixture.AbsoluteSourceDir, "_identities.yaml")
+							if _, err := os.Stat(expectedPath); err == nil {
+								if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+									_ = os.Remove(expectedPath)
+								} else {
+									t.Errorf("FAIL: _identities.yaml exists but no CAIS results were generated")
+								}
+							}
+						}
+					}
+
+					h.Events.Resume()
+				}
+
 				create.DeleteResources(h, opt)
 
 				// Verify kube events

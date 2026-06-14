@@ -16,7 +16,7 @@ title: "CloudIdentityGroup"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/identity/docs/">/identity/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/identity/docs/">https://docs.cloud.google.com/identity/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "CloudIdentityGroup"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/identity/docs/reference/rest/v1/groups">/identity/docs/reference/rest/v1/groups</a></td>
+<td><a href="https://docs.cloud.google.com/identity/docs/reference/rest/v1/groups">https://docs.cloud.google.com/identity/docs/reference/rest/v1/groups</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -335,4 +335,4 @@ spec:
     cloudidentity.googleapis.com/groups.discussion_forum: ""
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

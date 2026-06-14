@@ -16,7 +16,7 @@ title: "ComputeNodeGroup"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ComputeNodeGroup"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/v1/nodeGroups">/compute/docs/reference/rest/v1/nodeGroups</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/nodeGroups">https://docs.cloud.google.com/compute/docs/reference/rest/v1/nodeGroups</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -213,7 +213,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNodeTemplate` resource.</p>
+            <p>A reference to an externally managed ComputeNodeTemplate resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/nodeTemplates/{{nodeTemplateID}}".</p>
         </td>
     </tr>
     <tr>
@@ -223,7 +223,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNodeTemplate resource.</p>
         </td>
     </tr>
     <tr>
@@ -233,7 +233,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNodeTemplate resource.</p>
         </td>
     </tr>
     <tr>
@@ -509,4 +509,4 @@ spec:
   nodeType: n1-node-96-624
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

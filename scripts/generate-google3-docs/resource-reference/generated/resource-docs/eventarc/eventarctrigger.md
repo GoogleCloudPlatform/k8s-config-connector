@@ -18,7 +18,7 @@ Warning: Configuring a Cloud Function is not supported in EventarcTrigger as of 
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/eventarc/docs/">/eventarc/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/eventarc/docs/">https://docs.cloud.google.com/eventarc/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -26,7 +26,7 @@ Warning: Configuring a Cloud Function is not supported in EventarcTrigger as of 
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/eventarc/docs/reference/rest/v1/projects.locations.triggers">/eventarc/docs/reference/rest/v1/projects.locations.triggers</a></td>
+<td><a href="https://docs.cloud.google.com/eventarc/docs/reference/rest/v1/projects.locations.triggers">https://docs.cloud.google.com/eventarc/docs/reference/rest/v1/projects.locations.triggers</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -954,4 +954,4 @@ spec:
       type: "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

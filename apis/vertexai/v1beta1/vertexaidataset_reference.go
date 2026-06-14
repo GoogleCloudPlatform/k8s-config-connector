@@ -42,7 +42,7 @@ type VertexAIDatasetRef struct {
 }
 
 func init() {
-	refs.Register(&VertexAIDatasetRef{})
+	refs.Register(&VertexAIDatasetRef{}, &VertexAIDataset{})
 }
 
 func (r *VertexAIDatasetRef) GetGVK() schema.GroupVersionKind {

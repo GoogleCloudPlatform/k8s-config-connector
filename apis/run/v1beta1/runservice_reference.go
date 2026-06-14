@@ -29,7 +29,7 @@ import (
 var RunServiceGVK = GroupVersion.WithKind("RunService")
 
 func init() {
-	refsv1beta1.Register(&RunServiceRef{})
+	refsv1beta1.Register(&RunServiceRef{}, nil)
 }
 
 var _ refsv1beta1.Ref = &RunServiceRef{}

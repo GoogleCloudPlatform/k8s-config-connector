@@ -1,0 +1,7 @@
+- caisURL: unknown
+  error: cannot resolve resource ID
+  group: dataform.cnrm.cloud.google.com
+  kind: DataformRepository
+  name: dataformrepository-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

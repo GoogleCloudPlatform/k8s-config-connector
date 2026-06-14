@@ -16,7 +16,7 @@ title: "KMSImportJob"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/kms/docs/">/kms/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/kms/docs/">https://docs.cloud.google.com/kms/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "KMSImportJob"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/kms/docs/reference/rest/v1/projects.locations.keyRings.importJobs">/kms/docs/reference/rest/v1/projects.locations.keyRings.importJobs</a></td>
+<td><a href="https://docs.cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.importJobs">https://docs.cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.importJobs</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -377,4 +377,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

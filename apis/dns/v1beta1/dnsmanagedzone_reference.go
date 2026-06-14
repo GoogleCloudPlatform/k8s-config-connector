@@ -42,7 +42,7 @@ type DNSManagedZoneRef struct {
 }
 
 func init() {
-	refs.Register(&DNSManagedZoneRef{})
+	refs.Register(&DNSManagedZoneRef{}, &DNSManagedZone{})
 }
 
 func (r *DNSManagedZoneRef) GetGVK() schema.GroupVersionKind {

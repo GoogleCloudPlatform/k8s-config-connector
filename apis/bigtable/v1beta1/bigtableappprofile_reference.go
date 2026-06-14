@@ -41,7 +41,7 @@ type BigtableAppProfileRef struct {
 }
 
 func init() {
-	refs.Register(&BigtableAppProfileRef{})
+	refs.Register(&BigtableAppProfileRef{}, &BigtableAppProfile{})
 }
 
 func (r *BigtableAppProfileRef) GetGVK() schema.GroupVersionKind {

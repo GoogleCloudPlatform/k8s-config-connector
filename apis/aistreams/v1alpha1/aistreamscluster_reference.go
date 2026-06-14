@@ -41,7 +41,7 @@ type AIStreamsClusterRef struct {
 }
 
 func init() {
-	refs.Register(&AIStreamsClusterRef{})
+	refs.Register(&AIStreamsClusterRef{}, &AIStreamsCluster{})
 }
 
 func (r *AIStreamsClusterRef) GetGVK() schema.GroupVersionKind {

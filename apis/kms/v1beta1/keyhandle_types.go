@@ -61,6 +61,7 @@ type KMSKeyHandleStatus struct {
 }
 
 // KMSKeyHandleObservedState is the state of the KMSKeyHandle resource as most recently observed in GCP.
+// +kcc:observedstate:proto=google.cloud.kms.v1.KeyHandle
 type KMSKeyHandleObservedState struct {
 	KMSKey *string `json:"kmsKey,omitempty"`
 }

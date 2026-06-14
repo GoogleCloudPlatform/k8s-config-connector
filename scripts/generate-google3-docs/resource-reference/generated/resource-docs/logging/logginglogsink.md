@@ -20,7 +20,7 @@ organization. The parent resource is configured by setting one of
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/logging/docs/">/logging/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/logging/docs/">https://docs.cloud.google.com/logging/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -33,9 +33,9 @@ organization. The parent resource is configured by setting one of
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/logging/docs/reference/v2/rest/v2/folders.sinks">/logging/docs/reference/v2/rest/v2/folders.sinks</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/organizations.sinks">/logging/docs/reference/v2/rest/v2/organizations.sinks</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/projects.sinks">/logging/docs/reference/v2/rest/v2/projects.sinks</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/folders.sinks">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/folders.sinks</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/organizations.sinks">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/organizations.sinks</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks</a></pre>
 </td>
 </tr>
 <tr>
@@ -78,6 +78,7 @@ destination:
     namespace: string
   loggingLogBucketRef:
     external: string
+    kind: string
     name: string
     namespace: string
   pubSubTopicRef:
@@ -217,6 +218,16 @@ uniqueWriterIdentity: boolean
         <td>
             <p><code class="apitype">string</code></p>
             <p>A reference to an externally managed LoggingLogBucket resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>destination.loggingLogBucketRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -733,4 +744,4 @@ spec:
     external: "${BILLING_ACCOUNT_ID?}"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

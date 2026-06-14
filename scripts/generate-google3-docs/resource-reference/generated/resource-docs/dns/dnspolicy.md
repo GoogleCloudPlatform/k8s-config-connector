@@ -16,7 +16,7 @@ title: "DNSPolicy"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/dns/docs/">/dns/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/dns/docs/">https://docs.cloud.google.com/dns/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "DNSPolicy"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/dns/docs/reference/v1beta2/policies">/dns/docs/reference/rest/v1beta2/policies</a></td>
+<td><a href="https://docs.cloud.google.com/dns/docs/reference/v1beta2/policies">https://docs.cloud.google.com/dns/docs/reference/rest/v1beta2/policies</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -352,4 +352,4 @@ spec:
   autoCreateSubnetworks: false
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -16,7 +16,7 @@ title: "MemcacheInstance"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/memorystore/docs/memcached/">/memorystore/docs/memcached/</a></td>
+<td><a href="https://docs.cloud.google.com/memorystore/docs/memcached/">https://docs.cloud.google.com/memorystore/docs/memcached/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "MemcacheInstance"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/memorystore/docs/memcached/reference/rest/v1beta2/projects.locations.instances">/memorystore/docs/memcached/reference/rest/v1beta2/projects.locations.instances</a></td>
+<td><a href="https://docs.cloud.google.com/memorystore/docs/memcached/reference/rest/v1beta2/projects.locations.instances">https://docs.cloud.google.com/memorystore/docs/memcached/reference/rest/v1beta2/projects.locations.instances</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -700,4 +700,4 @@ spec:
   service: "servicenetworking.googleapis.com"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

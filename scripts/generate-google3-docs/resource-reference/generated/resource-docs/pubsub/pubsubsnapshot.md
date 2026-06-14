@@ -16,7 +16,7 @@ title: "PubSubSnapshot"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/pubsub/docs/">/pubsub/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/pubsub/docs/">https://docs.cloud.google.com/pubsub/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "PubSubSnapshot"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/pubsub/docs/reference/rest/v1/projects.snapshots">/pubsub/docs/reference/rest/v1/projects.snapshots</a></td>
+<td><a href="https://docs.cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots">https://docs.cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -338,4 +338,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -42,7 +42,7 @@ type CloudBuildTriggerRef struct {
 }
 
 func init() {
-	refs.Register(&CloudBuildTriggerRef{})
+	refs.Register(&CloudBuildTriggerRef{}, &CloudBuildTrigger{})
 }
 
 func (r *CloudBuildTriggerRef) GetGVK() schema.GroupVersionKind {

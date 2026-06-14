@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -503,7 +504,7 @@ func (in *NetworkSecurityInterceptDeploymentSpec) DeepCopyInto(out *NetworkSecur
 	}
 	if in.ForwardingRuleRef != nil {
 		in, out := &in.ForwardingRuleRef, &out.ForwardingRuleRef
-		*out = new(v1beta1.ComputeForwardingRuleRef)
+		*out = new(computev1beta1.ForwardingRuleRef)
 		**out = **in
 	}
 	if in.InterceptDeploymentGroupRef != nil {
@@ -884,7 +885,7 @@ func (in *NetworkSecurityMirroringDeploymentSpec) DeepCopyInto(out *NetworkSecur
 	}
 	if in.ForwardingRuleRef != nil {
 		in, out := &in.ForwardingRuleRef, &out.ForwardingRuleRef
-		*out = new(v1beta1.ComputeForwardingRuleRef)
+		*out = new(computev1beta1.ForwardingRuleRef)
 		**out = **in
 	}
 	if in.MirroringDeploymentGroupRef != nil {

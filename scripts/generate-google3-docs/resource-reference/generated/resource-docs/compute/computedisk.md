@@ -16,7 +16,7 @@ title: "ComputeDisk"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -28,8 +28,8 @@ title: "ComputeDisk"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/compute/docs/reference/rest/v1/disks">/compute/docs/reference/rest/v1/disks</a></pre>
-<pre><a href="/compute/docs/reference/rest/v1/regionDisks">/compute/docs/reference/rest/v1/regionDisks</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/disks">https://docs.cloud.google.com/compute/docs/reference/rest/v1/disks</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/regionDisks">https://docs.cloud.google.com/compute/docs/reference/rest/v1/regionDisks</a></pre>
 </td>
 </tr>
 <tr>
@@ -207,7 +207,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeDisk` resource.</p>
+            <p>A reference to an externally managed ComputeDisk resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/disks/{{diskID}}" or "projects/{{projectID}}/regions/{{region}}/disks/{{diskID}}".</p>
         </td>
     </tr>
     <tr>
@@ -217,7 +217,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeDisk resource.</p>
         </td>
     </tr>
     <tr>
@@ -227,7 +227,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeDisk resource.</p>
         </td>
     </tr>
     <tr>
@@ -237,8 +237,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. An optional description of this resource. Provide this property when
-you create the resource.</p>
+            <p>Immutable. An optional description of this resource. Provide this property when you create the resource.</p>
         </td>
     </tr>
     <tr>
@@ -269,12 +268,7 @@ you do not need to provide a key to use the disk later.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The encryption key used to encrypt the disk. Your project's Compute
-Engine System service account
-('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
-must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
-feature. See
-https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys</p>
+            <p>The encryption key used to encrypt the disk. Your project's Compute Engine System service account ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com') must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this feature. See https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys</p>
         </td>
     </tr>
     <tr>
@@ -284,7 +278,7 @@ https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -294,7 +288,7 @@ https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -304,7 +298,7 @@ https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -314,8 +308,7 @@ https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The service account used for the encryption request for the given KMS key.
-If absent, the Compute Engine Service Agent service account is used.</p>
+            <p>The service account used for the encryption request for the given KMS key. If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
     </tr>
     <tr>
@@ -325,7 +318,7 @@ If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -355,8 +348,7 @@ If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-RFC 4648 base64 to either encrypt or decrypt this resource.</p>
+            <p>Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
     </tr>
     <tr>
@@ -416,9 +408,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit
-customer-supplied encryption key to either encrypt or decrypt
-this resource. You can provide either the rawKey or the rsaEncryptedKey.</p>
+            <p>Immutable. Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit customer-supplied encryption key to either encrypt or decrypt this resource. You can provide either the rawKey or the rsaEncryptedKey.</p>
         </td>
     </tr>
     <tr>
@@ -478,8 +468,7 @@ this resource. You can provide either the rawKey or the rsaEncryptedKey.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
-encryption key that protects this resource.</p>
+            <p>The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource.</p>
         </td>
     </tr>
     <tr>
@@ -489,8 +478,7 @@ encryption key that protects this resource.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Whether this disk is using confidential compute mode.
-Note: Only supported on hyperdisk skus, disk_encryption_key is required when setting to true.</p>
+            <p>Immutable. Whether this disk is using confidential compute mode. Note: Only supported on hyperdisk skus, disk_encryption_key is required when setting to true.</p>
         </td>
     </tr>
     <tr>
@@ -500,8 +488,7 @@ Note: Only supported on hyperdisk skus, disk_encryption_key is required when set
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Immutable. A list of features to enable on the guest operating system.
-Applicable only for bootable disks.</p>
+            <p>Immutable. A list of features to enable on the guest operating system. Applicable only for bootable disks.</p>
         </td>
     </tr>
     <tr>
@@ -541,7 +528,7 @@ Applicable only for bootable disks.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
+            <p>A reference to an externally managed ComputeImage resource. Should be in the format "projects/{{project}}/global/images/{{name}}".</p>
         </td>
     </tr>
     <tr>
@@ -551,7 +538,7 @@ Applicable only for bootable disks.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeImage resource.</p>
         </td>
     </tr>
     <tr>
@@ -561,7 +548,7 @@ Applicable only for bootable disks.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeImage resource.</p>
         </td>
     </tr>
     <tr>
@@ -621,11 +608,7 @@ Applicable only for bootable disks.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Physical block size of the persistent disk, in bytes. If not present
-in a request, a default value is used. Currently supported sizes
-are 4096 and 16384, other sizes may be added in the future.
-If an unsupported value is requested, the error message will list
-the supported values for the caller's project.</p>
+            <p>Immutable. Physical block size of the persistent disk, in bytes. If not present in a request, a default value is used. Currently supported sizes are 4096 and 16384, other sizes may be added in the future. If an unsupported value is requested, the error message will list the supported values for the caller's project.</p>
         </td>
     </tr>
     <tr>
@@ -645,7 +628,7 @@ the supported values for the caller's project.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -655,7 +638,7 @@ the supported values for the caller's project.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -665,7 +648,7 @@ the supported values for the caller's project.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -675,9 +658,7 @@ the supported values for the caller's project.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Indicates how many IOPS must be provisioned for the disk.
-Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
-allows for an update of IOPS every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it.</p>
+            <p>Indicates how many IOPS must be provisioned for the disk. Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk allows for an update of IOPS every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it.</p>
         </td>
     </tr>
     <tr>
@@ -687,9 +668,7 @@ allows for an update of IOPS every 4 hours. To update your hyperdisk more freque
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Indicates how much Throughput must be provisioned for the disk.
-Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
-allows for an update of Throughput every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it.</p>
+            <p>Indicates how much Throughput must be provisioned for the disk. Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk allows for an update of Throughput every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it.</p>
         </td>
     </tr>
     <tr>
@@ -739,8 +718,7 @@ allows for an update of Throughput every 4 hours. To update your hyperdisk more 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Resource policies applied to this disk for automatic snapshot creations.
-This field only applies for zonal compute disk resources.</p>
+            <p>ComputeResourcePolicyRef is a reference to a ComputeResourcePolicy.</p>
         </td>
     </tr>
     <tr>
@@ -750,7 +728,7 @@ This field only applies for zonal compute disk resources.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeResourcePolicy` resource.</p>
+            <p>A reference to an externally managed ComputeResourcePolicy resource. Should be in the format "projects/{project}/regions/{region}/resourcePolicies/{resourcePolicy}".</p>
         </td>
     </tr>
     <tr>
@@ -760,7 +738,7 @@ This field only applies for zonal compute disk resources.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeResourcePolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -770,7 +748,7 @@ This field only applies for zonal compute disk resources.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeResourcePolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -810,7 +788,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSnapshot` resource.</p>
+            <p>A reference to an externally managed ComputeSnapshot resource. Should be in the format "projects/{{project}}/global/snapshots/{{name}}".</p>
         </td>
     </tr>
     <tr>
@@ -820,7 +798,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSnapshot resource.</p>
         </td>
     </tr>
     <tr>
@@ -830,7 +808,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSnapshot resource.</p>
         </td>
     </tr>
     <tr>
@@ -850,7 +828,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeDisk` resource.</p>
+            <p>A reference to an externally managed ComputeDisk resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/disks/{{diskID}}" or "projects/{{projectID}}/regions/{{region}}/disks/{{diskID}}".</p>
         </td>
     </tr>
     <tr>
@@ -860,7 +838,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeDisk resource.</p>
         </td>
     </tr>
     <tr>
@@ -870,7 +848,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeDisk resource.</p>
         </td>
     </tr>
     <tr>
@@ -880,8 +858,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The customer-supplied encryption key of the source image. Required if
-the source image is protected by a customer-supplied encryption key.</p>
+            <p>Immutable. The customer-supplied encryption key of the source image. Required if the source image is protected by a customer-supplied encryption key.</p>
         </td>
     </tr>
     <tr>
@@ -891,12 +868,7 @@ the source image is protected by a customer-supplied encryption key.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The encryption key used to encrypt the disk. Your project's Compute
-Engine System service account
-('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
-must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
-feature. See
-https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys</p>
+            <p>The encryption key used to encrypt the disk. Your project's Compute Engine System service account ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com') must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this feature. See https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys</p>
         </td>
     </tr>
     <tr>
@@ -906,7 +878,7 @@ https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -916,7 +888,7 @@ https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -926,7 +898,7 @@ https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -936,8 +908,7 @@ https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The service account used for the encryption request for the given KMS key.
-If absent, the Compute Engine Service Agent service account is used.</p>
+            <p>The service account used for the encryption request for the given KMS key. If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
     </tr>
     <tr>
@@ -947,7 +918,7 @@ If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -977,8 +948,7 @@ If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-RFC 4648 base64 to either encrypt or decrypt this resource.</p>
+            <p>Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
     </tr>
     <tr>
@@ -988,8 +958,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
-encryption key that protects this resource.</p>
+            <p>The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource.</p>
         </td>
     </tr>
     <tr>
@@ -999,9 +968,7 @@ encryption key that protects this resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The customer-supplied encryption key of the source snapshot. Required
-if the source snapshot is protected by a customer-supplied encryption
-key.</p>
+            <p>Immutable. The customer-supplied encryption key of the source snapshot. Required if the source snapshot is protected by a customer-supplied encryption key.</p>
         </td>
     </tr>
     <tr>
@@ -1011,12 +978,7 @@ key.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The encryption key used to encrypt the disk. Your project's Compute
-Engine System service account
-('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
-must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
-feature. See
-https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys</p>
+            <p>The encryption key used to encrypt the disk. Your project's Compute Engine System service account ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com') must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this feature. See https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys</p>
         </td>
     </tr>
     <tr>
@@ -1026,7 +988,7 @@ https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -1036,7 +998,7 @@ https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1046,7 +1008,7 @@ https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1056,8 +1018,7 @@ https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The service account used for the encryption request for the given KMS key.
-If absent, the Compute Engine Service Agent service account is used.</p>
+            <p>The service account used for the encryption request for the given KMS key. If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
     </tr>
     <tr>
@@ -1067,7 +1028,7 @@ If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1097,8 +1058,7 @@ If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-RFC 4648 base64 to either encrypt or decrypt this resource.</p>
+            <p>Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
     </tr>
     <tr>
@@ -1108,8 +1068,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
-encryption key that protects this resource.</p>
+            <p>The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource.</p>
         </td>
     </tr>
     <tr>
@@ -1119,8 +1078,7 @@ encryption key that protects this resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. URL of the disk type resource describing which disk type to use to
-create the disk. Provide this when creating the disk.</p>
+            <p>Immutable. URL of the disk type resource describing which disk type to use to create the disk. Provide this when creating the disk.</p>
         </td>
     </tr>
 </tbody>
@@ -1161,7 +1119,7 @@ users:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeDisk's current state.</p>
         </td>
     </tr>
     <tr>
@@ -1217,8 +1175,7 @@ users:
         <td><code>labelFingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The fingerprint used for optimistic locking of this resource.  Used
-internally during updates.</p>
+            <p>The fingerprint used for optimistic locking of this resource.  Used internally during updates.</p>
         </td>
     </tr>
     <tr>
@@ -1253,40 +1210,28 @@ internally during updates.</p>
         <td><code>sourceDiskId</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ID value of the disk used to create this image. This value may
-be used to determine whether the image was taken from the current
-or a previous instance of a given disk name.</p>
+            <p>The ID value of the disk used to create this image. This value may be used to determine whether the image was taken from the current or a previous instance of a given disk name.</p>
         </td>
     </tr>
     <tr>
         <td><code>sourceImageId</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ID value of the image used to create this disk. This value
-identifies the exact image that was used to create this persistent
-disk. For example, if you created the persistent disk from an image
-that was later deleted and recreated under the same name, the source
-image ID would identify the exact version of the image that was used.</p>
+            <p>The ID value of the image used to create this disk. This value identifies the exact image that was used to create this persistent disk. For example, if you created the persistent disk from an image that was later deleted and recreated under the same name, the source image ID would identify the exact version of the image that was used.</p>
         </td>
     </tr>
     <tr>
         <td><code>sourceSnapshotId</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The unique ID of the snapshot used to create this disk. This value
-identifies the exact snapshot that was used to create this persistent
-disk. For example, if you created the persistent disk from a snapshot
-that was later deleted and recreated under the same name, the source
-snapshot ID would identify the exact version of the snapshot that was
-used.</p>
+            <p>The unique ID of the snapshot used to create this disk. This value identifies the exact snapshot that was used to create this persistent disk. For example, if you created the persistent disk from a snapshot that was later deleted and recreated under the same name, the source snapshot ID would identify the exact version of the snapshot that was used.</p>
         </td>
     </tr>
     <tr>
         <td><code>users</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Links to the users of the disk (attached instances) in form:
-project/zones/zone/instances/instance.</p>
+            <p>Links to the users of the disk (attached instances) in form: project/zones/zone/instances/instance.</p>
         </td>
     </tr>
     <tr>
@@ -1396,4 +1341,4 @@ stringData:
   sharedSecret: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

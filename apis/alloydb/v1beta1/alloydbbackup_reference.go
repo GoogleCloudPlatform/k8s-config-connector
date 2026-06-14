@@ -41,7 +41,7 @@ type AlloyDBBackupRef struct {
 }
 
 func init() {
-	refs.Register(&AlloyDBBackupRef{})
+	refs.Register(&AlloyDBBackupRef{}, &AlloyDBBackup{})
 }
 
 func (r *AlloyDBBackupRef) GetGVK() schema.GroupVersionKind {

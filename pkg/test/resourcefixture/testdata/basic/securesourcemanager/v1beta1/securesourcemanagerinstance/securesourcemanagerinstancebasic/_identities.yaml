@@ -1,0 +1,6 @@
+- caisURL: //securesourcemanager.googleapis.com/projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}
+  group: securesourcemanager.cnrm.cloud.google.com
+  kind: SecureSourceManagerInstance
+  name: ssminstance-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

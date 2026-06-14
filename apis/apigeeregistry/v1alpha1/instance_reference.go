@@ -41,7 +41,7 @@ type ApigeeRegistryInstanceRef struct {
 }
 
 func init() {
-	refs.Register(&ApigeeRegistryInstanceRef{})
+	refs.Register(&ApigeeRegistryInstanceRef{}, &ApigeeRegistryInstance{})
 }
 
 func (r *ApigeeRegistryInstanceRef) GetGVK() schema.GroupVersionKind {

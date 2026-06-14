@@ -16,7 +16,7 @@ title: "SecretManagerSecret"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/secret-manager/docs/">/secret-manager/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/secret-manager/docs/">https://docs.cloud.google.com/secret-manager/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "SecretManagerSecret"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/secret-manager/docs/reference/rest/v1/projects.secrets">/secret-manager/docs/reference/rest/v1/projects.secrets</a></td>
+<td><a href="https://docs.cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets">https://docs.cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -698,4 +698,4 @@ spec:
       - location: us-east1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -31,6 +31,10 @@ type FakeDiscoveryengineV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineControls(namespace string) v1alpha1.DiscoveryEngineControlInterface {
+	return newFakeDiscoveryEngineControls(c, namespace)
+}
+
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineConversations(namespace string) v1alpha1.DiscoveryEngineConversationInterface {
 	return newFakeDiscoveryEngineConversations(c, namespace)
 }

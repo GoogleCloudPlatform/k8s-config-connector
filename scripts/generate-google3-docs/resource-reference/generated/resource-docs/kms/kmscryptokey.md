@@ -16,7 +16,7 @@ title: "KMSCryptoKey"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/kms/docs/">/kms/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/kms/docs/">https://docs.cloud.google.com/kms/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "KMSCryptoKey"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys">/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys</a></td>
+<td><a href="https://docs.cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys">https://docs.cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -344,4 +344,4 @@ spec:
   location: us-central1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

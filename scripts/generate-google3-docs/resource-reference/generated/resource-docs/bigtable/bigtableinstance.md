@@ -16,7 +16,7 @@ title: "BigtableInstance"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/bigtable/docs/">/bigtable/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/bigtable/docs/">https://docs.cloud.google.com/bigtable/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BigtableInstance"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/bigtable/docs/reference/admin/rest/v2/projects.instances">/bigtable/docs/reference/admin/rest/v2/projects.instances</a></td>
+<td><a href="https://docs.cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances">https://docs.cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -444,4 +444,4 @@ spec:
     numNodes: 3
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

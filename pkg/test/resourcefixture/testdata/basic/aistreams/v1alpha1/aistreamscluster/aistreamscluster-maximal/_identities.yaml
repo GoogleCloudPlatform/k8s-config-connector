@@ -1,0 +1,6 @@
+- caisURL: //aistreams.googleapis.com/projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}
+  group: aistreams.cnrm.cloud.google.com
+  kind: AIStreamsCluster
+  name: aistreamscluster-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -20,7 +20,7 @@ Note: You must specify the resource's name in <code>metadata.name</code> or <cod
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/identity-platform/docs/">/identity-platform/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/identity-platform/docs/">https://docs.cloud.google.com/identity-platform/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -28,7 +28,7 @@ Note: You must specify the resource's name in <code>metadata.name</code> or <cod
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/identity-platform/docs/reference/rest/v2/projects.oauthIdpConfigs">/identity-platform/docs/reference/rest/v2/projects.oauthIdpConfigs</a></td>
+<td><a href="https://docs.cloud.google.com/identity-platform/docs/reference/rest/v2/projects.oauthIdpConfigs">https://docs.cloud.google.com/identity-platform/docs/reference/rest/v2/projects.oauthIdpConfigs</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -359,4 +359,4 @@ stringData:
   clientSecret: "secret"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

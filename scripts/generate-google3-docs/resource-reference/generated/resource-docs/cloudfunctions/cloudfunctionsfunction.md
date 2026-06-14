@@ -16,7 +16,7 @@ title: "CloudFunctionsFunction"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/functions/docs/">/functions/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/functions/docs/">https://docs.cloud.google.com/functions/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "CloudFunctionsFunction"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/functions/docs/reference/rest/v1/projects.locations.functions">/functions/docs/reference/rest/v1/projects.locations.functions</a></td>
+<td><a href="https://docs.cloud.google.com/functions/docs/reference/rest/v1/projects.locations.functions">https://docs.cloud.google.com/functions/docs/reference/rest/v1/projects.locations.functions</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -414,7 +414,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 function, optional when updating an existing function. For a complete
 list of possible choices, see the
 [`gcloud` command
-reference](/sdk/gcloud/reference/functions/deploy#--runtime).
+reference](https://docs.cloud.google.com/sdk/gcloud/reference/functions/deploy#--runtime).
 </p>
         </td>
     </tr>
@@ -847,4 +847,4 @@ spec:
     securityLevel: "SECURE_OPTIONAL"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

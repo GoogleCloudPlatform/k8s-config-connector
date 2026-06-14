@@ -7,7 +7,7 @@ Note: You can update the spec of DataflowJob resources when the type is
 the spec cannot be updated. When you update a DataflowJob,
 Config Connector replaces the Cloud Dataflow Job with a new job.
 Read more about updating Dataflow jobs at
-<a href="/dataflow/docs/guides/updating-a-pipeline">Updating an existing pipeline</a>.
+<a href="https://docs.cloud.google.com/dataflow/docs/guides/updating-a-pipeline">Updating an existing pipeline</a>.
 
 <table>
 <thead>
@@ -23,7 +23,7 @@ Read more about updating Dataflow jobs at
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/dataflow/docs/">/dataflow/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/dataflow/docs/">https://docs.cloud.google.com/dataflow/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -31,7 +31,7 @@ Read more about updating Dataflow jobs at
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/dataflow/docs/reference/rest/v1b3/projects.jobs">/dataflow/docs/reference/rest/v1b3/projects.jobs</a></td>
+<td><a href="https://docs.cloud.google.com/dataflow/docs/reference/rest/v1b3/projects.jobs">https://docs.cloud.google.com/dataflow/docs/reference/rest/v1b3/projects.jobs</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -602,4 +602,4 @@ metadata:
   name: ${PROJECT_ID?}-dataflowjob-dep-streaming
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

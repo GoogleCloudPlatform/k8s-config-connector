@@ -8,7 +8,7 @@ but will not delete it from Google Cloud.
 
 Note: The Identity and Access Management (IAM) service account used by Config Connector to authenticate with Google Cloud APIs
 has to be the owner of the Google Group whose email address will be used as the support email of the brand.
-See <a href="/iap/docs/programmatic-oauth-clients#support-email">the IAP user guide]</a> for details.
+See <a href="https://docs.cloud.google.com/iap/docs/programmatic-oauth-clients#support-email">the IAP user guide]</a> for details.
 
 <table>
 <thead>
@@ -24,7 +24,7 @@ See <a href="/iap/docs/programmatic-oauth-clients#support-email">the IAP user gu
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/iap/docs/">/iap/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/iap/docs/">https://docs.cloud.google.com/iap/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -32,7 +32,7 @@ See <a href="/iap/docs/programmatic-oauth-clients#support-email">the IAP user gu
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/iap/docs/reference/rest/v1/projects.brands">/iap/docs/reference/rest/v1/projects.brands</a></td>
+<td><a href="https://docs.cloud.google.com/iap/docs/reference/rest/v1/projects.brands">https://docs.cloud.google.com/iap/docs/reference/rest/v1/projects.brands</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -222,4 +222,4 @@ spec:
   supportEmail: "support@example.com"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -31,7 +31,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeAddressRef) (*refs.ComputeAddressRef, error) {
+func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *krm.ComputeAddressRef) (*krm.ComputeAddressRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -73,7 +73,7 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 	if err != nil || address == "" {
 		return nil, fmt.Errorf("cannot get address for referenced %s %v (status.observedState.address is empty)", computeAddress.GetKind(), computeAddress.GetNamespace())
 	}
-	return &refs.ComputeAddressRef{
+	return &krm.ComputeAddressRef{
 		External: address}, nil
 }
 

@@ -27,6 +27,8 @@ type DataplexEntryGroupExpansion interface{}
 
 type DataplexEntryTypeExpansion interface{}
 
+type DataplexGlossaryExpansion interface{}
+
 type DataplexLakeExpansion interface{}
 
 type DataplexTaskExpansion interface{}

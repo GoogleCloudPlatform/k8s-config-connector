@@ -97,3 +97,23 @@ func DiscoveryEngineEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.Discov
 
 	return out
 }
+
+func SearchResponse_Summary_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary) *krm.SearchResponse_Summary {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SearchResponse_Summary{}
+	out.SummaryText = direct.LazyPtr(in.GetSummaryText())
+	out.SummarySkippedReasons = direct.EnumSlice_FromProto(mapCtx, in.SummarySkippedReasons)
+	return out
+}
+
+func SearchResponse_Summary_ToProto(mapCtx *direct.MapContext, in *krm.SearchResponse_Summary) *pb.SearchResponse_Summary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchResponse_Summary{}
+	out.SummaryText = direct.ValueOf(in.SummaryText)
+	out.SummarySkippedReasons = direct.EnumSlice_ToProto[pb.SearchResponse_Summary_SummarySkippedReason](mapCtx, in.SummarySkippedReasons)
+	return out
+}

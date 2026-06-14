@@ -92,18 +92,23 @@ For MockGCP-specific script tests (located under `mockgcp/mockgcptests/`), use t
    ```
 2. This runs the mock tests targeting real GCP to refresh golden script logs.
 
-### E. Committing E2E Baseline
-Once the recording successfully completes, stage and commit the generated `_http.log` and `_generated_object_*.golden.yaml` files:
-```bash
-git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
-git commit -m "Establish clean GCP golden logs for <testname>"
-```
+### E. Committing E2E Baseline (MANDATORY BEFORE MOCK RUN)
+To prevent `_http.log` and golden files from introducing undue/mixed changes between real GCP and MockGCP runs, you **MUST** commit the real GCP baseline **after the real GCP run and before running against MockGCP**:
+
+1. Stage and commit the generated `_http.log` and `_generated_object_*.golden.yaml` files:
+   ```bash
+   git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
+   git commit -m "Establish clean GCP golden logs for <testname>"
+   ```
 
 ---
 
 ## 4. Running against MockGCP and Checking Diffs
 
 To verify the mock implementation matches real GCP behavior:
+
+> [!IMPORTANT]
+> **Prerequisite**: You must have committed the real GCP baseline (from Section 3.E) before starting this section. Running against MockGCP without committing the real GCP baseline first can mix up different modifications in the `_http.log` files and make diff analysis impossible.
 
 1. **Run Mock Test**:
    - Run `hack/compare-mock <testname>`. 

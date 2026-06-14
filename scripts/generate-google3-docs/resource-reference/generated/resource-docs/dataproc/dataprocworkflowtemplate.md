@@ -16,7 +16,7 @@ title: "DataprocWorkflowTemplate"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/dataproc/docs/">/dataproc/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/dataproc/docs/">https://docs.cloud.google.com/dataproc/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "DataprocWorkflowTemplate"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/dataproc/docs/reference/rest/v1/projects.locations.workflowTemplates">/dataproc/docs/reference/rest/v1/projects.locations.workflowTemplates</a></td>
+<td><a href="https://docs.cloud.google.com/dataproc/docs/reference/rest/v1/projects.locations.workflowTemplates">https://docs.cloud.google.com/dataproc/docs/reference/rest/v1/projects.locations.workflowTemplates</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -364,7 +364,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. Timeout duration for the DAG of jobs, expressed in seconds (see [JSON representation of duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). The timeout duration must be from 10 minutes ("600s") to 24 hours ("86400s"). The timer begins when the first job is submitted. If the workflow is running at the end of the timeout period, any remaining jobs are cancelled, the workflow is ended, and if the workflow was running on a [managed cluster](/dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster), the cluster is deleted.</p>
+            <p>Immutable. Optional. Timeout duration for the DAG of jobs, expressed in seconds (see [JSON representation of duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). The timeout duration must be from 10 minutes ("600s") to 24 hours ("86400s"). The timer begins when the first job is submitted. If the workflow is running at the end of the timeout period, any remaining jobs are cancelled, the workflow is ended, and if the workflow was running on a [managed cluster](https://docs.cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster), the cluster is deleted.</p>
         </td>
     </tr>
     <tr>
@@ -2378,7 +2378,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.</p>
+            <p>Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](https://docs.cloud.google.com/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.</p>
         </td>
     </tr>
     <tr>
@@ -2550,7 +2550,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.</p>
+            <p>Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](https://docs.cloud.google.com/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.</p>
         </td>
     </tr>
     <tr>
@@ -3058,7 +3058,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.</p>
+            <p>Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](https://docs.cloud.google.com/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.</p>
         </td>
     </tr>
     <tr>
@@ -3529,4 +3529,4 @@ spec:
       scaleUpFactor: 1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -68,6 +68,7 @@ type RecordsetHealthCheckedTargets struct {
 }
 
 type RecordsetInternalLoadBalancers struct {
+	/* ComputeAddressRef is a reference to a GCP ComputeAddress. */
 	IpAddressRef v1alpha1.ResourceRef `json:"ipAddressRef"`
 
 	/* The configured IP protocol of the load balancer. This value is case-sensitive. Possible values: ["tcp", "udp"]. */
