@@ -30,6 +30,125 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+/* found existing non-generated mapping function "AIPlatformModelObservedState_FromProto", skipping
+func AIPlatformModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AIPlatformModelObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformModelObservedState{}
+	// MISSING: Name
+	out.VersionID = direct.LazyPtr(in.GetVersionId())
+	out.VersionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVersionCreateTime())
+	out.VersionUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVersionUpdateTime())
+	// MISSING: DefaultCheckpointID
+	out.SupportedExportFormats = direct.Slice_FromProto(mapCtx, in.SupportedExportFormats, Model_ExportFormat_FromProto)
+	out.TrainingPipeline = direct.LazyPtr(in.GetTrainingPipeline())
+	out.SupportedDeploymentResourcesTypes = direct.EnumSlice_FromProto(mapCtx, in.SupportedDeploymentResourcesTypes)
+	out.SupportedInputStorageFormats = in.SupportedInputStorageFormats
+	out.SupportedOutputStorageFormats = in.SupportedOutputStorageFormats
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeployedModels = direct.Slice_FromProto(mapCtx, in.DeployedModels, DeployedModelRef_FromProto)
+	// MISSING: Etag
+	out.ModelSourceInfo = ModelSourceInfo_FromProto(mapCtx, in.GetModelSourceInfo())
+	out.OriginalModelInfo = Model_OriginalModelInfo_FromProto(mapCtx, in.GetOriginalModelInfo())
+	out.MetadataArtifact = direct.LazyPtr(in.GetMetadataArtifact())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	// MISSING: Checkpoints
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AIPlatformModelObservedState_ToProto", skipping
+func AIPlatformModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformModelObservedState) *pb.Model {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Model{}
+	// MISSING: Name
+	out.VersionId = direct.ValueOf(in.VersionID)
+	out.VersionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.VersionCreateTime)
+	out.VersionUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.VersionUpdateTime)
+	// MISSING: DefaultCheckpointID
+	out.SupportedExportFormats = direct.Slice_ToProto(mapCtx, in.SupportedExportFormats, Model_ExportFormat_ToProto)
+	out.TrainingPipeline = direct.ValueOf(in.TrainingPipeline)
+	out.SupportedDeploymentResourcesTypes = direct.EnumSlice_ToProto[pb.Model_DeploymentResourcesType](mapCtx, in.SupportedDeploymentResourcesTypes)
+	out.SupportedInputStorageFormats = in.SupportedInputStorageFormats
+	out.SupportedOutputStorageFormats = in.SupportedOutputStorageFormats
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeployedModels = direct.Slice_ToProto(mapCtx, in.DeployedModels, DeployedModelRef_ToProto)
+	// MISSING: Etag
+	out.ModelSourceInfo = ModelSourceInfo_ToProto(mapCtx, in.ModelSourceInfo)
+	out.OriginalModelInfo = Model_OriginalModelInfo_ToProto(mapCtx, in.OriginalModelInfo)
+	out.MetadataArtifact = direct.ValueOf(in.MetadataArtifact)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	// MISSING: Checkpoints
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AIPlatformModelSpec_FromProto", skipping
+func AIPlatformModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AIPlatformModelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformModelSpec{}
+	// MISSING: Name
+	out.VersionAliases = in.VersionAliases
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.VersionDescription = direct.LazyPtr(in.GetVersionDescription())
+	// MISSING: DefaultCheckpointID
+	out.PredictSchemata = PredictSchemata_FromProto(mapCtx, in.GetPredictSchemata())
+	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
+	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
+	out.PipelineJob = direct.LazyPtr(in.GetPipelineJob())
+	out.ContainerSpec = ModelContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
+	out.ArtifactURI = direct.LazyPtr(in.GetArtifactUri())
+	out.ExplanationSpec = ExplanationSpec_FromProto(mapCtx, in.GetExplanationSpec())
+	// MISSING: Etag
+	out.Labels = in.Labels
+	out.DataStats = Model_DataStats_FromProto(mapCtx, in.GetDataStats())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.BaseModelSource = Model_BaseModelSource_FromProto(mapCtx, in.GetBaseModelSource())
+	// MISSING: Checkpoints
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AIPlatformModelSpec_ToProto", skipping
+
+	func AIPlatformModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformModelSpec) *pb.Model {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Model{}
+		// MISSING: Name
+		out.VersionAliases = in.VersionAliases
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.Description = direct.ValueOf(in.Description)
+		out.VersionDescription = direct.ValueOf(in.VersionDescription)
+		// MISSING: DefaultCheckpointID
+		out.PredictSchemata = PredictSchemata_ToProto(mapCtx, in.PredictSchemata)
+		out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
+		out.Metadata = Value_ToProto(mapCtx, in.Metadata)
+		out.PipelineJob = direct.ValueOf(in.PipelineJob)
+		out.ContainerSpec = ModelContainerSpec_ToProto(mapCtx, in.ContainerSpec)
+		out.ArtifactUri = direct.ValueOf(in.ArtifactURI)
+		out.ExplanationSpec = ExplanationSpec_ToProto(mapCtx, in.ExplanationSpec)
+		// MISSING: Etag
+		out.Labels = in.Labels
+		out.DataStats = Model_DataStats_ToProto(mapCtx, in.DataStats)
+		out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+		out.BaseModelSource = Model_BaseModelSource_ToProto(mapCtx, in.BaseModelSource)
+		// MISSING: Checkpoints
+		return out
+	}
+*/
 func BlurBaselineConfig_FromProto(mapCtx *direct.MapContext, in *pb.BlurBaselineConfig) *krm.BlurBaselineConfig {
 	if in == nil {
 		return nil
@@ -748,6 +867,17 @@ func SmoothGradConfig_ToProto(mapCtx *direct.MapContext, in *krm.SmoothGradConfi
 	out.NoisySampleCount = direct.ValueOf(in.NoisySampleCount)
 	return out
 }
+
+/*
+found existing non-generated mapping function "SmoothGradConfig_NoiseSigma_ToProto", skipping
+
+	func SmoothGradConfig_NoiseSigma_ToProto(mapCtx *direct.MapContext, in *float32) *pb.SmoothGradConfig_NoiseSigma {
+		if in == nil {
+			return nil
+		}
+		return &pb.SmoothGradConfig_NoiseSigma{NoiseSigma: *in}
+	}
+*/
 func VertexAIFeatureOnlineStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore) *krm.VertexAIFeatureOnlineStoreObservedState {
 	if in == nil {
 		return nil
@@ -804,6 +934,48 @@ func VertexAIFeatureOnlineStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.V
 	out.Labels = in.Labels
 	out.DedicatedServingEndpoint = FeatureOnlineStore_DedicatedServingEndpoint_ToProto(mapCtx, in.DedicatedServingEndpoint)
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	return out
+}
+func VertexAISpecialistPoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.VertexAISpecialistPoolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAISpecialistPoolObservedState{}
+	// MISSING: Name
+	out.SpecialistManagersCount = direct.LazyPtr(in.GetSpecialistManagersCount())
+	out.PendingDataLabelingJobs = in.PendingDataLabelingJobs
+	return out
+}
+func VertexAISpecialistPoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAISpecialistPoolObservedState) *pb.SpecialistPool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpecialistPool{}
+	// MISSING: Name
+	out.SpecialistManagersCount = direct.ValueOf(in.SpecialistManagersCount)
+	out.PendingDataLabelingJobs = in.PendingDataLabelingJobs
+	return out
+}
+func VertexAISpecialistPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.VertexAISpecialistPoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAISpecialistPoolSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.SpecialistManagerEmails = in.SpecialistManagerEmails
+	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
+	return out
+}
+func VertexAISpecialistPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAISpecialistPoolSpec) *pb.SpecialistPool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpecialistPool{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.SpecialistManagerEmails = in.SpecialistManagerEmails
+	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
 	return out
 }
 func XraiAttribution_FromProto(mapCtx *direct.MapContext, in *pb.XraiAttribution) *krm.XraiAttribution {
