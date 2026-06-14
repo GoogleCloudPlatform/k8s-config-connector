@@ -628,6 +628,9 @@ func MapStringString_FromProto(mapCtx *MapContext, in map[string]string) map[str
 	for k, v := range in {
 		out[k] = v
 	}
+	return out
+}
+
 func Status_FromProto(mapCtx *MapContext, in *statuspb.Status) *common.Status {
 	if in == nil {
 		return nil

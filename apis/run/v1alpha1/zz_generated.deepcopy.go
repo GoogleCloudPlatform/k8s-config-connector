@@ -1096,7 +1096,7 @@ func (in *VPCAccess_NetworkInterface) DeepCopyInto(out *VPCAccess_NetworkInterfa
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.Tags != nil {

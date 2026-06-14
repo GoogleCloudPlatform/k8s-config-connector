@@ -263,7 +263,7 @@ type VPCAccess_NetworkInterface struct {
 
 	// Optional. The VPC subnetwork that the Cloud Run resource will get IPs
 	//  from.
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	// Optional. Network tags applied to this Cloud Run resource.
 	Tags []string `json:"tags,omitempty"`

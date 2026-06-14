@@ -554,6 +554,7 @@ type Clientset struct {
 	recaptchaenterpriseV1beta1      *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
 	redisV1beta1                    *redisv1beta1.RedisV1beta1Client
 	resourcemanagerV1beta1          *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
+	runV1alpha1                     *runv1alpha1.RunV1alpha1Client
 	runV1beta1                      *runv1beta1.RunV1beta1Client
 	secretmanagerV1beta1            *secretmanagerv1beta1.SecretmanagerV1beta1Client
 	securesourcemanagerV1beta1      *securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Client
