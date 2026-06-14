@@ -118,11 +118,20 @@ type CloudSecurityComplianceFrameworkSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
+	/* Optional. The labels with user-defined metadata to organize your frameworks. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
 	/* The location of this resource. */
 	Location string `json:"location"`
 
-	/* The organization that this resource belongs to. */
-	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
+	/* The organization that this resource belongs to. Only one of organizationRef or projectRef may be specified. */
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+
+	/* The project that this resource belongs to. Only one of organizationRef or projectRef may be specified. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The CloudSecurityComplianceFramework name. If not given, the metadata.name will be used. */
 	// +optional

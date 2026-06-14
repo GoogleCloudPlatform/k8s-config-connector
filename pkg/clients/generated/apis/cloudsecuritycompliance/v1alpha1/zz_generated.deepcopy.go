@@ -295,7 +295,23 @@ func (in *CloudSecurityComplianceFrameworkSpec) DeepCopyInto(out *CloudSecurityC
 		*out = new(string)
 		**out = **in
 	}
-	out.OrganizationRef = in.OrganizationRef
+	if in.Labels != nil {
+		in, out := &in.Labels, &out.Labels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
+	if in.OrganizationRef != nil {
+		in, out := &in.OrganizationRef, &out.OrganizationRef
+		*out = new(k8sv1alpha1.ResourceRef)
+		**out = **in
+	}
+	if in.ProjectRef != nil {
+		in, out := &in.ProjectRef, &out.ProjectRef
+		*out = new(k8sv1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
