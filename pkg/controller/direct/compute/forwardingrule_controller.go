@@ -20,6 +20,7 @@ import (
 	"reflect"
 	"strings"
 
+	"google.golang.org/protobuf/proto"
 	"k8s.io/klog/v2"
 
 	gcp "cloud.google.com/go/compute/apiv1"
@@ -55,9 +56,10 @@ type forwardingRuleAdapter struct {
 	id                          *krm.ComputeForwardingRuleIdentity
 	forwardingRulesClient       *gcp.ForwardingRulesClient
 	globalForwardingRulesClient *gcp.GlobalForwardingRulesClient
-	desired                     *krm.ComputeForwardingRule
+	desired                     *computepb.ForwardingRule
 	actual                      *computepb.ForwardingRule
 	reader                      client.Reader
+	desiredStatusTarget         *string
 }
 
 var _ directbase.Adapter = &forwardingRuleAdapter{}
@@ -81,10 +83,23 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, op *directba
 		obj.Spec.LoadBalancingScheme = direct.LazyPtr("EXTERNAL")
 	}
 
+	if err := resolveForwardingRuleRefs(ctx, reader, obj); err != nil {
+		return nil, fmt.Errorf("resolving references: %w", err)
+	}
+
+	mapCtx := &direct.MapContext{}
+	desired := ComputeForwardingRuleSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desired.Name = direct.LazyPtr(id.ForwardingRule)
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(obj.Labels)
+
 	forwardingRuleAdapter := &forwardingRuleAdapter{
-		id:      id,
-		desired: obj,
-		reader:  reader,
+		id:                  id,
+		desired:             desired,
+		reader:              reader,
+		desiredStatusTarget: obj.Status.Target,
 	}
 
 	// Get GCP client
@@ -134,24 +149,11 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	u := createOp.GetUnstructured()
 	var err error
 
-	err = resolveForwardingRuleRefs(ctx, a.reader, a.desired)
-	if err != nil {
-		return err
-	}
-
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ComputeForwardingRule", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	sanitizedLabels := label.NewGCPLabelsFromK8sLabels(desired.Labels)
-
-	forwardingRule := ComputeForwardingRuleSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	forwardingRule.Name = direct.LazyPtr(a.id.ForwardingRule)
-	forwardingRule.Labels = sanitizedLabels
+	forwardingRule := proto.Clone(a.desired).(*computepb.ForwardingRule)
+	sanitizedLabels := forwardingRule.Labels
 
 	// API restriction: Cannot set labels during creation(by POST). But it can be set later by PATCH SetLabels.
 	// API error message: Labels are invalid in Private Service Connect Forwarding Rule.
@@ -238,23 +240,10 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 		return fmt.Errorf("resourceID is empty")
 	}
 
-	err = resolveForwardingRuleRefs(ctx, a.reader, a.desired)
-	if err != nil {
-		return err
-	}
-
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeForwardingRule", "name", a.id.ForwardingRule)
-	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	sanitizedLabels := label.NewGCPLabelsFromK8sLabels(desired.Labels)
-	forwardingRule := ComputeForwardingRuleSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	forwardingRule.Name = direct.LazyPtr(a.id.ForwardingRule)
-	forwardingRule.Labels = sanitizedLabels
+	forwardingRule := a.desired
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	// Use defer to ensure the diff is always reported, even if we return early due to errors (crucial for preview mode)
@@ -320,8 +309,8 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	// their dependencies being managed by different controllers.
 	// This can be removed once all Compute resources are migrated to direct controller.
 	targetMatchSpec := IsSelfLinkEqual(forwardingRule.Target, a.actual.Target)
-	targetMatchStatus := IsSelfLinkEqual(forwardingRule.Target, a.desired.Status.Target)
-	if !targetMatchSpec || (a.desired.Status.Target != nil && !targetMatchStatus) {
+	targetMatchStatus := IsSelfLinkEqual(forwardingRule.Target, a.desiredStatusTarget)
+	if !targetMatchSpec || (a.desiredStatusTarget != nil && !targetMatchStatus) {
 		report.AddField("target", a.actual.Target, forwardingRule.Target)
 		if a.id.IsGlobal() {
 			setTargetReq := &computepb.SetTargetGlobalForwardingRuleRequest{
