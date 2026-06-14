@@ -30,5 +30,15 @@ func init() {
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &dlpModel{}, nil
+}
+
+type dlpModel struct{}
+
+func (m *dlpModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	return nil, nil
+}
+
+func (m *dlpModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	return nil, nil
 }
