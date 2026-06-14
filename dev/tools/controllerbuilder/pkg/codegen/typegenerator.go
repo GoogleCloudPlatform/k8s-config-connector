@@ -238,6 +238,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		}
 
 		out.goPackage = lastGoComponent(g.goPackage)
+		out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 
 		out.fileAnnotation = g.generatedFileAnnotation
 
@@ -296,6 +297,7 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		}
 
 		out.goPackage = lastGoComponent(g.goPackage)
+		out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 
 		out.fileAnnotation = g.generatedFileAnnotation
 
