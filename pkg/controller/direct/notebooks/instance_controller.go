@@ -82,10 +82,11 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
-	id, err := krm.NewInstanceIdentity(ctx, reader, obj)
+	identityObj, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := identityObj.(*krm.NotebookInstanceIdentity)
 
 	// Get notebooks GCP client
 	gcpClient, err := m.client(ctx)
@@ -112,7 +113,7 @@ func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type InstanceAdapter struct {
-	id        *krm.InstanceIdentity
+	id        *krm.NotebookInstanceIdentity
 	gcpClient *gcp.NotebookClient
 	desired   *notebookspb.Instance
 	actual    *notebookspb.Instance
@@ -147,8 +148,8 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log.V(2).Info("creating Instance", "name", a.id)
 
 	req := &notebookspb.CreateInstanceRequest{
-		Parent:     a.id.Parent().String(),
-		InstanceId: a.id.ID(),
+		Parent:     a.id.ParentString(),
+		InstanceId: a.id.Instance,
 		Instance:   a.desired,
 	}
 	op, err := a.gcpClient.CreateInstance(ctx, req)
@@ -298,14 +299,14 @@ func (a *InstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Zone = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Zone = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.Instance)
 	u.SetGroupVersionKind(krm.NotebookInstanceGVK)
 
 	u.Object = uObj
