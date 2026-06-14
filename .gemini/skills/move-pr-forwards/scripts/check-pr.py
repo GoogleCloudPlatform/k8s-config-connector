@@ -142,7 +142,6 @@ def main():
       "justinsb",
       "ldanielmadariaga",
       "maqiuyujoyce",
-      "xiaoweim",
   }
 
   print("--- 🗣️  APPROVER FEEDBACK ---")
