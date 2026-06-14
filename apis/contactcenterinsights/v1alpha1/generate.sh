@@ -22,6 +22,8 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
+
 go run . generate-types \
   --service google.cloud.contactcenterinsights.v1 \
   --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1 \
@@ -29,10 +31,16 @@ go run . generate-types \
   --resource CCInsightsView:View \
   --resource CCInsightsPhraseMatcher:PhraseMatcher \
   --resource CCInsightsIssueModel:IssueModel \
+  --resource CCInsightsQaScorecard:QaScorecard \
   --prune-unused-types=false
+
+go run . generate-mapper \
+  --service google.cloud.contactcenterinsights.v1 \
+  --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 # Format generated code
 go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w apis/contactcenterinsights/v1alpha1/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/contactcenterinsights/

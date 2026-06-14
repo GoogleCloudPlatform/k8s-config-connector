@@ -25,3 +25,9 @@
 - **Problem**: When `generate-types` first ran, the main `IssueModel` and nested config/observedState sub-types were marked as unreachable and commented out because they were not yet referenced in the spec and status fields of `CCInsightsIssueModelSpec` and `CCInsightsIssueModelObservedState`.
 - **Solution**: Explicitly defined the spec fields referencing `IssueModel_InputDataConfig` and observedState fields referencing the nested observedState sub-types inside `issuemodel_types.go`, then re-ran `generate.sh`. The generator successfully detected them as reachable and fully compiled them into `types.generated.go`.
 - **Impact**: Provides proper type scaffolding, deepcopy, CRD, and IdentityV2 for CCInsightsIssueModel without unreachable/commented-out required types.
+
+### [2026-05-26] Scaffold CCInsightsQaScorecard
+- **Context**: Implementing CCInsightsQaScorecard types, identity, and generating mappers for Step 1.
+- **Problem**: The proto fields are completely missing from the generated types and marked as unreachable if `prune-unused-types` is set, and manual scaffolding is needed in `qascorecard_types.go` from the `types.generated.go`. Also `Location string` instead of `Location *string` is the standard despite the general primitive pointer rule, as it's required for `IdentityV2`.
+- **Solution**: Manually copied fields from `types.generated.go` into `qascorecard_types.go`, then pruned `types.generated.go`. Kept `Location string` non-pointer as it's part of the standard `ProjectRef / Location` combination.
+- **Impact**: Agents must remember to move `unreachable` types into the Spec/ObservedState structures manually when `generate-types` creates an initially bare Spec structure.
