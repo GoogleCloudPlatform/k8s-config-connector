@@ -109,7 +109,8 @@ type CloudControl struct {
 }
 */
 
-/* unreachable type CloudControlDeployment
+/* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment", skipping
+
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment
 type CloudControlDeployment struct {
 	// Identifier. CloudControlDeployment name in either of the following formats:
@@ -206,7 +207,8 @@ type CloudControlGroup struct {
 }
 */
 
-/* unreachable type CloudControlGroupDeployment
+/* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.CloudControlGroupDeployment", skipping
+
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroupDeployment
 type CloudControlGroupDeployment struct {
 	// Required. Cloud control group
@@ -219,6 +221,8 @@ type CloudControlGroupDeployment struct {
 }
 */
 
+/* found existing non-generated go type "CloudControlMetadata", skipping
+
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlMetadata
 type CloudControlMetadata struct {
 	// Required. Cloud control details
@@ -229,6 +233,9 @@ type CloudControlMetadata struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlMetadata.enforcement_mode
 	EnforcementMode *string `json:"enforcementMode,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "FolderCreationConfig", skipping
 
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.FolderCreationConfig
 type FolderCreationConfig struct {
@@ -240,6 +247,7 @@ type FolderCreationConfig struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FolderCreationConfig.folder_display_name
 	FolderDisplayName *string `json:"folderDisplayName,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.Framework", skipping
 
@@ -340,6 +348,8 @@ type FrameworkDeploymentReference struct {
 }
 */
 
+/* found existing non-generated go type "FrameworkReference", skipping
+
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.FrameworkReference
 type FrameworkReference struct {
 	// Required. In the format:
@@ -352,6 +362,7 @@ type FrameworkReference struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkReference.major_revision_id
 	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.IntRange
 type IntRange struct {
@@ -466,6 +477,8 @@ type PlaceholderSubstitutionRule struct {
 	Attribute *string `json:"attribute,omitempty"`
 }
 
+/* found existing non-generated go type "ProjectCreationConfig", skipping
+
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.ProjectCreationConfig
 type ProjectCreationConfig struct {
 	// Required. organizations/{org} or folders/{folder}
@@ -480,6 +493,7 @@ type ProjectCreationConfig struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ProjectCreationConfig.billing_account_id
 	BillingAccountID *string `json:"billingAccountID,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.RegexpPattern
 type RegexpPattern struct {
@@ -510,6 +524,8 @@ type StringList struct {
 	Values []string `json:"values,omitempty"`
 }
 
+/* found existing non-generated go type "TargetResourceConfig", skipping
+
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.TargetResourceConfig
 type TargetResourceConfig struct {
 	// Optional. CRM node in format organizations/{organization},
@@ -523,6 +539,9 @@ type TargetResourceConfig struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.TargetResourceConfig.target_resource_creation_config
 	TargetResourceCreationConfig *TargetResourceCreationConfig `json:"targetResourceCreationConfig,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "TargetResourceCreationConfig", skipping
 
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.TargetResourceCreationConfig
 type TargetResourceCreationConfig struct {
@@ -534,6 +553,7 @@ type TargetResourceCreationConfig struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.TargetResourceCreationConfig.project_creation_config
 	ProjectCreationConfig *ProjectCreationConfig `json:"projectCreationConfig,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.Validation
 type Validation struct {
@@ -627,6 +647,8 @@ type CloudControlObservedState struct {
 }
 */
 
+/* found existing non-generated go type "CloudControlDeploymentObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment
 type CloudControlDeploymentObservedState struct {
 	// Identifier. CloudControlDeployment name in either of the following formats:
@@ -688,6 +710,7 @@ type CloudControlDeploymentObservedState struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.target_resource_display_name
 	TargetResourceDisplayName *string `json:"targetResourceDisplayName,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlDeploymentReference
 type CloudControlDeploymentReferenceObservedState struct {
@@ -739,6 +762,8 @@ type CloudControlGroupObservedState struct {
 }
 */
 
+/* found existing non-generated go type "CloudControlGroupDeploymentObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroupDeployment
 type CloudControlGroupDeploymentObservedState struct {
 	// Required. Cloud control group
@@ -768,6 +793,7 @@ type CloudControlGroupDeploymentObservedState struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroupDeployment.cc_deployment_references
 	CcDeploymentReferences []CloudControlDeploymentReferenceObservedState `json:"ccDeploymentReferences,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.Framework", skipping
 
@@ -860,6 +886,7 @@ type FrameworkDeploymentObservedState struct {
 }
 */
 
+/* unreachable type FrameworkDeploymentReferenceObservedState
 // +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.FrameworkDeploymentReference
 type FrameworkDeploymentReferenceObservedState struct {
 	// Output only. The name of the framework. The format is:
@@ -880,3 +907,4 @@ type FrameworkDeploymentReferenceObservedState struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeploymentReference.framework_display_name
 	FrameworkDisplayName *string `json:"frameworkDisplayName,omitempty"`
 }
+*/

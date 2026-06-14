@@ -69,13 +69,13 @@ type FrameworkdeploymentFolderCreationConfig struct {
 
 	/* Required. organizations/{org} or folders/{folder} */
 	// +optional
-	Parent *string `json:"parent,omitempty"`
+	ParentRef *v1alpha1.ResourceRef `json:"parentRef,omitempty"`
 }
 
 type FrameworkdeploymentFramework struct {
-	/* Required. In the format: organizations/{org}/locations/{location}/frameworks/{framework} */
+	/* Required. Framework resource reference */
 	// +optional
-	Framework *string `json:"framework,omitempty"`
+	FrameworkRef *v1alpha1.ResourceRef `json:"frameworkRef,omitempty"`
 
 	/* Optional. Major revision id of the framework. If not specified, corresponds to the latest revision of the framework. */
 	// +optional
@@ -102,7 +102,7 @@ type FrameworkdeploymentProjectCreationConfig struct {
 
 	/* Required. organizations/{org} or folders/{folder} */
 	// +optional
-	Parent *string `json:"parent,omitempty"`
+	ParentRef *v1alpha1.ResourceRef `json:"parentRef,omitempty"`
 
 	/* Required. Display name of the project to be created */
 	// +optional
@@ -112,7 +112,7 @@ type FrameworkdeploymentProjectCreationConfig struct {
 type FrameworkdeploymentTargetResourceConfig struct {
 	/* Optional. CRM node in format organizations/{organization}, folders/{folder}, projects/{project} or projects/{project}/locations/{location}/applications/{application}. */
 	// +optional
-	ExistingTargetResource *string `json:"existingTargetResource,omitempty"`
+	ExistingTargetResourceRef *v1alpha1.ResourceRef `json:"existingTargetResourceRef,omitempty"`
 
 	/* Optional. Config to create a new resource and use that as the target_resource for deployment */
 	// +optional
@@ -120,11 +120,11 @@ type FrameworkdeploymentTargetResourceConfig struct {
 }
 
 type FrameworkdeploymentTargetResourceCreationConfig struct {
-	/* Optional. Config to create a new folder */
+	/* Optional. Folder creation config */
 	// +optional
 	FolderCreationConfig *FrameworkdeploymentFolderCreationConfig `json:"folderCreationConfig,omitempty"`
 
-	/* Optional. Config to create a new project */
+	/* Optional. Project creation config */
 	// +optional
 	ProjectCreationConfig *FrameworkdeploymentProjectCreationConfig `json:"projectCreationConfig,omitempty"`
 }
@@ -137,10 +137,6 @@ type CloudSecurityComplianceFrameworkDeploymentSpec struct {
 	/* Optional. User provided description of the deployment */
 	// +optional
 	Description *string `json:"description,omitempty"`
-
-	/* Optional. To prevent concurrent updates from overwriting each other, always provide the `etag` when you update a CustomComplianceFramework. You can also provide the `etag` when you delete a CustomComplianceFramework, to help ensure that you're deleting the intended version of the CustomComplianceFramework. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
 
 	/* Required. Framework resource reference */
 	// +optional
@@ -161,12 +157,6 @@ type CloudSecurityComplianceFrameworkDeploymentSpec struct {
 	TargetResourceConfig *FrameworkdeploymentTargetResourceConfig `json:"targetResourceConfig,omitempty"`
 }
 
-type FrameworkdeploymentCcDeploymentReferencesStatus struct {
-	/* Output only. The name of the cloud control deployment. The format is: organizations/{org}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id} */
-	// +optional
-	CloudControlDeployment *string `json:"cloudControlDeployment,omitempty"`
-}
-
 type FrameworkdeploymentCcDeploymentsStatus struct {
 	/* Required. CloudControlReference, Deployment mode and parameters for the cloud_control */
 	// +optional
@@ -184,23 +174,11 @@ type FrameworkdeploymentCcDeploymentsStatus struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Optional. To prevent concurrent updates from overwriting each other, always provide the `etag` when you update a CustomComplianceCloudControl. You can also provide the `etag` when you delete a CustomComplianceCloudControl, to help ensure that you're deleting the intended version of the CustomComplianceCloudControl. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
-
-	/* Output only. The references to the framework deployments that this cloud control deployment is part of. */
-	// +optional
-	FrameworkDeploymentReferences []FrameworkdeploymentFrameworkDeploymentReferencesStatus `json:"frameworkDeploymentReferences,omitempty"`
-
 	/* Identifier. CloudControlDeployment name in either of the following formats: organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id} */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* Output only. The cloud control after parameter substitution. */
-	// +optional
-	ParameterSubstitutedCloudControl *FrameworkdeploymentParameterSubstitutedCloudControlStatus `json:"parameterSubstitutedCloudControl,omitempty"`
-
-	/* Output only. The resource on which the CloudControl is deployed based on the provided TargetResourceConfig. In format organizations/{organization}, folders/{folder} or projects/{project}. */
+	/* Output only. The resource on which the CloudControl is deployed based on the provided TargetResourceConfig. */
 	// +optional
 	TargetResource *string `json:"targetResource,omitempty"`
 
@@ -208,20 +186,12 @@ type FrameworkdeploymentCcDeploymentsStatus struct {
 	// +optional
 	TargetResourceConfig *FrameworkdeploymentTargetResourceConfigStatus `json:"targetResourceConfig,omitempty"`
 
-	/* Output only. The name of the application, project, folder, or organization that the cloud control is deployed on. */
-	// +optional
-	TargetResourceDisplayName *string `json:"targetResourceDisplayName,omitempty"`
-
 	/* Output only. The time at which the resource last updated. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type FrameworkdeploymentCcGroupDeploymentsStatus struct {
-	/* Output only. The references to the cloud control deployments in the cloud control group. For example, if a cloud control group has two cloud controls, `cloud-control-1` and `cloud-control-2`, and the cloud control deployments for these cloud controls are `cloud-control-deployment-1` and `cloud-control-deployment-2` respectively, then the references are: ``` cloud_control_deployment_reference: { cloud_control_deployment: "organizations/{organization}/locations/{location}/cloudControlDeployments/cloud-control-deployment-1" }, cloud_control_deployment_reference: { cloud_control_deployment: "organizations/{organization}/locations/{location}/cloudControlDeployments/cloud-control-deployment-2" } ``` */
-	// +optional
-	CcDeploymentReferences []FrameworkdeploymentCcDeploymentReferencesStatus `json:"ccDeploymentReferences,omitempty"`
-
 	/* Required. Cloud control deployments in the group */
 	// +optional
 	CcDeployments []FrameworkdeploymentCcDeploymentsStatus `json:"ccDeployments,omitempty"`
@@ -240,13 +210,13 @@ type FrameworkdeploymentCloudControlDeploymentReferencesStatus struct {
 type FrameworkdeploymentCloudControlDetailsStatus struct {
 	/* Required. The name of the CloudControl in the format: “organizations/{organization}/locations/{location}/ cloudControls/{cloud-control}” */
 	// +optional
-	CloudControlRef *v1alpha1.ResourceRef `json:"cloudControlRef,omitempty"`
+	CloudControl *string `json:"cloudControl,omitempty"`
 
 	/* Required. Major revision of cloudcontrol */
 	// +optional
 	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
 
-	/* Optional. Parameters is a key-value pair that is required by the CloudControl. The specification of these parameters will be present in cloudcontrol.Eg: { "name": "location","value": "us-west-1"}. */
+	/* Optional. Parameters is a key-value pair that is required by the CloudControl. Eg: { "name": "location","value": "us-west-1"}. */
 	// +optional
 	Parameters []FrameworkdeploymentParametersStatus `json:"parameters,omitempty"`
 }
@@ -258,7 +228,7 @@ type FrameworkdeploymentCloudControlGroupStatus struct {
 }
 
 type FrameworkdeploymentCloudControlMetadataStatus struct {
-	/* Required. Cloud control details */
+	/* Required. CloudControlReference, Deployment mode and parameters for the cloud_control */
 	// +optional
 	CloudControlDetails *FrameworkdeploymentCloudControlDetailsStatus `json:"cloudControlDetails,omitempty"`
 
@@ -275,30 +245,6 @@ type FrameworkdeploymentFolderCreationConfigStatus struct {
 	/* Required. organizations/{org} or folders/{folder} */
 	// +optional
 	Parent *string `json:"parent,omitempty"`
-}
-
-type FrameworkdeploymentFrameworkDeploymentReferencesStatus struct {
-	/* Output only. The name of the framework. The format is: organizations/{org}/locations/{location}/frameworkDeployments/{framework_deployment_id} */
-	// +optional
-	FrameworkDeployment *string `json:"frameworkDeployment,omitempty"`
-
-	/* Optional. The display name of the framework. */
-	// +optional
-	FrameworkDisplayName *string `json:"frameworkDisplayName,omitempty"`
-
-	/* Optional. The reference to the framework that this deployment is for. Example: { framework: "organizations/{org}/locations/{location}/frameworks/{framework}", major_revision_id: 1 } */
-	// +optional
-	FrameworkReference *FrameworkdeploymentFrameworkReferenceStatus `json:"frameworkReference,omitempty"`
-}
-
-type FrameworkdeploymentFrameworkReferenceStatus struct {
-	/* Required. In the format: organizations/{org}/locations/{location}/frameworks/{framework} */
-	// +optional
-	Framework *string `json:"framework,omitempty"`
-
-	/* Optional. Major revision id of the framework. If not specified, corresponds to the latest revision of the framework. */
-	// +optional
-	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
 }
 
 type FrameworkdeploymentObservedStateStatus struct {
@@ -333,24 +279,6 @@ type FrameworkdeploymentObservedStateStatus struct {
 	/* Output only. The time at which the resource last updated. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
-}
-
-type FrameworkdeploymentParameterSubstitutedCloudControlStatus struct {
-	/* Output only. The time that the cloud control was last updated. create_time is used because a new cloud control is created whenever an existing cloud control is updated. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
-
-	/* Output only. The major version of the cloud control, which is incremented in ascending order. */
-	// +optional
-	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
-
-	/* Output only. The frameworks that include this cloud control. */
-	// +optional
-	RelatedFrameworks []string `json:"relatedFrameworks,omitempty"`
-
-	/* Output only. The supported enforcement modes for the cloud control. */
-	// +optional
-	SupportedEnforcementModes []string `json:"supportedEnforcementModes,omitempty"`
 }
 
 type FrameworkdeploymentParameterValueStatus struct {
@@ -391,11 +319,11 @@ type FrameworkdeploymentTargetResourceConfigStatus struct {
 }
 
 type FrameworkdeploymentTargetResourceCreationConfigStatus struct {
-	/* Optional. Config to create a new folder */
+	/* Optional. Folder creation config */
 	// +optional
 	FolderCreationConfig *FrameworkdeploymentFolderCreationConfigStatus `json:"folderCreationConfig,omitempty"`
 
-	/* Optional. Config to create a new project */
+	/* Optional. Project creation config */
 	// +optional
 	ProjectCreationConfig *FrameworkdeploymentProjectCreationConfigStatus `json:"projectCreationConfig,omitempty"`
 }

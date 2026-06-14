@@ -133,19 +133,39 @@ spec:
               description:
                 description: Optional. User provided description of the deployment
                 type: string
-              etag:
-                description: Optional. To prevent concurrent updates from overwriting
-                  each other, always provide the `etag` when you update a CustomComplianceFramework.
-                  You can also provide the `etag` when you delete a CustomComplianceFramework,
-                  to help ensure that you're deleting the intended version of the
-                  CustomComplianceFramework.
-                type: string
               framework:
                 description: Required. Framework resource reference
                 properties:
-                  framework:
-                    description: 'Required. In the format: organizations/{org}/locations/{location}/frameworks/{framework}'
-                    type: string
+                  frameworkRef:
+                    description: Required. Framework resource reference
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed CloudSecurityComplianceFramework
+                          resource. Should be in the format "organizations/{{organizationID}}/locations/{{location}}/frameworks/{{frameworkID}}".
+                        type: string
+                      name:
+                        description: The name of a CloudSecurityComplianceFramework
+                          resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a CloudSecurityComplianceFramework
+                          resource.
+                        type: string
+                    type: object
                   majorRevisionID:
                     description: Optional. Major revision id of the framework. If
                       not specified, corresponds to the latest revision of the framework.
@@ -174,35 +194,51 @@ spec:
                   already existing target_resource or contains config for a target_resource
                   to be created
                 properties:
-                  existingTargetResource:
+                  existingTargetResourceRef:
                     description: Optional. CRM node in format organizations/{organization},
                       folders/{folder}, projects/{project} or projects/{project}/locations/{location}/applications/{application}.
-                    type: string
+                    properties:
+                      external:
+                        description: A reference to an externally managed target resource.
+                          Can be in format organizations/{organization}, folders/{folder},
+                          projects/{project} or projects/{project}/locations/{location}/applications/{application}.
+                        type: string
+                    type: object
                   targetResourceCreationConfig:
                     description: Optional. Config to create a new resource and use
                       that as the target_resource for deployment
                     properties:
                       folderCreationConfig:
-                        description: Optional. Config to create a new folder
+                        description: Optional. Folder creation config
                         properties:
                           folderDisplayName:
                             description: Required. Display name of the folder to be
                               created
                             type: string
-                          parent:
+                          parentRef:
                             description: Required. organizations/{org} or folders/{folder}
-                            type: string
+                            properties:
+                              external:
+                                description: A reference to an Organization or Folder.
+                                  Can be in format folders/{folder_id} or organizations/{org_id}.
+                                type: string
+                            type: object
                         type: object
                       projectCreationConfig:
-                        description: Optional. Config to create a new project
+                        description: Optional. Project creation config
                         properties:
                           billingAccountID:
                             description: Required. Billing account id to be used for
                               the project
                             type: string
-                          parent:
+                          parentRef:
                             description: Required. organizations/{org} or folders/{folder}
-                            type: string
+                            properties:
+                              external:
+                                description: A reference to an Organization or Folder.
+                                  Can be in format folders/{folder_id} or organizations/{org_id}.
+                                type: string
+                            type: object
                           projectDisplayName:
                             description: Required. Display name of the project to
                               be created
@@ -272,51 +308,22 @@ spec:
                             mode and parameters for the cloud_control
                           properties:
                             cloudControlDetails:
-                              description: Required. Cloud control details
+                              description: Required. CloudControlReference, Deployment
+                                mode and parameters for the cloud_control
                               properties:
-                                cloudControlRef:
+                                cloudControl:
                                   description: 'Required. The name of the CloudControl
                                     in the format: “organizations/{organization}/locations/{location}/
                                     cloudControls/{cloud-control}”'
-                                  oneOf:
-                                  - not:
-                                      required:
-                                      - external
-                                    required:
-                                    - name
-                                  - not:
-                                      anyOf:
-                                      - required:
-                                        - name
-                                      - required:
-                                        - namespace
-                                    required:
-                                    - external
-                                  properties:
-                                    external:
-                                      description: A reference to an externally managed
-                                        CloudSecurityComplianceCloudControl resource.
-                                        Should be in the format "organizations/{{organizationID}}/locations/{{location}}/cloudControls/{{cloudControlID}}".
-                                      type: string
-                                    name:
-                                      description: The name of a CloudSecurityComplianceCloudControl
-                                        resource.
-                                      type: string
-                                    namespace:
-                                      description: The namespace of a CloudSecurityComplianceCloudControl
-                                        resource.
-                                      type: string
-                                  type: object
+                                  type: string
                                 majorRevisionID:
                                   description: Required. Major revision of cloudcontrol
                                   format: int64
                                   type: integer
                                 parameters:
                                   description: 'Optional. Parameters is a key-value
-                                    pair that is required by the CloudControl. The
-                                    specification of these parameters will be present
-                                    in cloudcontrol.Eg: { "name": "location","value":
-                                    "us-west-1"}.'
+                                    pair that is required by the CloudControl. Eg:
+                                    { "name": "location","value": "us-west-1"}.'
                                   items:
                                     properties:
                                       name:
@@ -346,82 +353,13 @@ spec:
                           description: Optional. User provided description of the
                             deployment
                           type: string
-                        etag:
-                          description: Optional. To prevent concurrent updates from
-                            overwriting each other, always provide the `etag` when
-                            you update a CustomComplianceCloudControl. You can also
-                            provide the `etag` when you delete a CustomComplianceCloudControl,
-                            to help ensure that you're deleting the intended version
-                            of the CustomComplianceCloudControl.
-                          type: string
-                        frameworkDeploymentReferences:
-                          description: Output only. The references to the framework
-                            deployments that this cloud control deployment is part
-                            of.
-                          items:
-                            properties:
-                              frameworkDeployment:
-                                description: 'Output only. The name of the framework.
-                                  The format is: organizations/{org}/locations/{location}/frameworkDeployments/{framework_deployment_id}'
-                                type: string
-                              frameworkDisplayName:
-                                description: Optional. The display name of the framework.
-                                type: string
-                              frameworkReference:
-                                description: 'Optional. The reference to the framework
-                                  that this deployment is for. Example: { framework:
-                                  "organizations/{org}/locations/{location}/frameworks/{framework}",
-                                  major_revision_id: 1 }'
-                                properties:
-                                  framework:
-                                    description: 'Required. In the format: organizations/{org}/locations/{location}/frameworks/{framework}'
-                                    type: string
-                                  majorRevisionID:
-                                    description: Optional. Major revision id of the
-                                      framework. If not specified, corresponds to
-                                      the latest revision of the framework.
-                                    format: int64
-                                    type: integer
-                                type: object
-                            type: object
-                          type: array
                         name:
                           description: 'Identifier. CloudControlDeployment name in
                             either of the following formats: organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}'
                           type: string
-                        parameterSubstitutedCloudControl:
-                          description: Output only. The cloud control after parameter
-                            substitution.
-                          properties:
-                            createTime:
-                              description: Output only. The time that the cloud control
-                                was last updated. create_time is used because a new
-                                cloud control is created whenever an existing cloud
-                                control is updated.
-                              type: string
-                            majorRevisionID:
-                              description: Output only. The major version of the cloud
-                                control, which is incremented in ascending order.
-                              format: int64
-                              type: integer
-                            relatedFrameworks:
-                              description: Output only. The frameworks that include
-                                this cloud control.
-                              items:
-                                type: string
-                              type: array
-                            supportedEnforcementModes:
-                              description: Output only. The supported enforcement
-                                modes for the cloud control.
-                              items:
-                                type: string
-                              type: array
-                          type: object
                         targetResource:
                           description: Output only. The resource on which the CloudControl
                             is deployed based on the provided TargetResourceConfig.
-                            In format organizations/{organization}, folders/{folder}
-                            or projects/{project}.
                           type: string
                         targetResourceConfig:
                           description: Required. target_resource_config referencing
@@ -437,7 +375,7 @@ spec:
                                 and use that as the target_resource for deployment
                               properties:
                                 folderCreationConfig:
-                                  description: Optional. Config to create a new folder
+                                  description: Optional. Folder creation config
                                   properties:
                                     folderDisplayName:
                                       description: Required. Display name of the folder
@@ -449,7 +387,7 @@ spec:
                                       type: string
                                   type: object
                                 projectCreationConfig:
-                                  description: Optional. Config to create a new project
+                                  description: Optional. Project creation config
                                   properties:
                                     billingAccountID:
                                       description: Required. Billing account id to
@@ -466,11 +404,6 @@ spec:
                                   type: object
                               type: object
                           type: object
-                        targetResourceDisplayName:
-                          description: Output only. The name of the application, project,
-                            folder, or organization that the cloud control is deployed
-                            on.
-                          type: string
                         updateTime:
                           description: Output only. The time at which the resource
                             last updated.
@@ -482,26 +415,6 @@ spec:
                       CloudControlGroups
                     items:
                       properties:
-                        ccDeploymentReferences:
-                          description: 'Output only. The references to the cloud control
-                            deployments in the cloud control group. For example, if
-                            a cloud control group has two cloud controls, `cloud-control-1`
-                            and `cloud-control-2`, and the cloud control deployments
-                            for these cloud controls are `cloud-control-deployment-1`
-                            and `cloud-control-deployment-2` respectively, then the
-                            references are: ``` cloud_control_deployment_reference:
-                            { cloud_control_deployment: "organizations/{organization}/locations/{location}/cloudControlDeployments/cloud-control-deployment-1"
-                            }, cloud_control_deployment_reference: { cloud_control_deployment:
-                            "organizations/{organization}/locations/{location}/cloudControlDeployments/cloud-control-deployment-2"
-                            } ```'
-                          items:
-                            properties:
-                              cloudControlDeployment:
-                                description: 'Output only. The name of the cloud control
-                                  deployment. The format is: organizations/{org}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}'
-                                type: string
-                            type: object
-                          type: array
                         ccDeployments:
                           description: Required. Cloud control deployments in the
                             group
@@ -512,41 +425,14 @@ spec:
                                   mode and parameters for the cloud_control
                                 properties:
                                   cloudControlDetails:
-                                    description: Required. Cloud control details
+                                    description: Required. CloudControlReference,
+                                      Deployment mode and parameters for the cloud_control
                                     properties:
-                                      cloudControlRef:
+                                      cloudControl:
                                         description: 'Required. The name of the CloudControl
                                           in the format: “organizations/{organization}/locations/{location}/
                                           cloudControls/{cloud-control}”'
-                                        oneOf:
-                                        - not:
-                                            required:
-                                            - external
-                                          required:
-                                          - name
-                                        - not:
-                                            anyOf:
-                                            - required:
-                                              - name
-                                            - required:
-                                              - namespace
-                                          required:
-                                          - external
-                                        properties:
-                                          external:
-                                            description: A reference to an externally
-                                              managed CloudSecurityComplianceCloudControl
-                                              resource. Should be in the format "organizations/{{organizationID}}/locations/{{location}}/cloudControls/{{cloudControlID}}".
-                                            type: string
-                                          name:
-                                            description: The name of a CloudSecurityComplianceCloudControl
-                                              resource.
-                                            type: string
-                                          namespace:
-                                            description: The namespace of a CloudSecurityComplianceCloudControl
-                                              resource.
-                                            type: string
-                                        type: object
+                                        type: string
                                       majorRevisionID:
                                         description: Required. Major revision of cloudcontrol
                                         format: int64
@@ -554,9 +440,7 @@ spec:
                                       parameters:
                                         description: 'Optional. Parameters is a key-value
                                           pair that is required by the CloudControl.
-                                          The specification of these parameters will
-                                          be present in cloudcontrol.Eg: { "name":
-                                          "location","value": "us-west-1"}.'
+                                          Eg: { "name": "location","value": "us-west-1"}.'
                                         items:
                                           properties:
                                             name:
@@ -587,84 +471,13 @@ spec:
                                 description: Optional. User provided description of
                                   the deployment
                                 type: string
-                              etag:
-                                description: Optional. To prevent concurrent updates
-                                  from overwriting each other, always provide the
-                                  `etag` when you update a CustomComplianceCloudControl.
-                                  You can also provide the `etag` when you delete
-                                  a CustomComplianceCloudControl, to help ensure that
-                                  you're deleting the intended version of the CustomComplianceCloudControl.
-                                type: string
-                              frameworkDeploymentReferences:
-                                description: Output only. The references to the framework
-                                  deployments that this cloud control deployment is
-                                  part of.
-                                items:
-                                  properties:
-                                    frameworkDeployment:
-                                      description: 'Output only. The name of the framework.
-                                        The format is: organizations/{org}/locations/{location}/frameworkDeployments/{framework_deployment_id}'
-                                      type: string
-                                    frameworkDisplayName:
-                                      description: Optional. The display name of the
-                                        framework.
-                                      type: string
-                                    frameworkReference:
-                                      description: 'Optional. The reference to the
-                                        framework that this deployment is for. Example:
-                                        { framework: "organizations/{org}/locations/{location}/frameworks/{framework}",
-                                        major_revision_id: 1 }'
-                                      properties:
-                                        framework:
-                                          description: 'Required. In the format: organizations/{org}/locations/{location}/frameworks/{framework}'
-                                          type: string
-                                        majorRevisionID:
-                                          description: Optional. Major revision id
-                                            of the framework. If not specified, corresponds
-                                            to the latest revision of the framework.
-                                          format: int64
-                                          type: integer
-                                      type: object
-                                  type: object
-                                type: array
                               name:
                                 description: 'Identifier. CloudControlDeployment name
                                   in either of the following formats: organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}'
                                 type: string
-                              parameterSubstitutedCloudControl:
-                                description: Output only. The cloud control after
-                                  parameter substitution.
-                                properties:
-                                  createTime:
-                                    description: Output only. The time that the cloud
-                                      control was last updated. create_time is used
-                                      because a new cloud control is created whenever
-                                      an existing cloud control is updated.
-                                    type: string
-                                  majorRevisionID:
-                                    description: Output only. The major version of
-                                      the cloud control, which is incremented in ascending
-                                      order.
-                                    format: int64
-                                    type: integer
-                                  relatedFrameworks:
-                                    description: Output only. The frameworks that
-                                      include this cloud control.
-                                    items:
-                                      type: string
-                                    type: array
-                                  supportedEnforcementModes:
-                                    description: Output only. The supported enforcement
-                                      modes for the cloud control.
-                                    items:
-                                      type: string
-                                    type: array
-                                type: object
                               targetResource:
                                 description: Output only. The resource on which the
                                   CloudControl is deployed based on the provided TargetResourceConfig.
-                                  In format organizations/{organization}, folders/{folder}
-                                  or projects/{project}.
                                 type: string
                               targetResourceConfig:
                                 description: Required. target_resource_config referencing
@@ -681,8 +494,7 @@ spec:
                                       for deployment
                                     properties:
                                       folderCreationConfig:
-                                        description: Optional. Config to create a
-                                          new folder
+                                        description: Optional. Folder creation config
                                         properties:
                                           folderDisplayName:
                                             description: Required. Display name of
@@ -694,8 +506,7 @@ spec:
                                             type: string
                                         type: object
                                       projectCreationConfig:
-                                        description: Optional. Config to create a
-                                          new project
+                                        description: Optional. Project creation config
                                         properties:
                                           billingAccountID:
                                             description: Required. Billing account
@@ -712,11 +523,6 @@ spec:
                                         type: object
                                     type: object
                                 type: object
-                              targetResourceDisplayName:
-                                description: Output only. The name of the application,
-                                  project, folder, or organization that the cloud
-                                  control is deployed on.
-                                type: string
                               updateTime:
                                 description: Output only. The time at which the resource
                                   last updated.

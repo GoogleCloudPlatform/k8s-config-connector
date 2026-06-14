@@ -49,13 +49,6 @@ type CloudSecurityComplianceFrameworkDeploymentSpec struct {
 	// Required. Deployment mode and parameters for each of the cloud_controls
 	//  part of the framework.
 	CloudControlMetadata []CloudControlMetadata `json:"cloudControlMetadata,omitempty"`
-
-	// Optional. To prevent concurrent updates from overwriting each other, always
-	//  provide the `etag` when you update a CustomComplianceFramework. You can
-	//  also provide the `etag` when you delete a CustomComplianceFramework, to
-	//  help ensure that you're deleting the intended version of the
-	//  CustomComplianceFramework.
-	Etag *string `json:"etag,omitempty"`
 }
 
 // CloudSecurityComplianceFrameworkDeploymentStatus defines the config connector machine state of CloudSecurityComplianceFrameworkDeployment
