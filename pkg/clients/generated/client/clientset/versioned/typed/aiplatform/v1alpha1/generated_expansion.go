@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type AIPlatformBatchPredictionJobExpansion interface{}
+
 type AIPlatformModelExpansion interface{}
 
 type VertexAIFeatureOnlineStoreExpansion interface{}

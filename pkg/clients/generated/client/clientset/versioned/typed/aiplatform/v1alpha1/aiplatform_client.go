@@ -31,6 +31,7 @@ import (
 
 type AiplatformV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	AIPlatformBatchPredictionJobsGetter
 	AIPlatformModelsGetter
 	VertexAIFeatureOnlineStoresGetter
 	VertexAISpecialistPoolsGetter
@@ -39,6 +40,10 @@ type AiplatformV1alpha1Interface interface {
 // AiplatformV1alpha1Client is used to interact with features provided by the aiplatform.cnrm.cloud.google.com group.
 type AiplatformV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *AiplatformV1alpha1Client) AIPlatformBatchPredictionJobs(namespace string) AIPlatformBatchPredictionJobInterface {
+	return newAIPlatformBatchPredictionJobs(c, namespace)
 }
 
 func (c *AiplatformV1alpha1Client) AIPlatformModels(namespace string) AIPlatformModelInterface {
