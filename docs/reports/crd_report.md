@@ -358,7 +358,7 @@
 | identityplatform.cnrm.cloud.google.com        | IdentityPlatformTenant                          | False        | True        | False  | DCL        | False       |
 | kms.cnrm.cloud.google.com                     | KMSAutokeyConfig                                | True         | True        | False  | Direct     | True        |
 | kms.cnrm.cloud.google.com                     | KMSCryptoKey                                    | False        | True        | False  | Terraform  | True        |
-| kms.cnrm.cloud.google.com                     | KMSCryptoKeyVersion                             | True         | False       | False  | Terraform  | False       |
+| kms.cnrm.cloud.google.com                     | KMSCryptoKeyVersion                             | True         | False       | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                     | KMSImportJob                                    | True         | True        | False  | Direct     | True        |
 | kms.cnrm.cloud.google.com                     | KMSKeyHandle                                    | True         | True        | False  | Direct     | True        |
 | kms.cnrm.cloud.google.com                     | KMSKeyRingImportJob                             | True         | False       | False  | Terraform  | False       |
