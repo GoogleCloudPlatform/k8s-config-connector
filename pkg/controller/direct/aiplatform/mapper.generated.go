@@ -265,6 +265,68 @@ func Examples_ExampleGcsSource_ToProto(mapCtx *direct.MapContext, in *krm.Exampl
 	// (near miss): "GCSSource" vs "GcsSource"
 	return out
 }
+
+/* found existing non-generated mapping function "ExplanationMetadata_InputMetadata_FeatureValueDomain_FromProto", skipping
+func ExplanationMetadata_InputMetadata_FeatureValueDomain_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata_InputMetadata_FeatureValueDomain) *krm.ExplanationMetadata_InputMetadata_FeatureValueDomain {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExplanationMetadata_InputMetadata_FeatureValueDomain{}
+	out.MinValue = direct.LazyPtr(in.GetMinValue())
+	out.MaxValue = direct.LazyPtr(in.GetMaxValue())
+	out.OriginalMean = direct.LazyPtr(in.GetOriginalMean())
+	out.OriginalStddev = direct.LazyPtr(in.GetOriginalStddev())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ExplanationMetadata_InputMetadata_FeatureValueDomain_ToProto", skipping
+func ExplanationMetadata_InputMetadata_FeatureValueDomain_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationMetadata_InputMetadata_FeatureValueDomain) *pb.ExplanationMetadata_InputMetadata_FeatureValueDomain {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationMetadata_InputMetadata_FeatureValueDomain{}
+	out.MinValue = direct.ValueOf(in.MinValue)
+	out.MaxValue = direct.ValueOf(in.MaxValue)
+	out.OriginalMean = direct.ValueOf(in.OriginalMean)
+	out.OriginalStddev = direct.ValueOf(in.OriginalStddev)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ExplanationMetadata_InputMetadata_Visualization_FromProto", skipping
+func ExplanationMetadata_InputMetadata_Visualization_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata_InputMetadata_Visualization) *krm.ExplanationMetadata_InputMetadata_Visualization {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExplanationMetadata_InputMetadata_Visualization{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Polarity = direct.Enum_FromProto(mapCtx, in.GetPolarity())
+	out.ColorMap = direct.Enum_FromProto(mapCtx, in.GetColorMap())
+	out.ClipPercentUpperbound = direct.LazyPtr(in.GetClipPercentUpperbound())
+	out.ClipPercentLowerbound = direct.LazyPtr(in.GetClipPercentLowerbound())
+	out.OverlayType = direct.Enum_FromProto(mapCtx, in.GetOverlayType())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ExplanationMetadata_InputMetadata_Visualization_ToProto", skipping
+
+	func ExplanationMetadata_InputMetadata_Visualization_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationMetadata_InputMetadata_Visualization) *pb.ExplanationMetadata_InputMetadata_Visualization {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ExplanationMetadata_InputMetadata_Visualization{}
+		out.Type = direct.Enum_ToProto[pb.ExplanationMetadata_InputMetadata_Visualization_Type](mapCtx, in.Type)
+		out.Polarity = direct.Enum_ToProto[pb.ExplanationMetadata_InputMetadata_Visualization_Polarity](mapCtx, in.Polarity)
+		out.ColorMap = direct.Enum_ToProto[pb.ExplanationMetadata_InputMetadata_Visualization_ColorMap](mapCtx, in.ColorMap)
+		out.ClipPercentUpperbound = direct.ValueOf(in.ClipPercentUpperbound)
+		out.ClipPercentLowerbound = direct.ValueOf(in.ClipPercentLowerbound)
+		out.OverlayType = direct.Enum_ToProto[pb.ExplanationMetadata_InputMetadata_Visualization_OverlayType](mapCtx, in.OverlayType)
+		return out
+	}
+*/
 func ExplanationParameters_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationParameters) *krm.ExplanationParameters {
 	if in == nil {
 		return nil
