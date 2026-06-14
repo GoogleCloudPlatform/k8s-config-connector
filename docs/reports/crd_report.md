@@ -464,7 +464,7 @@
 | securitycenter.cnrm.cloud.google.com          | SecurityCenterMuteConfig                        | True         | False       | False  | Direct     | True        |
 | securitycenter.cnrm.cloud.google.com          | SecurityCenterNotificationConfig                | True         | False       | False  | Terraform  | False       |
 | securitycenter.cnrm.cloud.google.com          | SecurityCenterSource                            | True         | False       | False  | Terraform  | False       |
-| servicedirectory.cnrm.cloud.google.com        | ServiceDirectoryEndpoint                        | False        | True        | False  | Terraform  | False       |
+| servicedirectory.cnrm.cloud.google.com        | ServiceDirectoryEndpoint                        | False        | True        | False  | Terraform  | True        |
 | servicedirectory.cnrm.cloud.google.com        | ServiceDirectoryNamespace                       | False        | True        | False  | Terraform  | True        |
 | servicedirectory.cnrm.cloud.google.com        | ServiceDirectoryService                         | False        | True        | False  | Terraform  | True        |
 | serviceusage.cnrm.cloud.google.com            | ServiceIdentity                                 | False        | True        | False  | Terraform  | True        |
