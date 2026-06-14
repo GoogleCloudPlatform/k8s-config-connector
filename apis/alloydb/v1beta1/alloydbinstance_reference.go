@@ -28,22 +28,21 @@ import (
 
 var _ refs.Ref = &AlloyDBInstanceRef{}
 
-// AlloyDBInstanceRef defines the resource reference to AlloyDBInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// AlloyDBInstanceRef is a reference to an AlloyDBInstance.
 type AlloyDBInstanceRef struct {
 	// A reference to an externally managed AlloyDBInstance resource.
 	// Should be in the format "projects/{{project}}/locations/{{location}}/clusters/{{cluster}}/instances/{{instance}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AlloyDBInstance resource.
+	// The name of an AlloyDBInstance resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AlloyDBInstance resource.
+	// The namespace of an AlloyDBInstance resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&AlloyDBInstanceRef{})
+	refs.Register(&AlloyDBInstanceRef{}, &AlloyDBInstance{})
 }
 
 func (r *AlloyDBInstanceRef) GetGVK() schema.GroupVersionKind {
@@ -63,6 +62,8 @@ func (r *AlloyDBInstanceRef) GetExternal() string {
 
 func (r *AlloyDBInstanceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *AlloyDBInstanceRef) ValidateExternal(ref string) error {

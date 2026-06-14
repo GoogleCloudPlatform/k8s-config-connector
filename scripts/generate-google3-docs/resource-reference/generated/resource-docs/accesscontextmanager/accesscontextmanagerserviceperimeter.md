@@ -16,7 +16,7 @@ title: "AccessContextManagerServicePerimeter"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/vpc-service-controls/docs/">/vpc-service-controls/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/vpc-service-controls/docs/">https://docs.cloud.google.com/vpc-service-controls/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "AccessContextManagerServicePerimeter"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/access-context-manager/docs/reference/rest/v1/accessPolicies.servicePerimeters">/access-context-manager/docs/reference/rest/v1/accessPolicies.servicePerimeters</a></td>
+<td><a href="https://docs.cloud.google.com/access-context-manager/docs/reference/rest/v1/accessPolicies.servicePerimeters">https://docs.cloud.google.com/access-context-manager/docs/reference/rest/v1/accessPolicies.servicePerimeters</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -233,7 +233,7 @@ useExplicitDryRunSpec: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a AccessContextManagerAccessPolicy resource.</p>
+            <p>The name of an AccessContextManagerAccessPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -243,7 +243,7 @@ useExplicitDryRunSpec: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a AccessContextManagerAccessPolicy resource.</p>
+            <p>The namespace of an AccessContextManagerAccessPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -318,7 +318,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>AccessLevelRef is a reference to a AccessLevel resource.</p>
+            <p>AccessLevelRef is a reference to an AccessLevel resource.</p>
         </td>
     </tr>
     <tr>
@@ -338,7 +338,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a AccessLevel resource.</p>
+            <p>The name of an AccessLevel resource.</p>
         </td>
     </tr>
     <tr>
@@ -348,7 +348,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a AccessLevel resource.</p>
+            <p>The namespace of an AccessLevel resource.</p>
         </td>
     </tr>
     <tr>
@@ -778,7 +778,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a AccessLevel resource.</p>
+            <p>The name of an AccessLevel resource.</p>
         </td>
     </tr>
     <tr>
@@ -788,7 +788,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a AccessLevel resource.</p>
+            <p>The namespace of an AccessLevel resource.</p>
         </td>
     </tr>
     <tr>
@@ -1118,7 +1118,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>AccessLevelRef is a reference to a AccessLevel resource.</p>
+            <p>AccessLevelRef is a reference to an AccessLevel resource.</p>
         </td>
     </tr>
     <tr>
@@ -1138,7 +1138,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a AccessLevel resource.</p>
+            <p>The name of an AccessLevel resource.</p>
         </td>
     </tr>
     <tr>
@@ -1148,7 +1148,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a AccessLevel resource.</p>
+            <p>The namespace of an AccessLevel resource.</p>
         </td>
     </tr>
     <tr>
@@ -1578,7 +1578,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a AccessLevel resource.</p>
+            <p>The name of an AccessLevel resource.</p>
         </td>
     </tr>
     <tr>
@@ -1588,7 +1588,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a AccessLevel resource.</p>
+            <p>The namespace of an AccessLevel resource.</p>
         </td>
     </tr>
     <tr>
@@ -2150,4 +2150,4 @@ metadata:
   name: serviceperimeteringressdep
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

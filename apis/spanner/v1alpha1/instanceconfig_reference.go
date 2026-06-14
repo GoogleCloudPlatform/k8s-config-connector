@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &InstanceConfigRef{}
 
-// InstanceConfigRef defines the resource reference to SpannerInstanceConfig, which "External" field
-// holds the GCP identifier for the KRM object.
+// InstanceConfigRef is a reference to a SpannerInstanceConfig.
 type InstanceConfigRef struct {
 	// A reference to an externally managed SpannerInstanceConfig resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/instanceconfigs/{{instanceconfigID}}".

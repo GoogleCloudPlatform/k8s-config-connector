@@ -25,8 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// BackupScheduleIdentity defines the resource reference to SpannerBackupSchedule, which "External" field
-// holds the GCP identifier for the KRM object.
+// BackupScheduleIdentity is the identity of a SpannerBackupSchedule.
 type BackupScheduleIdentity struct {
 	parent *BackupScheduleParent
 	id     string

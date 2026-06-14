@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: parametermanager.cnrm.cloud.google.com
+  kind: ParameterManagerParameter
+  name: parametermanagerparameter-basic-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  group: parametermanager.cnrm.cloud.google.com
+  kind: ParameterManagerParameterVersion
+  name: parametermanagerparameterversion-basic-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

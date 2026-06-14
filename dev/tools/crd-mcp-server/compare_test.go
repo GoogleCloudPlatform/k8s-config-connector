@@ -610,9 +610,7 @@ spec:
 
 	result := compareEquivalence(old, new)
 
-	expectedBlocked := []string{
-		"[v1beta1] field type changed: spec.count (integer -> int64)",
-	}
+	var expectedBlocked []string
 
 	if len(result.Diffs) != len(expectedBlocked) {
 		t.Fatalf("expected %d diffs, got %d: %v", len(expectedBlocked), len(result.Diffs), result.Diffs)
@@ -624,6 +622,7 @@ spec:
 	}
 
 	expectedNotes := []string{
+		"[v1beta1] field type changed: spec.count (integer -> int64) (allowed)",
 		"[v1beta1] field type changed: spec.httpKeepAliveTimeoutSec (integer -> int32) (allowed)",
 		"[v1beta1] field type changed: status.nodePort (integer -> int32) (allowed)",
 		"[v1beta1] field type changed: status.observedGeneration (integer -> int64) (allowed)",
@@ -1266,9 +1265,7 @@ spec:
 
 	result := compareBackwardCompatibility(old, new)
 
-	expectedBlocked := []string{
-		"[v1beta1] field type changed: spec.count (integer -> int64)",
-	}
+	var expectedBlocked []string
 
 	if len(result.Diffs) != len(expectedBlocked) {
 		t.Fatalf("expected %d diffs, got %d: %v", len(expectedBlocked), len(result.Diffs), result.Diffs)
@@ -1280,6 +1277,7 @@ spec:
 	}
 
 	expectedNotes := []string{
+		"[v1beta1] field type changed: spec.count (integer -> int64) (allowed)",
 		"[v1beta1] field type changed: spec.httpKeepAliveTimeoutSec (integer -> int32) (allowed)",
 		"[v1beta1] field type changed: status.observedGeneration (integer -> int64) (allowed)",
 		"[v1beta1] field type changed: status.proxyId (integer -> int64) (allowed)",

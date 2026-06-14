@@ -28,17 +28,16 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &GoogleChannelConfigRef{}
 
-// GoogleChannelConfigRef defines the resource reference to EventarcGoogleChannelConfig, which "External" field
-// holds the GCP identifier for the KRM object.
+// GoogleChannelConfigRef is a reference to an EventarcGoogleChannelConfig.
 type GoogleChannelConfigRef struct {
 	// A reference to an externally managed EventarcGoogleChannelConfig resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/googlechannelconfigs/{{googlechannelconfigID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a EventarcGoogleChannelConfig resource.
+	// The name of an EventarcGoogleChannelConfig resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a EventarcGoogleChannelConfig resource.
+	// The namespace of an EventarcGoogleChannelConfig resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

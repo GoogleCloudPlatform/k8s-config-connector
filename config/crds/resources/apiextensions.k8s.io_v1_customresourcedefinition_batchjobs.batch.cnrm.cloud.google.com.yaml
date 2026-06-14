@@ -442,10 +442,9 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: The value of an externally managed
+                                  description: A reference to an externally managed
                                     ComputeNetwork resource. Should be in the format
-                                    "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                                    or "projects/{{projectId}}/global/networks/{{networkId}}"
+                                    "projects/{{projectID}}/global/networks/{{networkID}}".
                                   type: string
                                 name:
                                   description: The name of a ComputeNetwork resource.
@@ -489,16 +488,15 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: The ComputeSubnetwork selflink of form
-                                    "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
-                                    when not managed by Config Connector.
+                                  description: A reference to an externally managed
+                                    ComputeSubnetwork resource. Should be in the format
+                                    "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".
                                   type: string
                                 name:
-                                  description: The `name` field of a `ComputeSubnetwork`
-                                    resource.
+                                  description: The name of a ComputeSubnetwork resource.
                                   type: string
                                 namespace:
-                                  description: The `namespace` field of a `ComputeSubnetwork`
+                                  description: The namespace of a ComputeSubnetwork
                                     resource.
                                   type: string
                               type: object

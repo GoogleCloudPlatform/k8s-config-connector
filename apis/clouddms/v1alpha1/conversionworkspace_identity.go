@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ConversionWorkspaceIdentity defines the resource reference to CloudDMSConversionWorkspace, which "External" field
-// holds the GCP identifier for the KRM object.
+// ConversionWorkspaceIdentity is the identity of a CloudDMSConversionWorkspace.
 type ConversionWorkspaceIdentity struct {
 	parent *ConversionWorkspaceParent
 	id     string

@@ -16,7 +16,7 @@ title: "MemorystoreInstance"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/memorystore/docs/valkey/">/memorystore/docs/valkey/</a></td>
+<td><a href="https://docs.cloud.google.com/memorystore/docs/valkey/">https://docs.cloud.google.com/memorystore/docs/valkey/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "MemorystoreInstance"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances">/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances</a></td>
+<td><a href="https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances">https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -89,9 +89,21 @@ endpoints:
 engineConfigs:
   string: string
 engineVersion: string
+kmsKeyRef:
+  external: string
+  name: string
+  namespace: string
 labels:
   string: string
 location: string
+maintenancePolicy:
+  weeklyMaintenanceWindow:
+  - day: string
+    startTime:
+      hours: integer
+      minutes: integer
+      nanos: integer
+      seconds: integer
 maintenanceVersion: string
 mode: string
 nodeType: string
@@ -373,7 +385,7 @@ zoneDistributionConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -468,6 +480,46 @@ zoneDistributionConfig:
     </tr>
     <tr>
         <td>
+            <p><code>kmsKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The KMS key reference for the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsKeyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>labels</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -484,6 +536,96 @@ zoneDistributionConfig:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The maintenance policy for the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Optional. Maintenance window that is applied to resources covered by this policy. Minimum 1. For the current version, the maximum number of weekly_window is expected to be one.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[].day</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. Allows to define schedule that runs specified day of the week.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[].startTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. Start time of the window in UTC.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[].startTime.hours</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[].startTime.minutes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Minutes of hour of day. Must be from 0 to 59.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[].startTime.nanos</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[].startTime.seconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.</p>
         </td>
     </tr>
     <tr>
@@ -741,6 +883,12 @@ observedState:
     - instance: string
       uid: string
   effectiveMaintenanceVersion: string
+  encryptionInfo:
+    encryptionType: string
+    kmsKeyPrimaryState: string
+    kmsKeyVersions:
+    - string
+    lastUpdateTime: string
   endpoints:
   - connections:
     - pscAutoConnection:
@@ -751,6 +899,12 @@ observedState:
         pscConnectionID: string
         pscConnectionStatus: string
         serviceAttachment: string
+  maintenancePolicy:
+    createTime: string
+    updateTime: string
+  maintenanceSchedule:
+    endTime: string
+    startTime: string
   nodeConfig:
     sizeGB: float
   pscAttachmentDetails:
@@ -989,6 +1143,48 @@ observedState:
         </td>
     </tr>
     <tr>
+        <td><code>observedState.encryptionInfo</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. Encryption information for the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.encryptionInfo.encryptionType</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. Type of encryption.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.encryptionInfo.kmsKeyPrimaryState</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The state of the primary KMS key.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.encryptionInfo.kmsKeyVersions</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Output only. KMS key versions that are being used to protect the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.encryptionInfo.kmsKeyVersions[]</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.encryptionInfo.lastUpdateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. Latest update timestamp of the encryption info.</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.endpoints</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
@@ -1070,6 +1266,48 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Output only. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenancePolicy</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. User-defined weekly maintenance windows in which space is reserved for maintenance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenancePolicy.createTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The time when the policy was created.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenancePolicy.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The time when the policy was updated.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenanceSchedule</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. Upcoming maintenance schedule.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenanceSchedule.endTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The end time of any upcoming scheduled maintenance for this instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenanceSchedule.startTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The start time of any upcoming scheduled maintenance for this instance.</p>
         </td>
     </tr>
     <tr>
@@ -1243,4 +1481,4 @@ spec:
     - name: memorystoreinstance-dep
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

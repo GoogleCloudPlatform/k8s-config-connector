@@ -18,7 +18,7 @@ Note: GKE Hub REST documentation is under construction.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/anthos/multicluster-management/connect/overview">/anthos/multicluster-management/connect/overview</a></td>
+<td><a href="https://docs.cloud.google.com/anthos/multicluster-management/connect/overview">https://docs.cloud.google.com/anthos/multicluster-management/connect/overview</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -694,4 +694,4 @@ spec:
     name: gkehubfeature-dep-mcsdfeature
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

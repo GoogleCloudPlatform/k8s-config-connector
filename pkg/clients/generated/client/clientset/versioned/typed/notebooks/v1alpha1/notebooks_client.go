@@ -32,6 +32,7 @@ import (
 type NotebooksV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	NotebooksEnvironmentsGetter
+	NotebooksExecutionsGetter
 }
 
 // NotebooksV1alpha1Client is used to interact with features provided by the notebooks.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type NotebooksV1alpha1Client struct {
 
 func (c *NotebooksV1alpha1Client) NotebooksEnvironments(namespace string) NotebooksEnvironmentInterface {
 	return newNotebooksEnvironments(c, namespace)
+}
+
+func (c *NotebooksV1alpha1Client) NotebooksExecutions(namespace string) NotebooksExecutionInterface {
+	return newNotebooksExecutions(c, namespace)
 }
 
 // NewForConfig creates a new NotebooksV1alpha1Client for the given config.

@@ -30,6 +30,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.pscConnections[].address", "10.11.12.13")
 	replacements.ReplacePath(".discoveryEndpoints[].address", "10.11.12.13")
 	replacements.ReplacePath(".response.discoveryEndpoints[].address", "10.11.12.13")
+	replacements.ReplacePath(".encryptionInfo.lastUpdateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.encryptionInfo.lastUpdateTime", "2024-04-01T12:34:56.123456Z")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

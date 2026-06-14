@@ -73,9 +73,13 @@ func (m *modelQueue) AdapterForObject(ctx context.Context, op *directbase.Adapte
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewQueueIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
+	}
+	typedID, ok := id.(*krm.TasksQueueIdentity)
+	if !ok {
+		return nil, fmt.Errorf("expected *krm.TasksQueueIdentity, got %T", id)
 	}
 
 	// Get tasks GCP client
@@ -84,7 +88,7 @@ func (m *modelQueue) AdapterForObject(ctx context.Context, op *directbase.Adapte
 		return nil, err
 	}
 	return &QueueAdapter{
-		id:        id,
+		id:        typedID,
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
@@ -96,7 +100,7 @@ func (m *modelQueue) AdapterForURL(ctx context.Context, url string) (directbase.
 }
 
 type QueueAdapter struct {
-	id        *krm.QueueIdentity
+	id        *krm.TasksQueueIdentity
 	gcpClient *gcp.Client
 	desired   *krm.TasksQueue
 	actual    *cloudtaskspb.Queue
@@ -110,7 +114,7 @@ var _ directbase.Adapter = &QueueAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *QueueAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting Queue", "name", a.id)
+	log.V(2).Info("getting Queue", "name", a.id.String())
 
 	req := &cloudtaskspb.GetQueueRequest{Name: a.id.String()}
 	queuepb, err := a.gcpClient.GetQueue(ctx, req)
@@ -118,7 +122,7 @@ func (a *QueueAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting Queue %q: %w", a.id, err)
+		return false, fmt.Errorf("getting Queue %q: %w", a.id.String(), err)
 	}
 
 	a.actual = queuepb
@@ -128,7 +132,7 @@ func (a *QueueAdapter) Find(ctx context.Context) (bool, error) {
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *QueueAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating Queue", "name", a.id)
+	log.V(2).Info("creating Queue", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -138,14 +142,14 @@ func (a *QueueAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	}
 	resource.Name = a.id.String()
 	req := &cloudtaskspb.CreateQueueRequest{
-		Parent: a.id.Parent().String(),
+		Parent: fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
 		Queue:  resource,
 	}
 	created, err := a.gcpClient.CreateQueue(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating Queue %s: %w", a.id, err)
+		return fmt.Errorf("creating Queue %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully created Queue", "name", a.id)
+	log.V(2).Info("successfully created Queue", "name", a.id.String())
 
 	status := &krm.TasksQueueStatus{}
 	status.ObservedState = TasksQueueObservedState_FromProto(mapCtx, created)
@@ -159,7 +163,7 @@ func (a *QueueAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *QueueAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating Queue", "name", a.id)
+	log.V(2).Info("updating Queue", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	desiredPb := TasksQueueSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
@@ -179,7 +183,7 @@ func (a *QueueAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	paths = paths.Delete("state")
 
 	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
+		log.V(2).Info("no field needs update", "name", a.id.String())
 		return nil
 	}
 
@@ -200,9 +204,9 @@ func (a *QueueAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	// return fmt.Errorf("update queue request %+v", req)
 	updated, err := a.gcpClient.UpdateQueue(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating Queue %+v: %w", a.id, err)
+		return fmt.Errorf("updating Queue %+v: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully updated Queue", "name", a.id)
+	log.V(2).Info("successfully updated Queue", "name", a.id.String())
 
 	status := &krm.TasksQueueStatus{}
 	status.ObservedState = TasksQueueObservedState_FromProto(mapCtx, updated)
@@ -225,8 +229,8 @@ func (a *QueueAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = &a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -242,18 +246,18 @@ func (a *QueueAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *QueueAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting Queue", "name", a.id)
+	log.V(2).Info("deleting Queue", "name", a.id.String())
 
 	req := &cloudtaskspb.DeleteQueueRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteQueue(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent Queue, assuming it was already deleted", "name", a.id)
+			log.V(2).Info("skipping delete for non-existent Queue, assuming it was already deleted", "name", a.id.String())
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting Queue %s: %w", a.id, err)
+		return false, fmt.Errorf("deleting Queue %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully deleted Queue", "name", a.id)
+	log.V(2).Info("successfully deleted Queue", "name", a.id.String())
 	return true, nil
 }

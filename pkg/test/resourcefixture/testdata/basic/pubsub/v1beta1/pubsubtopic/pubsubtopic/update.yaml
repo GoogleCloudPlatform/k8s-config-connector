@@ -27,3 +27,7 @@ spec:
       name: pubsubschema-${uniqueId}
     encoding: JSON
   messageRetentionDuration: 3600s
+  messageStoragePolicy:
+    allowedPersistenceRegions:
+      - us-central1
+    enforceInTransit: false

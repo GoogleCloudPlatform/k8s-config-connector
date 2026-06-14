@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// FeedIdentity defines the resource reference to AssetFeed, which "External" field
-// holds the GCP identifier for the KRM object.
+// FeedIdentity is the identity of an AssetFeed.
 type FeedIdentity struct {
 	parent *FeedParent
 	id     string

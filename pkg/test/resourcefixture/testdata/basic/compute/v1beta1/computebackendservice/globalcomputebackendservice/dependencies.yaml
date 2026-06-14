@@ -64,3 +64,4 @@ metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computehttphealthcheck-${uniqueId}
+spec: {}

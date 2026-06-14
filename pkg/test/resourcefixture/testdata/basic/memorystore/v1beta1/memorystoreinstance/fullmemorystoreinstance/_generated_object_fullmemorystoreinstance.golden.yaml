@@ -34,9 +34,19 @@ spec:
     maxclients: "10000"
     maxmemory-policy: volatile-ttl
   engineVersion: VALKEY_7_2
+  kmsKeyRef:
+    name: key-${uniqueId}
   labels:
     keyx: valx
   location: us-central1
+  maintenancePolicy:
+    weeklyMaintenanceWindow:
+    - day: WEDNESDAY
+      startTime:
+        hours: 6
+        minutes: 0
+        nanos: 0
+        seconds: 0
   mode: CLUSTER
   nodeType: STANDARD_SMALL
   persistenceConfig:
@@ -67,6 +77,11 @@ status:
     - MEMORYSTORE_20260313_01_03
     createTime: "1970-01-01T00:00:00Z"
     effectiveMaintenanceVersion: MEMORYSTORE_20260313_01_02
+    encryptionInfo:
+      encryptionType: CUSTOMER_MANAGED_ENCRYPTION
+      kmsKeyPrimaryState: ENABLED
+      kmsKeyVersions:
+      - projects/${projectId}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/key-${uniqueId}/cryptoKeyVersions/1
     endpoints:
     - connections:
       - pscAutoConnection:
@@ -81,6 +96,7 @@ status:
           ipAddress: ${ipAddress}-2
           pscConnectionID: ${pscConnectionId}
           serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2
+    maintenancePolicy: {}
     nodeConfig:
       sizeGB: 6.5
     pscAttachmentDetails:

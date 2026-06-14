@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &TopicRef{}
 
-// TopicRef defines the resource reference to ManagedKafkaTopic, which "External" field
-// holds the GCP identifier for the KRM object.
+// TopicRef is a reference to a ManagedKafkaTopic.
 type TopicRef struct {
 	// A reference to an externally managed ManagedKafkaTopic resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}/topics/{{topicID}}".

@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -60,7 +61,7 @@ func (i *ArtifactRegistryRepositoryIdentity) Host() string {
 	return ArtifactRegistryRepositoryIdentityFormat.Host()
 }
 
-func getIdentityFromArtifactRegistryRepositorySpec(ctx context.Context, reader client.Reader, obj client.Object) (*ArtifactRegistryRepositoryIdentity, error) {
+func getIdentityFromArtifactRegistryRepositorySpec(ctx context.Context, reader client.Reader, obj *ArtifactRegistryRepository) (*ArtifactRegistryRepositoryIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -95,13 +96,22 @@ func (obj *ArtifactRegistryRepository) GetIdentity(ctx context.Context, reader c
 	externalRef := common.ValueOf(obj.Status.Name)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &ArtifactRegistryRepositoryIdentity{}
-		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
+		// To preserve backward compatibility, status.Name can be just the repository name
+		// (e.g. "arrepository-xxx") or the full path. If it doesn't contain a "/", it's
+		// the short name; we can verify it directly against specIdentity.Repository.
+		if !strings.Contains(externalRef, "/") {
+			if externalRef != specIdentity.Repository {
+				return nil, fmt.Errorf("cannot change ArtifactRegistryRepository identity (old=%q, new=%q)", externalRef, specIdentity.Repository)
+			}
+		} else {
+			statusIdentity := &ArtifactRegistryRepositoryIdentity{}
+			if err := statusIdentity.FromExternal(externalRef); err != nil {
+				return nil, err
+			}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change ArtifactRegistryRepository identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			if statusIdentity.String() != specIdentity.String() {
+				return nil, fmt.Errorf("cannot change ArtifactRegistryRepository identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			}
 		}
 	}
 

@@ -33,8 +33,7 @@ var scopeURL = gcpurls.Template[GKEHubScopeIdentity](
 	"projects/{projectID}/locations/{location}/scopes/{scopeID}",
 )
 
-// GKEHubScopeIdentity defines the resource reference to GKEHubScope, which "External" field
-// holds the GCP identifier for the KRM object.
+// GKEHubScopeIdentity is the identity of a GKEHubScope.
 // +k8s:deepcopy-gen=false
 type GKEHubScopeIdentity struct {
 	ProjectID string

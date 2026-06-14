@@ -33,8 +33,7 @@ var memorystoreInstanceGVK = schema.GroupVersionKind{
 
 var _ refs.Ref = &MemorystoreInstanceRef{}
 
-// MemorystoreInstanceRef defines the resource reference to MemorystoreInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// MemorystoreInstanceRef is a reference to a MemorystoreInstance.
 type MemorystoreInstanceRef struct {
 	// A reference to an externally managed MemorystoreInstance resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
@@ -48,7 +47,7 @@ type MemorystoreInstanceRef struct {
 }
 
 func init() {
-	refs.Register(&MemorystoreInstanceRef{})
+	refs.Register(&MemorystoreInstanceRef{}, nil)
 }
 
 func (r *MemorystoreInstanceRef) GetGVK() schema.GroupVersionKind {
@@ -68,6 +67,8 @@ func (r *MemorystoreInstanceRef) GetExternal() string {
 
 func (r *MemorystoreInstanceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *MemorystoreInstanceRef) ValidateExternal(ref string) error {

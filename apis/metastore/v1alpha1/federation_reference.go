@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &FederationRef{}
 
-// FederationRef defines the resource reference to MetastoreFederation, which "External" field
-// holds the GCP identifier for the KRM object.
+// FederationRef is a reference to a MetastoreFederation.
 type FederationRef struct {
 	// A reference to an externally managed MetastoreFederation resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/federations/{{federationID}}".

@@ -16,7 +16,7 @@ title: "ComputeImage"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ComputeImage"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/v1/images">/compute/docs/reference/rest/v1/images</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/images">https://docs.cloud.google.com/compute/docs/reference/rest/v1/images</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -671,4 +671,4 @@ spec:
     sha1: 819b7e9c17423f4539f09687eaa13687afa2fe32
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

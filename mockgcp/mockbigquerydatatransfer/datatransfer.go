@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/bigquery/datatransfer/apiv1/datatransferpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/datatransfer/v1"
 )
 
 type dataTransferService struct {

@@ -31,6 +31,14 @@ type FakeSecuritycenterV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeSecuritycenterV1alpha1) SecurityCenterBigQueryExports(namespace string) v1alpha1.SecurityCenterBigQueryExportInterface {
+	return newFakeSecurityCenterBigQueryExports(c, namespace)
+}
+
+func (c *FakeSecuritycenterV1alpha1) SecurityCenterMuteConfigs(namespace string) v1alpha1.SecurityCenterMuteConfigInterface {
+	return newFakeSecurityCenterMuteConfigs(c, namespace)
+}
+
 func (c *FakeSecuritycenterV1alpha1) SecurityCenterNotificationConfigs(namespace string) v1alpha1.SecurityCenterNotificationConfigInterface {
 	return newFakeSecurityCenterNotificationConfigs(c, namespace)
 }

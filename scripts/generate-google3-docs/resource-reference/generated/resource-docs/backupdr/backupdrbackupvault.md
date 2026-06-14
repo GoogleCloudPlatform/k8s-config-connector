@@ -16,7 +16,7 @@ title: "BackupDRBackupVault"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/backup-disaster-recovery/docs/">/backup-disaster-recovery/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/backup-disaster-recovery/docs/">https://docs.cloud.google.com/backup-disaster-recovery/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BackupDRBackupVault"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/backup-disaster-recovery/docs/reference/rest/v1/projects.locations.backupVaults">/backup-disaster-recovery/docs/reference/rest/v1/projects.locations.backupVaults</a></td>
+<td><a href="https://docs.cloud.google.com/backup-disaster-recovery/docs/reference/rest/v1/projects.locations.backupVaults">https://docs.cloud.google.com/backup-disaster-recovery/docs/reference/rest/v1/projects.locations.backupVaults</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -384,4 +384,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

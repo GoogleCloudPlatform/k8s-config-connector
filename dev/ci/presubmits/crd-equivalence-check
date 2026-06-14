@@ -18,7 +18,7 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}
+cd "${REPO_ROOT}"
 
 # Determine the base branch for comparison
 # In GitHub Actions, GITHUB_BASE_REF is set for PRs.
@@ -47,38 +47,20 @@ fi
 
 FAILED=0
 
-for file in ${CHANGED_CRDS}; do
-  if [[ ! -f "${file}" ]]; then
-    echo "File ${file} was deleted. Skipping check."
-    continue
-  fi
+echo "Running equivalence check..."
+CMD="dev/tasks/diff-crds --base ${COMPARISON_REF}"
+echo "Running: ${CMD}"
 
-  echo "Checking CRD: ${file}"
+# We capture output to check for differences
+# We use '|| true' to prevent errexit from stopping the script on tool errors (we want to log them).
+OUTPUT=$(${CMD} 2>&1 || true)
 
-  # Perform equivalence check
-  # In step/gen-types PRs, we expect the KRM API to remain identical (equivalent).
-  echo "Running equivalence check..."
-  CMD="go run ./dev/tools/crd-mcp-server equivalent --file ${file} --ref ${COMPARISON_REF}"
-  echo "Running: ${CMD}"
-  
-  # We capture output to check for "NOT EQUIVALENT" because the tool currently exits 0 even on mismatch.
-  # We use '|| true' to prevent errexit from stopping the script on tool errors (we want to log them).
-  OUTPUT=$(${CMD} 2>&1) || {
-    echo "ERROR: CRD check tool failed to execute for ${file}"
-    echo "${OUTPUT}"
-    FAILED=1
-    continue
-  }
-  
-  echo "${OUTPUT}"
-  
-  if echo "${OUTPUT}" | grep -q "NOT EQUIVALENT"; then
-    echo "ERROR: CRD ${file} is not equivalent to ${COMPARISON_REF}!"
-    FAILED=1
-  fi
-  
-  echo "-------------------------------------------"
-done
+echo "${OUTPUT}"
+
+if echo "${OUTPUT}" | grep -q "Diffs for CRD:"; then
+  echo "ERROR: CRDs are not equivalent to ${COMPARISON_REF}!"
+  FAILED=1
+fi
 
 if [[ ${FAILED} -ne 0 ]]; then
   echo "CRD equivalence checks failed. Please review the output above."

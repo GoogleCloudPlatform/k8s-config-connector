@@ -15,52 +15,100 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
-	"strings"
 
-	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-type NetworkIdentity struct {
-	id     string
-	parent parent.ProjectParent
-}
+var (
+	_ identity.IdentityV2 = &NetworkIdentity{}
+	_ identity.Resource   = &ComputeNetwork{}
+)
 
-func (i *NetworkIdentity) Parent() parent.ProjectParent {
-	return i.parent
+var ComputeNetworkIdentityFormat = gcpurls.Template[NetworkIdentity]("compute.googleapis.com", "projects/{project}/global/networks/{network}")
+
+// NetworkIdentity is the identity of a GCP ComputeNetwork resource.
+// +k8s:deepcopy-gen=false
+type NetworkIdentity struct {
+	Project string
+	Network string
 }
 
 func (i *NetworkIdentity) String() string {
-	return i.parent.String() + "/global/networks/" + i.id
+	return ComputeNetworkIdentityFormat.ToString(*i)
 }
 
-func (i *NetworkIdentity) ID() string {
-	return i.id
-}
-
-func (i *NetworkIdentity) FromExternal(external string) error {
-	id, err := ParseComputeNetworkExternal(external)
+func (i *NetworkIdentity) FromExternal(ref string) error {
+	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
+	parsed, match, err := ComputeNetworkIdentityFormat.Parse(trimmedRef)
 	if err != nil {
-		return fmt.Errorf("error parsing ComputeNetworkID from %q: %w", external, err)
+		return fmt.Errorf("format of ComputeNetwork external=%q was not known (use %s): %w", ref, ComputeNetworkIdentityFormat.CanonicalForm(), err)
 	}
-	i.parent.ProjectID = id.Parent().ProjectID
-	i.id = id.id
+	if !match {
+		return fmt.Errorf("format of ComputeNetwork external=%q was not known (use %s)", ref, ComputeNetworkIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
 	return nil
+}
+
+func (i *NetworkIdentity) Host() string {
+	return ComputeNetworkIdentityFormat.Host()
 }
 
 func ParseComputeNetworkExternal(external string) (*NetworkIdentity, error) {
 	if external == "" {
 		return nil, fmt.Errorf("empty ComputeNetwork external value")
 	}
-	trimmedExternal := common.FixStaleComputeExternalFormat(external)
-	tokens := strings.Split(trimmedExternal, "/")
-	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
-		return &NetworkIdentity{
-			parent: parent.ProjectParent{ProjectID: tokens[1]},
-			id:     tokens[4],
-		}, nil
+	id := &NetworkIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		return nil, err
 	}
-	return nil, fmt.Errorf("format of computenetwork external=%q was not known (use https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}} or projects/{{projectId}}/global/networks/{{networkId}})", external)
+	return id, nil
+}
+
+func getIdentityFromComputeNetworkSpec(ctx context.Context, reader client.Reader, obj *ComputeNetwork) (*NetworkIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &NetworkIdentity{
+		Project: projectID,
+		Network: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *ComputeNetwork) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromComputeNetworkSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against status.selfLink, if present.
+	selfLink := common.ValueOf(obj.Status.SelfLink)
+	if selfLink != "" {
+		statusIdentity := &NetworkIdentity{}
+		if err := statusIdentity.FromExternal(selfLink); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change ComputeNetwork identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
 }

@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// PrivateCloudIdentity defines the resource reference to VMwareEnginePrivateCloud, which "External" field
-// holds the GCP identifier for the KRM object.
+// PrivateCloudIdentity is the identity of a VMwareEnginePrivateCloud.
 type PrivateCloudIdentity struct {
 	parent *PrivateCloudParent
 	id     string

@@ -89,6 +89,12 @@ type InstanceFixedFrequencySchedule struct {
 	StartTime *InstanceStartTime `json:"startTime,omitempty"`
 }
 
+type InstanceMaintenancePolicy struct {
+	/* Optional. Maintenance window that is applied to resources covered by this policy. Minimum 1. For the current version, the maximum number of weekly_window is expected to be one. */
+	// +optional
+	WeeklyMaintenanceWindow []InstanceWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
+}
+
 type InstancePersistenceConfig struct {
 	/* Optional. AOF configuration. This field will be ignored if mode is not AOF. */
 	// +optional
@@ -145,6 +151,16 @@ type InstanceStartTime struct {
 	Seconds *int32 `json:"seconds,omitempty"`
 }
 
+type InstanceWeeklyMaintenanceWindow struct {
+	/* Optional. Allows to define schedule that runs specified day of the week. */
+	// +optional
+	Day *string `json:"day,omitempty"`
+
+	/* Optional. Start time of the window in UTC. */
+	// +optional
+	StartTime *InstanceStartTime `json:"startTime,omitempty"`
+}
+
 type InstanceZoneDistributionConfig struct {
 	/* Optional. Current zone distribution mode. Defaults to MULTI_ZONE. */
 	// +optional
@@ -184,12 +200,20 @@ type MemorystoreInstanceSpec struct {
 	// +optional
 	EngineVersion *string `json:"engineVersion,omitempty"`
 
+	/* Optional. The KMS key reference for the instance. */
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* Optional. Labels to represent user-provided metadata. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/* Immutable. */
 	Location string `json:"location"`
+
+	/* Optional. The maintenance policy for the instance. */
+	// +optional
+	MaintenancePolicy *InstanceMaintenancePolicy `json:"maintenancePolicy,omitempty"`
 
 	/* Optional. The maintenance version of the instance. */
 	// +optional
@@ -257,10 +281,48 @@ type InstanceCrossInstanceReplicationConfigStatus struct {
 	SecondaryInstances []InstanceSecondaryInstancesStatus `json:"secondaryInstances,omitempty"`
 }
 
+type InstanceEncryptionInfoStatus struct {
+	/* Output only. Type of encryption. */
+	// +optional
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	/* Output only. The state of the primary KMS key. */
+	// +optional
+	KmsKeyPrimaryState *string `json:"kmsKeyPrimaryState,omitempty"`
+
+	/* Output only. KMS key versions that are being used to protect the instance. */
+	// +optional
+	KmsKeyVersions []string `json:"kmsKeyVersions,omitempty"`
+
+	/* Output only. Latest update timestamp of the encryption info. */
+	// +optional
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+}
+
 type InstanceEndpointsStatus struct {
 	/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
 	// +optional
 	Connections []InstanceConnectionsStatus `json:"connections,omitempty"`
+}
+
+type InstanceMaintenancePolicyStatus struct {
+	/* Output only. The time when the policy was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. The time when the policy was updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type InstanceMaintenanceScheduleStatus struct {
+	/* Output only. The end time of any upcoming scheduled maintenance for this instance. */
+	// +optional
+	EndTime *string `json:"endTime,omitempty"`
+
+	/* Output only. The start time of any upcoming scheduled maintenance for this instance. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
 }
 
 type InstanceMembershipStatus struct {
@@ -296,9 +358,21 @@ type InstanceObservedStateStatus struct {
 	// +optional
 	EffectiveMaintenanceVersion *string `json:"effectiveMaintenanceVersion,omitempty"`
 
+	/* Output only. Encryption information for the instance. */
+	// +optional
+	EncryptionInfo *InstanceEncryptionInfoStatus `json:"encryptionInfo,omitempty"`
+
 	/* Optional. Endpoints for the instance. */
 	// +optional
 	Endpoints []InstanceEndpointsStatus `json:"endpoints,omitempty"`
+
+	/* Output only. User-defined weekly maintenance windows in which space is reserved for maintenance. */
+	// +optional
+	MaintenancePolicy *InstanceMaintenancePolicyStatus `json:"maintenancePolicy,omitempty"`
+
+	/* Output only. Upcoming maintenance schedule. */
+	// +optional
+	MaintenanceSchedule *InstanceMaintenanceScheduleStatus `json:"maintenanceSchedule,omitempty"`
 
 	/* Output only. Configuration of individual nodes of the instance. */
 	// +optional

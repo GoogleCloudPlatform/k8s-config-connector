@@ -35,6 +35,13 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/orchestration/airflow/service/v1"
 )
 
+const (
+	// DefaultComposerInternalIpv4CidrBlock is the mock-simulated GCP default CIDR block.
+	DefaultComposerInternalIpv4CidrBlock = "172.31.251.0/24"
+	// DefaultComposerNetworkAttachment is the mock-simulated GCP default network attachment.
+	DefaultComposerNetworkAttachment = "projects/${projectId}/regions/us-central1/networkAttachments/test-attachment"
+)
+
 func (s *ComposerV1) GetEnvironment(ctx context.Context, req *pb.GetEnvironmentRequest) (*pb.Environment, error) {
 	name, err := s.parseEnvironmentName(req.Name)
 	if err != nil {
@@ -256,6 +263,12 @@ func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.Environment
 	}
 	if config.NodeConfig.ServiceAccount == "" {
 		config.NodeConfig.ServiceAccount = "${projectNumber}-compute@developer.gserviceaccount.com"
+	}
+	if config.NodeConfig.ComposerInternalIpv4CidrBlock == "" {
+		config.NodeConfig.ComposerInternalIpv4CidrBlock = DefaultComposerInternalIpv4CidrBlock
+	}
+	if config.NodeConfig.ComposerNetworkAttachment == "" {
+		config.NodeConfig.ComposerNetworkAttachment = DefaultComposerNetworkAttachment
 	}
 
 	if config.PrivateEnvironmentConfig == nil {

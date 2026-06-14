@@ -16,7 +16,7 @@ title: "CertificateManagerCertificateMapEntry"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/certificate-manager/docs/">/certificate-manager/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/certificate-manager/docs/">https://docs.cloud.google.com/certificate-manager/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "CertificateManagerCertificateMapEntry"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificateMaps.certificateMapEntries">/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificateMaps.certificateMapEntries</a></td>
+<td><a href="https://docs.cloud.google.com/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificateMaps.certificateMapEntries">https://docs.cloud.google.com/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificateMaps.certificateMapEntries</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -88,7 +88,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p></p>
+            <p>Immutable. A list of references to CertificateManagerCertificate resources that will be associated with this map entry.</p>
         </td>
     </tr>
     <tr>
@@ -98,9 +98,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A set of Certificates defines for the given hostname.
-There can be defined up to fifteen certificates in each Certificate Map Entry.
-Each certificate must match pattern projects/*/locations/*/certificates/*.</p>
+            <p>CertificateManagerCertificateRef is a reference to a CertificateManagerCertificate.</p>
         </td>
     </tr>
     <tr>
@@ -110,7 +108,7 @@ Each certificate must match pattern projects/*/locations/*/certificates/*.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `projects/{{project}}/locations/{{location}}/certificates/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificate` resource.</p>
+            <p>A reference to an externally managed CertificateManagerCertificate resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/certificates/{{certificateID}}".</p>
         </td>
     </tr>
     <tr>
@@ -120,7 +118,7 @@ Each certificate must match pattern projects/*/locations/*/certificates/*.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a CertificateManagerCertificate resource.</p>
         </td>
     </tr>
     <tr>
@@ -130,7 +128,7 @@ Each certificate must match pattern projects/*/locations/*/certificates/*.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a CertificateManagerCertificate resource.</p>
         </td>
     </tr>
     <tr>
@@ -150,9 +148,7 @@ Each certificate must match pattern projects/*/locations/*/certificates/*.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. A Hostname (FQDN, e.g. example.com) or a wildcard hostname expression (*.example.com)
-for a set of hostnames with common suffix. Used as Server Name Indication (SNI) for
-selecting a proper certificate.</p>
+            <p>Immutable. A Hostname (FQDN, e.g. example.com) or a wildcard hostname expression (*.example.com) for a set of hostnames with common suffix. Used as Server Name Indication (SNI) for selecting a proper certificate.</p>
         </td>
     </tr>
     <tr>
@@ -172,7 +168,7 @@ selecting a proper certificate.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `CertificateManagerCertificateMap` resource.</p>
+            <p>A reference to an externally managed CertificateManagerCertificateMap resource. Should be in the format "projects/{{projectID}}/locations/global/certificateMaps/{{certificateMapID}}".</p>
         </td>
     </tr>
     <tr>
@@ -182,7 +178,7 @@ selecting a proper certificate.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a CertificateManagerCertificateMap resource.</p>
         </td>
     </tr>
     <tr>
@@ -192,7 +188,7 @@ selecting a proper certificate.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a CertificateManagerCertificateMap resource.</p>
         </td>
     </tr>
     <tr>
@@ -222,7 +218,7 @@ selecting a proper certificate.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -232,7 +228,7 @@ selecting a proper certificate.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -242,7 +238,7 @@ selecting a proper certificate.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -284,7 +280,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the CertificateManagerCertificateMapEntry's current state.</p>
         </td>
     </tr>
     <tr>
@@ -333,9 +329,7 @@ updateTime: string
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Creation timestamp of a Certificate Map Entry. Timestamp in RFC3339 UTC "Zulu" format,
-with nanosecond resolution and up to nine fractional digits.
-Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
+            <p>Creation timestamp of a Certificate Map Entry. Timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
         </td>
     </tr>
     <tr>
@@ -356,9 +350,7 @@ Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
         <td><code>updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Update timestamp of a Certificate Map Entry. Timestamp in RFC3339 UTC "Zulu" format,
-with nanosecond resolution and up to nine fractional digits.
-Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
+            <p>Update timestamp of a Certificate Map Entry. Timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
         </td>
     </tr>
 </tbody>
@@ -464,4 +456,4 @@ stringData:
     -----END PRIVATE KEY-----
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -25,6 +25,7 @@ package securesourcemanager
 
 import (
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
+	krmprivatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -59,7 +60,7 @@ func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 	out := &krm.Instance_PrivateConfig{}
 	out.IsPrivate = direct.LazyPtr(in.GetIsPrivate())
 	if in.GetCaPool() != "" {
-		out.CAPoolRef = &refsv1beta1.PrivateCACAPoolRef{External: in.GetCaPool()}
+		out.CAPoolRef = &krmprivatecav1beta1.PrivateCACAPoolRef{External: in.GetCaPool()}
 	}
 	// MISSING: HTTPServiceAttachment
 	// MISSING: SSHServiceAttachment

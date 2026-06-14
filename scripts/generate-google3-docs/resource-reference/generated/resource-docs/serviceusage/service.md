@@ -22,7 +22,7 @@ do so using <code>kubectl get gcpservice</code>.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/service-usage/docs/">/service-usage/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/service-usage/docs/">https://docs.cloud.google.com/service-usage/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -30,7 +30,7 @@ do so using <code>kubectl get gcpservice</code>.
 </tr>
 <tr>
 <td>Google Cloud Rest Resource Documentation</td>
-<td><a href="/service-usage/docs/reference/rest/v1/services">/service-usage/docs/reference/rest/v1/services</a></td>
+<td><a href="https://docs.cloud.google.com/service-usage/docs/reference/rest/v1/services">https://docs.cloud.google.com/service-usage/docs/reference/rest/v1/services</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -110,7 +110,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -120,7 +120,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -130,7 +130,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -169,7 +169,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -241,4 +241,4 @@ spec:
   resourceID: pubsub.googleapis.com
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -39,16 +39,12 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ResponsepolicyGkeClusters struct {
-	/* The resource name of the cluster to bind this ManagedZone to.
-	This should be specified in the format like
-	'projects/* /locations/* /clusters/*'. */
+	/* The resource name of the cluster to bind this ManagedZone to. This should be specified in the format like 'projects/* /locations/* /clusters/*'. */
 	GkeClusterName string `json:"gkeClusterName"`
 }
 
 type ResponsepolicyNetworks struct {
-	/* The fully qualified URL of the VPC network to bind to.
-	This should be formatted like
-	'https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}'. */
+	/* The fully qualified URL of the VPC network to bind to. This should be formatted like 'https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}'. */
 	NetworkUrl string `json:"networkUrl"`
 }
 

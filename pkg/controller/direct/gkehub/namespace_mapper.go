@@ -37,9 +37,9 @@ func GKEHubNamespaceSpec_FromAPI(mapCtx *direct.MapContext, r *gkehubv1.Namespac
 		return nil
 	}
 	out := &krm.GKEHubNamespaceSpec{}
-	out.ScopeRef = &krm.GKEHubScopeRef{External: id.Parent().String()}
-	out.NamespaceID = direct.LazyPtr(id.ID())
-	out.ResourceID = direct.LazyPtr(id.ID())
+	out.ScopeRef = &krm.GKEHubScopeRef{External: krm.NewGKEHubScopeIdentity(id.Project, id.Location, id.Scope).String()}
+	out.NamespaceID = direct.LazyPtr(id.Namespace)
+	out.ResourceID = direct.LazyPtr(id.Namespace)
 	out.Labels = r.Labels
 	out.NamespaceLabels = r.NamespaceLabels
 	return out

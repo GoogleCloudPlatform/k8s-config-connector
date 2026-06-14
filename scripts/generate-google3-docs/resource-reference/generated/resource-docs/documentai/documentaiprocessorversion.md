@@ -16,7 +16,7 @@ title: "DocumentAIProcessorVersion"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/document-ai/docs/">/document-ai/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/document-ai/docs/">https://docs.cloud.google.com/document-ai/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "DocumentAIProcessorVersion"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/document-ai/docs/reference/rest/v1/projects.locations.processors.processorVersions">/document-ai/docs/reference/rest/v1/projects.locations.processors.processorVersions</a></td>
+<td><a href="https://docs.cloud.google.com/document-ai/docs/reference/rest/v1/projects.locations.processors.processorVersions">https://docs.cloud.google.com/document-ai/docs/reference/rest/v1/projects.locations.processors.processorVersions</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -187,7 +187,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ProcessorRef defines the resource reference to DocumentAIProcessor, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>ProcessorRef is a reference to a DocumentAIProcessor.</p>
         </td>
     </tr>
     <tr>
@@ -851,4 +851,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

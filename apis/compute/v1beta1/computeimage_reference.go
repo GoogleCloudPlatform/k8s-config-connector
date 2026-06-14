@@ -63,6 +63,8 @@ func (r *ComputeImageRef) GetExternal() string {
 
 func (r *ComputeImageRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeImageRef) ValidateExternal(ref string) error {

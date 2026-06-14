@@ -15,6 +15,8 @@
 package v1beta1
 
 import (
+	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
+	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -57,7 +59,7 @@ type ComputeTargetHTTPSProxySpec struct {
 	// Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
 	// sslCertificates and certificateManagerCertificates fields cannot be defined together.
 	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.ssl_certificates
-	CertificateManagerCertificates []CertificateManagerCertificateRef `json:"certificateManagerCertificates,omitempty"`
+	CertificateManagerCertificates []certificatemanagerv1beta1.CertificateManagerCertificateRef `json:"certificateManagerCertificates,omitempty"`
 
 	// A reference to the CertificateMap resource uri that identifies a
 	// certificate map associated with the given target proxy. This field
@@ -66,7 +68,7 @@ type ComputeTargetHTTPSProxySpec struct {
 	// For INTERNAL_MANAGED, use certificateManagerCertificates instead.
 	// sslCertificates and certificateMap fields cannot be defined together.
 	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.certificate_map
-	CertificateMapRef *CertificateManagerCertificateMapRef `json:"certificateMapRef,omitempty"`
+	CertificateMapRef *certificatemanagerv1beta1.CertificateManagerCertificateMapRef `json:"certificateMapRef,omitempty"`
 
 	// Immutable. An optional description of this resource.
 	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.description
@@ -114,7 +116,7 @@ type ComputeTargetHTTPSProxySpec struct {
 	// loadBalancingScheme consult ServerTlsPolicy documentation.
 	// If left blank, communications are not encrypted.
 	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.server_tls_policy
-	ServerTlsPolicyRef *NetworkSecurityServerTLSPolicyRef `json:"serverTlsPolicyRef,omitempty"`
+	ServerTlsPolicyRef *networksecurityv1beta1.NetworkSecurityServerTLSPolicyRef `json:"serverTlsPolicyRef,omitempty"`
 
 	// A list of ComputeSSLCertificate resources that are used to
 	// authenticate connections between users and the load balancer. At

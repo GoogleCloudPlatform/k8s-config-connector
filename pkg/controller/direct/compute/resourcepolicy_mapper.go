@@ -284,8 +284,8 @@ func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_FromProto(ma
 		return nil
 	}
 	out := &krm.ResourcePolicySnapshotSchedulePolicySnapshotProperties{}
-	out.ChainName = direct.LazyPtr(in.GetChainName())
-	out.GuestFlush = direct.LazyPtr(in.GetGuestFlush())
+	out.ChainName = in.ChainName
+	out.GuestFlush = in.GuestFlush
 	out.Labels = in.Labels
 	out.StorageLocations = in.StorageLocations
 	return out

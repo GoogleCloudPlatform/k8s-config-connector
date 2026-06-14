@@ -35,6 +35,7 @@ type BeyondcorpV1alpha1Interface interface {
 	BeyondCorpAppConnectorsGetter
 	BeyondCorpAppGatewaysGetter
 	BeyondCorpClientConnectorServicesGetter
+	BeyondCorpClientGatewaysGetter
 }
 
 // BeyondcorpV1alpha1Client is used to interact with features provided by the beyondcorp.cnrm.cloud.google.com group.
@@ -56,6 +57,10 @@ func (c *BeyondcorpV1alpha1Client) BeyondCorpAppGateways(namespace string) Beyon
 
 func (c *BeyondcorpV1alpha1Client) BeyondCorpClientConnectorServices(namespace string) BeyondCorpClientConnectorServiceInterface {
 	return newBeyondCorpClientConnectorServices(c, namespace)
+}
+
+func (c *BeyondcorpV1alpha1Client) BeyondCorpClientGateways(namespace string) BeyondCorpClientGatewayInterface {
+	return newBeyondCorpClientGateways(c, namespace)
 }
 
 // NewForConfig creates a new BeyondcorpV1alpha1Client for the given config.

@@ -16,7 +16,7 @@ title: "PrivateCACertificateAuthority"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/certificate-authority-service/docs/">/certificate-authority-service/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/certificate-authority-service/docs/">https://docs.cloud.google.com/certificate-authority-service/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "PrivateCACertificateAuthority"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools.certificateAuthorities">/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools.certificateAuthorities</a></td>
+<td><a href="https://docs.cloud.google.com/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools.certificateAuthorities">https://docs.cloud.google.com/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools.certificateAuthorities</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -2091,4 +2091,4 @@ spec:
         - 7
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

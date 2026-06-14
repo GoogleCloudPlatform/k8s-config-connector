@@ -28,17 +28,16 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ContactRef{}
 
-// ContactRef defines the resource reference to EssentialContactsContact, which "External" field
-// holds the GCP identifier for the KRM object.
+// ContactRef is a reference to an EssentialContactsContact.
 type ContactRef struct {
 	// A reference to an externally managed EssentialContactsContact resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/contacts/{{contactID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a EssentialContactsContact resource.
+	// The name of an EssentialContactsContact resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a EssentialContactsContact resource.
+	// The namespace of an EssentialContactsContact resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

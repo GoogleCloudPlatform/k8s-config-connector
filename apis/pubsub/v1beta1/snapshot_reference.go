@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &SnapshotRef{}
 
-// SnapshotRef defines the resource reference to PubSubSnapshot, which "External" field
-// holds the GCP identifier for the KRM object.
+// SnapshotRef is a reference to a PubSubSnapshot.
 type SnapshotRef struct {
 	// A reference to an externally managed PubSubSnapshot resource.
 	// Should be in the format "projects/{{projectID}}/snapshots/{{snapshotID}}".

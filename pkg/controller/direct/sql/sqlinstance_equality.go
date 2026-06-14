@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"reflect"
 	"sort"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	api "google.golang.org/api/sqladmin/v1beta4"
@@ -119,7 +120,7 @@ func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreport
 	if !slicesMatch(desired.AuthorizedGaeApplications, actual.AuthorizedGaeApplications) {
 		diff.AddField(".settings.authorizedGaeApplications", actual.AuthorizedGaeApplications, desired.AuthorizedGaeApplications)
 	}
-	if desired.AvailabilityType != actual.AvailabilityType {
+	if !strings.EqualFold(desired.AvailabilityType, actual.AvailabilityType) {
 		diff.AddField(".settings.availabilityType", actual.AvailabilityType, desired.AvailabilityType)
 	}
 	diff.AddDiff(DiffBackupConfiguration(desired.BackupConfiguration, actual.BackupConfiguration))

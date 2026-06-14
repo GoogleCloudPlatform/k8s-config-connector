@@ -16,7 +16,7 @@ title: "APIQuotaPreference"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/docs/quotas/">/docs/quotas/</a></td>
+<td><a href="https://docs.cloud.google.com/docs/quotas/">https://docs.cloud.google.com/docs/quotas/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "APIQuotaPreference"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/docs/quotas/reference/rest/v1/projects.locations.quotaPreferences">/docs/quotas/reference/rest/v1/projects.locations.quotaPreferences</a></td>
+<td><a href="https://docs.cloud.google.com/docs/quotas/reference/rest/v1/projects.locations.quotaPreferences">https://docs.cloud.google.com/docs/quotas/reference/rest/v1/projects.locations.quotaPreferences</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -481,4 +481,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

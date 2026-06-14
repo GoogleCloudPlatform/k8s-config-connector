@@ -18,7 +18,7 @@ A brief introduction to SpeechCustomClass.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/speech-to-text/docs/">/speech-to-text/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/speech-to-text/docs/">https://docs.cloud.google.com/speech-to-text/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -26,7 +26,7 @@ A brief introduction to SpeechCustomClass.
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/speech-to-text/docs/reference/rest/v1/projects.locations.customClasses">/speech-to-text/docs/reference/rest/v1/projects.locations.customClasses</a></td>
+<td><a href="https://docs.cloud.google.com/speech-to-text/docs/reference/rest/v1/projects.locations.customClasses">https://docs.cloud.google.com/speech-to-text/docs/reference/rest/v1/projects.locations.customClasses</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -393,4 +393,4 @@ spec:
     - value: "value1"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

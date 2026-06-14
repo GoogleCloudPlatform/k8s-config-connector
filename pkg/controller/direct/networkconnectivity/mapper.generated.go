@@ -24,6 +24,7 @@
 package networkconnectivity
 
 import (
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -181,6 +182,74 @@ found existing non-generated mapping function "NetworkConnectivityInternalRangeS
 		return out
 	}
 */
+func NetworkConnectivityRegionalEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RegionalEndpoint) *krm.NetworkConnectivityRegionalEndpointObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityRegionalEndpointObservedState{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
+	// MISSING: Labels
+	// MISSING: Name
+	out.PSCForwardingRule = direct.LazyPtr(in.GetPscForwardingRule())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func NetworkConnectivityRegionalEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityRegionalEndpointObservedState) *pb.RegionalEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RegionalEndpoint{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.IpAddress = direct.ValueOf(in.IPAddress)
+	// MISSING: Labels
+	// MISSING: Name
+	out.PscForwardingRule = direct.ValueOf(in.PSCForwardingRule)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func NetworkConnectivityRegionalEndpointSpec_FromProto(mapCtx *direct.MapContext, in *pb.RegionalEndpoint) *krm.NetworkConnectivityRegionalEndpointSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityRegionalEndpointSpec{}
+	out.AccessType = direct.LazyPtr(in.GetAccessType())
+	if in.GetAddress() != "" {
+		out.AddressRef = &krmcomputev1beta1.ComputeAddressRef{External: in.GetAddress()}
+	}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Labels
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	out.TargetGoogleAPI = direct.LazyPtr(in.GetTargetGoogleApi())
+	return out
+}
+func NetworkConnectivityRegionalEndpointSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityRegionalEndpointSpec) *pb.RegionalEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RegionalEndpoint{}
+	out.AccessType = direct.ValueOf(in.AccessType)
+	if in.AddressRef != nil {
+		out.Address = in.AddressRef.External
+	}
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Labels
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = in.SubnetworkRef.External
+	}
+	out.TargetGoogleApi = direct.ValueOf(in.TargetGoogleAPI)
+	return out
+}
 func NetworkConnectivityServiceConnectionPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krm.NetworkConnectivityServiceConnectionPolicyObservedState {
 	if in == nil {
 		return nil

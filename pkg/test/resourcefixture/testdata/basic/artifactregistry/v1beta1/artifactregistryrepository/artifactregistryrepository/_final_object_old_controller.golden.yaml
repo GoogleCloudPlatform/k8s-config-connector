@@ -1,0 +1,39 @@
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+    label-one: value-one
+  name: arrepository-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: test repository description 2
+  format: DOCKER
+  location: us-west1
+  mode: VIRTUAL_REPOSITORY
+  resourceID: arrepository-${uniqueId}
+  virtualRepositoryConfig:
+    upstreamPolicies:
+    - id: upstream-repo
+      priority: 1
+      repositoryRef:
+        name: arrepository-${uniqueId}-2
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  name: arrepository-${uniqueId}
+  observedGeneration: 3
+  updateTime: "1970-01-01T00:00:00Z"

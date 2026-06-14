@@ -28,8 +28,7 @@ var _ refsv1beta1.ExternalNormalizer = &CloudDeployTargetRef{}
 var _ refsv1beta1.Ref = &CloudDeployTargetRef{}
 var _ refsv1beta1.ExternalRef = &CloudDeployTargetRef{}
 
-// A resource reference to CloudDeployTarget, which "External" field
-// holds the GCP identifier for the KRM object.
+// CloudDeployTargetRef is a reference to a CloudDeployTarget.
 type CloudDeployTargetRef struct {
 	// A reference to an externally managed CloudDeployTarget resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/targets/{{targetID}}".
@@ -56,6 +55,8 @@ func (r *CloudDeployTargetRef) GetExternal() string {
 
 func (r *CloudDeployTargetRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CloudDeployTargetRef) ValidateExternal(external string) error {

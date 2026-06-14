@@ -23,13 +23,13 @@ package speech
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	gcp "cloud.google.com/go/speech/apiv2"
 	pb "cloud.google.com/go/speech/apiv2/speechpb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -37,6 +37,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -64,10 +65,11 @@ func (m *customClassModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewCustomClassIdentity(ctx, reader, obj)
+	idAny, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := idAny.(*krm.CustomClassIdentity)
 
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -134,8 +136,8 @@ func (a *customClassAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 
 	req := &pb.CreateCustomClassRequest{
-		Parent:        a.id.Parent().String(),
-		CustomClassId: a.id.ID(),
+		Parent:        fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
+		CustomClassId: a.id.CustomClass,
 		CustomClass:   resource,
 	}
 	op, err := a.gcpClient.CreateCustomClass(ctx, req)
@@ -168,24 +170,13 @@ func (a *customClassAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return mapCtx.Err()
 	}
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-
-	paths := []string{}
-	if a.desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
-		report.AddField("display_name", a.actual.DisplayName, resource.DisplayName)
-		paths = append(paths, "display_name")
-	}
-	if !reflect.DeepEqual(resource.Items, a.actual.Items) {
-		report.AddField("items", a.actual.Items, resource.Items)
-		paths = append(paths, "items")
-	}
-	if !reflect.DeepEqual(resource.Annotations, a.actual.Annotations) {
-		report.AddField("annotations", a.actual.Annotations, resource.Annotations)
-		paths = append(paths, "annotations")
+	paths, report, err := common.CompareProtoMessageStructuredDiff(resource, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
 
 	var updated *pb.CustomClass
-	if len(paths) == 0 {
+	if paths.Len() == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
@@ -193,7 +184,7 @@ func (a *customClassAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateCustomClassRequest{
 			CustomClass: resource,
-			UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
+			UpdateMask:  &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
 		}
 		op, err := a.gcpClient.UpdateCustomClass(ctx, req)
 		if err != nil {
@@ -228,14 +219,14 @@ func (a *customClassAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.CustomClass)
 	u.SetGroupVersionKind(krm.SpeechCustomClassGVK)
 	u.Object = uObj
 	return u, nil

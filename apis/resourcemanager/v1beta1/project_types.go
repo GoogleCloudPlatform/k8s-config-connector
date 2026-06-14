@@ -91,6 +91,8 @@ func (r *OrganizationRef) GetExternal() string {
 
 func (r *OrganizationRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 // ProjectStatus defines the config connector machine state of Project

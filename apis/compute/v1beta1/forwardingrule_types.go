@@ -45,7 +45,7 @@ type MetadataFilterLabelMatch struct {
 
 type IpAddress struct {
 	// +optional
-	AddressRef *refsv1beta1.ComputeAddressRef `json:"addressRef,omitempty"`
+	AddressRef *ComputeAddressRef `json:"addressRef,omitempty"`
 
 	// +optional
 	Ip *string `json:"ip,omitempty"`
@@ -370,7 +370,7 @@ type ComputeForwardingRuleSpec struct {
 	optional. However, if the network is in custom subnet mode, a
 	subnetwork must be specified. */
 	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.subnetwork
-	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	/* The target resource to receive the matched traffic. The forwarded
 	traffic must be of a type appropriate to the target object. For

@@ -16,7 +16,7 @@ title: "WorkstationConfig"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/workstations/docs/">/workstations/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/workstations/docs/">https://docs.cloud.google.com/workstations/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "WorkstationConfig"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/workstations/docs/reference/rest/v1/projects.locations.workstationClusters.workstationConfigs">/workstations/docs/reference/rest/v1/projects.locations.workstationClusters.workstationConfigs</a></td>
+<td><a href="https://docs.cloud.google.com/workstations/docs/reference/rest/v1/projects.locations.workstationClusters.workstationConfigs">https://docs.cloud.google.com/workstations/docs/reference/rest/v1/projects.locations.workstationClusters.workstationConfigs</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1243,4 +1243,4 @@ spec:
     name: computesubnetwork-dep
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

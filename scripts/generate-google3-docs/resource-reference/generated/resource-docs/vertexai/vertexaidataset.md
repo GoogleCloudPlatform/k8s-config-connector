@@ -16,7 +16,7 @@ title: "VertexAIDataset"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/vertex-ai/docs">/vertex-ai/docs</a></td>
+<td><a href="https://docs.cloud.google.com/vertex-ai/docs">https://docs.cloud.google.com/vertex-ai/docs</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "VertexAIDataset"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/vertex-ai/docs/reference/rest/v1beta1/projects.locations.datasets">/vertex-ai/docs/reference/rest/v1beta1/projects.locations.datasets</a></td>
+<td><a href="https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1beta1/projects.locations.datasets">https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1beta1/projects.locations.datasets</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -85,7 +85,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The user-defined name of the Dataset. The name can be up to 128 characters long and can be consist of any UTF-8 characters.</p>
+            <p>The user-defined name of the Dataset. The name can be up to 128 characters long and can consist of any UTF-8 characters.</p>
         </td>
     </tr>
     <tr>
@@ -105,9 +105,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource.
-Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key.
-The key needs to be in the same region as where the compute resource is created.</p>
+            <p>Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key. The key needs to be in the same region as where the compute resource is created.</p>
         </td>
     </tr>
     <tr>
@@ -117,7 +115,7 @@ The key needs to be in the same region as where the compute resource is created.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -127,7 +125,7 @@ The key needs to be in the same region as where the compute resource is created.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -137,7 +135,7 @@ The key needs to be in the same region as where the compute resource is created.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -167,7 +165,7 @@ The key needs to be in the same region as where the compute resource is created.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -177,7 +175,7 @@ The key needs to be in the same region as where the compute resource is created.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -187,7 +185,7 @@ The key needs to be in the same region as where the compute resource is created.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -239,7 +237,7 @@ observedState:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -295,21 +293,21 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The observed state of the underlying GCP resource.</p>
+            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The timestamp of when the dataset was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.</p>
+            <p>Output only. Timestamp when this Dataset was created.</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The resource name of the Dataset. This value is set by Google.</p>
+            <p>Output only. The resource name of the Dataset instance.</p>
         </td>
     </tr>
 </tbody>
@@ -394,4 +392,4 @@ spec:
   resourceID: aiplatform.googleapis.com
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

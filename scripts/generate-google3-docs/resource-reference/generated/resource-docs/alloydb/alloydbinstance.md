@@ -19,7 +19,7 @@ instance is ready and up to date.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/alloydb/docs/">/alloydb/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/alloydb/docs/">https://docs.cloud.google.com/alloydb/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -27,7 +27,7 @@ instance is ready and up to date.
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/alloydb/docs/reference/rest/v1/projects.locations.clusters.instances">/alloydb/docs/reference/rest/v1/projects.locations.clusters.instances</a></td>
+<td><a href="https://docs.cloud.google.com/alloydb/docs/reference/rest/v1/projects.locations.clusters.instances">https://docs.cloud.google.com/alloydb/docs/reference/rest/v1/projects.locations.clusters.instances</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -156,7 +156,7 @@ Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.</p>
+            <p>A reference to an externally managed AlloyDBCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".</p>
         </td>
     </tr>
     <tr>
@@ -166,7 +166,7 @@ Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.name` field of a `AlloyDBCluster` resource.</p>
+            <p>The name of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -176,7 +176,7 @@ Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `AlloyDBCluster` resource.</p>
+            <p>The namespace of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -1057,4 +1057,4 @@ spec:
   service: servicenetworking.googleapis.com
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

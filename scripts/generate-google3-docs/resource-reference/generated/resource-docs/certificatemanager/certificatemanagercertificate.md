@@ -16,7 +16,7 @@ title: "CertificateManagerCertificate"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/certificate-manager/docs/">/certificate-manager/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/certificate-manager/docs/">https://docs.cloud.google.com/certificate-manager/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "CertificateManagerCertificate"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificates">/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificates</a></td>
+<td><a href="https://docs.cloud.google.com/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificates">https://docs.cloud.google.com/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificates</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -140,9 +140,7 @@ selfManaged:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Configuration and state of a Managed Certificate.
-Certificate Manager provisions and renews Managed Certificates
-automatically, for as long as it's authorized to do so.</p>
+            <p>Immutable. Configuration and state of a Managed Certificate. Certificate Manager provisions and renews Managed Certificates automatically, for as long as it's authorized to do so.</p>
         </td>
     </tr>
     <tr>
@@ -152,8 +150,7 @@ automatically, for as long as it's authorized to do so.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Detailed state of the latest authorization attempt for each domain
-specified for this Managed Certificate.</p>
+            <p>Detailed state of the latest authorization attempt for each domain specified for this Managed Certificate.</p>
         </td>
     </tr>
     <tr>
@@ -173,9 +170,7 @@ specified for this Managed Certificate.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Human readable explanation for reaching the state. Provided to help
-address the configuration issues.
-Not guaranteed to be stable. For programmatic access use 'failure_reason' field.</p>
+            <p>Human readable explanation for reaching the state. Provided to help address the configuration issues. Not guaranteed to be stable. For programmatic access use 'failure_reason' field.</p>
         </td>
     </tr>
     <tr>
@@ -215,7 +210,7 @@ Not guaranteed to be stable. For programmatic access use 'failure_reason' field.
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p></p>
+            <p>Immutable. Authorizations that will be used for performing domain authorization. Either issuanceConfig or dnsAuthorizations should be specified, but not both.</p>
         </td>
     </tr>
     <tr>
@@ -225,7 +220,7 @@ Not guaranteed to be stable. For programmatic access use 'failure_reason' field.
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Authorizations that will be used for performing domain authorization. Either issuanceConfig or dnsAuthorizations should be specified, but not both.</p>
+            <p>CertificateManagerDNSAuthorizationRef is a reference to a GCP CertificateManagerDNSAuthorization.</p>
         </td>
     </tr>
     <tr>
@@ -235,7 +230,7 @@ Not guaranteed to be stable. For programmatic access use 'failure_reason' field.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `projects/{{project}}/locations/global/dnsAuthorizations/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerDNSAuthorization` resource.</p>
+            <p>A reference to an externally managed CertificateManagerDNSAuthorization resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dnsAuthorizations/{{dnsAuthorizationID}}".</p>
         </td>
     </tr>
     <tr>
@@ -245,7 +240,7 @@ Not guaranteed to be stable. For programmatic access use 'failure_reason' field.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a CertificateManagerDNSAuthorization resource.</p>
         </td>
     </tr>
     <tr>
@@ -255,7 +250,7 @@ Not guaranteed to be stable. For programmatic access use 'failure_reason' field.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a CertificateManagerDNSAuthorization resource.</p>
         </td>
     </tr>
     <tr>
@@ -265,8 +260,7 @@ Not guaranteed to be stable. For programmatic access use 'failure_reason' field.
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. The domains for which a managed SSL certificate will be generated.
-Wildcard domains are only supported with DNS challenge resolution.</p>
+            <p>Immutable. The domains for which a managed SSL certificate will be generated. Wildcard domains are only supported with DNS challenge resolution.</p>
         </td>
     </tr>
     <tr>
@@ -288,7 +282,7 @@ Wildcard domains are only supported with DNS challenge resolution.</p>
             <p><code class="apitype">object</code></p>
             <p>Only the `external` field is supported to configure the reference.
 
-Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/*/locations/*/certificateIssuanceConfigs/*.
+Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/{{project}}/locations/{{location}}/certificateIssuanceConfigs/{{name}}.
 If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
 Either issuanceConfig or dnsAuthorizations should be specified, but not both.</p>
         </td>
@@ -300,7 +294,7 @@ Either issuanceConfig or dnsAuthorizations should be specified, but not both.</p
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `projects/{{project}}/locations/{{location}}/certificateIssuanceConfigs/{{name}}`, where {{value}} is the `name` field of a `CertificateManagerCertificateIssuanceConfig` resource.</p>
+            <p>A reference to an externally managed CertificateManagerCertificateIssuanceConfig resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/certificateIssuanceConfigs/{{certificateIssuanceConfigID}}".</p>
         </td>
     </tr>
     <tr>
@@ -310,7 +304,7 @@ Either issuanceConfig or dnsAuthorizations should be specified, but not both.</p
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a CertificateManagerCertificateIssuanceConfig resource.</p>
         </td>
     </tr>
     <tr>
@@ -320,7 +314,7 @@ Either issuanceConfig or dnsAuthorizations should be specified, but not both.</p
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a CertificateManagerCertificateIssuanceConfig resource.</p>
         </td>
     </tr>
     <tr>
@@ -350,9 +344,7 @@ Either issuanceConfig or dnsAuthorizations should be specified, but not both.</p
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Human readable explanation about the issue. Provided to help address
-the configuration issues.
-Not guaranteed to be stable. For programmatic access use 'reason' field.</p>
+            <p>Human readable explanation about the issue. Provided to help address the configuration issues. Not guaranteed to be stable. For programmatic access use 'reason' field.</p>
         </td>
     </tr>
     <tr>
@@ -392,7 +384,7 @@ Not guaranteed to be stable. For programmatic access use 'reason' field.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -402,7 +394,7 @@ Not guaranteed to be stable. For programmatic access use 'reason' field.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -412,7 +404,7 @@ Not guaranteed to be stable. For programmatic access use 'reason' field.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -451,9 +443,7 @@ see https://cloud.google.com/compute/docs/regions-zones.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Certificate data for a SelfManaged Certificate.
-SelfManaged Certificates are uploaded by the user. Updating such
-certificates before they expire remains the user's responsibility.</p>
+            <p>Immutable. Certificate data for a SelfManaged Certificate. SelfManaged Certificates are uploaded by the user. Updating such certificates before they expire remains the user's responsibility.</p>
         </td>
     </tr>
     <tr>
@@ -689,7 +679,7 @@ observedState:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the CertificateManagerCertificate's current state.</p>
         </td>
     </tr>
     <tr>
@@ -752,17 +742,14 @@ observedState:
         <td><code>observedState.managed</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Configuration and state of a Managed Certificate.
-Certificate Manager provisions and renews Managed Certificates
-automatically, for as long as it's authorized to do so.</p>
+            <p>Immutable. Configuration and state of a Managed Certificate. Certificate Manager provisions and renews Managed Certificates automatically, for as long as it's authorized to do so.</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.managed.authorizationAttemptInfo</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Detailed state of the latest authorization attempt for each domain
-specified for this Managed Certificate.</p>
+            <p>Detailed state of the latest authorization attempt for each domain specified for this Managed Certificate.</p>
         </td>
     </tr>
     <tr>
@@ -776,9 +763,7 @@ specified for this Managed Certificate.</p>
         <td><code>observedState.managed.authorizationAttemptInfo[].details</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Human readable explanation for reaching the state. Provided to help
-address the configuration issues.
-Not guaranteed to be stable. For programmatic access use 'failure_reason' field.</p>
+            <p>Human readable explanation for reaching the state. Provided to help address the configuration issues. Not guaranteed to be stable. For programmatic access use 'failure_reason' field.</p>
         </td>
     </tr>
     <tr>
@@ -820,9 +805,7 @@ Not guaranteed to be stable. For programmatic access use 'failure_reason' field.
         <td><code>observedState.managed.provisioningIssue[].details</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Human readable explanation about the issue. Provided to help address
-the configuration issues.
-Not guaranteed to be stable. For programmatic access use 'reason' field.</p>
+            <p>Human readable explanation about the issue. Provided to help address the configuration issues. Not guaranteed to be stable. For programmatic access use 'reason' field.</p>
         </td>
     </tr>
     <tr>
@@ -965,4 +948,4 @@ stringData:
     -----END PRIVATE KEY-----
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/vpcaccess/apiv1/vpcaccesspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/vpcaccess/v1"
 )
 
 func (s *vpcAccessService) CreateConnector(ctx context.Context, req *pb.CreateConnectorRequest) (*longrunning.Operation, error) {
@@ -118,6 +118,10 @@ func (s *vpcAccessService) DeleteConnector(ctx context.Context, req *pb.DeleteCo
 		metadata.EndTime = timestamppb.Now()
 		return &emptypb.Empty{}, nil
 	})
+}
+
+func (s *vpcAccessService) ListConnectors(ctx context.Context, req *pb.ListConnectorsRequest) (*pb.ListConnectorsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListConnectors not implemented")
 }
 
 type connectorName struct {

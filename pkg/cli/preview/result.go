@@ -319,10 +319,10 @@ func (r *Recorder) ExportDetailObjectsEvent(filename string) error {
 				fmt.Fprintf(f, "  diff %+v\n", event.diff)
 
 			case EventTypeReconcileStart:
-				fmt.Fprintf(f, "  reconcileStart %+v\n", event.object)
+				fmt.Fprintf(f, "  reconcileStart type=%s\n", event.reconcilerType)
 
 			case EventTypeReconcileEnd:
-				fmt.Fprintf(f, "  reconcileEnd %+v\n", event.object)
+				fmt.Fprintf(f, "  reconcileEnd type=%s\n", event.reconcilerType)
 
 			case EventTypeKubeAction:
 				fmt.Fprintf(f, "  kubeAction %+v\n", event.kubeAction)

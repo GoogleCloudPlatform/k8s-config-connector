@@ -13,8 +13,8 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// proto.service: google.bigtable.admin.v2.BigtableInstanceAdmin
-// proto.message: google.bigtable.admin.v2.LogicalView
+// proto.service: google.analytics.admin.v1alpha.AnalyticsAdminService
+// proto.message: google.analytics.admin.v1alpha.Account
 
 package mockanalytics
 

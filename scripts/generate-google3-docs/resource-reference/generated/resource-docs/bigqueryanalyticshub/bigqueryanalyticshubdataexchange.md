@@ -16,7 +16,7 @@ title: "BigQueryAnalyticsHubDataExchange"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/bigquery/docs/query-overview">/bigquery/docs/query-overview</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/query-overview">https://docs.cloud.google.com/bigquery/docs/query-overview</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BigQueryAnalyticsHubDataExchange"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/bigquery/docs/reference/analytics-hub/rest/v1/projects.locations.dataExchanges">/bigquery/docs/reference/analytics-hub/rest/v1/projects.locations.dataExchangess</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/reference/analytics-hub/rest/v1/projects.locations.dataExchanges">https://docs.cloud.google.com/bigquery/docs/reference/analytics-hub/rest/v1/projects.locations.dataExchangess</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -321,4 +321,4 @@ spec:
     external: ${PROJECT_ID?}
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

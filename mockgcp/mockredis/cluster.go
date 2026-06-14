@@ -159,6 +159,19 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 		}
 	}
 
+	if obj.PscServiceAttachments == nil {
+		suffix := "abcdef0123456789"
+		obj.PscServiceAttachments = []*pb.PscServiceAttachment{
+			{
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-%s-psc-sa", name.Project.Number, name.Location, suffix),
+				ConnectionType:    pb.ConnectionType_CONNECTION_TYPE_DISCOVERY,
+			},
+			{
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-%s-psc-sa-2", name.Project.Number, name.Location, suffix),
+			},
+		}
+	}
+
 	if obj.PersistenceConfig == nil {
 		obj.PersistenceConfig = &pb.ClusterPersistenceConfig{}
 	}
@@ -198,6 +211,35 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 	if obj.ZoneDistributionConfig.Mode == pb.ZoneDistributionConfig_ZONE_DISTRIBUTION_MODE_UNSPECIFIED {
 		obj.ZoneDistributionConfig.Mode = pb.ZoneDistributionConfig_MULTI_ZONE
 	}
+	if obj.AutomatedBackupConfig != nil {
+		if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
+			obj.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
+		}
+		if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_DISABLED {
+			obj.AutomatedBackupConfig.Schedule = nil
+			obj.AutomatedBackupConfig.Retention = nil
+		}
+	} else {
+		obj.AutomatedBackupConfig = &pb.AutomatedBackupConfig{AutomatedBackupMode: pb.AutomatedBackupConfig_DISABLED}
+	}
+
+	if obj.GetKmsKey() != "" {
+		if obj.EncryptionInfo == nil {
+			obj.EncryptionInfo = &pb.EncryptionInfo{
+				EncryptionType:     pb.EncryptionInfo_CUSTOMER_MANAGED_ENCRYPTION,
+				KmsKeyVersions:     []string{obj.GetKmsKey() + "/cryptoKeyVersions/1"},
+				KmsKeyPrimaryState: pb.EncryptionInfo_ENABLED,
+				LastUpdateTime:     timestamppb.Now(),
+			}
+		}
+	} else {
+		if obj.EncryptionInfo == nil {
+			obj.EncryptionInfo = &pb.EncryptionInfo{
+				EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+			}
+		}
+	}
+
 	return nil
 }
 
@@ -251,6 +293,10 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.PersistenceConfig = req.Cluster.PersistenceConfig
 		case "redisConfigs":
 			obj.RedisConfigs = req.Cluster.RedisConfigs
+		case "automatedBackupConfig":
+			obj.AutomatedBackupConfig = req.Cluster.AutomatedBackupConfig
+		case "maintenancePolicy":
+			obj.MaintenancePolicy = req.Cluster.MaintenancePolicy
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)

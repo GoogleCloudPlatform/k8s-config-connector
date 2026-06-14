@@ -16,7 +16,7 @@ title: "ArtifactRegistryRepository"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/artifact-registry/docs/">/artifact-registry/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/artifact-registry/docs/">https://docs.cloud.google.com/artifact-registry/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ArtifactRegistryRepository"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/artifact-registry/docs/reference/rest/v1beta2/projects.locations.repositories">
+<td><a href="https://docs.cloud.google.com/artifact-registry/docs/reference/rest/v1beta2/projects.locations.repositories">
 /artifact-registry/docs/reference/rest/v1beta1/projects.locations.repositories</a></td>
 </tr>
 <tr>
@@ -653,7 +653,7 @@ virtualRepositoryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a ArtifactRegistryRepository resource.</p>
+            <p>The name of an ArtifactRegistryRepository resource.</p>
         </td>
     </tr>
     <tr>
@@ -663,7 +663,7 @@ virtualRepositoryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a ArtifactRegistryRepository resource.</p>
+            <p>The namespace of an ArtifactRegistryRepository resource.</p>
         </td>
     </tr>
 </tbody>
@@ -786,4 +786,4 @@ spec:
   location: us-west1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

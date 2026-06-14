@@ -116,7 +116,7 @@ func (s *SpeechV2) UpdateCustomClass(ctx context.Context, req *pb.UpdateCustomCl
 
 	for i, path := range paths {
 		switch path {
-		case "displayName":
+		case "displayName", "display_name":
 			obj.DisplayName = req.GetCustomClass().GetDisplayName()
 
 			// HACK: to make the field mask valid when returning

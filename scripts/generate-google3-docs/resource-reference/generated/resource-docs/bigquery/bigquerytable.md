@@ -16,7 +16,7 @@ title: "BigQueryTable"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/bigquery/docs/">/bigquery/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/">https://docs.cloud.google.com/bigquery/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BigQueryTable"
 </tr>
 <tr>
 <td>Google Cloud Rest Resource Documentation</td>
-<td><a href="/bigquery/docs/reference/rest/v2/tables">/bigquery/docs/reference/rest/v2/tables</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/reference/rest/v2/tables">https://docs.cloud.google.com/bigquery/docs/reference/rest/v2/tables</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -215,7 +215,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>DatasetRef defines the resource reference to BigQueryDataset, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>DatasetRef is a reference to a BigQueryDataset.</p>
         </td>
     </tr>
     <tr>
@@ -1350,4 +1350,4 @@ spec:
   location: us-central1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

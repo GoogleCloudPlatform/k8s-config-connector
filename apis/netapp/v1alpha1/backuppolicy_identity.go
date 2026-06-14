@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// BackupPolicyIdentity defines the resource reference to NetAppBackupPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// BackupPolicyIdentity is the identity of a NetAppBackupPolicy.
 type BackupPolicyIdentity struct {
 	parent *BackupPolicyParent
 	id     string

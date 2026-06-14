@@ -18,14 +18,15 @@ set -o nounset
 set -o pipefail
 
 function usage() {
-  echo "Usage: $0 --title <pr_title> --body <pr_body_file> [--base <base_branch>]"
-  echo "Example: $0 --title 'Fix issue 123' --body pr-body.txt"
+  echo "Usage: $0 --title <pr_title> --body <pr_body_file> [--base <base_branch>] [--labels <comma_separated_labels>]"
+  echo "Example: $0 --title 'Fix issue 123' --body pr-body.txt --labels 'bug,priority/high'"
   exit 1
 }
 
 TITLE=""
 BODY_FILE=""
 BASE="master"
+LABELS=""
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -39,6 +40,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --base)
       BASE="$2"
+      shift 2
+      ;;
+    --labels)
+      LABELS="$2"
       shift 2
       ;;
     *)
@@ -94,10 +99,18 @@ echo "Checking for existing PR..."
 if gh pr view "$BRANCH" >/dev/null 2>&1; then
   echo "PR already exists for branch $BRANCH."
   # Edit the existing PR title and body
-  gh pr edit "$BRANCH" --title "$TITLE" --body-file "$BODY_FILE"
+  if [[ -n "$LABELS" ]]; then
+    gh pr edit "$BRANCH" --title "$TITLE" --body-file "$BODY_FILE" --add-label "$LABELS"
+  else
+    gh pr edit "$BRANCH" --title "$TITLE" --body-file "$BODY_FILE"
+  fi
   echo "PR updated."
 else
   echo "Creating new PR..."
-  gh pr create --title "$TITLE" --body-file "$BODY_FILE" --base "$BASE"
+  if [[ -n "$LABELS" ]]; then
+    gh pr create --title "$TITLE" --body-file "$BODY_FILE" --base "$BASE" --label "$LABELS"
+  else
+    gh pr create --title "$TITLE" --body-file "$BODY_FILE" --base "$BASE"
+  fi
   echo "PR created successfully."
 fi

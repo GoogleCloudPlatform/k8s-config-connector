@@ -18,7 +18,7 @@ A brief introduction to SpeechRecognizer.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/speech-to-text/docs/">/speech-to-text/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/speech-to-text/docs/">https://docs.cloud.google.com/speech-to-text/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -26,7 +26,7 @@ A brief introduction to SpeechRecognizer.
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/speech-to-text/docs/reference/rest/v2/projects.locations.recognizers">/speech-to-text/docs/reference/rest/v2/projects.locations.recognizers</a></td>
+<td><a href="https://docs.cloud.google.com/speech-to-text/docs/reference/rest/v2/projects.locations.recognizers">https://docs.cloud.google.com/speech-to-text/docs/reference/rest/v2/projects.locations.recognizers</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -655,4 +655,4 @@ spec:
     - en-US
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

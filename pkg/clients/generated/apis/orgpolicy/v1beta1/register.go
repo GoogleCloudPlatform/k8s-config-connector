@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(OrgPolicyCustomConstraint{}).Name(),
 	}
 
+	OrgPolicyPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(OrgPolicyPolicy{}).Name(),
+	}
+
 	orgpolicyAPIVersion = SchemeGroupVersion.String()
 )

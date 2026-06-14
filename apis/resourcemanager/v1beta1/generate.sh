@@ -27,6 +27,7 @@ go run . generate-types \
   --service google.cloud.resourcemanager.v3 \
   --api-version resourcemanager.cnrm.cloud.google.com/v1beta1 \
   --resource Project:Project \
+  --resource Folder:Folder \
   --include-skipped-output
 
 go run . generate-mapper \

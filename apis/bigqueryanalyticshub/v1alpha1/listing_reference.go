@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &BigQueryAnalyticsHubListingRef{}
 
-// BigQueryAnalyticsHubListingRef defines the resource reference to BigQueryAnalyticsHubListing, which "External" field
-// holds the GCP identifier for the KRM object.
+// BigQueryAnalyticsHubListingRef is a reference to a BigQueryAnalyticsHubListing.
 type BigQueryAnalyticsHubListingRef struct {
 	// A reference to an externally managed BigQueryAnalyticsHubListing resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/dataExchanges/{{dataExchangeID}}/listings/{{listingID}}".
@@ -42,7 +41,7 @@ type BigQueryAnalyticsHubListingRef struct {
 }
 
 func init() {
-	refs.Register(&BigQueryAnalyticsHubListingRef{})
+	refs.Register(&BigQueryAnalyticsHubListingRef{}, &BigQueryAnalyticsHubListing{})
 }
 
 func (r *BigQueryAnalyticsHubListingRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *BigQueryAnalyticsHubListingRef) GetExternal() string {
 
 func (r *BigQueryAnalyticsHubListingRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *BigQueryAnalyticsHubListingRef) ValidateExternal(ref string) error {

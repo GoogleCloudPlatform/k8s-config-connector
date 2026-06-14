@@ -1,0 +1,8 @@
+apiVersion: securitycenter.cnrm.cloud.google.com/v1alpha1
+kind: SecurityCenterMuteConfig
+metadata:
+  name: scmuteconfig-min-${uniqueId}
+spec:
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  filter: category = "VULNERABILITY"

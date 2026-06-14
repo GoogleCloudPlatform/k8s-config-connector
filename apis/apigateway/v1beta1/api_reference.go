@@ -28,17 +28,16 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ApiRef{}
 
-// ApiRef defines the resource reference to APIGatewayAPI, which "External" field
-// holds the GCP identifier for the KRM object.
+// ApiRef is a reference to an APIGatewayAPI.
 type ApiRef struct {
 	// A reference to an externally managed APIGatewayAPI resource.
 	// Should be in the format "projects/{{projectID}}/locations/global/apis/{{apiID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a APIGatewayAPI resource.
+	// The name of an APIGatewayAPI resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a APIGatewayAPI resource.
+	// The namespace of an APIGatewayAPI resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

@@ -23,7 +23,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/googleapis/gax-go/v2/apierror"
+	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 	grpcCode "google.golang.org/grpc/codes"
 	grpcStatus "google.golang.org/grpc/status"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -626,5 +628,22 @@ func MapStringString_FromProto(mapCtx *MapContext, in map[string]string) map[str
 	for k, v := range in {
 		out[k] = v
 	}
+func Status_FromProto(mapCtx *MapContext, in *statuspb.Status) *common.Status {
+	if in == nil {
+		return nil
+	}
+	out := &common.Status{}
+	out.Code = LazyPtr(in.GetCode())
+	out.Message = LazyPtr(in.GetMessage())
+	return out
+}
+
+func Status_ToProto(mapCtx *MapContext, in *common.Status) *statuspb.Status {
+	if in == nil {
+		return nil
+	}
+	out := &statuspb.Status{}
+	out.Code = ValueOf(in.Code)
+	out.Message = ValueOf(in.Message)
 	return out
 }

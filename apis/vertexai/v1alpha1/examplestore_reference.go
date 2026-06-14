@@ -41,7 +41,7 @@ type VertexAIExampleStoreRef struct {
 }
 
 func init() {
-	refs.Register(&VertexAIExampleStoreRef{})
+	refs.Register(&VertexAIExampleStoreRef{}, &VertexAIExampleStore{})
 }
 
 func (r *VertexAIExampleStoreRef) GetGVK() schema.GroupVersionKind {
@@ -61,6 +61,8 @@ func (r *VertexAIExampleStoreRef) GetExternal() string {
 
 func (r *VertexAIExampleStoreRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *VertexAIExampleStoreRef) ValidateExternal(ref string) error {

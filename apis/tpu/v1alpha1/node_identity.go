@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// NodeIdentity defines the resource reference to TPUVirtualMachine, which "External" field
-// holds the GCP identifier for the KRM object.
+// NodeIdentity is the identity of a TPUVirtualMachine.
 type NodeIdentity struct {
 	parent *NodeParent
 	id     string

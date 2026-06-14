@@ -16,7 +16,7 @@ title: "RecaptchaEnterpriseKey"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/recaptcha-enterprise/docs/">/recaptcha-enterprise/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/recaptcha-enterprise/docs/">https://docs.cloud.google.com/recaptcha-enterprise/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "RecaptchaEnterpriseKey"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/recaptcha-enterprise/docs/reference/rest/v1/projects.keys">/recaptcha-enterprise/docs/reference/rest/v1/projects.keys</a></td>
+<td><a href="https://docs.cloud.google.com/recaptcha-enterprise/docs/reference/rest/v1/projects.keys">https://docs.cloud.google.com/recaptcha-enterprise/docs/reference/rest/v1/projects.keys</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -538,4 +538,4 @@ spec:
     testingScore: 0.5
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

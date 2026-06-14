@@ -16,7 +16,7 @@ title: "OSConfigGuestPolicy"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/osconfig/rest/">/compute/docs/osconfig/rest/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/osconfig/rest/">https://docs.cloud.google.com/compute/docs/osconfig/rest/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "OSConfigGuestPolicy"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/compute/docs/osconfig/rest/v1beta/projects.guestPolicies">/compute/docs/osconfig/rest/v1beta/projects.guestPolicies</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/osconfig/rest/v1beta/projects.guestPolicies">https://docs.cloud.google.com/compute/docs/osconfig/rest/v1beta/projects.guestPolicies</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1763,4 +1763,4 @@ spec:
               - updatecompile
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -16,23 +16,19 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
-	reference "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
-
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &ForwardingRuleRef{}
+var _ refs.Ref = &ForwardingRuleRef{}
 
-// ForwardingRuleRef defines the resource reference to ComputeForwardingRule, which "External" field
-// holds the GCP identifier for the KRM object.
+// ForwardingRuleRef is a reference to a ComputeForwardingRule.
 type ForwardingRuleRef struct {
 	// A reference to an externally managed ComputeForwardingRule resource.
 	// Should be in the format "projects/{{projectID}}/global/forwardingRules/{{forwardingRuleID}}"
@@ -44,6 +40,10 @@ type ForwardingRuleRef struct {
 
 	// The namespace of a ComputeForwardingRule resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&ForwardingRuleRef{}, &ComputeForwardingRule{})
 }
 
 func (r *ForwardingRuleRef) GetGVK() schema.GroupVersionKind {
@@ -63,42 +63,46 @@ func (r *ForwardingRuleRef) GetExternal() string {
 
 func (r *ForwardingRuleRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ForwardingRuleRef) ValidateExternal(ref string) error {
-	id := &ForwardingRuleIdentity{}
-	external := reference.FixStaleComputeExternalFormat(r.GetExternal())
-	if err := id.FromExternal(external); err != nil {
+	id := &ComputeForwardingRuleIdentity{}
+	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *ForwardingRuleRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	// TODO: Use general-purpose refsv1beta1.Normalize function once direct controller is implemented.
-	// For now, we can build the external reference by reading status fields.
-	if r.GetExternal() == "" {
-		if r.Namespace == "" {
-			r.Namespace = defaultNamespace
-		}
-		key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-		u := &unstructured.Unstructured{}
-		u.SetGroupVersionKind(ComputeForwardingRuleGVK)
-		if err := reader.Get(ctx, key, u); err != nil {
-			if apierrors.IsNotFound(err) {
-				return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-			}
-			return fmt.Errorf("reading referenced %s %s: %w", ComputeForwardingRuleGVK, key, err)
-		}
-		selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
-		if err != nil {
-			return fmt.Errorf("reading status.selfLink: %w", err)
-		}
-		if selfLink == "" {
-			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-		}
-		r.SetExternal(reference.FixStaleComputeExternalFormat(selfLink))
-		return nil
+func (r *ForwardingRuleRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ComputeForwardingRuleIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
 	}
-	return r.ValidateExternal(r.GetExternal())
+	return id, nil
+}
+
+func (r *ForwardingRuleRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		// Get external from status.selfLink. This ensures backward compatibility for TF/DCL-based resources that lack status.externalRef.
+		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		if selfLink != "" {
+			id := &ComputeForwardingRuleIdentity{}
+			if err := id.FromExternal(selfLink); err == nil {
+				return id.String()
+			}
+		}
+
+		obj, err := common.ToStructuredType[*ComputeForwardingRule](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromComputeForwardingRuleSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

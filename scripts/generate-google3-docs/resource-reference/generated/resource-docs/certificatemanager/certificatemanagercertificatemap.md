@@ -16,7 +16,7 @@ title: "CertificateManagerCertificateMap"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/certificate-manager/docs/">/certificate-manager/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/certificate-manager/docs/">https://docs.cloud.google.com/certificate-manager/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "CertificateManagerCertificateMap"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificateMaps">/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificateMaps</a></td>
+<td><a href="https://docs.cloud.google.com/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificateMaps">https://docs.cloud.google.com/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificateMaps</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -98,7 +98,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -108,7 +108,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -118,7 +118,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -128,7 +128,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+            <p>The CertificateManagerCertificateMap name. If not given, the metadata.name will be used.</p>
         </td>
     </tr>
 </tbody>
@@ -166,7 +166,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -215,37 +215,35 @@ updateTime: string
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Creation timestamp of a Certificate Map. Timestamp is in RFC3339 UTC "Zulu" format,
-accurate to nanoseconds with up to nine fractional digits.
-Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
+            <p>Output only. The creation timestamp of a Certificate Map.</p>
         </td>
     </tr>
     <tr>
         <td><code>gclbTargets</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>A list of target proxies that use this Certificate Map.</p>
+            <p>Output only. A list of GCLB targets which use this Certificate Map.</p>
         </td>
     </tr>
     <tr>
         <td><code>gclbTargets[]</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>CertificateMap_GclbTargetObservedState defines the GclbTargets</p>
         </td>
     </tr>
     <tr>
         <td><code>gclbTargets[].ipConfigs</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>An IP configuration where this Certificate Map is serving.</p>
+            <p>IP configurations for this Target Stage.</p>
         </td>
     </tr>
     <tr>
         <td><code>gclbTargets[].ipConfigs[]</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>CertificateMap_GclbTarget_IPConfigObservedState defines the IpConfigs</p>
         </td>
     </tr>
     <tr>
@@ -259,7 +257,7 @@ Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
         <td><code>gclbTargets[].ipConfigs[].ports</code></td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>A list of ports.</p>
+            <p>Ports.</p>
         </td>
     </tr>
     <tr>
@@ -273,18 +271,14 @@ Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
         <td><code>gclbTargets[].targetHttpsProxy</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Proxy name must be in the format projects/*/locations/*/targetHttpsProxies/*.
-This field is part of a union field 'target_proxy': Only one of 'targetHttpsProxy' or
-'targetSslProxy' may be set.</p>
+            <p>A HTTPS proxy serving as GCLB target.</p>
         </td>
     </tr>
     <tr>
         <td><code>gclbTargets[].targetSslProxy</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Proxy name must be in the format projects/*/locations/*/targetSslProxies/*.
-This field is part of a union field 'target_proxy': Only one of 'targetHttpsProxy' or
-'targetSslProxy' may be set.</p>
+            <p>A SSL proxy serving as GCLB target.</p>
         </td>
     </tr>
     <tr>
@@ -298,9 +292,7 @@ This field is part of a union field 'target_proxy': Only one of 'targetHttpsProx
         <td><code>updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Update timestamp of a Certificate Map. Timestamp is in RFC3339 UTC "Zulu" format,
-accurate to nanoseconds with up to nine fractional digits.
-Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
+            <p>Output only. The update timestamp of a Certificate Map.</p>
         </td>
     </tr>
 </tbody>
@@ -323,4 +315,4 @@ spec:
     external: ${PROJECT_ID?}
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

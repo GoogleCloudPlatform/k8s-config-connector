@@ -104,6 +104,14 @@ type MemorystoreInstanceSpec struct {
 	// Optional. The automated backup config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.automated_backup_config
 	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
+	// Optional. The maintenance policy for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_policy
+	MaintenancePolicy *MaintenancePolicy `json:"maintenancePolicy,omitempty"`
+
+	// Optional. The KMS key reference for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.kms_key
+	KmsKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 var _ identity.Resource = &MemorystoreInstance{}
@@ -203,6 +211,18 @@ type MemorystoreInstanceObservedState struct {
 	// Output only. The list of available maintenance versions for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.available_maintenance_versions
 	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
+
+	// Output only. Upcoming maintenance schedule.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_schedule
+	MaintenanceSchedule *MaintenanceScheduleObservedState `json:"maintenanceSchedule,omitempty"`
+
+	// Output only. User-defined weekly maintenance windows in which space is reserved for maintenance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_policy
+	MaintenancePolicy *MaintenancePolicyObservedState `json:"maintenancePolicy,omitempty"`
+
+	// Output only. Encryption information for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.encryption_info
+	EncryptionInfo *EncryptionInfoObservedState `json:"encryptionInfo,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
@@ -516,4 +536,23 @@ type AutomatedBackupConfig_FixedFrequencySchedule struct {
 	//  to the start of an hour. This field is required.
 	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule.start_time
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.EncryptionInfo
+type EncryptionInfoObservedState struct {
+	// Output only. Type of encryption.
+	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.encryption_type
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	// Output only. KMS key versions that are being used to protect the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.kms_key_versions
+	KmsKeyVersions []string `json:"kmsKeyVersions,omitempty"`
+
+	// Output only. The state of the primary KMS key.
+	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.kms_key_primary_state
+	KmsKeyPrimaryState *string `json:"kmsKeyPrimaryState,omitempty"`
+
+	// Output only. Latest update timestamp of the encryption info.
+	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.last_update_time
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
 }

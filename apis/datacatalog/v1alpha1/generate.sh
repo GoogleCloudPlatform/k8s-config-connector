@@ -31,3 +31,9 @@ go run . generate-types \
   --resource DataCatalogTag:Tag \
   --resource DataCatalogTagTemplate:TagTemplate \
   --include-skipped-output
+
+go run . generate-mapper \
+  --service google.cloud.datacatalog.v1 \
+  --api-version datacatalog.cnrm.cloud.google.com/v1alpha1 \
+  --multiversion \
+  --include-skipped-output

@@ -131,11 +131,26 @@ func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBu
 	}
 
 	for _, path := range req.GetUpdateMask().GetPaths() {
-		switch path {
+		switch {
+		case path == "displayName" || path == "display_name":
+			obj.DisplayName = req.GetBudget().GetDisplayName()
+		case path == "amount" || strings.HasPrefix(path, "amount."):
+			obj.Amount = req.GetBudget().GetAmount()
+		case path == "budgetFilter" || path == "budget_filter" ||
+			strings.HasPrefix(path, "budgetFilter.") || strings.HasPrefix(path, "budget_filter."):
+			obj.BudgetFilter = req.GetBudget().GetBudgetFilter()
+		case path == "thresholdRules" || path == "threshold_rules":
+			obj.ThresholdRules = req.GetBudget().GetThresholdRules()
+		case path == "allUpdatesRule" || path == "all_updates_rule" || path == "notificationsRule" || path == "notifications_rule" ||
+			strings.HasPrefix(path, "allUpdatesRule.") || strings.HasPrefix(path, "all_updates_rule.") ||
+			strings.HasPrefix(path, "notificationsRule.") || strings.HasPrefix(path, "notifications_rule."):
+			obj.AllUpdatesRule = req.GetBudget().GetAllUpdatesRule()
 		default:
-			return nil, fmt.Errorf("unhandled path in mockgcp UpdateBudget: %w", err)
+			return nil, status.Errorf(codes.InvalidArgument, "unhandled path %q in mockgcp UpdateBudget", path)
 		}
 	}
+
+	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

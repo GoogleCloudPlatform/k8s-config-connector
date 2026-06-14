@@ -16,90 +16,78 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &ClusterRef{}
+var _ refs.Ref = &ClusterRef{}
 
-// ClusterRef defines the resource reference to AlloyDBCluster, which "External" field
-// holds the GCP identifier for the KRM object.
+// ClusterRef is a reference to an AlloyDBCluster.
 type ClusterRef struct {
 	// A reference to an externally managed AlloyDBCluster resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AlloyDBCluster resource.
+	// The name of an AlloyDBCluster resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AlloyDBCluster resource.
+	// The namespace of an AlloyDBCluster resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on AlloyDBCluster.
-// If the "External" is given in the other resource's spec.AlloyDBClusterRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual AlloyDBCluster object from the cluster.
-func (r *ClusterRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", AlloyDBClusterGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseClusterExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func init() {
+	refs.Register(&ClusterRef{}, &AlloyDBCluster{})
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(AlloyDBClusterGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", AlloyDBClusterGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		// It's possible the referenced AlloyDBCluster is a legacy one and doesn't
-		// have `status.externalRef`.
-		ready, err := isResourceReady(u)
-		if err != nil {
-			return "", fmt.Errorf("checking if referenced %s %s is ready: %w", AlloyDBClusterGVK, key, err)
-		}
-		if !ready {
-			return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-		}
-		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-		if err != nil {
-			return "", err
-		}
-		location, err := refsv1beta1.GetLocation(u)
-		if err != nil {
-			return "", err
-		}
-		clusterID, err := refsv1beta1.GetResourceID(u)
-		if err != nil {
-			return "", err
-		}
-		return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", projectID, location, clusterID), nil
-	}
+func (r *ClusterRef) GetGVK() schema.GroupVersionKind {
+	return AlloyDBClusterGVK
+}
 
-	r.External = actualExternalRef
-	return r.External, nil
+func (r *ClusterRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ClusterRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ClusterRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *ClusterRef) ValidateExternal(ref string) error {
+	id := &AlloyDBClusterIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ClusterRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &AlloyDBClusterIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *ClusterRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromAlloyDBClusterSpec(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

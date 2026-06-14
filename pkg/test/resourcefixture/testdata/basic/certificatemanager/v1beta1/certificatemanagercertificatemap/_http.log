@@ -1,6 +1,5 @@
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -22,9 +21,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps?alt=json&certificateMapId=certificatemanagercertificatemap${uniqueId}
+POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps?%24alt=json%3Benum-encoding%3Dint&certificateMapId=certificatemanagercertificatemap${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "sample certificate map",
@@ -59,9 +57,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -95,9 +92,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -123,9 +119,8 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}?alt=json&updateMask=description%2Clabels
+PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "updated sample certificate map",
@@ -133,7 +128,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true",
     "value": "cert-map-2"
-  }
+  },
+  "name": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}"
 }
 
 200 OK
@@ -159,9 +155,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -194,9 +189,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -222,9 +216,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}?alt=json
+DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -249,9 +242,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

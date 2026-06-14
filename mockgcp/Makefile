@@ -36,8 +36,8 @@ gen-proto: tools sync-repo
 .PHONY: gen-proto-no-fixup
 gen-proto-no-fixup:
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
-		-I ./third_party/googleapis \
 		-I ./apis \
+		-I ./third_party/googleapis \
 		--go_out ./generated \
 		--go_opt paths=source_relative \
 		--go-grpc_out ./generated \
@@ -54,106 +54,44 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
+		./apis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \
-		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/annotation*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/data_item.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/dataset*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/encryption_spec.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/api_auth.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/artifact.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/lineage_subgraph.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/content.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/context.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/execution.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/event.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/metadata*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/model*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/deploy*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/env_var.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/evaluated_annotation.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/job_state.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/publisher_model.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/io.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/operation.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/saved_query.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/tensorboard*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/user_action_reference.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/entity_type.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/feature.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/feature_monitor.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/feature_selector.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/featurestore*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/feature_monitoring_stats.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/types.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/schedule.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/schedule_service.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_service.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_service.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_runtime.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_software_config.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_execution_job.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/network_spec.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_idle_shutdown_config.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_euc_config.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_runtime_template_ref.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/openapi.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/training_pipeline.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_job.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_state.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/service_networking.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/tool.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/ui_pipeline_spec.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_failure_policy.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/value.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/vertex_rag_data.proto \
 		./third_party/googleapis/mockgcp/cloud/apigateway/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
-		./third_party/googleapis/mockgcp/cloud/batch/v1/*.proto \		./third_party/googleapis/mockgcp/cloud/bigquery/analyticshub/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/bigquery/datatransfer/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/common/*.proto \
 		./third_party/googleapis/mockgcp/cloud/compute/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/documentai/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/edgenetwork/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/filestore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/functions/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/policycontroller/v1beta/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/configmanagement/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/metering/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/multiclusteringress/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta1/membership.proto \
-		./third_party/googleapis/mockgcp/cloud/gkemulticloud/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/parametermanager/v1/*.proto \
+		./apis/mockgcp/cloud/gkehub/v1beta/*.proto \
+		./apis/mockgcp/cloud/gkehub/policycontroller/v1beta/*.proto \
+		./apis/mockgcp/cloud/gkehub/v1beta/configmanagement/*.proto \
+		./apis/mockgcp/cloud/gkehub/v1beta/metering/*.proto \
+		./apis/mockgcp/cloud/gkehub/v1beta/multiclusteringress/*.proto \
+		./apis/mockgcp/cloud/gkehub/v1beta1/membership.proto \
 		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/pubsublite/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/redis/cluster/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/redis/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/resourcemanager/v3/*.proto \
 		./third_party/googleapis/mockgcp/cloud/security/privateca/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/servicedirectory/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/sql/v1beta4/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tpu/v2/*.proto \
-		./third_party/googleapis/mockgcp/cloud/vpcaccess/v1/*.proto \
 		./third_party/googleapis/mockgcp/container/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/dataflow/v1beta3/*.proto \
-		./third_party/googleapis/mockgcp/devtools/artifactregistry/v1/*.proto \
 		./third_party/googleapis/mockgcp/devtools/cloudbuild/v1/*.proto	 \
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/v1/resource_policy_member.proto \
-		./third_party/googleapis/mockgcp/pubsub/v1/*.proto \
 		./third_party/googleapis/mockgcp/spanner/admin/database/v1/*.proto \
 		./third_party/googleapis/mockgcp/spanner/admin/instance/v1/*.proto \
-		./third_party/googleapis/mockgrafeas/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/biglake/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/bigquery/reservation/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/orchestration/airflow/service/v1/*.proto \
-		./third_party/googleapis/mockgcp/api/cloudquotas/v1beta/*.proto \
-		./third_party/googleapis/mockgcp/cloud/asset/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/datacatalog/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/metastore/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
 		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
@@ -170,24 +108,19 @@ generate-grpc-for-google-protos:
 	mkdir -p ./generated
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
-		-I ./third_party/googleapis \
 		-I ./apis \
+		-I ./third_party/googleapis \
 		--experimental_allow_proto3_optional \
 		--grpc-gateway_out ./generated \
 		--grpc-gateway_opt logtostderr=true \
 		--grpc-gateway_opt paths=source_relative \
 		--grpc-gateway_opt standalone=true \
 		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
-		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto \
 		./third_party/googleapis/google/storage/control/v2/*.proto \
-		./third_party/googleapis/google/cloud/batch/v1/*.proto \
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
-		./third_party/googleapis/google/cloud/networksecurity/v1beta1/*.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
-		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
-		./third_party/googleapis/google/iam/v2/*.proto \
-		./third_party/googleapis/google/analytics/admin/v1alpha/*.proto
+		./third_party/googleapis/google/iam/v2/*.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:

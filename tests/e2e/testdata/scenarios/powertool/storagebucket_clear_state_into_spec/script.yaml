@@ -53,6 +53,7 @@ spec:
 ---
 
 kind: RunCLI
+DEFER-HTTP-LOG: true
 args: [ "powertools", "change-state-into-spec", "--namespace=${projectId}", "--kind=StorageBucket", "--name=storagebucket-merge-${uniqueId}" ]
 
 ---

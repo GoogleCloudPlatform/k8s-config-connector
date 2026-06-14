@@ -39,20 +39,18 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type PubSubSchemaSpec struct {
-	/* The definition of the schema.
-	This should contain a string representing the full definition of the schema
-	that is a valid schema definition of the type specified in type. */
+	/* The definition of the schema. This should contain a string representing the full definition of the schema that is a valid schema definition of the type specified in `type`. */
 	// +optional
 	Definition *string `json:"definition,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The PubSubSchema name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The type of the schema definition Default value: "TYPE_UNSPECIFIED" Possible values: ["TYPE_UNSPECIFIED", "PROTOCOL_BUFFER", "AVRO"]. */
+	/* The type of the schema definition. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }

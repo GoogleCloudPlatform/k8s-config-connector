@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ReservationIdentity defines the resource reference to BigqueryReservation, which "External" field
-// holds the GCP identifier for the KRM object.
+// ReservationIdentity is the identity of a BigqueryReservation.
 type ReservationIdentity struct {
 	parent *ReservationParent
 	id     string

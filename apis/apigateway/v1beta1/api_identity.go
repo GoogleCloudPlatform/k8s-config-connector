@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ApiIdentity defines the resource reference to APIGatewayAPI, which "External" field
-// holds the GCP identifier for the KRM object.
+// ApiIdentity is the identity of an APIGatewayAPI.
 type ApiIdentity struct {
 	parent *ApiParent
 	id     string
@@ -52,7 +51,7 @@ func (p *ApiParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a ApiIdentity from the Config Connector Api object.
+// New builds an ApiIdentity from the Config Connector Api object.
 func NewApiIdentity(ctx context.Context, reader client.Reader, obj *APIGatewayAPI) (*ApiIdentity, error) {
 
 	// Get Parent

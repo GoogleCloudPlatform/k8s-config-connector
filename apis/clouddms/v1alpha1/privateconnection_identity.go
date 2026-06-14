@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// PrivateConnectionIdentity defines the resource reference to CloudDMSPrivateConnection, which "External" field
-// holds the GCP identifier for the KRM object.
+// PrivateConnectionIdentity is the identity of a CloudDMSPrivateConnection.
 type PrivateConnectionIdentity struct {
 	parent *PrivateConnectionParent
 	id     string

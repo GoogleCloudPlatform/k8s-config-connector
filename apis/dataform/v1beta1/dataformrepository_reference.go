@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &DataformRepositoryRef{}
 
-// DataformRepositoryRef defines the resource reference to DataformRepository, which "External" field
-// holds the GCP identifier for the KRM object.
+// DataformRepositoryRef is a reference to a DataformRepository.
 type DataformRepositoryRef struct {
 	// A reference to an externally managed DataformRepository resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
@@ -42,7 +41,7 @@ type DataformRepositoryRef struct {
 }
 
 func init() {
-	refs.Register(&DataformRepositoryRef{})
+	refs.Register(&DataformRepositoryRef{}, &DataformRepository{})
 }
 
 func (r *DataformRepositoryRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *DataformRepositoryRef) GetExternal() string {
 
 func (r *DataformRepositoryRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *DataformRepositoryRef) ValidateExternal(ref string) error {

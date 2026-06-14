@@ -16,7 +16,7 @@ title: "ComputeForwardingRule"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -28,8 +28,8 @@ title: "ComputeForwardingRule"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/compute/docs/reference/rest/v1/forwardingRules">/compute/docs/reference/rest/v1/forwardingRules</a></pre>
-<pre><a href="/compute/docs/reference/rest/v1/globalForwardingRules">/compute/docs/reference/rest/v1/globalForwardingRules</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/forwardingRules">https://docs.cloud.google.com/compute/docs/reference/rest/v1/forwardingRules</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/globalForwardingRules">https://docs.cloud.google.com/compute/docs/reference/rest/v1/globalForwardingRules</a></pre>
 </td>
 </tr>
 <tr>
@@ -305,7 +305,7 @@ range of the subnet or network configured for this forwarding rule.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -315,7 +315,7 @@ range of the subnet or network configured for this forwarding rule.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}" when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeAddress resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}" or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".</p>
         </td>
     </tr>
     <tr>
@@ -325,7 +325,7 @@ range of the subnet or network configured for this forwarding rule.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeAddress` resource.</p>
+            <p>The name of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -335,7 +335,7 @@ range of the subnet or network configured for this forwarding rule.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeAddress` resource.</p>
+            <p>The namespace of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -535,7 +535,7 @@ provided metadata. Possible values: ["MATCH_ANY", "MATCH_ALL"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -774,7 +774,7 @@ subnetwork must be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -784,7 +784,7 @@ subnetwork must be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -794,7 +794,7 @@ subnetwork must be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -1180,6 +1180,7 @@ pscConnectionId: string
 pscConnectionStatus: string
 selfLink: string
 serviceName: string
+target: string
 ```
 
 <table class="properties responsive">
@@ -1299,6 +1300,13 @@ serviceName: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>The internal fully qualified service name for this Forwarding Rule. This field is only used for INTERNAL load balancing.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>target</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The target resource to receive the matched traffic.</p>
         </td>
     </tr>
 </tbody>
@@ -1873,4 +1881,4 @@ spec:
   purpose: "PRIVATE_SERVICE_CONNECT"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

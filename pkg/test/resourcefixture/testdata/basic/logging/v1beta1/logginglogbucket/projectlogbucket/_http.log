@@ -1,6 +1,5 @@
-GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -22,14 +21,11 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets?alt=json&bucketId=logginglogbucket-${uniqueId}
+POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets?%24alt=json%3Benum-encoding%3Dint&bucketId=logginglogbucket-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "description": "A sample log bucket",
-  "locked": false,
-  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
   "retentionDays": 30
 }
 
@@ -46,7 +42,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A sample log bucket",
-  "lifecycleState": "ACTIVE",
+  "lifecycleState": 1,
   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
   "retentionDays": 30,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -54,9 +50,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -71,7 +66,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A sample log bucket",
-  "lifecycleState": "ACTIVE",
+  "lifecycleState": 1,
   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
   "retentionDays": 30,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -79,13 +74,11 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json&updateMask=description%2CretentionDays
+PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CretentionDays
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "description": "An updated sample of a log bucket.",
-  "locked": false,
   "retentionDays": 100
 }
 
@@ -102,7 +95,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An updated sample of a log bucket.",
-  "lifecycleState": "ACTIVE",
+  "lifecycleState": 1,
   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
   "retentionDays": 100,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -110,9 +103,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -127,7 +119,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An updated sample of a log bucket.",
-  "lifecycleState": "ACTIVE",
+  "lifecycleState": 1,
   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
   "retentionDays": 100,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -135,9 +127,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8

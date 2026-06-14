@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeSharedVPCHostProject
+  name: computesharedvpchostproject-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

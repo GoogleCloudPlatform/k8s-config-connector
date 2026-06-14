@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMPolicyMember
+  name: iampolicymember-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: dlp.cnrm.cloud.google.com
+  kind: DLPStoredInfoType
+  name: dlpstoredinfotype-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

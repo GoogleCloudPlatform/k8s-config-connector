@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: vertexai.cnrm.cloud.google.com
+  kind: VertexAIMetadataStore
+  name: metadatastore${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

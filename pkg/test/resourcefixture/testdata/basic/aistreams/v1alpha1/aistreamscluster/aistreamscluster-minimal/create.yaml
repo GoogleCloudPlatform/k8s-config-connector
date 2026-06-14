@@ -1,0 +1,8 @@
+apiVersion: aistreams.cnrm.cloud.google.com/v1alpha1
+kind: AIStreamsCluster
+metadata:
+  name: aistreamscluster-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1

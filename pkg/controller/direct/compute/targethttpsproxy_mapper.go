@@ -18,7 +18,9 @@ import (
 	"strings"
 
 	pb "cloud.google.com/go/compute/apiv1/computepb"
+	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -55,7 +57,11 @@ func ComputeTargetHTTPSProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	for _, ref := range in.CertificateManagerCertificates {
 		// CertificateManagerCertificates are stored in the same SslCertificates field in the proto
 		// but they have a specific format.
-		out.SslCertificates = append(out.SslCertificates, ref.External)
+		external := ref.External
+		if !strings.HasPrefix(external, "//certificatemanager.googleapis.com/") {
+			external = "//certificatemanager.googleapis.com/" + external
+		}
+		out.SslCertificates = append(out.SslCertificates, external)
 	}
 
 	return out
@@ -75,7 +81,7 @@ func ComputeTargetHTTPSProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out.Description = in.Description
 
 	if in.CertificateMap != nil {
-		out.CertificateMapRef = &krm.CertificateManagerCertificateMapRef{External: *in.CertificateMap}
+		out.CertificateMapRef = &certificatemanagerv1beta1.CertificateManagerCertificateMapRef{External: *in.CertificateMap}
 	}
 	if in.UrlMap != nil {
 		out.UrlMapRef = &krm.ComputeURLMapRef{External: *in.UrlMap}
@@ -84,7 +90,7 @@ func ComputeTargetHTTPSProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 		out.SslPolicyRef = &krm.ComputeSSLPolicyRef{External: *in.SslPolicy}
 	}
 	if in.ServerTlsPolicy != nil {
-		out.ServerTlsPolicyRef = &krm.NetworkSecurityServerTLSPolicyRef{External: *in.ServerTlsPolicy}
+		out.ServerTlsPolicyRef = &networksecurityv1beta1.NetworkSecurityServerTLSPolicyRef{External: *in.ServerTlsPolicy}
 	}
 
 	for _, cert := range in.SslCertificates {
@@ -92,8 +98,9 @@ func ComputeTargetHTTPSProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 		// based on the format.
 		// Classic: projects/{{project}}/global/sslCertificates/{{name}}
 		// CertManager: //certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificates/{{name}}
-		if cert != "" && strings.Contains(cert, "certificatemanager.googleapis.com") {
-			out.CertificateManagerCertificates = append(out.CertificateManagerCertificates, krm.CertificateManagerCertificateRef{External: cert})
+		if cert != "" && strings.HasPrefix(cert, "//certificatemanager.googleapis.com/") {
+			external := strings.TrimPrefix(cert, "//certificatemanager.googleapis.com/")
+			out.CertificateManagerCertificates = append(out.CertificateManagerCertificates, certificatemanagerv1beta1.CertificateManagerCertificateRef{External: external})
 		} else {
 			out.SslCertificates = append(out.SslCertificates, krm.ComputeSSLCertificateRef{External: cert})
 		}

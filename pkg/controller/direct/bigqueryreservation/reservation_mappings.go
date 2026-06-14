@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BigQueryReservationReservationSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationReservationSpec) *pb.Reservation {
+func BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationReservationSpec) *pb.Reservation {
 	if in == nil {
 		return nil
 	}
@@ -28,7 +28,7 @@ func BigQueryReservationReservationSpec_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: Name
 	out.SlotCapacity = direct.ValueOf(in.SlotCapacity)
 	out.IgnoreIdleSlots = direct.ValueOf(in.IgnoreIdleSlots)
-	out.Autoscale = AutoscaleSpec_ToProto(mapCtx, in.Autoscale)
+	out.Autoscale = AutoscaleSpec_v1beta1_ToProto(mapCtx, in.Autoscale)
 	out.Concurrency = direct.ValueOf(in.Concurrency)
 	// MISSING: CreationTime
 	// MISSING: UpdateTime
@@ -41,13 +41,13 @@ func BigQueryReservationReservationSpec_ToProto(mapCtx *direct.MapContext, in *k
 	return out
 }
 
-func BigQueryReservationReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationReservationObservedState) *pb.Reservation {
+func BigQueryReservationReservationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationReservationObservedState) *pb.Reservation {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Reservation{}
 	// MISSING: Name
-	out.Autoscale = AutoscaleObservedState_ToProto(mapCtx, in.Autoscale)
+	out.Autoscale = AutoscaleObservedState_v1beta1_ToProto(mapCtx, in.Autoscale)
 	out.PrimaryLocation, out.SecondaryLocation, out.OriginalPrimaryLocation = FailoverObservedState_ToProto(mapCtx, in.FailOver)
 	// MISSING: CreationTime
 	// MISSING: UpdateTime
@@ -58,13 +58,13 @@ func BigQueryReservationReservationObservedState_ToProto(mapCtx *direct.MapConte
 	return out
 }
 
-func BigQueryReservationReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationObservedState {
+func BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.BigQueryReservationReservationObservedState{}
 	// MISSING: Name
-	out.Autoscale = AutoscaleObservedState_FromProto(mapCtx, in.GetAutoscale())
+	out.Autoscale = AutoscaleObservedState_v1beta1_FromProto(mapCtx, in.GetAutoscale())
 	// MISSING: CreationTime
 	// MISSING: CreationTime
 	// MISSING: UpdateTime
@@ -100,7 +100,7 @@ func FailoverObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FailoverOb
 	return direct.ValueOf(in.PrimaryLocation), direct.ValueOf(in.SecondaryLocation), direct.ValueOf(in.OriginalPrimaryLocation)
 }
 
-func AutoscaleSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutoscaleSpec) *pb.Reservation_Autoscale {
+func AutoscaleSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AutoscaleSpec) *pb.Reservation_Autoscale {
 	if in == nil {
 		return nil
 	}
@@ -109,7 +109,7 @@ func AutoscaleSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutoscaleSpec) *pb
 	return out
 }
 
-func AutoscaleSpec_FromProto(mapctx *direct.MapContext, in *pb.Reservation_Autoscale) *krm.AutoscaleSpec {
+func AutoscaleSpec_v1beta1_FromProto(mapctx *direct.MapContext, in *pb.Reservation_Autoscale) *krm.AutoscaleSpec {
 	if in == nil {
 		return nil
 	}
@@ -118,7 +118,7 @@ func AutoscaleSpec_FromProto(mapctx *direct.MapContext, in *pb.Reservation_Autos
 	return out
 }
 
-func AutoscaleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krm.AutoscaleObservedState {
+func AutoscaleObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krm.AutoscaleObservedState {
 	if in == nil {
 		return nil
 	}
@@ -129,7 +129,7 @@ func AutoscaleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservat
 	return out
 }
 
-func BigQueryReservationReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationSpec {
+func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationSpec {
 	if in == nil {
 		return nil
 	}
@@ -137,7 +137,7 @@ func BigQueryReservationReservationSpec_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: Name
 	out.SlotCapacity = direct.LazyPtr(in.GetSlotCapacity())
 	out.IgnoreIdleSlots = direct.LazyPtr(in.GetIgnoreIdleSlots())
-	out.Autoscale = AutoscaleSpec_FromProto(mapCtx, in.GetAutoscale())
+	out.Autoscale = AutoscaleSpec_v1beta1_FromProto(mapCtx, in.GetAutoscale())
 	out.Concurrency = direct.LazyPtr(in.GetConcurrency())
 	// MISSING: CreationTime
 	// MISSING: UpdateTime
@@ -157,4 +157,20 @@ func FailoverSpec_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.
 	out := &krm.FailoverSpec{}
 	out.SecondaryLocation = &in.SecondaryLocation
 	return out
+}
+
+func BigQueryReservationReservationSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationReservationSpec) *pb.Reservation {
+	return BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx, in)
+}
+
+func BigQueryReservationReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationSpec {
+	return BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx, in)
+}
+
+func BigQueryReservationReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationReservationObservedState) *pb.Reservation {
+	return BigQueryReservationReservationObservedState_v1beta1_ToProto(mapCtx, in)
+}
+
+func BigQueryReservationReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationObservedState {
+	return BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx, in)
 }

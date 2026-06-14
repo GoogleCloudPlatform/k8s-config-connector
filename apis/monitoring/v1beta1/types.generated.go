@@ -16,10 +16,309 @@
 // +generated:types
 // krm.group: monitoring.cnrm.cloud.google.com
 // krm.version: v1beta1
-// proto.service: google.monitoring.v3
+// proto.service: google.monitoring.v3,google.monitoring.metricsscope.v1
+// resource: MonitoringMetricDescriptor:google.api.MetricDescriptor
 // resource: MonitoringNotificationChannel:NotificationChannel
+// resource: MonitoringUptimeCheckConfig:UptimeCheckConfig
+// resource: MonitoringService:Service
+// resource: MonitoringMonitoredProject:MonitoredProject
 
 package v1beta1
+
+/* found existing non-generated go type with proto tag "google.api.LabelDescriptor", skipping
+
+// +kcc:proto=google.api.LabelDescriptor
+type LabelDescriptor struct {
+	// The label key.
+	// +kcc:proto:field=google.api.LabelDescriptor.key
+	Key *string `json:"key,omitempty"`
+
+	// The type of data that can be assigned to the label.
+	// +kcc:proto:field=google.api.LabelDescriptor.value_type
+	ValueType *string `json:"valueType,omitempty"`
+
+	// A human-readable description for the label.
+	// +kcc:proto:field=google.api.LabelDescriptor.description
+	Description *string `json:"description,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.api.MetricDescriptor", skipping
+
+// +kcc:proto=google.api.MetricDescriptor
+type MetricDescriptor struct {
+	// The resource name of the metric descriptor.
+	// +kcc:proto:field=google.api.MetricDescriptor.name
+	Name *string `json:"name,omitempty"`
+
+	// The metric type, including its DNS name prefix. The type is not
+	//  URL-encoded. All user-defined metric types have the DNS name
+	//  `custom.googleapis.com` or `external.googleapis.com`. Metric types should
+	//  use a natural hierarchical grouping. For example:
+	//
+	//      "custom.googleapis.com/invoice/paid/amount"
+	//      "external.googleapis.com/prometheus/up"
+	//      "appengine.googleapis.com/http/server/response_latencies"
+	// +kcc:proto:field=google.api.MetricDescriptor.type
+	Type *string `json:"type,omitempty"`
+
+	// The set of labels that can be used to describe a specific
+	//  instance of this metric type. For example, the
+	//  `appengine.googleapis.com/http/server/response_latencies` metric
+	//  type has a label for the HTTP response code, `response_code`, so
+	//  you can look at latencies for successful responses or just
+	//  for responses that failed.
+	// +kcc:proto:field=google.api.MetricDescriptor.labels
+	Labels []LabelDescriptor `json:"labels,omitempty"`
+
+	// Whether the metric records instantaneous values, changes to a value, etc.
+	//  Some combinations of `metric_kind` and `value_type` might not be supported.
+	// +kcc:proto:field=google.api.MetricDescriptor.metric_kind
+	MetricKind *string `json:"metricKind,omitempty"`
+
+	// Whether the measurement is an integer, a floating-point number, etc.
+	//  Some combinations of `metric_kind` and `value_type` might not be supported.
+	// +kcc:proto:field=google.api.MetricDescriptor.value_type
+	ValueType *string `json:"valueType,omitempty"`
+
+	// The units in which the metric value is reported. It is only applicable
+	//  if the `value_type` is `INT64`, `DOUBLE`, or `DISTRIBUTION`. The `unit`
+	//  defines the representation of the stored metric values.
+	//
+	//  Different systems might scale the values to be more easily displayed (so a
+	//  value of `0.02kBy` _might_ be displayed as `20By`, and a value of
+	//  `3523kBy` _might_ be displayed as `3.5MBy`). However, if the `unit` is
+	//  `kBy`, then the value of the metric is always in thousands of bytes, no
+	//  matter how it might be displayed.
+	//
+	//  If you want a custom metric to record the exact number of CPU-seconds used
+	//  by a job, you can create an `INT64 CUMULATIVE` metric whose `unit` is
+	//  `s{CPU}` (or equivalently `1s{CPU}` or just `s`). If the job uses 12,005
+	//  CPU-seconds, then the value is written as `12005`.
+	//
+	//  Alternatively, if you want a custom metric to record data in a more
+	//  granular way, you can create a `DOUBLE CUMULATIVE` metric whose `unit` is
+	//  `ks{CPU}`, and then write the value `12.005` (which is `12005/1000`),
+	//  or use `Kis{CPU}` and write `11.723` (which is `12005/1024`).
+	//
+	//  The supported units are a subset of [The Unified Code for Units of
+	//  Measure](https://unitsofmeasure.org/ucum.html) standard:
+	//
+	//  **Basic units (UNIT)**
+	//
+	//  * `bit`   bit
+	//  * `By`    byte
+	//  * `s`     second
+	//  * `min`   minute
+	//  * `h`     hour
+	//  * `d`     day
+	//  * `1`     dimensionless
+	//
+	//  **Prefixes (PREFIX)**
+	//
+	//  * `k`     kilo    (10^3)
+	//  * `M`     mega    (10^6)
+	//  * `G`     giga    (10^9)
+	//  * `T`     tera    (10^12)
+	//  * `P`     peta    (10^15)
+	//  * `E`     exa     (10^18)
+	//  * `Z`     zetta   (10^21)
+	//  * `Y`     yotta   (10^24)
+	//
+	//  * `m`     milli   (10^-3)
+	//  * `u`     micro   (10^-6)
+	//  * `n`     nano    (10^-9)
+	//  * `p`     pico    (10^-12)
+	//  * `f`     femto   (10^-15)
+	//  * `a`     atto    (10^-18)
+	//  * `z`     zepto   (10^-21)
+	//  * `y`     yocto   (10^-24)
+	//
+	//  * `Ki`    kibi    (2^10)
+	//  * `Mi`    mebi    (2^20)
+	//  * `Gi`    gibi    (2^30)
+	//  * `Ti`    tebi    (2^40)
+	//  * `Pi`    pebi    (2^50)
+	//
+	//  **Grammar**
+	//
+	//  The grammar also includes these connectors:
+	//
+	//  * `/`    division or ratio (as an infix operator). For examples,
+	//           `kBy/{email}` or `MiBy/10ms` (although you should almost never
+	//           have `/s` in a metric `unit`; rates should always be computed at
+	//           query time from the underlying cumulative or delta value).
+	//  * `.`    multiplication or composition (as an infix operator). For
+	//           examples, `GBy.d` or `k{watt}.h`.
+	//
+	//  The grammar for a unit is as follows:
+	//
+	//      Expression = Component { "." Component } { "/" Component } ;
+	//
+	//      Component = ( [ PREFIX ] UNIT | "%" ) [ Annotation ]
+	//                | Annotation
+	//                | "1"
+	//                ;
+	//
+	//      Annotation = "{" NAME "}" ;
+	//
+	//  Notes:
+	//
+	//  * `Annotation` is just a comment if it follows a `UNIT`. If the annotation
+	//     is used alone, then the unit is equivalent to `1`. For examples,
+	//     `{request}/s == 1/s`, `By{transmitted}/s == By/s`.
+	//  * `NAME` is a sequence of non-blank printable ASCII characters not
+	//     containing `{` or `}`.
+	//  * `1` represents a unitary [dimensionless
+	//     unit](https://en.wikipedia.org/wiki/Dimensionless_quantity) of 1, such
+	//     as in `1/s`. It is typically used when none of the basic units are
+	//     appropriate. For example, "new users per day" can be represented as
+	//     `1/d` or `{new-users}/d` (and a metric value `5` would mean "5 new
+	//     users). Alternatively, "thousands of page views per day" would be
+	//     represented as `1000/d` or `k1/d` or `k{page_views}/d` (and a metric
+	//     value of `5.3` would mean "5300 page views per day").
+	//  * `%` represents dimensionless value of 1/100, and annotates values giving
+	//     a percentage (so the metric values are typically in the range of 0..100,
+	//     and a metric value `3` means "3 percent").
+	//  * `10^2.%` indicates a metric contains a ratio, typically in the range
+	//     0..1, that will be multiplied by 100 and displayed as a percentage
+	//     (so a metric value `0.03` means "3 percent").
+	// +kcc:proto:field=google.api.MetricDescriptor.unit
+	Unit *string `json:"unit,omitempty"`
+
+	// A detailed description of the metric, which can be used in documentation.
+	// +kcc:proto:field=google.api.MetricDescriptor.description
+	Description *string `json:"description,omitempty"`
+
+	// A concise name for the metric, which can be displayed in user interfaces.
+	//  Use sentence case without an ending period, for example "Request count".
+	//  This field is optional but it is recommended to be set for any metrics
+	//  associated with user-visible concepts, such as Quota.
+	// +kcc:proto:field=google.api.MetricDescriptor.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Metadata which can be used to guide usage of the metric.
+	// +kcc:proto:field=google.api.MetricDescriptor.metadata
+	Metadata *MetricDescriptor_MetricDescriptorMetadata `json:"metadata,omitempty"`
+
+	// Optional. The launch stage of the metric definition.
+	// +kcc:proto:field=google.api.MetricDescriptor.launch_stage
+	LaunchStage *string `json:"launchStage,omitempty"`
+
+	// Read-only. If present, then a [time
+	//  series][google.monitoring.v3.TimeSeries], which is identified partially by
+	//  a metric type and a
+	//  [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor], that
+	//  is associated with this metric type can only be associated with one of the
+	//  monitored resource types listed here.
+	// +kcc:proto:field=google.api.MetricDescriptor.monitored_resource_types
+	MonitoredResourceTypes []string `json:"monitoredResourceTypes,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.api.MetricDescriptor.MetricDescriptorMetadata", skipping
+
+// +kcc:proto=google.api.MetricDescriptor.MetricDescriptorMetadata
+type MetricDescriptor_MetricDescriptorMetadata struct {
+	// Deprecated. Must use the
+	//  [MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage]
+	//  instead.
+	// +kcc:proto:field=google.api.MetricDescriptor.MetricDescriptorMetadata.launch_stage
+	LaunchStage *string `json:"launchStage,omitempty"`
+
+	// The sampling period of metric data points. For metrics which are written
+	//  periodically, consecutive data points are stored at this time interval,
+	//  excluding data loss due to errors. Metrics with a higher granularity have
+	//  a smaller sampling period.
+	// +kcc:proto:field=google.api.MetricDescriptor.MetricDescriptorMetadata.sample_period
+	SamplePeriod *string `json:"samplePeriod,omitempty"`
+
+	// The delay of data points caused by ingestion. Data points older than this
+	//  age are guaranteed to be ingested and available to be read, excluding
+	//  data loss due to errors.
+	// +kcc:proto:field=google.api.MetricDescriptor.MetricDescriptorMetadata.ingest_delay
+	IngestDelay *string `json:"ingestDelay,omitempty"`
+
+	// The scope of the timeseries data of the metric.
+	// +kcc:proto:field=google.api.MetricDescriptor.MetricDescriptorMetadata.time_series_resource_hierarchy_level
+	TimeSeriesResourceHierarchyLevel []string `json:"timeSeriesResourceHierarchyLevel,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MonitoredResource", skipping
+
+// +kcc:proto=google.api.MonitoredResource
+type MonitoredResource struct {
+	// Required. The monitored resource type. This field must match
+	//  the `type` field of a
+	//  [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor]
+	//  object. For example, the type of a Compute Engine VM instance is
+	//  `gce_instance`. Some descriptors include the service name in the type; for
+	//  example, the type of a Datastream stream is
+	//  `datastream.googleapis.com/Stream`.
+	// +kcc:proto:field=google.api.MonitoredResource.type
+	Type *string `json:"type,omitempty"`
+
+	// Required. Values for all of the labels listed in the associated monitored
+	//  resource descriptor. For example, Compute Engine VM instances use the
+	//  labels `"project_id"`, `"instance_id"`, and `"zone"`.
+	// +kcc:proto:field=google.api.MonitoredResource.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.metricsscope.v1.MonitoredProject", skipping
+
+// +kcc:proto=google.monitoring.metricsscope.v1.MonitoredProject
+type MonitoredProject struct {
+	// Immutable. The resource name of the `MonitoredProject`. On input, the resource name
+	//  includes the scoping project ID and monitored project ID. On output, it
+	//  contains the equivalent project numbers.
+	//  Example:
+	//  `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}/projects/{MONITORED_PROJECT_ID_OR_NUMBER}`
+	// +kcc:proto:field=google.monitoring.metricsscope.v1.MonitoredProject.name
+	Name *string `json:"name,omitempty"`
+}
+*/
+
+/* unreachable type InternalChecker
+// +kcc:proto=google.monitoring.v3.InternalChecker
+type InternalChecker struct {
+	// A unique resource name for this InternalChecker. The format is:
+	//
+	//      projects/[PROJECT_ID_OR_NUMBER]/internalCheckers/[INTERNAL_CHECKER_ID]
+	//
+	//  `[PROJECT_ID_OR_NUMBER]` is the Cloud Monitoring Metrics Scope project for
+	//  the Uptime check config associated with the internal checker.
+	// +kcc:proto:field=google.monitoring.v3.InternalChecker.name
+	Name *string `json:"name,omitempty"`
+
+	// The checker's human-readable name. The display name
+	//  should be unique within a Cloud Monitoring Metrics Scope in order to make
+	//  it easier to identify; however, uniqueness is not enforced.
+	// +kcc:proto:field=google.monitoring.v3.InternalChecker.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The [GCP VPC network](https://cloud.google.com/vpc/docs/vpc) where the
+	//  internal resource lives (ex: "default").
+	// +kcc:proto:field=google.monitoring.v3.InternalChecker.network
+	Network *string `json:"network,omitempty"`
+
+	// The GCP zone the Uptime check should egress from. Only respected for
+	//  internal Uptime checks, where internal_network is specified.
+	// +kcc:proto:field=google.monitoring.v3.InternalChecker.gcp_zone
+	GcpZone *string `json:"gcpZone,omitempty"`
+
+	// The GCP project ID where the internal checker lives. Not necessary
+	//  the same as the Metrics Scope project.
+	// +kcc:proto:field=google.monitoring.v3.InternalChecker.peer_project_id
+	PeerProjectID *string `json:"peerProjectID,omitempty"`
+
+	// The current operational state of the internal checker.
+	// +kcc:proto:field=google.monitoring.v3.InternalChecker.state
+	State *string `json:"state,omitempty"`
+}
+*/
 
 /* unreachable type MutationRecord
 // +kcc:proto=google.monitoring.v3.MutationRecord
@@ -31,5 +330,835 @@ type MutationRecord struct {
 	// The email address of the user making the change.
 	// +kcc:proto:field=google.monitoring.v3.MutationRecord.mutated_by
 	MutatedBy *string `json:"mutatedBy,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.NotificationChannel", skipping
+
+// +kcc:proto=google.monitoring.v3.NotificationChannel
+type NotificationChannel struct {
+	// The type of the notification channel. This field matches the
+	//  value of the
+	//  [NotificationChannelDescriptor.type][google.monitoring.v3.NotificationChannelDescriptor.type]
+	//  field.
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.type
+	Type *string `json:"type,omitempty"`
+
+	// Identifier. The full REST resource name for this channel. The format is:
+	//
+	//      projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+	//
+	//  The `[CHANNEL_ID]` is automatically assigned by the server on creation.
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.name
+	Name *string `json:"name,omitempty"`
+
+	// An optional human-readable name for this notification channel. It is
+	//  recommended that you specify a non-empty and unique name in order to
+	//  make it easier to identify the channels in your project, though this is
+	//  not enforced. The display name is limited to 512 Unicode characters.
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// An optional human-readable description of this notification channel. This
+	//  description may provide additional details, beyond the display
+	//  name, for the channel. This may not exceed 1024 Unicode characters.
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.description
+	Description *string `json:"description,omitempty"`
+
+	// Configuration fields that define the channel and its behavior. The
+	//  permissible and required labels are specified in the
+	//  [NotificationChannelDescriptor.labels][google.monitoring.v3.NotificationChannelDescriptor.labels]
+	//  of the `NotificationChannelDescriptor` corresponding to the `type` field.
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// User-supplied key/value data that does not need to conform to
+	//  the corresponding `NotificationChannelDescriptor`'s schema, unlike
+	//  the `labels` field. This field is intended to be used for organizing
+	//  and identifying the `NotificationChannel` objects.
+	//
+	//  The field can contain up to 64 entries. Each key and value is limited to
+	//  63 Unicode characters or 128 bytes, whichever is smaller. Labels and
+	//  values can contain only lowercase letters, numerals, underscores, and
+	//  dashes. Keys must begin with a letter.
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.user_labels
+	UserLabels map[string]string `json:"userLabels,omitempty"`
+
+	// Indicates whether this channel has been verified or not. On a
+	//  [`ListNotificationChannels`][google.monitoring.v3.NotificationChannelService.ListNotificationChannels]
+	//  or
+	//  [`GetNotificationChannel`][google.monitoring.v3.NotificationChannelService.GetNotificationChannel]
+	//  operation, this field is expected to be populated.
+	//
+	//  If the value is `UNVERIFIED`, then it indicates that the channel is
+	//  non-functioning (it both requires verification and lacks verification);
+	//  otherwise, it is assumed that the channel works.
+	//
+	//  If the channel is neither `VERIFIED` nor `UNVERIFIED`, it implies that
+	//  the channel is of a type that does not require verification or that
+	//  this specific channel has been exempted from verification because it was
+	//  created prior to verification being required for channels of this type.
+	//
+	//  This field cannot be modified using a standard
+	//  [`UpdateNotificationChannel`][google.monitoring.v3.NotificationChannelService.UpdateNotificationChannel]
+	//  operation. To change the value of this field, you must call
+	//  [`VerifyNotificationChannel`][google.monitoring.v3.NotificationChannelService.VerifyNotificationChannel].
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.verification_status
+	VerificationStatus *string `json:"verificationStatus,omitempty"`
+
+	// Whether notifications are forwarded to the described channel. This makes
+	//  it possible to disable delivery of notifications to a particular channel
+	//  without removing the channel from all alerting policies that reference
+	//  the channel. This is a more convenient approach when the change is
+	//  temporary and you want to receive notifications from the same set
+	//  of alerting policies on the channel at some point in the future.
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Record of the creation of this channel.
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.creation_record
+	CreationRecord *MutationRecord `json:"creationRecord,omitempty"`
+
+	// Records of the modification of this channel.
+	// +kcc:proto:field=google.monitoring.v3.NotificationChannel.mutation_records
+	MutationRecords []MutationRecord `json:"mutationRecords,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.Service", skipping
+
+// +kcc:proto=google.monitoring.v3.Service
+type Service struct {
+	// Identifier. Resource name for this Service. The format is:
+	//
+	//      projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
+	// +kcc:proto:field=google.monitoring.v3.Service.name
+	Name *string `json:"name,omitempty"`
+
+	// Name used for UI elements listing this Service.
+	// +kcc:proto:field=google.monitoring.v3.Service.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Custom service type.
+	// +kcc:proto:field=google.monitoring.v3.Service.custom
+	Custom *Service_Custom `json:"custom,omitempty"`
+
+	// Type used for App Engine services.
+	// +kcc:proto:field=google.monitoring.v3.Service.app_engine
+	AppEngine *Service_AppEngine `json:"appEngine,omitempty"`
+
+	// Type used for Cloud Endpoints services.
+	// +kcc:proto:field=google.monitoring.v3.Service.cloud_endpoints
+	CloudEndpoints *Service_CloudEndpoints `json:"cloudEndpoints,omitempty"`
+
+	// Type used for Istio services that live in a Kubernetes cluster.
+	// +kcc:proto:field=google.monitoring.v3.Service.cluster_istio
+	ClusterIstio *Service_ClusterIstio `json:"clusterIstio,omitempty"`
+
+	// Type used for Istio services scoped to an Istio mesh.
+	// +kcc:proto:field=google.monitoring.v3.Service.mesh_istio
+	MeshIstio *Service_MeshIstio `json:"meshIstio,omitempty"`
+
+	// Type used for canonical services scoped to an Istio mesh.
+	//  Metrics for Istio are
+	//  [documented here](https://istio.io/latest/docs/reference/config/metrics/)
+	// +kcc:proto:field=google.monitoring.v3.Service.istio_canonical_service
+	IstioCanonicalService *Service_IstioCanonicalService `json:"istioCanonicalService,omitempty"`
+
+	// Type used for Cloud Run services.
+	// +kcc:proto:field=google.monitoring.v3.Service.cloud_run
+	CloudRun *Service_CloudRun `json:"cloudRun,omitempty"`
+
+	// Type used for GKE Namespaces.
+	// +kcc:proto:field=google.monitoring.v3.Service.gke_namespace
+	GKENamespace *Service_GKENamespace `json:"gkeNamespace,omitempty"`
+
+	// Type used for GKE Workloads.
+	// +kcc:proto:field=google.monitoring.v3.Service.gke_workload
+	GKEWorkload *Service_GKEWorkload `json:"gkeWorkload,omitempty"`
+
+	// Type used for GKE Services (the Kubernetes concept of a service).
+	// +kcc:proto:field=google.monitoring.v3.Service.gke_service
+	GKEService *Service_GKEService `json:"gkeService,omitempty"`
+
+	// Message that contains the service type and service labels of this service
+	//  if it is a basic service.
+	//  Documentation and examples
+	//  [here](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/api-structures#basic-svc-w-basic-sli).
+	// +kcc:proto:field=google.monitoring.v3.Service.basic_service
+	BasicService *Service_BasicService `json:"basicService,omitempty"`
+
+	// Configuration for how to query telemetry on a Service.
+	// +kcc:proto:field=google.monitoring.v3.Service.telemetry
+	Telemetry *Service_Telemetry `json:"telemetry,omitempty"`
+
+	// Labels which have been used to annotate the service. Label keys must start
+	//  with a letter. Label keys and values may contain lowercase letters,
+	//  numbers, underscores, and dashes. Label keys and values have a maximum
+	//  length of 63 characters, and must be less than 128 bytes in size. Up to 64
+	//  label entries may be stored. For labels which do not have a semantic value,
+	//  the empty string may be supplied for the label value.
+	// +kcc:proto:field=google.monitoring.v3.Service.user_labels
+	UserLabels map[string]string `json:"userLabels,omitempty"`
+}
+*/
+
+/* unreachable type Service_AppEngine
+// +kcc:proto=google.monitoring.v3.Service.AppEngine
+type Service_AppEngine struct {
+	// The ID of the App Engine module underlying this service. Corresponds to
+	//  the `module_id` resource label in the [`gae_app` monitored
+	//  resource](https://cloud.google.com/monitoring/api/resources#tag_gae_app).
+	// +kcc:proto:field=google.monitoring.v3.Service.AppEngine.module_id
+	ModuleID *string `json:"moduleID,omitempty"`
+}
+*/
+
+/* unreachable type Service_BasicService
+// +kcc:proto=google.monitoring.v3.Service.BasicService
+type Service_BasicService struct {
+	// The type of service that this basic service defines, e.g.
+	//  APP_ENGINE service type.
+	//  Documentation and valid values
+	//  [here](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/api-structures#basic-svc-w-basic-sli).
+	// +kcc:proto:field=google.monitoring.v3.Service.BasicService.service_type
+	ServiceType *string `json:"serviceType,omitempty"`
+
+	// Labels that specify the resource that emits the monitoring data which
+	//  is used for SLO reporting of this `Service`.
+	//  Documentation and valid values for given service types
+	//  [here](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/api-structures#basic-svc-w-basic-sli).
+	// +kcc:proto:field=google.monitoring.v3.Service.BasicService.service_labels
+	ServiceLabels map[string]string `json:"serviceLabels,omitempty"`
+}
+*/
+
+/* unreachable type Service_CloudEndpoints
+// +kcc:proto=google.monitoring.v3.Service.CloudEndpoints
+type Service_CloudEndpoints struct {
+	// The name of the Cloud Endpoints service underlying this service.
+	//  Corresponds to the `service` resource label in the [`api` monitored
+	//  resource](https://cloud.google.com/monitoring/api/resources#tag_api).
+	// +kcc:proto:field=google.monitoring.v3.Service.CloudEndpoints.service
+	Service *string `json:"service,omitempty"`
+}
+*/
+
+/* unreachable type Service_CloudRun
+// +kcc:proto=google.monitoring.v3.Service.CloudRun
+type Service_CloudRun struct {
+	// The name of the Cloud Run service. Corresponds to the `service_name`
+	//  resource label in the [`cloud_run_revision` monitored
+	//  resource](https://cloud.google.com/monitoring/api/resources#tag_cloud_run_revision).
+	// +kcc:proto:field=google.monitoring.v3.Service.CloudRun.service_name
+	ServiceName *string `json:"serviceName,omitempty"`
+
+	// The location the service is run. Corresponds to the `location`
+	//  resource label in the [`cloud_run_revision` monitored
+	//  resource](https://cloud.google.com/monitoring/api/resources#tag_cloud_run_revision).
+	// +kcc:proto:field=google.monitoring.v3.Service.CloudRun.location
+	Location *string `json:"location,omitempty"`
+}
+*/
+
+/* unreachable type Service_ClusterIstio
+// +kcc:proto=google.monitoring.v3.Service.ClusterIstio
+type Service_ClusterIstio struct {
+	// The location of the Kubernetes cluster in which this Istio service is
+	//  defined. Corresponds to the `location` resource label in `k8s_cluster`
+	//  resources.
+	// +kcc:proto:field=google.monitoring.v3.Service.ClusterIstio.location
+	Location *string `json:"location,omitempty"`
+
+	// The name of the Kubernetes cluster in which this Istio service is
+	//  defined. Corresponds to the `cluster_name` resource label in
+	//  `k8s_cluster` resources.
+	// +kcc:proto:field=google.monitoring.v3.Service.ClusterIstio.cluster_name
+	ClusterName *string `json:"clusterName,omitempty"`
+
+	// The namespace of the Istio service underlying this service. Corresponds
+	//  to the `destination_service_namespace` metric label in Istio metrics.
+	// +kcc:proto:field=google.monitoring.v3.Service.ClusterIstio.service_namespace
+	ServiceNamespace *string `json:"serviceNamespace,omitempty"`
+
+	// The name of the Istio service underlying this service. Corresponds to the
+	//  `destination_service_name` metric label in Istio metrics.
+	// +kcc:proto:field=google.monitoring.v3.Service.ClusterIstio.service_name
+	ServiceName *string `json:"serviceName,omitempty"`
+}
+*/
+
+/* unreachable type Service_Custom
+// +kcc:proto=google.monitoring.v3.Service.Custom
+type Service_Custom struct {
+}
+*/
+
+/* unreachable type Service_GKENamespace
+// +kcc:proto=google.monitoring.v3.Service.GkeNamespace
+type Service_GKENamespace struct {
+
+	// The location of the parent cluster. This may be a zone or region.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeNamespace.location
+	Location *string `json:"location,omitempty"`
+
+	// The name of the parent cluster.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeNamespace.cluster_name
+	ClusterName *string `json:"clusterName,omitempty"`
+
+	// The name of this namespace.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeNamespace.namespace_name
+	NamespaceName *string `json:"namespaceName,omitempty"`
+}
+*/
+
+/* unreachable type Service_GKEService
+// +kcc:proto=google.monitoring.v3.Service.GkeService
+type Service_GKEService struct {
+
+	// The location of the parent cluster. This may be a zone or region.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeService.location
+	Location *string `json:"location,omitempty"`
+
+	// The name of the parent cluster.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeService.cluster_name
+	ClusterName *string `json:"clusterName,omitempty"`
+
+	// The name of the parent namespace.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeService.namespace_name
+	NamespaceName *string `json:"namespaceName,omitempty"`
+
+	// The name of this service.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeService.service_name
+	ServiceName *string `json:"serviceName,omitempty"`
+}
+*/
+
+/* unreachable type Service_GKEWorkload
+// +kcc:proto=google.monitoring.v3.Service.GkeWorkload
+type Service_GKEWorkload struct {
+
+	// The location of the parent cluster. This may be a zone or region.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeWorkload.location
+	Location *string `json:"location,omitempty"`
+
+	// The name of the parent cluster.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeWorkload.cluster_name
+	ClusterName *string `json:"clusterName,omitempty"`
+
+	// The name of the parent namespace.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeWorkload.namespace_name
+	NamespaceName *string `json:"namespaceName,omitempty"`
+
+	// The type of this workload (for example, "Deployment" or "DaemonSet")
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeWorkload.top_level_controller_type
+	TopLevelControllerType *string `json:"topLevelControllerType,omitempty"`
+
+	// The name of this workload.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeWorkload.top_level_controller_name
+	TopLevelControllerName *string `json:"topLevelControllerName,omitempty"`
+}
+*/
+
+/* unreachable type Service_IstioCanonicalService
+// +kcc:proto=google.monitoring.v3.Service.IstioCanonicalService
+type Service_IstioCanonicalService struct {
+	// Identifier for the Istio mesh in which this canonical service is defined.
+	//  Corresponds to the `mesh_uid` metric label in
+	//  [Istio metrics](https://cloud.google.com/monitoring/api/metrics_istio).
+	// +kcc:proto:field=google.monitoring.v3.Service.IstioCanonicalService.mesh_uid
+	MeshUid *string `json:"meshUid,omitempty"`
+
+	// The namespace of the canonical service underlying this service.
+	//  Corresponds to the `destination_canonical_service_namespace` metric
+	//  label in [Istio
+	//  metrics](https://cloud.google.com/monitoring/api/metrics_istio).
+	// +kcc:proto:field=google.monitoring.v3.Service.IstioCanonicalService.canonical_service_namespace
+	CanonicalServiceNamespace *string `json:"canonicalServiceNamespace,omitempty"`
+
+	// The name of the canonical service underlying this service.
+	//  Corresponds to the `destination_canonical_service_name` metric label in
+	//  label in [Istio
+	//  metrics](https://cloud.google.com/monitoring/api/metrics_istio).
+	// +kcc:proto:field=google.monitoring.v3.Service.IstioCanonicalService.canonical_service
+	CanonicalService *string `json:"canonicalService,omitempty"`
+}
+*/
+
+/* unreachable type Service_MeshIstio
+// +kcc:proto=google.monitoring.v3.Service.MeshIstio
+type Service_MeshIstio struct {
+	// Identifier for the mesh in which this Istio service is defined.
+	//  Corresponds to the `mesh_uid` metric label in Istio metrics.
+	// +kcc:proto:field=google.monitoring.v3.Service.MeshIstio.mesh_uid
+	MeshUid *string `json:"meshUid,omitempty"`
+
+	// The namespace of the Istio service underlying this service. Corresponds
+	//  to the `destination_service_namespace` metric label in Istio metrics.
+	// +kcc:proto:field=google.monitoring.v3.Service.MeshIstio.service_namespace
+	ServiceNamespace *string `json:"serviceNamespace,omitempty"`
+
+	// The name of the Istio service underlying this service. Corresponds to the
+	//  `destination_service_name` metric label in Istio metrics.
+	// +kcc:proto:field=google.monitoring.v3.Service.MeshIstio.service_name
+	ServiceName *string `json:"serviceName,omitempty"`
+}
+*/
+
+/* unreachable type Service_Telemetry
+// +kcc:proto=google.monitoring.v3.Service.Telemetry
+type Service_Telemetry struct {
+	// The full name of the resource that defines this service. Formatted as
+	//  described in https://cloud.google.com/apis/design/resource_names.
+	// +kcc:proto:field=google.monitoring.v3.Service.Telemetry.resource_name
+	ResourceName *string `json:"resourceName,omitempty"`
+}
+*/
+
+/* unreachable type SyntheticMonitorTarget
+// +kcc:proto=google.monitoring.v3.SyntheticMonitorTarget
+type SyntheticMonitorTarget struct {
+	// Target a Synthetic Monitor GCFv2 instance.
+	// +kcc:proto:field=google.monitoring.v3.SyntheticMonitorTarget.cloud_function_v2
+	CloudFunctionV2 *SyntheticMonitorTarget_CloudFunctionV2Target `json:"cloudFunctionV2,omitempty"`
+}
+*/
+
+/* unreachable type SyntheticMonitorTarget_CloudFunctionV2Target
+// +kcc:proto=google.monitoring.v3.SyntheticMonitorTarget.CloudFunctionV2Target
+type SyntheticMonitorTarget_CloudFunctionV2Target struct {
+	// Required. Fully qualified GCFv2 resource name
+	//  i.e. `projects/{project}/locations/{location}/functions/{function}`
+	//  Required.
+	// +kcc:proto:field=google.monitoring.v3.SyntheticMonitorTarget.CloudFunctionV2Target.name
+	Name *string `json:"name,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.UptimeCheckConfig", skipping
+
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig
+type UptimeCheckConfig struct {
+	// Identifier. A unique resource name for this Uptime check configuration. The
+	//  format is:
+	//
+	//       projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
+	//
+	//  `[PROJECT_ID_OR_NUMBER]` is the Workspace host project associated with the
+	//  Uptime check.
+	//
+	//  This field should be omitted when creating the Uptime check configuration;
+	//  on create, the resource name is assigned by the server and included in the
+	//  response.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// A human-friendly name for the Uptime check configuration. The display name
+	//  should be unique within a Cloud Monitoring Workspace in order to make it
+	//  easier to identify; however, uniqueness is not enforced. Required.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The [monitored
+	//  resource](https://cloud.google.com/monitoring/api/resources) associated
+	//  with the configuration.
+	//  The following monitored resource types are valid for this field:
+	//    `uptime_url`,
+	//    `gce_instance`,
+	//    `gae_app`,
+	//    `aws_ec2_instance`,
+	//    `aws_elb_load_balancer`
+	//    `k8s_service`
+	//    `servicedirectory_service`
+	//    `cloud_run_revision`
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.monitored_resource
+	MonitoredResource *MonitoredResource `json:"monitoredResource,omitempty"`
+
+	// The group resource associated with the configuration.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.resource_group
+	ResourceGroup *UptimeCheckConfig_ResourceGroup `json:"resourceGroup,omitempty"`
+
+	// Specifies a Synthetic Monitor to invoke.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.synthetic_monitor
+	SyntheticMonitor *SyntheticMonitorTarget `json:"syntheticMonitor,omitempty"`
+
+	// Contains information needed to make an HTTP or HTTPS check.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.http_check
+	HTTPCheck *UptimeCheckConfig_HTTPCheck `json:"httpCheck,omitempty"`
+
+	// Contains information needed to make a TCP check.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.tcp_check
+	TCPCheck *UptimeCheckConfig_TCPCheck `json:"tcpCheck,omitempty"`
+
+	// How often, in seconds, the Uptime check is performed.
+	//  Currently, the only supported values are `60s` (1 minute), `300s`
+	//  (5 minutes), `600s` (10 minutes), and `900s` (15 minutes). Optional,
+	//  defaults to `60s`.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.period
+	Period *string `json:"period,omitempty"`
+
+	// The maximum amount of time to wait for the request to complete (must be
+	//  between 1 and 60 seconds). Required.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// The content that is expected to appear in the data returned by the target
+	//  server against which the check is run.  Currently, only the first entry
+	//  in the `content_matchers` list is supported, and additional entries will
+	//  be ignored. This field is optional and should only be specified if a
+	//  content match is required as part of the/ Uptime check.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.content_matchers
+	ContentMatchers []UptimeCheckConfig_ContentMatcher `json:"contentMatchers,omitempty"`
+
+	// The type of checkers to use to execute the Uptime check.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.checker_type
+	CheckerType *string `json:"checkerType,omitempty"`
+
+	// The list of regions from which the check will be run.
+	//  Some regions contain one location, and others contain more than one.
+	//  If this field is specified, enough regions must be provided to include a
+	//  minimum of 3 locations.  Not specifying this field will result in Uptime
+	//  checks running from all available regions.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.selected_regions
+	SelectedRegions []string `json:"selectedRegions,omitempty"`
+
+	// If this is `true`, then checks are made only from the 'internal_checkers'.
+	//  If it is `false`, then checks are made only from the 'selected_regions'.
+	//  It is an error to provide 'selected_regions' when is_internal is `true`,
+	//  or to provide 'internal_checkers' when is_internal is `false`.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.is_internal
+	IsInternal *bool `json:"isInternal,omitempty"`
+
+	// The internal checkers that this check will egress from. If `is_internal` is
+	//  `true` and this list is empty, the check will egress from all the
+	//  InternalCheckers configured for the project that owns this
+	//  `UptimeCheckConfig`.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.internal_checkers
+	InternalCheckers []InternalChecker `json:"internalCheckers,omitempty"`
+
+	// User-supplied key/value data to be used for organizing and
+	//  identifying the `UptimeCheckConfig` objects.
+	//
+	//  The field can contain up to 64 entries. Each key and value is limited to
+	//  63 Unicode characters or 128 bytes, whichever is smaller. Labels and
+	//  values can contain only lowercase letters, numerals, underscores, and
+	//  dashes. Keys must begin with a letter.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.user_labels
+	UserLabels map[string]string `json:"userLabels,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "UptimeCheckConfig_ContentMatcher", skipping
+
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.ContentMatcher
+type UptimeCheckConfig_ContentMatcher struct {
+	// String, regex or JSON content to match. Maximum 1024 bytes. An empty
+	//  `content` string indicates no content matching is to be performed.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.ContentMatcher.content
+	Content *string `json:"content,omitempty"`
+
+	// The type of content matcher that will be applied to the server output,
+	//  compared to the `content` string when the check is run.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.ContentMatcher.matcher
+	Matcher *string `json:"matcher,omitempty"`
+
+	// Matcher information for `MATCHES_JSON_PATH` and `NOT_MATCHES_JSON_PATH`
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.ContentMatcher.json_path_matcher
+	JsonPathMatcher *UptimeCheckConfig_ContentMatcher_JsonPathMatcher `json:"jsonPathMatcher,omitempty"`
+}
+*/
+
+/* unreachable type UptimeCheckConfig_ContentMatcher_JsonPathMatcher
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.ContentMatcher.JsonPathMatcher
+type UptimeCheckConfig_ContentMatcher_JsonPathMatcher struct {
+	// JSONPath within the response output pointing to the expected
+	//  `ContentMatcher::content` to match against.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.ContentMatcher.JsonPathMatcher.json_path
+	JsonPath *string `json:"jsonPath,omitempty"`
+
+	// The type of JSONPath match that will be applied to the JSON output
+	//  (`ContentMatcher.content`)
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.ContentMatcher.JsonPathMatcher.json_matcher
+	JsonMatcher *string `json:"jsonMatcher,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "UptimeCheckConfig_HTTPCheck", skipping
+
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.HttpCheck
+type UptimeCheckConfig_HTTPCheck struct {
+	// The HTTP request method to use for the check. If set to
+	//  `METHOD_UNSPECIFIED` then `request_method` defaults to `GET`.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.request_method
+	RequestMethod *string `json:"requestMethod,omitempty"`
+
+	// If `true`, use HTTPS instead of HTTP to run the check.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.use_ssl
+	UseSSL *bool `json:"useSSL,omitempty"`
+
+	// Optional (defaults to "/"). The path to the page against which to run
+	//  the check. Will be combined with the `host` (specified within the
+	//  `monitored_resource`) and `port` to construct the full URL. If the
+	//  provided path does not begin with "/", a "/" will be prepended
+	//  automatically.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.path
+	Path *string `json:"path,omitempty"`
+
+	// Optional (defaults to 80 when `use_ssl` is `false`, and 443 when
+	//  `use_ssl` is `true`). The TCP port on the HTTP server against which to
+	//  run the check. Will be combined with host (specified within the
+	//  `monitored_resource`) and `path` to construct the full URL.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.port
+	Port *int32 `json:"port,omitempty"`
+
+	// The authentication information. Optional when creating an HTTP check;
+	//  defaults to empty.
+	//  Do not set both `auth_method` and `auth_info`.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.auth_info
+	AuthInfo *UptimeCheckConfig_HTTPCheck_BasicAuthentication `json:"authInfo,omitempty"`
+
+	// Boolean specifying whether to encrypt the header information.
+	//  Encryption should be specified for any headers related to authentication
+	//  that you do not wish to be seen when retrieving the configuration. The
+	//  server will be responsible for encrypting the headers.
+	//  On Get/List calls, if `mask_headers` is set to `true` then the headers
+	//  will be obscured with `******.`
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.mask_headers
+	MaskHeaders *bool `json:"maskHeaders,omitempty"`
+
+	// The list of headers to send as part of the Uptime check request.
+	//  If two headers have the same key and different values, they should
+	//  be entered as a single header, with the value being a comma-separated
+	//  list of all the desired values as described at
+	//  https://www.w3.org/Protocols/rfc2616/rfc2616.txt (page 31).
+	//  Entering two separate headers with the same key in a Create call will
+	//  cause the first to be overwritten by the second.
+	//  The maximum number of headers allowed is 100.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.headers
+	Headers map[string]string `json:"headers,omitempty"`
+
+	// The content type header to use for the check. The following
+	//  configurations result in errors:
+	//  1. Content type is specified in both the `headers` field and the
+	//  `content_type` field.
+	//  2. Request method is `GET` and `content_type` is not `TYPE_UNSPECIFIED`
+	//  3. Request method is `POST` and `content_type` is `TYPE_UNSPECIFIED`.
+	//  4. Request method is `POST` and a "Content-Type" header is provided via
+	//  `headers` field. The `content_type` field should be used instead.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.content_type
+	ContentType *string `json:"contentType,omitempty"`
+
+	// A user provided content type header to use for the check. The invalid
+	//  configurations outlined in the `content_type` field apply to
+	//  `custom_content_type`, as well as the following:
+	//  1. `content_type` is `URL_ENCODED` and `custom_content_type` is set.
+	//  2. `content_type` is `USER_PROVIDED` and `custom_content_type` is not
+	//  set.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.custom_content_type
+	CustomContentType *string `json:"customContentType,omitempty"`
+
+	// Boolean specifying whether to include SSL certificate validation as a
+	//  part of the Uptime check. Only applies to checks where
+	//  `monitored_resource` is set to `uptime_url`. If `use_ssl` is `false`,
+	//  setting `validate_ssl` to `true` has no effect.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.validate_ssl
+	ValidateSSL *bool `json:"validateSSL,omitempty"`
+
+	// The request body associated with the HTTP POST request. If `content_type`
+	//  is `URL_ENCODED`, the body passed in must be URL-encoded. Users can
+	//  provide a `Content-Length` header via the `headers` field or the API will
+	//  do so. If the `request_method` is `GET` and `body` is not empty, the API
+	//  will return an error. The maximum byte size is 1 megabyte.
+	//
+	//  Note: If client libraries aren't used (which performs the conversion
+	//  automatically) base64 encode your `body` data since the field is of
+	//  `bytes` type.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.body
+	Body []byte `json:"body,omitempty"`
+
+	// If present, the check will only pass if the HTTP response status code is
+	//  in this set of status codes. If empty, the HTTP status code will only
+	//  pass if the HTTP status code is 200-299.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.accepted_response_status_codes
+	AcceptedResponseStatusCodes []UptimeCheckConfig_HTTPCheck_ResponseStatusCode `json:"acceptedResponseStatusCodes,omitempty"`
+
+	// Contains information needed to add pings to an HTTP check.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.ping_config
+	PingConfig *UptimeCheckConfig_PingConfig `json:"pingConfig,omitempty"`
+
+	// If specified, Uptime will generate and attach an OIDC JWT token for the
+	//  Monitoring service agent service account as an `Authorization` header
+	//  in the HTTP request when probing.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.service_agent_authentication
+	ServiceAgentAuthentication *UptimeCheckConfig_HTTPCheck_ServiceAgentAuthentication `json:"serviceAgentAuthentication,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "UptimeCheckConfig_HTTPCheck_BasicAuthentication", skipping
+
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.HttpCheck.BasicAuthentication
+type UptimeCheckConfig_HTTPCheck_BasicAuthentication struct {
+	// The username to use when authenticating with the HTTP server.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.BasicAuthentication.username
+	Username *string `json:"username,omitempty"`
+
+	// The password to use when authenticating with the HTTP server.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.BasicAuthentication.password
+	Password *string `json:"password,omitempty"`
+}
+*/
+
+/* unreachable type UptimeCheckConfig_HTTPCheck_ResponseStatusCode
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.HttpCheck.ResponseStatusCode
+type UptimeCheckConfig_HTTPCheck_ResponseStatusCode struct {
+	// A status code to accept.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.ResponseStatusCode.status_value
+	StatusValue *int32 `json:"statusValue,omitempty"`
+
+	// A class of status codes to accept.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.ResponseStatusCode.status_class
+	StatusClass *string `json:"statusClass,omitempty"`
+}
+*/
+
+/* unreachable type UptimeCheckConfig_HTTPCheck_ServiceAgentAuthentication
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.HttpCheck.ServiceAgentAuthentication
+type UptimeCheckConfig_HTTPCheck_ServiceAgentAuthentication struct {
+	// Type of authentication.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.ServiceAgentAuthentication.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* unreachable type UptimeCheckConfig_PingConfig
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.PingConfig
+type UptimeCheckConfig_PingConfig struct {
+	// Number of ICMP pings. A maximum of 3 ICMP pings is currently supported.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.PingConfig.pings_count
+	PingsCount *int32 `json:"pingsCount,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "UptimeCheckConfig_ResourceGroup", skipping
+
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.ResourceGroup
+type UptimeCheckConfig_ResourceGroup struct {
+	// The group of resources being monitored. Should be only the `[GROUP_ID]`,
+	//  and not the full-path
+	//  `projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]`.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.ResourceGroup.group_id
+	GroupID *string `json:"groupID,omitempty"`
+
+	// The resource type of the group members.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.ResourceGroup.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "UptimeCheckConfig_TCPCheck", skipping
+
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.TcpCheck
+type UptimeCheckConfig_TCPCheck struct {
+	// The TCP port on the server against which to run the check. Will be
+	//  combined with host (specified within the `monitored_resource`) to
+	//  construct the full URL. Required.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.TcpCheck.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Contains information needed to add pings to a TCP check.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.TcpCheck.ping_config
+	PingConfig *UptimeCheckConfig_PingConfig `json:"pingConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.metricsscope.v1.MonitoredProject", skipping
+
+// +kcc:observedstate:proto=google.monitoring.metricsscope.v1.MonitoredProject
+type MonitoredProjectObservedState struct {
+	// Output only. The time when this `MonitoredProject` was created.
+	// +kcc:proto:field=google.monitoring.metricsscope.v1.MonitoredProject.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.Service", skipping
+
+// +kcc:observedstate:proto=google.monitoring.v3.Service
+type ServiceObservedState struct {
+	// Type used for GKE Namespaces.
+	// +kcc:proto:field=google.monitoring.v3.Service.gke_namespace
+	GKENamespace *Service_GKENamespaceObservedState `json:"gkeNamespace,omitempty"`
+
+	// Type used for GKE Workloads.
+	// +kcc:proto:field=google.monitoring.v3.Service.gke_workload
+	GKEWorkload *Service_GKEWorkloadObservedState `json:"gkeWorkload,omitempty"`
+
+	// Type used for GKE Services (the Kubernetes concept of a service).
+	// +kcc:proto:field=google.monitoring.v3.Service.gke_service
+	GKEService *Service_GKEServiceObservedState `json:"gkeService,omitempty"`
+}
+*/
+
+/* unreachable type Service_GKENamespaceObservedState
+// +kcc:observedstate:proto=google.monitoring.v3.Service.GkeNamespace
+type Service_GKENamespaceObservedState struct {
+	// Output only. The project this resource lives in. For legacy services
+	//  migrated from the `Custom` type, this may be a distinct project from the
+	//  one parenting the service itself.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeNamespace.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+}
+*/
+
+/* unreachable type Service_GKEServiceObservedState
+// +kcc:observedstate:proto=google.monitoring.v3.Service.GkeService
+type Service_GKEServiceObservedState struct {
+	// Output only. The project this resource lives in. For legacy services
+	//  migrated from the `Custom` type, this may be a distinct project from the
+	//  one parenting the service itself.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeService.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+}
+*/
+
+/* unreachable type Service_GKEWorkloadObservedState
+// +kcc:observedstate:proto=google.monitoring.v3.Service.GkeWorkload
+type Service_GKEWorkloadObservedState struct {
+	// Output only. The project this resource lives in. For legacy services
+	//  migrated from the `Custom` type, this may be a distinct project from the
+	//  one parenting the service itself.
+	// +kcc:proto:field=google.monitoring.v3.Service.GkeWorkload.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+}
+*/
+
+/* unreachable type SyntheticMonitorTargetObservedState
+// +kcc:observedstate:proto=google.monitoring.v3.SyntheticMonitorTarget
+type SyntheticMonitorTargetObservedState struct {
+	// Target a Synthetic Monitor GCFv2 instance.
+	// +kcc:proto:field=google.monitoring.v3.SyntheticMonitorTarget.cloud_function_v2
+	CloudFunctionV2 *SyntheticMonitorTarget_CloudFunctionV2TargetObservedState `json:"cloudFunctionV2,omitempty"`
+}
+*/
+
+/* unreachable type SyntheticMonitorTarget_CloudFunctionV2TargetObservedState
+// +kcc:observedstate:proto=google.monitoring.v3.SyntheticMonitorTarget.CloudFunctionV2Target
+type SyntheticMonitorTarget_CloudFunctionV2TargetObservedState struct {
+	// Output only. The `cloud_run_revision` Monitored Resource associated with
+	//  the GCFv2. The Synthetic Monitor execution results (metrics, logs, and
+	//  spans) are reported against this Monitored Resource. This field is output
+	//  only.
+	// +kcc:proto:field=google.monitoring.v3.SyntheticMonitorTarget.CloudFunctionV2Target.cloud_run_revision
+	CloudRunRevision *MonitoredResource `json:"cloudRunRevision,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.UptimeCheckConfig", skipping
+
+// +kcc:observedstate:proto=google.monitoring.v3.UptimeCheckConfig
+type UptimeCheckConfigObservedState struct {
+	// Specifies a Synthetic Monitor to invoke.
+	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.synthetic_monitor
+	SyntheticMonitor *SyntheticMonitorTargetObservedState `json:"syntheticMonitor,omitempty"`
 }
 */

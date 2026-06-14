@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &ComputeResourcePolicyRef{}
 
-// ComputeResourcePolicyRef defines the resource reference to ComputeResourcePolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// ComputeResourcePolicyRef is a reference to a ComputeResourcePolicy.
 type ComputeResourcePolicyRef struct {
 	// A reference to an externally managed ComputeResourcePolicy resource.
 	// Should be in the format "projects/{project}/regions/{region}/resourcePolicies/{resourcePolicy}".
@@ -42,7 +41,7 @@ type ComputeResourcePolicyRef struct {
 }
 
 func init() {
-	refs.Register(&ComputeResourcePolicyRef{})
+	refs.Register(&ComputeResourcePolicyRef{}, &ComputeResourcePolicy{})
 }
 
 func (r *ComputeResourcePolicyRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *ComputeResourcePolicyRef) GetExternal() string {
 
 func (r *ComputeResourcePolicyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeResourcePolicyRef) ValidateExternal(ref string) error {

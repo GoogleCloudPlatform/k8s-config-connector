@@ -28,10 +28,12 @@ import (
 func RegisterKRMFuzzer_NoProto(fuzzer KRMFuzzer_NoProto) {
 	RegisterFuzzer(fuzzer.FuzzSpec)
 	RegisterFuzzer(fuzzer.FuzzStatus)
+	registeredNoProtoFuzzers = append(registeredNoProtoFuzzers, fuzzer)
 }
 
 func RegisterKRMSpecFuzzer_NoProto(fuzzer KRMFuzzer_NoProto) {
 	RegisterFuzzer(fuzzer.FuzzSpec)
+	registeredNoProtoFuzzers = append(registeredNoProtoFuzzers, fuzzer)
 }
 
 type KRMTypedFuzzer_NoProto[APIType any, SpecType any, StatusType any] struct {

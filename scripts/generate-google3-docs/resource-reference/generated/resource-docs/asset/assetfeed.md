@@ -16,7 +16,7 @@ title: "AssetFeed"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/asset-inventory/docs/">/asset-inventory/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/asset-inventory/docs/">https://docs.cloud.google.com/asset-inventory/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "AssetFeed"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/asset-inventory/docs/reference/rest/v1/feeds">/asset-inventory/docs/reference/rest/v1/feeds</a></td>
+<td><a href="https://docs.cloud.google.com/asset-inventory/docs/reference/rest/v1/feeds">https://docs.cloud.google.com/asset-inventory/docs/reference/rest/v1/feeds</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -102,7 +102,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of the full names of the assets to receive updates. You must specify either or both of asset_names and asset_types. Only asset updates matching specified asset_names or asset_types are exported to the feed. Example: `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`. For a list of the full names for supported asset types, see [Resource name format](/asset-inventory/docs/resource-name-format).</p>
+            <p>A list of the full names of the assets to receive updates. You must specify either or both of asset_names and asset_types. Only asset updates matching specified asset_names or asset_types are exported to the feed. Example: `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`. For a list of the full names for supported asset types, see [Resource name format](https://docs.cloud.google.com/asset-inventory/docs/resource-name-format).</p>
         </td>
     </tr>
     <tr>
@@ -128,7 +128,7 @@ resourceID: string
  Example: `"compute.googleapis.com/Disk"`
 
  For a list of all supported asset types, see
- [Supported asset types](/asset-inventory/docs/supported-asset-types).</p>
+ [Supported asset types](https://docs.cloud.google.com/asset-inventory/docs/supported-asset-types).</p>
         </td>
     </tr>
     <tr>
@@ -505,4 +505,4 @@ observedGeneration: integer
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -16,7 +16,7 @@ title: "VPCAccessConnector"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/vpc/docs/">/vpc/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/vpc/docs/">https://docs.cloud.google.com/vpc/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "VPCAccessConnector"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/vpc/docs/reference/vpcaccess/rest/v1beta1/projects.locations.connectors">/vpc/docs/reference/vpcaccess/rest/v1beta1/projects.locations.connectors</a></td>
+<td><a href="https://docs.cloud.google.com/vpc/docs/reference/vpcaccess/rest/v1beta1/projects.locations.connectors">https://docs.cloud.google.com/vpc/docs/reference/vpcaccess/rest/v1beta1/projects.locations.connectors</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -520,4 +520,4 @@ spec:
     name: connector-dep-subnet
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

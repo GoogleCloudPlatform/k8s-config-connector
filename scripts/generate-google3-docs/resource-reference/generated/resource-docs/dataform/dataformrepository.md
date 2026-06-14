@@ -16,7 +16,7 @@ title: "DataformRepository"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/dataform/docs/">/dataform/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/dataform/docs/">https://docs.cloud.google.com/dataform/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "DataformRepository"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/dataform/reference/rest/v1beta1/projects.locations.repositories">/dataform/reference/rest/v1beta1/projects.locations.repositories</a></td>
+<td><a href="https://docs.cloud.google.com/dataform/reference/rest/v1beta1/projects.locations.repositories">https://docs.cloud.google.com/dataform/reference/rest/v1beta1/projects.locations.repositories</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -552,4 +552,4 @@ spec:
   region: us-west2
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

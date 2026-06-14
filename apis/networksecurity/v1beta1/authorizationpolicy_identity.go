@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AuthorizationPolicyIdentity defines the resource reference to NetworkSecurityAuthorizationPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// AuthorizationPolicyIdentity is the identity of a NetworkSecurityAuthorizationPolicy.
 type AuthorizationPolicyIdentity struct {
 	parent *AuthorizationPolicyParent
 	id     string
@@ -52,7 +51,7 @@ func (p *AuthorizationPolicyParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a AuthorizationPolicyIdentity from the Config Connector AuthorizationPolicy object.
+// New builds an AuthorizationPolicyIdentity from the Config Connector AuthorizationPolicy object.
 func NewAuthorizationPolicyIdentity(ctx context.Context, reader client.Reader, obj *NetworkSecurityAuthorizationPolicy) (*AuthorizationPolicyIdentity, error) {
 
 	// Get Parent

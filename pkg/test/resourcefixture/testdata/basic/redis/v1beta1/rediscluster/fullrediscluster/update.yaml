@@ -28,6 +28,8 @@ spec:
   nodeType: REDIS_STANDARD_SMALL
   transitEncryptionMode: TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION
   authorizationMode: AUTH_MODE_IAM_AUTH
+  kmsKeyRef:
+    name: kmscryptokey-${uniqueId}
   redisConfigs:
     maxmemory-policy: volatile-ttl
     maxclients: '10'
@@ -40,3 +42,20 @@ spec:
       rdbSnapshotPeriod: ONE_HOUR
       rdbSnapshotStartTime: 2024-10-02T15:01:23Z
   deletionProtectionEnabled: false
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    retention: 1209600s
+    fixedFrequencySchedule:
+      startTime:
+        hours: 15
+        minutes: 0
+        seconds: 0
+        nanos: 0
+  maintenancePolicy:
+    weeklyMaintenanceWindow:
+    - day: MONDAY
+      startTime:
+        hours: 3
+        minutes: 0
+        seconds: 0
+        nanos: 0

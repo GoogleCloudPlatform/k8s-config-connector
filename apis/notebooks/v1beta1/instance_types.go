@@ -155,7 +155,7 @@ type NotebookInstanceSpec struct {
 
 	// The name of the subnet that this instance is in.
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.subnet
-	SubnetRef *v1beta1.ComputeSubnetworkRef `json:"subnetRef,omitempty"`
+	SubnetRef *computev1beta1.ComputeSubnetworkRef `json:"subnetRef,omitempty"`
 
 	// Labels to apply to this instance.
 	//  These can be later modified by the setLabels method.

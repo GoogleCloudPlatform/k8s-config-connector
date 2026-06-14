@@ -16,7 +16,7 @@ title: "BigLakeTable"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/bigquery/docs/biglake-intro">/bigquery/docs/biglake-intro</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/biglake-intro">https://docs.cloud.google.com/bigquery/docs/biglake-intro</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BigLakeTable"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/bigquery/docs/reference/biglake/rest/v1/projects.locations.catalogs.databases.tables">/bigquery/docs/reference/biglake/rest/v1/projects.locations.catalogs.databases.tables</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/reference/biglake/rest/v1/projects.locations.catalogs.databases.tables">https://docs.cloud.google.com/bigquery/docs/reference/biglake/rest/v1/projects.locations.catalogs.databases.tables</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -362,4 +362,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

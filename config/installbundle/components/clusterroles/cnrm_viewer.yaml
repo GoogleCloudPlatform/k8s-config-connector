@@ -23,6 +23,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - aistreams.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - alloydb.cnrm.cloud.google.com
   resources:
   - '*'
@@ -48,6 +56,14 @@ rules:
   - watch
 - apiGroups:
   - apigee.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apigeeregistry.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -104,6 +120,14 @@ rules:
   - watch
 - apiGroups:
   - assuredworkloads.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - automl.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -319,6 +343,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - cloudsecuritycompliance.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudtasks.cnrm.cloud.google.com
   resources:
   - '*'
@@ -367,6 +399,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - contactcenterinsights.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - container.cnrm.cloud.google.com
   resources:
   - '*'
@@ -384,6 +424,14 @@ rules:
   - watch
 - apiGroups:
   - containerattached.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - contentwarehouse.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -416,6 +464,22 @@ rules:
   - watch
 - apiGroups:
   - datafusion.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - datalabeling.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - datamigration.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -456,6 +520,22 @@ rules:
   - watch
 - apiGroups:
   - deploymentmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - developerconnect.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - devicestreaming.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -688,6 +768,14 @@ rules:
   - watch
 - apiGroups:
   - mlengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - modelarmor.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

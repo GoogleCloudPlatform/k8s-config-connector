@@ -28,13 +28,12 @@ import (
 var BigQueryTableGVK = GroupVersion.WithKind("BigQueryTable")
 
 func init() {
-	refs.Register(&BigQueryTableRef{})
+	refs.Register(&BigQueryTableRef{}, &BigQueryTable{})
 }
 
 var _ refs.Ref = &BigQueryTableRef{}
 
-// BigQueryTableRef defines the resource reference to BigQueryTable, which "External" field
-// holds the GCP identifier for the KRM object.
+// BigQueryTableRef is a reference to a BigQueryTable.
 type BigQueryTableRef struct {
 	// A reference to an externally-managed BigQueryTable resource.
 	// Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}}".
@@ -68,6 +67,8 @@ func (r *BigQueryTableRef) GetExternal() string {
 // SetExternal sets the external reference.
 func (r *BigQueryTableRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 // ValidateExternal validates the external reference format.

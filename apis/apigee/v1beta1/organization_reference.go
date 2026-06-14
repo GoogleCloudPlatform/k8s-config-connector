@@ -29,16 +29,16 @@ import (
 
 var _ refsv1beta1.Ref = &ApigeeOrganizationRef{}
 
-// ApigeeOrganizationRef is a reference to a ApigeeOrganization resource.
+// ApigeeOrganizationRef is a reference to an ApigeeOrganization resource.
 type ApigeeOrganizationRef struct {
 	// A reference to an externally managed ApigeeOrganization resource.
 	// Should be in the format "organizations/{{organizationID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ApigeeOrganization resource.
+	// The name of an ApigeeOrganization resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ApigeeOrganization resource.
+	// The namespace of an ApigeeOrganization resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -59,6 +59,8 @@ func (r *ApigeeOrganizationRef) GetExternal() string {
 
 func (r *ApigeeOrganizationRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ApigeeOrganizationRef) ValidateExternal(ref string) error {

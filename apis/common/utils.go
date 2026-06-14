@@ -14,6 +14,15 @@
 
 package common
 
+import (
+	"fmt"
+	"reflect"
+
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
 func ValueOf[T any](t *T) T {
 	var zeroVal T
 	if t == nil {
@@ -28,4 +37,35 @@ func LazyPtr[V comparable](v V) *V {
 		return nil
 	}
 	return &v
+}
+
+func ToStructuredType[T client.Object](obj client.Object) (T, error) {
+	if typed, ok := obj.(T); ok {
+		return typed, nil
+	}
+
+	u, ok := obj.(*unstructured.Unstructured)
+	if !ok {
+		var zero T
+		return zero, fmt.Errorf("object is neither of type %T nor *unstructured.Unstructured: %T", zero, obj)
+	}
+
+	// T is a pointer type, e.g., *SecurityCenterMuteConfig.
+	// We need to create a new instance of the underlying struct.
+	var zero T
+	tType := reflect.TypeOf(zero)
+	if tType.Kind() != reflect.Ptr {
+		return zero, fmt.Errorf("expected pointer type for T, got %v", tType)
+	}
+
+	// Create a new instance of the element type, which is the struct.
+	elemType := tType.Elem()
+	newObjVal := reflect.New(elemType)
+	res := newObjVal.Interface().(T)
+
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, res); err != nil {
+		return zero, fmt.Errorf("error converting unstructured to %T: %w", zero, err)
+	}
+
+	return res, nil
 }

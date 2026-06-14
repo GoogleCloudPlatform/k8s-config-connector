@@ -16,7 +16,7 @@ title: "PubSubTopic"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/pubsub/docs/">/pubsub/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/pubsub/docs/">https://docs.cloud.google.com/pubsub/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "PubSubTopic"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/pubsub/docs/reference/rest/v1/projects.topics">/pubsub/docs/reference/rest/v1/projects.topics</a></td>
+<td><a href="https://docs.cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics">https://docs.cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -96,6 +96,7 @@ messageRetentionDuration: string
 messageStoragePolicy:
   allowedPersistenceRegions:
   - string
+  enforceInTransit: boolean
 resourceID: string
 schemaSettings:
   encoding: string
@@ -119,11 +120,7 @@ schemaSettings:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The KMSCryptoKey to be used to protect access to messages published
-on this topic. Your project's Pub/Sub service account
-('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com')
-must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
-feature.</p>
+            <p>The KMSCryptoKey to be used to protect access to messages published on this topic. Your project's Pub/Sub service account ('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com') must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this feature.</p>
         </td>
     </tr>
     <tr>
@@ -163,13 +160,7 @@ feature.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Indicates the minimum duration to retain a message after it is published
-to the topic. If this field is set, messages published to the topic in
-the last messageRetentionDuration are always available to subscribers.
-For instance, it allows any attached subscription to seek to a timestamp
-that is up to messageRetentionDuration in the past. If this field is not
-set, message retention is controlled by settings on individual subscriptions.
-Cannot be more than 31 days or less than 10 minutes.</p>
+            <p>Indicates the minimum duration to retain a message after it is published to the topic. If this field is set, messages published to the topic in the last messageRetentionDuration are always available to subscribers. For instance, it allows any attached subscription to seek to a timestamp that is up to messageRetentionDuration in the past. If this field is not set, message retention is controlled by settings on individual subscriptions. Cannot be more than 31 days or less than 10 minutes.</p>
         </td>
     </tr>
     <tr>
@@ -179,9 +170,7 @@ Cannot be more than 31 days or less than 10 minutes.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Policy constraining the set of Google Cloud Platform regions where
-messages published to the topic may be stored. If not present, then no
-constraints are in effect.</p>
+            <p>Policy constraining the set of Google Cloud Platform regions where messages published to the topic may be stored. If not present, then no constraints are in effect.</p>
         </td>
     </tr>
     <tr>
@@ -191,12 +180,7 @@ constraints are in effect.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of IDs of GCP regions where messages that are published to
-the topic may be persisted in storage. Messages published by
-publishers running in non-allowed GCP regions (or running outside
-of GCP altogether) will be routed for storage in one of the
-allowed regions. An empty list means that no regions are allowed,
-and is not a valid configuration.</p>
+            <p>A list of IDs of GCP regions where messages that are published to the topic may be persisted in storage. Messages published by publishers running in non-allowed GCP regions (or running outside of GCP altogether) will be routed for storage in one of the allowed regions. An empty list means that no regions are allowed, and is not a valid configuration.</p>
         </td>
     </tr>
     <tr>
@@ -207,6 +191,16 @@ and is not a valid configuration.</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>messageStoragePolicy.enforceInTransit</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Optional. If true, `allowed_persistence_regions` is also used to enforce in-transit guarantees for messages. That is, Pub/Sub will fail Publish operations on this topic and subscribe operations on any subscription attached to this topic in any region that is not in `allowed_persistence_regions`.</p>
         </td>
     </tr>
     <tr>
@@ -246,7 +240,7 @@ and is not a valid configuration.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>PubSubSchemaRef is a reference to a PubSubSchema.</p>
         </td>
     </tr>
     <tr>
@@ -256,7 +250,7 @@ and is not a valid configuration.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `projects/{{project}}/schemas/{{value}}`, where {{value}} is the `name` field of a `PubSubSchema` resource.</p>
+            <p>A reference to an externally managed PubSubSchema resource. Should be in the format "projects/{{projectID}}/schemas/{{schemaID}}".</p>
         </td>
     </tr>
     <tr>
@@ -266,7 +260,7 @@ and is not a valid configuration.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a PubSubSchema resource.</p>
         </td>
     </tr>
     <tr>
@@ -276,7 +270,7 @@ and is not a valid configuration.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a PubSubSchema resource.</p>
         </td>
     </tr>
 </tbody>
@@ -307,7 +301,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -390,4 +384,4 @@ spec:
     external: ${PROJECT_ID?}
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

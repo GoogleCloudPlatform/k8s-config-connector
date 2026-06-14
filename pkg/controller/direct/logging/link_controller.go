@@ -89,7 +89,7 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, err
 	}
 	return &LoggingLinkAdapter{
-		id:        id.(*krm.LinkIdentity),
+		id:        id.(*krm.LoggingLinkIdentity),
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
@@ -101,7 +101,7 @@ func (m *modelLoggingLink) AdapterForURL(ctx context.Context, url string) (direc
 }
 
 type LoggingLinkAdapter struct {
-	id        *krm.LinkIdentity
+	id        *krm.LoggingLinkIdentity
 	gcpClient *gcp.ConfigClient
 	desired   *krm.LoggingLink
 	actual    *loggingpb.Link

@@ -16,7 +16,7 @@ title: "ComputeAddress"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -28,8 +28,8 @@ title: "ComputeAddress"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/compute/docs/reference/rest/v1/globalAddresses">/compute/docs/reference/rest/v1/globalAddresses</a></pre>
-<pre><a href="/compute/docs/reference/rest/v1/addresses">/compute/docs/reference/rest/v1/addresses</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/globalAddresses">https://docs.cloud.google.com/compute/docs/reference/rest/v1/globalAddresses</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/addresses">https://docs.cloud.google.com/compute/docs/reference/rest/v1/addresses</a></pre>
 </td>
 </tr>
 <tr>
@@ -113,9 +113,7 @@ subnetworkRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The static external IP address represented by this resource.
-The IP address must be inside the specified subnetwork,
-if any. Set by the API if undefined.</p>
+            <p>Immutable. The static external IP address represented by this resource. The IP address must be inside the specified subnetwork, if any. Set by the API if undefined.</p>
         </td>
     </tr>
     <tr>
@@ -125,8 +123,7 @@ if any. Set by the API if undefined.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The type of address to reserve.
-Note: if you set this argument's value as 'INTERNAL' you need to leave the 'network_tier' argument unset in that resource block. Default value: "EXTERNAL" Possible values: ["INTERNAL", "EXTERNAL"].</p>
+            <p>Immutable. The type of address to reserve. Note: if you set this argument's value as 'INTERNAL' you need to leave the 'network_tier' argument unset in that resource block. Default value: "EXTERNAL" Possible values: ["INTERNAL", "EXTERNAL"].</p>
         </td>
     </tr>
     <tr>
@@ -156,9 +153,7 @@ Note: if you set this argument's value as 'INTERNAL' you need to leave the 'netw
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The endpoint type of this address, which should be VM or NETLB. This is
-used for deciding which type of endpoint this address can be used after
-the external IPv6 address reservation. Possible values: ["VM", "NETLB"].</p>
+            <p>Immutable. The endpoint type of this address, which should be VM or NETLB. This is used for deciding which type of endpoint this address can be used after the external IPv6 address reservation. Possible values: ["VM", "NETLB"].</p>
         </td>
     </tr>
     <tr>
@@ -178,11 +173,7 @@ the external IPv6 address reservation. Possible values: ["VM", "NETLB"].</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The network in which to reserve the address. If global, the address
-must be within the RFC1918 IP space. The network cannot be deleted
-if there are any reserved IP ranges referring to it. This field can
-only be used with INTERNAL type with the VPC_PEERING and
-IPSEC_INTERCONNECT purposes.</p>
+            <p>The network in which to reserve the address. If global, the address must be within the RFC1918 IP space. The network cannot be deleted if there are any reserved IP ranges referring to it. This field can only be used with INTERNAL type with the VPC_PEERING and IPSEC_INTERCONNECT purposes.</p>
         </td>
     </tr>
     <tr>
@@ -192,7 +183,7 @@ IPSEC_INTERCONNECT purposes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -202,7 +193,7 @@ IPSEC_INTERCONNECT purposes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -212,7 +203,7 @@ IPSEC_INTERCONNECT purposes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -222,9 +213,7 @@ IPSEC_INTERCONNECT purposes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The networking tier used for configuring this address. If this field is not
-specified, it is assumed to be PREMIUM.
-This argument should not be used when configuring Internal addresses, because [network tier cannot be set for internal traffic; it's always Premium](https://cloud.google.com/network-tiers/docs/overview). Possible values: ["PREMIUM", "STANDARD"].</p>
+            <p>Immutable. The networking tier used for configuring this address. If this field is not specified, it is assumed to be PREMIUM. This argument should not be used when configuring Internal addresses, because [network tier cannot be set for internal traffic; it's always Premium](https://cloud.google.com/network-tiers/docs/overview). Possible values: ["PREMIUM", "STANDARD"].</p>
         </td>
     </tr>
     <tr>
@@ -282,10 +271,7 @@ This should only be set when using an Internal address.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The subnetwork in which to reserve the address. If an IP address is
-specified, it must be within the subnetwork's IP range.  This field
-can only be used with INTERNAL type with GCE_ENDPOINT/DNS_RESOLVER
-purposes.</p>
+            <p>The subnetwork in which to reserve the address. If an IP address is specified, it must be within the subnetwork's IP range.  This field can only be used with INTERNAL type with GCE_ENDPOINT/DNS_RESOLVER purposes.</p>
         </td>
     </tr>
     <tr>
@@ -295,7 +281,7 @@ purposes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -305,7 +291,7 @@ purposes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -315,7 +301,7 @@ purposes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
 </tbody>
@@ -351,7 +337,7 @@ users:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -407,8 +393,7 @@ users:
         <td><code>labelFingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The fingerprint used for optimistic locking of this resource.  Used
-internally during updates.</p>
+            <p>The fingerprint used for optimistic locking of this resource. Used internally during updates.</p>
         </td>
     </tr>
     <tr>
@@ -422,16 +407,14 @@ internally during updates.</p>
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The observed state of the underlying GCP resource.</p>
+            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.address</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The static external IP address represented by this resource.
-The IP address must be inside the specified subnetwork,
-if any. Set by the API if undefined.</p>
+            <p>Immutable. The static external IP address represented by this resource. The IP address must be inside the specified subnetwork, if any. Set by the API if undefined.</p>
         </td>
     </tr>
     <tr>
@@ -521,4 +504,4 @@ spec:
     name: computeaddress-dep-regional
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
