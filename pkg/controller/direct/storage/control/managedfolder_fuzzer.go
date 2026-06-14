@@ -33,11 +33,11 @@ func storageManagedFolderFuzzer() fuzztesting.KRMFuzzer {
 		StorageManagedFolderObservedState_FromProto, StorageManagedFolderObservedState_ToProto,
 	)
 
-	f.StatusFields.Insert(".metageneration")
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
+	f.StatusField(".metageneration")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.Unimplemented_Identity(".name") // special field
 
 	return f
 }
