@@ -354,7 +354,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmElemTypeName := strings.TrimPrefix(krmField.Type, "*")
 					fromProtoElemFunc = krmElemTypeName + versionSpecifier + "_FromProto"
 					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
-						fromProtoElemFunc = krmFromProtoFunctionName(protoField, krmField.Name)
+						fromProtoElemFunc = krmFromProtoFunctionName(protoField, krmField.Name, krmField.Type, versionSpecifier)
 					}
 				case protoreflect.EnumKind:
 					fromProtoElemFunc = "direct. "
@@ -382,7 +382,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmElemTypeName := strings.TrimPrefix(krmSliceElemType, "*")
 					functionName := krmElemTypeName + versionSpecifier + "_FromProto"
 					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
-						functionName = krmFromProtoFunctionName(protoField, krmField.Name)
+						functionName = krmFromProtoFunctionName(protoField, krmField.Name, krmField.Type, versionSpecifier)
 					}
 					fmt.Fprintf(out, "\tif v := in.%s; v != nil {\n", protoAccessor)
 					if strings.HasPrefix(krmSliceElemType, "*") {
@@ -509,7 +509,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 				// special handling for proto messages that mapped to KRM string
 				if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
-					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
+					functionName = krmFromProtoFunctionName(protoField, krmField.Name, krmField.Type, versionSpecifier)
 				}
 
 				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
@@ -644,7 +644,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				case protoreflect.MessageKind:
 					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
 					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
-						functionName = krmToProtoFunctionName(protoField, krmField.Name)
+						functionName = krmToProtoFunctionName(protoField, krmField.Name, krmField.Type, versionSpecifier)
 					}
 					fmt.Fprintf(out, "\t\tout.%s = %s(mapCtx, in.%s[0])\n", protoFieldName, functionName, krmFieldName)
 
@@ -686,7 +686,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				case protoreflect.MessageKind:
 					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
 					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
-						functionName = krmToProtoFunctionName(protoField, krmField.Name)
+						functionName = krmToProtoFunctionName(protoField, krmField.Name, krmField.Type, versionSpecifier)
 					}
 					toProtoElemFunc = functionName
 					protoSliceElemType = "*" + v.goPackageForProto(protoField.Message().ParentFile()) + "." + protoNameForType(protoField.Message())
@@ -806,7 +806,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 				// special handling for proto messages that mapped to KRM string
 				if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
-					functionName = krmToProtoFunctionName(protoField, krmField.Name)
+					functionName = krmToProtoFunctionName(protoField, krmField.Name, krmField.Type, versionSpecifier)
 				}
 
 				oneof := protoField.ContainingOneof()
@@ -1094,13 +1094,20 @@ func sortIntoMessageSlice(messages protoreflect.MessageDescriptors) []protorefle
 	return out
 }
 
-func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldName string) string {
+func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldName string, krmFieldType string, versionSpecifier string) string {
 	fullname := string(protoField.Message().FullName())
+	krmTypeName := strings.TrimPrefix(krmFieldType, "*")
+	krmTypeName = strings.TrimPrefix(krmTypeName, "[]")
+	krmTypeName = strings.TrimPrefix(krmTypeName, "*")
+
 	switch fullname {
 	case "google.protobuf.Timestamp":
 		return "direct.StringTimestamp_FromProto"
 	case "google.protobuf.Struct":
-		return "direct.Struct_FromProto"
+		if strings.Contains(krmFieldType, "JSON") {
+			return "direct.Struct_FromProto"
+		}
+		return krmTypeName + versionSpecifier + "_FromProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_FromProto"
 	case "google.protobuf.Int64Value":
@@ -1122,7 +1129,10 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 	case "google.protobuf.BytesValue":
 		return "direct.BytesValue_FromProto"
 	case "google.protobuf.Value":
-		return "direct.JSON_FromProto"
+		if strings.Contains(krmFieldType, "JSON") {
+			return "direct.JSON_FromProto"
+		}
+		return krmTypeName + versionSpecifier + "_FromProto"
 	case "google.rpc.Status":
 		return "direct.Status_FromProto"
 	}
@@ -1130,13 +1140,20 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 	return ""
 }
 
-func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldName string) string {
+func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldName string, krmFieldType string, versionSpecifier string) string {
 	fullname := string(protoField.Message().FullName())
+	krmTypeName := strings.TrimPrefix(krmFieldType, "*")
+	krmTypeName = strings.TrimPrefix(krmTypeName, "[]")
+	krmTypeName = strings.TrimPrefix(krmTypeName, "*")
+
 	switch fullname {
 	case "google.protobuf.Timestamp":
 		return "direct.StringTimestamp_ToProto"
 	case "google.protobuf.Struct":
-		return "direct.Struct_ToProto"
+		if strings.Contains(krmFieldType, "JSON") {
+			return "direct.Struct_ToProto"
+		}
+		return krmTypeName + versionSpecifier + "_ToProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_ToProto"
 	case "google.protobuf.Int64Value":
@@ -1158,7 +1175,10 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 	case "google.protobuf.BytesValue":
 		return "direct.BytesValue_ToProto"
 	case "google.protobuf.Value":
-		return "direct.JSON_ToProto"
+		if strings.Contains(krmFieldType, "JSON") {
+			return "direct.JSON_ToProto"
+		}
+		return krmTypeName + versionSpecifier + "_ToProto"
 	case "google.rpc.Status":
 		return "direct.Status_ToProto"
 	}
