@@ -31,6 +31,7 @@ import (
 
 type DiscoveryengineV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	DiscoveryEngineControlsGetter
 	DiscoveryEngineConversationsGetter
 	DiscoveryEngineDataStoresGetter
 	DiscoveryEngineDataStoreTargetSitesGetter
@@ -41,6 +42,10 @@ type DiscoveryengineV1alpha1Interface interface {
 // DiscoveryengineV1alpha1Client is used to interact with features provided by the discoveryengine.cnrm.cloud.google.com group.
 type DiscoveryengineV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *DiscoveryengineV1alpha1Client) DiscoveryEngineControls(namespace string) DiscoveryEngineControlInterface {
+	return newDiscoveryEngineControls(c, namespace)
 }
 
 func (c *DiscoveryengineV1alpha1Client) DiscoveryEngineConversations(namespace string) DiscoveryEngineConversationInterface {
