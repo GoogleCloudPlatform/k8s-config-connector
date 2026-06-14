@@ -126,16 +126,9 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 		}
 	}
 	if in.NullValue != nil {
-		strVal := direct.ValueOf(in.NullValue)
-		var value int
-		if val, ok := structpb.NullValue_value[strVal]; ok {
-			value = int(val)
-		} else {
-			var err error
-			value, err = strconv.Atoi(strVal)
-			if err != nil {
-				mapCtx.Errorf("error converting value %s from string to int", strVal)
-			}
+		value, err := strconv.Atoi(direct.ValueOf(in.NullValue))
+		if err != nil {
+			mapCtx.Errorf("error converting value %s from string to int", direct.ValueOf(in.NullValue))
 		}
 		out.Kind = &structpb.Value_NullValue{
 			NullValue: structpb.NullValue(value),
@@ -413,5 +406,33 @@ func SmoothGradConfig_NoiseSigma_ToProto(mapCtx *direct.MapContext, in *float32)
 	}
 	out := &pb.SmoothGradConfig_NoiseSigma{}
 	out.NoiseSigma = direct.ValueOf(in)
+	return out
+}
+
+func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ListValue{}
+	for _, val := range in.Values {
+		mappedVal := Value_FromProto(mapCtx, val)
+		if mappedVal != nil {
+			out.Values = append(out.Values, *mappedVal)
+		}
+	}
+	return out
+}
+
+func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.ListValue{}
+	for _, val := range in.Values {
+		mappedVal := Value_ToProto(mapCtx, &val)
+		if mappedVal != nil {
+			out.Values = append(out.Values, mappedVal)
+		}
+	}
 	return out
 }
