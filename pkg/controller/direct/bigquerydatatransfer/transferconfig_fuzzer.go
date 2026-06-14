@@ -25,6 +25,39 @@ import (
 
 func init() {
 	fuzztesting.RegisterKRMFuzzer(dataTransferConfigFuzzer())
+	fuzztesting.RegisterKRMFuzzer(dataTransferTransferConfigFuzzer())
+}
+
+func dataTransferTransferConfigFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.TransferConfig{},
+		BigQueryDataTransferTransferConfigSpec_v1alpha1_FromProto, BigQueryDataTransferTransferConfigSpec_v1alpha1_ToProto,
+		BigQueryDataTransferTransferConfigObservedState_v1alpha1_FromProto, BigQueryDataTransferTransferConfigObservedState_v1alpha1_ToProto,
+	)
+
+	f.SpecFields.Insert(".destination_dataset_id")
+	f.SpecFields.Insert(".display_name")
+	f.SpecFields.Insert(".data_source_id")
+	f.SpecFields.Insert(".params")
+	f.SpecFields.Insert(".schedule")
+	f.SpecFields.Insert(".schedule_options")
+	f.SpecFields.Insert(".data_refresh_window_days")
+	f.SpecFields.Insert(".disabled")
+	f.SpecFields.Insert(".notification_pubsub_topic")
+	f.SpecFields.Insert(".email_preferences")
+	f.SpecFields.Insert(".encryption_configuration")
+	f.SpecFields.Insert(".schedule_options_v2")
+
+	f.StatusFields.Insert(".update_time")
+	f.StatusFields.Insert(".next_run_time")
+	f.StatusFields.Insert(".state")
+	f.StatusFields.Insert(".dataset_region")
+	f.StatusFields.Insert(".owner_info")
+
+	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".user_id")
+	f.UnimplementedFields.Insert(".error")
+
+	return f
 }
 
 func dataTransferConfigFuzzer() fuzztesting.KRMFuzzer {
