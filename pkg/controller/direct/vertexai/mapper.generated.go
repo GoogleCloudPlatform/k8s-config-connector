@@ -31,6 +31,44 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ActiveLearningConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ActiveLearningConfig) *krmvertexaiv1alpha1.ActiveLearningConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.ActiveLearningConfig{}
+	out.MaxDataItemCount = direct.LazyPtr(in.GetMaxDataItemCount())
+	out.MaxDataItemPercentage = direct.LazyPtr(in.GetMaxDataItemPercentage())
+	out.SampleConfig = SampleConfig_v1alpha1_FromProto(mapCtx, in.GetSampleConfig())
+	out.TrainingConfig = TrainingConfig_v1alpha1_FromProto(mapCtx, in.GetTrainingConfig())
+	return out
+}
+func ActiveLearningConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.ActiveLearningConfig) *pb.ActiveLearningConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ActiveLearningConfig{}
+	if oneof := ActiveLearningConfig_MaxDataItemCount_ToProto(mapCtx, in.MaxDataItemCount); oneof != nil {
+		out.HumanLabelingBudget = oneof
+	}
+	if oneof := ActiveLearningConfig_MaxDataItemPercentage_ToProto(mapCtx, in.MaxDataItemPercentage); oneof != nil {
+		out.HumanLabelingBudget = oneof
+	}
+	out.SampleConfig = SampleConfig_v1alpha1_ToProto(mapCtx, in.SampleConfig)
+	out.TrainingConfig = TrainingConfig_v1alpha1_ToProto(mapCtx, in.TrainingConfig)
+	return out
+}
+func ActiveLearningConfig_MaxDataItemCount_ToProto(mapCtx *direct.MapContext, in *int64) *pb.ActiveLearningConfig_MaxDataItemCount {
+	if in == nil {
+		return nil
+	}
+	return &pb.ActiveLearningConfig_MaxDataItemCount{MaxDataItemCount: *in}
+}
+func ActiveLearningConfig_MaxDataItemPercentage_ToProto(mapCtx *direct.MapContext, in *int32) *pb.ActiveLearningConfig_MaxDataItemPercentage {
+	if in == nil {
+		return nil
+	}
+	return &pb.ActiveLearningConfig_MaxDataItemPercentage{MaxDataItemPercentage: *in}
+}
 func AutoscalingMetricSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingMetricSpec) *krmvertexaiv1alpha1.AutoscalingMetricSpec {
 	if in == nil {
 		return nil
@@ -125,32 +163,6 @@ found existing non-generated mapping function "EncryptionSpec_v1beta1_ToProto", 
 		return out
 	}
 */
-func ExampleStore_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExampleStore) *krmvertexaiv1alpha1.ExampleStore {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.ExampleStore{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.ExampleStoreConfig = ExampleStoreConfig_v1alpha1_FromProto(mapCtx, in.GetExampleStoreConfig())
-	return out
-}
-func ExampleStore_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.ExampleStore) *pb.ExampleStore {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExampleStore{}
-	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.ExampleStoreConfig = ExampleStoreConfig_v1alpha1_ToProto(mapCtx, in.ExampleStoreConfig)
-	return out
-}
 func ExampleStoreConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExampleStoreConfig) *krmvertexaiv1alpha1.ExampleStoreConfig {
 	if in == nil {
 		return nil
@@ -165,32 +177,6 @@ func ExampleStoreConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmverte
 	}
 	out := &pb.ExampleStoreConfig{}
 	out.VertexEmbeddingModel = direct.ValueOf(in.VertexEmbeddingModel)
-	return out
-}
-func ExampleStoreObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExampleStore) *krmvertexaiv1alpha1.ExampleStoreObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.ExampleStoreObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: ExampleStoreConfig
-	return out
-}
-func ExampleStoreObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.ExampleStoreObservedState) *pb.ExampleStore {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExampleStore{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: ExampleStoreConfig
 	return out
 }
 func Featurestore_OnlineServingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig) *krmvertexaiv1alpha1.Featurestore_OnlineServingConfig {
@@ -357,6 +343,58 @@ func ReservationAffinity_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvert
 	out.ReservationAffinityType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ReservationAffinityType)
 	out.Key = direct.ValueOf(in.Key)
 	out.Values = in.Values
+	return out
+}
+func SampleConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SampleConfig) *krmvertexaiv1alpha1.SampleConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.SampleConfig{}
+	out.InitialBatchSamplePercentage = direct.LazyPtr(in.GetInitialBatchSamplePercentage())
+	out.FollowingBatchSamplePercentage = direct.LazyPtr(in.GetFollowingBatchSamplePercentage())
+	out.SampleStrategy = direct.Enum_FromProto(mapCtx, in.GetSampleStrategy())
+	return out
+}
+func SampleConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.SampleConfig) *pb.SampleConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SampleConfig{}
+	if oneof := SampleConfig_InitialBatchSamplePercentage_ToProto(mapCtx, in.InitialBatchSamplePercentage); oneof != nil {
+		out.InitialBatchSampleSize = oneof
+	}
+	if oneof := SampleConfig_FollowingBatchSamplePercentage_ToProto(mapCtx, in.FollowingBatchSamplePercentage); oneof != nil {
+		out.FollowingBatchSampleSize = oneof
+	}
+	out.SampleStrategy = direct.Enum_ToProto[pb.SampleConfig_SampleStrategy](mapCtx, in.SampleStrategy)
+	return out
+}
+func SampleConfig_InitialBatchSamplePercentage_ToProto(mapCtx *direct.MapContext, in *int32) *pb.SampleConfig_InitialBatchSamplePercentage {
+	if in == nil {
+		return nil
+	}
+	return &pb.SampleConfig_InitialBatchSamplePercentage{InitialBatchSamplePercentage: *in}
+}
+func SampleConfig_FollowingBatchSamplePercentage_ToProto(mapCtx *direct.MapContext, in *int32) *pb.SampleConfig_FollowingBatchSamplePercentage {
+	if in == nil {
+		return nil
+	}
+	return &pb.SampleConfig_FollowingBatchSamplePercentage{FollowingBatchSamplePercentage: *in}
+}
+func TrainingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TrainingConfig) *krmvertexaiv1alpha1.TrainingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.TrainingConfig{}
+	out.TimeoutTrainingMilliHours = direct.LazyPtr(in.GetTimeoutTrainingMilliHours())
+	return out
+}
+func TrainingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.TrainingConfig) *pb.TrainingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrainingConfig{}
+	out.TimeoutTrainingMilliHours = direct.ValueOf(in.TimeoutTrainingMilliHours)
 	return out
 }
 func VertexAIDatasetObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.VertexAIDatasetObservedState {
