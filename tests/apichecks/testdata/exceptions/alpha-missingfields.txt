@@ -1056,6 +1056,34 @@
 [missing_field] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.remediation" is not set in unstructured objects
 [missing_field] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceUri" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].accessControl.operationType" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].accessControl.policy.auditConfigs[].auditLogConfigs[].exemptedMembers[]" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].accessControl.policy.auditConfigs[].auditLogConfigs[].logType" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].accessControl.policy.auditConfigs[].service" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].accessControl.policy.bindings[].condition.description" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].accessControl.policy.bindings[].condition.expression" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].accessControl.policy.bindings[].condition.location" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].accessControl.policy.bindings[].condition.title" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].accessControl.policy.bindings[].members[]" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].accessControl.policy.bindings[].role" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].accessControl.policy.version" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].actionID" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].addToFolder.folders[]" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].dataUpdate.entries" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].dataValidation.conditions" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].deleteDocumentAction.enableHardDelete" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].publishToPubSub.messages[]" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].publishToPubSub.topicID" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].removeFromFolderAction.condition" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].actions[].removeFromFolderAction.folder" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].condition" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].description" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].ruleID" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].triggerType" is not set in unstructured objects
+[missing_field] crd=contentwarehouserulesets.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.source" is not set in unstructured objects
 [missing_field] crd=contentwarehouseschemas.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=contentwarehouseschemas.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=contentwarehouseschemas.contentwarehouse.cnrm.cloud.google.com version=v1alpha1: field ".spec.documentIsFolder" is not set in unstructured objects

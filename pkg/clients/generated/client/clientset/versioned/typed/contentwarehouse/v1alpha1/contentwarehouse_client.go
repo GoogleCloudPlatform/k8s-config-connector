@@ -31,12 +31,17 @@ import (
 
 type ContentwarehouseV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	ContentWarehouseRuleSetsGetter
 	ContentWarehouseSchemasGetter
 }
 
 // ContentwarehouseV1alpha1Client is used to interact with features provided by the contentwarehouse.cnrm.cloud.google.com group.
 type ContentwarehouseV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *ContentwarehouseV1alpha1Client) ContentWarehouseRuleSets(namespace string) ContentWarehouseRuleSetInterface {
+	return newContentWarehouseRuleSets(c, namespace)
 }
 
 func (c *ContentwarehouseV1alpha1Client) ContentWarehouseSchemas(namespace string) ContentWarehouseSchemaInterface {
