@@ -39,12 +39,12 @@ func (c *FakeAiplatformV1alpha1) VertexAIFeatureOnlineStores(namespace string) v
 	return newFakeVertexAIFeatureOnlineStores(c, namespace)
 }
 
-func (c *FakeAiplatformV1alpha1) VertexAITrainingPipelines(namespace string) v1alpha1.VertexAITrainingPipelineInterface {
-	return newFakeVertexAITrainingPipelines(c, namespace)
-}
-
 func (c *FakeAiplatformV1alpha1) VertexAISpecialistPools(namespace string) v1alpha1.VertexAISpecialistPoolInterface {
 	return newFakeVertexAISpecialistPools(c, namespace)
+}
+
+func (c *FakeAiplatformV1alpha1) VertexAITrainingPipelines(namespace string) v1alpha1.VertexAITrainingPipelineInterface {
+	return newFakeVertexAITrainingPipelines(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

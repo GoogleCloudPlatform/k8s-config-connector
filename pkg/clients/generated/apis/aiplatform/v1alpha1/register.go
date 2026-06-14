@@ -65,16 +65,16 @@ var (
 		Kind:    reflect.TypeOf(VertexAIFeatureOnlineStore{}).Name(),
 	}
 
-	VertexAITrainingPipelineGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAITrainingPipeline{}).Name(),
-	}
-
 	VertexAISpecialistPoolGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(VertexAISpecialistPool{}).Name(),
+	}
+
+	VertexAITrainingPipelineGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAITrainingPipeline{}).Name(),
 	}
 
 	aiplatformAPIVersion = SchemeGroupVersion.String()
