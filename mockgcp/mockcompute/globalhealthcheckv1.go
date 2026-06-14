@@ -95,6 +95,9 @@ func (s *GlobalHealthCheckV1) Patch(ctx context.Context, req *pb.PatchHealthChec
 	}
 
 	// TODO: Implement helper to implement the full rules here
+	if req.GetHealthCheckResource() != nil && req.GetHealthCheckResource().SourceRegions != nil {
+		obj.SourceRegions = nil
+	}
 	proto.Merge(obj, req.GetHealthCheckResource())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -125,21 +128,30 @@ func (s *GlobalHealthCheckV1) Update(ctx context.Context, req *pb.UpdateHealthCh
 		return nil, err
 	}
 
-	// TODO: Implement helper to implement the full rules here
-	proto.Merge(obj, req.GetHealthCheckResource())
+	// For PUT (Update), we replace the resource but preserve system fields
+	id := obj.Id
+	selfLink := obj.SelfLink
+	creationTimestamp := obj.CreationTimestamp
+	kind := obj.Kind
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	updatedObj := proto.Clone(req.GetHealthCheckResource()).(*pb.HealthCheck)
+	updatedObj.Id = id
+	updatedObj.SelfLink = selfLink
+	updatedObj.CreationTimestamp = creationTimestamp
+	updatedObj.Kind = kind
+
+	if err := s.storage.Update(ctx, fqn, updatedObj); err != nil {
 		return nil, err
 	}
 
 	op := &pb.Operation{
-		TargetId:      obj.Id,
-		TargetLink:    obj.SelfLink,
+		TargetId:      updatedObj.Id,
+		TargetLink:    updatedObj.SelfLink,
 		OperationType: PtrTo("update"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
-		return obj, nil
+		return updatedObj, nil
 	})
 }
 

@@ -96,6 +96,9 @@ func (s *RegionalHealthCheckV1) Patch(ctx context.Context, req *pb.PatchRegionHe
 	}
 
 	// TODO: Implement helper to implement the full rules here
+	if req.GetHealthCheckResource() != nil && req.GetHealthCheckResource().SourceRegions != nil {
+		obj.SourceRegions = nil
+	}
 	proto.Merge(obj, req.GetHealthCheckResource())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -126,21 +129,32 @@ func (s *RegionalHealthCheckV1) Update(ctx context.Context, req *pb.UpdateRegion
 		return nil, err
 	}
 
-	// TODO: Implement helper to implement the full rules here
-	proto.Merge(obj, req.GetHealthCheckResource())
+	// For PUT (Update), we replace the resource but preserve system fields
+	id := obj.Id
+	selfLink := obj.SelfLink
+	creationTimestamp := obj.CreationTimestamp
+	kind := obj.Kind
+	region := obj.Region
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	updatedObj := proto.Clone(req.GetHealthCheckResource()).(*pb.HealthCheck)
+	updatedObj.Id = id
+	updatedObj.SelfLink = selfLink
+	updatedObj.CreationTimestamp = creationTimestamp
+	updatedObj.Kind = kind
+	updatedObj.Region = region
+
+	if err := s.storage.Update(ctx, fqn, updatedObj); err != nil {
 		return nil, err
 	}
 
 	op := &pb.Operation{
-		TargetId:      obj.Id,
-		TargetLink:    obj.SelfLink,
+		TargetId:      updatedObj.Id,
+		TargetLink:    updatedObj.SelfLink,
 		OperationType: PtrTo("update"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
-		return obj, nil
+		return updatedObj, nil
 	})
 }
 
