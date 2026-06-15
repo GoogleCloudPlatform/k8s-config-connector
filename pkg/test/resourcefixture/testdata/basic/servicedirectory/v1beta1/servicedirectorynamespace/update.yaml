@@ -19,6 +19,9 @@ metadata:
   labels:
     label-one: value-two
 spec:
+  # Set resourceID here (to the same value as the name) to force a spec change,
+  # so that the object's generation changes and the update is reconciled.
+  resourceID: servicedirectory-namespace-${uniqueId}
   location: us-central1
   projectRef:
     external: ${projectId}
