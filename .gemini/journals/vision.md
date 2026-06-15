@@ -1,0 +1,5 @@
+### [2026-06-15] VisionProduct Greenfield Types Scaffolding
+- **Context**: Scaffolding the initial KRM types, CRD, and IdentityV2 for `VisionProduct:Product` in KCC's "direct" approach. (Issue #10312)
+- **Problem**: When running `generate-types`, the top-level `Product` and its subtype `Product_KeyValue` were commented out as unreachable in `types.generated.go`.
+- **Solution**: Manually copied/merged `Product` and `Product_KeyValue` into `apis/vision/v1alpha1/product_types.go`. Configured proper kubebuilder annotations including `XValidation` immutability for `location` and `productCategory`, enum validation, and the `cnrm.cloud.google.com/stability-level=alpha` metadata label.
+- **Impact**: Demonstrates standard pattern for handling unreachable top-level proto resource types during greenfield scaffolding. Ensure future agents regenerate CI/CD jobs using `./dev/tasks/generate-ci-cd-jobs` to auto-create the E2E script `./dev/ci/presubmits/tests-e2e-fixtures-vision` when adding new API groups.
