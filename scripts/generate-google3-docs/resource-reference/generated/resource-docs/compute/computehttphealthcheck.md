@@ -16,7 +16,7 @@ title: "ComputeHTTPHealthCheck"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ComputeHTTPHealthCheck"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/v1/httpHealthChecks">/compute/docs/reference/rest/v1/httpHealthChecks</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/httpHealthChecks">https://docs.cloud.google.com/compute/docs/reference/rest/v1/httpHealthChecks</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -95,8 +95,7 @@ unhealthyThreshold: integer
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>How often (in seconds) to send a health check. The default value is 5
-seconds.</p>
+            <p>How often (in seconds) to send a health check. The default value is 5 seconds.</p>
         </td>
     </tr>
     <tr>
@@ -106,8 +105,7 @@ seconds.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>An optional description of this resource. Provide this property when
-you create the resource.</p>
+            <p>An optional description of this resource. Provide this property when you create the resource.</p>
         </td>
     </tr>
     <tr>
@@ -117,8 +115,7 @@ you create the resource.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>A so-far unhealthy instance will be marked healthy after this many
-consecutive successes. The default value is 2.</p>
+            <p>A so-far unhealthy instance will be marked healthy after this many consecutive successes. The default value is 2.</p>
         </td>
     </tr>
     <tr>
@@ -128,9 +125,7 @@ consecutive successes. The default value is 2.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of the host header in the HTTP health check request. If
-left empty (default value), the public IP on behalf of which this
-health check is performed will be used.</p>
+            <p>The value of the host header in the HTTP health check request. If left empty (default value), the public IP on behalf of which this health check is performed will be used.</p>
         </td>
     </tr>
     <tr>
@@ -140,8 +135,7 @@ health check is performed will be used.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The TCP port number for the HTTP health check request.
-The default value is 80.</p>
+            <p>The TCP port number for the HTTP health check request. The default value is 80.</p>
         </td>
     </tr>
     <tr>
@@ -151,8 +145,7 @@ The default value is 80.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The request path of the HTTP health check request.
-The default value is /.</p>
+            <p>The request path of the HTTP health check request. The default value is /.</p>
         </td>
     </tr>
     <tr>
@@ -172,9 +165,7 @@ The default value is /.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>How long (in seconds) to wait before claiming failure.
-The default value is 5 seconds.  It is invalid for timeoutSec to have
-greater value than checkIntervalSec.</p>
+            <p>How long (in seconds) to wait before claiming failure. The default value is 5 seconds. It is invalid for timeoutSec to have greater value than checkIntervalSec.</p>
         </td>
     </tr>
     <tr>
@@ -184,8 +175,7 @@ greater value than checkIntervalSec.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>A so-far healthy instance will be marked unhealthy after this many
-consecutive failures. The default value is 2.</p>
+            <p>A so-far healthy instance will be marked unhealthy after this many consecutive failures. The default value is 2.</p>
         </td>
     </tr>
 </tbody>
@@ -216,7 +206,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -303,4 +293,4 @@ spec:
   unhealthyThreshold: 2
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

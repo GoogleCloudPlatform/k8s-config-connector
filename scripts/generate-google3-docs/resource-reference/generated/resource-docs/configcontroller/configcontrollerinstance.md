@@ -22,7 +22,7 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/anthos-config-management/docs/concepts/config-controller-overview">/anthos-config-management/docs/concepts/config-controller-overview</a></td>
+<td><a href="https://docs.cloud.google.com/anthos-config-management/docs/concepts/config-controller-overview">https://docs.cloud.google.com/anthos-config-management/docs/concepts/config-controller-overview</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -30,7 +30,7 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/anthos-config-management/docs/concepts/config-controller-overview">/anthos-config-management/docs/concepts/config-controller-overview</a></td>
+<td><a href="https://docs.cloud.google.com/anthos-config-management/docs/concepts/config-controller-overview">https://docs.cloud.google.com/anthos-config-management/docs/concepts/config-controller-overview</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -559,4 +559,4 @@ spec:
   autoCreateSubnetworks: true
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

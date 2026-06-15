@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
@@ -138,7 +139,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := KMSKeyHandleSpec_ToProto(mapCtx, &desired.Spec)
+	resource := kms.KMSKeyHandleSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -167,7 +168,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("successfully created KeyHandle", "name", a.id.String())
 
 	status := &krm.KMSKeyHandleStatus{}
-	status.ObservedState = KMSKeyHandleStatusObservedState_FromProto(mapCtx, created)
+	status.ObservedState = kms.KMSKeyHandleObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -182,7 +183,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating KeyHandle", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	resource := KMSKeyHandleSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	resource := kms.KMSKeyHandleSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -195,7 +196,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.KMSKeyHandleStatus{}
-		status.ObservedState = KMSKeyHandleStatusObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = kms.KMSKeyHandleObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -222,7 +223,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	obj := &krm.KMSKeyHandle{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(KMSKeyHandleSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(kms.KMSKeyHandleSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

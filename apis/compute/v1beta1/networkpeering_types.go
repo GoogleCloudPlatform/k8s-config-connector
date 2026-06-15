@@ -1,0 +1,121 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1beta1
+
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var ComputeNetworkPeeringGVK = GroupVersion.WithKind("ComputeNetworkPeering")
+
+// ComputeNetworkPeeringSpec defines the desired state of ComputeNetworkPeering
+// +kcc:spec:proto=google.cloud.compute.v1.NetworkPeering
+type ComputeNetworkPeeringSpec struct {
+	/* Whether to export the custom routes to the peer network. Defaults to false. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.export_custom_routes
+	ExportCustomRoutes *bool `json:"exportCustomRoutes,omitempty"`
+
+	/* Immutable. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.export_subnet_routes_with_public_ip
+	ExportSubnetRoutesWithPublicIP *bool `json:"exportSubnetRoutesWithPublicIp,omitempty"`
+
+	/* Whether to export the custom routes from the peer network. Defaults to false. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.import_custom_routes
+	ImportCustomRoutes *bool `json:"importCustomRoutes,omitempty"`
+
+	/* Immutable. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.import_subnet_routes_with_public_ip
+	ImportSubnetRoutesWithPublicIP *bool `json:"importSubnetRoutesWithPublicIp,omitempty"`
+
+	// +required
+	NetworkRef ComputeNetworkRef `json:"networkRef"`
+
+	// +required
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.network
+	PeerNetworkRef ComputeNetworkRef `json:"peerNetworkRef"`
+
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.name
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Which IP version(s) of traffic and routes are allowed to be imported or exported between peer networks. The default value is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.stack_type
+	StackType *string `json:"stackType,omitempty"`
+}
+
+// ComputeNetworkPeeringStatus defines the config connector machine state of ComputeNetworkPeering
+type ComputeNetworkPeeringStatus struct {
+	/* Conditions represent the latest available observations of the
+	   ComputeNetworkPeering's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* State for the peering, either ACTIVE or INACTIVE. The peering is ACTIVE when there's a matching configuration in the peer network. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.state
+	State *string `json:"state,omitempty"`
+
+	/* Details about the current state of the peering. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.state_details
+	StateDetails *string `json:"stateDetails,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcomputenetworkpeering;gcpcomputenetworkpeerings
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// ComputeNetworkPeering is the Schema for the compute API
+// +k8s:openapi-gen=true
+type ComputeNetworkPeering struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   ComputeNetworkPeeringSpec   `json:"spec,omitempty"`
+	Status ComputeNetworkPeeringStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeNetworkPeeringList contains a list of ComputeNetworkPeering
+type ComputeNetworkPeeringList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeNetworkPeering `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeNetworkPeering{}, &ComputeNetworkPeeringList{})
+}

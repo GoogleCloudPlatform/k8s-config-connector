@@ -17,7 +17,6 @@ package v1beta1
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -68,7 +67,7 @@ type RecordsetHealthCheckedTargets struct {
 }
 
 type RecordsetInternalLoadBalancers struct {
-	IpAddressRef refs.ComputeAddressRef `json:"ipAddressRef"`
+	IpAddressRef computev1beta1.ComputeAddressRef `json:"ipAddressRef"`
 
 	/* The configured IP protocol of the load balancer. This value is case-sensitive. Possible values: ["tcp", "udp"]. */
 	IpProtocol string `json:"ipProtocol"`

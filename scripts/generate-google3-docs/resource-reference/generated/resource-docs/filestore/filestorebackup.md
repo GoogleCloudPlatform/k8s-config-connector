@@ -16,7 +16,7 @@ title: "FilestoreBackup"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/filestore/docs">/filestore/docs</a></td>
+<td><a href="https://docs.cloud.google.com/filestore/docs">https://docs.cloud.google.com/filestore/docs</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "FilestoreBackup"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/filestore/docs/reference/rest/v1beta1/projects.locations.backups">/filestore/docs/reference/rest/v1beta1/projects.locations.backups</a></td>
+<td><a href="https://docs.cloud.google.com/filestore/docs/reference/rest/v1beta1/projects.locations.backups">https://docs.cloud.google.com/filestore/docs/reference/rest/v1beta1/projects.locations.backups</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -377,4 +377,4 @@ spec:
   tier: PREMIUM
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

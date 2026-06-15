@@ -1,0 +1,19 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/computenetwork-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetwork
+  name: computenetwork-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/northamerica-northeast2/subnetworks/computesubnetwork-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeSubnetwork
+  name: computesubnetwork-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  error: not yet supported
+  group: container.cnrm.cloud.google.com
+  kind: ContainerCluster
+  name: containercluster-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

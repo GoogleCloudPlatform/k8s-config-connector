@@ -39,15 +39,14 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type CertificateManagerCertificateMapEntrySpec struct {
+	/* Immutable. A list of references to CertificateManagerCertificate resources that will be associated with this map entry. */
 	CertificatesRefs []v1alpha1.ResourceRef `json:"certificatesRefs"`
 
 	/* A human-readable description of the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. A Hostname (FQDN, e.g. example.com) or a wildcard hostname expression (*.example.com)
-	for a set of hostnames with common suffix. Used as Server Name Indication (SNI) for
-	selecting a proper certificate. */
+	/* Immutable. A Hostname (FQDN, e.g. example.com) or a wildcard hostname expression (*.example.com) for a set of hostnames with common suffix. Used as Server Name Indication (SNI) for selecting a proper certificate. */
 	// +optional
 	Hostname *string `json:"hostname,omitempty"`
 
@@ -70,9 +69,7 @@ type CertificateManagerCertificateMapEntryStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CertificateManagerCertificateMapEntry's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Creation timestamp of a Certificate Map Entry. Timestamp in RFC3339 UTC "Zulu" format,
-	with nanosecond resolution and up to nine fractional digits.
-	Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	/* Creation timestamp of a Certificate Map Entry. Timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
@@ -84,9 +81,7 @@ type CertificateManagerCertificateMapEntryStatus struct {
 	// +optional
 	State *string `json:"state,omitempty"`
 
-	/* Update timestamp of a Certificate Map Entry. Timestamp in RFC3339 UTC "Zulu" format,
-	with nanosecond resolution and up to nine fractional digits.
-	Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	/* Update timestamp of a Certificate Map Entry. Timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }

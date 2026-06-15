@@ -26,7 +26,6 @@ package networkconnectivity
 import (
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -216,7 +215,7 @@ func NetworkConnectivityRegionalEndpointSpec_FromProto(mapCtx *direct.MapContext
 	out := &krm.NetworkConnectivityRegionalEndpointSpec{}
 	out.AccessType = direct.LazyPtr(in.GetAccessType())
 	if in.GetAddress() != "" {
-		out.AddressRef = &refsv1beta1.ComputeAddressRef{External: in.GetAddress()}
+		out.AddressRef = &krmcomputev1beta1.ComputeAddressRef{External: in.GetAddress()}
 	}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: Labels

@@ -41,7 +41,7 @@ type DialogflowGeneratorRef struct {
 }
 
 func init() {
-	refs.Register(&DialogflowGeneratorRef{})
+	refs.Register(&DialogflowGeneratorRef{}, &DialogflowGenerator{})
 }
 
 func (r *DialogflowGeneratorRef) GetGVK() schema.GroupVersionKind {

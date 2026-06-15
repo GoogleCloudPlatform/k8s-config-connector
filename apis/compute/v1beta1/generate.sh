@@ -26,19 +26,25 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
+  --resource ComputeAddress:Address \
+  --resource ComputeDisk:Disk \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
   --resource ComputeForwardingRule:ForwardingRule \
-  --resource ComputeResourcePolicy:ResourcePolicy \
-  --resource ComputeSecurityPolicy:SecurityPolicy \
-  --resource ComputeSubnetwork:Subnetwork \
+  --resource ComputeHTTPHealthCheck:HTTPHealthCheck \
+  --resource ComputeHealthCheck:HealthCheck \
+  --resource ComputeInstance:Instance \
+  --resource ComputeInstanceGroup:InstanceGroup \
   --resource ComputeNetwork:Network \
-  --resource ComputeTargetTcpProxy:TargetTcpProxy \
-  --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
+  --resource ComputeNetworkPeering:NetworkPeering \
+  --resource ComputeNodeGroup:NodeGroup \
   --resource ComputeNodeTemplate:NodeTemplate \
   --resource ComputeReservation:Reservation \
-  --resource ComputeHealthCheck:HealthCheck \
-  --resource ComputeNodeGroup:NodeGroup \
-  --resource ComputeInstance:Instance \
+  --resource ComputeResourcePolicy:ResourcePolicy \
+  --resource ComputeSecurityPolicy:SecurityPolicy \
+  --resource ComputeSnapshot:Snapshot \
+  --resource ComputeSubnetwork:Subnetwork \
+  --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
+  --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --include-skipped-output
 
 go run . generate-mapper \

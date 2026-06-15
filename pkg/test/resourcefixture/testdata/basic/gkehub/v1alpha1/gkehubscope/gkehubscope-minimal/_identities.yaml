@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: gkehub.cnrm.cloud.google.com
+  kind: GKEHubScope
+  name: gkehubscope-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

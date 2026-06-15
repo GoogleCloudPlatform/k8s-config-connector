@@ -16,7 +16,7 @@ title: "TagsTagValue"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/resource-manager/docs/tags/tags-overview">/resource-manager/docs/tags/tags-overview</a></td>
+<td><a href="https://docs.cloud.google.com/resource-manager/docs/tags/tags-overview">https://docs.cloud.google.com/resource-manager/docs/tags/tags-overview</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "TagsTagValue"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/resource-manager/reference/rest/v3/tagValues">/resource-manager/reference/rest/v3/tagValues</a></td>
+<td><a href="https://docs.cloud.google.com/resource-manager/reference/rest/v3/tagValues">https://docs.cloud.google.com/resource-manager/reference/rest/v3/tagValues</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -337,4 +337,4 @@ spec:
   shortName: keynamedepproject
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

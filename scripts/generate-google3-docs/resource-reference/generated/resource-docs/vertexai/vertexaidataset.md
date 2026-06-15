@@ -16,7 +16,7 @@ title: "VertexAIDataset"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/vertex-ai/docs">/vertex-ai/docs</a></td>
+<td><a href="https://docs.cloud.google.com/vertex-ai/docs">https://docs.cloud.google.com/vertex-ai/docs</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "VertexAIDataset"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/vertex-ai/docs/reference/rest/v1beta1/projects.locations.datasets">/vertex-ai/docs/reference/rest/v1beta1/projects.locations.datasets</a></td>
+<td><a href="https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1beta1/projects.locations.datasets">https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1beta1/projects.locations.datasets</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -392,4 +392,4 @@ spec:
   resourceID: aiplatform.googleapis.com
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

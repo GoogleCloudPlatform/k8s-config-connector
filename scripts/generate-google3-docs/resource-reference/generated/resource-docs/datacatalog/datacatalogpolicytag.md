@@ -16,7 +16,7 @@ title: "DataCatalogPolicyTag"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/data-catalog/docs/">/data-catalog/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/data-catalog/docs/">https://docs.cloud.google.com/data-catalog/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "DataCatalogPolicyTag"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/data-catalog/docs/reference/rest/v1/projects.locations.taxonomies.policyTags">/data-catalog/docs/reference/rest/v1/projects.locations.taxonomies.policyTags</a></td>
+<td><a href="https://docs.cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.taxonomies.policyTags">https://docs.cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.taxonomies.policyTags</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -354,4 +354,4 @@ spec:
   region: us
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

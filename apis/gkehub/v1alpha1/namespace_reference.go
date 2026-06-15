@@ -42,7 +42,7 @@ type GKEHubNamespaceRef struct {
 }
 
 func init() {
-	refsv1beta1.Register(&GKEHubNamespaceRef{})
+	refsv1beta1.Register(&GKEHubNamespaceRef{}, &GKEHubNamespace{})
 }
 
 func (r *GKEHubNamespaceRef) GetGVK() schema.GroupVersionKind {

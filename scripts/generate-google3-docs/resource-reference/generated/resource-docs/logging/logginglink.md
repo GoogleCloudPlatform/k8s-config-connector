@@ -19,7 +19,7 @@ This resource is able to configure log links for a project. The parent resource 
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/logging/docs/">/logging/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/logging/docs/">https://docs.cloud.google.com/logging/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -30,7 +30,7 @@ This resource is able to configure log links for a project. The parent resource 
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/logging/docs/reference/v2/rest/v2/projects.locations.buckets.links">/logging/docs/reference/v2/rest/v2/projects.locations.buckets.links</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.locations.buckets.links">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.locations.buckets.links</a></pre>
 </td>
 </tr>
 <tr>
@@ -66,6 +66,7 @@ This resource is able to configure log links for a project. The parent resource 
 description: string
 loggingLogBucketRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -108,6 +109,16 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>A reference to an externally managed LoggingLogBucket resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>loggingLogBucketRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -277,4 +288,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

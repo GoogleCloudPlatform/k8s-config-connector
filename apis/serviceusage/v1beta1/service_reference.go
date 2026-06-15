@@ -41,7 +41,7 @@ type ServiceRef struct {
 }
 
 func init() {
-	refs.Register(&ServiceRef{})
+	refs.Register(&ServiceRef{}, &Service{})
 }
 
 func (r *ServiceRef) GetGVK() schema.GroupVersionKind {

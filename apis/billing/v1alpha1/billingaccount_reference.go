@@ -42,7 +42,7 @@ type BillingAccountRef struct {
 }
 
 func init() {
-	refs.Register(&BillingAccountRef{})
+	refs.Register(&BillingAccountRef{}, &BillingAccount{})
 }
 
 func (r *BillingAccountRef) GetGVK() schema.GroupVersionKind {

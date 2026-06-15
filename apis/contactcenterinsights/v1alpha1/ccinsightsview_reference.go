@@ -41,7 +41,7 @@ type CCInsightsViewRef struct {
 }
 
 func init() {
-	refs.Register(&CCInsightsViewRef{})
+	refs.Register(&CCInsightsViewRef{}, &CCInsightsView{})
 }
 
 func (r *CCInsightsViewRef) GetGVK() schema.GroupVersionKind {

@@ -1,0 +1,12 @@
+- caisURL: //servicedirectory.googleapis.com/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}
+  group: servicedirectory.cnrm.cloud.google.com
+  kind: ServiceDirectoryNamespace
+  name: servicedirectorynamespace-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMPartialPolicy
+  name: iampartialpolicy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

@@ -41,7 +41,7 @@ type FirestoreIndexRef struct {
 }
 
 func init() {
-	refs.Register(&FirestoreIndexRef{})
+	refs.Register(&FirestoreIndexRef{}, &FirestoreIndex{})
 }
 
 func (r *FirestoreIndexRef) GetGVK() schema.GroupVersionKind {

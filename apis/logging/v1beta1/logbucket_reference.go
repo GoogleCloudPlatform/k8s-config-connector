@@ -35,6 +35,10 @@ type LoggingLogBucketRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".
 	External string `json:"external,omitempty"`
 
+	// The kind of the LoggingLogBucket resource.
+	// +optional
+	Kind string `json:"kind,omitempty"`
+
 	// The name of a LoggingLogBucket resource.
 	Name string `json:"name,omitempty"`
 
@@ -43,7 +47,7 @@ type LoggingLogBucketRef struct {
 }
 
 func init() {
-	refs.Register(&LoggingLogBucketRef{})
+	refs.Register(&LoggingLogBucketRef{}, &LoggingLogBucket{})
 }
 
 func (r *LoggingLogBucketRef) GetGVK() schema.GroupVersionKind {

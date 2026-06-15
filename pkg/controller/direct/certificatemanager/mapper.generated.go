@@ -241,6 +241,62 @@ func CertificateManagerCertificateIssuanceConfigSpec_v1alpha1_ToProto(mapCtx *di
 	out.KeyAlgorithm = direct.Enum_ToProto[pb.CertificateIssuanceConfig_KeyAlgorithm](mapCtx, in.KeyAlgorithm)
 	return out
 }
+
+/* found existing non-generated mapping function "CertificateManagerCertificateMapEntrySpec_v1beta1_FromProto", skipping
+func CertificateManagerCertificateMapEntrySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CertificateMapEntry) *krm.CertificateManagerCertificateMapEntrySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateManagerCertificateMapEntrySpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	out.Hostname = direct.LazyPtr(in.GetHostname())
+	out.Matcher = direct.Enum_FromProto(mapCtx, in.GetMatcher())
+	// MISSING: Certificates
+	// MISSING: State
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "CertificateManagerCertificateMapEntrySpec_v1beta1_ToProto", skipping
+
+	func CertificateManagerCertificateMapEntrySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManagerCertificateMapEntrySpec) *pb.CertificateMapEntry {
+		if in == nil {
+			return nil
+		}
+		out := &pb.CertificateMapEntry{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		// MISSING: CreateTime
+		// MISSING: UpdateTime
+		// MISSING: Labels
+		if oneof := CertificateManagerCertificateMapEntrySpec_Hostname_ToProto(mapCtx, in.Hostname); oneof != nil {
+			out.Match = oneof
+		}
+		if oneof := CertificateManagerCertificateMapEntrySpec_Matcher_ToProto(mapCtx, in.Matcher); oneof != nil {
+			out.Match = oneof
+		}
+		// MISSING: Certificates
+		// MISSING: State
+		return out
+	}
+*/
+func CertificateManagerCertificateMapEntrySpec_Hostname_ToProto(mapCtx *direct.MapContext, in *string) *pb.CertificateMapEntry_Hostname {
+	if in == nil {
+		return nil
+	}
+	return &pb.CertificateMapEntry_Hostname{Hostname: *in}
+}
+func CertificateManagerCertificateMapEntrySpec_Matcher_ToProto(mapCtx *direct.MapContext, in *string) *pb.CertificateMapEntry_Matcher_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.CertificateMapEntry_Matcher_{Matcher: direct.Enum_ToProto[pb.CertificateMapEntry_Matcher](mapCtx, in)}
+}
 func CertificateManagerCertificateMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CertificateMap) *krm.CertificateManagerCertificateMapSpec {
 	if in == nil {
 		return nil

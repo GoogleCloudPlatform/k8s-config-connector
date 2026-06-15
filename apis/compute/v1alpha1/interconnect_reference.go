@@ -42,7 +42,7 @@ type ComputeInterconnectRef struct {
 }
 
 func init() {
-	refs.Register(&ComputeInterconnectRef{})
+	refs.Register(&ComputeInterconnectRef{}, &ComputeInterconnect{})
 }
 
 func (r *ComputeInterconnectRef) GetGVK() schema.GroupVersionKind {

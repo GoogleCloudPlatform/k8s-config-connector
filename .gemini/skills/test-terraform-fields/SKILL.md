@@ -79,6 +79,10 @@ For standard E2E fixture tests under `pkg/test/resourcefixture/testdata/basic/`,
      hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/dnsrecordset
      ```
 2. The script executes the tests with `E2E_GCP_TARGET=real`, `WRITE_GOLDEN_OUTPUT=1`, and records the traffic to `_http.log`.
+3. **If the script fails** (e.g. due to permissions or an invalid default project ID like `foobar`), DO NOT skip this step. Ask the user for a valid GCP project ID to test against, and then run:
+   ```bash
+   GCP_PROJECT_ID=<project-id> hack/record-gcp <test_name>
+   ```
 
 ### D. Running MockGCP Script Test Recordings
 For MockGCP-specific script tests (located under `mockgcp/mockgcptests/`), use the python recording task:
@@ -88,18 +92,23 @@ For MockGCP-specific script tests (located under `mockgcp/mockgcptests/`), use t
    ```
 2. This runs the mock tests targeting real GCP to refresh golden script logs.
 
-### E. Committing E2E Baseline
-Once the recording successfully completes, stage and commit the generated `_http.log` and `_generated_object_*.golden.yaml` files:
-```bash
-git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
-git commit -m "Establish clean GCP golden logs for <testname>"
-```
+### E. Committing E2E Baseline (MANDATORY BEFORE MOCK RUN)
+To prevent `_http.log` and golden files from introducing undue/mixed changes between real GCP and MockGCP runs, you **MUST** commit the real GCP baseline **after the real GCP run and before running against MockGCP**:
+
+1. Stage and commit the generated `_http.log` and `_generated_object_*.golden.yaml` files:
+   ```bash
+   git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
+   git commit -m "Establish clean GCP golden logs for <testname>"
+   ```
 
 ---
 
 ## 4. Running against MockGCP and Checking Diffs
 
 To verify the mock implementation matches real GCP behavior:
+
+> [!IMPORTANT]
+> **Prerequisite**: You must have committed the real GCP baseline (from Section 3.E) before starting this section. Running against MockGCP without committing the real GCP baseline first can mix up different modifications in the `_http.log` files and make diff analysis impossible.
 
 1. **Run Mock Test**:
    - Run `hack/compare-mock <testname>`. 
@@ -173,17 +182,19 @@ If the mock test fails or produces a diff against the baseline golden logs, appl
 Before finishing the task or proposing a PR, the agent must run formatting, generation, static analysis, and full CI validation checks locally to ensure zero CI/CD failures:
 
 1. **Prepare PR and Regenerate Code**:
-   - Run `make ready-pr` to ensure all manifests, Go client types, and code formatting are up to date:
+   - Run `make ready-pr` and `make resource-docs` to ensure all manifests, Go client types, documentation, and code formatting are up to date:
      ```bash
      make ready-pr
+     make resource-docs
      ```
 2. **Mandatory CI/CD Presubmit Verification (CRITICAL)**:
-   - To guarantee generated PRs pass GitHub Actions CI/CD checks cleanly, execute the primary validation scripts locally:
+   - To guarantee generated PRs pass GitHub Actions CI/CD checks cleanly, execute the resource docs generation and the primary validation scripts locally:
      ```bash
+     make resource-docs
      dev/ci/presubmits/validate-generated-files
      scripts/validate-prereqs.sh
      ```
-   - *(Note: `validate-generated-files` runs GitHub Actions workflow codegen, static config generation, CRDs, and mappers. `validate-prereqs.sh` validates formatting and generation).*
+   - *(Note: `validate-generated-files` runs GitHub Actions workflow codegen, static config generation, CRDs, mappers, and resource docs. `validate-prereqs.sh` validates formatting and generation).*
 3. **Go Vet**:
    ```bash
    go vet ./...
@@ -200,12 +211,20 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
        ```bash
        WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha
        ```
-6. **Run CI/CD Group Presubmit Tests Locally**:
+6. **Verify Acronym Casing Compliance**:
+   - KCC enforces strict naming rules for acronyms in field names (e.g. using `IP` instead of `Ip`, `VPC` instead of `Vpc`). If the generated fields use non-standard casing (e.g. they were generated directly from Terraform's snake_case schema which maps `allow_cross_org_vpcs` -> `allowCrossOrgVpcs`), the API checks test `TestCRDsAcronyms` will fail.
+   - Run this test locally before submitting:
+     ```bash
+     go test ./tests/apichecks/... -run TestCRDsAcronyms
+     ```
+   - If the test fails, you **MUST** add the reported non-standard casing exceptions in alphabetical order to the exceptions file:
+     `tests/apichecks/testdata/exceptions/acronyms.txt`
+7. **Run CI/CD Group Presubmit Tests Locally**:
    - Locate and run the presubmit script under `dev/ci/presubmits/tests-e2e-fixtures-<service_name>` matching the resource's service name (e.g., `dev/ci/presubmits/tests-e2e-fixtures-container`) to ensure everything reconciles cleanly:
      ```bash
      dev/ci/presubmits/tests-e2e-fixtures-<service_name>
      ```
-7. **Commit All Updated Artifacts and Generated Changes**:
+8. **Commit All Updated Artifacts and Generated Changes**:
    - Verify if any generated files (such as `mapper.generated.go`, GitHub Actions YAMLs, CRDs, Go clients, or exceptions) are modified using `git status` or `git diff`. Stage and commit them:
      ```bash
      git add -A

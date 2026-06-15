@@ -40,7 +40,7 @@ type DiscoveryEngineIdentityMappingStoreRef struct {
 }
 
 func init() {
-	refs.Register(&DiscoveryEngineIdentityMappingStoreRef{})
+	refs.Register(&DiscoveryEngineIdentityMappingStoreRef{}, &DiscoveryEngineIdentityMappingStore{})
 }
 
 func (r *DiscoveryEngineIdentityMappingStoreRef) GetGVK() schema.GroupVersionKind {

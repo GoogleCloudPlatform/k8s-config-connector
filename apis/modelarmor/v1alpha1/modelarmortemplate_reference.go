@@ -41,7 +41,7 @@ type ModelArmorTemplateRef struct {
 }
 
 func init() {
-	refs.Register(&ModelArmorTemplateRef{})
+	refs.Register(&ModelArmorTemplateRef{}, &ModelArmorTemplate{})
 }
 
 func (r *ModelArmorTemplateRef) GetGVK() schema.GroupVersionKind {

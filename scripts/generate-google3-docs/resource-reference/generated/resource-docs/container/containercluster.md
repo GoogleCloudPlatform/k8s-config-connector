@@ -3,7 +3,7 @@
 title: "ContainerCluster"
 ---
 Note: The ContainerCluster annotation can include
-<a href="/config-connector/docs/concepts/resources#object_metadata">directives</a>.
+<a href="https://docs.cloud.google.com/config-connector/docs/concepts/resources#object_metadata">directives</a>.
 If set to <code>true</code>, the <code>remove-default-node-pool</code> directive
 removes the default node pool created during cluster creation.
 
@@ -12,7 +12,7 @@ Note: In <code>maintenancePolicy</code>, specify <code>startTime</code> and
 in RFC5545 RRULE format. GKE may accept other formats, but will return values in UTC,
 causing a permanent diff. For more details on how to debug and fix an issue which
 could lead to a permanent diff, please refer to the
-<a href="/config-connector/docs/troubleshooting#resource_keeps_updating_every_5-15_mins">Config Connector Troubleshooting page</a>
+<a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting#resource_keeps_updating_every_5-15_mins">Config Connector Troubleshooting page</a>
 
 <table>
 <thead>
@@ -28,7 +28,7 @@ could lead to a permanent diff, please refer to the
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/kubernetes-engine/docs/">/kubernetes-engine/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/kubernetes-engine/docs/">https://docs.cloud.google.com/kubernetes-engine/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -36,7 +36,7 @@ could lead to a permanent diff, please refer to the
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters">/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters</a></td>
+<td><a href="https://docs.cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters">https://docs.cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -4412,4 +4412,4 @@ metadata:
   name: containercluster-dep-vpcnative
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

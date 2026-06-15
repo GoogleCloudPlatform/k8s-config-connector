@@ -30,7 +30,8 @@ go run . generate-types \
     --include-skipped-output \
     --resource CertificateManagerDNSAuthorization:DnsAuthorization \
     --resource CertificateManagerCertificate:Certificate \
-    --resource CertificateManagerCertificateMap:CertificateMap
+    --resource CertificateManagerCertificateMap:CertificateMap \
+    --resource CertificateManagerCertificateMapEntry:CertificateMapEntry
 
 go run . generate-mapper \
     --service google.cloud.certificatemanager.v1 \

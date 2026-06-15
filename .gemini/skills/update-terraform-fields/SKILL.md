@@ -98,6 +98,12 @@ KCC dynamically generates the CRD directly from the Terraform schema:
      make generate-go-client
      ```
    - Verify if any generated files under `pkg/clients/generated/` are modified using `git status` or `git diff`. If there are modifications, stage and commit them.
+4. **Regenerate Resource Reference Docs (CRITICAL)**:
+   - Run:
+     ```bash
+     make resource-docs
+     ```
+   - Verify if any documentation or generated files under `scripts/generate-google3-docs/resource-reference/generated/` are modified using `git status` or `git diff`. If there are modifications, stage and commit them.
 
 ### Case B: The resource HAS Go types in `apis/`
 If a `<kind>_types.go` file exists under `apis/<service>/<version>/`:
@@ -137,6 +143,12 @@ If a `<kind>_types.go` file exists under `apis/<service>/<version>/`:
      make generate-go-client
      ```
    - Verify if any generated files under `pkg/clients/generated/` are modified using `git status` or `git diff`. If there are modifications, stage and commit them.
+5. **Regenerate Resource Reference Docs (CRITICAL)**:
+   - Run:
+     ```bash
+     make resource-docs
+     ```
+   - Verify if any documentation or generated files under `scripts/generate-google3-docs/resource-reference/generated/` are modified using `git status` or `git diff`. If there are modifications, stage and commit them.
 
 ---
 
@@ -161,12 +173,13 @@ Once definitions are updated, the agent must verify correctness of the field usi
    - **Solution**: Enable Server-Side Apply for the resource by removing it from the exempted list in [ratcheting.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/tests/e2e/ratcheting.go). This ensures both creation and updates use SSA, and unreferenced fields under a `oneOf` choice are correctly cleaned up.
 
 4. **Local CI/CD Presubmit Verification (CRITICAL)**:
-   - To ensure that generated PRs do not fail CI/CD validation pipelines (`validate-generated-files` and `validations`), you **MUST** run the local presubmit verifications before submitting:
+   - To ensure that generated PRs do not fail CI/CD validation pipelines (`validate-generated-files` and `validations`), you **MUST** run the resource docs generation and the local presubmit verifications before submitting:
      ```bash
+     make resource-docs
      dev/ci/presubmits/validate-generated-files
      scripts/validate-prereqs.sh
      ```
-   - If these scripts generate any updates to auto-generated mappers, CRDs, static configs, or GitHub Actions workflows, verify with `git status` and stage and commit them:
+   - If these scripts or commands generate any updates to auto-generated mappers, CRDs, static configs, documentation, or GitHub Actions workflows, verify with `git status` and stage and commit them:
      ```bash
      git add -A
      git commit -m "chore: ensure clean generated state for CI/CD presubmits"

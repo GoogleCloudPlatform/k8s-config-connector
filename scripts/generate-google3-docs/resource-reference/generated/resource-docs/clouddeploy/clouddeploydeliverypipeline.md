@@ -16,7 +16,7 @@ title: "CloudDeployDeliveryPipeline"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/deploy/docs/">/deploy/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/deploy/docs/">https://docs.cloud.google.com/deploy/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "CloudDeployDeliveryPipeline"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/deploy/docs/api/reference/rest/v1/projects.locations.deliveryPipelines">/deploy/docs/api/reference/rest/v1/projects.locations.deliveryPipelines</a></td>
+<td><a href="https://docs.cloud.google.com/deploy/docs/api/reference/rest/v1/projects.locations.deliveryPipelines">https://docs.cloud.google.com/deploy/docs/api/reference/rest/v1/projects.locations.deliveryPipelines</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1164,4 +1164,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

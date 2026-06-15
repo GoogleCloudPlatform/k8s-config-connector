@@ -152,6 +152,7 @@ spec:
                   range of the subnet or network configured for this forwarding rule.
                 properties:
                   addressRef:
+                    description: ComputeAddressRef is a reference to a GCP ComputeAddress.
                     oneOf:
                     - not:
                         required:
@@ -168,14 +169,15 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}"
-                          when not managed by Config Connector.
+                        description: A reference to an externally managed ComputeAddress
+                          resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}"
+                          or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".
                         type: string
                       name:
-                        description: The `name` field of a `ComputeAddress` resource.
+                        description: The name of a ComputeAddress resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeAddress` resource.
+                        description: The namespace of a ComputeAddress resource.
                         type: string
                     type: object
                   ip:

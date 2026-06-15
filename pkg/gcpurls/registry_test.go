@@ -72,6 +72,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Add known exceptions here.
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
 		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":                         true,
+		"//notebooks.googleapis.com/projects/{}/locations/{}/environments/{}":                       true,
 		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}":                              true,
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}":             true,
 		"//storage.googleapis.com/projects/{}/buckets/{}":                                           true,
@@ -86,9 +87,11 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                   true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                     true,
 		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}":                           true,
+		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/ruleSets/{}":                    true,
 		"//batch.googleapis.com/projects/{}/locations/{}/resourceAllowances/{}":                     true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":        true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":  true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":       true,
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}":                    true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
 		"//iam.googleapis.com/policies/{}/denypolicies/{}":                                          true,
@@ -107,6 +110,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":                        true,
 		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}":                                true,
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}":                                      true,
+		"//monitoring.googleapis.com/projects/{}/metricDescriptors/{}":                              true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()

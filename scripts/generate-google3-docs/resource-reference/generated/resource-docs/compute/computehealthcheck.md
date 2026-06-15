@@ -16,7 +16,7 @@ title: "ComputeHealthCheck"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -28,8 +28,8 @@ title: "ComputeHealthCheck"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/compute/docs/reference/rest/v1/healthChecks">/compute/docs/reference/rest/v1/healthChecks</a></pre>
-<pre><a href="/compute/docs/reference/rest/v1/regionHealthChecks">/compute/docs/reference/rest/v1/regionHealthChecks</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/healthChecks">https://docs.cloud.google.com/compute/docs/reference/rest/v1/healthChecks</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/regionHealthChecks">https://docs.cloud.google.com/compute/docs/reference/rest/v1/regionHealthChecks</a></pre>
 </td>
 </tr>
 <tr>
@@ -793,4 +793,4 @@ spec:
   location: us-central1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

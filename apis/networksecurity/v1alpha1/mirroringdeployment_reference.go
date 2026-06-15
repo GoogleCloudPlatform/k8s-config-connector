@@ -40,7 +40,7 @@ type NetworkSecurityMirroringDeploymentRef struct {
 }
 
 func init() {
-	refs.Register(&NetworkSecurityMirroringDeploymentRef{})
+	refs.Register(&NetworkSecurityMirroringDeploymentRef{}, &NetworkSecurityMirroringDeployment{})
 }
 
 func (r *NetworkSecurityMirroringDeploymentRef) GetGVK() schema.GroupVersionKind {

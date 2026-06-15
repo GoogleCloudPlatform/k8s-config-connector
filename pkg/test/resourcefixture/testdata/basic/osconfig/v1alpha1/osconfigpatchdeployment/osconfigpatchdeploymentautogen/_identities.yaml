@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: osconfig.cnrm.cloud.google.com
+  kind: OSConfigPatchDeployment
+  name: osconfigpatchdeployment-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

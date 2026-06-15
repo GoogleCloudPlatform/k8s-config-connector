@@ -1,0 +1,6 @@
+- caisURL: //cloudbilling.googleapis.com/billingAccounts/billingaccount-${uniqueId}
+  group: billing.cnrm.cloud.google.com
+  kind: BillingAccount
+  name: billingaccount-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

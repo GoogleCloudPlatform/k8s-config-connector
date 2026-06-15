@@ -41,7 +41,7 @@ type InternalRangeRef struct {
 }
 
 func init() {
-	refs.Register(&InternalRangeRef{})
+	refs.Register(&InternalRangeRef{}, &NetworkConnectivityInternalRange{})
 }
 
 func (r *InternalRangeRef) GetGVK() schema.GroupVersionKind {

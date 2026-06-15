@@ -16,7 +16,7 @@ title: "NotebookInstance"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/access-context-manager/docs/">/access-context-manager/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/access-context-manager/docs/">https://docs.cloud.google.com/access-context-manager/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "NotebookInstance"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/access-context-manager/docs/reference/rest/v1/accessPolicies">/access-context-manager/docs/reference/rest/v1/accessPolicies</a></td>
+<td><a href="https://docs.cloud.google.com/access-context-manager/docs/reference/rest/v1/accessPolicies">https://docs.cloud.google.com/access-context-manager/docs/reference/rest/v1/accessPolicies</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -311,7 +311,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Input only. The KMS key used to encrypt the disks, only applicable if disk_encryption is CMEK. Learn more about [using your own encryption keys](/kms/docs/quickstart).</p>
+            <p>Input only. The KMS key used to encrypt the disks, only applicable if disk_encryption is CMEK. Learn more about [using your own encryption keys](https://docs.cloud.google.com/kms/docs/quickstart).</p>
         </td>
     </tr>
     <tr>
@@ -1346,4 +1346,4 @@ spec:
   location: us-central1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

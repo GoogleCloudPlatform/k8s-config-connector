@@ -41,7 +41,7 @@ type AccessContextManagerServicePerimeterRef struct {
 }
 
 func init() {
-	refs.Register(&AccessContextManagerServicePerimeterRef{})
+	refs.Register(&AccessContextManagerServicePerimeterRef{}, &AccessContextManagerServicePerimeter{})
 }
 
 func (r *AccessContextManagerServicePerimeterRef) GetGVK() schema.GroupVersionKind {

@@ -45,7 +45,7 @@ type MetadataFilterLabelMatch struct {
 
 type IpAddress struct {
 	// +optional
-	AddressRef *refsv1beta1.ComputeAddressRef `json:"addressRef,omitempty"`
+	AddressRef *ComputeAddressRef `json:"addressRef,omitempty"`
 
 	// +optional
 	Ip *string `json:"ip,omitempty"`

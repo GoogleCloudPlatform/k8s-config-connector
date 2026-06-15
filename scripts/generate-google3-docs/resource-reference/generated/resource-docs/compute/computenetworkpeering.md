@@ -16,7 +16,7 @@ title: "ComputeNetworkPeering"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ComputeNetworkPeering"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/v1/networks">/compute/docs/reference/rest/v1/networks</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/networks">https://docs.cloud.google.com/compute/docs/reference/rest/v1/networks</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -126,7 +126,7 @@ stackType: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -136,7 +136,7 @@ stackType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -146,7 +146,7 @@ stackType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -156,7 +156,7 @@ stackType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -166,7 +166,7 @@ stackType: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -176,7 +176,7 @@ stackType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -186,7 +186,7 @@ stackType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -196,7 +196,7 @@ stackType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -247,7 +247,7 @@ stateDetails: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeNetworkPeering's current state.</p>
         </td>
     </tr>
     <tr>
@@ -361,4 +361,4 @@ spec:
   autoCreateSubnetworks: false
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

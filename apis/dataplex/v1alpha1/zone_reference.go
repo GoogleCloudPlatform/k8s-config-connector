@@ -42,7 +42,7 @@ type ZoneRef struct {
 }
 
 func init() {
-	refs.Register(&ZoneRef{})
+	refs.Register(&ZoneRef{}, &DataplexZone{})
 }
 
 func (r *ZoneRef) GetGVK() schema.GroupVersionKind {

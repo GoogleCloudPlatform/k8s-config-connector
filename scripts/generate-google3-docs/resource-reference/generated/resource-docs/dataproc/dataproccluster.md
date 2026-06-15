@@ -16,7 +16,7 @@ title: "DataprocCluster"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/dataproc/docs/">/dataproc/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/dataproc/docs/">https://docs.cloud.google.com/dataproc/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "DataprocCluster"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/dataproc/docs/reference/rest/v1/projects.regions.clusters">/dataproc/docs/reference/rest/v1/projects.regions.clusters</a></td>
+<td><a href="https://docs.cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.clusters">https://docs.cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.clusters</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1124,7 +1124,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.</p>
+            <p>Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](https://docs.cloud.google.com/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.</p>
         </td>
     </tr>
     <tr>
@@ -1357,7 +1357,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.</p>
+            <p>Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](https://docs.cloud.google.com/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.</p>
         </td>
     </tr>
     <tr>
@@ -1895,7 +1895,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.</p>
+            <p>Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](https://docs.cloud.google.com/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.</p>
         </td>
     </tr>
     <tr>
@@ -2352,7 +2352,7 @@ Allowed value: The `selfLink` field of a `ContainerCluster` resource.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Optional. Whether the nodes are created as [Spot VM instances] (https://cloud.google.com/compute/docs/instances/spot). Spot VMs are the latest update to legacy preemptible VMs. Spot VMs do not have a maximum lifetime. Legacy and Spot preemptible nodes cannot be used in a node pool with the `CONTROLLER` [role](/dataproc/docs/reference/rest/v1/projects.regions.clusters#role) or in the DEFAULT node pool if the CONTROLLER role is not assigned (the DEFAULT node pool will assume the CONTROLLER role).</p>
+            <p>Immutable. Optional. Whether the nodes are created as [Spot VM instances] (https://cloud.google.com/compute/docs/instances/spot). Spot VMs are the latest update to legacy preemptible VMs. Spot VMs do not have a maximum lifetime. Legacy and Spot preemptible nodes cannot be used in a node pool with the `CONTROLLER` [role](https://docs.cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.clusters#role) or in the DEFAULT node pool if the CONTROLLER role is not assigned (the DEFAULT node pool will assume the CONTROLLER role).</p>
         </td>
     </tr>
     <tr>
@@ -3146,4 +3146,4 @@ spec:
   bucketPolicyOnly: true
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

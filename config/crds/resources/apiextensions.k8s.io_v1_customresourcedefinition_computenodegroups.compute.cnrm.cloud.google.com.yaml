@@ -132,14 +132,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `selfLink` field of a `ComputeNodeTemplate`
-                      resource.'
+                    description: A reference to an externally managed ComputeNodeTemplate
+                      resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/nodeTemplates/{{nodeTemplateID}}".
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a ComputeNodeTemplate resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a ComputeNodeTemplate resource.
                     type: string
                 type: object
               resourceID:

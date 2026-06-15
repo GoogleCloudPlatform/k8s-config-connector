@@ -18,7 +18,7 @@ Note: GKE Hub REST documentation is under construction.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/kubernetes-engine/fleet-management/docs/manage-features">/kubernetes-engine/fleet-management/docs/manage-features</a></td>
+<td><a href="https://docs.cloud.google.com/kubernetes-engine/fleet-management/docs/manage-features">https://docs.cloud.google.com/kubernetes-engine/fleet-management/docs/manage-features</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -610,4 +610,4 @@ spec:
     workloadPool: ${PROJECT_ID?}.svc.id.goog
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

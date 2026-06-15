@@ -10,10 +10,10 @@ Google Cloud resource's IAM policy. It
 replaces any existing IAM policy already attached.
 
 If you want finer-grained control over bindings, use
-<a href="/config-connector/docs/reference/resource-docs/iam/iampartialpolicy">IAMPartialPolicy</a>
-or <a href="/config-connector/docs/reference/resource-docs/iam/iampolicymember">IAMPolicyMember</a>.
+<a href="https://docs.cloud.google.com/config-connector/docs/reference/resource-docs/iam/iampartialpolicy">IAMPartialPolicy</a>
+or <a href="https://docs.cloud.google.com/config-connector/docs/reference/resource-docs/iam/iampolicymember">IAMPolicyMember</a>.
 If you want finer-grained control over audit configs, use
-<a href="/config-connector/docs/reference/resource-docs/iam/iamauditconfig">IAMAuditConfig</a>.
+<a href="https://docs.cloud.google.com/config-connector/docs/reference/resource-docs/iam/iamauditconfig">IAMAuditConfig</a>.
 
 Warning: Any existing bindings and audit configs are overwritten if not specified in the
 <code>IAMPolicy</code> resource. You can lock yourself out of your own
@@ -21,7 +21,7 @@ Google Cloud project by omitting the default bindings which grant
 you access. You can also cause some Google Cloud services to stop
 working properly by omitting the default bindings created for default service
 accounts (for example, <a
-href="/compute/docs/access/service-accounts#google-managed_service_accounts">default
+href="https://docs.cloud.google.com/compute/docs/access/service-accounts#google-managed_service_accounts">default
 {{gce_name_short}} service accounts</a>).
 
 Warning: When you delete an <code>IAMPolicy</code>, all the bindings and audit
@@ -48,7 +48,7 @@ Note: Updating <code>spec.resourceRef</code> is not allowed.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/iam/docs/">/iam/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/iam/docs/">https://docs.cloud.google.com/iam/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -56,7 +56,7 @@ Note: Updating <code>spec.resourceRef</code> is not allowed.
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/iam/docs/reference/rest/v1/iamPolicies">/iam/docs/reference/rest/v1/iamPolicies</a></td>
+<td><a href="https://docs.cloud.google.com/iam/docs/reference/rest/v1/iamPolicies">https://docs.cloud.google.com/iam/docs/reference/rest/v1/iamPolicies</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1088,4 +1088,4 @@ metadata:
     iam.gke.io/gcp-service-account: iampolicy-dep-workloadidentity@${PROJECT_ID?}.iam.gserviceaccount.com
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

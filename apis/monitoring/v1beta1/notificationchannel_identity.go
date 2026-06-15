@@ -32,6 +32,7 @@ var (
 
 var MonitoringNotificationChannelIdentityFormat = gcpurls.Template[MonitoringNotificationChannelIdentity]("monitoring.googleapis.com", "projects/{project}/notificationChannels/{notificationchannel}")
 
+// MonitoringNotificationChannelIdentity is the identity of a GCP MonitoringNotificationChannel resource.
 // +k8s:deepcopy-gen=false
 type MonitoringNotificationChannelIdentity struct {
 	Project             string
@@ -59,7 +60,7 @@ func (i *MonitoringNotificationChannelIdentity) Host() string {
 	return MonitoringNotificationChannelIdentityFormat.Host()
 }
 
-func getIdentityFromMonitoringNotificationChannelSpec(ctx context.Context, reader client.Reader, obj client.Object) (*MonitoringNotificationChannelIdentity, error) {
+func getIdentityFromMonitoringNotificationChannelSpec(ctx context.Context, reader client.Reader, obj *MonitoringNotificationChannel) (*MonitoringNotificationChannelIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")

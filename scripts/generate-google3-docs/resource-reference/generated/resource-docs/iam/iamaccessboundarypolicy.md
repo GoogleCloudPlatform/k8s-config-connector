@@ -18,7 +18,7 @@ Use of <code>IAMAccessBoundaryPolicy</code> is restricted and is covered by the 
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/iam/docs/">/iam/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/iam/docs/">https://docs.cloud.google.com/iam/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -380,4 +380,4 @@ spec:
           expression: "request.matchAccessLevels('${ORG_ID?}', ['${ACCESS_LEVEL?}'])"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

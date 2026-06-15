@@ -16,7 +16,7 @@ title: "ComputeRouterNAT"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ComputeRouterNAT"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/v1/routers">/compute/docs/reference/rest/v1/routers</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/routers">https://docs.cloud.google.com/compute/docs/reference/rest/v1/routers</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1014,4 +1014,4 @@ spec:
     name: computerouternat-dep-withrules
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

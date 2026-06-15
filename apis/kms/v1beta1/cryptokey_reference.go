@@ -47,7 +47,7 @@ type KMSCryptoKeyRef struct {
 }
 
 func init() {
-	refs.Register(&KMSCryptoKeyRef{})
+	refs.Register(&KMSCryptoKeyRef{}, &KMSCryptoKey{})
 }
 
 func (r *KMSCryptoKeyRef) GetGVK() schema.GroupVersionKind {

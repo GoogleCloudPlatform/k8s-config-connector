@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: cloudidentity.cnrm.cloud.google.com
+  kind: CloudIdentityGroup
+  name: cloudidentitygroup-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: cloudidentity.cnrm.cloud.google.com
+  kind: CloudIdentityMembership
+  name: cloudidentitymembership-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

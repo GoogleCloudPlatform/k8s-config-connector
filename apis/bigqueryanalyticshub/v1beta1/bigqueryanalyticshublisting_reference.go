@@ -41,7 +41,7 @@ type BigQueryAnalyticsHubListingRef struct {
 }
 
 func init() {
-	refs.Register(&BigQueryAnalyticsHubListingRef{})
+	refs.Register(&BigQueryAnalyticsHubListingRef{}, &BigQueryAnalyticsHubListing{})
 }
 
 func (r *BigQueryAnalyticsHubListingRef) GetGVK() schema.GroupVersionKind {

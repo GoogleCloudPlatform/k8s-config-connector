@@ -16,7 +16,7 @@ title: "NetworkConnectivityHub"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/network-connectivity/docs/">/network-connectivity/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/network-connectivity/docs/">https://docs.cloud.google.com/network-connectivity/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "NetworkConnectivityHub"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.global.hubs">/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.global.hubs</a></td>
+<td><a href="https://docs.cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.global.hubs">https://docs.cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.global.hubs</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -286,4 +286,4 @@ spec:
   description: "A sample hub"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

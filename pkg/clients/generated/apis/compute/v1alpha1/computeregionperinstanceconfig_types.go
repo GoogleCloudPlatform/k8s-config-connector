@@ -39,11 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type RegionperinstanceconfigDisk struct {
-	/* A value that prescribes what should happen to the stateful disk when the VM instance is deleted.
-	The available options are 'NEVER' and 'ON_PERMANENT_INSTANCE_DELETION'.
-	'NEVER' - detach the disk when the VM is deleted, but do not delete the disk.
-	'ON_PERMANENT_INSTANCE_DELETION' will delete the stateful disk when the VM is permanently
-	deleted from the instance group. Default value: "NEVER" Possible values: ["NEVER", "ON_PERMANENT_INSTANCE_DELETION"]. */
+	/* A value that prescribes what should happen to the stateful disk when the VM instance is deleted. The available options are 'NEVER' and 'ON_PERMANENT_INSTANCE_DELETION'. 'NEVER' - detach the disk when the VM is deleted, but do not delete the disk. 'ON_PERMANENT_INSTANCE_DELETION' will delete the stateful disk when the VM is permanently deleted from the instance group. Default value: "NEVER" Possible values: ["NEVER", "ON_PERMANENT_INSTANCE_DELETION"]. */
 	// +optional
 	DeleteRule *string `json:"deleteRule,omitempty"`
 
@@ -54,8 +50,7 @@ type RegionperinstanceconfigDisk struct {
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
-	/* The URI of an existing persistent disk to attach under the specified device-name in the format
-	'projects/project-id/zones/zone/disks/disk-name'. */
+	/* The URI of an existing persistent disk to attach under the specified device-name in the format 'projects/project-id/zones/zone/disks/disk-name'. */
 	Source string `json:"source"`
 }
 
@@ -108,21 +103,11 @@ type RegionperinstanceconfigPreservedState struct {
 }
 
 type ComputeRegionPerInstanceConfigSpec struct {
-	/* The minimal action to perform on the instance during an update.
-	Default is 'NONE'. Possible values are:
-	* REPLACE
-	* RESTART
-	* REFRESH
-	* NONE. */
+	/* The minimal action to perform on the instance during an update. Default is 'NONE'. Possible values are: * REPLACE * RESTART * REFRESH * NONE. */
 	// +optional
 	MinimalAction *string `json:"minimalAction,omitempty"`
 
-	/* The most disruptive action to perform on the instance during an update.
-	Default is 'REPLACE'. Possible values are:
-	* REPLACE
-	* RESTART
-	* REFRESH
-	* NONE. */
+	/* The most disruptive action to perform on the instance during an update. Default is 'REPLACE'. Possible values are: * REPLACE * RESTART * REFRESH * NONE. */
 	// +optional
 	MostDisruptiveAllowedAction *string `json:"mostDisruptiveAllowedAction,omitempty"`
 
@@ -138,9 +123,7 @@ type ComputeRegionPerInstanceConfigSpec struct {
 
 	RegionInstanceGroupManagerRef v1alpha1.ResourceRef `json:"regionInstanceGroupManagerRef"`
 
-	/* When true, deleting this config will immediately remove any specified state from the underlying instance.
-	When false, deleting this config will *not* immediately remove any state from the underlying instance.
-	State will be removed on the next instance recreation or update. */
+	/* When true, deleting this config will immediately remove any specified state from the underlying instance. When false, deleting this config will *not* immediately remove any state from the underlying instance. State will be removed on the next instance recreation or update. */
 	// +optional
 	RemoveInstanceStateOnDestroy *bool `json:"removeInstanceStateOnDestroy,omitempty"`
 

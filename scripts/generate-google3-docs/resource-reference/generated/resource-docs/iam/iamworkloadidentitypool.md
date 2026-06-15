@@ -16,7 +16,7 @@ title: "IAMWorkloadIdentityPool"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/iam/docs/">/iam/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/iam/docs/">https://docs.cloud.google.com/iam/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "IAMWorkloadIdentityPool"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/iam/docs/reference/rest/v1/projects.locations.workloadIdentityPools">/iam/docs/reference/rest/v1/projects.locations.workloadIdentityPools</a></td>
+<td><a href="https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.locations.workloadIdentityPools">https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.locations.workloadIdentityPools</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -273,4 +273,4 @@ spec:
     external: "projects/${PROJECT_ID?}"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -41,7 +41,7 @@ type OSConfigOSPolicyAssignmentRef struct {
 }
 
 func init() {
-	refs.Register(&OSConfigOSPolicyAssignmentRef{})
+	refs.Register(&OSConfigOSPolicyAssignmentRef{}, &OSConfigOSPolicyAssignment{})
 }
 
 func (r *OSConfigOSPolicyAssignmentRef) GetGVK() schema.GroupVersionKind {

@@ -16,7 +16,7 @@ title: "PrivateCACertificate"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/certificate-authority-service/docs/">/certificate-authority-service/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/certificate-authority-service/docs/">https://docs.cloud.google.com/certificate-authority-service/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "PrivateCACertificate"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools.certificates">/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools.certificates</a></td>
+<td><a href="https://docs.cloud.google.com/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools.certificates">https://docs.cloud.google.com/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools.certificates</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -2215,4 +2215,4 @@ spec:
     external: projects/${PROJECT_ID?}
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
