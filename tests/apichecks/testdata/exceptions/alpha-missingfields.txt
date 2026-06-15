@@ -2794,6 +2794,34 @@
 [missing_field] crd=notebooksexecutions.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=notebooksexecutions.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputNotebookFile" is not set in unstructured objects
 [missing_field] crd=notebooksexecutions.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.adminPassword" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.cidr" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.database" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.backupRetentionPeriodDays" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.characterSet" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.computeCount" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.cpuCoreCount" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.customerContacts[].email" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.dataStorageSizeGB" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.dataStorageSizeTb" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.dbEdition" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.dbVersion" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.dbWorkload" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.isAutoScalingEnabled" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.isStorageAutoScalingEnabled" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.licenseType" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.maintenanceScheduleType" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.mtlsConnectionRequired" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.nCharacterSet" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.privateEndpointIP" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.privateEndpointLabel" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.secretID" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.vaultID" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.duration" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceFilter.all" is not set in unstructured objects

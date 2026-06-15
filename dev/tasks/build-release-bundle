@@ -229,7 +229,6 @@ BLOCKED_KINDS=(
     "EventarcChannelConnection"
     "AppOptimizeReport"
     "BigQueryDataTransferTransferConfig"
-    "BigQueryMigrationMigrationWorkflow"
     "BigQueryReservationReservationGroup"
     "BlockchainNodeEngineBlockchainNode"
     "CESApp"
