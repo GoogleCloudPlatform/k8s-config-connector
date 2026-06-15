@@ -743,6 +743,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - licensemanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - logging.cnrm.cloud.google.com
   resources:
   - '*'
