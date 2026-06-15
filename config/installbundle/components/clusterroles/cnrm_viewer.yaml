@@ -1063,6 +1063,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - transcoder.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - vertexai.cnrm.cloud.google.com
   resources:
   - '*'
