@@ -196,6 +196,7 @@ import (
 	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sql/v1beta1"
 	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1alpha1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
+	storageinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storageinsights/v1alpha1"
 	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1alpha1"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1beta1"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
@@ -393,6 +394,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	sqlv1beta1.AddToScheme,
 	storagev1alpha1.AddToScheme,
 	storagev1beta1.AddToScheme,
+	storageinsightsv1alpha1.AddToScheme,
 	storagetransferv1alpha1.AddToScheme,
 	storagetransferv1beta1.AddToScheme,
 	tagsv1beta1.AddToScheme,
