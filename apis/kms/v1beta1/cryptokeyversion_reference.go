@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,11 +19,21 @@ import (
 	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var _ refsv1beta1.ExternalNormalizer = &KMSCryptoKeyVersionRef{}
-var KMSCryptoKeyVersionGVK = GroupVersion.WithKind("KMSCryptoKeyVersion")
+
+var KMSCryptoKeyVersionGVK = schema.GroupVersionKind{
+	Group:   "kms.cnrm.cloud.google.com",
+	Version: "v1alpha1",
+	Kind:    "KMSCryptoKeyVersion",
+}
 
 // KMSCryptoKeyVersionRef is a reference to a KMSCryptoKeyVersion.
 type KMSCryptoKeyVersionRef struct {
@@ -31,30 +41,53 @@ type KMSCryptoKeyVersionRef struct {
 	// Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}/cryptoKeyVersions/{{version}}`.
 	External string `json:"external,omitempty"`
 
-	// The `name` of a `KMSCryptoKey` resource.
-	//Name string `json:"name,omitempty"`
-	// The `namespace` of a `KMSCryptoKey` resource.
-	//Namespace string `json:"namespace,omitempty"`
+	// The name of a KMSCryptoKeyVersion resource.
+	Name string `json:"name,omitempty"`
+
+	// The namespace of a KMSCryptoKeyVersion resource.
+	Namespace string `json:"namespace,omitempty"`
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on KMSCryptoKeyVersionRef.
 // If the "External" is given in the other resource's spec.KMSCryptoKeyVersionRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual KMSCryptoKeyVersionRef object from the cluster.
 func (r *KMSCryptoKeyVersionRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	// todo: Currently cannot reference to KMSCryptoKeyVersion name. Implemented once the KMSCryptoKeyVersion resource is supported by KCC
-	//if r.External != "" && r.Name != "" {
-	//	return "", fmt.Errorf("cannot specify both name and external on %s reference", KMSCryptoKeyVersionGVK.Kind)
-	//}
+	if r.External != "" && r.Name != "" {
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", KMSCryptoKeyVersionGVK.Kind)
+	}
 
 	// From given External
-	// External should be in the `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}/cryptoKeyVersions/{{version}}` format
 	if r.External != "" {
-		//if _, err := ParseKMSCryptoKeyVersionExternal(r.External); err != nil {
-		//	return "", err
-		//}
 		return r.External, nil
 	}
 
 	// From the Config Connector object
-	return "", fmt.Errorf("no External specified")
+	if r.Name == "" {
+		return "", fmt.Errorf("either external or name must be specified on %s reference", KMSCryptoKeyVersionGVK.Kind)
+	}
+
+	if r.Namespace == "" {
+		r.Namespace = otherNamespace
+	}
+
+	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(KMSCryptoKeyVersionGVK)
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return "", fmt.Errorf("reading referenced %s %s: %w", KMSCryptoKeyVersionGVK.Kind, key, err)
+	}
+
+	// Get external from status.name. This is the most trustworthy place.
+	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "name")
+	if err != nil {
+		return "", fmt.Errorf("reading status.name: %w", err)
+	}
+	if actualExternalRef != "" {
+		return actualExternalRef, nil
+	}
+
+	return "", fmt.Errorf("referenced %s %s does not have status.name", KMSCryptoKeyVersionGVK.Kind, key)
 }
