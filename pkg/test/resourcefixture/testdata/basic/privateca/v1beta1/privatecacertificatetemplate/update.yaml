@@ -19,6 +19,7 @@ metadata:
     label-one: "value-one"
   name: privatecacertificatetemplate-${uniqueId}
 spec:
+  resourceID: privatecacertificatetemplate-${uniqueId}
   location: "us-central1"
   predefinedValues:
     keyUsage:

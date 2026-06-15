@@ -19,6 +19,7 @@ metadata:
   labels:
     value: key
 spec:
+  resourceID: privatecacertificate-${uniqueId}
   location: "us-central1"
   certificateAuthorityRef:
     name: privatecacertificateauthority-${uniqueId}
