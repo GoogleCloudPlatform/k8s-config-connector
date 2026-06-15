@@ -241,6 +241,8 @@ import (
 	fakefilestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1alpha1/fake"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1beta1"
 	fakefilestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1beta1/fake"
+	financialservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/financialservices/v1alpha1"
+	fakefinancialservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/financialservices/v1alpha1/fake"
 	firebasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebase/v1alpha1"
 	fakefirebasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebase/v1alpha1/fake"
 	firebasedatabasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasedatabase/v1alpha1"
@@ -1035,6 +1037,11 @@ func (c *Clientset) FilestoreV1alpha1() filestorev1alpha1.FilestoreV1alpha1Inter
 // FilestoreV1beta1 retrieves the FilestoreV1beta1Client
 func (c *Clientset) FilestoreV1beta1() filestorev1beta1.FilestoreV1beta1Interface {
 	return &fakefilestorev1beta1.FakeFilestoreV1beta1{Fake: &c.Fake}
+}
+
+// FinancialservicesV1alpha1 retrieves the FinancialservicesV1alpha1Client
+func (c *Clientset) FinancialservicesV1alpha1() financialservicesv1alpha1.FinancialservicesV1alpha1Interface {
+	return &fakefinancialservicesv1alpha1.FakeFinancialservicesV1alpha1{Fake: &c.Fake}
 }
 
 // FirebaseV1alpha1 retrieves the FirebaseV1alpha1Client

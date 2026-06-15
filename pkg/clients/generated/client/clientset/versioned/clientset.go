@@ -134,6 +134,7 @@ import (
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1"
 	filestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1alpha1"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1beta1"
+	financialservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/financialservices/v1alpha1"
 	firebasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebase/v1alpha1"
 	firebasedatabasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasedatabase/v1alpha1"
 	firebasehostingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasehosting/v1alpha1"
@@ -339,6 +340,7 @@ type Interface interface {
 	EventarcV1beta1() eventarcv1beta1.EventarcV1beta1Interface
 	FilestoreV1alpha1() filestorev1alpha1.FilestoreV1alpha1Interface
 	FilestoreV1beta1() filestorev1beta1.FilestoreV1beta1Interface
+	FinancialservicesV1alpha1() financialservicesv1alpha1.FinancialservicesV1alpha1Interface
 	FirebaseV1alpha1() firebasev1alpha1.FirebaseV1alpha1Interface
 	FirebasedatabaseV1alpha1() firebasedatabasev1alpha1.FirebasedatabaseV1alpha1Interface
 	FirebasehostingV1alpha1() firebasehostingv1alpha1.FirebasehostingV1alpha1Interface
@@ -542,6 +544,7 @@ type Clientset struct {
 	eventarcV1beta1                 *eventarcv1beta1.EventarcV1beta1Client
 	filestoreV1alpha1               *filestorev1alpha1.FilestoreV1alpha1Client
 	filestoreV1beta1                *filestorev1beta1.FilestoreV1beta1Client
+	financialservicesV1alpha1       *financialservicesv1alpha1.FinancialservicesV1alpha1Client
 	firebaseV1alpha1                *firebasev1alpha1.FirebaseV1alpha1Client
 	firebasedatabaseV1alpha1        *firebasedatabasev1alpha1.FirebasedatabaseV1alpha1Client
 	firebasehostingV1alpha1         *firebasehostingv1alpha1.FirebasehostingV1alpha1Client
@@ -1176,6 +1179,11 @@ func (c *Clientset) FilestoreV1alpha1() filestorev1alpha1.FilestoreV1alpha1Inter
 // FilestoreV1beta1 retrieves the FilestoreV1beta1Client
 func (c *Clientset) FilestoreV1beta1() filestorev1beta1.FilestoreV1beta1Interface {
 	return c.filestoreV1beta1
+}
+
+// FinancialservicesV1alpha1 retrieves the FinancialservicesV1alpha1Client
+func (c *Clientset) FinancialservicesV1alpha1() financialservicesv1alpha1.FinancialservicesV1alpha1Interface {
+	return c.financialservicesV1alpha1
 }
 
 // FirebaseV1alpha1 retrieves the FirebaseV1alpha1Client
@@ -2103,6 +2111,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.financialservicesV1alpha1, err = financialservicesv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.firebaseV1alpha1, err = firebasev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2589,6 +2601,7 @@ func New(c rest.Interface) *Clientset {
 	cs.eventarcV1beta1 = eventarcv1beta1.New(c)
 	cs.filestoreV1alpha1 = filestorev1alpha1.New(c)
 	cs.filestoreV1beta1 = filestorev1beta1.New(c)
+	cs.financialservicesV1alpha1 = financialservicesv1alpha1.New(c)
 	cs.firebaseV1alpha1 = firebasev1alpha1.New(c)
 	cs.firebasedatabaseV1alpha1 = firebasedatabasev1alpha1.New(c)
 	cs.firebasehostingV1alpha1 = firebasehostingv1alpha1.New(c)
