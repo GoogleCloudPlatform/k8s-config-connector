@@ -27,7 +27,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.iam.v2 \
   --api-version iam.cnrm.cloud.google.com/v1alpha1 \
-  --resource IAMDenyPolicy:Policy
+  --resource IAMDenyPolicy:Policy \
+  --resource IamAccessPolicy:google.iam.v3beta.AccessPolicy
 
 go run . generate-mapper \
   --service google.iam.v2 \
