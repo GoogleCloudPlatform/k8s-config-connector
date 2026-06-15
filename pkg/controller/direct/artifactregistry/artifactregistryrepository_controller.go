@@ -105,8 +105,28 @@ func (m *modelArtifactRegistryRepository) AdapterForObject(ctx context.Context, 
 }
 
 func (m *modelArtifactRegistryRepository) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	// The url format should match the Cloud-Asset-Inventory format: https://cloud.google.com/asset-inventory/docs/resource-name-format
+	if !strings.HasPrefix(url, "//artifactregistry.googleapis.com/") {
+		return nil, nil
+	}
+
+	url = strings.TrimPrefix(url, "//artifactregistry.googleapis.com/")
+
+	id := &krm.ArtifactRegistryRepositoryIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ArtifactRegistryRepositoryAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type ArtifactRegistryRepositoryAdapter struct {

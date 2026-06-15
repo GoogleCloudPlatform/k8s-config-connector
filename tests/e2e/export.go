@@ -22,6 +22,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -55,6 +56,15 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	// This list should match https://cloud.google.com/asset-inventory/docs/resource-name-format
 	gvk := obj.GroupVersionKind()
 	switch gvk.GroupKind() {
+	case schema.GroupKind{Group: "artifactregistry.cnrm.cloud.google.com", Kind: "ArtifactRegistryRepository"}:
+		caisScheme := cais.NewScheme()
+		caisResults, err := cais.GetCAISIdentities(h.Ctx, caisScheme, h.GetClient(), []*unstructured.Unstructured{obj})
+		if err == nil && len(caisResults) > 0 && caisResults[0].CAISURL != "unknown" {
+			exportURI = caisResults[0].CAISURL
+		} else {
+			h.T.Errorf("failed to get CAIS identity for ArtifactRegistryRepository: %v", err)
+		}
+
 	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
 		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
 

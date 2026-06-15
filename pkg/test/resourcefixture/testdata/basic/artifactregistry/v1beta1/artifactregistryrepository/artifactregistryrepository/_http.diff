@@ -98,66 +98,154 @@
 <   "cleanupPolicies": {},
 296a260
 >   "format": 1,
-301a266,267
->   "mode": 2,
->   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
-326c292
+302,332c266
+<   "virtualRepositoryConfig": {
+<     "upstreamPolicies": [
+<       {
+<         "id": "upstream-repo",
+<         "priority": 1,
+<         "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
+<       }
+<     ]
+<   }
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "description": "test repository description 2",
 <   "format": "DOCKER",
----
->   "format": 1,
-332c298
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
 <   "mode": "VIRTUAL_REPOSITORY",
 ---
 >   "mode": 2,
-346c312
+334,335d267
+<   "satisfiesPzi": true,
+<   "updateTime": "2024-04-01T12:34:56.123456Z",
+344,348d275
+<   },
+<   "vulnerabilityScanningConfig": {
 <     "enablementState": "SCANNING_UNSUPPORTED",
----
->     "enablementState": 1,
-354c320
+<     "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
+<     "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+352,356d278
+< ---
+< 
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
----
-> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-370c336
+< Content-Type: application/json
+< 
+370c292
 <   "format": "DOCKER",
 ---
 >   "format": 1,
-376c342
+376c298
 <   "mode": "VIRTUAL_REPOSITORY",
 ---
 >   "mode": 2,
-391c357
+378d299
+<   "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
+391c312
 <     "enablementState": "SCANNING_UNSUPPORTED",
 ---
 >     "enablementState": 1,
-399c365
-< DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
----
-> DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-421c387
-< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
----
-> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
-447c413
+444c365
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
 ---
 > GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
-462c428
+459c380
 <   "format": "DOCKER",
 ---
 >   "format": 1,
-468c434
+465c386
 <   "mode": "STANDARD_REPOSITORY",
 ---
 >   "mode": 1,
-474c440
+471c392
 <     "enablementState": "SCANNING_DISABLED",
 ---
 >     "enablementState": 2,
-482c448
+479,501c400
 < DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "metadata": {
+<     "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+<   },
+<   "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+< }
+< 
+< ---
+< 
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+517c416
+<   "format": "DOCKER",
+---
+>   "format": 1,
+523c422
+<   "mode": "VIRTUAL_REPOSITORY",
+---
+>   "mode": 2,
+538c437
+<     "enablementState": "SCANNING_UNSUPPORTED",
+---
+>     "enablementState": 1,
+546c445,467
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 ---
 > DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
-504c470
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "metadata": {
+>     "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+>   },
+>   "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+> }
+> 
+> ---
+> 
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+572c493
+< DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+594c515
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 ---
 > GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}

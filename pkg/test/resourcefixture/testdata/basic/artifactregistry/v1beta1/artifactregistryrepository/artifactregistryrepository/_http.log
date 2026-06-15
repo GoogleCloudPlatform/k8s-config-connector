@@ -362,7 +362,87 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "mode": 1,
+  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}-2",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": 2,
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test repository description 2",
+  "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "mode": 2,
+  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "virtualRepositoryConfig": {
+    "upstreamPolicies": [
+      {
+        "id": "upstream-repo",
+        "priority": 1,
+        "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
+      }
+    ]
+  },
+  "vulnerabilityScanningConfig": {
+    "enablementState": 1,
+    "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
 200 OK
@@ -410,42 +490,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "format": 1,
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-two",
-    "managed-by-cnrm": "true"
-  },
-  "mode": 1,
-  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
-  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}-2",
-  "satisfiesPzi": true,
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "vulnerabilityScanningConfig": {
-    "enablementState": 2,
-    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
-    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
-DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
 200 OK
