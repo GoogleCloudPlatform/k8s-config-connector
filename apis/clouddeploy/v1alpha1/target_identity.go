@@ -28,8 +28,7 @@ import (
 
 var _ identity.Identity = &CloudDeployTargetIdentity{}
 
-// CloudDeployTargetIdentity defines the resource reference to CloudDeployTarget, which "External" field
-// holds the GCP identifier for the KRM object.
+// CloudDeployTargetIdentity is the identity of a CloudDeployTarget.
 type CloudDeployTargetIdentity struct {
 	parent *parent.ProjectAndLocationParent
 	id     string

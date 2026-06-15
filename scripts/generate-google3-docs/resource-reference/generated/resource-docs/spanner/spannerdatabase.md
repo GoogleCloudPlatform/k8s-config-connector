@@ -16,7 +16,7 @@ title: "SpannerDatabase"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/spanner/docs/">/spanner/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/spanner/docs/">https://docs.cloud.google.com/spanner/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "SpannerDatabase"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/spanner/docs/reference/rest/v1/projects.instances.databases">/spanner/docs/reference/rest/v1/projects.instances.databases</a></td>
+<td><a href="https://docs.cloud.google.com/spanner/docs/reference/rest/v1/projects.instances.databases">https://docs.cloud.google.com/spanner/docs/reference/rest/v1/projects.instances.databases</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -387,4 +387,4 @@ spec:
   displayName: Spanner Database Dependency
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -16,7 +16,7 @@ title: "NetworkServicesMesh"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/traffic-director/docs/">/traffic-director/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/traffic-director/docs/">https://docs.cloud.google.com/traffic-director/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "NetworkServicesMesh"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/traffic-director/docs/reference/network-services/rest/v1/projects.locations.meshes">/traffic-director/docs/reference/network-services/rest/v1/projects.locations.meshes</a></td>
+<td><a href="https://docs.cloud.google.com/traffic-director/docs/reference/network-services/rest/v1/projects.locations.meshes">https://docs.cloud.google.com/traffic-director/docs/reference/network-services/rest/v1/projects.locations.meshes</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -279,4 +279,4 @@ spec:
     external: "projects/${PROJECT_ID?}"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

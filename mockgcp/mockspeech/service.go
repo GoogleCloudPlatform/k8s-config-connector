@@ -20,14 +20,15 @@ package mockspeech
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/speech/apiv2/speechpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/speech/v2"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -66,19 +67,13 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterSpeechHandler,
-		s.operations.RegisterOperationsPath("/v2/{prefix=**}/operations/{name}"),
-	)
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building speechmux: %w", err)
 	}
 
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	mux.AddService(pb.NewSpeechClient(conn))
+	mux.AddOperationsPath("/v2/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
 }

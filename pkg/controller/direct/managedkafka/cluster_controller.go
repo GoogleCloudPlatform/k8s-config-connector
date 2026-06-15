@@ -286,11 +286,9 @@ func (a *ClusterAdapter) normalizeReference(ctx context.Context) error {
 		for i := range obj.Spec.GcpConfig.AccessConfig.NetworkConfigs {
 			networkConfig := &obj.Spec.GcpConfig.AccessConfig.NetworkConfigs[i]
 			if networkConfig.SubnetRef != nil {
-				subnet, err := refs.ResolveComputeSubnetwork(ctx, a.reader, obj, networkConfig.SubnetRef)
-				if err != nil {
+				if err := networkConfig.SubnetRef.Normalize(ctx, a.reader, obj.Namespace); err != nil {
 					return err
 				}
-				networkConfig.SubnetRef = subnet
 			}
 		}
 	}

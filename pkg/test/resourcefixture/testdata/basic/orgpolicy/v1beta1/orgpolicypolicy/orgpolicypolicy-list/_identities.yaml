@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: orgpolicy.cnrm.cloud.google.com
+  kind: OrgPolicyPolicy
+  name: orgpolicypolicy-list${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

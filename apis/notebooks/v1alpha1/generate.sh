@@ -27,7 +27,8 @@ go run . generate-types \
   --service google.cloud.notebooks.v1 \
   --api-version notebooks.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource NotebooksEnvironment:Environment
+  --resource NotebooksEnvironment:Environment \
+  --resource NotebooksExecution:Execution
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

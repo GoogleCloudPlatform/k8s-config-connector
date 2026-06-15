@@ -25,9 +25,9 @@ When you are ready to send your changes as a Pull Request, use the provided `sen
    ```
 
 2. **Run the `send-pr.sh` Script**:
-   Execute the script by providing the PR title and the path to the body file you just created.
+   Execute the script by providing the PR title, the path to the body file you just created, and optionally a comma-separated list of labels.
    ```bash
-   ./.gemini/skills/send-pr/scripts/send-pr.sh --title "Brief PR Title" --body /root/.gemini/tmp/k8s-config-connector/pr-body.txt
+   ./.gemini/skills/send-pr/scripts/send-pr.sh --title "Brief PR Title" --body /root/.gemini/tmp/k8s-config-connector/pr-body.txt --labels "overseer,area/direct"
    ```
 
 3. **What the Script Does**:

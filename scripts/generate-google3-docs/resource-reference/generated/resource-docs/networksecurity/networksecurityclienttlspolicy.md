@@ -16,7 +16,7 @@ title: "NetworkSecurityClientTLSPolicy"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/traffic-director/docs/">/traffic-director/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/traffic-director/docs/">https://docs.cloud.google.com/traffic-director/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "NetworkSecurityClientTLSPolicy"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/traffic-director/docs/reference/network-security/rest/v1beta1/projects.locations.clientTlsPolicies">/traffic-director/docs/reference/network-security/rest/v1beta1/projects.locations.clientTlsPolicies</a></td>
+<td><a href="https://docs.cloud.google.com/traffic-director/docs/reference/network-security/rest/v1beta1/projects.locations.clientTlsPolicies">https://docs.cloud.google.com/traffic-director/docs/reference/network-security/rest/v1beta1/projects.locations.clientTlsPolicies</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -87,6 +87,7 @@ description: string
 location: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -122,7 +123,7 @@ sni: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The certificate provider instance specification that will be passed to the data plane, which will be used to load necessary credential information.</p>
+            <p>Optional. The certificate provider instance specification that will be passed to the data plane, which will be used to load necessary credential information.</p>
         </td>
     </tr>
     <tr>
@@ -142,7 +143,7 @@ sni: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>gRPC specific configuration to access the gRPC server to obtain the cert and private key.</p>
+            <p>Optional. gRPC specific configuration to access the gRPC server to obtain the cert and private key.</p>
         </td>
     </tr>
     <tr>
@@ -152,7 +153,7 @@ sni: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The target URI of the gRPC endpoint. Only UDS path is supported, and should start with “unix:”.</p>
+            <p>Required. The target URI of the gRPC endpoint. Only UDS path is supported, and should start with "unix:".</p>
         </td>
     </tr>
     <tr>
@@ -172,7 +173,7 @@ sni: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The location for the resource</p>
+            <p>The location of this resource.</p>
         </td>
     </tr>
     <tr>
@@ -182,7 +183,7 @@ sni: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The Project that this resource belongs to.</p>
+            <p>The project that this resource belongs to.</p>
         </td>
     </tr>
     <tr>
@@ -192,9 +193,17 @@ sni: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
         </td>
     </tr>
     <tr>
@@ -204,7 +213,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -214,7 +223,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -224,7 +233,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+            <p>The NetworkSecurityClientTLSPolicy name. If not given, the metadata.name will be used.</p>
         </td>
     </tr>
     <tr>
@@ -234,7 +243,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Required. Defines the mechanism to obtain the Certificate Authority certificate to validate the server certificate.</p>
+            <p>Optional. Defines the mechanism to obtain the Certificate Authority certificate to validate the server certificate. If empty, client does not validate the server certificate.</p>
         </td>
     </tr>
     <tr>
@@ -254,7 +263,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The certificate provider instance specification that will be passed to the data plane, which will be used to load necessary credential information.</p>
+            <p>Optional. The certificate provider instance specification that will be passed to the data plane, which will be used to load necessary credential information.</p>
         </td>
     </tr>
     <tr>
@@ -274,7 +283,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>gRPC specific configuration to access the gRPC server to obtain the CA certificate.</p>
+            <p>Optional. gRPC specific configuration to access the gRPC server to obtain the CA certificate.</p>
         </td>
     </tr>
     <tr>
@@ -284,7 +293,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The target URI of the gRPC endpoint. Only UDS path is supported, and should start with “unix:”.</p>
+            <p>Required. The target URI of the gRPC endpoint. Only UDS path is supported, and should start with "unix:".</p>
         </td>
     </tr>
     <tr>
@@ -327,7 +336,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -418,4 +427,4 @@ spec:
         pluginInstance: google_cloud_private_spiffe
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

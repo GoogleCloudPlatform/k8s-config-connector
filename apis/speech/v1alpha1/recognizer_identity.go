@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// RecognizerIdentity defines the resource reference to SpeechRecognizer, which "External" field
-// holds the GCP identifier for the KRM object.
+// RecognizerIdentity is the identity of a SpeechRecognizer.
 type RecognizerIdentity struct {
 	parent *RecognizerParent
 	id     string

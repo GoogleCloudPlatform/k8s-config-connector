@@ -91,7 +91,7 @@ type StorageAnywhereCacheObservedState struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. True if there is an active update operation against this cache
-	//  instance. Subsequential update requests will be rejected if this field is
+	//  instance. Subsequent update requests will be rejected if this field is
 	//  true. Output only.
 	// +kcc:proto:field=google.storage.control.v2.AnywhereCache.pending_update
 	PendingUpdate *bool `json:"pendingUpdate,omitempty"`

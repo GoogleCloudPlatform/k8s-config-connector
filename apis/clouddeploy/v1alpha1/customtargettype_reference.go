@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &CustomTargetTypeRef{}
 
-// CustomTargetTypeRef defines the resource reference to CloudDeployCustomTargetType, which "External" field
-// holds the GCP identifier for the KRM object.
+// CustomTargetTypeRef is a reference to a CloudDeployCustomTargetType.
 type CustomTargetTypeRef struct {
 	// A reference to an externally managed CloudDeployCustomTargetType resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/customtargettypes/{{customtargettypeID}}".

@@ -113,12 +113,12 @@ func PrivateEnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.Privat
 	out.CloudComposerNetworkIPv4CIDRBlock = direct.LazyPtr(in.GetCloudComposerNetworkIpv4CidrBlock())
 	out.EnablePrivatelyUsedPublicIPs = direct.LazyPtr(in.GetEnablePrivatelyUsedPublicIps())
 	if in.GetCloudComposerConnectionSubnetwork() != "" {
-		out.CloudComposerConnectionSubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
+		out.CloudComposerConnectionSubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
 	}
 	// MISSING: WebServerIPV4ReservedRange
 	// MISSING: CloudComposerNetworkIPV4ReservedRange
 	if in.GetCloudComposerConnectionSubnetwork() != "" {
-		out.CloudComposerConnectionSubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
+		out.CloudComposerConnectionSubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
 	}
 	out.NetworkingConfig = NetworkingConfig_FromProto(mapCtx, in.GetNetworkingConfig())
 	return out
@@ -191,7 +191,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
 	// MISSING: OauthScopes
@@ -342,5 +342,27 @@ func WorkloadsConfig_WorkerResource_ToProto(mapCtx *direct.MapContext, in *krm.W
 	out.StorageGb = direct.StringToFloat32(mapCtx, direct.ValueOf(in.StorageGB))
 	out.MinCount = direct.ValueOf(in.MinCount)
 	out.MaxCount = direct.ValueOf(in.MaxCount)
+	return out
+}
+
+func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionConfig{}
+	if in.GetKmsKeyName() != "" {
+		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+	}
+	return out
+}
+
+func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionConfig{}
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
+	}
 	return out
 }

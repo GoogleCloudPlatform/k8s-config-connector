@@ -51,7 +51,7 @@ func (i *IAPSettingsIdentity) ID() string {
 	return i.id
 }
 
-// NewIAPSettingsIdentity builds a IAPSettingsIdentity from the Config Connector IAPSettings object.
+// NewIAPSettingsIdentity builds an IAPSettingsIdentity from the Config Connector IAPSettings object.
 func NewIAPSettingsIdentity(ctx context.Context, reader client.Reader, obj *IAPSettings) (*IAPSettingsIdentity, error) {
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)

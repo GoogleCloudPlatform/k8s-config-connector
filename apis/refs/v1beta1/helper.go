@@ -95,3 +95,13 @@ func SetRefFields(ref Ref, name, namespace, external string) error {
 	}
 	return nil
 }
+
+func ValidateNameAndExternal(name, external string) error {
+	if name != "" && external != "" {
+		return fmt.Errorf("cannot specify both name and external")
+	}
+	if name == "" && external == "" {
+		return fmt.Errorf("must specify either name or external")
+	}
+	return nil
+}

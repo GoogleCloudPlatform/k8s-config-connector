@@ -16,7 +16,7 @@ title: "EdgeNetworkNetwork"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/distributed-cloud/edge/latest/docs/">/distributed-cloud/edge/latest/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/distributed-cloud/edge/latest/docs/">https://docs.cloud.google.com/distributed-cloud/edge/latest/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "EdgeNetworkNetwork"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/distributed-cloud/edge/latest/docs/reference/network/rest/v1/projects.locations.zones.networks">/distributed-cloud/edge/latest/docs/reference/network/rest/v1/projects.locations.zones.networks</a></td>
+<td><a href="https://docs.cloud.google.com/distributed-cloud/edge/latest/docs/reference/network/rest/v1/projects.locations.zones.networks">https://docs.cloud.google.com/distributed-cloud/edge/latest/docs/reference/network/rest/v1/projects.locations.zones.networks</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -290,4 +290,4 @@ spec:
   mtu: 9000
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

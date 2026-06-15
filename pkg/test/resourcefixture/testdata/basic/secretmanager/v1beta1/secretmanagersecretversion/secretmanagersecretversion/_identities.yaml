@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: secretmanager.cnrm.cloud.google.com
+  kind: SecretManagerSecret
+  name: secretmanagersecretversion-dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: secretmanager.cnrm.cloud.google.com
+  kind: SecretManagerSecretVersion
+  name: secretmanagersecretversion-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

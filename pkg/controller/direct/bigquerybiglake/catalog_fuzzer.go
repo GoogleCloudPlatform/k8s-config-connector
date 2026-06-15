@@ -33,12 +33,12 @@ func bigLakeCatalogFuzzer() fuzztesting.KRMFuzzer {
 		BigLakeCatalogObservedState_v1alpha1_FromProto, BigLakeCatalogObservedState_v1alpha1_ToProto,
 	)
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
 
-	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".delete_time")
-	f.UnimplementedFields.Insert(".expire_time")
+	f.Unimplemented_Identity(".name")
+	f.Unimplemented_NotYetTriaged(".delete_time")
+	f.Unimplemented_NotYetTriaged(".expire_time")
 
 	return f
 }

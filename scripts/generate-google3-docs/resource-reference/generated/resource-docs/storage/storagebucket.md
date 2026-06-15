@@ -3,7 +3,7 @@
 title: "StorageBucket"
 ---
 Note: The StorageBucket annotation can include
-<a href="/config-connector/docs/concepts/resources#object_metadata">directives</a>.
+<a href="https://docs.cloud.google.com/config-connector/docs/concepts/resources#object_metadata">directives</a>.
 If set to <code>true</code>, the <code>force-destroy</code> directive cleans up
 the objects within a storage bucket before issuing the delete command.
 
@@ -21,7 +21,7 @@ the objects within a storage bucket before issuing the delete command.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/storage/docs/">/storage/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/storage/docs/">https://docs.cloud.google.com/storage/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -29,7 +29,7 @@ the objects within a storage bucket before issuing the delete command.
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/storage/docs/json_api/v1/buckets">/storage/docs/json_api/v1/buckets</a></td>
+<td><a href="https://docs.cloud.google.com/storage/docs/json_api/v1/buckets">https://docs.cloud.google.com/storage/docs/json_api/v1/buckets</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -116,6 +116,20 @@ encryption:
     external: string
     name: string
     namespace: string
+ipFilter:
+  allowAllServiceAgentAccess: boolean
+  allowCrossOrgVpcs: boolean
+  mode: string
+  publicNetworkSource:
+    allowedIpCidrRanges:
+    - string
+  vpcNetworkSources:
+  - allowedIpCidrRanges:
+    - string
+    networkRef:
+      external: string
+      name: string
+      namespace: string
 lifecycleRule:
 - action:
     storageClass: string
@@ -190,8 +204,7 @@ website:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
-Enables Bucket PolicyOnly access to a bucket.</p>
+            <p>DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field. Enables Bucket PolicyOnly access to a bucket.</p>
         </td>
     </tr>
     <tr>
@@ -341,7 +354,7 @@ Enables Bucket PolicyOnly access to a bucket.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>A reference to the KMS Crypto Key that will be used to encrypt objects inserted into this bucket.</p>
         </td>
     </tr>
     <tr>
@@ -351,7 +364,7 @@ Enables Bucket PolicyOnly access to a bucket.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -361,7 +374,7 @@ Enables Bucket PolicyOnly access to a bucket.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -371,7 +384,157 @@ Enables Bucket PolicyOnly access to a bucket.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The bucket IP filtering configuration.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.allowAllServiceAgentAccess</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Whether to allow all service agents to access the bucket regardless of the IP filter configuration.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.allowCrossOrgVpcs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Whether to allow cross-org VPCs in the bucket's IP filter configuration.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.mode</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The mode of the IP filter. Valid values are 'Enabled' and 'Disabled'.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.publicNetworkSource</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The public network IP address ranges that can access the bucket and its data.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.publicNetworkSource.allowedIpCidrRanges</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>The list of public IPv4, IPv6 cidr ranges that are allowed to access the bucket.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.publicNetworkSource.allowedIpCidrRanges[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>The list of VPC networks that can access the bucket.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].allowedIpCidrRanges</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>The list of public or private IPv4 and IPv6 CIDR ranges that can access the bucket.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].allowedIpCidrRanges[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].networkRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The VPC network that can access the bucket.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].networkRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].networkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputeNetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].networkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -481,8 +644,7 @@ Enables Bucket PolicyOnly access to a bucket.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Number of days elapsed since the noncurrent timestamp of an object. This
-										condition is relevant only for versioned objects.</p>
+            <p>Number of days elapsed since the noncurrent timestamp of an object. This condition is relevant only for versioned objects.</p>
         </td>
     </tr>
     <tr>
@@ -799,7 +961,7 @@ url: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -855,7 +1017,7 @@ url: string
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The observed state of the underlying GCP resource.</p>
+            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
         </td>
     </tr>
     <tr>
@@ -928,4 +1090,4 @@ spec:
     retentionDurationSeconds: 604800
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

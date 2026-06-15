@@ -63,10 +63,11 @@ func (m *modelBackupPlan) AdapterForObject(ctx context.Context, op *directbase.A
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewBackupPlanIdentity(ctx, reader, obj)
+	idRaw, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := idRaw.(*krm.BackupPlanIdentity)
 
 	// resolve required reference fields
 	if obj.Spec.BackupVaultRef != nil {
@@ -142,8 +143,8 @@ func (a *BackupPlanAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	log.V(2).Info("creating BackupPlan", "name", a.id)
 
 	req := &pb.CreateBackupPlanRequest{
-		Parent:       a.id.Parent().String(),
-		BackupPlanId: a.id.ID(),
+		Parent:       a.id.ParentString(),
+		BackupPlanId: a.id.BackupPlan,
 		BackupPlan:   a.desired,
 	}
 	op, err := a.gcpClient.CreateBackupPlan(ctx, req)
@@ -221,7 +222,7 @@ func (a *BackupPlanAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.BackupVaultRef = &krm.BackupVaultRef{External: a.actual.BackupVault}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.Location = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

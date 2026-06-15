@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,29 +15,112 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var (
+	_ identity.IdentityV2 = &KMSKeyRingIdentity{}
+	_ identity.Resource   = &KMSKeyRing{}
+)
+
+var KMSKeyRingIdentityFormat = gcpurls.Template[KMSKeyRingIdentity]("cloudkms.googleapis.com", "projects/{project}/locations/{location}/keyRings/{keyring}")
+
+// +k8s:deepcopy-gen=false
+
+// KMSKeyRingIdentity is the identity of a GCP KMSKeyRing resource.
 type KMSKeyRingIdentity struct {
-	Parent *parent.ProjectAndLocationParent
-	ID     string
+	Project  string
+	Location string
+	Keyring  string
 }
 
 func (i *KMSKeyRingIdentity) String() string {
-	return i.Parent.String() + "/keyRings/" + i.ID
+	return KMSKeyRingIdentityFormat.ToString(*i)
+}
+
+func (i *KMSKeyRingIdentity) FromExternal(ref string) error {
+	ref = strings.TrimPrefix(ref, "/")
+	parsed, match, err := KMSKeyRingIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of KMSKeyRing external=%q was not known (use %s): %w", ref, KMSKeyRingIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of KMSKeyRing external=%q was not known (use %s)", ref, KMSKeyRingIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *KMSKeyRingIdentity) Host() string {
+	return KMSKeyRingIdentityFormat.Host()
+}
+
+func (i *KMSKeyRingIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
+func getIdentityFromKMSKeyRingSpec(ctx context.Context, reader client.Reader, obj *KMSKeyRing) (*KMSKeyRingIdentity, error) {
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	location := common.ValueOf(obj.Spec.Location)
+	if location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	identity := &KMSKeyRingIdentity{
+		Project:  projectID,
+		Location: location,
+		Keyring:  resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *KMSKeyRing) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromKMSKeyRingSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against status.selfLink, if present.
+	selfLink := common.ValueOf(obj.Status.SelfLink)
+	if selfLink != "" {
+		statusIdentity := &KMSKeyRingIdentity{}
+		if err := statusIdentity.FromExternal(selfLink); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change KMSKeyRing identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
 }
 
 func ParseKMSKeyRingExternal(external string) (*KMSKeyRingIdentity, error) {
-	external = strings.TrimPrefix(external, "/")
-	tokens := strings.Split(external, "/")
-	// projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "keyRings" {
-		return &KMSKeyRingIdentity{Parent: &parent.ProjectAndLocationParent{
-			ProjectID: tokens[1], Location: tokens[3],
-		}, ID: tokens[5]}, nil
+	id := &KMSKeyRingIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		return nil, err
 	}
-	return nil, fmt.Errorf("format of KMSKeyRing external=%q was not known (use projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}})", external)
+	return id, nil
 }

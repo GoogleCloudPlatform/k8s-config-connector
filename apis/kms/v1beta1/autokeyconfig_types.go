@@ -30,14 +30,23 @@ var KMSAutokeyConfigGVK = GroupVersion.WithKind("KMSAutokeyConfig")
 // +kcc:spec:proto=google.cloud.kms.v1.AutokeyConfig
 type KMSAutokeyConfigSpec struct {
 
-	// NOTE: ResourceID field is not required for AutokeyConfig as its ID has the format folders/<folderID>/autokeyConfig i.e., it doesnt have any unique ID of its own and relies on folderID for uniqueness.
+	// NOTE: ResourceID field is not required for AutokeyConfig as its ID has the format folders/<folderID>/autokeyConfig or projects/<projectID>/autokeyConfig i.e., it doesnt have any unique ID of its own and relies on parent ID for uniqueness.
 
 	// Immutable. The folder that this resource belongs to.
-	// +required
-	FolderRef *refs.FolderRef `json:"folderRef"`
+	// +optional
+	FolderRef *refs.FolderRef `json:"folderRef,omitempty"`
+
+	// Immutable. The project that this resource belongs to.
+	// +optional
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
 
 	// +optional
+	// +kcc:proto:field=google.cloud.kms.v1.AutokeyConfig.key_project
 	KeyProjectRef *refs.ProjectRef `json:"keyProject,omitempty"`
+
+	// +optional
+	// +kcc:proto:field=google.cloud.kms.v1.AutokeyConfig.key_project_resolution_mode
+	KeyProjectResolutionMode *string `json:"keyProjectResolutionMode,omitempty"`
 }
 
 // KMSAutokeyConfigStatus defines the config connector machine state of KMSAutokeyConfig
@@ -61,6 +70,7 @@ type KMSAutokeyConfigStatus struct {
 type KMSAutokeyConfigObservedState struct {
 	// Output only. Current state of this AutokeyConfig.
 	// +optional
+	// +kcc:proto:field=google.cloud.kms.v1.AutokeyConfig.state
 	State *string `json:"state,omitempty"`
 }
 
@@ -71,6 +81,7 @@ type KMSAutokeyConfigObservedState struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=beta"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

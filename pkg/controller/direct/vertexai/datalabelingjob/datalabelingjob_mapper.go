@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/genproto/googleapis/type/money"
@@ -94,18 +95,18 @@ func VertexAIDataLabelingJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Vert
 	return out
 }
 
-func VertexAIDataLabelingJobSpec_DatasetRefs_FromProto(mapCtx *direct.MapContext, in []string) []refsv1beta1.VertexAIDatasetRef {
+func VertexAIDataLabelingJobSpec_DatasetRefs_FromProto(mapCtx *direct.MapContext, in []string) []v1beta1.VertexAIDatasetRef {
 	if in == nil {
 		return nil
 	}
-	out := make([]refsv1beta1.VertexAIDatasetRef, len(in))
+	out := make([]v1beta1.VertexAIDatasetRef, len(in))
 	for i, v := range in {
-		out[i] = refsv1beta1.VertexAIDatasetRef{External: v}
+		out[i] = v1beta1.VertexAIDatasetRef{External: v}
 	}
 	return out
 }
 
-func VertexAIDataLabelingJobSpec_DatasetRefs_ToProto(mapCtx *direct.MapContext, in []refsv1beta1.VertexAIDatasetRef) []string {
+func VertexAIDataLabelingJobSpec_DatasetRefs_ToProto(mapCtx *direct.MapContext, in []v1beta1.VertexAIDatasetRef) []string {
 	if in == nil {
 		return nil
 	}

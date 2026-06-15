@@ -31,6 +31,14 @@ type FakeDiscoveryengineV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineControls(namespace string) v1alpha1.DiscoveryEngineControlInterface {
+	return newFakeDiscoveryEngineControls(c, namespace)
+}
+
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineConversations(namespace string) v1alpha1.DiscoveryEngineConversationInterface {
+	return newFakeDiscoveryEngineConversations(c, namespace)
+}
+
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineDataStores(namespace string) v1alpha1.DiscoveryEngineDataStoreInterface {
 	return newFakeDiscoveryEngineDataStores(c, namespace)
 }
@@ -41,6 +49,10 @@ func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineDataStoreTargetSites(namesp
 
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineEngines(namespace string) v1alpha1.DiscoveryEngineEngineInterface {
 	return newFakeDiscoveryEngineEngines(c, namespace)
+}
+
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineIdentityMappingStores(namespace string) v1alpha1.DiscoveryEngineIdentityMappingStoreInterface {
+	return newFakeDiscoveryEngineIdentityMappingStores(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

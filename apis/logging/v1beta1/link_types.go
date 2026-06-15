@@ -19,8 +19,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var LoggingLinkGVK = GroupVersion.WithKind("LoggingLink")
-
 // LoggingLinkSpec defines the desired state of LoggingLink
 // +kcc:spec:proto=google.logging.v2.Link
 type LoggingLinkSpec struct {

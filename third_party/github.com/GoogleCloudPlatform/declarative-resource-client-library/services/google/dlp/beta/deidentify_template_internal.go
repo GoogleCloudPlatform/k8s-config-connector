@@ -1861,7 +1861,7 @@ func (r *DeidentifyTemplate) getURL(userBasePath string) (string, error) {
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 		"name":     dcl.ValueOrEmptyString(nr.Name),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/deidentifyTemplates/{{name}}", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -1874,7 +1874,7 @@ func (r *DeidentifyTemplate) listURL(userBasePath string) (string, error) {
 		"location": dcl.ValueOrEmptyString(nr.Location),
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/deidentifyTemplates", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -1888,7 +1888,7 @@ func (r *DeidentifyTemplate) createURL(userBasePath string) (string, error) {
 		"location": dcl.ValueOrEmptyString(nr.Location),
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/deidentifyTemplates", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -1903,7 +1903,7 @@ func (r *DeidentifyTemplate) deleteURL(userBasePath string) (string, error) {
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 		"name":     dcl.ValueOrEmptyString(nr.Name),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/deidentifyTemplates/{{name}}", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -36396,7 +36396,7 @@ func (r *DeidentifyTemplate) updateURL(userBasePath, updateName string) (string,
 			"parent":   dcl.ValueOrEmptyString(nr.Parent),
 			"name":     dcl.ValueOrEmptyString(nr.Name),
 		}
-		if dcl.IsRegion(nr.Location) {
+		if isRegion(nr.Location) {
 			return dcl.URL("{{parent}}/locations/{{location}}/deidentifyTemplates/{{name}}", nr.basePath(), userBasePath, fields), nil
 		}
 

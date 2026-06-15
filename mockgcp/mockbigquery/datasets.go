@@ -70,7 +70,7 @@ func (s *datasetsServer) InsertDataset(ctx context.Context, req *pb.InsertDatase
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetDataset()).(*pb.Dataset)
+	obj := proto.CloneOf(req.GetDataset())
 
 	if obj.DatasetReference == nil {
 		obj.DatasetReference = &pb.DatasetReference{}

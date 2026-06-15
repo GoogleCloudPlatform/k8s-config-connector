@@ -16,7 +16,7 @@ title: "PrivilegedAccessManagerEntitlement"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/iam/docs/pam-overview">/iam/docs/pam-overview</a></td>
+<td><a href="https://docs.cloud.google.com/iam/docs/pam-overview">https://docs.cloud.google.com/iam/docs/pam-overview</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -29,9 +29,9 @@ title: "PrivilegedAccessManagerEntitlement"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/iam/docs/reference/pam/rest/v1/folders.locations.entitlements">/logging/docs/reference/v2/rest/v2/folders.exclusions</a></pre>
-<pre><a href="/iam/docs/reference/pam/rest/v1/organizations.locations.entitlements">/logging/docs/reference/v2/rest/v2/organizations.exclusions</a></pre>
-<pre><a href="/iam/docs/reference/pam/rest/v1/projects.locations.entitlements">/logging/docs/reference/v2/rest/v2/projects.exclusions</a></pre>
+<pre><a href="https://docs.cloud.google.com/iam/docs/reference/pam/rest/v1/folders.locations.entitlements">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/folders.exclusions</a></pre>
+<pre><a href="https://docs.cloud.google.com/iam/docs/reference/pam/rest/v1/organizations.locations.entitlements">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/organizations.exclusions</a></pre>
+<pre><a href="https://docs.cloud.google.com/iam/docs/reference/pam/rest/v1/projects.locations.entitlements">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.exclusions</a></pre>
 </td>
 </tr>
 <tr>
@@ -817,4 +817,4 @@ metadata:
   name: pame-dep-project
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

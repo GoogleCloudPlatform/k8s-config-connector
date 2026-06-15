@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// GoogleChannelConfigIdentity defines the resource reference to EventarcGoogleChannelConfig, which "External" field
-// holds the GCP identifier for the KRM object.
+// GoogleChannelConfigIdentity is the identity of an EventarcGoogleChannelConfig.
 type GoogleChannelConfigIdentity struct {
 	parent *GoogleChannelConfigParent
 	id     string

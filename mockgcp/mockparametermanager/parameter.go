@@ -19,6 +19,7 @@ import (
 	"strings"
 
 	"cloud.google.com/go/iam/apiv1/iampb"
+	pb "cloud.google.com/go/parametermanager/apiv1/parametermanagerpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -26,7 +27,6 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/parametermanager/v1"
 )
 
 type ParameterManagerV1 struct {
@@ -51,7 +51,7 @@ func (s *ParameterManagerV1) CreateParameter(ctx context.Context, req *pb.Create
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Parameter).(*pb.Parameter)
+	obj := proto.CloneOf(req.Parameter)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	obj.UpdateTime = obj.CreateTime
@@ -97,7 +97,7 @@ func (s *ParameterManagerV1) UpdateParameter(ctx context.Context, req *pb.Update
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.Parameter)
+	updated := proto.CloneOf(existing)
 	updated.Name = name.String()
 	updated.UpdateTime = timestamppb.Now()
 

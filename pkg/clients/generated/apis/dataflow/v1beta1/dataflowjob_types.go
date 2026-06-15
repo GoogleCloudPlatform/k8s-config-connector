@@ -69,6 +69,7 @@ type DataflowJobSpec struct {
 	// +optional
 	MaxWorkers *int64 `json:"maxWorkers,omitempty"`
 
+	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
@@ -87,6 +88,7 @@ type DataflowJobSpec struct {
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
+	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 

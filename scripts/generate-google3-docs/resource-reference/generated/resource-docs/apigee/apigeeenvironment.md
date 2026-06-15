@@ -16,7 +16,7 @@ title: "ApigeeEnvironment"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/apigee/docs/">/apigee/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/apigee/docs/">https://docs.cloud.google.com/apigee/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -27,7 +27,7 @@ organizations.environments
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<a href="/apigee/docs/reference/apis/apigee/rest/v1/organizations.environments">/apigee/docs/reference/apis/apigee/rest/v1/organizations.environments</a>
+<a href="https://docs.cloud.google.com/apigee/docs/reference/apis/apigee/rest/v1/organizations.environments">https://docs.cloud.google.com/apigee/docs/reference/apis/apigee/rest/v1/organizations.environments</a>
 </td>
 </tr>
 <tr>
@@ -127,7 +127,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a ApigeeOrganization resource.</p>
+            <p>The name of an ApigeeOrganization resource.</p>
         </td>
     </tr>
     <tr>
@@ -137,7 +137,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a ApigeeOrganization resource.</p>
+            <p>The namespace of an ApigeeOrganization resource.</p>
         </td>
     </tr>
     <tr>
@@ -351,4 +351,4 @@ spec:
   description: A sample authorized network for an apigee organization
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

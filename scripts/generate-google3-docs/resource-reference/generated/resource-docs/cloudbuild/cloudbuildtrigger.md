@@ -16,7 +16,7 @@ title: "CloudBuildTrigger"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/cloud-build/docs/">/cloud-build/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/cloud-build/docs/">https://docs.cloud.google.com/cloud-build/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "CloudBuildTrigger"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/cloud-build/docs/api/reference/rest/v1/projects.triggers">/cloud-build/docs/reference/rest/v1/projects.triggers</a></td>
+<td><a href="https://docs.cloud.google.com/cloud-build/docs/api/reference/rest/v1/projects.triggers">https://docs.cloud.google.com/cloud-build/docs/reference/rest/v1/projects.triggers</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -2994,4 +2994,4 @@ metadata:
   name: cloudbuildtrigger-dep-withtemplatefile
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

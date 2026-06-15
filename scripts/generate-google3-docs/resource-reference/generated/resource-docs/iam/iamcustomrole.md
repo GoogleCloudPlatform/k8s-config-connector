@@ -12,11 +12,11 @@ title: "IAMCustomRole"
 <tbody>
 <tr>
 <td>Google Cloud Service Name</td>
-<td>{{iam_name_short}}</td>
+<td>IAM</td>
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/iam/docs/">/iam/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/iam/docs/">https://docs.cloud.google.com/iam/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "IAMCustomRole"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/iam/docs/reference/rest/v1/projects.roles">/iam/docs/reference/rest/v1/projects.roles</a></td>
+<td><a href="https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.roles">https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.roles</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -308,4 +308,4 @@ metadata:
   name: iamcustomrole-dep-project
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

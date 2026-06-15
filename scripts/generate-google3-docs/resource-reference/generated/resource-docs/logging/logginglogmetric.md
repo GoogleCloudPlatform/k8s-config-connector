@@ -6,7 +6,7 @@ Caution: After
 [v1.118.1](https://github.com/GoogleCloudPlatform/k8s-config-connector/releases/tag/v1.118.1),
 `cnrm.cloud.google.com/state-into-spec` annotation is no longer used during
 LoggingLogMetric resource reconciliation, and [externally-managed
-fields](/config-connector/docs/concepts/managing-fields-externally) in the
+fields](https://docs.cloud.google.com/config-connector/docs/concepts/managing-fields-externally) in the
 existing LoggingLogMetric resources are considered managed, i.e. the Kubernetes
 object is the source of truth for the underlying Google Cloud
 resource.
@@ -25,7 +25,7 @@ resource.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/logging/docs/">/logging/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/logging/docs/">https://docs.cloud.google.com/logging/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -36,7 +36,7 @@ resource.
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/logging/docs/reference/v2/rest/v2/projects.metrics">/logging/docs/reference/v2/rest/v2/projects.metrics</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics</a></pre>
 </td>
 </tr>
 <tr>
@@ -297,7 +297,7 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The external name of the referenced resource</p>
+            <p>A reference to an externally managed LoggingLogBucket resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>
@@ -307,7 +307,7 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Kind of the referent.</p>
+            <p>The kind of the LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -317,7 +317,7 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -327,7 +327,7 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -787,4 +787,4 @@ spec:
     external: "projects/${PROJECT_ID?}"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

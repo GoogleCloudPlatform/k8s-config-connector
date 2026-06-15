@@ -105,7 +105,7 @@ type MonitoringNotificationChannelSpec struct {
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
-	/* Immutable. Optional. The service-generated name of theresource. Used for acquisition only. Leave unset to create a new resource. */
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 

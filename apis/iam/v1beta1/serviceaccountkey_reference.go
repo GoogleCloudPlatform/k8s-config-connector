@@ -33,8 +33,7 @@ var IAMServiceAccountGVK = schema.GroupVersionKind{
 	Kind:    "IAMServiceAccount",
 }
 
-// ServiceAccountKeyRef defines the resource reference to IAMServiceAccountKey, which "External" field
-// holds the GCP identifier for the KRM object.
+// ServiceAccountKeyRef is a reference to an IAMServiceAccountKey.
 type ServiceAccountKeyRef struct {
 	// A reference to an externally managed IAMServiceAccountKey resource.
 	// Should be in the format "projects/{{projectID}}/serviceAccounts/{{serviceAccountID}}/keys/{{keyID}}".
@@ -64,6 +63,8 @@ func (r *ServiceAccountKeyRef) GetExternal() string {
 
 func (r *ServiceAccountKeyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ServiceAccountKeyRef) ValidateExternal(ref string) error {

@@ -16,7 +16,7 @@ title: "RedisCluster"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/memorystore/docs/redis/">/memorystore/docs/redis/</a></td>
+<td><a href="https://docs.cloud.google.com/memorystore/docs/redis/">https://docs.cloud.google.com/memorystore/docs/redis/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "RedisCluster"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/memorystore/docs/redis/reference/rest/v1/projects.locations.instances">/memorystore/docs/redis/reference/rest/v1/projects.locations.instances</a></td>
+<td><a href="https://docs.cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances">https://docs.cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -57,8 +57,29 @@ title: "RedisCluster"
 #### Schema
 ```yaml
 authorizationMode: string
+automatedBackupConfig:
+  automatedBackupMode: string
+  fixedFrequencySchedule:
+    startTime:
+      hours: integer
+      minutes: integer
+      nanos: integer
+      seconds: integer
+  retention: string
 deletionProtectionEnabled: boolean
+kmsKeyRef:
+  external: string
+  name: string
+  namespace: string
 location: string
+maintenancePolicy:
+  weeklyMaintenanceWindow:
+  - day: string
+    startTime:
+      hours: integer
+      minutes: integer
+      nanos: integer
+      seconds: integer
 nodeType: string
 persistenceConfig:
   aofConfig:
@@ -107,6 +128,96 @@ zoneDistributionConfig:
     </tr>
     <tr>
         <td>
+            <p><code>automatedBackupConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The automated backup config for the cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.automatedBackupMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. The automated backup mode. If the mode is disabled, the other fields will be ignored.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.fixedFrequencySchedule</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. Trigger automated backups at a fixed frequency.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.fixedFrequencySchedule.startTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Required. The start time of every automated backup in UTC. It must be set to the start of an hour. This field is required.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.fixedFrequencySchedule.startTime.hours</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.fixedFrequencySchedule.startTime.minutes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Minutes of hour of day. Must be from 0 to 59.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.fixedFrequencySchedule.startTime.nanos</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.fixedFrequencySchedule.startTime.seconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.retention</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. How long to keep automated backups before the backups are deleted. The value should be between 1 day and 365 days. If not specified, the default value is 35 days.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>deletionProtectionEnabled</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -117,12 +228,142 @@ zoneDistributionConfig:
     </tr>
     <tr>
         <td>
+            <p><code>kmsKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The KMS key name to encrypt data at rest.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsKeyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>location</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. Location of the resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. ClusterMaintenancePolicy determines when to allow or deny updates.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Optional. Maintenance window that is applied to resources covered by this policy. Minimum 1. For the current version, the maximum number of weekly_maintenance_window is expected to be one.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[].day</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Allows to define schedule that runs specified day of the week.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[].startTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Start time of the window in UTC.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[].startTime.hours</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[].startTime.minutes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Minutes of hour of day. Must be from 0 to 59.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[].startTime.nanos</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.weeklyMaintenanceWindow[].startTime.seconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.</p>
         </td>
     </tr>
     <tr>
@@ -292,7 +533,7 @@ zoneDistributionConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -418,6 +659,18 @@ observedState:
     port: integer
     pscConfig:
       network: string
+  encryptionInfo:
+    encryptionType: string
+    kmsKeyPrimaryState: string
+    kmsKeyVersions:
+    - string
+    lastUpdateTime: string
+  maintenancePolicy:
+    createTime: string
+    updateTime: string
+  maintenanceSchedule:
+    endTime: string
+    startTime: string
   preciseSizeGb: float
   pscConnections:
   - address: string
@@ -425,6 +678,9 @@ observedState:
     network: string
     projectID: string
     pscConnectionID: string
+    serviceAttachment: string
+  pscServiceAttachments:
+  - connectionType: string
     serviceAttachment: string
   sizeGb: integer
   state: string
@@ -562,6 +818,90 @@ observedState:
         </td>
     </tr>
     <tr>
+        <td><code>observedState.encryptionInfo</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. Encryption information for the client to retrieve.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.encryptionInfo.encryptionType</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. Type of encryption.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.encryptionInfo.kmsKeyPrimaryState</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The state of the primary version of the KMS key perceived by the system. This field is not populated in backups.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.encryptionInfo.kmsKeyVersions</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Output only. KMS key versions that are being used to protect the data at-rest.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.encryptionInfo.kmsKeyVersions[]</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.encryptionInfo.lastUpdateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The most recent time when the encryption info was updated.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenancePolicy</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. ClusterMaintenancePolicy determines when to allow or deny updates.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenancePolicy.createTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The time when the policy was created i.e. Maintenance Window or Deny Period was assigned.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenancePolicy.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The time when the policy was updated i.e. Maintenance Window or Deny Period was updated.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenanceSchedule</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. ClusterMaintenanceSchedule Output only Published maintenance schedule.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenanceSchedule.endTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The end time of any upcoming scheduled maintenance for this instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenanceSchedule.startTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The start time of any upcoming scheduled maintenance for this instance.</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.preciseSizeGb</code></td>
         <td>
             <p><code class="apitype">float</code></p>
@@ -622,6 +962,34 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Required. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscServiceAttachments</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Output only. Service attachment details to configure Psc connections.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscServiceAttachments[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscServiceAttachments[].connectionType</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. Type of a PSC connection targeting this service attachment.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscServiceAttachments[].serviceAttachment</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. Service attachment URI which your self-created PscConnection should use as target</p>
         </td>
     </tr>
     <tr>
@@ -746,4 +1114,4 @@ spec:
     - name: rediscluster-dep
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

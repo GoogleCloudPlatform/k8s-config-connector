@@ -26,8 +26,7 @@ import (
 
 var InstanceIdentityFormat = gcpurls.Template[InstanceIdentity]("notebooks.googleapis.com", "projects/{project}/locations/{location}/instances/{instance}")
 
-// InstanceIdentity defines the resource reference to NotebookInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// InstanceIdentity is the identity of a NotebookInstance.
 // +k8s:deepcopy-gen=false
 type InstanceIdentity struct {
 	Project  string
@@ -73,7 +72,7 @@ func (p *InstanceParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a InstanceIdentity from the Config Connector Instance object.
+// New builds an InstanceIdentity from the Config Connector Instance object.
 func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *NotebookInstance) (*InstanceIdentity, error) {
 
 	// Get Parent

@@ -16,7 +16,7 @@ title: "MonitoringDashboard"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/monitoring/dashboards/">/monitoring/dashboards/</a></td>
+<td><a href="https://docs.cloud.google.com/monitoring/dashboards/">https://docs.cloud.google.com/monitoring/dashboards/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "MonitoringDashboard"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/monitoring/api/ref_v3/rest/v1/projects.dashboards/">monitoring/api/ref_v3/rest/v1/projects.dashboards/</a></td>
+<td><a href="https://docs.cloud.google.com/monitoring/api/ref_v3/rest/v1/projects.dashboards/">monitoring/api/ref_v3/rest/v1/projects.dashboards/</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1407,7 +1407,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
+            <p>A reference to an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1647,7 +1647,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>MonitoringAlertPolicyRef is a reference to a MonitoringAlertPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -1657,7 +1657,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
+            <p>A reference to an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
         </td>
     </tr>
     <tr>
@@ -4667,7 +4667,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
+            <p>A reference to an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
         </td>
     </tr>
     <tr>
@@ -4907,7 +4907,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>MonitoringAlertPolicyRef is a reference to a MonitoringAlertPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -4917,7 +4917,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
+            <p>A reference to an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
         </td>
     </tr>
     <tr>
@@ -7877,7 +7877,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
+            <p>A reference to an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
         </td>
     </tr>
     <tr>
@@ -8117,7 +8117,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>MonitoringAlertPolicyRef is a reference to a MonitoringAlertPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -8127,7 +8127,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
+            <p>A reference to an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
         </td>
     </tr>
     <tr>
@@ -11177,7 +11177,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
+            <p>A reference to an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
         </td>
     </tr>
     <tr>
@@ -11417,7 +11417,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>MonitoringAlertPolicyRef is a reference to a MonitoringAlertPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -11427,7 +11427,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
+            <p>A reference to an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".</p>
         </td>
     </tr>
     <tr>
@@ -14447,4 +14447,4 @@ spec:
             - external: "projects/${PROJECT_ID?}"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

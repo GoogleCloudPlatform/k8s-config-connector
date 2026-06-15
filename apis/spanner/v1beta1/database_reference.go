@@ -30,8 +30,7 @@ import (
 var _ refsv1beta1.ExternalNormalizer = &SpannerDatabaseRef{}
 var SpannerDatabaseGVK = GroupVersion.WithKind("SpannerDatabase")
 
-// SpannerDatabaseRef defines the resource reference to SpannerDatabase, which "External" field
-// holds the GCP identifier for the KRM object.
+// SpannerDatabaseRef is a reference to a SpannerDatabase.
 type SpannerDatabaseRef struct {
 	// A reference to an externally managed SpannerDatabase resource.
 	// Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/databases/{{databaseID}}".

@@ -148,7 +148,8 @@ func NewKubeHarness(ctx context.Context, t *testing.T) *KubeHarness {
 		if err != nil {
 			h.Fatalf("error loading crds: %v", err)
 		}
-		{
+		if len(crds) > 0 {
+			start := time.Now()
 			var wg sync.WaitGroup
 			var errsMutex sync.Mutex
 			var errs []error
@@ -164,6 +165,7 @@ func NewKubeHarness(ctx context.Context, t *testing.T) *KubeHarness {
 						errsMutex.Lock()
 						defer errsMutex.Unlock()
 						errs = append(errs, fmt.Errorf("error creating crd %v: %w", crd.GroupVersionKind(), err))
+						return
 					}
 					h.waitForCRDReady(crd)
 				}()
@@ -172,6 +174,10 @@ func NewKubeHarness(ctx context.Context, t *testing.T) *KubeHarness {
 			if len(errs) != 0 {
 				h.Fatalf("error creating crds: %v", errors.Join(errs...))
 			}
+
+			duration := time.Since(start)
+			h.Logf("Installed %d CRDs in %v", len(crds), duration.Round(time.Millisecond))
+			log.Info("Installed CRDs", "count", len(crds), "duration", duration)
 		}
 	}
 
@@ -187,14 +193,17 @@ func (h *KubeHarness) GetRESTConfig() *rest.Config {
 }
 
 func (h *KubeHarness) waitForCRDReady(obj client.Object) {
+	start := time.Now()
 	logger := log.FromContext(h.Ctx)
 
 	apiVersion, kind := obj.GetObjectKind().GroupVersionKind().ToAPIVersionAndKind()
 	name := obj.GetName()
 	namespace := obj.GetNamespace()
 
+	var lastStatus *teststatus.ObjectStatus
+
 	id := types.NamespacedName{Name: name, Namespace: namespace}
-	if err := wait.PollImmediate(2*time.Second, 1*time.Minute, func() (bool, error) {
+	if err := wait.PollImmediate(2*time.Second, 2*time.Minute, func() (bool, error) {
 		u := &unstructured.Unstructured{}
 		u.SetAPIVersion(apiVersion)
 		u.SetKind(kind)
@@ -204,10 +213,12 @@ func (h *KubeHarness) waitForCRDReady(obj client.Object) {
 			return false, err
 		}
 		objectStatus := teststatus.GetObjectStatus(h.T, u)
+		lastStatus = &objectStatus
 		// CRDs do not have observedGeneration
 		for _, condition := range objectStatus.Conditions {
 			if condition.Type == "Established" && condition.Status == "True" {
 				logger.V(2).Info("crd is ready", "kind", kind, "id", id)
+				h.Logf("CRD %s ready in %v", name, time.Since(start).Round(time.Millisecond))
 				return true, nil
 			}
 		}
@@ -215,7 +226,20 @@ func (h *KubeHarness) waitForCRDReady(obj client.Object) {
 		logger.V(2).Info("CRD is not ready", "kind", kind, "id", id, "conditions", objectStatus.Conditions)
 		return false, nil
 	}); err != nil {
-		h.Errorf("error while polling for ready on %v %v: %v", kind, id, err)
+		u := &unstructured.Unstructured{}
+		u.SetAPIVersion(apiVersion)
+		u.SetKind(kind)
+		if getErr := h.GetClient().Get(h.Ctx, id, u); getErr == nil {
+			logger.Info("CRD status on timeout", "kind", kind, "id", id, "status", u.Object["status"])
+		} else {
+			logger.Info("Error retrieving CRD status on timeout", "kind", kind, "id", id, "error", getErr)
+		}
+
+		if lastStatus != nil {
+			h.Fatalf("error while polling for ready on %v %v: %v (last status conditions: %v)", kind, id, err, lastStatus.Conditions)
+		} else {
+			h.Fatalf("error while polling for ready on %v %v: %v", kind, id, err)
+		}
 		return
 	}
 }
@@ -314,4 +338,13 @@ func (h *KubeHarness) CreateDummyCRD(gvk schema.GroupVersionKind) {
 	}
 	crd.SetGroupVersionKind(apiextensions.SchemeGroupVersion.WithKind("CustomResourceDefinition"))
 	h.waitForCRDReady(crd)
+
+	if err := wait.PollImmediate(1*time.Second, 30*time.Second, func() (bool, error) {
+		if _, err := h.client.RESTMapper().RESTMapping(gvk.GroupKind(), gvk.Version); err != nil {
+			return false, nil
+		}
+		return true, nil
+	}); err != nil {
+		h.Fatalf("error waiting for REST mapper to discover CRD %v: %v", gvk, err)
+	}
 }

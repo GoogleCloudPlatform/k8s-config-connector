@@ -67,7 +67,7 @@ func (s *ReservationsV1) Insert(ctx context.Context, req *pb.InsertReservationRe
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetReservationResource()).(*pb.Reservation)
+	obj := proto.CloneOf(req.GetReservationResource())
 
 	if obj.GetShareSettings() != nil && obj.GetShareSettings().GetShareType() == "SPECIFIC_PROJECTS" {
 		if len(obj.GetShareSettings().GetProjectMap()) == 0 {
@@ -133,13 +133,20 @@ func (s *ReservationsV1) Update(ctx context.Context, req *pb.UpdateReservationRe
 	}
 
 	update := req.GetReservationResource()
-	// Changing shareType is not supported.
-	if update.GetShareSettings().GetShareType() != obj.GetShareSettings().GetShareType() {
-		return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.shareSettings.shareType': '%s'. Changing shareType is not supported.", update.GetShareSettings().GetShareType())
+
+	// We may not need this, as the immutability is guaranteed at CRD and controller level
+	//if update.GetShareSettings().GetShareType() != obj.GetShareSettings().GetShareType() {
+	//	return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.shareSettings.shareType': '%s'. Changing shareType is not supported.", update.GetShareSettings().GetShareType())
+	//}
+
+	if update.GetShareSettings().GetShareType() == "SPECIFIC_PROJECTS" {
+		if len(update.GetShareSettings().GetProjectMap()) == 0 {
+			return nil, status.Errorf(codes.InvalidArgument, "project_map is required when share_type is SPECIFIC_PROJECTS")
+		}
 	}
 
 	// For other fields, we use proto.Merge
-	updateCopy := proto.Clone(update).(*pb.Reservation)
+	updateCopy := proto.CloneOf(update)
 	// Preserve immutable fields
 	updateCopy.Zone = nil
 	updateCopy.SelfLink = nil
@@ -152,24 +159,29 @@ func (s *ReservationsV1) Update(ctx context.Context, req *pb.UpdateReservationRe
 	updateCopy.ShareSettings = nil
 	proto.Merge(obj, updateCopy)
 
-	if update.ShareSettings != nil {
-		newMap, err := s.convertProjectMap(ctx, update.ShareSettings.ProjectMap)
-		if err != nil {
-			return nil, err
-		}
-		if obj.ShareSettings.ProjectMap == nil {
-			obj.ShareSettings.ProjectMap = make(map[string]*pb.ShareSettingsProjectConfig)
-		}
-		if newMap != nil {
-			for k, v := range newMap {
-				obj.ShareSettings.ProjectMap[k] = v
-			}
-		}
-	}
+	if req.GetPaths() != "" {
+		paths := strings.Split(req.GetPaths(), ",")
+		for _, path := range paths {
+			if strings.HasPrefix(path, "shareSettings.projectMap.") {
+				projectID := strings.TrimPrefix(path, "shareSettings.projectMap.")
+				project, err := s.Projects.GetProjectByIDOrNumber(projectID)
+				if err != nil {
+					return nil, err
+				}
+				projectNumber := strconv.FormatInt(project.Number, 10)
 
-	if obj.GetShareSettings().GetShareType() == "SPECIFIC_PROJECTS" {
-		if len(obj.GetShareSettings().GetProjectMap()) == 0 {
-			return nil, status.Errorf(codes.InvalidArgument, "project_map is required when share_type is SPECIFIC_PROJECTS")
+				// If the project is in the request body, it's an add.
+				// Otherwise, it's a removal.
+				if req.GetReservationResource().GetShareSettings().GetProjectMap() != nil {
+					if config, ok := req.GetReservationResource().GetShareSettings().GetProjectMap()[projectID]; ok {
+						newConfig := proto.CloneOf(config)
+						newConfig.ProjectId = &projectNumber
+						obj.ShareSettings.ProjectMap[projectNumber] = newConfig
+						continue
+					}
+				}
+				delete(obj.ShareSettings.ProjectMap, projectNumber)
+			}
 		}
 	}
 
@@ -297,7 +309,7 @@ func (s *ReservationsV1) convertProjectMap(ctx context.Context, projectMap map[s
 			return nil, err
 		}
 		projectNumber := strconv.FormatInt(project.Number, 10)
-		newConfig := proto.Clone(config).(*pb.ShareSettingsProjectConfig)
+		newConfig := proto.CloneOf(config)
 		newConfig.ProjectId = &projectNumber
 		newMap[projectNumber] = newConfig
 	}

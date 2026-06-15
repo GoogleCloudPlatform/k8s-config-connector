@@ -17,6 +17,7 @@ package mockcompute
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -79,7 +80,7 @@ func (s *FutureReservationsV1) Insert(ctx context.Context, req *pb.InsertFutureR
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetFutureReservationResource()).(*pb.FutureReservation)
+	obj := proto.CloneOf(req.GetFutureReservationResource())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, name.String()))
@@ -118,6 +119,16 @@ func (s *FutureReservationsV1) Insert(ctx context.Context, req *pb.InsertFutureR
 		}
 		if obj.ShareSettings != nil && obj.ShareSettings.GetShareType() == "LOCAL" {
 			obj.ShareSettings = nil
+		}
+		if obj.ShareSettings != nil && obj.ShareSettings.GetShareType() == "SPECIFIC_PROJECTS" {
+			if obj.GetShareSettings().GetProjectMap() == nil {
+				return nil, status.Error(codes.InvalidArgument, "Invalid value for field 'resource.shareSettings.projects': ''. Shared future reservation must be shared with at least one project.")
+			}
+			newMap, err := s.convertProjectMap(ctx, obj.GetShareSettings().GetProjectMap())
+			if err != nil {
+				return nil, err
+			}
+			obj.ShareSettings.ProjectMap = newMap
 		}
 		if obj.GetSchedulingType() == "FLEXIBLE" {
 			obj.SchedulingType = nil
@@ -219,6 +230,16 @@ func (s *FutureReservationsV1) Update(ctx context.Context, req *pb.UpdateFutureR
 		// Simulate realGCP
 		if obj.Description == nil {
 			obj.Description = direct.PtrTo("")
+		}
+		if obj.ShareSettings != nil && obj.ShareSettings.GetShareType() == "LOCAL" {
+			obj.ShareSettings = nil
+		}
+		if obj.ShareSettings != nil && obj.ShareSettings.GetShareType() == "SPECIFIC_PROJECTS" {
+			newMap, err := s.convertProjectMap(ctx, obj.GetShareSettings().GetProjectMap())
+			if err != nil {
+				return nil, err
+			}
+			obj.ShareSettings.ProjectMap = newMap
 		}
 
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -354,6 +375,24 @@ func (s *MockService) parseFutureReservationName(name string) (*futureReservatio
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func (s *MockService) convertProjectMap(ctx context.Context, projectMap map[string]*pb.ShareSettingsProjectConfig) (map[string]*pb.ShareSettingsProjectConfig, error) {
+	if projectMap == nil {
+		return nil, nil
+	}
+	newMap := make(map[string]*pb.ShareSettingsProjectConfig)
+	for idOrNumber, config := range projectMap {
+		project, err := s.Projects.GetProjectByIDOrNumber(idOrNumber)
+		if err != nil {
+			return nil, err
+		}
+		projectNumber := strconv.FormatInt(project.Number, 10)
+		newConfig := proto.Clone(config).(*pb.ShareSettingsProjectConfig)
+		newConfig.ProjectId = &projectNumber
+		newMap[projectNumber] = newConfig
+	}
+	return newMap, nil
 }
 
 func parseDuration(startTime *string, duration *pb.Duration) (time.Time, error) {

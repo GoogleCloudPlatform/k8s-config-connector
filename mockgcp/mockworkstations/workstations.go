@@ -29,7 +29,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/workstations/v1"
+	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
 )
 
 type WorkstationsService struct {
@@ -54,7 +54,7 @@ func (s *WorkstationsService) GetWorkstationCluster(ctx context.Context, req *pb
 func (s *WorkstationsService) CreateWorkstationCluster(ctx context.Context, req *pb.CreateWorkstationClusterRequest) (*longrunningpb.Operation, error) {
 	fqn := req.GetParent() + "/workstationClusters/" + req.GetWorkstationClusterId()
 
-	obj := proto.Clone(req.WorkstationCluster).(*pb.WorkstationCluster)
+	obj := proto.CloneOf(req.WorkstationCluster)
 	populateDefaultsForWorkstationCluster(obj, false)
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -70,7 +70,7 @@ func (s *WorkstationsService) CreateWorkstationCluster(ctx context.Context, req 
 	}
 	op, err := s.operations.StartLRO(ctx, req.GetParent(), metadata, func() (proto.Message, error) {
 		metadata.EndTime = t
-		result := proto.Clone(obj).(*pb.WorkstationCluster)
+		result := proto.CloneOf(obj)
 		populateOutputsForWorkstationCluster(result, fqn)
 		s.storage.Update(ctx, fqn, result)
 		return result, nil
@@ -86,14 +86,14 @@ func (s *WorkstationsService) UpdateWorkstationCluster(ctx context.Context, req 
 		return nil, err
 	}
 
-	updated := proto.Clone(req.WorkstationCluster).(*pb.WorkstationCluster)
+	updated := proto.CloneOf(req.WorkstationCluster)
 	populateDefaultsForWorkstationCluster(updated, true)
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
 	op, err := s.operations.StartLRO(ctx, fqn, nil, func() (proto.Message, error) {
-		result := proto.Clone(updated).(*pb.WorkstationCluster)
+		result := proto.CloneOf(updated)
 		populateOutputsForWorkstationCluster(result, fqn)
 		return result, nil
 	})
@@ -158,7 +158,7 @@ func (s *WorkstationsService) CreateWorkstationConfig(ctx context.Context, req *
 		return nil, err
 	}
 
-	obj := proto.Clone(req.WorkstationConfig).(*pb.WorkstationConfig)
+	obj := proto.CloneOf(req.WorkstationConfig)
 	populateDefaultsForWorkstationConfig(obj, false)
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -174,7 +174,7 @@ func (s *WorkstationsService) CreateWorkstationConfig(ctx context.Context, req *
 	}
 	op, err := s.operations.StartLRO(ctx, location, metadata, func() (proto.Message, error) {
 		metadata.EndTime = t
-		result := proto.Clone(obj).(*pb.WorkstationConfig)
+		result := proto.CloneOf(obj)
 		s.storage.Update(ctx, fqn, result)
 		return result, nil
 	})
@@ -193,7 +193,7 @@ func (s *WorkstationsService) UpdateWorkstationConfig(ctx context.Context, req *
 		return nil, err
 	}
 
-	updated := proto.Clone(req.WorkstationConfig).(*pb.WorkstationConfig)
+	updated := proto.CloneOf(req.WorkstationConfig)
 	populateDefaultsForWorkstationConfig(updated, true)
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
@@ -208,7 +208,7 @@ func (s *WorkstationsService) UpdateWorkstationConfig(ctx context.Context, req *
 		Verb:                  "update",
 	}
 	op, err := s.operations.StartLRO(ctx, location, metadata, func() (proto.Message, error) {
-		result := proto.Clone(updated).(*pb.WorkstationConfig)
+		result := proto.CloneOf(updated)
 		return result, nil
 	})
 	if err != nil {
@@ -265,7 +265,7 @@ func (s *WorkstationsService) CreateWorkstation(ctx context.Context, req *pb.Cre
 		return nil, err
 	}
 
-	obj := proto.Clone(req.Workstation).(*pb.Workstation)
+	obj := proto.CloneOf(req.Workstation)
 	populateDefaultsForWorkstation(obj, false)
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -281,7 +281,7 @@ func (s *WorkstationsService) CreateWorkstation(ctx context.Context, req *pb.Cre
 	}
 	op, err := s.operations.StartLRO(ctx, location, metadata, func() (proto.Message, error) {
 		metadata.EndTime = t
-		result := proto.Clone(obj).(*pb.Workstation)
+		result := proto.CloneOf(obj)
 		s.storage.Update(ctx, fqn, result)
 		return result, nil
 	})
@@ -300,7 +300,7 @@ func (s *WorkstationsService) UpdateWorkstation(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
-	updated := proto.Clone(req.Workstation).(*pb.Workstation)
+	updated := proto.CloneOf(req.Workstation)
 	populateDefaultsForWorkstation(updated, true)
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
@@ -315,7 +315,7 @@ func (s *WorkstationsService) UpdateWorkstation(ctx context.Context, req *pb.Upd
 		Verb:                  "update",
 	}
 	op, err := s.operations.StartLRO(ctx, location, metadata, func() (proto.Message, error) {
-		result := proto.Clone(updated).(*pb.Workstation)
+		result := proto.CloneOf(updated)
 		return result, nil
 	})
 	if err != nil {

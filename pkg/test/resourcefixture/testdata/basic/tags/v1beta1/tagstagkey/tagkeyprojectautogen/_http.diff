@@ -1,10 +1,8 @@
-1c1,26
+1c1,24
 < POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?alt=json
 ---
 > GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
 > Content-Type: application/json
-> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-> X-Goog-Request-Params: name=projects%2F${projectId}
 > 
 > 200 OK
 > Content-Type: application/json; charset=UTF-8
@@ -27,31 +25,23 @@
 > ---
 > 
 > POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?%24alt=json%3Benum-encoding%3Dint
-7c32
+6c29
 <   "parent": "projects/${projectId}",
 ---
 >   "parent": "projects/${projectNumber}",
-30c55
+29c52
 < GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
 ---
 > GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
-32a58
-> X-Goog-Request-Params: name=operations%2F${operationID}
-65c91
+63c86
 < GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 ---
 > GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
-67a94
-> X-Goog-Request-Params: name=tagKeys%2F${tagKeyID}
-92c119
+89c112
 < DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 ---
 > DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
-94a122
-> X-Goog-Request-Params: name=tagKeys%2F${tagKeyID}
-115c143
+111c134
 < GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
 ---
 > GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
-117a146
-> X-Goog-Request-Params: name=operations%2F${operationID}

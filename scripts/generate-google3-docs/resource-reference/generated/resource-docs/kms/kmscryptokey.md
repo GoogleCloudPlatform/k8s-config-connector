@@ -16,7 +16,7 @@ title: "KMSCryptoKey"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/kms/docs/">/kms/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/kms/docs/">https://docs.cloud.google.com/kms/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "KMSCryptoKey"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys">/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys</a></td>
+<td><a href="https://docs.cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys">https://docs.cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -103,8 +103,7 @@ versionTemplate:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The period of time that versions of this key spend in the DESTROY_SCHEDULED state before transitioning to DESTROYED.
-If not specified at creation time, the default duration is 24 hours.</p>
+            <p>Immutable. The period of time that versions of this key spend in the DESTROY_SCHEDULED state before transitioning to DESTROYED. If not specified at creation time, the default duration is 24 hours.</p>
         </td>
     </tr>
     <tr>
@@ -134,7 +133,7 @@ If not specified at creation time, the default duration is 24 hours.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSKeyRing` resource.</p>
+            <p>A reference to an externally managed KMSKeyRing resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyRingID}}".</p>
         </td>
     </tr>
     <tr>
@@ -144,7 +143,7 @@ If not specified at creation time, the default duration is 24 hours.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a KMSKeyRing resource.</p>
         </td>
     </tr>
     <tr>
@@ -154,7 +153,7 @@ If not specified at creation time, the default duration is 24 hours.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a KMSKeyRing resource.</p>
         </td>
     </tr>
     <tr>
@@ -164,10 +163,7 @@ If not specified at creation time, the default duration is 24 hours.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The immutable purpose of this CryptoKey. See the
-[purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-for possible inputs.
-Default value is "ENCRYPT_DECRYPT".</p>
+            <p>Immutable. The immutable purpose of this CryptoKey. See the [purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose) for possible inputs. Default value is "ENCRYPT_DECRYPT".</p>
         </td>
     </tr>
     <tr>
@@ -187,10 +183,7 @@ Default value is "ENCRYPT_DECRYPT".</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Every time this period passes, generate a new CryptoKeyVersion and set it as the primary.
-The first rotation will take place after the specified period. The rotation period has
-the format of a decimal number with up to 9 fractional digits, followed by the
-letter 's' (seconds). It must be greater than a day (ie, 86400).</p>
+            <p>Every time this period passes, generate a new CryptoKeyVersion and set it as the primary. The first rotation will take place after the specified period. The rotation period has the format of a decimal number with up to 9 fractional digits, followed by the letter 's' (seconds). It must be greater than a day (ie, 86400).</p>
         </td>
     </tr>
     <tr>
@@ -200,8 +193,7 @@ letter 's' (seconds). It must be greater than a day (ie, 86400).</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions.
-You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion.</p>
+            <p>Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions. You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion.</p>
         </td>
     </tr>
     <tr>
@@ -221,8 +213,7 @@ You must use the 'google_kms_key_ring_import_job' resource to import the CryptoK
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The algorithm to use when creating a version based on this template.
-See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v1/CryptoKeyVersionAlgorithm) for possible inputs.</p>
+            <p>The algorithm to use when creating a version based on this template. See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v1/CryptoKeyVersionAlgorithm) for possible inputs.</p>
         </td>
     </tr>
     <tr>
@@ -264,7 +255,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -353,4 +344,4 @@ spec:
   location: us-central1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

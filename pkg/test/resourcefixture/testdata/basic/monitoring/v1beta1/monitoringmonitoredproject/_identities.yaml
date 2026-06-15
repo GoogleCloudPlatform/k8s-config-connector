@@ -1,0 +1,12 @@
+- caisURL: //cloudresourcemanager.googleapis.com/projects/mmp-${uniqueId}
+  group: resourcemanager.cnrm.cloud.google.com
+  kind: Project
+  name: mmp-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringMonitoredProject
+  name: mmp-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

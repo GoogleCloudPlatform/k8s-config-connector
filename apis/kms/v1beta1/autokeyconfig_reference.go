@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &KMSAutokeyConfigRef{}
 
-// KMSAutokeyConfigRef defines the resource reference to KMSAutokeyConfig, which "External" field
-// holds the GCP identifier for the KRM object.
+// KMSAutokeyConfigRef is a reference to a KMSAutokeyConfig.
 type KMSAutokeyConfigRef struct {
 	// A reference to an externally managed KMSAutokeyConfig resource.
 	// Should be in the format "folders/<folderID>/autokeyConfig".

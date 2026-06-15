@@ -144,7 +144,7 @@ def write_markdown_report(results, fieldnames, mdfile):
     header_line = "| " + " | ".join([h.ljust(col_widths[h]) for h in fieldnames]) + " |"
     mdfile.write(header_line + '\n')
 
-    separator_line = "|-" + "-|- ".join([ "-" * col_widths[h] for h in fieldnames]) + "-|"
+    separator_line = "|-" + "-|-".join([ "-" * col_widths[h] for h in fieldnames]) + "-|"
     mdfile.write(separator_line + '\n')
 
     for res in results:

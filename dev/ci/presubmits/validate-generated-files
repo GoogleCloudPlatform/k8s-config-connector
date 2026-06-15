@@ -21,16 +21,16 @@ import sys
 def run_and_verify_no_changes(command):
     subprocess.run(command, check=True)
 
-    # Use subprocess.check_output which will raise an exception if the command fails.
-    diff_output = subprocess.check_output(["git", "diff", "--name-only"]).decode("utf-8").strip()
-    if diff_output:
+    # Use subprocess.check_output to check for any changes (tracked or untracked).
+    status_output = subprocess.check_output(["git", "status", "--porcelain"]).decode("utf-8").strip()
+    if status_output:
         print("Full diff:")
         # Use subprocess.run to simply execute and print the output of git diff
         subprocess.run(["git", "--no-pager", "diff"])
         print("ERROR: Generated files out-of-date. Please run '{}' and update your PR.".format(" ".join(command)))
         print("<hint_for_agent>Generated files out of date.  Run '{}' to regenerate, and then update your PR.</hint_for_agent>".format(" ".join(command)))
         print("Affected files:")
-        print(diff_output)
+        print(status_output)
         sys.exit(1)
 
 
@@ -45,6 +45,7 @@ def main():
     run_and_verify_no_changes(["dev/tasks/generate-crds"])
     run_and_verify_no_changes(["dev/tasks/generate-resource-report"])
     run_and_verify_no_changes(["dev/tasks/generate_static_config.py"])
+    run_and_verify_no_changes(["make", "resource-docs"])
 
 if __name__ == "__main__":
     main()

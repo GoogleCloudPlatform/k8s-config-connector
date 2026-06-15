@@ -28,16 +28,15 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &IAPSettingsRef{}
 
-// IAPSettingsRef defines the resource reference to IAPSettings, which "External" field
-// holds the GCP identifier for the KRM object.
+// IAPSettingsRef is a reference to an IAPSettings.
 type IAPSettingsRef struct {
 	// A reference to an externally managed IAPSettings resource.
 	External string `json:"external,omitempty"`
 
-	// The name of a IAPSettings resource.
+	// The name of an IAPSettings resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a IAPSettings resource.
+	// The namespace of an IAPSettings resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

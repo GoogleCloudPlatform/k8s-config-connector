@@ -159,19 +159,37 @@ func (s *cloudTasks) CreateQueue(ctx context.Context, req *pb.CreateQueueRequest
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Queue).(*pb.Queue)
+	obj := proto.CloneOf(req.Queue)
 	obj.Name = fqn
-	obj.RateLimits = &pb.RateLimits{
-		MaxBurstSize:            100,
-		MaxConcurrentDispatches: 1000,
-		MaxDispatchesPerSecond:  500,
+	if obj.RateLimits == nil {
+		obj.RateLimits = &pb.RateLimits{}
 	}
-	obj.RetryConfig = &pb.RetryConfig{
-		MaxAttempts:  100,
-		MaxBackoff:   durationpb.New(3600 * time.Second),
-		MaxDoublings: 16,
-		MinBackoff:   durationpb.New(time.Second / 10),
+	if obj.RateLimits.MaxBurstSize == 0 {
+		obj.RateLimits.MaxBurstSize = 100
 	}
+	if obj.RateLimits.MaxConcurrentDispatches == 0 {
+		obj.RateLimits.MaxConcurrentDispatches = 1000
+	}
+	if obj.RateLimits.MaxDispatchesPerSecond == 0 {
+		obj.RateLimits.MaxDispatchesPerSecond = 500
+	}
+
+	if obj.RetryConfig == nil {
+		obj.RetryConfig = &pb.RetryConfig{}
+	}
+	if obj.RetryConfig.MaxAttempts == 0 {
+		obj.RetryConfig.MaxAttempts = 100
+	}
+	if obj.RetryConfig.MaxBackoff == nil {
+		obj.RetryConfig.MaxBackoff = durationpb.New(3600 * time.Second)
+	}
+	if obj.RetryConfig.MaxDoublings == 0 {
+		obj.RetryConfig.MaxDoublings = 16
+	}
+	if obj.RetryConfig.MinBackoff == nil {
+		obj.RetryConfig.MinBackoff = durationpb.New(time.Second / 10)
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

@@ -47,6 +47,7 @@ type ForwardingruleFilterLabels struct {
 }
 
 type ForwardingruleIpAddress struct {
+	/* ComputeAddressRef is a reference to a GCP ComputeAddress. */
 	// +optional
 	AddressRef *v1alpha1.ResourceRef `json:"addressRef,omitempty"`
 
@@ -401,6 +402,10 @@ type ComputeForwardingRuleStatus struct {
 	/* The internal fully qualified service name for this Forwarding Rule. This field is only used for INTERNAL load balancing. */
 	// +optional
 	ServiceName *string `json:"serviceName,omitempty"`
+
+	/* The target resource to receive the matched traffic. */
+	// +optional
+	Target *string `json:"target,omitempty"`
 }
 
 // +genclient

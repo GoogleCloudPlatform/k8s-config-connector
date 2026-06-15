@@ -28,6 +28,8 @@ spec:
   nodeType: REDIS_STANDARD_SMALL
   transitEncryptionMode: TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION
   authorizationMode: AUTH_MODE_IAM_AUTH
+  kmsKeyRef:
+    name: kmscryptokey-${uniqueId}
   redisConfigs:
     maxmemory-policy: volatile-ttl
   zoneDistributionConfig:
@@ -38,3 +40,20 @@ spec:
     aofConfig:
       appendFsync: EVERYSEC
   deletionProtectionEnabled: true
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    retention: 2592000s
+    fixedFrequencySchedule:
+      startTime:
+        hours: 14
+        minutes: 0
+        seconds: 0
+        nanos: 0
+  maintenancePolicy:
+    weeklyMaintenanceWindow:
+    - day: SUNDAY
+      startTime:
+        hours: 2
+        minutes: 0
+        seconds: 0
+        nanos: 0

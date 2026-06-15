@@ -85,3 +85,11 @@ func TagField_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.TagField) *pb.T
 	// MISSING: Order
 	return out
 }
+
+func DataCatalogTagSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krmv1alpha1.DataCatalogTagSpec {
+	return DataCatalogTagSpec_FromProto(mapCtx, in)
+}
+
+func DataCatalogTagSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogTagSpec) *pb.Tag {
+	return DataCatalogTagSpec_ToProto(mapCtx, in)
+}

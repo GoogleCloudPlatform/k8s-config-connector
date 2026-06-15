@@ -1,6 +1,5 @@
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -15,16 +14,15 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}' was not found",
+    "message": "certificate \"projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?alt=json&certificateId=certificatemanagercertificate-kompanion-${uniqueId}
+POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?%24alt=json%3Benum-encoding%3Dint&certificateId=certificatemanagercertificate-kompanion-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "sample managed certificate for kcc",
@@ -40,7 +38,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     ],
     "issuanceConfig": "projects/${projectId}/locations/global/certificateIssuanceConfigs/my-test-ic"
   },
-  "scope": "ALL_REGIONS"
+  "scope": 2
 }
 
 200 OK
@@ -66,9 +64,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -123,9 +120,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -147,15 +143,15 @@ X-Xss-Protection: 0
     "authorizationAttemptInfo": [
       {
         "domain": "*.${uniqueId}.com",
-        "state": "AUTHORIZED"
+        "state": 6
       },
       {
         "domain": "test.${uniqueId}.com",
-        "state": "AUTHORIZED"
+        "state": 6
       },
       {
         "domain": "test2.${uniqueId}.com",
-        "state": "AUTHORIZED"
+        "state": 6
       }
     ],
     "domains": [
@@ -164,17 +160,16 @@ X-Xss-Protection: 0
       "test2.${uniqueId}.com"
     ],
     "issuanceConfig": "projects/${projectId}/locations/global/certificateIssuanceConfigs/my-test-ic",
-    "state": "ACTIVE"
+    "state": 3
   },
   "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}",
-  "scope": "ALL_REGIONS"
+  "scope": 2
 }
 
 ---
 
-DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?alt=json
+DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -199,9 +194,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

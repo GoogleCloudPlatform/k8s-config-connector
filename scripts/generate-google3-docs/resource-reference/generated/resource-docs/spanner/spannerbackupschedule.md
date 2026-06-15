@@ -16,7 +16,7 @@ title: "SpannerBackupSchedule"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/spanner/docs/">/spanner/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/spanner/docs/">https://docs.cloud.google.com/spanner/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "SpannerBackupSchedule"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/spanner/docs/reference/rest/v1/projects.instances.databases.backupSchedules">/spanner/docs/reference/rest/v1/projects.instances.databases.backupSchedules</a></td>
+<td><a href="https://docs.cloud.google.com/spanner/docs/reference/rest/v1/projects.instances.databases.backupSchedules">https://docs.cloud.google.com/spanner/docs/reference/rest/v1/projects.instances.databases.backupSchedules</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -319,7 +319,7 @@ spec:
             <p><code class="apitype">string</code></p>
             <p>Required. Textual representation of the crontab. User can customize the
  backup frequency and the backup version time using the cron
- expression. The version time must be in UTC timzeone.
+ expression. The version time must be in UTC timezone.
 
  The backup will contain an externally consistent copy of the
  database at the version time. Allowed frequencies are 12 hour, 1 day,
@@ -530,4 +530,4 @@ spec:
   displayName: Spanner Database Dependency
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

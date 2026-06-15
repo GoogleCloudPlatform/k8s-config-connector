@@ -139,7 +139,7 @@ X-Xss-Protection: 0
   "creationRecord": {
     "mutateTime": "2024-04-01T12:34:56.123456Z"
   },
-  "description": "Sends notifications to indicated webhook URL using HTTP-standard basic authentication. Should be used in conjunction with SSL/TLS to reduce the risk of attackers snooping the credentials.",
+  "description": "Sends notifications to newly indicated webhook URL using HTTP-standard basic authentication. Should be used in conjunction with SSL/TLS to reduce the risk of attackers snooping the credentials.",
   "displayName": "monitoringnotificationchannel-${uniqueId}",
   "enabled": true,
   "labels": {
@@ -183,7 +183,7 @@ X-Xss-Protection: 0
   "creationRecord": {
     "mutateTime": "2024-04-01T12:34:56.123456Z"
   },
-  "description": "Sends notifications to indicated webhook URL using HTTP-standard basic authentication. Should be used in conjunction with SSL/TLS to reduce the risk of attackers snooping the credentials.",
+  "description": "Sends notifications to newly indicated webhook URL using HTTP-standard basic authentication. Should be used in conjunction with SSL/TLS to reduce the risk of attackers snooping the credentials.",
   "displayName": "monitoringnotificationchannel-${uniqueId}",
   "enabled": true,
   "labels": {

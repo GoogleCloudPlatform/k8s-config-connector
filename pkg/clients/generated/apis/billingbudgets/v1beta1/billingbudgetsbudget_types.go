@@ -46,6 +46,7 @@ type BudgetAllUpdatesRule struct {
 	// +optional
 	MonitoringNotificationChannels []v1alpha1.ResourceRef `json:"monitoringNotificationChannels,omitempty"`
 
+	/* PubSubTopicRef is a reference to a PubSubTopic. */
 	// +optional
 	PubsubTopicRef *v1alpha1.ResourceRef `json:"pubsubTopicRef,omitempty"`
 
@@ -184,7 +185,7 @@ type BillingBudgetsBudgetSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* The BillingBudgetsBudget name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 

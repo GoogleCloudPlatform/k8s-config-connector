@@ -34,8 +34,7 @@ var (
 	DatasetIdentityFormat = gcpurls.Template[DatasetIdentity]("bigquery.googleapis.com", "projects/{project}/datasets/{dataset}")
 )
 
-// DatasetIdentity defines the resource reference to BigQueryDataset, which "External" field
-// holds the GCP identifier for the KRM object.
+// DatasetIdentity is the identity of a BigQueryDataset.
 // +k8s:deepcopy-gen=false
 type DatasetIdentity struct {
 	Project string

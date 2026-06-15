@@ -65,7 +65,7 @@ func (s *BackupForGKEV1) CreateBackupPlan(ctx context.Context, req *pb.CreateBac
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetBackupPlan()).(*pb.BackupPlan)
+	obj := proto.CloneOf(req.GetBackupPlan())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

@@ -16,7 +16,7 @@ title: "SecretManagerSecret"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/secret-manager/docs/">/secret-manager/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/secret-manager/docs/">https://docs.cloud.google.com/secret-manager/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "SecretManagerSecret"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/secret-manager/docs/reference/rest/v1/projects.secrets">/secret-manager/docs/reference/rest/v1/projects.secrets</a></td>
+<td><a href="https://docs.cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets">https://docs.cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -488,7 +488,7 @@ No more than 64 labels can be assigned to a given resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>PubSubTopicRef defines the resource reference to PubSubTopic, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>PubSubTopicRef is a reference to a PubSubTopic.</p>
         </td>
     </tr>
     <tr>
@@ -698,4 +698,4 @@ spec:
       - location: us-east1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -56,7 +56,7 @@ func (s *AlloyDBAdminV1) CreateUser(ctx context.Context, req *pb.CreateUserReque
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.User).(*pb.User)
+	obj := proto.CloneOf(req.User)
 	obj.Name = fqn
 
 	if obj.DatabaseRoles == nil && obj.UserType == pb.User_ALLOYDB_IAM_USER {

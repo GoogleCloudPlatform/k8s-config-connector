@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &TagRef{}
 
-// TagRef defines the resource reference to DataCatalogTag, which "External" field
-// holds the GCP identifier for the KRM object.
+// TagRef is a reference to a DataCatalogTag.
 type TagRef struct {
 	// A reference to an externally managed DataCatalogTag resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/tags/{{tagID}}".

@@ -16,7 +16,7 @@ title: "KMSImportJob"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/kms/docs/">/kms/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/kms/docs/">https://docs.cloud.google.com/kms/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "KMSImportJob"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/kms/docs/reference/rest/v1/projects.locations.keyRings.importJobs">/kms/docs/reference/rest/v1/projects.locations.keyRings.importJobs</a></td>
+<td><a href="https://docs.cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.importJobs">https://docs.cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.importJobs</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -89,7 +89,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>KMSKeyRingRef defines the resource reference to KMSKeyRing, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>KMSKeyRingRef is a reference to a KMSKeyRing.</p>
         </td>
     </tr>
     <tr>
@@ -99,7 +99,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed KMSKeyRing. Should be in the format `projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}`.</p>
+            <p>A reference to an externally managed KMSKeyRing resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyRingID}}".</p>
         </td>
     </tr>
     <tr>
@@ -109,7 +109,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` of a `KMSKeyRing` resource.</p>
+            <p>The name of a KMSKeyRing resource.</p>
         </td>
     </tr>
     <tr>
@@ -119,7 +119,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` of a `KMSKeyRing` resource.</p>
+            <p>The namespace of a KMSKeyRing resource.</p>
         </td>
     </tr>
     <tr>
@@ -377,4 +377,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

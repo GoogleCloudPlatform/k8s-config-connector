@@ -195,6 +195,8 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("nextRotationTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.nextRotationTime", "2024-04-01T12:34:56.123456Z")
 
 	// Specific to datacatalog
 	addReplacement("dataCatalogTimestamps.createTime", "2024-04-01T12:34:56.123456Z")

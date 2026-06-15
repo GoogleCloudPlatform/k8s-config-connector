@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ExternalAccessRuleRef{}
 
-// ExternalAccessRuleRef defines the resource reference to VMwareEngineExternalAccessRule, which "External" field
-// holds the GCP identifier for the KRM object.
+// ExternalAccessRuleRef is a reference to a VMwareEngineExternalAccessRule.
 type ExternalAccessRuleRef struct {
 	// A reference to an externally managed VMwareEngineExternalAccessRule resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/externalAccessRules/{{externalaccessruleID}}".

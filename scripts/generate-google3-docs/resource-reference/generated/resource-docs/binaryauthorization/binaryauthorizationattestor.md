@@ -16,7 +16,7 @@ title: "BinaryAuthorizationAttestor"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/binary-authorization/docs/">/binary-authorization/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/binary-authorization/docs/">https://docs.cloud.google.com/binary-authorization/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BinaryAuthorizationAttestor"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/binary-authorization/docs/reference/rest/v1/projects.attestors">/binary-authorization/docs/reference/rest/v1/projects.attestors</a></td>
+<td><a href="https://docs.cloud.google.com/binary-authorization/docs/reference/rest/v1/projects.attestors">https://docs.cloud.google.com/binary-authorization/docs/reference/rest/v1/projects.attestors</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -419,4 +419,4 @@ spec:
     name: test-package
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

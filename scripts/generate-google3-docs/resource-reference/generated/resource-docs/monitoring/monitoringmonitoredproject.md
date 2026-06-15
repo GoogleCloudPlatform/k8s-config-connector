@@ -16,7 +16,7 @@ title: "MonitoringMonitoredProject"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/monitoring/docs/">/monitoring/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/monitoring/docs/">https://docs.cloud.google.com/monitoring/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "MonitoringMonitoredProject"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/monitoring/api/ref_v3/rest/v1/locations.global.metricsScopes.projects">/monitoring/api/ref_v3/rest/v1/locations.global.metricsScopes.projects</a></td>
+<td><a href="https://docs.cloud.google.com/monitoring/api/ref_v3/rest/v1/locations.global.metricsScopes.projects">https://docs.cloud.google.com/monitoring/api/ref_v3/rest/v1/locations.global.metricsScopes.projects</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -114,7 +114,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the MonitoringMonitoredProject's current state.</p>
         </td>
     </tr>
     <tr>
@@ -200,4 +200,4 @@ spec:
   name: "Config Connector Sample"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

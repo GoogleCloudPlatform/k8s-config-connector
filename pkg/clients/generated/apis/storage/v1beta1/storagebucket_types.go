@@ -69,8 +69,7 @@ type BucketCondition struct {
 	// +optional
 	DaysSinceCustomTime *int64 `json:"daysSinceCustomTime,omitempty"`
 
-	/* Number of days elapsed since the noncurrent timestamp of an object. This
-	condition is relevant only for versioned objects. */
+	/* Number of days elapsed since the noncurrent timestamp of an object. This condition is relevant only for versioned objects. */
 	// +optional
 	DaysSinceNoncurrentTime *int64 `json:"daysSinceNoncurrentTime,omitempty"`
 
@@ -123,7 +122,29 @@ type BucketCustomPlacementConfig struct {
 }
 
 type BucketEncryption struct {
+	/* A reference to the KMS Crypto Key that will be used to encrypt objects inserted into this bucket. */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+}
+
+type BucketIpFilter struct {
+	/* Whether to allow all service agents to access the bucket regardless of the IP filter configuration. */
+	// +optional
+	AllowAllServiceAgentAccess *bool `json:"allowAllServiceAgentAccess,omitempty"`
+
+	/* Whether to allow cross-org VPCs in the bucket's IP filter configuration. */
+	// +optional
+	AllowCrossOrgVpcs *bool `json:"allowCrossOrgVpcs,omitempty"`
+
+	/* The mode of the IP filter. Valid values are 'Enabled' and 'Disabled'. */
+	Mode string `json:"mode"`
+
+	/* The public network IP address ranges that can access the bucket and its data. */
+	// +optional
+	PublicNetworkSource *BucketPublicNetworkSource `json:"publicNetworkSource,omitempty"`
+
+	/* The list of VPC networks that can access the bucket. */
+	// +optional
+	VpcNetworkSources []BucketVpcNetworkSources `json:"vpcNetworkSources,omitempty"`
 }
 
 type BucketLifecycleRule struct {
@@ -141,6 +162,11 @@ type BucketLogging struct {
 	/* The object prefix for log objects. If it's not provided, by default Google Cloud Storage sets this to this bucket's name. */
 	// +optional
 	LogObjectPrefix *string `json:"logObjectPrefix,omitempty"`
+}
+
+type BucketPublicNetworkSource struct {
+	/* The list of public IPv4, IPv6 cidr ranges that are allowed to access the bucket. */
+	AllowedIpCidrRanges []string `json:"allowedIpCidrRanges"`
 }
 
 type BucketRetentionPolicy struct {
@@ -163,6 +189,14 @@ type BucketVersioning struct {
 	Enabled bool `json:"enabled"`
 }
 
+type BucketVpcNetworkSources struct {
+	/* The list of public or private IPv4 and IPv6 CIDR ranges that can access the bucket. */
+	AllowedIpCidrRanges []string `json:"allowedIpCidrRanges"`
+
+	/* The VPC network that can access the bucket. */
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+}
+
 type BucketWebsite struct {
 	/* Behaves as the bucket's directory index where missing objects are treated as potential directories. */
 	// +optional
@@ -178,8 +212,7 @@ type StorageBucketSpec struct {
 	// +optional
 	Autoclass *BucketAutoclass `json:"autoclass,omitempty"`
 
-	/* DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
-	Enables Bucket PolicyOnly access to a bucket. */
+	/* DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field. Enables Bucket PolicyOnly access to a bucket. */
 	// +optional
 	BucketPolicyOnly *bool `json:"bucketPolicyOnly,omitempty"`
 
@@ -198,6 +231,10 @@ type StorageBucketSpec struct {
 	/* The bucket's encryption configuration. */
 	// +optional
 	Encryption *BucketEncryption `json:"encryption,omitempty"`
+
+	/* The bucket IP filtering configuration. */
+	// +optional
+	IpFilter *BucketIpFilter `json:"ipFilter,omitempty"`
 
 	/* The bucket's Lifecycle Rules configuration. */
 	// +optional
@@ -272,7 +309,7 @@ type StorageBucketStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The observed state of the underlying GCP resource. */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
 	ObservedState *BucketObservedStateStatus `json:"observedState,omitempty"`
 

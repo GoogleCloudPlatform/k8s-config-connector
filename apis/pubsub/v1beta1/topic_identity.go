@@ -15,33 +15,74 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
-	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// TopicIdentity defines the resource reference to PubSubTopic, which "External" field
-// holds the GCP identifier for the KRM object.
-type TopicIdentity struct {
-	parent *parent.ProjectParent
-	id     string
+var (
+	_ identity.IdentityV2 = &PubSubTopicIdentity{}
+	_ identity.Resource   = &PubSubTopic{}
+)
+
+var PubSubTopicIdentityFormat = gcpurls.Template[PubSubTopicIdentity]("pubsub.googleapis.com", "projects/{project}/topics/{topic}")
+
+// +k8s:deepcopy-gen=false
+
+// PubSubTopicIdentity is the identity of a GCP PubSubTopic resource.
+type PubSubTopicIdentity struct {
+	Project string
+	Topic   string
 }
 
-func (i *TopicIdentity) String() string {
-	return i.parent.String() + "/topics/" + i.id
+func (i *PubSubTopicIdentity) String() string {
+	return PubSubTopicIdentityFormat.ToString(*i)
 }
 
-func (i *TopicIdentity) ID() string {
-	return i.id
-}
-
-func ParseTopicExternal(external string) (*TopicIdentity, error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "topics" {
-		return nil, fmt.Errorf("format of PubSubSnapshot external=%q was not known (use projects/{{projectID}}/topics/{{topicID}})", external)
+func (i *PubSubTopicIdentity) FromExternal(ref string) error {
+	parsed, match, err := PubSubTopicIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of PubSubTopic external=%q was not known (use %s): %w", ref, PubSubTopicIdentityFormat.CanonicalForm(), err)
 	}
-	return &TopicIdentity{parent: &parent.ProjectParent{
-		ProjectID: tokens[1],
-	}, id: tokens[3]}, nil
+	if !match {
+		return fmt.Errorf("format of PubSubTopic external=%q was not known (use %s)", ref, PubSubTopicIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *PubSubTopicIdentity) Host() string {
+	return PubSubTopicIdentityFormat.Host()
+}
+
+func getIdentityFromPubSubTopicSpec(ctx context.Context, reader client.Reader, obj *PubSubTopic) (*PubSubTopicIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	identity := &PubSubTopicIdentity{
+		Project: projectID,
+		Topic:   resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *PubSubTopic) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromPubSubTopicSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	return specIdentity, nil
 }

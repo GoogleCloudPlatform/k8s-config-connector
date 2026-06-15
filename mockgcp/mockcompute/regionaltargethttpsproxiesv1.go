@@ -59,7 +59,7 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetTargetHttpsProxyResource()).(*pb.TargetHttpsProxy)
+	obj := proto.CloneOf(req.GetTargetHttpsProxyResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id

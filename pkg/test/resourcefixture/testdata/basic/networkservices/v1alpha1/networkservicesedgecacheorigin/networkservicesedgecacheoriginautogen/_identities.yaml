@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: networkservices.cnrm.cloud.google.com
+  kind: NetworkServicesEdgeCacheOrigin
+  name: networkservicesedgecacheorigin-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

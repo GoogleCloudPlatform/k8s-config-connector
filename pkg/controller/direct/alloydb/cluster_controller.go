@@ -111,10 +111,11 @@ func (m *modelCluster) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewClusterIdentity(ctx, reader, obj)
+	idObj, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := idObj.(*krm.AlloyDBClusterIdentity)
 
 	// Get alloydb GCP client
 	gcpClient, err := m.client(ctx)
@@ -135,7 +136,7 @@ func (m *modelCluster) AdapterForURL(ctx context.Context, url string) (directbas
 }
 
 type ClusterAdapter struct {
-	id        *krm.ClusterIdentity
+	id        *krm.AlloyDBClusterIdentity
 	gcpClient *gcp.AlloyDBAdminClient
 	desired   *krm.AlloyDBCluster
 	actual    *alloydbpb.Cluster
@@ -150,7 +151,7 @@ var _ directbase.Adapter = &ClusterAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *ClusterAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting Cluster", "name", a.id)
+	log.V(2).Info("getting Cluster", "name", a.id.String())
 
 	req := &alloydbpb.GetClusterRequest{Name: a.id.String()}
 	clusterpb, err := a.gcpClient.GetCluster(ctx, req)
@@ -229,27 +230,21 @@ func (a *ClusterAdapter) normalizeReferences(ctx context.Context) error {
 	}
 
 	if obj.Spec.RestoreBackupSource != nil && obj.Spec.RestoreBackupSource.BackupNameRef != nil {
-		backup, err := refs.ResolveAlloyDBBackupRef(ctx, a.reader, obj, obj.Spec.RestoreBackupSource.BackupNameRef)
-		if err != nil {
+		if err := obj.Spec.RestoreBackupSource.BackupNameRef.Normalize(ctx, a.reader, obj.Namespace); err != nil {
 			return err
 		}
-		obj.Spec.RestoreBackupSource.BackupNameRef = backup
 	}
 
 	if obj.Spec.RestoreContinuousBackupSource != nil && obj.Spec.RestoreContinuousBackupSource.ClusterRef != nil {
-		external, err := obj.Spec.RestoreContinuousBackupSource.ClusterRef.NormalizedExternal(ctx, a.reader, obj.Namespace)
-		if err != nil {
+		if err := obj.Spec.RestoreContinuousBackupSource.ClusterRef.Normalize(ctx, a.reader, obj.Namespace); err != nil {
 			return err
 		}
-		obj.Spec.RestoreContinuousBackupSource.ClusterRef.External = external
 	}
 
 	if obj.Spec.SecondaryConfig != nil && obj.Spec.SecondaryConfig.PrimaryClusterNameRef != nil {
-		external, err := obj.Spec.SecondaryConfig.PrimaryClusterNameRef.NormalizedExternal(ctx, a.reader, obj.Namespace)
-		if err != nil {
+		if err := obj.Spec.SecondaryConfig.PrimaryClusterNameRef.Normalize(ctx, a.reader, obj.Namespace); err != nil {
 			return err
 		}
-		obj.Spec.SecondaryConfig.PrimaryClusterNameRef.External = external
 	}
 
 	return nil
@@ -343,8 +338,8 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 	var created *alloydbpb.Cluster
 	if desired.Spec.RestoreBackupSource != nil || desired.Spec.RestoreContinuousBackupSource != nil {
 		req := &alloydbpb.RestoreClusterRequest{
-			Parent:    a.id.Parent().String(),
-			ClusterId: a.id.ID(),
+			Parent:    fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
+			ClusterId: a.id.Cluster,
 			Cluster:   resource,
 		}
 		if desired.Spec.RestoreBackupSource != nil {
@@ -401,8 +396,8 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 
 		createOp.RecordUpdatingEvent()
 		req := &alloydbpb.CreateSecondaryClusterRequest{
-			Parent:    a.id.Parent().String(),
-			ClusterId: a.id.ID(),
+			Parent:    fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
+			ClusterId: a.id.Cluster,
 			Cluster:   resource,
 		}
 		op, err := a.gcpClient.CreateSecondaryCluster(ctx, req)
@@ -423,8 +418,8 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 
 		createOp.RecordUpdatingEvent()
 		req := &alloydbpb.CreateClusterRequest{
-			Parent:    a.id.Parent().String(),
-			ClusterId: a.id.ID(),
+			Parent:    fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
+			ClusterId: a.id.Cluster,
 			Cluster:   resource,
 		}
 		op, err := a.gcpClient.CreateCluster(ctx, req)
@@ -463,7 +458,7 @@ func (a *ClusterAdapter) resolveGCPDefaults(desired *alloydbpb.Cluster, actual *
 		desired.AutomatedBackupPolicy.Enabled = direct.PtrTo(false)
 	}
 	if desired.AutomatedBackupPolicy.Location == "" {
-		desired.AutomatedBackupPolicy.Location = a.id.Parent().Location
+		desired.AutomatedBackupPolicy.Location = a.id.Location
 	}
 	if desired.AutomatedBackupPolicy.Retention == nil {
 		desired.AutomatedBackupPolicy.Retention = &alloydbpb.AutomatedBackupPolicy_TimeBasedRetention_{
@@ -655,8 +650,8 @@ func (a *ClusterAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = direct.PtrTo(a.id.Parent().Location)
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = direct.PtrTo(a.id.Location)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

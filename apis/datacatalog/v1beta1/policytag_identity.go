@@ -23,8 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// PolicyTagIdentity defines the resource reference to DataCatalogPolicyTag, which "External" field
-// holds the GCP identifier for the KRM object.
+// PolicyTagIdentity is the identity of a DataCatalogPolicyTag.
 type PolicyTagIdentity struct {
 	parent *PolicyTagParent
 	id     string

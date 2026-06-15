@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerb
 
 go 1.26
 
-toolchain go1.26.1
+toolchain go1.26.4
 
 require (
 	github.com/fatih/color v1.18.0

@@ -29,7 +29,7 @@ var _ refs.Ref = &BinaryAuthorizationPlatformPolicyRef{}
 
 type BinaryAuthorizationPlatformPolicyRef struct {
 	// A reference to an externally managed BinaryAuthorizationPlatformPolicy resource.
-	// Should be in the format "projects/{{projectID}}/platforms/{{platform}}/policies/{{policy}}"
+	// Should be in the format "projects/{{projectID}}/platforms/{{platform}}/policies/{{policy}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BinaryAuthorizationPlatformPolicy resource.
@@ -40,7 +40,7 @@ type BinaryAuthorizationPlatformPolicyRef struct {
 }
 
 func init() {
-	refs.Register(&BinaryAuthorizationPlatformPolicyRef{})
+	refs.Register(&BinaryAuthorizationPlatformPolicyRef{}, &BinaryAuthorizationPlatformPolicy{})
 }
 
 func (r *BinaryAuthorizationPlatformPolicyRef) GetGVK() schema.GroupVersionKind {
@@ -60,6 +60,8 @@ func (r *BinaryAuthorizationPlatformPolicyRef) GetExternal() string {
 
 func (r *BinaryAuthorizationPlatformPolicyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *BinaryAuthorizationPlatformPolicyRef) ValidateExternal(ref string) error {

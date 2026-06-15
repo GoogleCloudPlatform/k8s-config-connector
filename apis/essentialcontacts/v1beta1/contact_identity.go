@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ContactIdentity defines the resource reference to EssentialContactsContact, which "External" field
-// holds the GCP identifier for the KRM object.
+// ContactIdentity is the identity of an EssentialContactsContact.
 type ContactIdentity struct {
 	parent *ContactParent
 	id     string

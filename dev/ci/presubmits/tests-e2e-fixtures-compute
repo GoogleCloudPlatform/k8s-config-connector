@@ -28,5 +28,21 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
 export ONLY_TEST_APIGROUPS="compute.cnrm.cloud.google.com"
+export USE_FULL_TEST_NAMES=true
+export TEST_TIMEOUT=15m
 
-${REPO_ROOT}/dev/tasks/run-e2e
+echo "Prebuilding e2e tests..."
+export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
+mkdir -p ${REPO_ROOT}/.build
+time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+
+echo "Building paralleltestrunner..."
+time go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/paralleltestrunner
+
+echo "Running compute fixtures tests in parallel..."
+${REPO_ROOT}/.build/paralleltestrunner \
+    -list-file="${REPO_ROOT}/tests/e2e/testdata/fixtures-compute-list.txt" \
+    -j=4 \
+    -base-test="TestAllInSeries/fixtures" \
+    -check-unchanged=true \
+    -- ${REPO_ROOT}/dev/tasks/run-e2e

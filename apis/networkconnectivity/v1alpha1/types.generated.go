@@ -19,6 +19,7 @@
 // proto.service: mockgcp.cloud.networkconnectivity.v1
 // resource: NetworkConnectivityInternalRange:InternalRange
 // resource: NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy
+// resource: NetworkConnectivityRegionalEndpoint:RegionalEndpoint
 
 package v1alpha1
 
@@ -298,6 +299,60 @@ type PSCConnection struct {
 	// State of the PSC Connection
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.state
 	State *string `json:"state,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint", skipping
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint
+type RegionalEndpoint struct {
+	// Required. The access type of this regional endpoint. This field is reflected in the PSC Forwarding Rule configuration to enable global access.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.access_type
+	AccessType *string `json:"accessType,omitempty"`
+
+	// Optional. The IP Address of the Regional Endpoint. When no address is provided, an IP from the subnetwork is allocated. Use one of the following formats: * IPv4 address as in `10.0.0.1` * Address resource URI as in `projects/{project}/regions/{region}/addresses/{address_name}` for an IPv4 or IPv6 address.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.address
+	Address *string `json:"address,omitempty"`
+
+	// Output only. Time when the RegionalEndpoint was created.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Optional. A description of this resource.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. The literal IP address of the PSC Forwarding Rule created on behalf of the customer. This field is deprecated. Use address instead.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// User-defined labels.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Output only. The name of a RegionalEndpoint. Pattern: `projects/{project}/locations/{location}/regionalEndpoints/^[-a-z0-9](?:[-a-z0-9]{0,44})[a-z0-9]$`.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The name of the VPC network for this private regional endpoint. Format: `projects/{project}/global/networks/{network}`
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.network
+	Network *string `json:"network,omitempty"`
+
+	// Output only. The resource reference of the PSC Forwarding Rule created on behalf of the customer. Format: `//compute.googleapis.com/projects/{project}/regions/{region}/forwardingRules/{forwarding_rule_name}`
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.psc_forwarding_rule
+	PSCForwardingRule *string `json:"pscForwardingRule,omitempty"`
+
+	// Optional. The name of the subnetwork from which the IP address will be allocated. Format: `projects/{project}/regions/{region}/subnetworks/{subnetwork}`
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+
+	// Required. The service endpoint this private regional endpoint connects to. Format: `{apiname}.{region}.p.rep.googleapis.com` Example: "cloudkms.us-central1.p.rep.googleapis.com".
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.target_google_api
+	TargetGoogleAPI *string `json:"targetGoogleAPI,omitempty"`
+
+	// Output only. Time when the RegionalEndpoint was updated.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
 

@@ -76,7 +76,7 @@ func (s *MemcacheServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.Resource).(*pb.Instance)
+	obj := proto.CloneOf(req.Resource)
 	obj.Name = fqn
 
 	t := timestamppb.New(time.Now())

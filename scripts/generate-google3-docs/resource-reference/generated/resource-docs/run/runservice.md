@@ -16,7 +16,7 @@ title: "RunService"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/run/docs/">/run/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/run/docs/">https://docs.cloud.google.com/run/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "RunService"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/run/docs/reference/rest/v2/projects.locations.services">/run/docs/reference/rest/v2/projects.locations.services</a></td>
+<td><a href="https://docs.cloud.google.com/run/docs/reference/rest/v2/projects.locations.services">https://docs.cloud.google.com/run/docs/reference/rest/v2/projects.locations.services</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -2435,4 +2435,4 @@ spec:
     external: ${PROJECT_ID?}
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

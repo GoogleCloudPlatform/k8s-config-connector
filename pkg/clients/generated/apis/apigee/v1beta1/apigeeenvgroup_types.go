@@ -43,7 +43,7 @@ type ApigeeEnvgroupSpec struct {
 	// +optional
 	Hostnames []string `json:"hostnames,omitempty"`
 
-	/* ApigeeOrganizationRef is a reference to a ApigeeOrganization resource. */
+	/* ApigeeOrganizationRef is a reference to an ApigeeOrganization resource. */
 	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
 
 	/* The ApigeeEnvgroup name. If not given, the metadata.name will be used. */

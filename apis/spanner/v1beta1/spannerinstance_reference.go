@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &SpannerInstanceRef{}
 
-// SpannerInstanceRef defines the resource reference to SpannerInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// SpannerInstanceRef is a reference to a SpannerInstance.
 type SpannerInstanceRef struct {
 	// A reference to an externally managed SpannerInstance resource.
 	// Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".
@@ -42,7 +41,7 @@ type SpannerInstanceRef struct {
 }
 
 func init() {
-	refs.Register(&SpannerInstanceRef{})
+	refs.Register(&SpannerInstanceRef{}, &SpannerInstance{})
 }
 
 func (r *SpannerInstanceRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *SpannerInstanceRef) GetExternal() string {
 
 func (r *SpannerInstanceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *SpannerInstanceRef) ValidateExternal(ref string) error {

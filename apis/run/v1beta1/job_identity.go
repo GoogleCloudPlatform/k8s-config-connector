@@ -32,8 +32,7 @@ var jobURL = gcpurls.Template[JobIdentity](
 	"projects/{projectID}/locations/{location}/jobs/{jobID}",
 )
 
-// JobIdentity defines the resource reference to RunJob, which "External" field
-// holds the GCP identifier for the KRM object.
+// JobIdentity is the identity of a RunJob.
 // +k8s:deepcopy-gen=false
 type JobIdentity struct {
 	ProjectID string

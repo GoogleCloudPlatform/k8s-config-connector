@@ -28,17 +28,16 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &CustomConstraintRef{}
 
-// CustomConstraintRef defines the resource reference to OrgPolicyCustomConstraint, which "External" field
-// holds the GCP identifier for the KRM object.
+// CustomConstraintRef is a reference to an OrgPolicyCustomConstraint.
 type CustomConstraintRef struct {
 	// A reference to an externally managed OrgPolicyCustomConstraint resource.
 	// Should be in the format "organizations/{{organizationID}}/customConstraints/{{customconstraintID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a OrgPolicyCustomConstraint resource.
+	// The name of an OrgPolicyCustomConstraint resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a OrgPolicyCustomConstraint resource.
+	// The namespace of an OrgPolicyCustomConstraint resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

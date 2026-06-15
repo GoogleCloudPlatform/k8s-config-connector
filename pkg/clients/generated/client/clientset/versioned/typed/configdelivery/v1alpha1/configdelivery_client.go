@@ -31,12 +31,17 @@ import (
 
 type ConfigdeliveryV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	ConfigDeliveryFleetPackagesGetter
 	ConfigDeliveryResourceBundlesGetter
 }
 
 // ConfigdeliveryV1alpha1Client is used to interact with features provided by the configdelivery.cnrm.cloud.google.com group.
 type ConfigdeliveryV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *ConfigdeliveryV1alpha1Client) ConfigDeliveryFleetPackages(namespace string) ConfigDeliveryFleetPackageInterface {
+	return newConfigDeliveryFleetPackages(c, namespace)
 }
 
 func (c *ConfigdeliveryV1alpha1Client) ConfigDeliveryResourceBundles(namespace string) ConfigDeliveryResourceBundleInterface {

@@ -17,17 +17,223 @@
 // krm.group: compute.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.compute.v1
+// resource: ComputeAddress:Address
+// resource: ComputeDisk:Disk
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
 // resource: ComputeForwardingRule:ForwardingRule
-// resource: ComputeResourcePolicy:ResourcePolicy
-// resource: ComputeSecurityPolicy:SecurityPolicy
-// resource: ComputeSubnetwork:Subnetwork
-// resource: ComputeTargetTcpProxy:TargetTcpProxy
-// resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
+// resource: ComputeHTTPHealthCheck:HTTPHealthCheck
+// resource: ComputeHealthCheck:HealthCheck
+// resource: ComputeInstance:Instance
+// resource: ComputeInstanceGroup:InstanceGroup
+// resource: ComputeNetwork:Network
+// resource: ComputeNetworkPeering:NetworkPeering
+// resource: ComputeNodeGroup:NodeGroup
 // resource: ComputeNodeTemplate:NodeTemplate
 // resource: ComputeReservation:Reservation
+// resource: ComputeResourcePolicy:ResourcePolicy
+// resource: ComputeSecurityPolicy:SecurityPolicy
+// resource: ComputeSnapshot:Snapshot
+// resource: ComputeSubnetwork:Subnetwork
+// resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
+// resource: ComputeTargetTcpProxy:TargetTcpProxy
 
 package v1beta1
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AcceleratorConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.AcceleratorConfig
+type AcceleratorConfig struct {
+	// The number of the guest accelerator cards exposed to this instance.
+	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_count
+	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
+
+	// Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types.
+	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+}
+*/
+
+/* unreachable type AccessConfig
+// +kcc:proto=google.cloud.compute.v1.AccessConfig
+type AccessConfig struct {
+	// Applies to ipv6AccessConfigs only. The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. To use a static external IP address, it must be unused and in the same region as the instance's zone. If not specified, Google Cloud will automatically assign an external IPv6 address from the instance's subnetwork.
+	// +kcc:proto:field=google.cloud.compute.v1.AccessConfig.external_ipv6
+	ExternalIPV6 *string `json:"externalIPV6,omitempty"`
+
+	// Applies to ipv6AccessConfigs only. The prefix length of the external IPv6 range.
+	// +kcc:proto:field=google.cloud.compute.v1.AccessConfig.external_ipv6_prefix_length
+	ExternalIPV6PrefixLength *int32 `json:"externalIPV6PrefixLength,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#accessConfig for access configs.
+	// +kcc:proto:field=google.cloud.compute.v1.AccessConfig.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The name of this access configuration. In accessConfigs (IPv4), the default and recommended name is External NAT, but you can use any arbitrary string, such as My external IP or Network Access. In ipv6AccessConfigs, the recommend name is External IPv6.
+	// +kcc:proto:field=google.cloud.compute.v1.AccessConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// Applies to accessConfigs (IPv4) only. An external IP address associated with this instance. Specify an unused static external IP address available to the project or leave this field undefined to use an IP from a shared ephemeral IP address pool. If you specify a static external IP address, it must live in the same region as the zone of the instance.
+	// +kcc:proto:field=google.cloud.compute.v1.AccessConfig.nat_i_p
+	NATIP *string `json:"natIP,omitempty"`
+
+	// This signifies the networking tier used for configuring this access configuration and can only take the following values: PREMIUM, STANDARD. If an AccessConfig is specified without a valid external IP address, an ephemeral IP will be created with this networkTier. If an AccessConfig with a valid external IP address is specified, it must match that of the networkTier associated with the Address resource owning that IP.
+	//  Check the NetworkTier enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AccessConfig.network_tier
+	NetworkTier *string `json:"networkTier,omitempty"`
+
+	// The DNS domain name for the public PTR record. You can set this field only if the `setPublicPtr` field is enabled in accessConfig. If this field is unspecified in ipv6AccessConfig, a default PTR record will be created for first IP in associated external IPv6 range.
+	// +kcc:proto:field=google.cloud.compute.v1.AccessConfig.public_ptr_domain_name
+	PublicPtrDomainName *string `json:"publicPtrDomainName,omitempty"`
+
+	// The resource URL for the security policy associated with this access config.
+	// +kcc:proto:field=google.cloud.compute.v1.AccessConfig.security_policy
+	SecurityPolicy *string `json:"securityPolicy,omitempty"`
+
+	// Specifies whether a public DNS 'PTR' record should be created to map the external IP address of the instance to a DNS domain name. This field is not used in ipv6AccessConfig. A default PTR record will be created if the VM has external IPv6 range associated.
+	// +kcc:proto:field=google.cloud.compute.v1.AccessConfig.set_public_ptr
+	SetPublicPtr *bool `json:"setPublicPtr,omitempty"`
+
+	// The type of configuration. In accessConfigs (IPv4), the default and only option is ONE_TO_ONE_NAT. In ipv6AccessConfigs, the default and only option is DIRECT_IPV6.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AccessConfig.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Address", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Address
+type Address struct {
+	// The static IP address represented by this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.address
+	Address *string `json:"address,omitempty"`
+
+	// The type of address to reserve, either INTERNAL or EXTERNAL. If unspecified, defaults to EXTERNAL.
+	//  Check the AddressType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.address_type
+	AddressType *string `json:"addressType,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this field when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// The IP version that will be used by this address. Valid options are IPV4 or IPV6.
+	//  Check the IpVersion enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.ip_version
+	IPVersion *string `json:"ipVersion,omitempty"`
+
+	// The endpoint type of this address, which should be VM or NETLB. This is used for deciding which type of endpoint this address can be used after the external IPv6 address reservation.
+	//  Check the Ipv6EndpointType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.ipv6_endpoint_type
+	IPV6EndpointType *string `json:"ipv6EndpointType,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#address for addresses.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A fingerprint for the labels being applied to this Address, which is essentially a hash of the labels set used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve an Address.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.label_fingerprint
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
+	// Labels for this resource. These can only be added or modified by the setLabels method. Each label key/value pair must comply with RFC1035. Label values may be empty.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`. The first character must be a lowercase letter, and all following characters (except for the last character) must be a dash, lowercase letter, or digit. The last character must be a lowercase letter or digit.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.name
+	Name *string `json:"name,omitempty"`
+
+	// The URL of the network in which to reserve the address. This field can only be used with INTERNAL type with the VPC_PEERING purpose.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.network
+	Network *string `json:"network,omitempty"`
+
+	// This signifies the networking tier used for configuring this address and can only take the following values: PREMIUM or STANDARD. Internal IP addresses are always Premium Tier; global external IP addresses are always Premium Tier; regional external IP addresses can be either Standard or Premium Tier. If this field is not specified, it is assumed to be PREMIUM.
+	//  Check the NetworkTier enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.network_tier
+	NetworkTier *string `json:"networkTier,omitempty"`
+
+	// The prefix length if the resource represents an IP range.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.prefix_length
+	PrefixLength *int32 `json:"prefixLength,omitempty"`
+
+	// The purpose of this resource, which can be one of the following values: - GCE_ENDPOINT for addresses that are used by VM instances, alias IP ranges, load balancers, and similar resources. - DNS_RESOLVER for a DNS resolver address in a subnetwork for a Cloud DNS inbound forwarder IP addresses (regional internal IP address in a subnet of a VPC network) - VPC_PEERING for global internal IP addresses used for private services access allocated ranges. - NAT_AUTO for the regional external IP addresses used by Cloud NAT when allocating addresses using automatic NAT IP address allocation. - IPSEC_INTERCONNECT for addresses created from a private IP range that are reserved for a VLAN attachment in an *HA VPN over Cloud Interconnect* configuration. These addresses are regional resources. - `SHARED_LOADBALANCER_VIP` for an internal IP address that is assigned to multiple internal forwarding rules. - `PRIVATE_SERVICE_CONNECT` for a private network address that is used to configure Private Service Connect. Only global internal addresses can use this purpose.
+	//  Check the Purpose enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.purpose
+	Purpose *string `json:"purpose,omitempty"`
+
+	// [Output Only] The URL of the region where a regional address resides. For regional addresses, you must specify the region as a path parameter in the HTTP request URL. *This field is not applicable to global addresses.*
+	// +kcc:proto:field=google.cloud.compute.v1.Address.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] The status of the address, which can be one of RESERVING, RESERVED, or IN_USE. An address that is RESERVING is currently in the process of being reserved. A RESERVED address is currently reserved and available to use. An IN_USE address is currently being used by another resource and is not available.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.status
+	Status *string `json:"status,omitempty"`
+
+	// The URL of the subnetwork in which to reserve the address. If an IP address is specified, it must be within the subnetwork's IP range. This field can only be used with INTERNAL type with a GCE_ENDPOINT or DNS_RESOLVER purpose.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+
+	// [Output Only] The URLs of the resources that are using this address.
+	// +kcc:proto:field=google.cloud.compute.v1.Address.users
+	Users []string `json:"users,omitempty"`
+}
+*/
+
+/* unreachable type AdvancedMachineFeatures
+// +kcc:proto=google.cloud.compute.v1.AdvancedMachineFeatures
+type AdvancedMachineFeatures struct {
+	// Whether to enable nested virtualization or not (default is false).
+	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.enable_nested_virtualization
+	EnableNestedVirtualization *bool `json:"enableNestedVirtualization,omitempty"`
+
+	// Whether to enable UEFI networking for instance creation.
+	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.enable_uefi_networking
+	EnableUefiNetworking *bool `json:"enableUefiNetworking,omitempty"`
+
+	// Type of Performance Monitoring Unit requested on instance.
+	//  Check the PerformanceMonitoringUnit enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.performance_monitoring_unit
+	PerformanceMonitoringUnit *string `json:"performanceMonitoringUnit,omitempty"`
+
+	// The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed.
+	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.threads_per_core
+	ThreadsPerCore *int32 `json:"threadsPerCore,omitempty"`
+
+	// Turbo frequency mode to use for the instance. Supported modes include: * ALL_CORE_MAX Using empty string or not setting this field will use the platform-specific default turbo mode.
+	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.turbo_mode
+	TurboMode *string `json:"turboMode,omitempty"`
+
+	// The number of physical cores to expose to an instance. Multiply by the number of threads per core to compute the total number of virtual CPUs to expose to the instance. If unset, the number of cores is inferred from the instance's nominal CPU count and the underlying platform's SMT width.
+	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.visible_core_count
+	VisibleCoreCount *int32 `json:"visibleCoreCount,omitempty"`
+}
+*/
+
+/* unreachable type AliasIPRange
+// +kcc:proto=google.cloud.compute.v1.AliasIpRange
+type AliasIPRange struct {
+	// The IP alias ranges to allocate for this interface. This IP CIDR range must belong to the specified subnetwork and cannot contain IP addresses reserved by system or used by other network interfaces. This range may be a single IP address (such as 10.2.3.4), a netmask (such as /24) or a CIDR-formatted string (such as 10.1.2.0/24).
+	// +kcc:proto:field=google.cloud.compute.v1.AliasIpRange.ip_cidr_range
+	IPCIDRRange *string `json:"ipCIDRRange,omitempty"`
+
+	// The name of a subnetwork secondary IP range from which to allocate an IP alias range. If not specified, the primary range of the subnetwork is used.
+	// +kcc:proto:field=google.cloud.compute.v1.AliasIpRange.subnetwork_range_name
+	SubnetworkRangeName *string `json:"subnetworkRangeName,omitempty"`
+}
+*/
 
 /* unreachable type AllocationAggregateReservation
 // +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservation
@@ -136,6 +342,553 @@ type AllocationResourceStatusSpecificSkuAllocation struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk", skipping
+
+// +kcc:proto=google.cloud.compute.v1.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk
+type AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk struct {
+	// Specifies the size of the disk in base-2 GB.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk.disk_size_gb
+	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
+
+	// Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. For performance characteristics of SCSI over NVMe, see Local SSD performance.
+	//  Check the Interface enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk.interface
+	Interface *string `json:"interface,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AllocationSpecificSKUAllocationReservedInstanceProperties", skipping
+
+// +kcc:proto=google.cloud.compute.v1.AllocationSpecificSKUAllocationReservedInstanceProperties
+type AllocationSpecificSkuAllocationReservedInstanceProperties struct {
+	// Specifies accelerator type and count.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUAllocationReservedInstanceProperties.guest_accelerators
+	GuestAccelerators []AcceleratorConfig `json:"guestAccelerators,omitempty"`
+
+	// Specifies amount of local ssd to reserve with each instance. The type of disk is local-ssd.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUAllocationReservedInstanceProperties.local_ssds
+	LocalSsds []AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk `json:"localSsds,omitempty"`
+
+	// An opaque location hint used to place the allocation close to other resources. This field is for use by internal tools that use the public API.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUAllocationReservedInstanceProperties.location_hint
+	LocationHint *string `json:"locationHint,omitempty"`
+
+	// Specifies type of machine (name only) which has fixed number of vCPUs and fixed amount of memory. This also includes specifying custom machine type following custom-NUMBER_OF_CPUS-AMOUNT_OF_MEMORY pattern.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUAllocationReservedInstanceProperties.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Minimum cpu platform the reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUAllocationReservedInstanceProperties.min_cpu_platform
+	MinCPUPlatform *string `json:"minCPUPlatform,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AllocationSpecificSKUReservation", skipping
+
+// +kcc:proto=google.cloud.compute.v1.AllocationSpecificSKUReservation
+type AllocationSpecificSkuReservation struct {
+	// [Output Only] Indicates how many instances are actually usable currently.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUReservation.assured_count
+	AssuredCount *int64 `json:"assuredCount,omitempty"`
+
+	// Specifies the number of resources that are allocated.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUReservation.count
+	Count *int64 `json:"count,omitempty"`
+
+	// [Output Only] Indicates how many instances are in use.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUReservation.in_use_count
+	InUseCount *int64 `json:"inUseCount,omitempty"`
+
+	// The instance properties for the reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUReservation.instance_properties
+	InstanceProperties *AllocationSpecificSkuAllocationReservedInstanceProperties `json:"instanceProperties,omitempty"`
+
+	// Specifies the instance template to create the reservation. If you use this field, you must exclude the instanceProperties field. This field is optional, and it can be a full or partial URL. For example, the following are all valid URLs to an instance template: - https://www.googleapis.com/compute/v1/projects/project /global/instanceTemplates/instanceTemplate - projects/project/global/instanceTemplates/instanceTemplate - global/instanceTemplates/instanceTemplate
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUReservation.source_instance_template
+	SourceInstanceTemplate *string `json:"sourceInstanceTemplate,omitempty"`
+}
+*/
+
+/* unreachable type AttachedDisk
+// +kcc:proto=google.cloud.compute.v1.AttachedDisk
+type AttachedDisk struct {
+	// [Output Only] The architecture of the attached disk. Valid values are ARM64 or X86_64.
+	//  Check the Architecture enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.architecture
+	Architecture *string `json:"architecture,omitempty"`
+
+	// Specifies whether the disk will be auto-deleted when the instance is deleted (but not when the disk is detached from the instance).
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.auto_delete
+	AutoDelete *bool `json:"autoDelete,omitempty"`
+
+	// Indicates that this is a boot disk. The virtual machine will use the first partition of the disk for its root filesystem.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.boot
+	Boot *bool `json:"boot,omitempty"`
+
+	// Specifies a unique device name of your choice that is reflected into the /dev/disk/by-id/google-* tree of a Linux operating system running within the instance. This name can be used to reference the device for mounting, resizing, and so on, from within the instance. If not specified, the server chooses a default device name to apply to this disk, in the form persistent-disk-x, where x is a number assigned by Google Compute Engine. This field is only applicable for persistent disks.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.device_name
+	DeviceName *string `json:"deviceName,omitempty"`
+
+	// Encrypts or decrypts a disk using a customer-supplied encryption key. If you are creating a new disk, this field encrypts the new disk using an encryption key that you provide. If you are attaching an existing disk that is already encrypted, this field decrypts the disk using the customer-supplied encryption key. If you encrypt a disk using a customer-supplied key, you must provide the same key again when you attempt to use this resource at a later time. For example, you must provide the key when you create a snapshot or an image from the disk or when you attach the disk to a virtual machine instance. If you do not provide an encryption key, then the disk will be encrypted using an automatically generated key and you do not need to provide a key to use the disk later. Note: Instance templates do not store customer-supplied encryption keys, so you cannot use your own keys to encrypt disks in a managed instance group. You cannot create VMs that have disks with customer-supplied keys using the bulk insert method.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.disk_encryption_key
+	DiskEncryptionKey *CustomerEncryptionKey `json:"diskEncryptionKey,omitempty"`
+
+	// The size of the disk in GB.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.disk_size_gb
+	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
+
+	// [Input Only] Whether to force attach the regional disk even if it's currently attached to another instance. If you try to force attach a zonal disk to an instance, you will receive an error.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.force_attach
+	ForceAttach *bool `json:"forceAttach,omitempty"`
+
+	// A list of features to enable on the guest operating system. Applicable only for bootable images. Read Enabling guest operating system features to see a list of available options.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.guest_os_features
+	GuestOSFeatures []GuestOSFeature `json:"guestOSFeatures,omitempty"`
+
+	// [Output Only] A zero-based index to this disk, where 0 is reserved for the boot disk. If you have many disks attached to an instance, each disk would have a unique index number.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.index
+	Index *int32 `json:"index,omitempty"`
+
+	// [Input Only] Specifies the parameters for a new disk that will be created alongside the new instance. Use initialization parameters to create boot disks or local SSDs attached to the new instance. This property is mutually exclusive with the source property; you can only define one or the other, but not both.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.initialize_params
+	InitializeParams *AttachedDiskInitializeParams `json:"initializeParams,omitempty"`
+
+	// Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. For most machine types, the default is SCSI. Local SSDs can use either NVME or SCSI. In certain configurations, persistent disks can use NVMe. For more information, see About persistent disks.
+	//  Check the Interface enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.interface
+	Interface *string `json:"interface,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#attachedDisk for attached disks.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// [Output Only] Any valid publicly visible licenses.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.licenses
+	Licenses []string `json:"licenses,omitempty"`
+
+	// The mode in which to attach this disk, either READ_WRITE or READ_ONLY. If not specified, the default is to attach the disk in READ_WRITE mode.
+	//  Check the Mode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// For LocalSSD disks on VM Instances in STOPPED or SUSPENDED state, this field is set to PRESERVED if the LocalSSD data has been saved to a persistent location by customer request. (see the discard_local_ssd option on Stop/Suspend). Read-only in the api.
+	//  Check the SavedState enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.saved_state
+	SavedState *string `json:"savedState,omitempty"`
+
+	// [Output Only] shielded vm initial state stored on disk
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.shielded_instance_initial_state
+	ShieldedInstanceInitialState *InitialStateConfig `json:"shieldedInstanceInitialState,omitempty"`
+
+	// Specifies a valid partial or full URL to an existing Persistent Disk resource. When creating a new instance boot disk, one of initializeParams.sourceImage or initializeParams.sourceSnapshot or disks.source is required. If desired, you can also attach existing non-root persistent disks using this property. This field is only applicable for persistent disks. Note that for InstanceTemplate, specify the disk name for zonal disk, and the URL for regional disk.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.source
+	Source *string `json:"source,omitempty"`
+
+	// Specifies the type of the disk, either SCRATCH or PERSISTENT. If not specified, the default is PERSISTENT.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* unreachable type AttachedDiskInitializeParams
+// +kcc:proto=google.cloud.compute.v1.AttachedDiskInitializeParams
+type AttachedDiskInitializeParams struct {
+	// The architecture of the attached disk. Valid values are arm64 or x86_64.
+	//  Check the Architecture enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.architecture
+	Architecture *string `json:"architecture,omitempty"`
+
+	// An optional description. Provide this property when creating the disk.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.description
+	Description *string `json:"description,omitempty"`
+
+	// Specifies the disk name. If not specified, the default is to use the name of the instance. If a disk with the same name already exists in the given region, the existing disk is attached to the new instance and the new disk is not created.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.disk_name
+	DiskName *string `json:"diskName,omitempty"`
+
+	// Specifies the size of the disk in base-2 GB. The size must be at least 10 GB. If you specify a sourceImage, which is required for boot disks, the default size is the size of the sourceImage. If you do not specify a sourceImage, the default disk size is 500 GB.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.disk_size_gb
+	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
+
+	// Specifies the disk type to use to create the instance. If not specified, the default is pd-standard, specified using the full URL. For example: https://www.googleapis.com/compute/v1/projects/project/zones/zone /diskTypes/pd-standard For a full list of acceptable values, see Persistent disk types. If you specify this field when creating a VM, you can provide either the full or partial URL. For example, the following values are valid: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /diskTypes/diskType - projects/project/zones/zone/diskTypes/diskType - zones/zone/diskTypes/diskType If you specify this field when creating or updating an instance template or all-instances configuration, specify the type of the disk, not the URL. For example: pd-standard.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+
+	// Whether this disk is using confidential compute mode.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.enable_confidential_compute
+	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
+
+	// Labels to apply to this disk. These can be later modified by the disks.setLabels method. This field is only applicable for persistent disks.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// A list of publicly visible licenses. Reserved for Google's use.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.licenses
+	Licenses []string `json:"licenses,omitempty"`
+
+	// Specifies which action to take on instance update with this disk. Default is to use the existing disk.
+	//  Check the OnUpdateAction enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.on_update_action
+	OnUpdateAction *string `json:"onUpdateAction,omitempty"`
+
+	// Indicates how many IOPS to provision for the disk. This sets the number of I/O operations per second that the disk can handle. Values must be between 10,000 and 120,000. For more details, see the Extreme persistent disk documentation.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.provisioned_iops
+	ProvisionedIops *int64 `json:"provisionedIops,omitempty"`
+
+	// Indicates how much throughput to provision for the disk. This sets the number of throughput mb per second that the disk can handle. Values must greater than or equal to 1.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.provisioned_throughput
+	ProvisionedThroughput *int64 `json:"provisionedThroughput,omitempty"`
+
+	// Required for each regional disk associated with the instance. Specify the URLs of the zones where the disk should be replicated to. You must provide exactly two replica zones, and one zone must be the same as the instance zone.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.replica_zones
+	ReplicaZones []string `json:"replicaZones,omitempty"`
+
+	// Resource manager tags to be bound to the disk. Tag keys and values have the same definition as resource manager tags. Keys must be in the format `tagKeys/{tag_key_id}`, and values are in the format `tagValues/456`. The field is ignored (both PUT & PATCH) when empty.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.resource_manager_tags
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+
+	// Resource policies applied to this disk for automatic snapshot creations. Specified using the full or partial URL. For instance template, specify only the resource policy name.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.resource_policies
+	ResourcePolicies []string `json:"resourcePolicies,omitempty"`
+
+	// The source image to create this disk. When creating a new instance boot disk, one of initializeParams.sourceImage or initializeParams.sourceSnapshot or disks.source is required. To create a disk with one of the public operating system images, specify the image by its family name. For example, specify family/debian-9 to use the latest Debian 9 image: projects/debian-cloud/global/images/family/debian-9 Alternatively, use a specific version of a public operating system image: projects/debian-cloud/global/images/debian-9-stretch-vYYYYMMDD To create a disk with a custom image that you created, specify the image name in the following format: global/images/my-custom-image You can also specify a custom image by its image family, which returns the latest version of the image in that family. Replace the image name with family/family-name: global/images/family/my-image-family If the source image is deleted later, this field will not be set.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.source_image
+	SourceImage *string `json:"sourceImage,omitempty"`
+
+	// The customer-supplied encryption key of the source image. Required if the source image is protected by a customer-supplied encryption key. InstanceTemplate and InstancePropertiesPatch do not store customer-supplied encryption keys, so you cannot create disks for instances in a managed instance group if the source images are encrypted with your own keys.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.source_image_encryption_key
+	SourceImageEncryptionKey *CustomerEncryptionKey `json:"sourceImageEncryptionKey,omitempty"`
+
+	// The source snapshot to create this disk. When creating a new instance boot disk, one of initializeParams.sourceSnapshot or initializeParams.sourceImage or disks.source is required. To create a disk with a snapshot that you created, specify the snapshot name in the following format: global/snapshots/my-backup If the source snapshot is deleted later, this field will not be set. Note: You cannot create VMs in bulk using a snapshot as the source. Use an image instead when you create VMs using the bulk insert method.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.source_snapshot
+	SourceSnapshot *string `json:"sourceSnapshot,omitempty"`
+
+	// The customer-supplied encryption key of the source snapshot.
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.source_snapshot_encryption_key
+	SourceSnapshotEncryptionKey *CustomerEncryptionKey `json:"sourceSnapshotEncryptionKey,omitempty"`
+
+	// The storage pool in which the new disk is created. You can provide this as a partial or full URL to the resource. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /storagePools/storagePool - projects/project/zones/zone/storagePools/storagePool - zones/zone/storagePools/storagePool
+	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.storage_pool
+	StoragePool *string `json:"storagePool,omitempty"`
+}
+*/
+
+/* unreachable type ConfidentialInstanceConfig
+// +kcc:proto=google.cloud.compute.v1.ConfidentialInstanceConfig
+type ConfidentialInstanceConfig struct {
+	// Defines the type of technology used by the confidential instance.
+	//  Check the ConfidentialInstanceType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ConfidentialInstanceConfig.confidential_instance_type
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
+
+	// Defines whether the instance should have confidential compute enabled.
+	// +kcc:proto:field=google.cloud.compute.v1.ConfidentialInstanceConfig.enable_confidential_compute
+	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.CustomerEncryptionKey", skipping
+
+// +kcc:proto=google.cloud.compute.v1.CustomerEncryptionKey
+type CustomerEncryptionKey struct {
+	// The name of the encryption key that is stored in Google Cloud KMS. For example: "kmsKeyName": "projects/kms_project_id/locations/region/keyRings/ key_region/cryptoKeys/key The fully-qualifed key name may be returned for resource GET requests. For example: "kmsKeyName": "projects/kms_project_id/locations/region/keyRings/ key_region/cryptoKeys/key /cryptoKeyVersions/1
+	// +kcc:proto:field=google.cloud.compute.v1.CustomerEncryptionKey.kms_key_name
+	KMSKeyName *string `json:"kmsKeyName,omitempty"`
+
+	// The service account being used for the encryption request for the given KMS key. If absent, the Compute Engine default service account is used. For example: "kmsKeyServiceAccount": "name@project_id.iam.gserviceaccount.com/
+	// +kcc:proto:field=google.cloud.compute.v1.CustomerEncryptionKey.kms_key_service_account
+	KMSKeyServiceAccount *string `json:"kmsKeyServiceAccount,omitempty"`
+
+	// Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource. You can provide either the rawKey or the rsaEncryptedKey. For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+	// +kcc:proto:field=google.cloud.compute.v1.CustomerEncryptionKey.raw_key
+	RawKey *string `json:"rawKey,omitempty"`
+
+	// Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit customer-supplied encryption key to either encrypt or decrypt this resource. You can provide either the rawKey or the rsaEncryptedKey. For example: "rsaEncryptedKey": "ieCx/NcW06PcT7Ep1X6LUTc/hLvUDYyzSZPPVCVPTVEohpeHASqC8uw5TzyO9U+Fka9JFH z0mBibXUInrC/jEk014kCK/NPjYgEMOyssZ4ZINPKxlUh2zn1bV+MCaTICrdmuSBTWlUUiFoD D6PYznLwh8ZNdaheCeZ8ewEXgFQ8V+sDroLaN3Xs3MDTXQEMMoNUXMCZEIpg9Vtp9x2oe==" The key must meet the following requirements before you can provide it to Compute Engine: 1. The key is wrapped using a RSA public key certificate provided by Google. 2. After being wrapped, the key must be encoded in RFC 4648 base64 encoding. Gets the RSA public key certificate provided by Google at: https://cloud-certs.storage.googleapis.com/google-cloud-csek-ingress.pem
+	// +kcc:proto:field=google.cloud.compute.v1.CustomerEncryptionKey.rsa_encrypted_key
+	RsaEncryptedKey *string `json:"rsaEncryptedKey,omitempty"`
+
+	// [Output only] The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.CustomerEncryptionKey.sha256
+	Sha256 *string `json:"sha256,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Disk", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Disk
+type Disk struct {
+	// The access mode of the disk. - READ_WRITE_SINGLE: The default AccessMode, means the disk can be attached to single instance in RW mode. - READ_WRITE_MANY: The AccessMode means the disk can be attached to multiple instances in RW mode. - READ_ONLY_MANY: The AccessMode means the disk can be attached to multiple instances in RO mode. The AccessMode is only valid for Hyperdisk disk types.
+	//  Check the AccessMode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.access_mode
+	AccessMode *string `json:"accessMode,omitempty"`
+
+	// The architecture of the disk. Valid values are ARM64 or X86_64.
+	//  Check the Architecture enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.architecture
+	Architecture *string `json:"architecture,omitempty"`
+
+	// Disk asynchronously replicated into this disk.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.async_primary_disk
+	AsyncPrimaryDisk *DiskAsyncReplication `json:"asyncPrimaryDisk,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.description
+	Description *string `json:"description,omitempty"`
+
+	// Encrypts the disk using a customer-supplied encryption key or a customer-managed encryption key. Encryption keys do not protect access to metadata of the disk. After you encrypt a disk with a customer-supplied key, you must provide the same key if you use the disk later. For example, to create a disk snapshot, to create a disk image, to create a machine image, or to attach the disk to a virtual machine. After you encrypt a disk with a customer-managed key, the diskEncryptionKey.kmsKeyName is set to a key *version* name once the disk is created. The disk is encrypted with this version of the key. In the response, diskEncryptionKey.kmsKeyName appears in the following format: "diskEncryptionKey.kmsKeyName": "projects/kms_project_id/locations/region/keyRings/ key_region/cryptoKeys/key /cryptoKeysVersions/version If you do not provide an encryption key when creating the disk, then the disk is encrypted using an automatically generated key and you don't need to provide a key to use the disk later.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.disk_encryption_key
+	DiskEncryptionKey *CustomerEncryptionKey `json:"diskEncryptionKey,omitempty"`
+
+	// Whether this disk is using confidential compute mode.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.enable_confidential_compute
+	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
+
+	// A list of features to enable on the guest operating system. Applicable only for bootable images. Read Enabling guest operating system features to see a list of available options.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.guest_os_features
+	GuestOSFeatures []GuestOSFeature `json:"guestOSFeatures,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#disk for disks.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A fingerprint for the labels being applied to this disk, which is essentially a hash of the labels set used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve a disk.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.label_fingerprint
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
+	// Labels to apply to this disk. These can be later modified by the setLabels method.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// [Output Only] Last attach timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.last_attach_timestamp
+	LastAttachTimestamp *string `json:"lastAttachTimestamp,omitempty"`
+
+	// [Output Only] Last detach timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.last_detach_timestamp
+	LastDetachTimestamp *string `json:"lastDetachTimestamp,omitempty"`
+
+	// Integer license codes indicating which licenses are attached to this disk.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.license_codes
+	LicenseCodes []int64 `json:"licenseCodes,omitempty"`
+
+	// A list of publicly visible licenses. Reserved for Google's use.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.licenses
+	Licenses []string `json:"licenses,omitempty"`
+
+	// An opaque location hint used to place the disk close to other resources. This field is for use by internal tools that use the public API.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.location_hint
+	LocationHint *string `json:"locationHint,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.name
+	Name *string `json:"name,omitempty"`
+
+	// Internal use only.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.options
+	Options *string `json:"options,omitempty"`
+
+	// Input only. [Input Only] Additional params passed with the request, but not persisted as part of resource payload.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.params
+	Params *DiskParams `json:"params,omitempty"`
+
+	// Physical block size of the persistent disk, in bytes. If not present in a request, a default value is used. The currently supported size is 4096, other sizes may be added in the future. If an unsupported value is requested, the error message will list the supported values for the caller's project.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.physical_block_size_bytes
+	PhysicalBlockSizeBytes *int64 `json:"physicalBlockSizeBytes,omitempty"`
+
+	// Indicates how many IOPS to provision for the disk. This sets the number of I/O operations per second that the disk can handle. Values must be between 10,000 and 120,000. For more details, see the Extreme persistent disk documentation.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.provisioned_iops
+	ProvisionedIops *int64 `json:"provisionedIops,omitempty"`
+
+	// Indicates how much throughput to provision for the disk. This sets the number of throughput mb per second that the disk can handle. Values must be greater than or equal to 1.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.provisioned_throughput
+	ProvisionedThroughput *int64 `json:"provisionedThroughput,omitempty"`
+
+	// [Output Only] URL of the region where the disk resides. Only applicable for regional resources. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.region
+	Region *string `json:"region,omitempty"`
+
+	// URLs of the zones where the disk should be replicated to. Only applicable for regional resources.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.replica_zones
+	ReplicaZones []string `json:"replicaZones,omitempty"`
+
+	// Resource policies applied to this disk for automatic snapshot creations.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.resource_policies
+	ResourcePolicies []string `json:"resourcePolicies,omitempty"`
+
+	// [Output Only] Status information for the disk resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.resource_status
+	ResourceStatus *DiskResourceStatus `json:"resourceStatus,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	// [Output Only] Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Size, in GB, of the persistent disk. You can specify this field when creating a persistent disk using the sourceImage, sourceSnapshot, or sourceDisk parameter, or specify it alone to create an empty persistent disk. If you specify this field along with a source, the value of sizeGb must not be less than the size of the source. Acceptable values are greater than 0.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.size_gb
+	SizeGB *int64 `json:"sizeGB,omitempty"`
+
+	// [Output Only] URL of the DiskConsistencyGroupPolicy for a secondary disk that was created using a consistency group.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_consistency_group_policy
+	SourceConsistencyGroupPolicy *string `json:"sourceConsistencyGroupPolicy,omitempty"`
+
+	// [Output Only] ID of the DiskConsistencyGroupPolicy for a secondary disk that was created using a consistency group.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_consistency_group_policy_id
+	SourceConsistencyGroupPolicyID *string `json:"sourceConsistencyGroupPolicyID,omitempty"`
+
+	// The source disk used to create this disk. You can provide this as a partial or full URL to the resource. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /disks/disk - https://www.googleapis.com/compute/v1/projects/project/regions/region /disks/disk - projects/project/zones/zone/disks/disk - projects/project/regions/region/disks/disk - zones/zone/disks/disk - regions/region/disks/disk
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_disk
+	SourceDisk *string `json:"sourceDisk,omitempty"`
+
+	// [Output Only] The unique ID of the disk used to create this disk. This value identifies the exact disk that was used to create this persistent disk. For example, if you created the persistent disk from a disk that was later deleted and recreated under the same name, the source disk ID would identify the exact version of the disk that was used.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_disk_id
+	SourceDiskID *string `json:"sourceDiskID,omitempty"`
+
+	// The source image used to create this disk. If the source image is deleted, this field will not be set. To create a disk with one of the public operating system images, specify the image by its family name. For example, specify family/debian-9 to use the latest Debian 9 image: projects/debian-cloud/global/images/family/debian-9 Alternatively, use a specific version of a public operating system image: projects/debian-cloud/global/images/debian-9-stretch-vYYYYMMDD To create a disk with a custom image that you created, specify the image name in the following format: global/images/my-custom-image You can also specify a custom image by its image family, which returns the latest version of the image in that family. Replace the image name with family/family-name: global/images/family/my-image-family
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_image
+	SourceImage *string `json:"sourceImage,omitempty"`
+
+	// The customer-supplied encryption key of the source image. Required if the source image is protected by a customer-supplied encryption key.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_image_encryption_key
+	SourceImageEncryptionKey *CustomerEncryptionKey `json:"sourceImageEncryptionKey,omitempty"`
+
+	// [Output Only] The ID value of the image used to create this disk. This value identifies the exact image that was used to create this persistent disk. For example, if you created the persistent disk from an image that was later deleted and recreated under the same name, the source image ID would identify the exact version of the image that was used.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_image_id
+	SourceImageID *string `json:"sourceImageID,omitempty"`
+
+	// The source instant snapshot used to create this disk. You can provide this as a partial or full URL to the resource. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /instantSnapshots/instantSnapshot - projects/project/zones/zone/instantSnapshots/instantSnapshot - zones/zone/instantSnapshots/instantSnapshot
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_instant_snapshot
+	SourceInstantSnapshot *string `json:"sourceInstantSnapshot,omitempty"`
+
+	// [Output Only] The unique ID of the instant snapshot used to create this disk. This value identifies the exact instant snapshot that was used to create this persistent disk. For example, if you created the persistent disk from an instant snapshot that was later deleted and recreated under the same name, the source instant snapshot ID would identify the exact version of the instant snapshot that was used.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_instant_snapshot_id
+	SourceInstantSnapshotID *string `json:"sourceInstantSnapshotID,omitempty"`
+
+	// The source snapshot used to create this disk. You can provide this as a partial or full URL to the resource. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project /global/snapshots/snapshot - projects/project/global/snapshots/snapshot - global/snapshots/snapshot
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_snapshot
+	SourceSnapshot *string `json:"sourceSnapshot,omitempty"`
+
+	// The customer-supplied encryption key of the source snapshot. Required if the source snapshot is protected by a customer-supplied encryption key.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_snapshot_encryption_key
+	SourceSnapshotEncryptionKey *CustomerEncryptionKey `json:"sourceSnapshotEncryptionKey,omitempty"`
+
+	// [Output Only] The unique ID of the snapshot used to create this disk. This value identifies the exact snapshot that was used to create this persistent disk. For example, if you created the persistent disk from a snapshot that was later deleted and recreated under the same name, the source snapshot ID would identify the exact version of the snapshot that was used.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_snapshot_id
+	SourceSnapshotID *string `json:"sourceSnapshotID,omitempty"`
+
+	// The full Google Cloud Storage URI where the disk image is stored. This file must be a gzip-compressed tarball whose name ends in .tar.gz or virtual machine disk whose name ends in vmdk. Valid URIs may start with gs:// or https://storage.googleapis.com/. This flag is not optimized for creating multiple disks from a source storage object. To create many disks from a source storage object, use gcloud compute images import instead.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.source_storage_object
+	SourceStorageObject *string `json:"sourceStorageObject,omitempty"`
+
+	// [Output Only] The status of disk creation. - CREATING: Disk is provisioning. - RESTORING: Source data is being copied into the disk. - FAILED: Disk creation failed. - READY: Disk is ready for use. - DELETING: Disk is deleting.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.status
+	Status *string `json:"status,omitempty"`
+
+	// The storage pool in which the new disk is created. You can provide this as a partial or full URL to the resource. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /storagePools/storagePool - projects/project/zones/zone/storagePools/storagePool - zones/zone/storagePools/storagePool
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.storage_pool
+	StoragePool *string `json:"storagePool,omitempty"`
+
+	// URL of the disk type resource describing which disk type to use to create the disk. Provide this when creating the disk. For example: projects/project /zones/zone/diskTypes/pd-ssd . See Persistent disk types.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.type
+	Type *string `json:"type,omitempty"`
+
+	// [Output Only] Links to the users of the disk (attached instances) in form: projects/project/zones/zone/instances/instance
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.users
+	Users []string `json:"users,omitempty"`
+
+	// [Output Only] URL of the zone where the disk resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.Disk.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
+/* unreachable type DiskAsyncReplication
+// +kcc:proto=google.cloud.compute.v1.DiskAsyncReplication
+type DiskAsyncReplication struct {
+	// [Output Only] URL of the DiskConsistencyGroupPolicy if replication was started on the disk as a member of a group.
+	// +kcc:proto:field=google.cloud.compute.v1.DiskAsyncReplication.consistency_group_policy
+	ConsistencyGroupPolicy *string `json:"consistencyGroupPolicy,omitempty"`
+
+	// [Output Only] ID of the DiskConsistencyGroupPolicy if replication was started on the disk as a member of a group.
+	// +kcc:proto:field=google.cloud.compute.v1.DiskAsyncReplication.consistency_group_policy_id
+	ConsistencyGroupPolicyID *string `json:"consistencyGroupPolicyID,omitempty"`
+
+	// The other disk asynchronously replicated to or from the current disk. You can provide this as a partial or full URL to the resource. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /disks/disk - projects/project/zones/zone/disks/disk - zones/zone/disks/disk
+	// +kcc:proto:field=google.cloud.compute.v1.DiskAsyncReplication.disk
+	Disk *string `json:"disk,omitempty"`
+
+	// [Output Only] The unique ID of the other disk asynchronously replicated to or from the current disk. This value identifies the exact disk that was used to create this replication. For example, if you started replicating the persistent disk from a disk that was later deleted and recreated under the same name, the disk ID would identify the exact version of the disk that was used.
+	// +kcc:proto:field=google.cloud.compute.v1.DiskAsyncReplication.disk_id
+	DiskID *string `json:"diskID,omitempty"`
+}
+*/
+
+/* unreachable type DiskAsyncReplicationList
+// +kcc:proto=google.cloud.compute.v1.DiskAsyncReplicationList
+type DiskAsyncReplicationList struct {
+	// +kcc:proto:field=google.cloud.compute.v1.DiskAsyncReplicationList.async_replication_disk
+	AsyncReplicationDisk *DiskAsyncReplication `json:"asyncReplicationDisk,omitempty"`
+}
+*/
+
+/* unreachable type DiskParams
+// +kcc:proto=google.cloud.compute.v1.DiskParams
+type DiskParams struct {
+	// Resource manager tags to be bound to the disk. Tag keys and values have the same definition as resource manager tags. Keys must be in the format `tagKeys/{tag_key_id}`, and values are in the format `tagValues/456`. The field is ignored (both PUT & PATCH) when empty.
+	// +kcc:proto:field=google.cloud.compute.v1.DiskParams.resource_manager_tags
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+}
+*/
+
+/* unreachable type DiskResourceStatus
+// +kcc:proto=google.cloud.compute.v1.DiskResourceStatus
+type DiskResourceStatus struct {
+	// +kcc:proto:field=google.cloud.compute.v1.DiskResourceStatus.async_primary_disk
+	AsyncPrimaryDisk *DiskResourceStatusAsyncReplicationStatus `json:"asyncPrimaryDisk,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+*/
+
+/* unreachable type DiskResourceStatusAsyncReplicationStatus
+// +kcc:proto=google.cloud.compute.v1.DiskResourceStatusAsyncReplicationStatus
+type DiskResourceStatusAsyncReplicationStatus struct {
+	// Check the State enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.DiskResourceStatusAsyncReplicationStatus.state
+	State *string `json:"state,omitempty"`
+}
+*/
+
+/* unreachable type DisplayDevice
+// +kcc:proto=google.cloud.compute.v1.DisplayDevice
+type DisplayDevice struct {
+	// Defines whether the instance has Display enabled.
+	// +kcc:proto:field=google.cloud.compute.v1.DisplayDevice.enable_display
+	EnableDisplay *bool `json:"enableDisplay,omitempty"`
+}
+*/
+
 /* unreachable type Duration
 // +kcc:proto=google.cloud.compute.v1.Duration
 type Duration struct {
@@ -170,6 +923,169 @@ type Expr struct {
 }
 */
 
+/* unreachable type FileContentBuffer
+// +kcc:proto=google.cloud.compute.v1.FileContentBuffer
+type FileContentBuffer struct {
+	// The raw content in the secure keys file.
+	// +kcc:proto:field=google.cloud.compute.v1.FileContentBuffer.content
+	Content *string `json:"content,omitempty"`
+
+	// The file type of source file.
+	//  Check the FileType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.FileContentBuffer.file_type
+	FileType *string `json:"fileType,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.FirewallPolicyRule", skipping
+
+// +kcc:proto=google.cloud.compute.v1.FirewallPolicyRule
+type FirewallPolicyRule struct {
+	// The Action to perform when the client connection triggers the rule. Valid actions for firewall rules are: "allow", "deny", "apply_security_profile_group" and "goto_next". Valid actions for packet mirroring rules are: "mirror", "do_not_mirror" and "goto_next".
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.action
+	Action *string `json:"action,omitempty"`
+
+	// An optional description for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.description
+	Description *string `json:"description,omitempty"`
+
+	// The direction in which this rule applies.
+	//  Check the Direction enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.direction
+	Direction *string `json:"direction,omitempty"`
+
+	// Denotes whether the firewall policy rule is disabled. When set to true, the firewall policy rule is not enforced and traffic behaves as if it did not exist. If this is unspecified, the firewall policy rule will be enabled.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+
+	// Denotes whether to enable logging for a particular rule. If logging is enabled, logs will be exported to the configured export destination in Stackdriver. Logs may be exported to BigQuery or Pub/Sub. Note: you cannot enable logging on "goto_next" rules.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.enable_logging
+	EnableLogging *bool `json:"enableLogging,omitempty"`
+
+	// [Output only] Type of the resource. Returns compute#firewallPolicyRule for firewall rules and compute#packetMirroringRule for packet mirroring rules.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.match
+	Match *FirewallPolicyRuleMatcher `json:"match,omitempty"`
+
+	// An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest priority.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.priority
+	Priority *int32 `json:"priority,omitempty"`
+
+	// An optional name for the rule. This field is not a unique identifier and can be updated.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.rule_name
+	RuleName *string `json:"ruleName,omitempty"`
+
+	// [Output Only] Calculation of the complexity of a single firewall policy rule.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.rule_tuple_count
+	RuleTupleCount *int32 `json:"ruleTupleCount,omitempty"`
+
+	// A fully-qualified URL of a SecurityProfile resource instance. Example: https://networksecurity.googleapis.com/v1/projects/{project}/locations/{location}/securityProfileGroups/my-security-profile-group Must be specified if action is one of 'apply_security_profile_group' or 'mirror'. Cannot be specified for other actions.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.security_profile_group
+	SecurityProfileGroup *string `json:"securityProfileGroup,omitempty"`
+
+	// A list of network resource URLs to which this rule applies. This field allows you to control which network's VMs get this rule. If this field is left blank, all VMs within the organization will receive the rule.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.target_resources
+	TargetResources []string `json:"targetResources,omitempty"`
+
+	// A list of secure tags that controls which instances the firewall rule applies to. If targetSecureTag are specified, then the firewall rule applies only to instances in the VPC network that have one of those EFFECTIVE secure tags, if all the target_secure_tag are in INEFFECTIVE state, then this rule will be ignored. targetSecureTag may not be set at the same time as targetServiceAccounts. If neither targetServiceAccounts nor targetSecureTag are specified, the firewall rule applies to all instances on the specified network. Maximum number of target label tags allowed is 256.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.target_secure_tags
+	TargetSecureTags []FirewallPolicyRuleSecureTag `json:"targetSecureTags,omitempty"`
+
+	// A list of service accounts indicating the sets of instances that are applied with this rule.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.target_service_accounts
+	TargetServiceAccounts []string `json:"targetServiceAccounts,omitempty"`
+
+	// Boolean flag indicating if the traffic should be TLS decrypted. Can be set only if action = 'apply_security_profile_group' and cannot be set for other actions.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.tls_inspect
+	TLSInspect *bool `json:"tlsInspect,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "FirewallPolicyRuleMatcher", skipping
+
+// +kcc:proto=google.cloud.compute.v1.FirewallPolicyRuleMatcher
+type FirewallPolicyRuleMatcher struct {
+	// Address groups which should be matched against the traffic destination. Maximum number of destination address groups is 10.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.dest_address_groups
+	DestAddressGroups []string `json:"destAddressGroups,omitempty"`
+
+	// Fully Qualified Domain Name (FQDN) which should be matched against traffic destination. Maximum number of destination fqdn allowed is 100.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.dest_fqdns
+	DestFqdns []string `json:"destFqdns,omitempty"`
+
+	// CIDR IP address range. Maximum number of destination CIDR IP ranges allowed is 5000.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.dest_ip_ranges
+	DestIPRanges []string `json:"destIPRanges,omitempty"`
+
+	// Network type of the traffic destination. Allowed values are: - UNSPECIFIED - INTERNET - NON_INTERNET
+	//  Check the DestNetworkType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.dest_network_type
+	DestNetworkType *string `json:"destNetworkType,omitempty"`
+
+	// Region codes whose IP addresses will be used to match for destination of traffic. Should be specified as 2 letter country code defined as per ISO 3166 alpha-2 country codes. ex."US" Maximum number of dest region codes allowed is 5000.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.dest_region_codes
+	DestRegionCodes []string `json:"destRegionCodes,omitempty"`
+
+	// Names of Network Threat Intelligence lists. The IPs in these lists will be matched against traffic destination.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.dest_threat_intelligences
+	DestThreatIntelligences []string `json:"destThreatIntelligences,omitempty"`
+
+	// Pairs of IP protocols and ports that the rule should match.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.layer4_configs
+	Layer4Configs []FirewallPolicyRuleMatcherLayer4Config `json:"layer4Configs,omitempty"`
+
+	// Address groups which should be matched against the traffic source. Maximum number of source address groups is 10.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_address_groups
+	SrcAddressGroups []string `json:"srcAddressGroups,omitempty"`
+
+	// Fully Qualified Domain Name (FQDN) which should be matched against traffic source. Maximum number of source fqdn allowed is 100.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_fqdns
+	SrcFqdns []string `json:"srcFqdns,omitempty"`
+
+	// CIDR IP address range. Maximum number of source CIDR IP ranges allowed is 5000.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_ip_ranges
+	SrcIPRanges []string `json:"srcIPRanges,omitempty"`
+
+	// Network type of the traffic source. Allowed values are: - UNSPECIFIED - INTERNET - INTRA_VPC - NON_INTERNET - VPC_NETWORKS
+	//  Check the SrcNetworkType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_network_type
+	SrcNetworkType *string `json:"srcNetworkType,omitempty"`
+
+	// Networks of the traffic source. It can be either a full or partial url.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_networks
+	SrcNetworks []string `json:"srcNetworks,omitempty"`
+
+	// Region codes whose IP addresses will be used to match for source of traffic. Should be specified as 2 letter country code defined as per ISO 3166 alpha-2 country codes. ex."US" Maximum number of source region codes allowed is 5000.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_region_codes
+	SrcRegionCodes []string `json:"srcRegionCodes,omitempty"`
+
+	// List of secure tag values, which should be matched at the source of the traffic. For INGRESS rule, if all the srcSecureTag are INEFFECTIVE, and there is no srcIpRange, this rule will be ignored. Maximum number of source tag values allowed is 256.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_secure_tags
+	SrcSecureTags []FirewallPolicyRuleSecureTag `json:"srcSecureTags,omitempty"`
+
+	// Names of Network Threat Intelligence lists. The IPs in these lists will be matched against traffic source.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_threat_intelligences
+	SrcThreatIntelligences []string `json:"srcThreatIntelligences,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "FirewallPolicyRuleMatcherLayer4Config", skipping
+
+// +kcc:proto=google.cloud.compute.v1.FirewallPolicyRuleMatcherLayer4Config
+type FirewallPolicyRuleMatcherLayer4Config struct {
+	// The IP protocol to which this rule applies. The protocol type is required when creating a firewall rule. This value can either be one of the following well known protocol strings (tcp, udp, icmp, esp, ah, ipip, sctp), or the IP protocol number.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcherLayer4Config.ip_protocol
+	IPProtocol *string `json:"ipProtocol,omitempty"`
+
+	// An optional list of ports to which this rule applies. This field is only applicable for UDP or TCP protocol. Each entry must be either an integer or a range. If not specified, this rule applies to connections through any port. Example inputs include: ["22"], ["80","443"], and ["12345-12349"].
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcherLayer4Config.ports
+	Ports []string `json:"ports,omitempty"`
+}
+*/
+
 /* unreachable type FirewallPolicyRuleSecureTag
 // +kcc:proto=google.cloud.compute.v1.FirewallPolicyRuleSecureTag
 type FirewallPolicyRuleSecureTag struct {
@@ -181,6 +1097,210 @@ type FirewallPolicyRuleSecureTag struct {
 	//  Check the State enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleSecureTag.state
 	State *string `json:"state,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ForwardingRule", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ForwardingRule
+type ForwardingRule struct {
+	// IP address for which this forwarding rule accepts traffic. When a client sends traffic to this IP address, the forwarding rule directs the traffic to the referenced target or backendService. While creating a forwarding rule, specifying an IPAddress is required under the following circumstances: - When the target is set to targetGrpcProxy and validateForProxyless is set to true, the IPAddress should be set to 0.0.0.0. - When the target is a Private Service Connect Google APIs bundle, you must specify an IPAddress. Otherwise, you can optionally specify an IP address that references an existing static (reserved) IP address resource. When omitted, Google Cloud assigns an ephemeral IP address. Use one of the following formats to specify an IP address while creating a forwarding rule: * IP address number, as in `100.1.2.3` * IPv6 address range, as in `2600:1234::/96` * Full resource URL, as in https://www.googleapis.com/compute/v1/projects/ project_id/regions/region/addresses/address-name * Partial URL or by name, as in: - projects/project_id/regions/region/addresses/address-name - regions/region/addresses/address-name - global/addresses/address-name - address-name The forwarding rule's target or backendService, and in most cases, also the loadBalancingScheme, determine the type of IP address that you can use. For detailed information, see [IP address specifications](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#ip_address_specifications). When reading an IPAddress, the API always returns the IP address number.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.I_p_address
+	IPAddress *string `json:"IPAddress,omitempty"`
+
+	// The IP protocol to which this rule applies. For protocol forwarding, valid options are TCP, UDP, ESP, AH, SCTP, ICMP and L3_DEFAULT. The valid IP protocols are different for different load balancing products as described in [Load balancing features](https://cloud.google.com/load-balancing/docs/features#protocols_from_the_load_balancer_to_the_backends).
+	//  Check the IPProtocolEnum enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.I_p_protocol
+	IPProtocol *string `json:"IPProtocol,omitempty"`
+
+	// The ports, portRange, and allPorts fields are mutually exclusive. Only packets addressed to ports in the specified range will be forwarded to the backends configured with this forwarding rule. The allPorts field has the following limitations: - It requires that the forwarding rule IPProtocol be TCP, UDP, SCTP, or L3_DEFAULT. - It's applicable only to the following products: internal passthrough Network Load Balancers, backend service-based external passthrough Network Load Balancers, and internal and external protocol forwarding. - Set this field to true to allow packets addressed to any port or packets lacking destination port information (for example, UDP fragments after the first fragment) to be forwarded to the backends configured with this forwarding rule. The L3_DEFAULT protocol requires allPorts be set to true.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.all_ports
+	AllPorts *bool `json:"allPorts,omitempty"`
+
+	// If set to true, clients can access the internal passthrough Network Load Balancers, the regional internal Application Load Balancer, and the regional internal proxy Network Load Balancer from all regions. If false, only allows access from the local region the load balancer is located at. Note that for INTERNAL_MANAGED forwarding rules, this field cannot be changed after the forwarding rule is created.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.allow_global_access
+	AllowGlobalAccess *bool `json:"allowGlobalAccess,omitempty"`
+
+	// This is used in PSC consumer ForwardingRule to control whether the PSC endpoint can be accessed from another region.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.allow_psc_global_access
+	AllowPSCGlobalAccess *bool `json:"allowPSCGlobalAccess,omitempty"`
+
+	// Identifies the backend service to which the forwarding rule sends traffic. Required for internal and external passthrough Network Load Balancers; must be omitted for all other load balancer types.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.backend_service
+	BackendService *string `json:"backendService,omitempty"`
+
+	// [Output Only] The URL for the corresponding base forwarding rule. By base forwarding rule, we mean the forwarding rule that has the same IP address, protocol, and port settings with the current forwarding rule, but without sourceIPRanges specified. Always empty if the current forwarding rule does not have sourceIPRanges specified.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.base_forwarding_rule
+	BaseForwardingRule *string `json:"baseForwardingRule,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.description
+	Description *string `json:"description,omitempty"`
+
+	// Specifies the canary migration state for the backend buckets attached to this forwarding rule. Possible values are PREPARE, TEST_BY_PERCENTAGE, and TEST_ALL_TRAFFIC. To begin the migration from EXTERNAL to EXTERNAL_MANAGED, the state must be changed to PREPARE. The state must be changed to TEST_ALL_TRAFFIC before the loadBalancingScheme can be changed to EXTERNAL_MANAGED. Optionally, the TEST_BY_PERCENTAGE state can be used to migrate traffic to backend buckets attached to this forwarding rule by percentage using externalManagedBackendBucketMigrationTestingPercentage. Rolling back a migration requires the states to be set in reverse order. So changing the scheme from EXTERNAL_MANAGED to EXTERNAL requires the state to be set to TEST_ALL_TRAFFIC at the same time. Optionally, the TEST_BY_PERCENTAGE state can be used to migrate some traffic back to EXTERNAL or PREPARE can be used to migrate all traffic back to EXTERNAL.
+	//  Check the ExternalManagedBackendBucketMigrationState enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.external_managed_backend_bucket_migration_state
+	ExternalManagedBackendBucketMigrationState *string `json:"externalManagedBackendBucketMigrationState,omitempty"`
+
+	// Determines the fraction of requests to backend buckets that should be processed by the global external Application Load Balancer. The value of this field must be in the range [0, 100]. This value can only be set if the loadBalancingScheme in the BackendService is set to EXTERNAL (when using the classic Application Load Balancer) and the migration state is TEST_BY_PERCENTAGE.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.external_managed_backend_bucket_migration_testing_percentage
+	ExternalManagedBackendBucketMigrationTestingPercentage *float32 `json:"externalManagedBackendBucketMigrationTestingPercentage,omitempty"`
+
+	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a ForwardingRule. Include the fingerprint in patch request to ensure that you do not overwrite changes that were applied from another concurrent request. To see the latest fingerprint, make a get() request to retrieve a ForwardingRule.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Resource reference of a PublicDelegatedPrefix. The PDP must be a sub-PDP in EXTERNAL_IPV6_FORWARDING_RULE_CREATION mode. Use one of the following formats to specify a sub-PDP when creating an IPv6 NetLB forwarding rule using BYOIP: Full resource URL, as in https://www.googleapis.com/compute/v1/projects/project_id/regions/region /publicDelegatedPrefixes/sub-pdp-name Partial URL, as in: - projects/project_id/regions/region/publicDelegatedPrefixes/sub-pdp-name - regions/region/publicDelegatedPrefixes/sub-pdp-name
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.ip_collection
+	IPCollection *string `json:"ipCollection,omitempty"`
+
+	// The IP Version that will be used by this forwarding rule. Valid options are IPV4 or IPV6.
+	//  Check the IpVersion enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.ip_version
+	IPVersion *string `json:"ipVersion,omitempty"`
+
+	// Indicates whether or not this load balancer can be used as a collector for packet mirroring. To prevent mirroring loops, instances behind this load balancer will not have their traffic mirrored even if a PacketMirroring rule applies to them. This can only be set to true for load balancers that have their loadBalancingScheme set to INTERNAL.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.is_mirroring_collector
+	IsMirroringCollector *bool `json:"isMirroringCollector,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#forwardingRule for forwarding rule resources.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A fingerprint for the labels being applied to this resource, which is essentially a hash of the labels set used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve a ForwardingRule.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.label_fingerprint
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
+	// Labels for this resource. These can only be added or modified by the setLabels method. Each label key/value pair must comply with RFC1035. Label values may be empty.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Specifies the forwarding rule type. For more information about forwarding rules, refer to Forwarding rule concepts.
+	//  Check the LoadBalancingScheme enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.load_balancing_scheme
+	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
+
+	// Opaque filter criteria used by load balancer to restrict routing configuration to a limited set of xDS compliant clients. In their xDS requests to load balancer, xDS clients present node metadata. When there is a match, the relevant configuration is made available to those proxies. Otherwise, all the resources (e.g. TargetHttpProxy, UrlMap) referenced by the ForwardingRule are not visible to those proxies. For each metadataFilter in this list, if its filterMatchCriteria is set to MATCH_ANY, at least one of the filterLabels must match the corresponding label provided in the metadata. If its filterMatchCriteria is set to MATCH_ALL, then all of its filterLabels must match with corresponding labels provided in the metadata. If multiple metadataFilters are specified, all of them need to be satisfied in order to be considered a match. metadataFilters specified here will be applifed before those specified in the UrlMap that this ForwardingRule references. metadataFilters only applies to Loadbalancers that have their loadBalancingScheme set to INTERNAL_SELF_MANAGED.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.metadata_filters
+	MetadataFilters []MetadataFilter `json:"metadataFilters,omitempty"`
+
+	// Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash. For Private Service Connect forwarding rules that forward traffic to Google APIs, the forwarding rule name must be a 1-20 characters string with lowercase letters and numbers and must start with a letter.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.name
+	Name *string `json:"name,omitempty"`
+
+	// This field is not used for global external load balancing. For internal passthrough Network Load Balancers, this field identifies the network that the load balanced IP should belong to for this forwarding rule. If the subnetwork is specified, the network of the subnetwork will be used. If neither subnetwork nor this field is specified, the default network will be used. For Private Service Connect forwarding rules that forward traffic to Google APIs, a network must be provided.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.network
+	Network *string `json:"network,omitempty"`
+
+	// This signifies the networking tier used for configuring this load balancer and can only take the following values: PREMIUM, STANDARD. For regional ForwardingRule, the valid values are PREMIUM and STANDARD. For GlobalForwardingRule, the valid value is PREMIUM. If this field is not specified, it is assumed to be PREMIUM. If IPAddress is specified, this value must be equal to the networkTier of the Address.
+	//  Check the NetworkTier enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.network_tier
+	NetworkTier *string `json:"networkTier,omitempty"`
+
+	// This is used in PSC consumer ForwardingRule to control whether it should try to auto-generate a DNS zone or not. Non-PSC forwarding rules do not use this field. Once set, this field is not mutable.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.no_automate_dns_zone
+	NoAutomateDNSZone *bool `json:"noAutomateDNSZone,omitempty"`
+
+	// The ports, portRange, and allPorts fields are mutually exclusive. Only packets addressed to ports in the specified range will be forwarded to the backends configured with this forwarding rule. The portRange field has the following limitations: - It requires that the forwarding rule IPProtocol be TCP, UDP, or SCTP, and - It's applicable only to the following products: external passthrough Network Load Balancers, internal and external proxy Network Load Balancers, internal and external Application Load Balancers, external protocol forwarding, and Classic VPN. - Some products have restrictions on what ports can be used. See port specifications for details. For external forwarding rules, two or more forwarding rules cannot use the same [IPAddress, IPProtocol] pair, and cannot have overlapping portRanges. For internal forwarding rules within the same VPC network, two or more forwarding rules cannot use the same [IPAddress, IPProtocol] pair, and cannot have overlapping portRanges. @pattern: \\d+(?:-\\d+)?
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.port_range
+	PortRange *string `json:"portRange,omitempty"`
+
+	// The ports, portRange, and allPorts fields are mutually exclusive. Only packets addressed to ports in the specified range will be forwarded to the backends configured with this forwarding rule. The ports field has the following limitations: - It requires that the forwarding rule IPProtocol be TCP, UDP, or SCTP, and - It's applicable only to the following products: internal passthrough Network Load Balancers, backend service-based external passthrough Network Load Balancers, and internal protocol forwarding. - You can specify a list of up to five ports by number, separated by commas. The ports can be contiguous or discontiguous. For external forwarding rules, two or more forwarding rules cannot use the same [IPAddress, IPProtocol] pair if they share at least one port number. For internal forwarding rules within the same VPC network, two or more forwarding rules cannot use the same [IPAddress, IPProtocol] pair if they share at least one port number. @pattern: \\d+(?:-\\d+)?
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.ports
+	Ports []string `json:"ports,omitempty"`
+
+	// [Output Only] The PSC connection id of the PSC forwarding rule.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.psc_connection_id
+	PSCConnectionID *uint64 `json:"pscConnectionID,omitempty"`
+
+	// Check the PscConnectionStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.psc_connection_status
+	PSCConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
+
+	// [Output Only] URL of the region where the regional forwarding rule resides. This field is not applicable to global forwarding rules. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] Server-defined URL for this resource with the resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// Service Directory resources to register this forwarding rule with. Currently, only supports a single Service Directory resource.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.service_directory_registrations
+	ServiceDirectoryRegistrations []ForwardingRuleServiceDirectoryRegistration `json:"serviceDirectoryRegistrations,omitempty"`
+
+	// An optional prefix to the service name for this forwarding rule. If specified, the prefix is the first label of the fully qualified service name. The label must be 1-63 characters long, and comply with RFC1035. Specifically, the label must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash. This field is only used for internal load balancing.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.service_label
+	ServiceLabel *string `json:"serviceLabel,omitempty"`
+
+	// [Output Only] The internal fully qualified service name for this forwarding rule. This field is only used for internal load balancing.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.service_name
+	ServiceName *string `json:"serviceName,omitempty"`
+
+	// If not empty, this forwarding rule will only forward the traffic when the source IP address matches one of the IP addresses or CIDR ranges set here. Note that a forwarding rule can only have up to 64 source IP ranges, and this field can only be used with a regional forwarding rule whose scheme is EXTERNAL. Each source_ip_range entry should be either an IP address (for example, 1.2.3.4) or a CIDR range (for example, 1.2.3.0/24).
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.source_ip_ranges
+	SourceIPRanges []string `json:"sourceIPRanges,omitempty"`
+
+	// This field identifies the subnetwork that the load balanced IP should belong to for this forwarding rule, used with internal load balancers and external passthrough Network Load Balancers with IPv6. If the network specified is in auto subnet mode, this field is optional. However, a subnetwork must be specified if the network is in custom subnet mode or when creating external forwarding rule with IPv6.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+
+	// The URL of the target resource to receive the matched traffic. For regional forwarding rules, this target must be in the same region as the forwarding rule. For global forwarding rules, this target must be a global load balancing resource. The forwarded traffic must be of a type appropriate to the target object. - For load balancers, see the "Target" column in [Port specifications](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#ip_address_specifications). - For Private Service Connect forwarding rules that forward traffic to Google APIs, provide the name of a supported Google API bundle: - vpc-sc - APIs that support VPC Service Controls. - all-apis - All supported Google APIs. - For Private Service Connect forwarding rules that forward traffic to managed services, the target must be a service attachment. The target is not mutable once set as a service attachment.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.target
+	Target *string `json:"target,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ForwardingRuleServiceDirectoryRegistration", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ForwardingRuleServiceDirectoryRegistration
+type ForwardingRuleServiceDirectoryRegistration struct {
+	// Service Directory namespace to register the forwarding rule under.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRuleServiceDirectoryRegistration.namespace
+	Namespace *string `json:"namespace,omitempty"`
+
+	// Service Directory service to register the forwarding rule under.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRuleServiceDirectoryRegistration.service
+	Service *string `json:"service,omitempty"`
+
+	// [Optional] Service Directory region to register this global forwarding rule under. Default to "us-central1". Only used for PSC for Google APIs. All PSC for Google APIs forwarding rules on the same network should use the same Service Directory region.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRuleServiceDirectoryRegistration.service_directory_region
+	ServiceDirectoryRegion *string `json:"serviceDirectoryRegion,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.GRPCHealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.GRPCHealthCheck
+type GrpcHealthCheck struct {
+	// The gRPC service name for the health check. This field is optional. The value of grpc_service_name has the following meanings by convention: - Empty service_name means the overall status of all services at the backend. - Non-empty service_name means the health of that gRPC service, as defined by the owner of the service. The grpc_service_name can only be ASCII.
+	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.grpc_service_name
+	GrpcServiceName *string `json:"grpcServiceName,omitempty"`
+
+	// The TCP port number to which the health check prober sends packets. Valid values are 1 through 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Not supported.
+	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.port_name
+	PortName *string `json:"portName,omitempty"`
+
+	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for passthrough load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
+	//  Check the PortSpecification enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.port_specification
+	PortSpecification *string `json:"portSpecification,omitempty"`
 }
 */
 
@@ -222,6 +1342,506 @@ type GroupMaintenanceInfo struct {
 }
 */
 
+/* unreachable type GuestOSFeature
+// +kcc:proto=google.cloud.compute.v1.GuestOsFeature
+type GuestOSFeature struct {
+	// The ID of a supported feature. To add multiple values, use commas to separate values. Set to one or more of the following values: - VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE - SEV_LIVE_MIGRATABLE_V2 - SEV_SNP_CAPABLE - TDX_CAPABLE - IDPF - SNP_SVSM_CAPABLE For more information, see Enabling guest operating system features.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.GuestOsFeature.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HTTP2HealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HTTP2HealthCheck
+type Http2HealthCheck struct {
+	// The value of the host header in the HTTP/2 health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.host
+	Host *string `json:"host,omitempty"`
+
+	// The TCP port number to which the health check prober sends packets. The default value is 443. Valid values are 1 through 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Not supported.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.port_name
+	PortName *string `json:"portName,omitempty"`
+
+	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for passthrough load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
+	//  Check the PortSpecification enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.port_specification
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
+	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
+	//  Check the ProxyHeader enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.proxy_header
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
+	// The request path of the HTTP/2 health check request. The default value is /. Must comply with RFC3986.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.request_path
+	RequestPath *string `json:"requestPath,omitempty"`
+
+	// Creates a content-based HTTP/2 health check. In addition to the required HTTP 200 (OK) status code, you can configure the health check to pass only when the backend sends this specific ASCII response string within the first 1024 bytes of the HTTP response body. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.response
+	Response *string `json:"response,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HTTPHealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HTTPHealthCheck
+type HTTPHealthCheck struct {
+	// The value of the host header in the HTTP health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.host
+	Host *string `json:"host,omitempty"`
+
+	// The TCP port number to which the health check prober sends packets. The default value is 80. Valid values are 1 through 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Not supported.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.port_name
+	PortName *string `json:"portName,omitempty"`
+
+	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Also supported in legacy HTTP health checks for target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
+	//  Check the PortSpecification enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.port_specification
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
+	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
+	//  Check the ProxyHeader enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.proxy_header
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
+	// The request path of the HTTP health check request. The default value is /. Must comply with RFC3986.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.request_path
+	RequestPath *string `json:"requestPath,omitempty"`
+
+	// Creates a content-based HTTP health check. In addition to the required HTTP 200 (OK) status code, you can configure the health check to pass only when the backend sends this specific ASCII response string within the first 1024 bytes of the HTTP response body. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.response
+	Response *string `json:"response,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HTTPSHealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HTTPSHealthCheck
+type HTTPSHealthCheck struct {
+	// The value of the host header in the HTTPS health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.host
+	Host *string `json:"host,omitempty"`
+
+	// The TCP port number to which the health check prober sends packets. The default value is 443. Valid values are 1 through 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Not supported.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.port_name
+	PortName *string `json:"portName,omitempty"`
+
+	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for passthrough load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
+	//  Check the PortSpecification enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.port_specification
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
+	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
+	//  Check the ProxyHeader enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.proxy_header
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
+	// The request path of the HTTPS health check request. The default value is /. Must comply with RFC3986.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.request_path
+	RequestPath *string `json:"requestPath,omitempty"`
+
+	// Creates a content-based HTTPS health check. In addition to the required HTTP 200 (OK) status code, you can configure the health check to pass only when the backend sends this specific ASCII response string within the first 1024 bytes of the HTTP response body. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.response
+	Response *string `json:"response,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HealthCheck
+type HealthCheck struct {
+	// How often (in seconds) to send a health check. The default value is 5 seconds.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.check_interval_sec
+	CheckIntervalSec *int32 `json:"checkIntervalSec,omitempty"`
+
+	// [Output Only] Creation timestamp in 3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.description
+	Description *string `json:"description,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.grpc_health_check
+	GrpcHealthCheck *GrpcHealthCheck `json:"grpcHealthCheck,omitempty"`
+
+	// A so-far unhealthy instance will be marked healthy after this many consecutive successes. The default value is 2.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.healthy_threshold
+	HealthyThreshold *int32 `json:"healthyThreshold,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.http2_health_check
+	Http2HealthCheck *Http2HealthCheck `json:"http2HealthCheck,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.http_health_check
+	HTTPHealthCheck *HTTPHealthCheck `json:"httpHealthCheck,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.https_health_check
+	HTTPSHealthCheck *HTTPSHealthCheck `json:"httpsHealthCheck,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Type of the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Configure logging on this health check.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.log_config
+	LogConfig *HealthCheckLogConfig `json:"logConfig,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. For example, a name that is 1-63 characters long, matches the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`, and otherwise complies with RFC1035. This regular expression describes a name where the first character is a lowercase letter, and all following characters are a dash, lowercase letter, or digit, except the last character, which isn't a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] Region where the health check resides. Not applicable to global health checks.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// The list of cloud regions from which health checks are performed. If any regions are specified, then exactly 3 regions should be specified. The region names must be valid names of Google Cloud regions. This can only be set for global health check. If this list is non-empty, then there are restrictions on what other health check fields are supported and what other resources can use this health check: - SSL, HTTP2, and GRPC protocols are not supported. - The TCP request field is not supported. - The proxyHeader field for HTTP, HTTPS, and TCP is not supported. - The checkIntervalSec field must be at least 30. - The health check cannot be used with BackendService nor with managed instance group auto-healing.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.source_regions
+	SourceRegions []string `json:"sourceRegions,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.ssl_health_check
+	SSLHealthCheck *SSLHealthCheck `json:"sslHealthCheck,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.tcp_health_check
+	TCPHealthCheck *TCPHealthCheck `json:"tcpHealthCheck,omitempty"`
+
+	// How long (in seconds) to wait before claiming failure. The default value is 5 seconds. It is invalid for timeoutSec to have greater value than checkIntervalSec.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.timeout_sec
+	TimeoutSec *int32 `json:"timeoutSec,omitempty"`
+
+	// Specifies the type of the healthCheck, either TCP, SSL, HTTP, HTTPS, HTTP2 or GRPC. Exactly one of the protocol-specific health check fields must be specified, which must match type field.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.type
+	Type *string `json:"type,omitempty"`
+
+	// A so-far healthy instance will be marked unhealthy after this many consecutive failures. The default value is 2.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.unhealthy_threshold
+	UnhealthyThreshold *int32 `json:"unhealthyThreshold,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "HealthCheckLogConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HealthCheckLogConfig
+type HealthCheckLogConfig struct {
+	// Indicates whether or not to export logs. This is false by default, which means no health check logging will be done.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckLogConfig.enable
+	Enable *bool `json:"enable,omitempty"`
+}
+*/
+
+/* unreachable type InitialStateConfig
+// +kcc:proto=google.cloud.compute.v1.InitialStateConfig
+type InitialStateConfig struct {
+	// The Key Database (db).
+	// +kcc:proto:field=google.cloud.compute.v1.InitialStateConfig.dbs
+	Dbs []FileContentBuffer `json:"dbs,omitempty"`
+
+	// The forbidden key database (dbx).
+	// +kcc:proto:field=google.cloud.compute.v1.InitialStateConfig.dbxs
+	Dbxs []FileContentBuffer `json:"dbxs,omitempty"`
+
+	// The Key Exchange Key (KEK).
+	// +kcc:proto:field=google.cloud.compute.v1.InitialStateConfig.keks
+	Keks []FileContentBuffer `json:"keks,omitempty"`
+
+	// The Platform Key (PK).
+	// +kcc:proto:field=google.cloud.compute.v1.InitialStateConfig.pk
+	Pk *FileContentBuffer `json:"pk,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Instance", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Instance
+type Instance struct {
+	// Controls for advanced machine-related behavior features.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.advanced_machine_features
+	AdvancedMachineFeatures *AdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
+
+	// Allows this instance to send and receive packets with non-matching destination or source IPs. This is required if you plan to use this instance to forward routes. For more information, see Enabling IP Forwarding .
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.can_ip_forward
+	CanIPForward *bool `json:"canIPForward,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.confidential_instance_config
+	ConfidentialInstanceConfig *ConfidentialInstanceConfig `json:"confidentialInstanceConfig,omitempty"`
+
+	// [Output Only] The CPU platform used by this instance.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.cpu_platform
+	CPUPlatform *string `json:"cpuPlatform,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Whether the resource should be protected against deletion.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.deletion_protection
+	DeletionProtection *bool `json:"deletionProtection,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.description
+	Description *string `json:"description,omitempty"`
+
+	// Array of disks associated with this instance. Persistent disks must be created before you can assign them.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.disks
+	Disks []AttachedDisk `json:"disks,omitempty"`
+
+	// Enables display device for the instance.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.display_device
+	DisplayDevice *DisplayDevice `json:"displayDevice,omitempty"`
+
+	// Specifies a fingerprint for this resource, which is essentially a hash of the instance's contents and used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update the instance. You must always provide an up-to-date fingerprint hash in order to update the instance. To see the latest fingerprint, make get() request to the instance.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// A list of the type and count of accelerator cards attached to the instance.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.guest_accelerators
+	GuestAccelerators []AcceleratorConfig `json:"guestAccelerators,omitempty"`
+
+	// Specifies the hostname of the instance. The specified hostname must be RFC1035 compliant. If hostname is not specified, the default hostname is [INSTANCE_NAME].c.[PROJECT_ID].internal when using the global DNS, and [INSTANCE_NAME].[ZONE].c.[PROJECT_ID].internal when using zonal DNS.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.hostname
+	Hostname *string `json:"hostname,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Encrypts suspended data for an instance with a customer-managed encryption key. If you are creating a new instance, this field will encrypt the local SSD and in-memory contents of the instance during the suspend operation. If you do not provide an encryption key when creating the instance, then the local SSD and in-memory contents will be encrypted using an automatically generated key during the suspend operation.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.instance_encryption_key
+	InstanceEncryptionKey *CustomerEncryptionKey `json:"instanceEncryptionKey,omitempty"`
+
+	// KeyRevocationActionType of the instance. Supported options are "STOP" and "NONE". The default value is "NONE" if it is not specified.
+	//  Check the KeyRevocationActionType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.key_revocation_action_type
+	KeyRevocationActionType *string `json:"keyRevocationActionType,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#instance for instances.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A fingerprint for this request, which is essentially a hash of the label's contents and used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels. To see the latest fingerprint, make get() request to the instance.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.label_fingerprint
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
+	// Labels to apply to this instance. These can be later modified by the setLabels method.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// [Output Only] Last start timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.last_start_timestamp
+	LastStartTimestamp *string `json:"lastStartTimestamp,omitempty"`
+
+	// [Output Only] Last stop timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.last_stop_timestamp
+	LastStopTimestamp *string `json:"lastStopTimestamp,omitempty"`
+
+	// [Output Only] Last suspended timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.last_suspended_timestamp
+	LastSuspendedTimestamp *string `json:"lastSuspendedTimestamp,omitempty"`
+
+	// Full or partial URL of the machine type resource to use for this instance, in the format: zones/zone/machineTypes/machine-type. This is provided by the client when the instance is created. For example, the following is a valid partial url to a predefined machine type: zones/us-central1-f/machineTypes/n1-standard-1 To create a custom machine type, provide a URL to a machine type in the following format, where CPUS is 1 or an even number up to 32 (2, 4, 6, ... 24, etc), and MEMORY is the total memory for this instance. Memory must be a multiple of 256 MB and must be supplied in MB (e.g. 5 GB of memory is 5120 MB): zones/zone/machineTypes/custom-CPUS-MEMORY For example: zones/us-central1-f/machineTypes/custom-4-5120 For a full list of restrictions, read the Specifications for custom machine types.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// The metadata key/value pairs assigned to this instance. This includes metadata keys that were explicitly defined for the instance.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.metadata
+	Metadata *Metadata `json:"metadata,omitempty"`
+
+	// Specifies a minimum CPU platform for the VM instance. Applicable values are the friendly names of CPU platforms, such as minCpuPlatform: "Intel Haswell" or minCpuPlatform: "Intel Sandy Bridge".
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.min_cpu_platform
+	MinCPUPlatform *string `json:"minCPUPlatform,omitempty"`
+
+	// The name of the resource, provided by the client when initially creating the resource. The resource name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.name
+	Name *string `json:"name,omitempty"`
+
+	// An array of network configurations for this instance. These specify how interfaces are configured to interact with other network services, such as connecting to the internet. Multiple interfaces are supported per instance.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.network_interfaces
+	NetworkInterfaces []NetworkInterface `json:"networkInterfaces,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.network_performance_config
+	NetworkPerformanceConfig *NetworkPerformanceConfig `json:"networkPerformanceConfig,omitempty"`
+
+	// Input only. [Input Only] Additional params passed with the request, but not persisted as part of resource payload.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.params
+	Params *InstanceParams `json:"params,omitempty"`
+
+	// The private IPv6 google access type for the VM. If not specified, use INHERIT_FROM_SUBNETWORK as default.
+	//  Check the PrivateIpv6GoogleAccess enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.private_ipv6_google_access
+	PrivateIPV6GoogleAccess *string `json:"privateIPV6GoogleAccess,omitempty"`
+
+	// Specifies the reservations that this instance can consume from.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.reservation_affinity
+	ReservationAffinity *ReservationAffinity `json:"reservationAffinity,omitempty"`
+
+	// Resource policies applied to this instance.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.resource_policies
+	ResourcePolicies []string `json:"resourcePolicies,omitempty"`
+
+	// [Output Only] Specifies values set for instance attributes as compared to the values requested by user in the corresponding input only field.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.resource_status
+	ResourceStatus *ResourceStatus `json:"resourceStatus,omitempty"`
+
+	// [Output Only] Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	// [Output Only] Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Sets the scheduling options for this instance.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.scheduling
+	Scheduling *Scheduling `json:"scheduling,omitempty"`
+
+	// [Output Only] Server-defined URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// A list of service accounts, with their specified scopes, authorized for this instance. Only one service account per VM instance is supported. Service accounts generate access tokens that can be accessed through the metadata server and used to authenticate applications on the instance. See Service Accounts for more information.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.service_accounts
+	ServiceAccounts []ServiceAccount `json:"serviceAccounts,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.shielded_instance_config
+	ShieldedInstanceConfig *ShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.shielded_instance_integrity_policy
+	ShieldedInstanceIntegrityPolicy *ShieldedInstanceIntegrityPolicy `json:"shieldedInstanceIntegrityPolicy,omitempty"`
+
+	// Source machine image
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.source_machine_image
+	SourceMachineImage *string `json:"sourceMachineImage,omitempty"`
+
+	// Source machine image encryption key when creating an instance from a machine image.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.source_machine_image_encryption_key
+	SourceMachineImageEncryptionKey *CustomerEncryptionKey `json:"sourceMachineImageEncryptionKey,omitempty"`
+
+	// [Output Only] Whether a VM has been restricted for start because Compute Engine has detected suspicious activity.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.start_restricted
+	StartRestricted *bool `json:"startRestricted,omitempty"`
+
+	// [Output Only] The status of the instance. One of the following values: PROVISIONING, STAGING, RUNNING, STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED. For more information about the status of the instance, see Instance life cycle.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.status
+	Status *string `json:"status,omitempty"`
+
+	// [Output Only] An optional, human-readable explanation of the status.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.status_message
+	StatusMessage *string `json:"statusMessage,omitempty"`
+
+	// Tags to apply to this instance. Tags are used to identify valid sources or targets for network firewalls and are specified by the client during instance creation. The tags can be later modified by the setTags method. Each tag within the list must comply with RFC1035. Multiple tags can be specified via the 'tags.items' field.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.tags
+	Tags *Tags `json:"tags,omitempty"`
+
+	// [Output Only] URL of the zone where the instance resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.Instance.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InstanceGroup", skipping
+
+// +kcc:proto=google.cloud.compute.v1.InstanceGroup
+type InstanceGroup struct {
+	// [Output Only] The creation timestamp for this instance group in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] The fingerprint of the named ports. The system uses this fingerprint to detect conflicts when multiple users change the named ports concurrently.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] A unique identifier for this instance group, generated by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] The resource type, which is always compute#instanceGroup for instance groups.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The name of the instance group. The name must be 1-63 characters long, and comply with RFC1035.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Assigns a name to a port number. For example: {name: "http", port: 80} This allows the system to reference ports by the assigned name instead of a port number. Named ports can also contain multiple ports. For example: [{name: "app1", port: 8080}, {name: "app1", port: 8081}, {name: "app2", port: 8082}] Named ports apply to all instances in this instance group.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.named_ports
+	NamedPorts []NamedPort `json:"namedPorts,omitempty"`
+
+	// [Output Only] The URL of the network to which all instances in the instance group belong. If your instance has multiple network interfaces, then the network and subnetwork fields only refer to the network and subnet used by your primary interface (nic0).
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.network
+	Network *string `json:"network,omitempty"`
+
+	// [Output Only] The URL of the region where the instance group is located (for regional resources).
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] The URL for this instance group. The server generates this URL.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] The total number of instances in the instance group.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.size
+	Size *int32 `json:"size,omitempty"`
+
+	// [Output Only] The URL of the subnetwork to which all instances in the instance group belong. If your instance has multiple network interfaces, then the network and subnetwork fields only refer to the network and subnet used by your primary interface (nic0).
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+
+	// [Output Only] The URL of the zone where the instance group is located (for zonal resources).
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "InstanceParams", skipping
+
+// +kcc:proto=google.cloud.compute.v1.InstanceParams
+type InstanceParams struct {
+	// Resource manager tags to be bound to the instance. Tag keys and values have the same definition as resource manager tags. Keys must be in the format `tagKeys/{tag_key_id}`, and values are in the format `tagValues/456`. The field is ignored (both PUT & PATCH) when empty.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceParams.resource_manager_tags
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+}
+*/
+
+/* unreachable type Items
+// +kcc:proto=google.cloud.compute.v1.Items
+type Items struct {
+	// Key for the metadata entry. Keys must conform to the following regexp: [a-zA-Z0-9-_]+, and be less than 128 bytes in length. This is reflected as part of a URL in the metadata server. Additionally, to avoid ambiguity, keys must not conflict with any other metadata keys for the project.
+	// +kcc:proto:field=google.cloud.compute.v1.Items.key
+	Key *string `json:"key,omitempty"`
+
+	// Value for the metadata entry. These are free-form strings, and only have meaning as interpreted by the image running in the instance. The only restriction placed on values is that their size must be less than or equal to 262144 bytes (256 KiB).
+	// +kcc:proto:field=google.cloud.compute.v1.Items.value
+	Value *string `json:"value,omitempty"`
+}
+*/
+
 /* unreachable type LocalDisk
 // +kcc:proto=google.cloud.compute.v1.LocalDisk
 type LocalDisk struct {
@@ -239,6 +1859,697 @@ type LocalDisk struct {
 }
 */
 
+/* unreachable type Metadata
+// +kcc:proto=google.cloud.compute.v1.Metadata
+type Metadata struct {
+	// Specifies a fingerprint for this request, which is essentially a hash of the metadata's contents and used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update metadata. You must always provide an up-to-date fingerprint hash in order to update or change metadata, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Metadata.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// Array of key/value pairs. The total size of all keys and values must be less than 512 KB.
+	// +kcc:proto:field=google.cloud.compute.v1.Metadata.items
+	Items []Items `json:"items,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#metadata for metadata.
+	// +kcc:proto:field=google.cloud.compute.v1.Metadata.kind
+	Kind *string `json:"kind,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MetadataFilter", skipping
+
+// +kcc:proto=google.cloud.compute.v1.MetadataFilter
+type MetadataFilter struct {
+	// The list of label value pairs that must match labels in the provided metadata based on filterMatchCriteria This list must not be empty and can have at the most 64 entries.
+	// +kcc:proto:field=google.cloud.compute.v1.MetadataFilter.filter_labels
+	FilterLabels []MetadataFilterLabelMatch `json:"filterLabels,omitempty"`
+
+	// Specifies how individual filter label matches within the list of filterLabels and contributes toward the overall metadataFilter match. Supported values are: - MATCH_ANY: at least one of the filterLabels must have a matching label in the provided metadata. - MATCH_ALL: all filterLabels must have matching labels in the provided metadata.
+	//  Check the FilterMatchCriteria enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.MetadataFilter.filter_match_criteria
+	FilterMatchCriteria *string `json:"filterMatchCriteria,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MetadataFilterLabelMatch", skipping
+
+// +kcc:proto=google.cloud.compute.v1.MetadataFilterLabelMatch
+type MetadataFilterLabelMatch struct {
+	// Name of metadata label. The name can have a maximum length of 1024 characters and must be at least 1 character long.
+	// +kcc:proto:field=google.cloud.compute.v1.MetadataFilterLabelMatch.name
+	Name *string `json:"name,omitempty"`
+
+	// The value of the label must match the specified value. value can have a maximum length of 1024 characters.
+	// +kcc:proto:field=google.cloud.compute.v1.MetadataFilterLabelMatch.value
+	Value *string `json:"value,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NamedPort", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NamedPort
+type NamedPort struct {
+	// The name for this named port. The name must be 1-63 characters long, and comply with RFC1035.
+	// +kcc:proto:field=google.cloud.compute.v1.NamedPort.name
+	Name *string `json:"name,omitempty"`
+
+	// The port number, which can be a value between 1 and 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.NamedPort.port
+	Port *int32 `json:"port,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Network", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Network
+type Network struct {
+	// Deprecated in favor of subnet mode networks. The range of internal addresses that are legal on this network. This range is a CIDR specification, for example: 192.168.0.0/16. Provided by the client when the network is created.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.I_pv4_range
+	IPv4Range *string `json:"IPv4Range,omitempty"`
+
+	// Must be set to create a VPC network. If not set, a legacy network is created. When set to true, the VPC network is created in auto mode. When set to false, the VPC network is created in custom mode. An auto mode VPC network starts with one subnet per region. Each subnet has a predetermined range as described in Auto mode VPC network IP ranges. For custom mode VPC networks, you can add subnets using the subnetworks insert method.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.auto_create_subnetworks
+	AutoCreateSubnetworks *bool `json:"autoCreateSubnetworks,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this field when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.description
+	Description *string `json:"description,omitempty"`
+
+	// Enable ULA internal ipv6 on this network. Enabling this feature will assign a /48 from google defined ULA prefix fd20::/20. .
+	// +kcc:proto:field=google.cloud.compute.v1.Network.enable_ula_internal_ipv6
+	EnableUlaInternalIPV6 *bool `json:"enableUlaInternalIPV6,omitempty"`
+
+	// [Output Only] URL of the firewall policy the network is associated with.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.firewall_policy
+	FirewallPolicy *string `json:"firewallPolicy,omitempty"`
+
+	// [Output Only] The gateway address for default routing out of the network, selected by Google Cloud.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.gateway_i_pv4
+	GatewayIPv4 *string `json:"gatewayIPv4,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// When enabling ula internal ipv6, caller optionally can specify the /48 range they want from the google defined ULA prefix fd20::/20. The input must be a valid /48 ULA IPv6 address and must be within the fd20::/20. Operation will fail if the speficied /48 is already in used by another resource. If the field is not speficied, then a /48 range will be randomly allocated from fd20::/20 and returned via this field. .
+	// +kcc:proto:field=google.cloud.compute.v1.Network.internal_ipv6_range
+	InternalIPV6Range *string `json:"internalIPV6Range,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#network for networks.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Maximum Transmission Unit in bytes. The minimum value for this field is 1300 and the maximum value is 8896. The suggested value is 1500, which is the default MTU used on the Internet, or 8896 if you want to use Jumbo frames. If unspecified, the value defaults to 1460.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.mtu
+	Mtu *int32 `json:"mtu,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`. The first character must be a lowercase letter, and all following characters (except for the last character) must be a dash, lowercase letter, or digit. The last character must be a lowercase letter or digit.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.name
+	Name *string `json:"name,omitempty"`
+
+	// The network firewall policy enforcement order. Can be either AFTER_CLASSIC_FIREWALL or BEFORE_CLASSIC_FIREWALL. Defaults to AFTER_CLASSIC_FIREWALL if the field is not specified.
+	//  Check the NetworkFirewallPolicyEnforcementOrder enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.network_firewall_policy_enforcement_order
+	NetworkFirewallPolicyEnforcementOrder *string `json:"networkFirewallPolicyEnforcementOrder,omitempty"`
+
+	// A full or partial URL of the network profile to apply to this network. This field can be set only at resource creation time. For example, the following are valid URLs: - https://www.googleapis.com/compute/{api_version}/projects/{project_id}/global/networkProfiles/{network_profile_name} - projects/{project_id}/global/networkProfiles/{network_profile_name}
+	// +kcc:proto:field=google.cloud.compute.v1.Network.network_profile
+	NetworkProfile *string `json:"networkProfile,omitempty"`
+
+	// Input only. [Input Only] Additional params passed with the request, but not persisted as part of resource payload.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.params
+	Params *NetworkParams `json:"params,omitempty"`
+
+	// [Output Only] A list of network peerings for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.peerings
+	Peerings []NetworkPeering `json:"peerings,omitempty"`
+
+	// The network-level routing configuration for this network. Used by Cloud Router to determine what type of network-wide routing behavior to enforce.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.routing_config
+	RoutingConfig *NetworkRoutingConfig `json:"routingConfig,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] Server-defined URL for this resource with the resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// [Output Only] Server-defined fully-qualified URLs for all subnetworks in this VPC network.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.subnetworks
+	Subnetworks []string `json:"subnetworks,omitempty"`
+}
+*/
+
+/* unreachable type NetworkInterface
+// +kcc:proto=google.cloud.compute.v1.NetworkInterface
+type NetworkInterface struct {
+	// An array of configurations for this interface. Currently, only one access config, ONE_TO_ONE_NAT, is supported. If there are no accessConfigs specified, then this instance will have no external internet access.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.access_configs
+	AccessConfigs []AccessConfig `json:"accessConfigs,omitempty"`
+
+	// An array of alias IP ranges for this network interface. You can only specify this field for network interfaces in VPC networks.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.alias_ip_ranges
+	AliasIPRanges []AliasIPRange `json:"aliasIPRanges,omitempty"`
+
+	// Fingerprint hash of contents stored in this network interface. This field will be ignored when inserting an Instance or adding a NetworkInterface. An up-to-date fingerprint must be provided in order to update the NetworkInterface. The request will fail with error 400 Bad Request if the fingerprint is not provided, or 412 Precondition Failed if the fingerprint is out of date.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// The prefix length of the primary internal IPv6 range.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.internal_ipv6_prefix_length
+	InternalIPV6PrefixLength *int32 `json:"internalIPV6PrefixLength,omitempty"`
+
+	// An array of IPv6 access configurations for this interface. Currently, only one IPv6 access config, DIRECT_IPV6, is supported. If there is no ipv6AccessConfig specified, then this instance will have no external IPv6 Internet access.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.ipv6_access_configs
+	IPV6AccessConfigs []AccessConfig `json:"ipv6AccessConfigs,omitempty"`
+
+	// [Output Only] One of EXTERNAL, INTERNAL to indicate whether the IP can be accessed from the Internet. This field is always inherited from its subnetwork. Valid only if stackType is IPV4_IPV6.
+	//  Check the Ipv6AccessType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.ipv6_access_type
+	IPV6AccessType *string `json:"ipv6AccessType,omitempty"`
+
+	// An IPv6 internal network address for this network interface. To use a static internal IP address, it must be unused and in the same region as the instance's zone. If not specified, Google Cloud will automatically assign an internal IPv6 address from the instance's subnetwork.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.ipv6_address
+	IPV6Address *string `json:"ipv6Address,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#networkInterface for network interfaces.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// [Output Only] The name of the network interface, which is generated by the server. For a VM, the network interface uses the nicN naming format. Where N is a value between 0 and 7. The default interface value is nic0.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.name
+	Name *string `json:"name,omitempty"`
+
+	// URL of the VPC network resource for this instance. When creating an instance, if neither the network nor the subnetwork is specified, the default network global/networks/default is used. If the selected project doesn't have the default network, you must specify a network or subnet. If the network is not specified but the subnetwork is specified, the network is inferred. If you specify this property, you can specify the network as a full or partial URL. For example, the following are all valid URLs: - https://www.googleapis.com/compute/v1/projects/project/global/networks/ network - projects/project/global/networks/network - global/networks/default
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.network
+	Network *string `json:"network,omitempty"`
+
+	// The URL of the network attachment that this interface should connect to in the following format: projects/{project_number}/regions/{region_name}/networkAttachments/{network_attachment_name}.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.network_attachment
+	NetworkAttachment *string `json:"networkAttachment,omitempty"`
+
+	// An IPv4 internal IP address to assign to the instance for this network interface. If not specified by the user, an unused internal IP is assigned by the system.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.network_i_p
+	NetworkIP *string `json:"networkIP,omitempty"`
+
+	// The type of vNIC to be used on this interface. This may be gVNIC or VirtioNet.
+	//  Check the NicType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.nic_type
+	NicType *string `json:"nicType,omitempty"`
+
+	// The networking queue count that's specified by users for the network interface. Both Rx and Tx queues will be set to this number. It'll be empty if not specified by the users.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.queue_count
+	QueueCount *int32 `json:"queueCount,omitempty"`
+
+	// The stack type for this network interface. To assign only IPv4 addresses, use IPV4_ONLY. To assign both IPv4 and IPv6 addresses, use IPV4_IPV6. If not specified, IPV4_ONLY is used. This field can be both set at instance creation and update network interface operations.
+	//  Check the StackType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.stack_type
+	StackType *string `json:"stackType,omitempty"`
+
+	// The URL of the Subnetwork resource for this instance. If the network resource is in legacy mode, do not specify this field. If the network is in auto subnet mode, specifying the subnetwork is optional. If the network is in custom subnet mode, specifying the subnetwork is required. If you specify this field, you can specify the subnetwork as a full or partial URL. For example, the following are all valid URLs: - https://www.googleapis.com/compute/v1/projects/project/regions/region /subnetworks/subnetwork - regions/region/subnetworks/subnetwork
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+}
+*/
+
+/* unreachable type NetworkParams
+// +kcc:proto=google.cloud.compute.v1.NetworkParams
+type NetworkParams struct {
+	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkParams.resource_manager_tags
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NetworkPeering", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NetworkPeering
+type NetworkPeering struct {
+	// This field will be deprecated soon. Use the exchange_subnet_routes field instead. Indicates whether full mesh connectivity is created and managed automatically between peered networks. Currently this field should always be true since Google Compute Engine will automatically create and manage subnetwork routes between two networks when peering state is ACTIVE.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.auto_create_routes
+	AutoCreateRoutes *bool `json:"autoCreateRoutes,omitempty"`
+
+	// [Output Only] The effective state of the peering connection as a whole.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.connection_status
+	ConnectionStatus *NetworkPeeringConnectionStatus `json:"connectionStatus,omitempty"`
+
+	// Indicates whether full mesh connectivity is created and managed automatically between peered networks. Currently this field should always be true since Google Compute Engine will automatically create and manage subnetwork routes between two networks when peering state is ACTIVE.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.exchange_subnet_routes
+	ExchangeSubnetRoutes *bool `json:"exchangeSubnetRoutes,omitempty"`
+
+	// Whether to export the custom routes to peer network. The default value is false.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.export_custom_routes
+	ExportCustomRoutes *bool `json:"exportCustomRoutes,omitempty"`
+
+	// Whether subnet routes with public IP range are exported. The default value is true, all subnet routes are exported. IPv4 special-use ranges are always exported to peers and are not controlled by this field.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.export_subnet_routes_with_public_ip
+	ExportSubnetRoutesWithPublicIP *bool `json:"exportSubnetRoutesWithPublicIP,omitempty"`
+
+	// Whether to import the custom routes from peer network. The default value is false.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.import_custom_routes
+	ImportCustomRoutes *bool `json:"importCustomRoutes,omitempty"`
+
+	// Whether subnet routes with public IP range are imported. The default value is false. IPv4 special-use ranges are always imported from peers and are not controlled by this field.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.import_subnet_routes_with_public_ip
+	ImportSubnetRoutesWithPublicIP *bool `json:"importSubnetRoutesWithPublicIP,omitempty"`
+
+	// Name of this peering. Provided by the client when the peering is created. The name must comply with RFC1035. Specifically, the name must be 1-63 characters long and match regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`. The first character must be a lowercase letter, and all the following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.name
+	Name *string `json:"name,omitempty"`
+
+	// The URL of the peer network. It can be either full URL or partial URL. The peer network may belong to a different project. If the partial URL does not contain project, it is assumed that the peer network is in the same project as the current network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.network
+	Network *string `json:"network,omitempty"`
+
+	// [Output Only] Maximum Transmission Unit in bytes of the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.peer_mtu
+	PeerMtu *int32 `json:"peerMtu,omitempty"`
+
+	// Which IP version(s) of traffic and routes are allowed to be imported or exported between peer networks. The default value is IPV4_ONLY.
+	//  Check the StackType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.stack_type
+	StackType *string `json:"stackType,omitempty"`
+
+	// [Output Only] State for the peering, either `ACTIVE` or `INACTIVE`. The peering is `ACTIVE` when there's a matching configuration in the peer network.
+	//  Check the State enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.state
+	State *string `json:"state,omitempty"`
+
+	// [Output Only] Details about the current state of the peering.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.state_details
+	StateDetails *string `json:"stateDetails,omitempty"`
+
+	// The update strategy determines the semantics for updates and deletes to the peering connection configuration.
+	//  Check the UpdateStrategy enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.update_strategy
+	UpdateStrategy *string `json:"updateStrategy,omitempty"`
+}
+*/
+
+/* unreachable type NetworkPeeringConnectionStatus
+// +kcc:proto=google.cloud.compute.v1.NetworkPeeringConnectionStatus
+type NetworkPeeringConnectionStatus struct {
+	// The consensus state contains information about the status of update and delete for a consensus peering connection.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatus.consensus_state
+	ConsensusState *NetworkPeeringConnectionStatusConsensusState `json:"consensusState,omitempty"`
+
+	// The active connectivity settings for the peering connection based on the settings of the network peerings.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatus.traffic_configuration
+	TrafficConfiguration *NetworkPeeringConnectionStatusTrafficConfiguration `json:"trafficConfiguration,omitempty"`
+
+	// The update strategy determines the update/delete semantics for this peering connection.
+	//  Check the UpdateStrategy enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatus.update_strategy
+	UpdateStrategy *string `json:"updateStrategy,omitempty"`
+}
+*/
+
+/* unreachable type NetworkPeeringConnectionStatusConsensusState
+// +kcc:proto=google.cloud.compute.v1.NetworkPeeringConnectionStatusConsensusState
+type NetworkPeeringConnectionStatusConsensusState struct {
+	// The status of the delete request.
+	//  Check the DeleteStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusConsensusState.delete_status
+	DeleteStatus *string `json:"deleteStatus,omitempty"`
+
+	// The status of the update request.
+	//  Check the UpdateStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusConsensusState.update_status
+	UpdateStatus *string `json:"updateStatus,omitempty"`
+}
+*/
+
+/* unreachable type NetworkPeeringConnectionStatusTrafficConfiguration
+// +kcc:proto=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration
+type NetworkPeeringConnectionStatusTrafficConfiguration struct {
+	// Whether custom routes are being exported to the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.export_custom_routes_to_peer
+	ExportCustomRoutesToPeer *bool `json:"exportCustomRoutesToPeer,omitempty"`
+
+	// Whether subnet routes with public IP ranges are being exported to the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.export_subnet_routes_with_public_ip_to_peer
+	ExportSubnetRoutesWithPublicIPToPeer *bool `json:"exportSubnetRoutesWithPublicIPToPeer,omitempty"`
+
+	// Whether custom routes are being imported from the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.import_custom_routes_from_peer
+	ImportCustomRoutesFromPeer *bool `json:"importCustomRoutesFromPeer,omitempty"`
+
+	// Whether subnet routes with public IP ranges are being imported from the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.import_subnet_routes_with_public_ip_from_peer
+	ImportSubnetRoutesWithPublicIPFromPeer *bool `json:"importSubnetRoutesWithPublicIPFromPeer,omitempty"`
+
+	// Which IP version(s) of traffic and routes are being imported or exported between peer networks.
+	//  Check the StackType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.stack_type
+	StackType *string `json:"stackType,omitempty"`
+}
+*/
+
+/* unreachable type NetworkPerformanceConfig
+// +kcc:proto=google.cloud.compute.v1.NetworkPerformanceConfig
+type NetworkPerformanceConfig struct {
+	// Check the TotalEgressBandwidthTier enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPerformanceConfig.total_egress_bandwidth_tier
+	TotalEgressBandwidthTier *string `json:"totalEgressBandwidthTier,omitempty"`
+}
+*/
+
+/* unreachable type NetworkRoutingConfig
+// +kcc:proto=google.cloud.compute.v1.NetworkRoutingConfig
+type NetworkRoutingConfig struct {
+	// Enable comparison of Multi-Exit Discriminators (MED) across routes with different neighbor ASNs when using the STANDARD BGP best path selection algorithm.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.bgp_always_compare_med
+	BGPAlwaysCompareMed *bool `json:"bgpAlwaysCompareMed,omitempty"`
+
+	// The BGP best path selection algorithm to be employed within this network for dynamic routes learned by Cloud Routers. Can be LEGACY (default) or STANDARD.
+	//  Check the BgpBestPathSelectionMode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.bgp_best_path_selection_mode
+	BGPBestPathSelectionMode *string `json:"bgpBestPathSelectionMode,omitempty"`
+
+	// Allows to define a preferred approach for handling inter-region cost in the selection process when using the STANDARD BGP best path selection algorithm. Can be DEFAULT or ADD_COST_TO_MED.
+	//  Check the BgpInterRegionCost enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.bgp_inter_region_cost
+	BGPInterRegionCost *string `json:"bgpInterRegionCost,omitempty"`
+
+	// [Output Only] Effective value of the bgp_always_compare_med field.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.effective_bgp_always_compare_med
+	EffectiveBGPAlwaysCompareMed *bool `json:"effectiveBGPAlwaysCompareMed,omitempty"`
+
+	// [Output Only] Effective value of the bgp_inter_region_cost field.
+	//  Check the EffectiveBgpInterRegionCost enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.effective_bgp_inter_region_cost
+	EffectiveBGPInterRegionCost *string `json:"effectiveBGPInterRegionCost,omitempty"`
+
+	// The network-wide routing mode to use. If set to REGIONAL, this network's Cloud Routers will only advertise routes with subnets of this network in the same region as the router. If set to GLOBAL, this network's Cloud Routers will advertise routes with all subnets of this network, across regions.
+	//  Check the RoutingMode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.routing_mode
+	RoutingMode *string `json:"routingMode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NodeGroup", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NodeGroup
+type NodeGroup struct {
+	// Specifies how autoscaling should behave.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.autoscaling_policy
+	AutoscalingPolicy *NodeGroupAutoscalingPolicy `json:"autoscalingPolicy,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] The type of the resource. Always compute#nodeGroup for node group.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// An opaque location hint used to place the Node close to other resources. This field is for use by internal tools that use the public API. The location hint here on the NodeGroup overrides any location_hint present in the NodeTemplate.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.location_hint
+	LocationHint *string `json:"locationHint,omitempty"`
+
+	// Specifies the frequency of planned maintenance events. The accepted values are: `AS_NEEDED` and `RECURRENT`.
+	//  Check the MaintenanceInterval enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.maintenance_interval
+	MaintenanceInterval *string `json:"maintenanceInterval,omitempty"`
+
+	// Specifies how to handle instances when a node in the group undergoes maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE, or MIGRATE_WITHIN_NODE_GROUP. The default value is DEFAULT. For more information, see Maintenance policies.
+	//  Check the MaintenancePolicy enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.maintenance_policy
+	MaintenancePolicy *string `json:"maintenancePolicy,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.maintenance_window
+	MaintenanceWindow *NodeGroupMaintenanceWindow `json:"maintenanceWindow,omitempty"`
+
+	// The name of the resource, provided by the client when initially creating the resource. The resource name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// URL of the node template to create the node group from.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.node_template
+	NodeTemplate *string `json:"nodeTemplate,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Share-settings for the node group
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.share_settings
+	ShareSettings *ShareSettings `json:"shareSettings,omitempty"`
+
+	// [Output Only] The total number of nodes in the node group.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.size
+	Size *int32 `json:"size,omitempty"`
+
+	// Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.status
+	Status *string `json:"status,omitempty"`
+
+	// [Output Only] The name of the zone where the node group resides, such as us-central1-a.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodeGroupAutoscalingPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NodeGroupAutoscalingPolicy
+type NodeGroupAutoscalingPolicy struct {
+	// The maximum number of nodes that the group should have. Must be set if autoscaling is enabled. Maximum value allowed is 100.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupAutoscalingPolicy.max_nodes
+	MaxNodes *int32 `json:"maxNodes,omitempty"`
+
+	// The minimum number of nodes that the group should have.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupAutoscalingPolicy.min_nodes
+	MinNodes *int32 `json:"minNodes,omitempty"`
+
+	// The autoscaling mode. Set to one of: ON, OFF, or ONLY_SCALE_OUT. For more information, see Autoscaler modes.
+	//  Check the Mode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupAutoscalingPolicy.mode
+	Mode *string `json:"mode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodeGroupMaintenanceWindow", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NodeGroupMaintenanceWindow
+type NodeGroupMaintenanceWindow struct {
+	// [Output only] A predetermined duration for the window, automatically chosen to be the smallest possible in the given scenario.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupMaintenanceWindow.maintenance_duration
+	MaintenanceDuration *Duration `json:"maintenanceDuration,omitempty"`
+
+	// Start time of the window. This must be in UTC format that resolves to one of 00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example, both 13:00-5 and 08:00 are valid.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupMaintenanceWindow.start_time
+	StartTime *string `json:"startTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NodeTemplate", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NodeTemplate
+type NodeTemplate struct {
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.accelerators
+	Accelerators []AcceleratorConfig `json:"accelerators,omitempty"`
+
+	// CPU overcommit.
+	//  Check the CpuOvercommitType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.cpu_overcommit_type
+	CPUOvercommitType *string `json:"cpuOvercommitType,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.description
+	Description *string `json:"description,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.disks
+	Disks []LocalDisk `json:"disks,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] The type of the resource. Always compute#nodeTemplate for node templates.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The name of the resource, provided by the client when initially creating the resource. The resource name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.name
+	Name *string `json:"name,omitempty"`
+
+	// Labels to use for node affinity, which will be used in instance scheduling.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.node_affinity_labels
+	NodeAffinityLabels map[string]string `json:"nodeAffinityLabels,omitempty"`
+
+	// The node type to use for nodes group that are created from this template.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.node_type
+	NodeType *string `json:"nodeType,omitempty"`
+
+	// Do not use. Instead, use the node_type property.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.node_type_flexibility
+	NodeTypeFlexibility *NodeTemplateNodeTypeFlexibility `json:"nodeTypeFlexibility,omitempty"`
+
+	// [Output Only] The name of the region where the node template resides, such as us-central1.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Sets the binding properties for the physical server. Valid values include: - *[Default]* RESTART_NODE_ON_ANY_SERVER: Restarts VMs on any available physical server - RESTART_NODE_ON_MINIMAL_SERVER: Restarts VMs on the same physical server whenever possible See Sole-tenant node options for more information.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.server_binding
+	ServerBinding *ServerBinding `json:"serverBinding,omitempty"`
+
+	// [Output Only] The status of the node template. One of the following values: CREATING, READY, and DELETING.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.status
+	Status *string `json:"status,omitempty"`
+
+	// [Output Only] An optional, human-readable explanation of the status.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.status_message
+	StatusMessage *string `json:"statusMessage,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodeTemplateNodeTypeFlexibility", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NodeTemplateNodeTypeFlexibility
+type NodeTemplateNodeTypeFlexibility struct {
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplateNodeTypeFlexibility.cpus
+	Cpus *string `json:"cpus,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplateNodeTypeFlexibility.local_ssd
+	LocalSsd *string `json:"localSsd,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplateNodeTypeFlexibility.memory
+	Memory *string `json:"memory,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Reservation", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Reservation
+type Reservation struct {
+	// Advanced control for cluster management, applicable only to DENSE deployment type reservations.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.advanced_deployment_control
+	AdvancedDeploymentControl *ReservationAdvancedDeploymentControl `json:"advancedDeploymentControl,omitempty"`
+
+	// Reservation for aggregated resources, providing shape flexibility.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.aggregate_reservation
+	AggregateReservation *AllocationAggregateReservation `json:"aggregateReservation,omitempty"`
+
+	// [Output Only] Full or partial URL to a parent commitment. This field displays for reservations that are tied to a commitment.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.commitment
+	Commitment *string `json:"commitment,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Duration time relative to reservation creation when Compute Engine will automatically delete this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.delete_after_duration
+	DeleteAfterDuration *Duration `json:"deleteAfterDuration,omitempty"`
+
+	// Absolute time in future when the reservation will be auto-deleted by Compute Engine. Timestamp is represented in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.delete_at_time
+	DeleteAtTime *string `json:"deleteAtTime,omitempty"`
+
+	// Specifies the deployment strategy for this reservation.
+	//  Check the DeploymentType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.deployment_type
+	DeploymentType *string `json:"deploymentType,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.description
+	Description *string `json:"description,omitempty"`
+
+	// Indicates whether Compute Engine allows unplanned maintenance for your VMs; for example, to fix hardware errors.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.enable_emergent_maintenance
+	EnableEmergentMaintenance *bool `json:"enableEmergentMaintenance,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#reservations for reservations.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// [Output Only] Full or partial URL to parent commitments. This field displays for reservations that are tied to multiple commitments.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.linked_commitments
+	LinkedCommitments []string `json:"linkedCommitments,omitempty"`
+
+	// The name of the resource, provided by the client when initially creating the resource. The resource name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.name
+	Name *string `json:"name,omitempty"`
+
+	// Specify the reservation sharing policy. If unspecified, the reservation will not be shared with Google Cloud managed services.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.reservation_sharing_policy
+	ReservationSharingPolicy *AllocationReservationSharingPolicy `json:"reservationSharingPolicy,omitempty"`
+
+	// Resource policies to be added to this reservation. The key is defined by user, and the value is resource policy url. This is to define placement policy with reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.resource_policies
+	ResourcePolicies map[string]string `json:"resourcePolicies,omitempty"`
+
+	// [Output Only] Status information for Reservation resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.resource_status
+	ResourceStatus *AllocationResourceStatus `json:"resourceStatus,omitempty"`
+
+	// [Output Only] Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// The type of maintenance for the reservation.
+	//  Check the SchedulingType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.scheduling_type
+	SchedulingType *string `json:"schedulingType,omitempty"`
+
+	// [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Specify share-settings to create a shared reservation. This property is optional. For more information about the syntax and options for this field and its subfields, see the guide for creating a shared reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.share_settings
+	ShareSettings *ShareSettings `json:"shareSettings,omitempty"`
+
+	// Reservation for instances with specific machine shapes.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.specific_reservation
+	SpecificReservation *AllocationSpecificSkuReservation `json:"specificReservation,omitempty"`
+
+	// Indicates whether the reservation can be consumed by VMs with affinity for "any" reservation. If the field is set, then only VMs that target the reservation by name can consume from this reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.specific_reservation_required
+	SpecificReservationRequired *bool `json:"specificReservationRequired,omitempty"`
+
+	// [Output Only] The status of the reservation. - CREATING: Reservation resources are being allocated. - READY: Reservation resources have been allocated, and the reservation is ready for use. - DELETING: Reservation deletion is in progress. - UPDATING: Reservation update is in progress.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.status
+	Status *string `json:"status,omitempty"`
+
+	// Zone in which the reservation resides. A zone must be provided if the reservation is created within a commitment.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
 /* unreachable type ReservationAdvancedDeploymentControl
 // +kcc:proto=google.cloud.compute.v1.ReservationAdvancedDeploymentControl
 type ReservationAdvancedDeploymentControl struct {
@@ -246,6 +2557,187 @@ type ReservationAdvancedDeploymentControl struct {
 	//  Check the ReservationOperationalMode enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.ReservationAdvancedDeploymentControl.reservation_operational_mode
 	ReservationOperationalMode *string `json:"reservationOperationalMode,omitempty"`
+}
+*/
+
+/* unreachable type ReservationAffinity
+// +kcc:proto=google.cloud.compute.v1.ReservationAffinity
+type ReservationAffinity struct {
+	// Specifies the type of reservation from which this instance can consume resources: ANY_RESERVATION (default), SPECIFIC_RESERVATION, or NO_RESERVATION. See Consuming reserved instances for examples.
+	//  Check the ConsumeReservationType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ReservationAffinity.consume_reservation_type
+	ConsumeReservationType *string `json:"consumeReservationType,omitempty"`
+
+	// Corresponds to the label key of a reservation resource. To target a SPECIFIC_RESERVATION by name, specify googleapis.com/reservation-name as the key and specify the name of your reservation as its value.
+	// +kcc:proto:field=google.cloud.compute.v1.ReservationAffinity.key
+	Key *string `json:"key,omitempty"`
+
+	// Corresponds to the label values of a reservation resource. This can be either a name to a reservation in the same project or "projects/different-project/reservations/some-reservation-name" to target a shared reservation in the same zone but in a different project.
+	// +kcc:proto:field=google.cloud.compute.v1.ReservationAffinity.values
+	Values []string `json:"values,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ResourcePolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicy
+type ResourcePolicy struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Resource policy for disk consistency groups.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.disk_consistency_group_policy
+	DiskConsistencyGroupPolicy *ResourcePolicyDiskConsistencyGroupPolicy `json:"diskConsistencyGroupPolicy,omitempty"`
+
+	// Resource policy for instances for placement configuration.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.group_placement_policy
+	GroupPlacementPolicy *ResourcePolicyGroupPlacementPolicy `json:"groupPlacementPolicy,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Resource policy for scheduling instance operations.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.instance_schedule_policy
+	InstanceSchedulePolicy *ResourcePolicyInstanceSchedulePolicy `json:"instanceSchedulePolicy,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#resource_policies for resource policies.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The name of the resource, provided by the client when initially creating the resource. The resource name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] The system status of the resource policy.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.resource_status
+	ResourceStatus *ResourcePolicyResourceStatus `json:"resourceStatus,omitempty"`
+
+	// [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Resource policy for persistent disks for creating snapshots.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.snapshot_schedule_policy
+	SnapshotSchedulePolicy *ResourcePolicySnapshotSchedulePolicy `json:"snapshotSchedulePolicy,omitempty"`
+
+	// [Output Only] The status of resource policy creation.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.status
+	Status *string `json:"status,omitempty"`
+
+	// Resource policy for defining instance placement for MIGs.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicy.workload_policy
+	WorkloadPolicy *ResourcePolicyWorkloadPolicy `json:"workloadPolicy,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ResourcePolicyDailyCycle", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyDailyCycle
+type ResourcePolicyDailyCycle struct {
+	// Defines a schedule with units measured in days. The value determines how many days pass between the start of each cycle.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyDailyCycle.days_in_cycle
+	DaysInCycle *int32 `json:"daysInCycle,omitempty"`
+
+	// [Output only] A predetermined duration for the window, automatically chosen to be the smallest possible in the given scenario.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyDailyCycle.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// Start time of the window. This must be in UTC format that resolves to one of 00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example, both 13:00-5 and 08:00 are valid.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyDailyCycle.start_time
+	StartTime *string `json:"startTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ResourcePolicyDiskConsistencyGroupPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyDiskConsistencyGroupPolicy
+type ResourcePolicyDiskConsistencyGroupPolicy struct {
+}
+*/
+
+/* found existing non-generated go type "ResourcePolicyGroupPlacementPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyGroupPlacementPolicy
+type ResourcePolicyGroupPlacementPolicy struct {
+	// The number of availability domains to spread instances across. If two instances are in different availability domain, they are not in the same low latency network.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyGroupPlacementPolicy.availability_domain_count
+	AvailabilityDomainCount *int32 `json:"availabilityDomainCount,omitempty"`
+
+	// Specifies network collocation
+	//  Check the Collocation enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyGroupPlacementPolicy.collocation
+	Collocation *string `json:"collocation,omitempty"`
+
+	// Specifies the shape of the GPU slice, in slice based GPU families eg. A4X.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyGroupPlacementPolicy.gpu_topology
+	GpuTopology *string `json:"gpuTopology,omitempty"`
+
+	// Number of VMs in this placement group. Google does not recommend that you use this field unless you use a compact policy and you want your policy to work only if it contains this exact number of VMs.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyGroupPlacementPolicy.vm_count
+	VMCount *int32 `json:"vmCount,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ResourcePolicyHourlyCycle", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyHourlyCycle
+type ResourcePolicyHourlyCycle struct {
+	// [Output only] Duration of the time window, automatically chosen to be smallest possible in the given scenario.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyHourlyCycle.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// Defines a schedule with units measured in hours. The value determines how many hours pass between the start of each cycle.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyHourlyCycle.hours_in_cycle
+	HoursInCycle *int32 `json:"hoursInCycle,omitempty"`
+
+	// Time within the window to start the operations. It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyHourlyCycle.start_time
+	StartTime *string `json:"startTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ResourcePolicyInstanceSchedulePolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy
+type ResourcePolicyInstanceSchedulePolicy struct {
+	// The expiration time of the schedule. The timestamp is an RFC3339 string.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy.expiration_time
+	ExpirationTime *string `json:"expirationTime,omitempty"`
+
+	// The start time of the schedule. The timestamp is an RFC3339 string.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Specifies the time zone to be used in interpreting Schedule.schedule. The value of this field must be a time zone name from the tz database: https://wikipedia.org/wiki/Tz_database.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy.time_zone
+	TimeZone *string `json:"timeZone,omitempty"`
+
+	// Specifies the schedule for starting instances.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy.vm_start_schedule
+	VMStartSchedule *ResourcePolicyInstanceSchedulePolicySchedule `json:"vmStartSchedule,omitempty"`
+
+	// Specifies the schedule for stopping instances.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy.vm_stop_schedule
+	VMStopSchedule *ResourcePolicyInstanceSchedulePolicySchedule `json:"vmStopSchedule,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ResourcePolicyInstanceSchedulePolicySchedule", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicySchedule
+type ResourcePolicyInstanceSchedulePolicySchedule struct {
+	// Specifies the frequency for the operation, using the unix-cron format.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicySchedule.schedule
+	Schedule *string `json:"schedule,omitempty"`
 }
 */
 
@@ -271,6 +2763,105 @@ type ResourcePolicyResourceStatusInstanceSchedulePolicyStatus struct {
 }
 */
 
+/* found existing non-generated go type "ResourcePolicySnapshotSchedulePolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicy
+type ResourcePolicySnapshotSchedulePolicy struct {
+	// Retention policy applied to snapshots created by this resource policy.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicy.retention_policy
+	RetentionPolicy *ResourcePolicySnapshotSchedulePolicyRetentionPolicy `json:"retentionPolicy,omitempty"`
+
+	// A Vm Maintenance Policy specifies what kind of infrastructure maintenance we are allowed to perform on this VM and when. Schedule that is applied to disks covered by this policy.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicy.schedule
+	Schedule *ResourcePolicySnapshotSchedulePolicySchedule `json:"schedule,omitempty"`
+
+	// Properties with which snapshots are created such as labels, encryption keys.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicy.snapshot_properties
+	SnapshotProperties *ResourcePolicySnapshotSchedulePolicySnapshotProperties `json:"snapshotProperties,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ResourcePolicySnapshotSchedulePolicyRetentionPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicyRetentionPolicy
+type ResourcePolicySnapshotSchedulePolicyRetentionPolicy struct {
+	// Maximum age of the snapshot that is allowed to be kept.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicyRetentionPolicy.max_retention_days
+	MaxRetentionDays *int32 `json:"maxRetentionDays,omitempty"`
+
+	// Specifies the behavior to apply to scheduled snapshots when the source disk is deleted.
+	//  Check the OnSourceDiskDelete enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicyRetentionPolicy.on_source_disk_delete
+	OnSourceDiskDelete *string `json:"onSourceDiskDelete,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ResourcePolicySnapshotSchedulePolicySchedule", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySchedule
+type ResourcePolicySnapshotSchedulePolicySchedule struct {
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySchedule.daily_schedule
+	DailySchedule *ResourcePolicyDailyCycle `json:"dailySchedule,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySchedule.hourly_schedule
+	HourlySchedule *ResourcePolicyHourlyCycle `json:"hourlySchedule,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySchedule.weekly_schedule
+	WeeklySchedule *ResourcePolicyWeeklyCycle `json:"weeklySchedule,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ResourcePolicySnapshotSchedulePolicySnapshotProperties", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySnapshotProperties
+type ResourcePolicySnapshotSchedulePolicySnapshotProperties struct {
+	// Chain name that the snapshot is created in.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySnapshotProperties.chain_name
+	ChainName *string `json:"chainName,omitempty"`
+
+	// Indication to perform a 'guest aware' snapshot.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySnapshotProperties.guest_flush
+	GuestFlush *bool `json:"guestFlush,omitempty"`
+
+	// Labels to apply to scheduled snapshots. These can be later modified by the setLabels method. Label values may be empty.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySnapshotProperties.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Cloud Storage bucket storage location of the auto snapshot (regional or multi-regional).
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySnapshotProperties.storage_locations
+	StorageLocations []string `json:"storageLocations,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ResourcePolicyWeeklyCycle", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyWeeklyCycle
+type ResourcePolicyWeeklyCycle struct {
+	// Up to 7 intervals/windows, one for each day of the week.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWeeklyCycle.day_of_weeks
+	DayOfWeeks []ResourcePolicyWeeklyCycleDayOfWeek `json:"dayOfWeeks,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ResourcePolicyWeeklyCycleDayOfWeek", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyWeeklyCycleDayOfWeek
+type ResourcePolicyWeeklyCycleDayOfWeek struct {
+	// Defines a schedule that runs on specific days of the week. Specify one or more days. The following options are available: MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY.
+	//  Check the Day enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWeeklyCycleDayOfWeek.day
+	Day *string `json:"day,omitempty"`
+
+	// [Output only] Duration of the time window, automatically chosen to be smallest possible in the given scenario.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWeeklyCycleDayOfWeek.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// Time within the window to start the operations. It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWeeklyCycleDayOfWeek.start_time
+	StartTime *string `json:"startTime,omitempty"`
+}
+*/
+
 /* unreachable type ResourcePolicyWorkloadPolicy
 // +kcc:proto=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy
 type ResourcePolicyWorkloadPolicy struct {
@@ -287,6 +2878,277 @@ type ResourcePolicyWorkloadPolicy struct {
 	//  Check the Type enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy.type
 	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* unreachable type ResourceStatus
+// +kcc:proto=google.cloud.compute.v1.ResourceStatus
+type ResourceStatus struct {
+	// [Output Only] The precise location of your instance within the zone's data center, including the block, sub-block, and host. The field is formatted as follows: blockId/subBlockId/hostId.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatus.physical_host
+	PhysicalHost *string `json:"physicalHost,omitempty"`
+
+	// [Output Only] A series of fields containing the global name of the Compute Engine cluster, as well as the ID of the block, sub-block, and host on which the running instance is located.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatus.physical_host_topology
+	PhysicalHostTopology *ResourceStatusPhysicalHostTopology `json:"physicalHostTopology,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatus.scheduling
+	Scheduling *ResourceStatusScheduling `json:"scheduling,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatus.upcoming_maintenance
+	UpcomingMaintenance *UpcomingMaintenance `json:"upcomingMaintenance,omitempty"`
+}
+*/
+
+/* unreachable type ResourceStatusPhysicalHostTopology
+// +kcc:proto=google.cloud.compute.v1.ResourceStatusPhysicalHostTopology
+type ResourceStatusPhysicalHostTopology struct {
+	// [Output Only] The ID of the block in which the running instance is located. Instances within the same block experience low network latency.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatusPhysicalHostTopology.block
+	Block *string `json:"block,omitempty"`
+
+	// [Output Only] The global name of the Compute Engine cluster where the running instance is located.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatusPhysicalHostTopology.cluster
+	Cluster *string `json:"cluster,omitempty"`
+
+	// [Output Only] The ID of the host on which the running instance is located. Instances on the same host experience the lowest possible network latency.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatusPhysicalHostTopology.host
+	Host *string `json:"host,omitempty"`
+
+	// [Output Only] The ID of the sub-block in which the running instance is located. Instances in the same sub-block experience lower network latency than instances in the same block.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatusPhysicalHostTopology.subblock
+	Subblock *string `json:"subblock,omitempty"`
+}
+*/
+
+/* unreachable type ResourceStatusScheduling
+// +kcc:proto=google.cloud.compute.v1.ResourceStatusScheduling
+type ResourceStatusScheduling struct {
+	// Specifies the availability domain to place the instance in. The value must be a number between 1 and the number of availability domains specified in the spread placement policy attached to the instance.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatusScheduling.availability_domain
+	AvailabilityDomain *int32 `json:"availabilityDomain,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SSLHealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SSLHealthCheck
+type SSLHealthCheck struct {
+	// The TCP port number to which the health check prober sends packets. The default value is 443. Valid values are 1 through 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.SSLHealthCheck.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Not supported.
+	// +kcc:proto:field=google.cloud.compute.v1.SSLHealthCheck.port_name
+	PortName *string `json:"portName,omitempty"`
+
+	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for passthrough load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
+	//  Check the PortSpecification enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SSLHealthCheck.port_specification
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
+	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
+	//  Check the ProxyHeader enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SSLHealthCheck.proxy_header
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
+	// Instructs the health check prober to send this exact ASCII string, up to 1024 bytes in length, after establishing the TCP connection and SSL handshake.
+	// +kcc:proto:field=google.cloud.compute.v1.SSLHealthCheck.request
+	Request *string `json:"request,omitempty"`
+
+	// Creates a content-based SSL health check. In addition to establishing a TCP connection and the TLS handshake, you can configure the health check to pass only when the backend sends this exact response ASCII string, up to 1024 bytes in length. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-ssl-tcp
+	// +kcc:proto:field=google.cloud.compute.v1.SSLHealthCheck.response
+	Response *string `json:"response,omitempty"`
+}
+*/
+
+/* unreachable type Scheduling
+// +kcc:proto=google.cloud.compute.v1.Scheduling
+type Scheduling struct {
+	// Specifies whether the instance should be automatically restarted if it is terminated by Compute Engine (not terminated by a user). You can only set the automatic restart option for standard instances. Preemptible instances cannot be automatically restarted. By default, this is set to true so an instance is automatically restarted if it is terminated by Compute Engine.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.automatic_restart
+	AutomaticRestart *bool `json:"automaticRestart,omitempty"`
+
+	// Specifies the availability domain to place the instance in. The value must be a number between 1 and the number of availability domains specified in the spread placement policy attached to the instance.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.availability_domain
+	AvailabilityDomain *int32 `json:"availabilityDomain,omitempty"`
+
+	// Specify the time in seconds for host error detection, the value must be within the range of [90, 330] with the increment of 30, if unset, the default behavior of host error recovery will be used.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.host_error_timeout_seconds
+	HostErrorTimeoutSeconds *int32 `json:"hostErrorTimeoutSeconds,omitempty"`
+
+	// Specifies the termination action for the instance.
+	//  Check the InstanceTerminationAction enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.instance_termination_action
+	InstanceTerminationAction *string `json:"instanceTerminationAction,omitempty"`
+
+	// Specifies the maximum amount of time a Local Ssd Vm should wait while recovery of the Local Ssd state is attempted. Its value should be in between 0 and 168 hours with hour granularity and the default value being 1 hour.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.local_ssd_recovery_timeout
+	LocalSsdRecoveryTimeout *Duration `json:"localSsdRecoveryTimeout,omitempty"`
+
+	// An opaque location hint used to place the instance close to other resources. This field is for use by internal tools that use the public API.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.location_hint
+	LocationHint *string `json:"locationHint,omitempty"`
+
+	// Specifies the max run duration for the given instance. If specified, the instance termination action will be performed at the end of the run duration.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.max_run_duration
+	MaxRunDuration *Duration `json:"maxRunDuration,omitempty"`
+
+	// The minimum number of virtual CPUs this instance will consume when running on a sole-tenant node.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.min_node_cpus
+	MinNodeCpus *int32 `json:"minNodeCpus,omitempty"`
+
+	// A set of node affinity and anti-affinity configurations. Refer to Configuring node affinity for more information. Overrides reservationAffinity.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.node_affinities
+	NodeAffinities []SchedulingNodeAffinity `json:"nodeAffinities,omitempty"`
+
+	// Defines the maintenance behavior for this instance. For standard instances, the default behavior is MIGRATE. For preemptible instances, the default and only possible behavior is TERMINATE. For more information, see Set VM host maintenance policy.
+	//  Check the OnHostMaintenance enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.on_host_maintenance
+	OnHostMaintenance *string `json:"onHostMaintenance,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.on_instance_stop_action
+	OnInstanceStopAction *SchedulingOnInstanceStopAction `json:"onInstanceStopAction,omitempty"`
+
+	// Defines whether the instance is preemptible. This can only be set during instance creation or while the instance is stopped and therefore, in a `TERMINATED` state. See Instance Life Cycle for more information on the possible instance states.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.preemptible
+	Preemptible *bool `json:"preemptible,omitempty"`
+
+	// Specifies the provisioning model of the instance.
+	//  Check the ProvisioningModel enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.provisioning_model
+	ProvisioningModel *string `json:"provisioningModel,omitempty"`
+
+	// Specifies the timestamp, when the instance will be terminated, in RFC3339 text format. If specified, the instance termination action will be performed at the termination time.
+	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.termination_time
+	TerminationTime *string `json:"terminationTime,omitempty"`
+}
+*/
+
+/* unreachable type SchedulingNodeAffinity
+// +kcc:proto=google.cloud.compute.v1.SchedulingNodeAffinity
+type SchedulingNodeAffinity struct {
+	// Corresponds to the label key of Node resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SchedulingNodeAffinity.key
+	Key *string `json:"key,omitempty"`
+
+	// Defines the operation of node selection. Valid operators are IN for affinity and NOT_IN for anti-affinity.
+	//  Check the Operator enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SchedulingNodeAffinity.operator
+	Operator *string `json:"operator,omitempty"`
+
+	// Corresponds to the label values of Node resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SchedulingNodeAffinity.values
+	Values []string `json:"values,omitempty"`
+}
+*/
+
+/* unreachable type SchedulingOnInstanceStopAction
+// +kcc:proto=google.cloud.compute.v1.SchedulingOnInstanceStopAction
+type SchedulingOnInstanceStopAction struct {
+	// If true, the contents of any attached Local SSD disks will be discarded else, the Local SSD data will be preserved when the instance is stopped at the end of the run duration/termination time.
+	// +kcc:proto:field=google.cloud.compute.v1.SchedulingOnInstanceStopAction.discard_local_ssd
+	DiscardLocalSsd *bool `json:"discardLocalSsd,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SecurityPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicy
+type SecurityPolicy struct {
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.adaptive_protection_config
+	AdaptiveProtectionConfig *SecurityPolicyAdaptiveProtectionConfig `json:"adaptiveProtectionConfig,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.advanced_options_config
+	AdvancedOptionsConfig *SecurityPolicyAdvancedOptionsConfig `json:"advancedOptionsConfig,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.ddos_protection_config
+	DdosProtectionConfig *SecurityPolicyDdosProtectionConfig `json:"ddosProtectionConfig,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Specifies a fingerprint for this resource, which is essentially a hash of the metadata's contents and used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update metadata. You must always provide an up-to-date fingerprint hash in order to update or change metadata, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make get() request to the security policy.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output only] Type of the resource. Always compute#securityPolicyfor security policies
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A fingerprint for the labels being applied to this security policy, which is essentially a hash of the labels set used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels. To see the latest fingerprint, make get() request to the security policy.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.label_fingerprint
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
+	// Labels for this resource. These can only be added or modified by the setLabels method. Each label key/value pair must comply with RFC1035. Label values may be empty.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.recaptcha_options_config
+	RecaptchaOptionsConfig *SecurityPolicyRecaptchaOptionsConfig `json:"recaptchaOptionsConfig,omitempty"`
+
+	// [Output Only] URL of the region where the regional security policy resides. This field is not applicable to global security policies.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.region
+	Region *string `json:"region,omitempty"`
+
+	// A list of rules that belong to this policy. There must always be a default rule which is a rule with priority 2147483647 and match all condition (for the match condition this means match "*" for srcIpRanges and for the networkMatch condition every field must be either match "*" or not set). If no rules are provided when creating a security policy, a default rule with action "allow" will be added.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.rules
+	Rules []SecurityPolicyRule `json:"rules,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// The type indicates the intended use of the security policy. - CLOUD_ARMOR: Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. - CLOUD_ARMOR_EDGE: Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google's cache. - CLOUD_ARMOR_INTERNAL_SERVICE: Cloud Armor internal service policies can be configured to filter HTTP requests targeting services managed by Traffic Director in a service mesh. They filter requests before the request is served from the application. - CLOUD_ARMOR_NETWORK: Cloud Armor network policies can be configured to filter packets targeting network load balancing resources such as backend services, target pools, target instances, and instances with external IPs. They filter requests before the request is served from the application. This field can be set only at resource creation time.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.type
+	Type *string `json:"type,omitempty"`
+
+	// Definitions of user-defined fields for CLOUD_ARMOR_NETWORK policies. A user-defined field consists of up to 4 bytes extracted from a fixed offset in the packet, relative to the IPv4, IPv6, TCP, or UDP header, with an optional mask to select certain bits. Rules may then specify matching values for these fields. Example: userDefinedFields: - name: "ipv4_fragment_offset" base: IPV4 offset: 6 size: 2 mask: "0x1fff"
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.user_defined_fields
+	UserDefinedFields []SecurityPolicyUserDefinedField `json:"userDefinedFields,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPolicyAdaptiveProtectionConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfig
+type SecurityPolicyAdaptiveProtectionConfig struct {
+	// If set to true, enables Cloud Armor Machine Learning.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfig.layer7_ddos_defense_config
+	Layer7DdosDefenseConfig *SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig `json:"layer7DdosDefenseConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig
+type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig struct {
+	// If set to true, enables CAAP for L7 DDoS detection. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig.enable
+	Enable *bool `json:"enable,omitempty"`
+
+	// Rule visibility can be one of the following: STANDARD - opaque rules. (default) PREMIUM - transparent rules. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	//  Check the RuleVisibility enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig.rule_visibility
+	RuleVisibility *string `json:"ruleVisibility,omitempty"`
+
+	// Configuration options for layer7 adaptive protection for various customizable thresholds.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig.threshold_configs
+	ThresholdConfigs []SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig `json:"thresholdConfigs,omitempty"`
 }
 */
 
@@ -342,12 +3204,104 @@ type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfi
 }
 */
 
+/* found existing non-generated go type "SecurityPolicyAdvancedOptionsConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfig
+type SecurityPolicyAdvancedOptionsConfig struct {
+	// Custom configuration to apply the JSON parsing. Only applicable when json_parsing is set to STANDARD.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfig.json_custom_config
+	JsonCustomConfig *SecurityPolicyAdvancedOptionsConfigJsonCustomConfig `json:"jsonCustomConfig,omitempty"`
+
+	// Check the JsonParsing enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfig.json_parsing
+	JsonParsing *string `json:"jsonParsing,omitempty"`
+
+	// Check the LogLevel enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfig.log_level
+	LogLevel *string `json:"logLevel,omitempty"`
+
+	// An optional list of case-insensitive request header names to use for resolving the callers client IP address.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfig.user_ip_request_headers
+	UserIPRequestHeaders []string `json:"userIPRequestHeaders,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPolicyAdvancedOptionsConfigJsonCustomConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig
+type SecurityPolicyAdvancedOptionsConfigJsonCustomConfig struct {
+	// A list of custom Content-Type header values to apply the JSON parsing. As per RFC 1341, a Content-Type header value has the following format: Content-Type := type "/" subtype *[";" parameter] When configuring a custom Content-Type header value, only the type/subtype needs to be specified, and the parameters should be excluded.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig.content_types
+	ContentTypes []string `json:"contentTypes,omitempty"`
+}
+*/
+
 /* unreachable type SecurityPolicyDdosProtectionConfig
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyDdosProtectionConfig
 type SecurityPolicyDdosProtectionConfig struct {
 	// Check the DdosProtection enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyDdosProtectionConfig.ddos_protection
 	DdosProtection *string `json:"ddosProtection,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPolicyRecaptchaOptionsConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRecaptchaOptionsConfig
+type SecurityPolicyRecaptchaOptionsConfig struct {
+	// An optional field to supply a reCAPTCHA site key to be used for all the rules using the redirect action with the type of GOOGLE_RECAPTCHA under the security policy. The specified site key needs to be created from the reCAPTCHA API. The user is responsible for the validity of the specified site key. If not specified, a Google-managed site key is used. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRecaptchaOptionsConfig.redirect_site_key
+	RedirectSiteKey *string `json:"redirectSiteKey,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPolicyRule", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRule
+type SecurityPolicyRule struct {
+	// The Action to perform when the rule is matched. The following are the valid actions: - allow: allow access to target. - deny(STATUS): deny access to target, returns the HTTP response code specified. Valid values for `STATUS` are 403, 404, and 502. - rate_based_ban: limit client traffic to the configured threshold and ban the client if the traffic exceeds the threshold. Configure parameters for this action in RateLimitOptions. Requires rate_limit_options to be set. - redirect: redirect to a different target. This can either be an internal reCAPTCHA redirect, or an external URL-based redirect via a 302 response. Parameters for this action can be configured via redirectOptions. This action is only supported in Global Security Policies of type CLOUD_ARMOR. - throttle: limit client traffic to the configured threshold. Configure parameters for this action in rateLimitOptions. Requires rate_limit_options to be set for this.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.action
+	Action *string `json:"action,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional, additional actions that are performed on headers. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.header_action
+	HeaderAction *SecurityPolicyRuleHTTPHeaderAction `json:"headerAction,omitempty"`
+
+	// [Output only] Type of the resource. Always compute#securityPolicyRule for security policy rules
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.match
+	Match *SecurityPolicyRuleMatcher `json:"match,omitempty"`
+
+	// A match condition that incoming packets are evaluated against for CLOUD_ARMOR_NETWORK security policies. If it matches, the corresponding 'action' is enforced. The match criteria for a rule consists of built-in match fields (like 'srcIpRanges') and potentially multiple user-defined match fields ('userDefinedFields'). Field values may be extracted directly from the packet or derived from it (e.g. 'srcRegionCodes'). Some fields may not be present in every packet (e.g. 'srcPorts'). A user-defined field is only present if the base header is found in the packet and the entire field is in bounds. Each match field may specify which values can match it, listing one or more ranges, prefixes, or exact values that are considered a match for the field. A field value must be present in order to match a specified match field. If no match values are specified for a match field, then any field value is considered to match it, and it's not required to be present. For strings specifying '*' is also equivalent to match all. For a packet to match a rule, all specified match fields must match the corresponding field values derived from the packet. Example: networkMatch: srcIpRanges: - "192.0.2.0/24" - "198.51.100.0/24" userDefinedFields: - name: "ipv4_fragment_offset" values: - "1-0x1fff" The above match condition matches packets with a source IP in 192.0.2.0/24 or 198.51.100.0/24 and a user-defined field named "ipv4_fragment_offset" with a value between 1 and 0x1fff inclusive.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.network_match
+	NetworkMatch *SecurityPolicyRuleNetworkMatcher `json:"networkMatch,omitempty"`
+
+	// Preconfigured WAF configuration to be applied for the rule. If the rule does not evaluate preconfigured WAF rules, i.e., if evaluatePreconfiguredWaf() is not used, this field will have no effect.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.preconfigured_waf_config
+	PreconfiguredWafConfig *SecurityPolicyRulePreconfiguredWafConfig `json:"preconfiguredWafConfig,omitempty"`
+
+	// If set to true, the specified action is not enforced.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.preview
+	Preview *bool `json:"preview,omitempty"`
+
+	// An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest priority.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.priority
+	Priority *int32 `json:"priority,omitempty"`
+
+	// Must be specified if the action is "rate_based_ban" or "throttle". Cannot be specified for any other actions.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.rate_limit_options
+	RateLimitOptions *SecurityPolicyRuleRateLimitOptions `json:"rateLimitOptions,omitempty"`
+
+	// Parameters defining the redirect action. Cannot be specified for any other actions. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.redirect_options
+	RedirectOptions *SecurityPolicyRuleRedirectOptions `json:"redirectOptions,omitempty"`
 }
 */
 
@@ -368,6 +3322,39 @@ type SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderActionHttpHeaderOption.header_value
 	HeaderValue *string `json:"headerValue,omitempty"`
 }
+
+/* found existing non-generated go type "SecurityPolicyRuleMatcher", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcher
+type SecurityPolicyRuleMatcher struct {
+	// The configuration options available when specifying versioned_expr. This field must be specified if versioned_expr is specified and cannot be specified if versioned_expr is not specified.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcher.config
+	Config *SecurityPolicyRuleMatcherConfig `json:"config,omitempty"`
+
+	// User defined CEVAL expression. A CEVAL expression is used to specify match criteria such as origin.ip, source.region_code and contents in the request header. Expressions containing `evaluateThreatIntelligence` require Cloud Armor Managed Protection Plus tier and are not supported in Edge Policies nor in Regional Policies. Expressions containing `evaluatePreconfiguredExpr('sourceiplist-*')` require Cloud Armor Managed Protection Plus tier and are only supported in Global Security Policies.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcher.expr
+	Expr *Expr `json:"expr,omitempty"`
+
+	// The configuration options available when specifying a user defined CEVAL expression (i.e., 'expr').
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcher.expr_options
+	ExprOptions *SecurityPolicyRuleMatcherExprOptions `json:"exprOptions,omitempty"`
+
+	// Preconfigured versioned expression. If this field is specified, config must also be specified. Available preconfigured expressions along with their requirements are: SRC_IPS_V1 - must specify the corresponding src_ip_range field in config.
+	//  Check the VersionedExpr enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcher.versioned_expr
+	VersionedExpr *string `json:"versionedExpr,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPolicyRuleMatcherConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherConfig
+type SecurityPolicyRuleMatcherConfig struct {
+	// CIDR IP address range. Maximum number of src_ip_ranges allowed is 10.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherConfig.src_ip_ranges
+	SrcIPRanges []string `json:"srcIPRanges,omitempty"`
+}
+*/
 
 /* unreachable type SecurityPolicyRuleMatcherExprOptions
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptions
@@ -441,6 +3428,104 @@ type SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch struct {
 }
 */
 
+/* found existing non-generated go type "SecurityPolicyRulePreconfiguredWafConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfig
+type SecurityPolicyRulePreconfiguredWafConfig struct {
+	// A list of exclusions to apply during preconfigured WAF evaluation.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfig.exclusions
+	Exclusions []SecurityPolicyRulePreconfiguredWafConfigExclusion `json:"exclusions,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPolicyRulePreconfiguredWafConfigExclusion", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion
+type SecurityPolicyRulePreconfiguredWafConfigExclusion struct {
+	// A list of request cookie names whose value will be excluded from inspection during preconfigured WAF evaluation.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.request_cookies_to_exclude
+	RequestCookiesToExclude []SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams `json:"requestCookiesToExclude,omitempty"`
+
+	// A list of request header names whose value will be excluded from inspection during preconfigured WAF evaluation.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.request_headers_to_exclude
+	RequestHeadersToExclude []SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams `json:"requestHeadersToExclude,omitempty"`
+
+	// A list of request query parameter names whose value will be excluded from inspection during preconfigured WAF evaluation. Note that the parameter can be in the query string or in the POST body.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.request_query_params_to_exclude
+	RequestQueryParamsToExclude []SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams `json:"requestQueryParamsToExclude,omitempty"`
+
+	// A list of request URIs from the request line to be excluded from inspection during preconfigured WAF evaluation. When specifying this field, the query or fragment part should be excluded.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.request_uris_to_exclude
+	RequestUrisToExclude []SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams `json:"requestUrisToExclude,omitempty"`
+
+	// A list of target rule IDs under the WAF rule set to apply the preconfigured WAF exclusion. If omitted, it refers to all the rule IDs under the WAF rule set.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.target_rule_ids
+	TargetRuleIds []string `json:"targetRuleIds,omitempty"`
+
+	// Target WAF rule set to apply the preconfigured WAF exclusion.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.target_rule_set
+	TargetRuleSet *string `json:"targetRuleSet,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams
+type SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams struct {
+	// The match operator for the field.
+	//  Check the Op enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams.op
+	Op *string `json:"op,omitempty"`
+
+	// The value of the field.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams.val
+	Val *string `json:"val,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPolicyRuleRateLimitOptions", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions
+type SecurityPolicyRuleRateLimitOptions struct {
+	// Can only be specified if the action for the rule is "rate_based_ban". If specified, determines the time (in seconds) the traffic will continue to be banned by the rate limit after the rate falls below the threshold.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.ban_duration_sec
+	BanDurationSec *int32 `json:"banDurationSec,omitempty"`
+
+	// Can only be specified if the action for the rule is "rate_based_ban". If specified, the key will be banned for the configured 'ban_duration_sec' when the number of requests that exceed the 'rate_limit_threshold' also exceed this 'ban_threshold'.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.ban_threshold
+	BanThreshold *SecurityPolicyRuleRateLimitOptionsThreshold `json:"banThreshold,omitempty"`
+
+	// Action to take for requests that are under the configured rate limit threshold. Valid option is "allow" only.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.conform_action
+	ConformAction *string `json:"conformAction,omitempty"`
+
+	// Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if "enforceOnKey" is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. - USER_IP: The IP address of the originating client, which is resolved based on "userIpRequestHeaders" configured with the security policy. If there is no "userIpRequestHeaders" configuration or an IP address cannot be resolved from it, the key type defaults to IP. - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL.
+	//  Check the EnforceOnKey enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.enforce_on_key
+	EnforceOnKey *string `json:"enforceOnKey,omitempty"`
+
+	// If specified, any combination of values of enforce_on_key_type/enforce_on_key_name is treated as the key on which ratelimit threshold/action is enforced. You can specify up to 3 enforce_on_key_configs. If enforce_on_key_configs is specified, enforce_on_key must not be specified.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.enforce_on_key_configs
+	EnforceOnKeyConfigs []SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig `json:"enforceOnKeyConfigs,omitempty"`
+
+	// Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.enforce_on_key_name
+	EnforceOnKeyName *string `json:"enforceOnKeyName,omitempty"`
+
+	// Action to take for requests that are above the configured rate limit threshold, to either deny with a specified HTTP response code, or redirect to a different endpoint. Valid options are `deny(STATUS)`, where valid values for `STATUS` are 403, 404, 429, and 502, and `redirect`, where the redirect parameters come from `exceedRedirectOptions` below. The `redirect` action is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.exceed_action
+	ExceedAction *string `json:"exceedAction,omitempty"`
+
+	// Parameters defining the redirect action that is used as the exceed action. Cannot be specified if the exceed action is not redirect. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.exceed_redirect_options
+	ExceedRedirectOptions *SecurityPolicyRuleRedirectOptions `json:"exceedRedirectOptions,omitempty"`
+
+	// Threshold at which to begin ratelimiting.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.rate_limit_threshold
+	RateLimitThreshold *SecurityPolicyRuleRateLimitOptionsThreshold `json:"rateLimitThreshold,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig
 type SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig struct {
 	// Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value.
@@ -452,6 +3537,35 @@ type SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig.enforce_on_key_type
 	EnforceOnKeyType *string `json:"enforceOnKeyType,omitempty"`
 }
+
+/* found existing non-generated go type "SecurityPolicyRuleRateLimitOptionsThreshold", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsThreshold
+type SecurityPolicyRuleRateLimitOptionsThreshold struct {
+	// Number of HTTP(S) requests for calculating the threshold.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsThreshold.count
+	Count *int32 `json:"count,omitempty"`
+
+	// Interval over which the threshold is computed.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsThreshold.interval_sec
+	IntervalSec *int32 `json:"intervalSec,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SecurityPolicyRuleRedirectOptions", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRedirectOptions
+type SecurityPolicyRuleRedirectOptions struct {
+	// Target for the redirect action. This is required if the type is EXTERNAL_302 and cannot be specified for GOOGLE_RECAPTCHA.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRedirectOptions.target
+	Target *string `json:"target,omitempty"`
+
+	// Type of the redirect action. Possible values are: - GOOGLE_RECAPTCHA: redirect to reCAPTCHA for manual challenge assessment. - EXTERNAL_302: redirect to a different URL via a 302 response.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRedirectOptions.type
+	Type *string `json:"type,omitempty"`
+}
+*/
 
 /* unreachable type SecurityPolicyUserDefinedField
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyUserDefinedField
@@ -479,11 +3593,36 @@ type SecurityPolicyUserDefinedField struct {
 }
 */
 
-/* unreachable type ShareSettings
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ServerBinding", skipping
+
+// +kcc:proto=google.cloud.compute.v1.ServerBinding
+type ServerBinding struct {
+	// Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ServerBinding.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* unreachable type ServiceAccount
+// +kcc:proto=google.cloud.compute.v1.ServiceAccount
+type ServiceAccount struct {
+	// Email address of the service account.
+	// +kcc:proto:field=google.cloud.compute.v1.ServiceAccount.email
+	Email *string `json:"email,omitempty"`
+
+	// The list of scopes to be made available for this service account.
+	// +kcc:proto:field=google.cloud.compute.v1.ServiceAccount.scopes
+	Scopes []string `json:"scopes,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ShareSettings", skipping
+
 // +kcc:proto=google.cloud.compute.v1.ShareSettings
 type ShareSettings struct {
 
 	// TODO: unsupported map type with key string and value message
+
 
 	// Type of sharing for this shared-reservation
 	//  Check the ShareType enum for the list of possible values.
@@ -492,12 +3631,361 @@ type ShareSettings struct {
 }
 */
 
-/* unreachable type ShareSettingsProjectConfig
+/* found existing non-generated go type "ShareSettingsProjectConfig", skipping
+
 // +kcc:proto=google.cloud.compute.v1.ShareSettingsProjectConfig
 type ShareSettingsProjectConfig struct {
 	// The project ID, should be same as the key of this project config in the parent map.
 	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
 	ProjectID *string `json:"projectID,omitempty"`
+}
+*/
+
+/* unreachable type ShieldedInstanceConfig
+// +kcc:proto=google.cloud.compute.v1.ShieldedInstanceConfig
+type ShieldedInstanceConfig struct {
+	// Defines whether the instance has integrity monitoring enabled. Enabled by default.
+	// +kcc:proto:field=google.cloud.compute.v1.ShieldedInstanceConfig.enable_integrity_monitoring
+	EnableIntegrityMonitoring *bool `json:"enableIntegrityMonitoring,omitempty"`
+
+	// Defines whether the instance has Secure Boot enabled. Disabled by default.
+	// +kcc:proto:field=google.cloud.compute.v1.ShieldedInstanceConfig.enable_secure_boot
+	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
+
+	// Defines whether the instance has the vTPM enabled. Enabled by default.
+	// +kcc:proto:field=google.cloud.compute.v1.ShieldedInstanceConfig.enable_vtpm
+	EnableVTPM *bool `json:"enableVTPM,omitempty"`
+}
+*/
+
+/* unreachable type ShieldedInstanceIntegrityPolicy
+// +kcc:proto=google.cloud.compute.v1.ShieldedInstanceIntegrityPolicy
+type ShieldedInstanceIntegrityPolicy struct {
+	// Updates the integrity policy baseline using the measurements from the VM instance's most recent boot.
+	// +kcc:proto:field=google.cloud.compute.v1.ShieldedInstanceIntegrityPolicy.update_auto_learn_policy
+	UpdateAutoLearnPolicy *bool `json:"updateAutoLearnPolicy,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Snapshot", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Snapshot
+type Snapshot struct {
+	// [Output Only] The architecture of the snapshot. Valid values are ARM64 or X86_64.
+	//  Check the Architecture enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.architecture
+	Architecture *string `json:"architecture,omitempty"`
+
+	// [Output Only] Set to true if snapshots are automatically created by applying resource policy on the target disk.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.auto_created
+	AutoCreated *bool `json:"autoCreated,omitempty"`
+
+	// Creates the new snapshot in the snapshot chain labeled with the specified name. The chain name must be 1-63 characters long and comply with RFC1035. This is an uncommon option only for advanced service owners who needs to create separate snapshot chains, for example, for chargeback tracking. When you describe your snapshot resource, this field is visible only if it has a non-empty value.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.chain_name
+	ChainName *string `json:"chainName,omitempty"`
+
+	// [Output Only] Size in bytes of the snapshot at creation time.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.creation_size_bytes
+	CreationSizeBytes *int64 `json:"creationSizeBytes,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] Size of the source disk, specified in GB.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.disk_size_gb
+	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
+
+	// [Output Only] Number of bytes downloaded to restore a snapshot to a disk.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.download_bytes
+	DownloadBytes *int64 `json:"downloadBytes,omitempty"`
+
+	// Whether this snapshot is created from a confidential compute mode disk. [Output Only]: This field is not set by user, but from source disk.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.enable_confidential_compute
+	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
+
+	// [Input Only] Whether to attempt an application consistent snapshot by informing the OS to prepare for the snapshot process.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.guest_flush
+	GuestFlush *bool `json:"guestFlush,omitempty"`
+
+	// [Output Only] A list of features to enable on the guest operating system. Applicable only for bootable images. Read Enabling guest operating system features to see a list of available options.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.guest_os_features
+	GuestOSFeatures []GuestOSFeature `json:"guestOSFeatures,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#snapshot for Snapshot resources.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A fingerprint for the labels being applied to this snapshot, which is essentially a hash of the labels set used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve a snapshot.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.label_fingerprint
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
+	// Labels to apply to this snapshot. These can be later modified by the setLabels method. Label values may be empty.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// [Output Only] Integer license codes indicating which licenses are attached to this snapshot.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.license_codes
+	LicenseCodes []int64 `json:"licenseCodes,omitempty"`
+
+	// [Output Only] A list of public visible licenses that apply to this snapshot. This can be because the original image had licenses attached (such as a Windows image).
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.licenses
+	Licenses []string `json:"licenses,omitempty"`
+
+	// An opaque location hint used to place the snapshot close to other resources. This field is for use by internal tools that use the public API.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.location_hint
+	LocationHint *string `json:"locationHint,omitempty"`
+
+	// Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	// [Output Only] Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Encrypts the snapshot using a customer-supplied encryption key. After you encrypt a snapshot using a customer-supplied key, you must provide the same key if you use the snapshot later. For example, you must provide the encryption key when you create a disk from the encrypted snapshot in a future request. Customer-supplied encryption keys do not protect access to metadata of the snapshot. If you do not provide an encryption key when creating the snapshot, then the snapshot will be encrypted using an automatically generated key and you do not need to provide a key to use the snapshot later.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.snapshot_encryption_key
+	SnapshotEncryptionKey *CustomerEncryptionKey `json:"snapshotEncryptionKey,omitempty"`
+
+	// Indicates the type of the snapshot.
+	//  Check the SnapshotType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.snapshot_type
+	SnapshotType *string `json:"snapshotType,omitempty"`
+
+	// The source disk used to create this snapshot.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.source_disk
+	SourceDisk *string `json:"sourceDisk,omitempty"`
+
+	// The customer-supplied encryption key of the source disk. Required if the source disk is protected by a customer-supplied encryption key.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.source_disk_encryption_key
+	SourceDiskEncryptionKey *CustomerEncryptionKey `json:"sourceDiskEncryptionKey,omitempty"`
+
+	// The source disk whose recovery checkpoint will be used to create this snapshot.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.source_disk_for_recovery_checkpoint
+	SourceDiskForRecoveryCheckpoint *string `json:"sourceDiskForRecoveryCheckpoint,omitempty"`
+
+	// [Output Only] The ID value of the disk used to create this snapshot. This value may be used to determine whether the snapshot was taken from the current or a previous instance of a given disk name.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.source_disk_id
+	SourceDiskID *string `json:"sourceDiskID,omitempty"`
+
+	// The source instant snapshot used to create this snapshot. You can provide this as a partial or full URL to the resource. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /instantSnapshots/instantSnapshot - projects/project/zones/zone/instantSnapshots/instantSnapshot - zones/zone/instantSnapshots/instantSnapshot
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.source_instant_snapshot
+	SourceInstantSnapshot *string `json:"sourceInstantSnapshot,omitempty"`
+
+	// Customer provided encryption key when creating Snapshot from Instant Snapshot.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.source_instant_snapshot_encryption_key
+	SourceInstantSnapshotEncryptionKey *CustomerEncryptionKey `json:"sourceInstantSnapshotEncryptionKey,omitempty"`
+
+	// [Output Only] The unique ID of the instant snapshot used to create this snapshot. This value identifies the exact instant snapshot that was used to create this snapshot. For example, if you created the snapshot from an instant snapshot that was later deleted and recreated under the same name, the source instant snapshot ID would identify the exact instant snapshot that was used.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.source_instant_snapshot_id
+	SourceInstantSnapshotID *string `json:"sourceInstantSnapshotID,omitempty"`
+
+	// [Output Only] URL of the resource policy which created this scheduled snapshot.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.source_snapshot_schedule_policy
+	SourceSnapshotSchedulePolicy *string `json:"sourceSnapshotSchedulePolicy,omitempty"`
+
+	// [Output Only] ID of the resource policy which created this scheduled snapshot.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.source_snapshot_schedule_policy_id
+	SourceSnapshotSchedulePolicyID *string `json:"sourceSnapshotSchedulePolicyID,omitempty"`
+
+	// [Output Only] The status of the snapshot. This can be CREATING, DELETING, FAILED, READY, or UPLOADING.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.status
+	Status *string `json:"status,omitempty"`
+
+	// [Output Only] A size of the storage used by the snapshot. As snapshots share storage, this number is expected to change with snapshot creation/deletion.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.storage_bytes
+	StorageBytes *int64 `json:"storageBytes,omitempty"`
+
+	// [Output Only] An indicator whether storageBytes is in a stable state or it is being adjusted as a result of shared storage reallocation. This status can either be UPDATING, meaning the size of the snapshot is being updated, or UP_TO_DATE, meaning the size of the snapshot is up-to-date.
+	//  Check the StorageBytesStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.storage_bytes_status
+	StorageBytesStatus *string `json:"storageBytesStatus,omitempty"`
+
+	// Cloud Storage bucket storage location of the snapshot (regional or multi-regional).
+	// +kcc:proto:field=google.cloud.compute.v1.Snapshot.storage_locations
+	StorageLocations []string `json:"storageLocations,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Subnetwork", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Subnetwork
+type Subnetwork struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource. This field can be set only at resource creation time.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.description
+	Description *string `json:"description,omitempty"`
+
+	// Whether to enable flow logging for this subnetwork. If this field is not explicitly set, it will not appear in get listings. If not set the default behavior is determined by the org policy, if there is no org policy specified, then it will default to disabled. This field isn't supported if the subnet purpose field is set to REGIONAL_MANAGED_PROXY.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.enable_flow_logs
+	EnableFlowLogs *bool `json:"enableFlowLogs,omitempty"`
+
+	// The external IPv6 address range that is owned by this subnetwork.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.external_ipv6_prefix
+	ExternalIPV6Prefix *string `json:"externalIPV6Prefix,omitempty"`
+
+	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a Subnetwork. An up-to-date fingerprint must be provided in order to update the Subnetwork, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve a Subnetwork.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] The gateway address for default routes to reach destination addresses outside this subnetwork.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.gateway_address
+	GatewayAddress *string `json:"gatewayAddress,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// The internal IPv6 address range that is owned by this subnetwork.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.internal_ipv6_prefix
+	InternalIPV6Prefix *string `json:"internalIPV6Prefix,omitempty"`
+
+	// The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 100.64.0.0/10. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. This field is set at resource creation time. The range can be any range listed in the Valid ranges list. The range can be expanded after creation using expandIpCidrRange.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.ip_cidr_range
+	IPCIDRRange *string `json:"ipCIDRRange,omitempty"`
+
+	// Reference to the source of IP, like a PublicDelegatedPrefix (PDP) for BYOIP. The PDP must be a sub-PDP in EXTERNAL_IPV6_SUBNETWORK_CREATION mode. Use one of the following formats to specify a sub-PDP when creating a dual stack subnetwork with external access using BYOIP: - Full resource URL, as in https://www.googleapis.com/compute/v1/projects/projectId/regions/region /publicDelegatedPrefixes/sub-pdp-name - Partial URL, as in - projects/projectId/regions/region/publicDelegatedPrefixes/ sub-pdp-name - regions/region/publicDelegatedPrefixes/sub-pdp-name
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.ip_collection
+	IPCollection *string `json:"ipCollection,omitempty"`
+
+	// The access type of IPv6 address this subnet holds. It's immutable and can only be specified during creation or the first time the subnet is updated into IPV4_IPV6 dual stack.
+	//  Check the Ipv6AccessType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.ipv6_access_type
+	IPV6AccessType *string `json:"ipv6AccessType,omitempty"`
+
+	// [Output Only] This field is for internal use.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.ipv6_cidr_range
+	IPV6CIDRRange *string `json:"ipv6CIDRRange,omitempty"`
+
+	// [Output Only] Possible endpoints of this subnetwork. It can be one of the following: - VM_ONLY: The subnetwork can be used for creating instances and IPv6 addresses with VM endpoint type. Such a subnetwork gets external IPv6 ranges from a public delegated prefix and cannot be used to create NetLb. - VM_AND_FR: The subnetwork can be used for creating both VM instances and Forwarding Rules. It can also be used to reserve IPv6 addresses with both VM and FR endpoint types. Such a subnetwork gets its IPv6 range from Google IP Pool directly.
+	//  Check the Ipv6GceEndpoint enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.ipv6_gce_endpoint
+	IPV6GCEEndpoint *string `json:"ipv6GCEEndpoint,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#subnetwork for Subnetwork resources.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// This field denotes the VPC flow logging options for this subnetwork. If logging is enabled, logs are exported to Cloud Logging.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.log_config
+	LogConfig *SubnetworkLogConfig `json:"logConfig,omitempty"`
+
+	// The name of the resource, provided by the client when initially creating the resource. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.name
+	Name *string `json:"name,omitempty"`
+
+	// The URL of the network to which this subnetwork belongs, provided by the client when initially creating the subnetwork. This field can be set only at resource creation time.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.network
+	Network *string `json:"network,omitempty"`
+
+	// Input only. [Input Only] Additional params passed with the request, but not persisted as part of resource payload.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.params
+	Params *SubnetworkParams `json:"params,omitempty"`
+
+	// Whether the VMs in this subnet can access Google services without assigned external IP addresses. This field can be both set at resource creation time and updated using setPrivateIpGoogleAccess.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.private_ip_google_access
+	PrivateIPGoogleAccess *bool `json:"privateIPGoogleAccess,omitempty"`
+
+	// This field is for internal use. This field can be both set at resource creation time and updated using patch.
+	//  Check the PrivateIpv6GoogleAccess enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.private_ipv6_google_access
+	PrivateIPV6GoogleAccess *string `json:"privateIPV6GoogleAccess,omitempty"`
+
+	// Check the Purpose enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.purpose
+	Purpose *string `json:"purpose,omitempty"`
+
+	// URL of the region where the Subnetwork resides. This field can be set only at resource creation time.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.region
+	Region *string `json:"region,omitempty"`
+
+	// The URL of the reserved internal range.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.reserved_internal_range
+	ReservedInternalRange *string `json:"reservedInternalRange,omitempty"`
+
+	// The role of subnetwork. Currently, this field is only used when purpose is set to GLOBAL_MANAGED_PROXY or REGIONAL_MANAGED_PROXY. The value can be set to ACTIVE or BACKUP. An ACTIVE subnetwork is one that is currently being used for Envoy-based load balancers in a region. A BACKUP subnetwork is one that is ready to be promoted to ACTIVE or is currently draining. This field can be updated with a patch request.
+	//  Check the Role enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.role
+	Role *string `json:"role,omitempty"`
+
+	// An array of configurations for secondary IP ranges for VM instances contained in this subnetwork. The primary IP of such VM must belong to the primary ipCidrRange of the subnetwork. The alias IPs may belong to either primary or secondary ranges. This field can be updated with a patch request.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.secondary_ip_ranges
+	SecondaryIPRanges []SubnetworkSecondaryRange `json:"secondaryIPRanges,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// The stack type for the subnet. If set to IPV4_ONLY, new VMs in the subnet are assigned IPv4 addresses only. If set to IPV4_IPV6, new VMs in the subnet can be assigned both IPv4 and IPv6 addresses. If not specified, IPV4_ONLY is used. This field can be both set at resource creation time and updated using patch.
+	//  Check the StackType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.stack_type
+	StackType *string `json:"stackType,omitempty"`
+
+	// [Output Only] The state of the subnetwork, which can be one of the following values: READY: Subnetwork is created and ready to use DRAINING: only applicable to subnetworks that have the purpose set to INTERNAL_HTTPS_LOAD_BALANCER and indicates that connections to the load balancer are being drained. A subnetwork that is draining cannot be used or modified until it reaches a status of READY
+	//  Check the State enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. [Output Only] The array of external IPv6 network ranges reserved from the subnetwork's external IPv6 range for system use.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.system_reserved_external_ipv6_ranges
+	SystemReservedExternalIPV6Ranges []string `json:"systemReservedExternalIPV6Ranges,omitempty"`
+
+	// Output only. [Output Only] The array of internal IPv6 network ranges reserved from the subnetwork's internal IPv6 range for system use.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.system_reserved_internal_ipv6_ranges
+	SystemReservedInternalIPV6Ranges []string `json:"systemReservedInternalIPV6Ranges,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SubnetworkLogConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SubnetworkLogConfig
+type SubnetworkLogConfig struct {
+	// Can only be specified if VPC flow logging for this subnetwork is enabled. Toggles the aggregation interval for collecting flow logs. Increasing the interval time will reduce the amount of generated flow logs for long lasting connections. Default is an interval of 5 seconds per connection.
+	//  Check the AggregationInterval enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkLogConfig.aggregation_interval
+	AggregationInterval *string `json:"aggregationInterval,omitempty"`
+
+	// Whether to enable flow logging for this subnetwork. If this field is not explicitly set, it will not appear in get listings. If not set the default behavior is determined by the org policy, if there is no org policy specified, then it will default to disabled. Flow logging isn't supported if the subnet purpose field is set to REGIONAL_MANAGED_PROXY.
+	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkLogConfig.enable
+	Enable *bool `json:"enable,omitempty"`
+
+	// Can only be specified if VPC flow logs for this subnetwork is enabled. The filter expression is used to define which VPC flow logs should be exported to Cloud Logging.
+	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkLogConfig.filter_expr
+	FilterExpr *string `json:"filterExpr,omitempty"`
+
+	// Can only be specified if VPC flow logging for this subnetwork is enabled. The value of the field must be in [0, 1]. Set the sampling rate of VPC flow logs within the subnetwork where 1.0 means all collected logs are reported and 0.0 means no logs are reported. Default is 0.5 unless otherwise specified by the org policy, which means half of all collected logs are reported.
+	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkLogConfig.flow_sampling
+	FlowSampling *float32 `json:"flowSampling,omitempty"`
+
+	// Can only be specified if VPC flow logs for this subnetwork is enabled. Configures whether all, none or a subset of metadata fields should be added to the reported VPC flow logs. Default is EXCLUDE_ALL_METADATA.
+	//  Check the Metadata enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkLogConfig.metadata
+	Metadata *string `json:"metadata,omitempty"`
+
+	// Can only be specified if VPC flow logs for this subnetwork is enabled and "metadata" was set to CUSTOM_METADATA.
+	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkLogConfig.metadata_fields
+	MetadataFields []string `json:"metadataFields,omitempty"`
 }
 */
 
@@ -507,6 +3995,196 @@ type SubnetworkParams struct {
 	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
 	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkParams.resource_manager_tags
 	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SubnetworkSecondaryRange", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SubnetworkSecondaryRange
+type SubnetworkSecondaryRange struct {
+	// The range of IP addresses belonging to this subnetwork secondary range. Provide this property when you create the subnetwork. Ranges must be unique and non-overlapping with all primary and secondary IP ranges within a network. Only IPv4 is supported. The range can be any range listed in the Valid ranges list.
+	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkSecondaryRange.ip_cidr_range
+	IPCIDRRange *string `json:"ipCIDRRange,omitempty"`
+
+	// The name associated with this subnetwork secondary range, used when adding an alias IP range to a VM instance. The name must be 1-63 characters long, and comply with RFC1035. The name must be unique within the subnetwork.
+	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkSecondaryRange.range_name
+	RangeName *string `json:"rangeName,omitempty"`
+
+	// The URL of the reserved internal range.
+	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkSecondaryRange.reserved_internal_range
+	ReservedInternalRange *string `json:"reservedInternalRange,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.TCPHealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.TCPHealthCheck
+type TCPHealthCheck struct {
+	// The TCP port number to which the health check prober sends packets. The default value is 80. Valid values are 1 through 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.TCPHealthCheck.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Not supported.
+	// +kcc:proto:field=google.cloud.compute.v1.TCPHealthCheck.port_name
+	PortName *string `json:"portName,omitempty"`
+
+	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for passthrough load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
+	//  Check the PortSpecification enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.TCPHealthCheck.port_specification
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
+	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
+	//  Check the ProxyHeader enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.TCPHealthCheck.proxy_header
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
+	// Instructs the health check prober to send this exact ASCII string, up to 1024 bytes in length, after establishing the TCP connection.
+	// +kcc:proto:field=google.cloud.compute.v1.TCPHealthCheck.request
+	Request *string `json:"request,omitempty"`
+
+	// Creates a content-based TCP health check. In addition to establishing a TCP connection, you can configure the health check to pass only when the backend sends this exact response ASCII string, up to 1024 bytes in length. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-ssl-tcp
+	// +kcc:proto:field=google.cloud.compute.v1.TCPHealthCheck.response
+	Response *string `json:"response,omitempty"`
+}
+*/
+
+/* unreachable type Tags
+// +kcc:proto=google.cloud.compute.v1.Tags
+type Tags struct {
+	// Specifies a fingerprint for this request, which is essentially a hash of the tags' contents and used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update tags. You must always provide an up-to-date fingerprint hash in order to update or change tags. To see the latest fingerprint, make get() request to the instance.
+	// +kcc:proto:field=google.cloud.compute.v1.Tags.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// An array of tags. Each tag must be 1-63 characters long, and comply with RFC1035.
+	// +kcc:proto:field=google.cloud.compute.v1.Tags.items
+	Items []string `json:"items,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.TargetHttpsProxy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.TargetHttpsProxy
+type TargetHTTPSProxy struct {
+	// Optional. A URL referring to a networksecurity.AuthorizationPolicy resource that describes how the proxy should authorize inbound traffic. If left blank, access will not be restricted by an authorization policy. Refer to the AuthorizationPolicy resource for additional details. authorizationPolicy only applies to a global TargetHttpsProxy attached to globalForwardingRules with the loadBalancingScheme set to INTERNAL_SELF_MANAGED. Note: This field currently has no impact.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.authorization_policy
+	AuthorizationPolicy *string `json:"authorizationPolicy,omitempty"`
+
+	// URL of a certificate map that identifies a certificate map associated with the given target proxy. This field can only be set for Global external Application Load Balancer or Classic Application Load Balancer. For other products use Certificate Manager Certificates instead. If set, sslCertificates will be ignored. Accepted format is //certificatemanager.googleapis.com/projects/{project }/locations/{location}/certificateMaps/{resourceName}.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.certificate_map
+	CertificateMap *string `json:"certificateMap,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.description
+	Description *string `json:"description,omitempty"`
+
+	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a TargetHttpsProxy. An up-to-date fingerprint must be provided in order to patch the TargetHttpsProxy; otherwise, the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve the TargetHttpsProxy.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds). If an HTTP keep-alive is not specified, a default value (610 seconds) will be used. For global external Application Load Balancers, the minimum allowed value is 5 seconds and the maximum allowed value is 1200 seconds. For classic Application Load Balancers, this option is not supported.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.http_keep_alive_timeout_sec
+	HTTPKeepAliveTimeoutSec *int32 `json:"httpKeepAliveTimeoutSec,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of resource. Always compute#targetHttpsProxy for target HTTPS proxies.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.name
+	Name *string `json:"name,omitempty"`
+
+	// This field only applies when the forwarding rule that references this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. When this field is set to true, Envoy proxies set up inbound traffic interception and bind to the IP address and port specified in the forwarding rule. This is generally useful when using Traffic Director to configure Envoy as a gateway or middle proxy (in other words, not a sidecar proxy). The Envoy proxy listens for inbound requests and handles requests when it receives them. The default is false.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.proxy_bind
+	ProxyBind *bool `json:"proxyBind,omitempty"`
+
+	// Specifies the QUIC override policy for this TargetHttpsProxy resource. This setting determines whether the load balancer attempts to negotiate QUIC with clients. You can specify NONE, ENABLE, or DISABLE. - When quic-override is set to NONE, Google manages whether QUIC is used. - When quic-override is set to ENABLE, the load balancer uses QUIC when possible. - When quic-override is set to DISABLE, the load balancer doesn't use QUIC. - If the quic-override flag is not specified, NONE is implied.
+	//  Check the QuicOverride enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.quic_override
+	QuicOverride *string `json:"quicOverride,omitempty"`
+
+	// [Output Only] URL of the region where the regional TargetHttpsProxy resides. This field is not applicable to global TargetHttpsProxies.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Optional. A URL referring to a networksecurity.ServerTlsPolicy resource that describes how the proxy should authenticate inbound traffic. serverTlsPolicy only applies to a global TargetHttpsProxy attached to globalForwardingRules with the loadBalancingScheme set to INTERNAL_SELF_MANAGED or EXTERNAL or EXTERNAL_MANAGED or INTERNAL_MANAGED. It also applies to a regional TargetHttpsProxy attached to regional forwardingRules with the loadBalancingScheme set to EXTERNAL_MANAGED or INTERNAL_MANAGED. For details which ServerTlsPolicy resources are accepted with INTERNAL_SELF_MANAGED and which with EXTERNAL, INTERNAL_MANAGED, EXTERNAL_MANAGED loadBalancingScheme consult ServerTlsPolicy documentation. If left blank, communications are not encrypted.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.server_tls_policy
+	ServerTLSPolicy *string `json:"serverTLSPolicy,omitempty"`
+
+	// URLs to SslCertificate resources that are used to authenticate connections between users and the load balancer. At least one SSL certificate must be specified. SslCertificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED. The URLs should refer to a SSL Certificate resource or Certificate Manager Certificate resource. Mixing Classic Certificates and Certificate Manager Certificates is not allowed. Certificate Manager Certificates must include the certificatemanager API namespace. Using Certificate Manager Certificates in this field is not supported by Global external Application Load Balancer or Classic Application Load Balancer, use certificate_map instead. Currently, you may specify up to 15 Classic SSL Certificates or up to 100 Certificate Manager Certificates. Certificate Manager Certificates accepted formats are: - //certificatemanager.googleapis.com/projects/{project}/locations/{ location}/certificates/{resourceName}. - https://certificatemanager.googleapis.com/v1alpha1/projects/{project }/locations/{location}/certificates/{resourceName}.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.ssl_certificates
+	SSLCertificates []string `json:"sslCertificates,omitempty"`
+
+	// URL of SslPolicy resource that will be associated with the TargetHttpsProxy resource. If not set, the TargetHttpsProxy resource has no SSL policy configured.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.ssl_policy
+	SSLPolicy *string `json:"sslPolicy,omitempty"`
+
+	// Specifies whether TLS 1.3 0-RTT Data ("Early Data") should be accepted for this service. Early Data allows a TLS resumption handshake to include the initial application payload (a HTTP request) alongside the handshake, reducing the effective round trips to "zero". This applies to TLS 1.3 connections over TCP (HTTP/2) as well as over UDP (QUIC/h3). This can improve application performance, especially on networks where interruptions may be common, such as on mobile. Requests with Early Data will have the "Early-Data" HTTP header set on the request, with a value of "1", to allow the backend to determine whether Early Data was included. Note: TLS Early Data may allow requests to be replayed, as the data is sent to the backend before the handshake has fully completed. Applications that allow idempotent HTTP methods to make non-idempotent changes, such as a GET request updating a database, should not accept Early Data on those requests, and reject requests with the "Early-Data: 1" HTTP header by returning a HTTP 425 (Too Early) status code, in order to remain RFC compliant. The default value is DISABLED.
+	//  Check the TlsEarlyData enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.tls_early_data
+	TLSEarlyData *string `json:"tlsEarlyData,omitempty"`
+
+	// A fully-qualified or valid partial URL to the UrlMap resource that defines the mapping from URL to the BackendService. For example, the following are all valid URLs for specifying a URL map: - https://www.googleapis.compute/v1/projects/project/global/urlMaps/ url-map - projects/project/global/urlMaps/url-map - global/urlMaps/url-map
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.url_map
+	URLMap *string `json:"urlMap,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.TargetTcpProxy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.TargetTcpProxy
+type TargetTCPProxy struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#targetTcpProxy for target TCP proxies.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.name
+	Name *string `json:"name,omitempty"`
+
+	// This field only applies when the forwarding rule that references this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. When this field is set to true, Envoy proxies set up inbound traffic interception and bind to the IP address and port specified in the forwarding rule. This is generally useful when using Traffic Director to configure Envoy as a gateway or middle proxy (in other words, not a sidecar proxy). The Envoy proxy listens for inbound requests and handles requests when it receives them. The default is false.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.proxy_bind
+	ProxyBind *bool `json:"proxyBind,omitempty"`
+
+	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
+	//  Check the ProxyHeader enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.proxy_header
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
+	// [Output Only] URL of the region where the regional TCP proxy resides. This field is not applicable to global TCP proxy.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// URL to the BackendService resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.service
+	Service *string `json:"service,omitempty"`
 }
 */
 

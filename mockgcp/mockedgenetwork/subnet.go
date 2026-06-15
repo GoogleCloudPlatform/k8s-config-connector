@@ -22,7 +22,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgenetwork/v1"
+	pb "cloud.google.com/go/edgenetwork/apiv1/edgenetworkpb"
 )
 
 func (s *EdgenetworkV1) GetSubnet(ctx context.Context, req *pb.GetSubnetRequest) (*pb.Subnet, error) {
@@ -49,7 +49,7 @@ func (s *EdgenetworkV1) CreateSubnet(ctx context.Context, req *pb.CreateSubnetRe
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Subnet).(*pb.Subnet)
+	obj := proto.CloneOf(req.Subnet)
 	obj.Name = fqn
 
 	// Network reference must exist

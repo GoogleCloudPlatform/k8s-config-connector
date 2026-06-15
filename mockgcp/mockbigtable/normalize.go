@@ -29,6 +29,13 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// Instances
 	replacements.ReplacePath(".instances[].createTime", mockgcpregistry.PlaceholderTimestamp)
 
+	// Backups
+	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".expireTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".status.observedState.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".status.observedState.endTime", mockgcpregistry.PlaceholderTimestamp)
+
 	// Materialized Views
 	replacements.ReplacePath(".materializedViews[].etag", "abcdef0123A=")
 	if strings.Contains(url, "/materializedViews") {

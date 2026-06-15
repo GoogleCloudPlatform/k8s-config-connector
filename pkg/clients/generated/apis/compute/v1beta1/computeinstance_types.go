@@ -200,28 +200,20 @@ type InstanceLabels struct {
 }
 
 type InstanceLocalSsdRecoveryTimeout struct {
-	/* Immutable. Span of time that's a fraction of a second at nanosecond
-	resolution. Durations less than one second are represented
-	with a 0 seconds field and a positive nanos field. Must
-	be from 0 to 999,999,999 inclusive. */
+	/* Immutable. Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive. */
 	// +optional
 	Nanos *int64 `json:"nanos,omitempty"`
 
-	/* Immutable. Span of time at a resolution of a second.
-	Must be from 0 to 315,576,000,000 inclusive. */
+	/* Immutable. Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. */
 	Seconds int64 `json:"seconds"`
 }
 
 type InstanceMaxRunDuration struct {
-	/* Immutable. Span of time that's a fraction of a second at nanosecond
-	resolution. Durations less than one second are represented
-	with a 0 seconds field and a positive nanos field. Must
-	be from 0 to 999,999,999 inclusive. */
+	/* Immutable. Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive. */
 	// +optional
 	Nanos *int64 `json:"nanos,omitempty"`
 
-	/* Immutable. Span of time at a resolution of a second.
-	Must be from 0 to 315,576,000,000 inclusive. */
+	/* Immutable. Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. */
 	Seconds int64 `json:"seconds"`
 }
 
@@ -327,10 +319,7 @@ type InstanceScheduling struct {
 	// +optional
 	InstanceTerminationAction *string `json:"instanceTerminationAction,omitempty"`
 
-	/* Immutable. Specifies the maximum amount of time a Local Ssd Vm should wait while
-	recovery of the Local Ssd state is attempted. Its value should be in
-	between 0 and 168 hours with hour granularity and the default value being 1
-	hour. */
+	/* Immutable. Specifies the maximum amount of time a Local Ssd Vm should wait while recovery of the Local Ssd state is attempted. Its value should be in between 0 and 168 hours with hour granularity and the default value being 1 hour. */
 	// +optional
 	LocalSsdRecoveryTimeout *InstanceLocalSsdRecoveryTimeout `json:"localSsdRecoveryTimeout,omitempty"`
 
@@ -528,9 +517,7 @@ type ComputeInstanceStatus struct {
 	// +optional
 	CpuPlatform *string `json:"cpuPlatform,omitempty"`
 
-	/* Current status of the instance.
-	This could be one of the following values: PROVISIONING, STAGING, RUNNING, STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED.
-	For more information about the status of the instance, see [Instance life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle). */
+	/* Current status of the instance. This could be one of the following values: PROVISIONING, STAGING, RUNNING, STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED. For more information about the status of the instance, see [Instance life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle). */
 	// +optional
 	CurrentStatus *string `json:"currentStatus,omitempty"`
 

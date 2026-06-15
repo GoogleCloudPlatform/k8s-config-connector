@@ -32,9 +32,9 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/backupdr/v1"
 )
 
 func (s *BackupDRV1) GetBackupVault(ctx context.Context, req *pb.GetBackupVaultRequest) (*pb.BackupVault, error) {
@@ -65,7 +65,7 @@ func (s *BackupDRV1) CreateBackupVault(ctx context.Context, req *pb.CreateBackup
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.BackupVault).(*pb.BackupVault)
+	obj := proto.CloneOf(req.BackupVault)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())

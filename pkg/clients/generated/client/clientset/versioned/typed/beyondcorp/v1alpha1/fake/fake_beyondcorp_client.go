@@ -43,6 +43,14 @@ func (c *FakeBeyondcorpV1alpha1) BeyondCorpAppGateways(namespace string) v1alpha
 	return newFakeBeyondCorpAppGateways(c, namespace)
 }
 
+func (c *FakeBeyondcorpV1alpha1) BeyondCorpClientConnectorServices(namespace string) v1alpha1.BeyondCorpClientConnectorServiceInterface {
+	return newFakeBeyondCorpClientConnectorServices(c, namespace)
+}
+
+func (c *FakeBeyondcorpV1alpha1) BeyondCorpClientGateways(namespace string) v1alpha1.BeyondCorpClientGatewayInterface {
+	return newFakeBeyondCorpClientGateways(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeBeyondcorpV1alpha1) RESTClient() rest.Interface {

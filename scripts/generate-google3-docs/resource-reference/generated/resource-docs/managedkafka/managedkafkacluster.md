@@ -16,7 +16,7 @@ title: "ManagedKafkaCluster"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/managed-service-for-apache-kafka/docs/">/managed-service-for-apache-kafka/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/managed-service-for-apache-kafka/docs/">https://docs.cloud.google.com/managed-service-for-apache-kafka/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ManagedKafkaCluster"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/managed-service-for-apache-kafka/docs/reference/rest/v1/projects.locations.clusters">/managed-service-for-apache-kafka/docs/reference/rest/v1/projects.locations.clusters</a></td>
+<td><a href="https://docs.cloud.google.com/managed-service-for-apache-kafka/docs/reference/rest/v1/projects.locations.clusters">https://docs.cloud.google.com/managed-service-for-apache-kafka/docs/reference/rest/v1/projects.locations.clusters</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -185,7 +185,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -195,7 +195,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -205,7 +205,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -603,4 +603,4 @@ spec:
   resourceID: managedkafka.googleapis.com
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

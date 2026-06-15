@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
@@ -78,10 +79,11 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewKMSKeyHandleIdentity(ctx, reader, obj)
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := identity.(*krm.KMSKeyHandleIdentity)
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -115,7 +117,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	// Check whether Config Connector knows the resource identity.
 	// If not, Config Connector saves one GCP GET call, and starts the CREATE call directly.
 	// This is mostly for GCP services that do not allow user to specify ID, but assign an ID when creating the object.
-	if a.id.ID() == "" {
+	if a.id.KeyHandle == "" {
 		return false, nil
 	}
 
@@ -138,22 +140,20 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := KMSKeyHandleSpec_ToProto(mapCtx, &desired.Spec)
+	resource := kms.KMSKeyHandleSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	parent := a.id.Parent()
-
 	req := &kmspb.CreateKeyHandleRequest{}
-	if a.id.ID() != "" {
+	if a.id.KeyHandle != "" {
 		// Optional. Id of the [KeyHandle][google.cloud.kms.v1.KeyHandle]. Must be
 		// unique to the resource project and location. If not provided by the caller,
 		// a new UUID is used.
 		resource.Name = a.id.String()
-		req.KeyHandleId = a.id.ID()
+		req.KeyHandleId = a.id.KeyHandle
 	}
-	req.Parent = parent.String()
+	req.Parent = a.id.ParentString()
 	req.KeyHandle = resource
 
 	op, err := a.gcpClient.CreateKeyHandle(ctx, req)
@@ -167,7 +167,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("successfully created KeyHandle", "name", a.id.String())
 
 	status := &krm.KMSKeyHandleStatus{}
-	status.ObservedState = KMSKeyHandleStatusObservedState_FromProto(mapCtx, created)
+	status.ObservedState = kms.KMSKeyHandleObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -182,7 +182,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating KeyHandle", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	resource := KMSKeyHandleSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	resource := kms.KMSKeyHandleSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -195,7 +195,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.KMSKeyHandleStatus{}
-		status.ObservedState = KMSKeyHandleStatusObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = kms.KMSKeyHandleObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -222,13 +222,12 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	obj := &krm.KMSKeyHandle{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(KMSKeyHandleSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(kms.KMSKeyHandleSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	parent := a.id.Parent()
-	obj.Spec.ProjectRef = &refs.ProjectRef{Name: parent.ProjectID}
-	obj.Spec.Location = direct.LazyPtr(parent.Location)
+	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
+	obj.Spec.Location = direct.LazyPtr(a.id.Location)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

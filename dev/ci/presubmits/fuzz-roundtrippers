@@ -31,7 +31,3 @@ go test -v ./pkg/fuzztesting/fuzztests/ -fuzz=FuzzAllMappers -fuzztime 600s # fu
 
 # Please do not add more fuzzers here; register them so they are run with FuzzAllMappers (or a similar approach)
 
-go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityGroupSpec -fuzztime 60s
-go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityGroupStatus -fuzztime 60s
-go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityMembershipSpec -fuzztime 60s
-go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityMembershipStatus -fuzztime 60s

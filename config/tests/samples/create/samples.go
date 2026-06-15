@@ -15,6 +15,7 @@
 package create
 
 import (
+	"context"
 	"fmt"
 	"io/fs"
 	"path/filepath"
@@ -39,6 +40,7 @@ import (
 	"github.com/ghodss/yaml" //nolint:depguard
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -125,6 +127,18 @@ type CreateDeleteTestOptions struct { //nolint:revive
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	ctx := t.Ctx
+
+	if t.Manager != nil {
+		var gvks []schema.GroupVersionKind
+		for _, u := range opt.Create {
+			gvks = append(gvks, u.GroupVersionKind())
+		}
+		cacheSyncCtx, cacheSyncCancel := context.WithTimeout(ctx, 2*time.Minute)
+		defer cacheSyncCancel()
+		if err := WaitUntilControllersAreRegistered(cacheSyncCtx, t.T, t.Manager, gvks); err != nil {
+			t.Fatalf("FAIL: error waiting for controllers to register and cache to sync: %v", err)
+		}
+	}
 
 	// Note: we should use server-side apply for both create and update.
 	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field

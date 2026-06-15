@@ -34,6 +34,12 @@ type IdentityV2 interface {
 	Host() string
 }
 
+// ServerGeneratedIdentity is implemented by Identity types for resources that have a server-generated ID.
+type ServerGeneratedIdentity interface {
+	IdentityV2
+	HasIdentitySpecified() bool
+}
+
 type Resource interface {
 	// GetIdentity gets the identity of a resource.
 	GetIdentity(ctx context.Context, reader client.Reader) (Identity, error)

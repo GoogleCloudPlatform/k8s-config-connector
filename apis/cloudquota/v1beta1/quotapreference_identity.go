@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// QuotaPreferenceIdentity defines the resource reference to APIQuotaPreference, which "External" field
-// holds the GCP identifier for the KRM object.
+// QuotaPreferenceIdentity is the identity of an APIQuotaPreference.
 type QuotaPreferenceIdentity struct {
 	parent *QuotaPreferenceParent
 	id     string

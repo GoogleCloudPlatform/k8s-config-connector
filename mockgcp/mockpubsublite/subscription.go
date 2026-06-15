@@ -56,7 +56,7 @@ func (s *PubSubLiteV1) CreateSubscription(ctx context.Context, req *pb.CreateSub
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Subscription).(*pb.Subscription)
+	obj := proto.CloneOf(req.Subscription)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

@@ -70,8 +70,7 @@ spec:
                   type: string
                 type: array
               datasetRef:
-                description: DatasetRef defines the resource reference to BigQueryDataset,
-                  which "External" field holds the GCP identifier for the KRM object.
+                description: DatasetRef is a reference to a BigQueryDataset.
                 oneOf:
                 - not:
                     required:

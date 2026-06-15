@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// NodeGroupIdentity defines the resource reference to DataprocNodeGroup, which "External" field
-// holds the GCP identifier for the KRM object.
+// NodeGroupIdentity is the identity of a DataprocNodeGroup.
 type NodeGroupIdentity struct {
 	parent *NodeGroupParent
 	id     string

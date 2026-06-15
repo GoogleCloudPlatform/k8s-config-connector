@@ -185,7 +185,7 @@ func (a *snapshotAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	updated := proto.Clone(a.actual).(*pb.Snapshot)
+	updated := proto.CloneOf(a.actual)
 
 	if !reflect.DeepEqual(a.actual.Labels, a.desired.Spec.Labels) {
 		report.AddField("labels", a.actual.Labels, a.desired.Spec.Labels)

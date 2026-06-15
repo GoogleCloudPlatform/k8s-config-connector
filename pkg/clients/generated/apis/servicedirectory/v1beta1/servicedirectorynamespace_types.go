@@ -39,9 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ServiceDirectoryNamespaceSpec struct {
-	/* Immutable. The location for the Namespace.
-	A full list of valid locations can be found by running
-	'gcloud beta service-directory locations list'. */
+	/* Immutable. The location for the Namespace. A full list of valid locations can be found by running 'gcloud beta service-directory locations list'. */
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
@@ -56,8 +54,7 @@ type ServiceDirectoryNamespaceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ServiceDirectoryNamespace's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The resource name for the namespace
-	in the format 'projects/* /locations/* /namespaces/*'. */
+	/* The resource name for the namespace in the format 'projects/* /locations/* /namespaces/*'. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 

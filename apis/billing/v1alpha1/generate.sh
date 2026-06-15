@@ -27,11 +27,13 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.billing.v1 \
   --api-version billing.cnrm.cloud.google.com/v1alpha1  \
+  --include-skipped-output \
   --resource BillingAccount:BillingAccount
 
 go run . generate-mapper \
   --service google.cloud.billing.v1 \
-  --api-version billing.cnrm.cloud.google.com/v1alpha1
+  --api-version billing.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
 
 
 cd ${REPO_ROOT}

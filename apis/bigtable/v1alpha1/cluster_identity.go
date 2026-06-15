@@ -27,8 +27,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ClusterIdentity defines the resource reference to BigtableCluster, which "External" field
-// holds the GCP identifier for the KRM object.
+// ClusterIdentity is the identity of a BigtableCluster.
 type ClusterIdentity struct {
 	parent *bigtablev1beta1.InstanceIdentity
 	id     string

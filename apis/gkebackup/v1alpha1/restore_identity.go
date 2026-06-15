@@ -23,8 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// RestoreIdentity defines the resource reference to GKEBackupRestore, which "External" field
-// holds the GCP identifier for the KRM object.
+// RestoreIdentity is the identity of a GKEBackupRestore.
 type RestoreIdentity struct {
 	parent *RestoreParent
 	id     string

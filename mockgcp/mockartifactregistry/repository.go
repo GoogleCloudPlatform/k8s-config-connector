@@ -26,7 +26,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/devtools/artifactregistry/v1"
+	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 )
 
 type ArtifactRegistryV1 struct {

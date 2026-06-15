@@ -7,6 +7,16 @@ description: Moves a mockgcp service from using locally generated grpc-gateway p
 
 This skill outlines the steps to transition a mockgcp service from using `grpc-gateway` to using reflection via `httptogrpc`.
 
+## Step 0: Verify gRPC client library existence
+
+Before migrating, verify that an official gRPC Go client and protobuf module exists for the service. Some services (e.g., `servicenetworking`) only have REST-only client libraries (`google.golang.org/api`) and do not have official protobuf packages under `cloud.google.com/go/` (or `google.golang.org/genproto/googleapis/api/`).
+
+Check if the client package can be imported:
+```go
+import pb "cloud.google.com/go/<service_name>/apiv1/<service_name>pb"
+```
+Or check if it exists in the standard Google Cloud Go module repository. If no such package exists, the migration is **blocked** and cannot be completed. In this case, please document this in a new journal file under `mockgcp/.gemini/skills/move-away-from-grpc-gateway/journal/<service_name>.md` and do not perform the migration.
+
 ## Step 1: Stop generating protos
 
 In `mockgcp/Makefile`, remove the service from the `gen-proto-no-fixup` target. Find the line that looks like `./third_party/googleapis/google/cloud/<service_name>/v1/*.proto \` (or `./third_party/googleapis/mockgcp/cloud/...`) and delete it.
@@ -22,7 +32,18 @@ Run `rm -rf` on the directory to remove the `.pb.go`, `.pb.gw.go`, and `_grpc.pb
 Update the Go files in `mockgcp/mock<service_name>/` (typically `service.go`, `instance.go`, etc.):
 
 - Remove the local generated import: `pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/<service_name>/<version>"`
-- Add the official client library import: `pb "cloud.google.com/go/<service_name>/apiv1/<service_name>pb"`
+- Add the official client library import: `pb "cloud.google.com/go/<service_name>/apiv1/<service_name>pb"` (or `apiv1beta` if the service is only in beta).
+- Register the service with `mockgcpregistry` by adding an `init` function and updating the `New` function signature in `service.go`:
+  ```go
+  func init() {
+      mockgcpregistry.Register(New)
+  }
+  func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
+      // ...
+  }
+  ```
+- Update `mockgcp/register.go` to include the new service package in the anonymous imports.
+- Remove the manual registration of the service in `mockgcp/mock_http_roundtrip.go`.
 
 ## Step 4: Switch HTTP Multiplexer to httptogrpc
 
@@ -62,6 +83,11 @@ The official client library proto types might differ slightly from the old grpc-
 - Check and fix compilation errors by running `go build` or `go test` in the service directory.
 - Update `uuid` generation or default field behaviors to match the strict types in the official client.
 
+- Mocks often handle FieldMask paths manually with a switch statement. The official client library via `httptogrpc` may send camelCase paths (matching JSON names) instead of snake_case (matching proto names). You should update your `switch` statements to support both formats.
+
 ## Journaling
 
-If you discover any new patterns, edge cases, or workarounds during migration, document them in the `mockgcp/.gemini/skills/move-away-from-grpc-gateway/journal/` directory. Create a new file with a descriptive, topic-based name (e.g., `netapp_leftover_generated_files.md` or `datastream_rewriteerror_not_needed.md`) to capture the learning for future reference.
+If you discover any new patterns, edge cases, or workarounds during migration, you MUST document them in the `mockgcp/.gemini/skills/move-away-from-grpc-gateway/journal/` directory.
+
+- **CRITICAL RULE:** Always create a new file with a descriptive, topic-based name (e.g., `netapp_leftover_generated_files.md` or `datastream_rewriteerror_not_needed.md`) to capture your findings, or **append** to an existing relevant file.
+- **NEVER** overwrite, truncate, or delete any existing journal files or entries. All records must be preserved to prevent losing valuable historical migration context.

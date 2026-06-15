@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// WorkflowsWorkflowIdentity defines the resource reference to WorkflowsWorkflow, which "External" field
-// holds the GCP identifier for the KRM object.
+// WorkflowsWorkflowIdentity is the identity of a WorkflowsWorkflow.
 type WorkflowsWorkflowIdentity struct {
 	parent *WorkflowsWorkflowParent
 	id     string

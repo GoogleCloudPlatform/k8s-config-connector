@@ -29,8 +29,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &SecretRef{}
 
-// SecretRef defines the resource reference to SecretManagerSecret, which "External" field
-// holds the GCP identifier for the KRM object.
+// SecretRef is a reference to a SecretManagerSecret.
 type SecretRef struct {
 	// A reference to an externally managed SecretManagerSecret resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".

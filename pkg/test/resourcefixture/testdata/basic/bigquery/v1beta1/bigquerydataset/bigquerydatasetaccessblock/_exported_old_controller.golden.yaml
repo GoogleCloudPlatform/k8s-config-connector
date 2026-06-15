@@ -1,0 +1,25 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/delete-contents-on-destroy: "false"
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  name: bigquerydataset${uniqueId}
+spec:
+  access:
+  - domain: google.com
+    role: READER
+  - iamMember: allUsers
+    role: READER
+  - role: OWNER
+    specialGroup: projectOwners
+  defaultTableExpirationMs: 7200000
+  description: BigQuery Dataset With Access Block v2
+  friendlyName: bigquerydataset-accessblock
+  location: US
+  maxTimeTravelHours: "168"
+  projectRef:
+    external: ${projectId}
+  resourceID: bigquerydataset${uniqueId}

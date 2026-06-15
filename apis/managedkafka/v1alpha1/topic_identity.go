@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// TopicIdentity defines the resource reference to ManagedKafkaTopic, which "External" field
-// holds the GCP identifier for the KRM object.
+// TopicIdentity is the identity of a ManagedKafkaTopic.
 type TopicIdentity struct {
 	parent *TopicParent
 	id     string

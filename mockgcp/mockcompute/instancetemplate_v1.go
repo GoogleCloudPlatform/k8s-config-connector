@@ -40,7 +40,7 @@ func (s *InstanceTemplatesV1) Insert(ctx context.Context, req *pb.InsertInstance
 	fqn := "projects/" + req.GetProject() + "/global/instanceTemplates/" + name
 	selfLink := fmt.Sprintf("https://compute.googleapis.com/compute/v1/projects/%s/global/instanceTemplates/%s", req.GetProject(), name)
 
-	obj := proto.Clone(req.GetInstanceTemplateResource()).(*pb.InstanceTemplate)
+	obj := proto.CloneOf(req.GetInstanceTemplateResource())
 	obj.SelfLink = PtrTo(selfLink)
 	obj.Kind = PtrTo("compute#instanceTemplate")
 	obj.Id = PtrTo(s.generateID())

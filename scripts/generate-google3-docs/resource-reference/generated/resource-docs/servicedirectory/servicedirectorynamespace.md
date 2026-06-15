@@ -16,7 +16,7 @@ title: "ServiceDirectoryNamespace"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/service-directory/docs/">/service-directory/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/service-directory/docs/">https://docs.cloud.google.com/service-directory/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ServiceDirectoryNamespace"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces">/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces</a></td>
+<td><a href="https://docs.cloud.google.com/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces">https://docs.cloud.google.com/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -96,9 +96,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The location for the Namespace.
-A full list of valid locations can be found by running
-'gcloud beta service-directory locations list'.</p>
+            <p>Immutable. The location for the Namespace. A full list of valid locations can be found by running 'gcloud beta service-directory locations list'.</p>
         </td>
     </tr>
     <tr>
@@ -118,7 +116,7 @@ A full list of valid locations can be found by running
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -128,7 +126,7 @@ A full list of valid locations can be found by running
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -138,7 +136,7 @@ A full list of valid locations can be found by running
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -178,7 +176,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -227,8 +225,7 @@ observedGeneration: integer
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The resource name for the namespace
-in the format 'projects/*/locations/*/namespaces/*'.</p>
+            <p>The resource name for the namespace in the format 'projects/*/locations/*/namespaces/*'.</p>
         </td>
     </tr>
     <tr>
@@ -256,4 +253,4 @@ spec:
     external: ${PROJECT_ID?}
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &MaterializedViewRef{}
 
-// MaterializedViewRef defines the resource reference to BigtableMaterializedView, which "External" field
-// holds the GCP identifier for the KRM object.
+// MaterializedViewRef is a reference to a BigtableMaterializedView.
 type MaterializedViewRef struct {
 	// A reference to an externally managed BigtableMaterializedView resource.
 	// Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/materializedViews/{{materializedViewID}}".

@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// VmwareEngineNetworkIdentity defines the resource reference to VMwareEngineNetwork, which "External" field
-// holds the GCP identifier for the KRM object.
+// VmwareEngineNetworkIdentity is the identity of a VMwareEngineNetwork.
 type VmwareEngineNetworkIdentity struct {
 	parent *VmwareEngineNetworkParent
 	id     string

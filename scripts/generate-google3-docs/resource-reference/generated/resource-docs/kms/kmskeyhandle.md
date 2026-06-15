@@ -16,7 +16,7 @@ title: "KMSKeyHandle"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/kms/docs/">/kms/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/kms/docs/">https://docs.cloud.google.com/kms/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "KMSKeyHandle"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/kms/docs/reference/rest/v1/projects.locations.keyHandles">/kms/docs/reference/rest/v1/projects.locations.keyHandles</a></td>
+<td><a href="https://docs.cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyHandles">https://docs.cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyHandles</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -54,9 +54,7 @@ title: "KMSKeyHandle"
 ## Prerequisites
 
 Before you can use this resource, you must follow the guide https://cloud.google.com/kms/docs/enable-autokey to enable
-and configure Cloud KMS Autokey on a resource folder. This includes: setup resource folder, setup key project, enable
-Cloud KMS Autokey on the resource folder, setup the Cloud KMS service agent, grant Autokey user roles and enableand
-configure Cloud KMS Autokey on a resource folder. This includes: 
+and configure Cloud KMS Autokey. This includes:
 
 *   Setup resource folder.
 *   Setup key project.

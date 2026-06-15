@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/vmwareengine/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
@@ -66,7 +66,7 @@ func (s *VMwareEngineV1) CreateExternalAddress(ctx context.Context, req *pb.Crea
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetExternalAddress()).(*pb.ExternalAddress)
+	obj := proto.CloneOf(req.GetExternalAddress())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

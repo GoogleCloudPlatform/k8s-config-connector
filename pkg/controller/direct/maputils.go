@@ -23,7 +23,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/googleapis/gax-go/v2/apierror"
+	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 	grpcCode "google.golang.org/grpc/codes"
 	grpcStatus "google.golang.org/grpc/status"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -554,6 +556,22 @@ func PtrInt64ToPtrUint64(in *int64) *uint64 {
 	return &out
 }
 
+func PtrUint64ToPtrInt64(in *uint64) *int64 {
+	if in == nil {
+		return nil
+	}
+	out := int64(*in)
+	return &out
+}
+
+func PtrInt32ToPtrInt64(in *int32) *int64 {
+	if in == nil {
+		return nil
+	}
+	out := int64(*in)
+	return &out
+}
+
 func PtrInt64ToPtrInt32(in *int64) *int32 {
 	if in == nil {
 		return nil
@@ -589,4 +607,24 @@ func Struct_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Stru
 		return nil
 	}
 	return s
+}
+
+func Status_FromProto(mapCtx *MapContext, in *statuspb.Status) *common.Status {
+	if in == nil {
+		return nil
+	}
+	out := &common.Status{}
+	out.Code = LazyPtr(in.GetCode())
+	out.Message = LazyPtr(in.GetMessage())
+	return out
+}
+
+func Status_ToProto(mapCtx *MapContext, in *common.Status) *statuspb.Status {
+	if in == nil {
+		return nil
+	}
+	out := &statuspb.Status{}
+	out.Code = ValueOf(in.Code)
+	out.Message = ValueOf(in.Message)
+	return out
 }

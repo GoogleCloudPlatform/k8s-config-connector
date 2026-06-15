@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// DataPolicyIdentity defines the resource reference to BigQueryDataPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// DataPolicyIdentity is the identity of a BigQueryDataPolicy.
 type DataPolicyIdentity struct {
 	parent *DataPolicyParent
 	id     string

@@ -32,8 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &RepositoryRef{}
 
 var RespositoryGVK = GroupVersion.WithKind("CloudBuildRepository")
 
-// RepositoryRef defines the resource reference to CloudBuildRepository, which "External" field
-// holds the GCP identifier for the KRM object.
+// RepositoryRef is a reference to a CloudBuildRepository.
 type RepositoryRef struct {
 	// A reference to an externally managed CloudBuildRepository resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/connections/{{connectionID}}/repositories/{{RepositoryID}}".

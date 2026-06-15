@@ -46,6 +46,8 @@ func (r *LogsPanelResourceRef) GetExternal() string {
 
 func (r *LogsPanelResourceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 // GetGVK returns the schema.GroupVersionKind of the reference type

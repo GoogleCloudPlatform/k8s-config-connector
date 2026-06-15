@@ -347,7 +347,6 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.dataRetentionConfig.taskLogsRetentionConfig.storageMode" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.databaseConfig.machineType" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.databaseConfig.zone" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.encryptionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.environmentSize" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.maintenanceWindow.endTime" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.maintenanceWindow.recurrence" is not set in unstructured objects
@@ -356,7 +355,6 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.masterAuthorizedNetworksConfig.cidrBlocks[].displayName" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.masterAuthorizedNetworksConfig.enabled" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.composerInternalIPv4CIDRBlock" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.composerNetworkAttachmentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.diskSizeGB" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.enableIPMasqAgent" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.ipAllocationPolicy.clusterIPV4CIDRBlock" is not set in unstructured objects
@@ -366,17 +364,12 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.ipAllocationPolicy.useIPAliases" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.location" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.machineType" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.oauthScopes[]" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.subnetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.tags[]" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeCount" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.privateEnvironmentConfig.cloudComposerConnectionSubnetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.privateEnvironmentConfig.cloudComposerNetworkIPv4CIDRBlock" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.privateEnvironmentConfig.cloudSQLIPv4CIDRBlock" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.privateEnvironmentConfig.enablePrivateBuildsOnly" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.privateEnvironmentConfig.enablePrivateEnvironment" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.privateEnvironmentConfig.enablePrivatelyUsedPublicIPs" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.privateEnvironmentConfig.networkingConfig.connectionType" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.privateEnvironmentConfig.privateClusterConfig.enablePrivateEndpoint" is not set in unstructured objects
@@ -390,7 +383,6 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.airflowConfigOverrides" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.cloudDataLineageIntegration.enabled" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.envVariables" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.imageVersion" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.pypiPackages" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.pythonVersion" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.schedulerCount" is not set in unstructured objects
@@ -417,7 +409,6 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.worker.memoryGB" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.worker.minCount" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.worker.storageGB" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.storageConfig.bucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.address" is not set in unstructured objects
 [missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv6EndpointType" is not set in unstructured objects
 [missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkTier" is not set in unstructured objects
@@ -1263,7 +1254,6 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.binaryAuthorization.evaluationMode" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.clusterIpv4Cidr" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.clusterTelemetry.type" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.confidentialNodes.enabled" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.costManagementConfig.enabled" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultMaxPodsPerNode" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultSnatStatus.disabled" is not set in unstructured objects
@@ -1305,7 +1295,6 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.networkingMode" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.advancedMachineFeatures.threadsPerCore" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.bootDiskKMSCryptoKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.confidentialNodes.enabled" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.diskSizeGb" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.diskType" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.ephemeralStorageConfig.localSsdCount" is not set in unstructured objects
@@ -1386,7 +1375,6 @@
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.networkConfig.podIpv4CidrBlock" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.networkConfig.podRange" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.bootDiskKMSCryptoKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.confidentialNodes.enabled" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.diskSizeGb" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.diskType" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.ephemeralStorageConfig.localSsdCount" is not set in unstructured objects
@@ -1400,7 +1388,6 @@
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.guestAccelerator[].type" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.gvnic.enabled" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.hostMaintenancePolicy.maintenanceInterval" is not set in unstructured objects
-[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.imageType" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.cpuCfsQuota" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.cpuCfsQuotaPeriod" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.cpuManagerPolicy" is not set in unstructured objects
@@ -2216,7 +2203,6 @@
 [missing_field] crd=kmsautokeyconfigs.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.keyProject.external" is not set in unstructured objects
 [missing_field] crd=kmsautokeyconfigs.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.keyProject.namespace" is not set in unstructured objects
 [missing_field] crd=kmscryptokeys.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.destroyScheduledDuration" is not set in unstructured objects
-[missing_field] crd=kmscryptokeys.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.rotationPeriod" is not set in unstructured objects
 [missing_field] crd=kmscryptokeys.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.skipInitialVersionCreation" is not set in unstructured objects
 [missing_field] crd=logginglogbuckets.logging.cnrm.cloud.google.com version=v1beta1: field ".spec.billingAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=logginglogbuckets.logging.cnrm.cloud.google.com version=v1beta1: field ".spec.enableAnalytics" is not set in unstructured objects
@@ -3082,6 +3068,50 @@
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.vmImage.imageFamily" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.vmImage.imageName" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.vmImage.project" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowAnyGKEPath" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowPaths[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedAWSAccountIDs[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedDataSources[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedEgressFQDNs[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedEncryptions[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedMemberSubjects[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedParents[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedPreviewFeatures[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedPrincipalSets[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedProviders[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedRetentionDurationSeconds" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedRetentionPeriods[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedSchemes[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedServiceList[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.allowedServices[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.defaultAWSProvider" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.defaultXMLServiceProvider" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.deniedEditions[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.enforcedProjects[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.minimumDestroyScheduleDurationInDays" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].parameters.nonFIPSMachineTypes[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowAnyGKEPath" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowPaths[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedAWSAccountIDs[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedDataSources[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedEgressFQDNs[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedEncryptions[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedMemberSubjects[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedParents[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedPreviewFeatures[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedPrincipalSets[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedProviders[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedRetentionDurationSeconds" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedRetentionPeriods[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedSchemes[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedServiceList[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.allowedServices[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.defaultAWSProvider" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.defaultXMLServiceProvider" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.deniedEditions[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.enforcedProjects[]" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.minimumDestroyScheduleDurationInDays" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].parameters.nonFIPSMachineTypes[]" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.assignment.instanceNamePrefixes[]" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.assignment.instances[].external" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.assignment.instances[].namespace" is not set in unstructured objects
@@ -3156,7 +3186,6 @@
 [missing_field] crd=privatecacertificatetemplates.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=projects.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.billingAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.messageStoragePolicy.allowedPersistenceRegions[]" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com version=v1beta1: field ".spec.wafSettings.wafFeature" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com version=v1beta1: field ".spec.wafSettings.wafService" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.alternativeLocationId" is not set in unstructured objects
@@ -3293,9 +3322,7 @@
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.enableDropProtection" is not set in unstructured objects
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.versionRetentionPeriod" is not set in unstructured objects
-[missing_field] crd=speechcustomclasses.speech.cnrm.cloud.google.com version=v1beta1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=speechphrasesets.speech.cnrm.cloud.google.com version=v1beta1: field ".spec.annotations" is not set in unstructured objects
-[missing_field] crd=speechrecognizers.speech.cnrm.cloud.google.com version=v1beta1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.cloneSource.binLogCoordinates.binLogFileName" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.cloneSource.binLogCoordinates.binLogPosition" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.cloneSource.databaseNames[]" is not set in unstructured objects

@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &PolicyTagRef{}
 
-// PolicyTagRef defines the resource reference to DataCatalogPolicyTag, which "External" field
-// holds the GCP identifier for the KRM object.
+// PolicyTagRef is a reference to a DataCatalogPolicyTag.
 type PolicyTagRef struct {
 	// A reference to an externally managed DataCatalogPolicyTag resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}}/policyTags/{{policytagID}}".

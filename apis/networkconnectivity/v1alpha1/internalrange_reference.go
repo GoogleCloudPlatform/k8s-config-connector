@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &InternalRangeRef{}
 
-// InternalRangeRef defines the resource reference to NetworkConnectivityInternalRange, which "External" field
-// holds the GCP identifier for the KRM object.
+// InternalRangeRef is a reference to a NetworkConnectivityInternalRange.
 type InternalRangeRef struct {
 	// A reference to an externally managed NetworkConnectivityInternalRange resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/internalRanges/{{internalrangeID}}".
@@ -42,7 +41,7 @@ type InternalRangeRef struct {
 }
 
 func init() {
-	refs.Register(&InternalRangeRef{})
+	refs.Register(&InternalRangeRef{}, &NetworkConnectivityInternalRange{})
 }
 
 func (r *InternalRangeRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *InternalRangeRef) GetExternal() string {
 
 func (r *InternalRangeRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *InternalRangeRef) ValidateExternal(ref string) error {

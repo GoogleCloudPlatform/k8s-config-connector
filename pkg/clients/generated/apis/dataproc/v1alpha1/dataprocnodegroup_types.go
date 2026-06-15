@@ -281,9 +281,27 @@ type NodegroupInstanceReferencesStatus struct {
 }
 
 type NodegroupInstanceSelectionResultsStatus struct {
+	/* Output only. Full machine-type names, e.g. "n1-standard-16". */
+	// +optional
+	MachineType *string `json:"machineType,omitempty"`
+
+	/* Output only. Number of VM provisioned with the machine_type. */
+	// +optional
+	VmCount *int32 `json:"vmCount,omitempty"`
 }
 
 type NodegroupManagedGroupConfigStatus struct {
+	/* Output only. The name of the Instance Group Manager for this group. */
+	// +optional
+	InstanceGroupManagerName *string `json:"instanceGroupManagerName,omitempty"`
+
+	/* Output only. The partial URI to the instance group manager for this group. E.g. projects/my-project/regions/us-central1/instanceGroupManagers/my-igm. */
+	// +optional
+	InstanceGroupManagerURI *string `json:"instanceGroupManagerURI,omitempty"`
+
+	/* Output only. The name of the Instance Template used for the Managed Instance Group. */
+	// +optional
+	InstanceTemplateName *string `json:"instanceTemplateName,omitempty"`
 }
 
 type NodegroupNodeGroupConfigStatus struct {

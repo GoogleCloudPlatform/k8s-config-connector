@@ -16,7 +16,7 @@ title: "AlloyDBBackup"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/alloydb/docs/">/alloydb/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/alloydb/docs/">https://docs.cloud.google.com/alloydb/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "AlloyDBBackup"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/alloydb/docs/reference/rest/v1/projects.locations.backups">/alloydb/docs/reference/rest/v1/projects.locations.clusters</a></td>
+<td><a href="https://docs.cloud.google.com/alloydb/docs/reference/rest/v1/projects.locations.backups">https://docs.cloud.google.com/alloydb/docs/reference/rest/v1/projects.locations.clusters</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -105,7 +105,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a AlloyDBCluster resource.</p>
+            <p>The name of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -115,7 +115,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a AlloyDBCluster resource.</p>
+            <p>The namespace of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -492,4 +492,4 @@ spec:
   service: servicenetworking.googleapis.com
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

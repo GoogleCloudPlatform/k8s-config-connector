@@ -26,16 +26,16 @@ import (
 
 var _ refsv1beta1.Ref = &ApigeeEnvgroupAttachmentRef{}
 
-// ApigeeEnvgroupAttachmentRef is a reference to a ApigeeEnvgroupAttachment resource.
+// ApigeeEnvgroupAttachmentRef is a reference to an ApigeeEnvgroupAttachment resource.
 type ApigeeEnvgroupAttachmentRef struct {
 	// A reference to an externally managed ApigeeEnvgroupAttachment resource.
 	// Should be in the format "organizations/{{organizationID}}/envgroups/{{envgroupID}}/attachments/{{attachmentID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ApigeeEnvgroupAttachment resource.
+	// The name of an ApigeeEnvgroupAttachment resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ApigeeEnvgroupAttachment resource.
+	// The namespace of an ApigeeEnvgroupAttachment resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -56,6 +56,8 @@ func (r *ApigeeEnvgroupAttachmentRef) GetExternal() string {
 
 func (r *ApigeeEnvgroupAttachmentRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ApigeeEnvgroupAttachmentRef) ValidateExternal(ref string) error {

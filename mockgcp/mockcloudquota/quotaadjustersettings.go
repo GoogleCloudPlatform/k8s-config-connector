@@ -29,8 +29,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1beta"
 	"github.com/google/uuid"
 )
 
@@ -76,10 +76,11 @@ func (s *QuotaAdjusterSettingsManagerV1Beta) UpdateQuotaAdjusterSettings(ctx con
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
+		// mockgcp hack: gcloud does not send updateMask, grpc-gateway auto-populated it.
+		paths = []string{"enablement"}
 	}
 
-	updated := proto.Clone(existing).(*pb.QuotaAdjusterSettings)
+	updated := proto.CloneOf(existing)
 	updated.UpdateTime = timestamppb.Now()
 	updated.Etag = uuid.New().String()
 
@@ -88,10 +89,10 @@ func (s *QuotaAdjusterSettingsManagerV1Beta) UpdateQuotaAdjusterSettings(ctx con
 		switch path {
 		case "enablement":
 			updated.Enablement = req.GetQuotaAdjusterSettings().GetEnablement()
-		case "name":
-			updated.Name = req.GetQuotaAdjusterSettings().GetName()
 		case "inherited":
 			updated.Inherited = req.GetQuotaAdjusterSettings().GetInherited()
+		case "name":
+			updated.Name = req.GetQuotaAdjusterSettings().GetName()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

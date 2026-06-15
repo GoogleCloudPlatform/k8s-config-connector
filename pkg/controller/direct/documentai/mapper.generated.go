@@ -23,7 +23,7 @@ import (
 	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
 	krmdocumentaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1beta1"
-	krmkmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -129,7 +129,7 @@ func DocumentAIProcessorVersionSpec_v1beta1_FromProto(mapCtx *direct.MapContext,
 		out.KMSKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	if in.GetKmsKeyVersionName() != "" {
-		out.KMSKeyVersionNameRef = &krmkmsv1alpha1.KMSCryptoKeyVersionRef{External: in.GetKmsKeyVersionName()}
+		out.KMSKeyVersionNameRef = &krmkmsv1beta1.KMSCryptoKeyVersionRef{External: in.GetKmsKeyVersionName()}
 	}
 	out.DeprecationInfo = ProcessorVersion_DeprecationInfo_v1beta1_FromProto(mapCtx, in.GetDeprecationInfo())
 	return out

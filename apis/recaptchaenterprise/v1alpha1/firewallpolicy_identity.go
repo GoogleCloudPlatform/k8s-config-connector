@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// FirewallPolicyIdentity defines the resource reference to ReCAPTCHAEnterpriseFirewallPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// FirewallPolicyIdentity is the identity of a ReCAPTCHAEnterpriseFirewallPolicy.
 type FirewallPolicyIdentity struct {
 	parent *FirewallPolicyParent
 	id     string

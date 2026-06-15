@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &ComputeReservationRef{}
 
-// ComputeReservationRef defines the resource reference to ComputeReservation, which "External" field
-// holds the GCP identifier for the KRM object.
+// ComputeReservationRef is a reference to a ComputeReservation.
 type ComputeReservationRef struct {
 	// A reference to an externally managed ComputeReservation resource.
 	// Should be in the format "projects/{project}/zones/{zone}/reservations/{reservation}".
@@ -42,7 +41,7 @@ type ComputeReservationRef struct {
 }
 
 func init() {
-	refs.Register(&ComputeReservationRef{})
+	refs.Register(&ComputeReservationRef{}, &ComputeReservation{})
 }
 
 func (r *ComputeReservationRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *ComputeReservationRef) GetExternal() string {
 
 func (r *ComputeReservationRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeReservationRef) ValidateExternal(ref string) error {

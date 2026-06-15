@@ -1,0 +1,21 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  name: bigquerytablesample${uniqueId}
+spec:
+  datasetRef:
+    external: bigquerydatasetsample${uniqueId}
+  externalDataConfiguration:
+    autodetect: true
+    compression: NONE
+    sourceFormat: CSV
+    sourceUris:
+    - gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt
+  friendlyName: bigquerytable-sample-updated
+  resourceID: bigquerytablesample${uniqueId}
+  schema: '[{"mode":"NULLABLE","name":"string_field_0","type":"STRING"},{"mode":"NULLABLE","name":"string_field_1","type":"STRING"},{"mode":"NULLABLE","name":"string_field_2","type":"STRING"},{"mode":"NULLABLE","name":"string_field_3","type":"STRING"},{"mode":"NULLABLE","name":"string_field_4","type":"STRING"},{"mode":"NULLABLE","name":"string_field_5","type":"STRING"},{"mode":"NULLABLE","name":"int64_field_6","type":"INTEGER"},{"mode":"NULLABLE","name":"int64_field_7","type":"INTEGER"},{"mode":"NULLABLE","name":"int64_field_8","type":"INTEGER"},{"mode":"NULLABLE","name":"int64_field_9","type":"INTEGER"},{"mode":"NULLABLE","name":"string_field_10","type":"STRING"},{"mode":"NULLABLE","name":"int64_field_11","type":"INTEGER"},{"mode":"NULLABLE","name":"int64_field_12","type":"INTEGER"},{"mode":"NULLABLE","name":"string_field_13","type":"STRING"}]'

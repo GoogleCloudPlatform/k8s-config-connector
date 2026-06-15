@@ -20,8 +20,10 @@ package create
 import (
 	"context"
 	"flag"
+	"fmt"
 	"regexp"
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/contexts"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
@@ -242,7 +244,7 @@ func TestAll(t *testing.T) {
 
 	project := testgcp.GetDefaultProject(t)
 
-	setup(ctx)
+	setup(ctx, t)
 	// When runTestsRegex is unset, we run all the samples.
 	matchedSamples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
 	// When skipTestsRegex is unset, we don't skip any sample.
@@ -305,7 +307,7 @@ func TestAll(t *testing.T) {
 	}
 }
 
-func setup(ctx context.Context) {
+func setup(ctx context.Context, t *testing.T) {
 	flag.Parse()
 	var err error
 	mgr, err = kccmanager.New(ctx, unusedManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: stateintospec.StateIntoSpecDefaultValueV1Beta1})
@@ -322,6 +324,13 @@ func setup(ctx context.Context) {
 			logging.Fatal(err, "error starting manager")
 		}
 	}()
+
+	// Wait for all controllers to register and their caches to sync before starting any tests
+	cacheSyncCtx, cacheSyncCancel := context.WithTimeout(ctx, 2*time.Minute)
+	defer cacheSyncCancel()
+	if err := WaitUntilControllersAreRegistered(cacheSyncCtx, t, mgr, nil); err != nil {
+		logging.Fatal(fmt.Errorf("error waiting for controllers to register and cache to sync: %w", err), "error starting manager")
+	}
 }
 
 func TestMain(m *testing.M) {

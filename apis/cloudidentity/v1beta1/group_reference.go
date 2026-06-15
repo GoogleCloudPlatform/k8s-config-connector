@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &GroupRef{}
 
-// GroupRef defines the resource reference to CloudIdentityGroup, which "External" field
-// holds the GCP identifier for the KRM object.
+// GroupRef is a reference to a CloudIdentityGroup.
 type GroupRef struct {
 	// A reference to an externally managed CloudIdentityGroup resource.
 	// Should be in the format "groups/{{groupID}}".

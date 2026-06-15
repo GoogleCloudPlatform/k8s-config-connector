@@ -16,7 +16,7 @@ title: "AlloyDBCluster"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/alloydb/docs/">/alloydb/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/alloydb/docs/">https://docs.cloud.google.com/alloydb/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "AlloyDBCluster"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/alloydb/docs/reference/rest/v1/projects.locations.clusters">/alloydb/docs/reference/rest/v1/projects.locations.clusters</a></td>
+<td><a href="https://docs.cloud.google.com/alloydb/docs/reference/rest/v1/projects.locations.clusters">https://docs.cloud.google.com/alloydb/docs/reference/rest/v1/projects.locations.clusters</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -792,7 +792,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -832,7 +832,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -942,7 +942,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>If provided must be in the format `projects/[projectId]/locations/[location]/backups/[backupId]`.</p>
+            <p>A reference to an externally managed AlloyDBBackup resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".</p>
         </td>
     </tr>
     <tr>
@@ -952,7 +952,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.name` field of a `AlloyDBBackup` resource.</p>
+            <p>The name of an AlloyDBBackup resource.</p>
         </td>
     </tr>
     <tr>
@@ -962,7 +962,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `AlloyDBBackup` resource.</p>
+            <p>The namespace of an AlloyDBBackup resource.</p>
         </td>
     </tr>
     <tr>
@@ -1002,7 +1002,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a AlloyDBCluster resource.</p>
+            <p>The name of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -1012,7 +1012,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a AlloyDBCluster resource.</p>
+            <p>The namespace of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -1062,7 +1062,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a AlloyDBCluster resource.</p>
+            <p>The name of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -1072,7 +1072,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a AlloyDBCluster resource.</p>
+            <p>The namespace of an AlloyDBCluster resource.</p>
         </td>
     </tr>
 </tbody>
@@ -1751,4 +1751,4 @@ spec:
   resourceID: alloydb.googleapis.com
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

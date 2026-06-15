@@ -242,7 +242,7 @@ func (r *InspectTemplate) getURL(userBasePath string) (string, error) {
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 		"name":     dcl.ValueOrEmptyString(nr.Name),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/inspectTemplates/{{name}}", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -255,7 +255,7 @@ func (r *InspectTemplate) listURL(userBasePath string) (string, error) {
 		"location": dcl.ValueOrEmptyString(nr.Location),
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/inspectTemplates", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -269,7 +269,7 @@ func (r *InspectTemplate) createURL(userBasePath string) (string, error) {
 		"location": dcl.ValueOrEmptyString(nr.Location),
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/inspectTemplates", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -284,7 +284,7 @@ func (r *InspectTemplate) deleteURL(userBasePath string) (string, error) {
 		"parent":   dcl.ValueOrEmptyString(nr.Parent),
 		"name":     dcl.ValueOrEmptyString(nr.Name),
 	}
-	if dcl.IsRegion(nr.Location) {
+	if isRegion(nr.Location) {
 		return dcl.URL("{{parent}}/locations/{{location}}/inspectTemplates/{{name}}", nr.basePath(), userBasePath, params), nil
 	}
 
@@ -5148,7 +5148,7 @@ func (r *InspectTemplate) updateURL(userBasePath, updateName string) (string, er
 			"parent":   dcl.ValueOrEmptyString(nr.Parent),
 			"name":     dcl.ValueOrEmptyString(nr.Name),
 		}
-		if dcl.IsRegion(nr.Location) {
+		if isRegion(nr.Location) {
 			return dcl.URL("{{parent}}/locations/{{location}}/inspectTemplates/{{name}}", nr.basePath(), userBasePath, fields), nil
 		}
 

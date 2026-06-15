@@ -17,16 +17,18 @@ package v1alpha1
 import (
 	"context"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &BillingAccountRef{}
+var _ refs.Ref = &BillingAccountRef{}
 
-// BillingAccountRef is a reference to a BillingAccount resource.
+// BillingAccountRef is a reference to a BillingAccount.
 type BillingAccountRef struct {
 	// A reference to an externally managed BillingAccount resource.
 	// Should be in the format "billingAccounts/{billingAccountID}".
@@ -37,6 +39,10 @@ type BillingAccountRef struct {
 
 	// The namespace of a BillingAccount resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&BillingAccountRef{}, &BillingAccount{})
 }
 
 func (r *BillingAccountRef) GetGVK() schema.GroupVersionKind {
@@ -56,16 +62,37 @@ func (r *BillingAccountRef) GetExternal() string {
 
 func (r *BillingAccountRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *BillingAccountRef) ValidateExternal(ref string) error {
 	id := &BillingAccountIdentity{}
-	if err := id.FromExternal(r.GetExternal()); err != nil {
+	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
+func (r *BillingAccountRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &BillingAccountIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
 func (r *BillingAccountRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*BillingAccount](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromBillingAccountSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

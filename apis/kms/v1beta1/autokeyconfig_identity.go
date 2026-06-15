@@ -37,44 +37,72 @@ func (r *KMSAutokeyConfigIdentity) Parent() *KMSAutokeyConfigParent {
 }
 
 type KMSAutokeyConfigParent struct {
-	FolderID string
+	FolderID  string
+	ProjectID string
 }
 
 func (p *KMSAutokeyConfigParent) String() string {
-	return "folders/" + p.FolderID
+	if p.FolderID != "" {
+		return "folders/" + p.FolderID
+	}
+	return "projects/" + p.ProjectID
 }
 
 func NewAutokeyConfigIdentity(ctx context.Context, reader client.Reader, obj *KMSAutokeyConfig) (*KMSAutokeyConfigIdentity, error) {
 	// Get Parent
-	folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
-
-	if err != nil {
-		return nil, err
+	var folderID, projectID string
+	if obj.Spec.FolderRef != nil {
+		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
+		if err != nil {
+			return nil, err
+		}
+		folderID = folderRef.FolderID
 	}
-	folderID := folderRef.FolderID
+	if obj.Spec.ProjectRef != nil {
+		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+		if err != nil {
+			return nil, err
+		}
+		projectID = projectRef.ProjectID
+	}
+
+	if folderID == "" && projectID == "" {
+		return nil, fmt.Errorf("either spec.folderRef or spec.projectRef must be specified")
+	}
+	if folderID != "" && projectID != "" {
+		return nil, fmt.Errorf("only one of spec.folderRef or spec.projectRef can be specified")
+	}
+
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		actualIdentity, err := ParseKMSAutokeyConfigExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		if actualIdentity.parent.FolderID != folderID {
-			return nil, fmt.Errorf("spec.folderRef changed, expect %s, got %s", actualIdentity.parent.FolderID, folderID)
+		if actualIdentity.parent.FolderID != folderID || actualIdentity.parent.ProjectID != projectID {
+			return nil, fmt.Errorf("parent changed, expect %s, got %s", actualIdentity.parent.String(), folderID+projectID)
 		}
 	}
 
 	return &KMSAutokeyConfigIdentity{
-		parent: &KMSAutokeyConfigParent{FolderID: folderID},
+		parent: &KMSAutokeyConfigParent{FolderID: folderID, ProjectID: projectID},
 	}, nil
 }
 
 func ParseKMSAutokeyConfigExternal(external string) (parent *KMSAutokeyConfigIdentity, err error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 3 || tokens[0] != "folders" || tokens[2] != "autokeyConfig" {
-		return nil, fmt.Errorf("format of KMSAutokeyConfig external=%q was not known (use folders/<folderID>/autokeyConfig)", external)
+	if len(tokens) != 3 || tokens[2] != "autokeyConfig" {
+		return nil, fmt.Errorf("format of KMSAutokeyConfig external=%q was not known (use folders/<folderID>/autokeyConfig or projects/<projectID>/autokeyConfig)", external)
 	}
-	return &KMSAutokeyConfigIdentity{parent: &KMSAutokeyConfigParent{
-		FolderID: tokens[1],
-	}}, nil
+	if tokens[0] == "folders" {
+		return &KMSAutokeyConfigIdentity{parent: &KMSAutokeyConfigParent{
+			FolderID: tokens[1],
+		}}, nil
+	} else if tokens[0] == "projects" {
+		return &KMSAutokeyConfigIdentity{parent: &KMSAutokeyConfigParent{
+			ProjectID: tokens[1],
+		}}, nil
+	}
+	return nil, fmt.Errorf("unknown parent type %q in external=%q", tokens[0], external)
 }

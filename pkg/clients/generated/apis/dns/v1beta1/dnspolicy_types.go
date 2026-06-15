@@ -39,9 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type PolicyAlternativeNameServerConfig struct {
-	/* Sets an alternative name server for the associated networks. When specified,
-	all DNS queries are forwarded to a name server that you choose. Names such as .internal
-	are not available when an alternative name server is specified. */
+	/* Sets an alternative name server for the associated networks. When specified, all DNS queries are forwarded to a name server that you choose. Names such as .internal are not available when an alternative name server is specified. */
 	TargetNameServers []PolicyTargetNameServers `json:"targetNameServers"`
 }
 
@@ -51,9 +49,7 @@ type PolicyNetworks struct {
 }
 
 type PolicyTargetNameServers struct {
-	/* Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
-	decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
-	to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"]. */
+	/* Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"]. */
 	// +optional
 	ForwardingPath *string `json:"forwardingPath,omitempty"`
 
@@ -62,9 +58,7 @@ type PolicyTargetNameServers struct {
 }
 
 type DNSPolicySpec struct {
-	/* Sets an alternative name server for the associated networks.
-	When specified, all DNS queries are forwarded to a name server that you choose.
-	Names such as .internal are not available when an alternative name server is specified. */
+	/* Sets an alternative name server for the associated networks. When specified, all DNS queries are forwarded to a name server that you choose. Names such as .internal are not available when an alternative name server is specified. */
 	// +optional
 	AlternativeNameServerConfig *PolicyAlternativeNameServerConfig `json:"alternativeNameServerConfig,omitempty"`
 
@@ -72,15 +66,11 @@ type DNSPolicySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Allows networks bound to this policy to receive DNS queries sent
-	by VMs or applications over VPN connections. When enabled, a
-	virtual IP address will be allocated from each of the sub-networks
-	that are bound to this policy. */
+	/* Allows networks bound to this policy to receive DNS queries sent by VMs or applications over VPN connections. When enabled, a virtual IP address will be allocated from each of the sub-networks that are bound to this policy. */
 	// +optional
 	EnableInboundForwarding *bool `json:"enableInboundForwarding,omitempty"`
 
-	/* Controls whether logging is enabled for the networks bound to this policy.
-	Defaults to no logging if not set. */
+	/* Controls whether logging is enabled for the networks bound to this policy. Defaults to no logging if not set. */
 	// +optional
 	EnableLogging *bool `json:"enableLogging,omitempty"`
 

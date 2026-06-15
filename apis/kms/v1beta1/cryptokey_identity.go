@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,32 +15,96 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
-	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var (
+	_ identity.IdentityV2 = &KMSCryptoKeyIdentity{}
+	_ identity.Resource   = &KMSCryptoKey{}
+)
+
+var KMSCryptoKeyIdentityFormat = gcpurls.Template[KMSCryptoKeyIdentity]("cloudkms.googleapis.com", "projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{cryptokey}")
+
+// KMSCryptoKeyIdentity is the identity of a GCP KMSCryptoKey resource.
+// +k8s:deepcopy-gen=false
 type KMSCryptoKeyIdentity struct {
-	parent *KMSKeyRingIdentity
-	id     string
+	Project   string
+	Location  string
+	KeyRing   string
+	CryptoKey string
 }
 
 func (i *KMSCryptoKeyIdentity) String() string {
-	return i.parent.String() + "/cryptoKeys/" + i.id
+	return KMSCryptoKeyIdentityFormat.ToString(*i)
 }
 
-func ParseKMSCryptoKeyExternal(external string) (*KMSCryptoKeyIdentity, error) {
-	external = strings.TrimPrefix(external, "/")
-	tokens := strings.Split(external, "/")
-	// projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}/cryptoKeys/{{key}}
-	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "keyRings" && tokens[6] == "cryptoKeys" {
-		return &KMSCryptoKeyIdentity{parent: &KMSKeyRingIdentity{
-			Parent: &parent.ProjectAndLocationParent{
-				ProjectID: tokens[1], Location: tokens[3],
-			}, ID: tokens[5],
-		}, id: tokens[7]}, nil
+func (i *KMSCryptoKeyIdentity) FromExternal(ref string) error {
+	parsed, match, err := KMSCryptoKeyIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of KMSCryptoKey external=%q was not known (use %s): %w", ref, KMSCryptoKeyIdentityFormat.CanonicalForm(), err)
 	}
-	return nil, fmt.Errorf("format of KMSCryptoKey external=%q was not known (use projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}/cryptoKeys/{{keyId}})", external)
+	if !match {
+		return fmt.Errorf("format of KMSCryptoKey external=%q was not known (use %s)", ref, KMSCryptoKeyIdentityFormat.CanonicalForm())
+	}
 
+	*i = *parsed
+	return nil
+}
+
+func (i *KMSCryptoKeyIdentity) Host() string {
+	return KMSCryptoKeyIdentityFormat.Host()
+}
+
+func (i *KMSCryptoKeyIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s/keyRings/%s", i.Project, i.Location, i.KeyRing)
+}
+
+func getIdentityFromKMSCryptoKeySpec(ctx context.Context, reader client.Reader, obj *KMSCryptoKey) (*KMSCryptoKeyIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+	}
+
+	keyRingExternal, err := obj.Spec.KeyRingRef.NormalizedExternal(ctx, reader, obj.Namespace)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve keyRingRef: %w", err)
+	}
+
+	keyRingIdentity, err := ParseKMSKeyRingExternal(keyRingExternal)
+	if err != nil {
+		return nil, fmt.Errorf("cannot parse resolved keyRingRef: %w", err)
+	}
+
+	identity := &KMSCryptoKeyIdentity{
+		Project:   keyRingIdentity.Project,
+		Location:  keyRingIdentity.Location,
+		KeyRing:   keyRingIdentity.Keyring,
+		CryptoKey: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *KMSCryptoKey) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromKMSCryptoKeySpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	if obj.Status.SelfLink != nil && *obj.Status.SelfLink != "" {
+		statusIdentity := &KMSCryptoKeyIdentity{}
+		if err := statusIdentity.FromExternal(*obj.Status.SelfLink); err != nil {
+			return nil, err
+		}
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change KMSCryptoKey identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
 }

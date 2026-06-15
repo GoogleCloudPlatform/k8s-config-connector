@@ -434,6 +434,128 @@ func DataprocNodeGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmda
 	out.Labels = in.Labels
 	return out
 }
+func DataprocSessionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Session) *krmdataprocv1alpha1.DataprocSessionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.DataprocSessionObservedState{}
+	// MISSING: Name
+	out.Uuid = direct.LazyPtr(in.GetUuid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: SparkConnectSession
+	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_FromProto(mapCtx, in.GetRuntimeInfo())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
+	out.StateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStateTime())
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	out.StateHistory = direct.Slice_FromProto(mapCtx, in.StateHistory, Session_SessionStateHistoryObservedState_v1alpha1_FromProto)
+	return out
+}
+func DataprocSessionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocSessionObservedState) *pb.Session {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Session{}
+	// MISSING: Name
+	out.Uuid = direct.ValueOf(in.Uuid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: SparkConnectSession
+	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_ToProto(mapCtx, in.RuntimeInfo)
+	out.State = direct.Enum_ToProto[pb.Session_State](mapCtx, in.State)
+	out.StateMessage = direct.ValueOf(in.StateMessage)
+	out.StateTime = direct.StringTimestamp_ToProto(mapCtx, in.StateTime)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.StateHistory = direct.Slice_ToProto(mapCtx, in.StateHistory, Session_SessionStateHistoryObservedState_v1alpha1_ToProto)
+	return out
+}
+func DataprocSessionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Session) *krmdataprocv1alpha1.DataprocSessionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.DataprocSessionSpec{}
+	// MISSING: Name
+	out.JupyterSession = JupyterConfig_v1alpha1_FromProto(mapCtx, in.GetJupyterSession())
+	// MISSING: SparkConnectSession
+	out.Labels = in.Labels
+	out.RuntimeConfig = RuntimeConfig_v1alpha1_FromProto(mapCtx, in.GetRuntimeConfig())
+	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_FromProto(mapCtx, in.GetEnvironmentConfig())
+	out.User = direct.LazyPtr(in.GetUser())
+	out.SessionTemplate = direct.LazyPtr(in.GetSessionTemplate())
+	return out
+}
+func DataprocSessionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocSessionSpec) *pb.Session {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Session{}
+	// MISSING: Name
+	if oneof := JupyterConfig_v1alpha1_ToProto(mapCtx, in.JupyterSession); oneof != nil {
+		out.SessionConfig = &pb.Session_JupyterSession{JupyterSession: oneof}
+	}
+	// MISSING: SparkConnectSession
+	out.Labels = in.Labels
+	out.RuntimeConfig = RuntimeConfig_v1alpha1_ToProto(mapCtx, in.RuntimeConfig)
+	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_ToProto(mapCtx, in.EnvironmentConfig)
+	out.User = direct.ValueOf(in.User)
+	out.SessionTemplate = direct.ValueOf(in.SessionTemplate)
+	return out
+}
+func DataprocSessionTemplateObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SessionTemplate) *krmdataprocv1alpha1.DataprocSessionTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.DataprocSessionTemplateObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Uuid = direct.LazyPtr(in.GetUuid())
+	return out
+}
+func DataprocSessionTemplateObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocSessionTemplateObservedState) *pb.SessionTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SessionTemplate{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Uuid = direct.ValueOf(in.Uuid)
+	return out
+}
+func DataprocSessionTemplateSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SessionTemplate) *krmdataprocv1alpha1.DataprocSessionTemplateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.DataprocSessionTemplateSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.JupyterSession = JupyterConfig_v1alpha1_FromProto(mapCtx, in.GetJupyterSession())
+	out.SparkConnectSession = SparkConnectConfig_v1alpha1_FromProto(mapCtx, in.GetSparkConnectSession())
+	out.Labels = in.Labels
+	out.RuntimeConfig = RuntimeConfig_v1alpha1_FromProto(mapCtx, in.GetRuntimeConfig())
+	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_FromProto(mapCtx, in.GetEnvironmentConfig())
+	return out
+}
+func DataprocSessionTemplateSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocSessionTemplateSpec) *pb.SessionTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SessionTemplate{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := JupyterConfig_v1alpha1_ToProto(mapCtx, in.JupyterSession); oneof != nil {
+		out.SessionConfig = &pb.SessionTemplate_JupyterSession{JupyterSession: oneof}
+	}
+	if oneof := SparkConnectConfig_v1alpha1_ToProto(mapCtx, in.SparkConnectSession); oneof != nil {
+		out.SessionConfig = &pb.SessionTemplate_SparkConnectSession{SparkConnectSession: oneof}
+	}
+	out.Labels = in.Labels
+	out.RuntimeConfig = RuntimeConfig_v1alpha1_ToProto(mapCtx, in.RuntimeConfig)
+	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_ToProto(mapCtx, in.EnvironmentConfig)
+	return out
+}
 
 /* found existing non-generated mapping function "DiskConfig_v1alpha1_FromProto", skipping
 func DiskConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DiskConfig) *krmdataprocv1alpha1.DiskConfig {
@@ -775,7 +897,7 @@ func InstanceFlexibilityPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.Ma
 	out := &krmdataprocv1alpha1.InstanceFlexibilityPolicyObservedState{}
 	// MISSING: ProvisioningModelMix
 	// MISSING: InstanceSelectionList
-	out.InstanceSelectionResults = direct.Slice_FromProto(mapCtx, in.InstanceSelectionResults, InstanceFlexibilityPolicy_InstanceSelectionResult_v1alpha1_FromProto)
+	out.InstanceSelectionResults = direct.Slice_FromProto(mapCtx, in.InstanceSelectionResults, InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_v1alpha1_FromProto)
 	return out
 }
 func InstanceFlexibilityPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicyObservedState) *pb.InstanceFlexibilityPolicy {
@@ -785,7 +907,7 @@ func InstanceFlexibilityPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapC
 	out := &pb.InstanceFlexibilityPolicy{}
 	// MISSING: ProvisioningModelMix
 	// MISSING: InstanceSelectionList
-	out.InstanceSelectionResults = direct.Slice_ToProto(mapCtx, in.InstanceSelectionResults, InstanceFlexibilityPolicy_InstanceSelectionResult_v1alpha1_ToProto)
+	out.InstanceSelectionResults = direct.Slice_ToProto(mapCtx, in.InstanceSelectionResults, InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_v1alpha1_ToProto)
 	return out
 }
 func InstanceFlexibilityPolicy_InstanceSelection_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelection) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelection {
@@ -806,22 +928,22 @@ func InstanceFlexibilityPolicy_InstanceSelection_v1alpha1_ToProto(mapCtx *direct
 	out.Rank = direct.ValueOf(in.Rank)
 	return out
 }
-func InstanceFlexibilityPolicy_InstanceSelectionResult_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelectionResult) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult {
+func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelectionResult) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult{}
-	// MISSING: MachineType
-	// MISSING: VMCount
+	out := &krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState{}
+	out.MachineType = in.MachineType
+	out.VMCount = in.VmCount
 	return out
 }
-func InstanceFlexibilityPolicy_InstanceSelectionResult_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult) *pb.InstanceFlexibilityPolicy_InstanceSelectionResult {
+func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState) *pb.InstanceFlexibilityPolicy_InstanceSelectionResult {
 	if in == nil {
 		return nil
 	}
 	out := &pb.InstanceFlexibilityPolicy_InstanceSelectionResult{}
-	// MISSING: MachineType
-	// MISSING: VMCount
+	out.MachineType = in.MachineType
+	out.VmCount = in.VMCount
 	return out
 }
 func InstanceFlexibilityPolicy_ProvisioningModelMix_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_ProvisioningModelMix) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_ProvisioningModelMix {
@@ -925,7 +1047,7 @@ func InstanceGroupConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapConte
 	// MISSING: DiskConfig
 	out.IsPreemptible = direct.LazyPtr(in.GetIsPreemptible())
 	// MISSING: Preemptibility
-	out.ManagedGroupConfig = ManagedGroupConfig_v1alpha1_FromProto(mapCtx, in.GetManagedGroupConfig())
+	out.ManagedGroupConfig = ManagedGroupConfigObservedState_v1alpha1_FromProto(mapCtx, in.GetManagedGroupConfig())
 	// MISSING: Accelerators
 	// MISSING: MinCPUPlatform
 	// MISSING: MinNumInstances
@@ -946,7 +1068,7 @@ func InstanceGroupConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	// MISSING: DiskConfig
 	out.IsPreemptible = direct.ValueOf(in.IsPreemptible)
 	// MISSING: Preemptibility
-	out.ManagedGroupConfig = ManagedGroupConfig_v1alpha1_ToProto(mapCtx, in.ManagedGroupConfig)
+	out.ManagedGroupConfig = ManagedGroupConfigObservedState_v1alpha1_ToProto(mapCtx, in.ManagedGroupConfig)
 	// MISSING: Accelerators
 	// MISSING: MinCPUPlatform
 	// MISSING: MinNumInstances
@@ -1119,19 +1241,39 @@ func JobStatusObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb
 }
 */
 
-/* found existing non-generated mapping function "JobStatusObservedState_v1alpha1_ToProto", skipping
-func JobStatusObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobStatusObservedState) *pb.JobStatus {
+/*
+found existing non-generated mapping function "JobStatusObservedState_v1alpha1_ToProto", skipping
+
+	func JobStatusObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobStatusObservedState) *pb.JobStatus {
+		if in == nil {
+			return nil
+		}
+		out := &pb.JobStatus{}
+		out.State = direct.Enum_ToProto[pb.JobStatus_State](mapCtx, in.State)
+		out.Details = direct.ValueOf(in.Details)
+		out.StateStartTime = direct.StringTimestamp_ToProto(mapCtx, in.StateStartTime)
+		out.Substate = direct.Enum_ToProto[pb.JobStatus_Substate](mapCtx, in.Substate)
+		return out
+	}
+*/
+func JupyterConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JupyterConfig) *krmdataprocv1alpha1.JupyterConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.JobStatus{}
-	out.State = direct.Enum_ToProto[pb.JobStatus_State](mapCtx, in.State)
-	out.Details = direct.ValueOf(in.Details)
-	out.StateStartTime = direct.StringTimestamp_ToProto(mapCtx, in.StateStartTime)
-	out.Substate = direct.Enum_ToProto[pb.JobStatus_Substate](mapCtx, in.Substate)
+	out := &krmdataprocv1alpha1.JupyterConfig{}
+	out.Kernel = direct.Enum_FromProto(mapCtx, in.GetKernel())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	return out
 }
-*/
+func JupyterConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JupyterConfig) *pb.JupyterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.JupyterConfig{}
+	out.Kernel = direct.Enum_ToProto[pb.JupyterConfig_Kernel](mapCtx, in.Kernel)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	return out
+}
 
 /* found existing non-generated mapping function "LoggingConfig_v1alpha1_FromProto", skipping
 func LoggingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krmdataprocv1alpha1.LoggingConfig {
@@ -1156,24 +1298,24 @@ found existing non-generated mapping function "LoggingConfig_v1alpha1_ToProto", 
 		return out
 	}
 */
-func ManagedGroupConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagedGroupConfig) *krmdataprocv1alpha1.ManagedGroupConfig {
+func ManagedGroupConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagedGroupConfig) *krmdataprocv1alpha1.ManagedGroupConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmdataprocv1alpha1.ManagedGroupConfig{}
-	// MISSING: InstanceTemplateName
-	// MISSING: InstanceGroupManagerName
-	// MISSING: InstanceGroupManagerURI
+	out := &krmdataprocv1alpha1.ManagedGroupConfigObservedState{}
+	out.InstanceTemplateName = direct.LazyPtr(in.GetInstanceTemplateName())
+	out.InstanceGroupManagerName = direct.LazyPtr(in.GetInstanceGroupManagerName())
+	out.InstanceGroupManagerURI = direct.LazyPtr(in.GetInstanceGroupManagerUri())
 	return out
 }
-func ManagedGroupConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.ManagedGroupConfig) *pb.ManagedGroupConfig {
+func ManagedGroupConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.ManagedGroupConfigObservedState) *pb.ManagedGroupConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ManagedGroupConfig{}
-	// MISSING: InstanceTemplateName
-	// MISSING: InstanceGroupManagerName
-	// MISSING: InstanceGroupManagerURI
+	out.InstanceTemplateName = direct.ValueOf(in.InstanceTemplateName)
+	out.InstanceGroupManagerName = direct.ValueOf(in.InstanceGroupManagerName)
+	out.InstanceGroupManagerUri = direct.ValueOf(in.InstanceGroupManagerURI)
 	return out
 }
 
@@ -1550,18 +1692,40 @@ func SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx *dir
 }
 */
 
-/* found existing non-generated mapping function "SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto", skipping
-func SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecondaryInstanceGroupAutoscalingPolicyConfig) *pb.InstanceGroupAutoscalingPolicyConfig {
+/*
+found existing non-generated mapping function "SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto", skipping
+
+	func SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecondaryInstanceGroupAutoscalingPolicyConfig) *pb.InstanceGroupAutoscalingPolicyConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.InstanceGroupAutoscalingPolicyConfig{}
+		out.MinInstances = direct.ValueOf(in.MinInstances)
+		out.MaxInstances = direct.ValueOf(in.MaxInstances)
+		out.Weight = direct.ValueOf(in.Weight)
+		return out
+	}
+*/
+func Session_SessionStateHistoryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Session_SessionStateHistory) *krmdataprocv1alpha1.Session_SessionStateHistoryObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.InstanceGroupAutoscalingPolicyConfig{}
-	out.MinInstances = direct.ValueOf(in.MinInstances)
-	out.MaxInstances = direct.ValueOf(in.MaxInstances)
-	out.Weight = direct.ValueOf(in.Weight)
+	out := &krmdataprocv1alpha1.Session_SessionStateHistoryObservedState{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
+	out.StateStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStateStartTime())
 	return out
 }
-*/
+func Session_SessionStateHistoryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Session_SessionStateHistoryObservedState) *pb.Session_SessionStateHistory {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Session_SessionStateHistory{}
+	out.State = direct.Enum_ToProto[pb.Session_State](mapCtx, in.State)
+	out.StateMessage = direct.ValueOf(in.StateMessage)
+	out.StateStartTime = direct.StringTimestamp_ToProto(mapCtx, in.StateStartTime)
+	return out
+}
 
 /* found existing non-generated mapping function "SparkBatch_v1alpha1_FromProto", skipping
 func SparkBatch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkBatch) *krmdataprocv1alpha1.SparkBatch {
@@ -1617,6 +1781,20 @@ func SparkBatch_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.Spa
 		return nil
 	}
 	return &pb.SparkBatch_MainClass{MainClass: *in}
+}
+func SparkConnectConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkConnectConfig) *krmdataprocv1alpha1.SparkConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.SparkConnectConfig{}
+	return out
+}
+func SparkConnectConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkConnectConfig) *pb.SparkConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SparkConnectConfig{}
+	return out
 }
 
 /* found existing non-generated mapping function "SparkHistoryServerConfig_v1alpha1_FromProto", skipping
