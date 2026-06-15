@@ -180,6 +180,7 @@ import (
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/resourcemanager/v1beta1"
 	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1beta1"
+	saasservicemgmtv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/saasservicemgmt/v1alpha1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1"
 	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1beta1"
 	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1"
@@ -369,6 +370,7 @@ type Interface interface {
 	RedisV1beta1() redisv1beta1.RedisV1beta1Interface
 	ResourcemanagerV1beta1() resourcemanagerv1beta1.ResourcemanagerV1beta1Interface
 	RunV1beta1() runv1beta1.RunV1beta1Interface
+	SaasservicemgmtV1alpha1() saasservicemgmtv1alpha1.SaasservicemgmtV1alpha1Interface
 	SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface
 	SecuresourcemanagerV1beta1() securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Interface
 	SecuritycenterV1alpha1() securitycenterv1alpha1.SecuritycenterV1alpha1Interface
@@ -556,6 +558,7 @@ type Clientset struct {
 	redisV1beta1                    *redisv1beta1.RedisV1beta1Client
 	resourcemanagerV1beta1          *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
 	runV1beta1                      *runv1beta1.RunV1beta1Client
+	saasservicemgmtV1alpha1         *saasservicemgmtv1alpha1.SaasservicemgmtV1alpha1Client
 	secretmanagerV1beta1            *secretmanagerv1beta1.SecretmanagerV1beta1Client
 	securesourcemanagerV1beta1      *securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Client
 	securitycenterV1alpha1          *securitycenterv1alpha1.SecuritycenterV1alpha1Client
@@ -1360,6 +1363,11 @@ func (c *Clientset) RunV1beta1() runv1beta1.RunV1beta1Interface {
 	return c.runV1beta1
 }
 
+// SaasservicemgmtV1alpha1 retrieves the SaasservicemgmtV1alpha1Client
+func (c *Clientset) SaasservicemgmtV1alpha1() saasservicemgmtv1alpha1.SaasservicemgmtV1alpha1Interface {
+	return c.saasservicemgmtV1alpha1
+}
+
 // SecretmanagerV1beta1 retrieves the SecretmanagerV1beta1Client
 func (c *Clientset) SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface {
 	return c.secretmanagerV1beta1
@@ -2159,6 +2167,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.saasservicemgmtV1alpha1, err = saasservicemgmtv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.secretmanagerV1beta1, err = secretmanagerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2443,6 +2455,7 @@ func New(c rest.Interface) *Clientset {
 	cs.redisV1beta1 = redisv1beta1.New(c)
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.New(c)
 	cs.runV1beta1 = runv1beta1.New(c)
+	cs.saasservicemgmtV1alpha1 = saasservicemgmtv1alpha1.New(c)
 	cs.secretmanagerV1beta1 = secretmanagerv1beta1.New(c)
 	cs.securesourcemanagerV1beta1 = securesourcemanagerv1beta1.New(c)
 	cs.securitycenterV1alpha1 = securitycenterv1alpha1.New(c)

@@ -177,6 +177,7 @@ import (
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
 	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/run/v1beta1"
+	saasservicemgmtv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/saasservicemgmt/v1alpha1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/secretmanager/v1beta1"
 	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securesourcemanager/v1beta1"
 	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securitycenter/v1alpha1"
@@ -370,6 +371,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	redisv1beta1.AddToScheme,
 	resourcemanagerv1beta1.AddToScheme,
 	runv1beta1.AddToScheme,
+	saasservicemgmtv1alpha1.AddToScheme,
 	secretmanagerv1beta1.AddToScheme,
 	securesourcemanagerv1beta1.AddToScheme,
 	securitycenterv1alpha1.AddToScheme,

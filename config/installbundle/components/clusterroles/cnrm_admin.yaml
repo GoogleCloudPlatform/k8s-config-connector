@@ -1400,6 +1400,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - saasservicemgmt.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - secretmanager.cnrm.cloud.google.com
   resources:
   - '*'
