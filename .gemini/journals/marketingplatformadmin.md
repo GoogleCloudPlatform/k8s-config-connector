@@ -1,0 +1,5 @@
+### [2026-06-15] MarketingPlatformAdmin Proto Compilation Glob Exception
+- **Context**: Implementing initial KRM types and IdentityV2 for `MarketingPlatformAdminAnalyticsAccountLink`
+- **Problem**: The proto compilation script `dev/tools/controllerbuilder/generate-proto.sh` uses standard wildcards like `google/*/*.proto` and `google/cloud/*/*/*.proto`. However, `marketingplatformadmin` protos are deeply nested inside `google/marketingplatform/admin/v1alpha/`, which means they were completely skipped during `generate-proto.sh` runs.
+- **Solution**: Explicitly added `${THIRD_PARTY}/googleapis/google/marketingplatform/admin/*/*.proto \` glob pattern to `generate-proto.sh`. Also, since the remote proto library does not publish Go bindings for this specific v1alpha package yet, mapper generation had to be skipped (`generate-mapper` excluded from `generate.sh`) to prevent importing a non-existent package `google.golang.org/genproto/googleapis/marketingplatform/admin/v1alpha`.
+- **Impact**: Unblocks type generation and local validations for any upcoming Marketing Platform Admin API resources in KCC, while keeping types buildable.
