@@ -327,6 +327,8 @@ import (
 	fakeosconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1beta1/fake"
 	osloginv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oslogin/v1alpha1"
 	fakeosloginv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oslogin/v1alpha1/fake"
+	parallelstorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/parallelstore/v1alpha1"
+	fakeparallelstorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/parallelstore/v1alpha1/fake"
 	parametermanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/parametermanager/v1alpha1"
 	fakeparametermanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/parametermanager/v1alpha1/fake"
 	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privateca/v1beta1"
@@ -1238,6 +1240,11 @@ func (c *Clientset) OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface {
 // OsloginV1alpha1 retrieves the OsloginV1alpha1Client
 func (c *Clientset) OsloginV1alpha1() osloginv1alpha1.OsloginV1alpha1Interface {
 	return &fakeosloginv1alpha1.FakeOsloginV1alpha1{Fake: &c.Fake}
+}
+
+// ParallelstoreV1alpha1 retrieves the ParallelstoreV1alpha1Client
+func (c *Clientset) ParallelstoreV1alpha1() parallelstorev1alpha1.ParallelstoreV1alpha1Interface {
+	return &fakeparallelstorev1alpha1.FakeParallelstoreV1alpha1{Fake: &c.Fake}
 }
 
 // ParametermanagerV1alpha1 retrieves the ParametermanagerV1alpha1Client
