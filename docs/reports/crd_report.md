@@ -319,6 +319,7 @@
 | firestore.cnrm.cloud.google.com               | FirestoreField                                  | True         | False       | False  | Direct     | True        |
 | firestore.cnrm.cloud.google.com               | FirestoreIndex                                  | False        | True        | False  | Terraform  | True        |
 | resourcemanager.cnrm.cloud.google.com         | Folder                                          | False        | True        | False  | Terraform  | True        |
+| gdchardwaremanagement.cnrm.cloud.google.com   | GDCHardwareManagementHardware                   | True         | False       | False  | Direct     | True        |
 | gkebackup.cnrm.cloud.google.com               | GKEBackupBackupPlan                             | True         | False       | False  | Direct     | True        |
 | gkebackup.cnrm.cloud.google.com               | GKEBackupBackup                                 | True         | False       | False  | Direct     | True        |
 | gkebackup.cnrm.cloud.google.com               | GKEBackupRestorePlan                            | True         | False       | False  | Direct     | True        |
