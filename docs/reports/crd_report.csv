@@ -411,6 +411,7 @@ networkconnectivity.cnrm.cloud.google.com,NetworkConnectivityRegionalEndpoint,Tr
 networkconnectivity.cnrm.cloud.google.com,NetworkConnectivityServiceConnectionPolicy,True,False,False,Direct,True
 networkconnectivity.cnrm.cloud.google.com,NetworkConnectivitySpoke,False,True,False,DCL,False
 networkmanagement.cnrm.cloud.google.com,NetworkManagementConnectivityTest,True,False,False,Direct,True
+networkmanagement.cnrm.cloud.google.com,NetworkManagementVpcFlowLogsConfig,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityAddressGroup,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityAuthorizationPolicy,False,True,False,DCL,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityBackendAuthenticationConfig,True,False,False,Direct,True

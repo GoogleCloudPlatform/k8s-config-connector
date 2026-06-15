@@ -32,6 +32,7 @@ import (
 type NetworkmanagementV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	NetworkManagementConnectivityTestsGetter
+	NetworkManagementVpcFlowLogsConfigsGetter
 }
 
 // NetworkmanagementV1alpha1Client is used to interact with features provided by the networkmanagement.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type NetworkmanagementV1alpha1Client struct {
 
 func (c *NetworkmanagementV1alpha1Client) NetworkManagementConnectivityTests(namespace string) NetworkManagementConnectivityTestInterface {
 	return newNetworkManagementConnectivityTests(c, namespace)
+}
+
+func (c *NetworkmanagementV1alpha1Client) NetworkManagementVpcFlowLogsConfigs(namespace string) NetworkManagementVpcFlowLogsConfigInterface {
+	return newNetworkManagementVpcFlowLogsConfigs(c, namespace)
 }
 
 // NewForConfig creates a new NetworkmanagementV1alpha1Client for the given config.

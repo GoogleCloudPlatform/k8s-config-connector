@@ -562,6 +562,7 @@
 [acronyms] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedVpnTunnels.uris[].name" should be ".spec.linkedVPNTunnels.uris[].name"
 [acronyms] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedVpnTunnels.uris[].namespace" should be ".spec.linkedVPNTunnels.uris[].namespace"
 [acronyms] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".status.uniqueId" should be ".status.uniqueID"
+[acronyms] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com: kind "NetworkManagementVpcFlowLogsConfig" should be "NetworkManagementVPCFlowLogsConfig"
 [acronyms] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.clientCertificate.grpcEndpoint.targetUri" should be ".spec.clientCertificate.grpcEndpoint.targetURI"
 [acronyms] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.serverValidationCa" should be ".spec.serverValidationCA"
 [acronyms] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.serverValidationCa[].grpcEndpoint.targetUri" should be ".spec.serverValidationCa[].grpcEndpoint.targetURI"

@@ -269,3 +269,21 @@ type ComputeForwardingRuleRef struct {
 	/* The namespace field of a ComputeForwardingRule resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type ComputeVPNTunnelRef struct {
+	/* The ComputeVPNTunnel selflink in the form "projects/{{project}}/regions/{{region}}/vpnTunnels/{{name}}" when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeVPNTunnel` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeVPNTunnel` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeInterconnectAttachmentRef struct {
+	/* The ComputeInterconnectAttachment selflink in the form "projects/{{project}}/regions/{{region}}/interconnectAttachments/{{name}}" when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeInterconnectAttachment` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeInterconnectAttachment` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
