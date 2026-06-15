@@ -282,6 +282,9 @@ func (a *WasmPluginAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 
 	u.SetName(a.id.ID())
 	u.SetGroupVersionKind(krm.NetworkServicesWasmPluginGVK)
+	if a.actual.Labels != nil {
+		u.SetLabels(a.actual.Labels)
+	}
 
 	u.Object = uObj
 	return u, nil
