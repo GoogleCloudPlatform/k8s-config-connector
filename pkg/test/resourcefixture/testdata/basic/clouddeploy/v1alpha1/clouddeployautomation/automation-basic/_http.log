@@ -356,6 +356,11 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%
 
 {
   "description": "Test Automation",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "test-value"
+  },
   "rules": [
     {
       "promoteReleaseRule": {
@@ -428,6 +433,11 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Test Automation",
     "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true",
+      "test-label": "test-value"
+    },
     "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/automations/clouddeployautomation-${uniqueId}",
     "rules": [
       {
@@ -474,6 +484,11 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Test Automation",
   "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "test-value"
+  },
   "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/automations/clouddeployautomation-${uniqueId}",
   "rules": [
     {
@@ -500,7 +515,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/automations/clouddeployautomation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Crules%2Csuspended
+PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/automations/clouddeployautomation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels%2Crules%2Csuspended
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: automation.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-${uniqueId}%2Fautomations%2Fclouddeployautomation-${uniqueId}
@@ -508,6 +523,11 @@ X-Goog-Request-Params: automation.name=projects%2F${projectId}%2Flocations%2Fus-
 {
   "description": "Updated Test Automation",
   "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "updated-value"
+  },
   "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/automations/clouddeployautomation-${uniqueId}",
   "rules": [
     {
@@ -582,6 +602,11 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated Test Automation",
     "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true",
+      "test-label": "updated-value"
+    },
     "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/automations/clouddeployautomation-${uniqueId}",
     "rules": [
       {
@@ -629,6 +654,11 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated Test Automation",
   "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "updated-value"
+  },
   "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-${uniqueId}/automations/clouddeployautomation-${uniqueId}",
   "rules": [
     {
