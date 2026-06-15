@@ -31,6 +31,10 @@ type FakeApigeeregistryV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeApigeeregistryV1alpha1) ApigeeRegistryArtifacts(namespace string) v1alpha1.ApigeeRegistryArtifactInterface {
+	return newFakeApigeeRegistryArtifacts(c, namespace)
+}
+
 func (c *FakeApigeeregistryV1alpha1) ApigeeRegistryInstances(namespace string) v1alpha1.ApigeeRegistryInstanceInterface {
 	return newFakeApigeeRegistryInstances(c, namespace)
 }

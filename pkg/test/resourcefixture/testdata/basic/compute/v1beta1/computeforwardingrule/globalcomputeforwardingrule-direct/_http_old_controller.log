@@ -87,11 +87,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "healthCheck \"projects/${projectId}/global/healthChecks/${healthCheckID}\" not found",
+        "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "healthCheck \"projects/${projectId}/global/healthChecks/${healthCheckID}\" not found"
+    "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found"
   }
 }
 

@@ -24,6 +24,7 @@ apigee.cnrm.cloud.google.com,ApigeeInstanceAttachment,True,True,False,Direct,Tru
 apigee.cnrm.cloud.google.com,ApigeeInstance,True,True,False,Direct,True
 apigee.cnrm.cloud.google.com,ApigeeNATAddress,True,False,False,Terraform,False
 apigee.cnrm.cloud.google.com,ApigeeOrganization,False,True,False,DCL,True
+apigeeregistry.cnrm.cloud.google.com,ApigeeRegistryArtifact,True,False,False,Direct,True
 apigeeregistry.cnrm.cloud.google.com,ApigeeRegistryInstance,True,False,False,Direct,True
 apigee.cnrm.cloud.google.com,ApigeeSyncAuthorization,True,False,False,Terraform,False
 apihub.cnrm.cloud.google.com,APIHubAPI,True,False,False,Direct,True
@@ -102,6 +103,7 @@ cloudasset.cnrm.cloud.google.com,CloudAssetFolderFeed,True,False,False,Terraform
 cloudasset.cnrm.cloud.google.com,CloudAssetOrganizationFeed,True,False,False,Terraform,False
 cloudasset.cnrm.cloud.google.com,CloudAssetProjectFeed,True,False,False,Terraform,False
 batch.cnrm.cloud.google.com,CloudBatchResourceAllowance,True,False,False,Direct,True
+cloudbuild.cnrm.cloud.google.com,CloudBuildConnection,True,False,False,Direct,True
 cloudbuild.cnrm.cloud.google.com,CloudBuildTrigger,False,True,False,Terraform,True
 cloudbuild.cnrm.cloud.google.com,CloudBuildWorkerPool,True,True,False,Direct,True
 clouddeploy.cnrm.cloud.google.com,CloudDeployAutomation,True,False,False,Direct,True
@@ -228,6 +230,7 @@ dataflow.cnrm.cloud.google.com,DataflowJob,False,True,False,Terraform,True
 dataform.cnrm.cloud.google.com,DataformRepository,True,True,False,Direct,True
 datafusion.cnrm.cloud.google.com,DataFusionInstance,False,True,False,DCL,False
 datalabeling.cnrm.cloud.google.com,DataLabelingAnnotationSpecSet,True,False,False,Direct,True
+datalabeling.cnrm.cloud.google.com,DataLabelingDataset,True,False,False,Direct,True
 datalabeling.cnrm.cloud.google.com,DataLabelingInstruction,True,False,False,Direct,True
 dataplex.cnrm.cloud.google.com,DataplexDataTaxonomy,True,False,False,Direct,True
 dataplex.cnrm.cloud.google.com,DataplexEntryGroup,True,False,False,Direct,True
@@ -251,6 +254,7 @@ datastream.cnrm.cloud.google.com,DatastreamRoute,True,False,False,Direct,True
 datastream.cnrm.cloud.google.com,DatastreamStream,True,False,False,Terraform,False
 deploymentmanager.cnrm.cloud.google.com,DeploymentManagerDeployment,True,False,False,Terraform,False
 developerconnect.cnrm.cloud.google.com,DevConnectAccountConnector,True,False,False,Direct,True
+developerconnect.cnrm.cloud.google.com,DevConnectConnection,True,False,False,Direct,True
 developerconnect.cnrm.cloud.google.com,DevConnectInsightsConfig,True,False,False,Direct,True
 devicestreaming.cnrm.cloud.google.com,DeviceStreamingSession,True,False,False,Direct,True
 dialogflow.cnrm.cloud.google.com,DialogflowAgent,True,False,False,Terraform,False
