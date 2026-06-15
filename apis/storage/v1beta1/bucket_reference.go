@@ -16,29 +16,22 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &StorageBucketRef{}
-var StorageBucketGVK = GroupVersion.WithKind("StorageBucket")
+var _ refs.Ref = &StorageBucketRef{}
 
-func init() {
-	refsv1beta1.Register(&StorageBucketRef{})
-}
-
-// StorageBucketRef defines the resource reference to StorageBucket, which "External" field
-// holds the GCP identifier for the KRM object.
+// StorageBucketRef is a reference to a GCP StorageBucket.
 type StorageBucketRef struct {
-	// For backward compatibility, we are not enforcing the external format.
-
-	// A reference to an externally-managed StorageBucket resource.
+	// A reference to an externally managed StorageBucket resource.
+	// Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a StorageBucket resource.
@@ -46,6 +39,10 @@ type StorageBucketRef struct {
 
 	// The namespace of a StorageBucket resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&StorageBucketRef{}, &StorageBucket{})
 }
 
 func (r *StorageBucketRef) GetGVK() schema.GroupVersionKind {
@@ -65,11 +62,13 @@ func (r *StorageBucketRef) GetExternal() string {
 
 func (r *StorageBucketRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *StorageBucketRef) ValidateExternal(ref string) error {
 	id := &StorageBucketIdentity{}
-	if err := id.FromExternal(r.GetExternal()); err != nil {
+	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
@@ -77,7 +76,7 @@ func (r *StorageBucketRef) ValidateExternal(ref string) error {
 
 func (r *StorageBucketRef) ParseExternalToIdentity() (identity.Identity, error) {
 	id := &StorageBucketIdentity{}
-	if err := id.FromExternal(r.GetExternal()); err != nil {
+	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}
 	return id, nil
@@ -85,18 +84,15 @@ func (r *StorageBucketRef) ParseExternalToIdentity() (identity.Identity, error) 
 
 func (r *StorageBucketRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		// Backward compatible to Terraform/DCL based resource, which does not have status.externalRef.
-		resourceID, err := refsv1beta1.GetResourceID(u)
+		obj, err := common.ToStructuredType[*StorageBucket](u)
 		if err != nil {
 			return ""
 		}
-
-		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+		identity, err := getIdentityFromStorageBucketSpec(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}
-
-		return fmt.Sprintf("projects/%s/buckets/%s", projectID, resourceID)
+		return identity.String()
 	}
-	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

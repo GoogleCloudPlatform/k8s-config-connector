@@ -1,0 +1,12 @@
+- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexLake
+  name: dataplexlake-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexTask
+  name: dataplextask-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

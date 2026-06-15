@@ -144,6 +144,7 @@ func CloudSpannerPropertiesSpec_ToProto(mapCtx *direct.MapContext, in *krm.Cloud
 	out := &pb.CloudSpannerProperties{}
 	out.UseParallelism = direct.ValueOf(in.UseParallelism)
 	out.UseDataBoost = direct.ValueOf(in.UseDataBoost)
+	out.UseServerlessAnalytics = direct.ValueOf(in.UseServerlessAnalytics)
 	out.MaxParallelism = direct.ValueOf(in.MaxParallelism)
 	out.DatabaseRole = direct.ValueOf(in.DatabaseRole)
 	if in.DatabaseRef != nil {
@@ -162,6 +163,7 @@ func CloudSpannerPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clou
 	out := &krm.CloudSpannerPropertiesSpec{}
 	out.UseDataBoost = direct.LazyPtr(in.UseDataBoost)
 	out.UseParallelism = direct.LazyPtr(in.UseParallelism)
+	out.UseServerlessAnalytics = direct.LazyPtr(in.UseServerlessAnalytics)
 	out.MaxParallelism = direct.LazyPtr(in.MaxParallelism)
 	out.DatabaseRole = direct.LazyPtr(in.DatabaseRole)
 	out.DatabaseRef = &spannerv1beta1.SpannerDatabaseRef{
@@ -282,7 +284,7 @@ func BigQueryConnectionConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm
 		out.Properties = &pb.Connection_Azure{Azure: oneof}
 	}
 	if oneof := CloudResourcePropertiesSpec_ToProto(mapCtx, in.CloudResourceSpec); oneof != nil {
-		out.Properties = &pb.Connection_CloudResource{}
+		out.Properties = &pb.Connection_CloudResource{CloudResource: oneof}
 	}
 	if oneof := CloudSqlPropertiesSpec_ToProto(mapCtx, in.CloudSQLSpec); oneof != nil {
 		out.Properties = &pb.Connection_CloudSql{CloudSql: oneof}
@@ -295,6 +297,33 @@ func BigQueryConnectionConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 
 	// MISSING: SalesforceDataCloud
+	return out
+}
+
+func BigQueryConnectionConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.BigQueryConnectionConnectionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryConnectionConnectionSpec{}
+	out.FriendlyName = direct.LazyPtr(in.GetFriendlyName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+
+	if in.Properties != nil {
+		switch p := in.Properties.(type) {
+		case *pb.Connection_Aws:
+			out.AwsSpec = AwsPropertiesSpec_FromProto(mapCtx, p.Aws)
+		case *pb.Connection_Azure:
+			out.AzureSpec = AzurePropertiesSpec_FromProto(mapCtx, p.Azure)
+		case *pb.Connection_CloudResource:
+			out.CloudResourceSpec = CloudResourcePropertiesSpec_FromProto(mapCtx, p.CloudResource)
+		case *pb.Connection_CloudSql:
+			out.CloudSQLSpec = CloudSqlPropertiesSpec_FromProto(mapCtx, p.CloudSql)
+		case *pb.Connection_CloudSpanner:
+			out.CloudSpannerSpec = CloudSpannerPropertiesSpec_FromProto(mapCtx, p.CloudSpanner)
+		case *pb.Connection_Spark:
+			out.SparkSpec = SparkPropertiesSpec_FromProto(mapCtx, p.Spark)
+		}
+	}
 	return out
 }
 
@@ -318,5 +347,31 @@ func CloudSqlCredential_ToProto(mapCtx *direct.MapContext, in *krm.CloudSqlCrede
 		out.Username = in.SecretRef.Username
 		out.Password = in.SecretRef.Password
 	}
+	return out
+}
+
+func AzurePropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.AzureProperties) *krm.AzurePropertiesStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AzurePropertiesStatus{}
+	out.Application = direct.LazyPtr(in.GetApplication())
+	out.ClientID = direct.LazyPtr(in.GetClientId())
+	out.ObjectID = direct.LazyPtr(in.GetObjectId())
+	out.RedirectUri = direct.LazyPtr(in.GetRedirectUri())
+	out.Identity = direct.LazyPtr(in.GetIdentity())
+	return out
+}
+
+func AzurePropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.AzurePropertiesStatus) *pb.AzureProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureProperties{}
+	out.Application = direct.ValueOf(in.Application)
+	out.ClientId = direct.ValueOf(in.ClientID)
+	out.ObjectId = direct.ValueOf(in.ObjectID)
+	out.RedirectUri = direct.ValueOf(in.RedirectUri)
+	out.Identity = direct.ValueOf(in.Identity)
 	return out
 }

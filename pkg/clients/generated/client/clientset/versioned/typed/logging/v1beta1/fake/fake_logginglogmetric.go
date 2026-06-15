@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeLoggingLogMetrics implements LoggingLogMetricInterface
-type FakeLoggingLogMetrics struct {
+// fakeLoggingLogMetrics implements LoggingLogMetricInterface
+type fakeLoggingLogMetrics struct {
+	*gentype.FakeClientWithList[*v1beta1.LoggingLogMetric, *v1beta1.LoggingLogMetricList]
 	Fake *FakeLoggingV1beta1
-	ns   string
 }
 
-var logginglogmetricsResource = v1beta1.SchemeGroupVersion.WithResource("logginglogmetrics")
-
-var logginglogmetricsKind = v1beta1.SchemeGroupVersion.WithKind("LoggingLogMetric")
-
-// Get takes name of the loggingLogMetric, and returns the corresponding loggingLogMetric object, and an error if there is any.
-func (c *FakeLoggingLogMetrics) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.LoggingLogMetric, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(logginglogmetricsResource, c.ns, name), &v1beta1.LoggingLogMetric{})
-
-	if obj == nil {
-		return nil, err
+func newFakeLoggingLogMetrics(fake *FakeLoggingV1beta1, namespace string) loggingv1beta1.LoggingLogMetricInterface {
+	return &fakeLoggingLogMetrics{
+		gentype.NewFakeClientWithList[*v1beta1.LoggingLogMetric, *v1beta1.LoggingLogMetricList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("logginglogmetrics"),
+			v1beta1.SchemeGroupVersion.WithKind("LoggingLogMetric"),
+			func() *v1beta1.LoggingLogMetric { return &v1beta1.LoggingLogMetric{} },
+			func() *v1beta1.LoggingLogMetricList { return &v1beta1.LoggingLogMetricList{} },
+			func(dst, src *v1beta1.LoggingLogMetricList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.LoggingLogMetricList) []*v1beta1.LoggingLogMetric {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.LoggingLogMetricList, items []*v1beta1.LoggingLogMetric) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.LoggingLogMetric), err
-}
-
-// List takes label and field selectors, and returns the list of LoggingLogMetrics that match those selectors.
-func (c *FakeLoggingLogMetrics) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.LoggingLogMetricList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(logginglogmetricsResource, logginglogmetricsKind, c.ns, opts), &v1beta1.LoggingLogMetricList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.LoggingLogMetricList{ListMeta: obj.(*v1beta1.LoggingLogMetricList).ListMeta}
-	for _, item := range obj.(*v1beta1.LoggingLogMetricList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested loggingLogMetrics.
-func (c *FakeLoggingLogMetrics) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(logginglogmetricsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a loggingLogMetric and creates it.  Returns the server's representation of the loggingLogMetric, and an error, if there is any.
-func (c *FakeLoggingLogMetrics) Create(ctx context.Context, loggingLogMetric *v1beta1.LoggingLogMetric, opts v1.CreateOptions) (result *v1beta1.LoggingLogMetric, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(logginglogmetricsResource, c.ns, loggingLogMetric), &v1beta1.LoggingLogMetric{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.LoggingLogMetric), err
-}
-
-// Update takes the representation of a loggingLogMetric and updates it. Returns the server's representation of the loggingLogMetric, and an error, if there is any.
-func (c *FakeLoggingLogMetrics) Update(ctx context.Context, loggingLogMetric *v1beta1.LoggingLogMetric, opts v1.UpdateOptions) (result *v1beta1.LoggingLogMetric, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(logginglogmetricsResource, c.ns, loggingLogMetric), &v1beta1.LoggingLogMetric{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.LoggingLogMetric), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeLoggingLogMetrics) UpdateStatus(ctx context.Context, loggingLogMetric *v1beta1.LoggingLogMetric, opts v1.UpdateOptions) (*v1beta1.LoggingLogMetric, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(logginglogmetricsResource, "status", c.ns, loggingLogMetric), &v1beta1.LoggingLogMetric{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.LoggingLogMetric), err
-}
-
-// Delete takes name of the loggingLogMetric and deletes it. Returns an error if one occurs.
-func (c *FakeLoggingLogMetrics) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(logginglogmetricsResource, c.ns, name, opts), &v1beta1.LoggingLogMetric{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeLoggingLogMetrics) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(logginglogmetricsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.LoggingLogMetricList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched loggingLogMetric.
-func (c *FakeLoggingLogMetrics) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.LoggingLogMetric, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(logginglogmetricsResource, c.ns, name, pt, data, subresources...), &v1beta1.LoggingLogMetric{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.LoggingLogMetric), err
 }

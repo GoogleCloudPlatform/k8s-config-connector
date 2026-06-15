@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: cloudfunctions.cnrm.cloud.google.com
+  kind: CloudFunctionsFunction
+  name: cloudfunctionsfunction-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeRegionNetworkEndpointGroup
+  name: computeregionnetworkendpointgroup-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

@@ -22,16 +22,17 @@
 package v1alpha1
 
 import (
-	"net/http"
+	http "net/http"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/notebooks/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
+	notebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/notebooks/v1alpha1"
+	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 
 type NotebooksV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	NotebooksEnvironmentsGetter
+	NotebooksExecutionsGetter
 }
 
 // NotebooksV1alpha1Client is used to interact with features provided by the notebooks.cnrm.cloud.google.com group.
@@ -43,14 +44,16 @@ func (c *NotebooksV1alpha1Client) NotebooksEnvironments(namespace string) Notebo
 	return newNotebooksEnvironments(c, namespace)
 }
 
+func (c *NotebooksV1alpha1Client) NotebooksExecutions(namespace string) NotebooksExecutionInterface {
+	return newNotebooksExecutions(c, namespace)
+}
+
 // NewForConfig creates a new NotebooksV1alpha1Client for the given config.
 // NewForConfig is equivalent to NewForConfigAndClient(c, httpClient),
 // where httpClient was generated with rest.HTTPClientFor(c).
 func NewForConfig(c *rest.Config) (*NotebooksV1alpha1Client, error) {
 	config := *c
-	if err := setConfigDefaults(&config); err != nil {
-		return nil, err
-	}
+	setConfigDefaults(&config)
 	httpClient, err := rest.HTTPClientFor(&config)
 	if err != nil {
 		return nil, err
@@ -62,9 +65,7 @@ func NewForConfig(c *rest.Config) (*NotebooksV1alpha1Client, error) {
 // Note the http client provided takes precedence over the configured transport values.
 func NewForConfigAndClient(c *rest.Config, h *http.Client) (*NotebooksV1alpha1Client, error) {
 	config := *c
-	if err := setConfigDefaults(&config); err != nil {
-		return nil, err
-	}
+	setConfigDefaults(&config)
 	client, err := rest.RESTClientForConfigAndClient(&config, h)
 	if err != nil {
 		return nil, err
@@ -87,17 +88,15 @@ func New(c rest.Interface) *NotebooksV1alpha1Client {
 	return &NotebooksV1alpha1Client{c}
 }
 
-func setConfigDefaults(config *rest.Config) error {
-	gv := v1alpha1.SchemeGroupVersion
+func setConfigDefaults(config *rest.Config) {
+	gv := notebooksv1alpha1.SchemeGroupVersion
 	config.GroupVersion = &gv
 	config.APIPath = "/apis"
-	config.NegotiatedSerializer = scheme.Codecs.WithoutConversion()
+	config.NegotiatedSerializer = rest.CodecFactoryForGeneratedClient(scheme.Scheme, scheme.Codecs).WithoutConversion()
 
 	if config.UserAgent == "" {
 		config.UserAgent = rest.DefaultKubernetesUserAgent()
 	}
-
-	return nil
 }
 
 // RESTClient returns a RESTClient that is used to communicate

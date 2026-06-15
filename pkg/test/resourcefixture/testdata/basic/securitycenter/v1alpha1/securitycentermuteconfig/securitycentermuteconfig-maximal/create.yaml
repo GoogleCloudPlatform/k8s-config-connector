@@ -1,0 +1,10 @@
+apiVersion: securitycenter.cnrm.cloud.google.com/v1alpha1
+kind: SecurityCenterMuteConfig
+metadata:
+  name: scmuteconfig-max-${uniqueId}
+spec:
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  description: "Maximal SecurityCenterMuteConfig description"
+  filter: category = "VULNERABILITY" AND severity = "LOW"
+  type: STATIC

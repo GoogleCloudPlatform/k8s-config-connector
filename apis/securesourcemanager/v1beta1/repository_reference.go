@@ -29,8 +29,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &SecureSourceManagerRepositoryRef{}
 
-// SecureSourceManagerRepositoryRef defines the resource reference to SecureSourceManagerRepository, which "External" field
-// holds the GCP identifier for the KRM object.
+// SecureSourceManagerRepositoryRef is a reference to a SecureSourceManagerRepository.
 type SecureSourceManagerRepositoryRef struct {
 	// A reference to an externally managed SecureSourceManagerRepository resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".

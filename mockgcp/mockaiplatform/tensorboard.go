@@ -29,8 +29,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
 	"github.com/google/uuid"
 )
 
@@ -67,7 +67,7 @@ func (s *tensorboardService) CreateTensorboard(ctx context.Context, req *pb.Crea
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Tensorboard).(*pb.Tensorboard)
+	obj := proto.CloneOf(req.Tensorboard)
 	obj.Name = fqn
 
 	obj.BlobStoragePathPrefix = "cloud-ai-platform-" + uuid.New().String()
@@ -88,7 +88,7 @@ func (s *tensorboardService) CreateTensorboard(ctx context.Context, req *pb.Crea
 	opPrefix := name.String()
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
-		result := proto.Clone(obj).(*pb.Tensorboard)
+		result := proto.CloneOf(obj)
 		result.BlobStoragePathPrefix = ""
 		result.CreateTime = nil
 		result.UpdateTime = nil

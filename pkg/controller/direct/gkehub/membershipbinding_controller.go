@@ -137,8 +137,8 @@ func (a *gkeHubMembershipBindingAdapter) Create(ctx context.Context, createOp *d
 	}
 	desired.Scope = a.desired.Spec.ScopeRef.External
 
-	parent := a.id.Parent().String()
-	op, err := a.hubClient.membershipBindingClientV1.Create(parent, desired).MembershipBindingId(a.id.ID()).Context(ctx).Do()
+	parent := a.id.Parent()
+	op, err := a.hubClient.membershipBindingClientV1.Create(parent, desired).MembershipBindingId(a.id.MembershipBinding).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating GKEHubMembershipBinding %q: %w", a.id.String(), err)
 	}

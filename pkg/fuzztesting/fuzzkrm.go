@@ -32,15 +32,21 @@ import (
 
 type FuzzFn func(t *testing.T, seed int64)
 
-var fuzzers []FuzzFn
+var (
+	fuzzers                  []FuzzFn
+	registeredFuzzers        []any
+	registeredNoProtoFuzzers []any
+)
 
 func RegisterKRMFuzzer(fuzzer KRMFuzzer) {
 	RegisterFuzzer(fuzzer.FuzzSpec)
 	RegisterFuzzer(fuzzer.FuzzStatus)
+	registeredFuzzers = append(registeredFuzzers, fuzzer)
 }
 
 func RegisterKRMSpecFuzzer(fuzzer KRMFuzzer) {
 	RegisterFuzzer(fuzzer.FuzzSpec)
+	registeredFuzzers = append(registeredFuzzers, fuzzer)
 }
 
 func RegisterFuzzer(fuzzer FuzzFn) {
@@ -49,6 +55,13 @@ func RegisterFuzzer(fuzzer FuzzFn) {
 
 func ChooseFuzzer(n int64) FuzzFn {
 	return fuzzers[n%int64(len(fuzzers))]
+}
+
+func GetRegisteredFuzzers() []any {
+	var all []any
+	all = append(all, registeredFuzzers...)
+	all = append(all, registeredNoProtoFuzzers...)
+	return all
 }
 
 type KRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any] struct {
@@ -99,6 +112,11 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_LabelsAnnot
 // Unimplemented_Etag marks the 'etag' field as not round-tripped.
 func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Etag() {
 	f.UnimplementedFields.Insert(".etag")
+}
+
+// Ignore_JSONBookkeeping marks the specified fieldPath as fields we expect to be missing, such as ServerResponse or ForceSendFields.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Ignore_JSONBookkeeping(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
 }
 
 // Unimplemented_NotYetTriaged marks the specified fieldPath as not round-tripped,
@@ -197,7 +215,7 @@ func NewFuzzTest[ProtoT proto.Message, KRMType any](protoType ProtoT, fromProto 
 func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	randStream := rand.New(rand.NewSource(seed))
 
-	p1 := proto.Clone(f.ProtoType).(ProtoT)
+	p1 := proto.CloneOf(f.ProtoType)
 	fuzz.FillWithRandom(t, randStream, p1)
 
 	ignoreFields := sets.New[string]()

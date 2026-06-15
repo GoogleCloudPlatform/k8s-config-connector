@@ -31,61 +31,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeSubnetworkRef) (*refs.ComputeSubnetworkRef, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on reference")
-		}
-		return ref, nil
-	}
-
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	computeSubnetwork, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeSubnetwork",
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	resourceID, err := refs.GetResourceID(computeSubnetwork)
-	if err != nil {
-		return nil, err
-	}
-
-	projectID, err := refs.ResolveProjectID(ctx, reader, computeSubnetwork)
-	if err != nil {
-		return nil, err
-	}
-
-	region, _, _ := unstructured.NestedString(computeSubnetwork.Object, "spec", "region")
-	if region == "" {
-		return nil, fmt.Errorf("cannot get region from references ComputeSubnetwork %v: %w", key, err)
-	}
-
-	// convert to format `projects/<projectID>/regions/<region>/subnetworks/<subnetwork>`
-	return &refs.ComputeSubnetworkRef{
-		External: fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", projectID, region, resourceID),
-	}, nil
-}
-
-func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeAddressRef) (*refs.ComputeAddressRef, error) {
+func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *krm.ComputeAddressRef) (*krm.ComputeAddressRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -127,7 +73,7 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 	if err != nil || address == "" {
 		return nil, fmt.Errorf("cannot get address for referenced %s %v (status.observedState.address is empty)", computeAddress.GetKind(), computeAddress.GetNamespace())
 	}
-	return &refs.ComputeAddressRef{
+	return &krm.ComputeAddressRef{
 		External: address}, nil
 }
 
@@ -503,12 +449,10 @@ func resolveForwardingRuleRefs(ctx context.Context, reader client.Reader, obj *k
 
 	// Get subnetwork
 	if obj.Spec.SubnetworkRef != nil {
-		subnetworkRef, err := ResolveComputeSubnetwork(ctx, reader, obj, obj.Spec.SubnetworkRef)
+		err := obj.Spec.SubnetworkRef.Normalize(ctx, reader, obj.Namespace)
 		if err != nil {
 			return err
-
 		}
-		obj.Spec.SubnetworkRef.External = subnetworkRef.External
 	}
 
 	// Get backend service

@@ -133,8 +133,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The value of an externally managed ComputeSecurityPolicy
-                      resource
+                    description: A reference to an externally managed ComputeSecurityPolicy
+                      resource. Should be in the format "projects/{{projectID}}/global/securityPolicies/{{name}}".
                     type: string
                   name:
                     description: The name of a ComputeSecurityPolicy resource.

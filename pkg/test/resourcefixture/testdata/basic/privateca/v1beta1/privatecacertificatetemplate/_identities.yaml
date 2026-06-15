@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: privateca.cnrm.cloud.google.com
+  kind: PrivateCACertificateTemplate
+  name: privatecacertificatetemplate-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

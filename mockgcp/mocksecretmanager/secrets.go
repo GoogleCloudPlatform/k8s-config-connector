@@ -26,8 +26,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/secretmanager/v1"
 )
 
 type SecretsV1 struct {
@@ -59,7 +59,7 @@ func (s *SecretsV1) CreateSecret(ctx context.Context, req *pb.CreateSecretReques
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.Secret).(*pb.Secret)
+	obj := proto.CloneOf(req.Secret)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	if obj.Replication == nil {

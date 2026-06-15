@@ -46,7 +46,7 @@ func (s *firestoreAdminServer) CreateIndex(ctx context.Context, req *pb.CreateIn
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.Index).(*pb.Index)
+	obj := proto.CloneOf(req.Index)
 	obj.Name = fqn
 	obj.State = pb.Index_READY
 

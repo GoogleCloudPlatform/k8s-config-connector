@@ -20,11 +20,10 @@ import (
 	"strings"
 	"time"
 
+	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/reservation/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -57,7 +56,7 @@ func (s *ReservationV1) CreateReservation(ctx context.Context, req *pb.CreateRes
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.Reservation).(*pb.Reservation)
+	obj := proto.CloneOf(req.Reservation)
 	obj.Name = fqn
 	obj.CreationTime = &timestamppb.Timestamp{
 		Seconds: now.Unix(),
@@ -93,7 +92,7 @@ func (s *ReservationV1) GetReservation(ctx context.Context, req *pb.GetReservati
 	obj := &pb.Reservation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Not found: Reservation %s", fqn)
+			return nil, status.Errorf(codes.NotFound, "No reservation found.")
 		}
 		return nil, err
 	}
@@ -154,7 +153,7 @@ func (s *ReservationV1) UpdateReservation(ctx context.Context, req *pb.UpdateRes
 	return obj, nil
 }
 
-func (s *ReservationV1) DeleteReservation(ctx context.Context, req *pb.DeleteReservationRequest) (*empty.Empty, error) {
+func (s *ReservationV1) DeleteReservation(ctx context.Context, req *pb.DeleteReservationRequest) (*emptypb.Empty, error) {
 	name, err := s.parseReservationName(req.Name)
 	if err != nil {
 		return nil, err
@@ -268,7 +267,7 @@ func (s *ReservationV1) CreateAssignment(ctx context.Context, req *pb.CreateAssi
 		name = req.Parent + "/assignments/" + req.AssignmentId
 	}
 
-	obj := proto.Clone(req.Assignment).(*pb.Assignment)
+	obj := proto.CloneOf(req.Assignment)
 	obj.Name = name
 	obj.State = pb.Assignment_ACTIVE
 
@@ -340,7 +339,7 @@ func (s *ReservationV1) MoveAssignment(ctx context.Context, req *pb.MoveAssignme
 }
 
 // Deletes a assignment. No expansion will happen.
-func (s *ReservationV1) DeleteAssignment(ctx context.Context, req *pb.DeleteAssignmentRequest) (*empty.Empty, error) {
+func (s *ReservationV1) DeleteAssignment(ctx context.Context, req *pb.DeleteAssignmentRequest) (*emptypb.Empty, error) {
 	name, err := s.parseAssignmentName(req.Name)
 	if err != nil {
 		return nil, err

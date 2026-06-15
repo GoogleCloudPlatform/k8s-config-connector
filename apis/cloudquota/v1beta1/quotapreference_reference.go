@@ -28,17 +28,16 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &QuotaPreferenceRef{}
 
-// QuotaPreferenceRef defines the resource reference to APIQuotaPreference, which "External" field
-// holds the GCP identifier for the KRM object.
+// QuotaPreferenceRef is a reference to an APIQuotaPreference.
 type QuotaPreferenceRef struct {
 	// A reference to an externally managed APIQuotaPreference resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/quotapreferences/{{quotapreferenceID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a APIQuotaPreference resource.
+	// The name of an APIQuotaPreference resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a APIQuotaPreference resource.
+	// The namespace of an APIQuotaPreference resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

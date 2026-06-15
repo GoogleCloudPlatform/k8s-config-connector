@@ -88,7 +88,7 @@ func (m *importJobModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, err
 	}
 
-	gcpClient, err := m.client(ctx, id.Parent().Parent.ProjectID)
+	gcpClient, err := m.client(ctx, id.Parent().Project)
 	if err != nil {
 		return nil, err
 	}

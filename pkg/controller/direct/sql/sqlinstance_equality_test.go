@@ -21,6 +21,7 @@ import (
 )
 
 func TestDiffInstances_StrictPointersMatch(t *testing.T) {
+	t.Parallel()
 	// desired has all optional struct pointers as nil (typical for a minimal KRM spec)
 	desired := &api.DatabaseInstance{
 		Settings: &api.Settings{},
@@ -60,6 +61,7 @@ func TestDiffInstances_StrictPointersMatch(t *testing.T) {
 }
 
 func TestDiffInstances_NilSettings(t *testing.T) {
+	t.Parallel()
 	// desired has Settings as nil
 	desired := &api.DatabaseInstance{
 		Settings: nil,
@@ -78,6 +80,7 @@ func TestDiffInstances_NilSettings(t *testing.T) {
 }
 
 func TestDiffInstances_NilUserLabels(t *testing.T) {
+	t.Parallel()
 	// desired has nil UserLabels
 	desired := &api.DatabaseInstance{
 		Settings: &api.Settings{
@@ -100,6 +103,7 @@ func TestDiffInstances_NilUserLabels(t *testing.T) {
 }
 
 func TestDiffInstances_AuthorizedNetworksSorting(t *testing.T) {
+	t.Parallel()
 	desired := &api.DatabaseInstance{
 		Settings: &api.Settings{
 			IpConfiguration: &api.IpConfiguration{
@@ -134,6 +138,7 @@ func TestDiffInstances_AuthorizedNetworksSorting(t *testing.T) {
 }
 
 func TestDiffInstances_DatabaseFlagsSorting(t *testing.T) {
+	t.Parallel()
 	desired := &api.DatabaseInstance{
 		Settings: &api.Settings{
 			DatabaseFlags: []*api.DatabaseFlags{
@@ -160,6 +165,7 @@ func TestDiffInstances_DatabaseFlagsSorting(t *testing.T) {
 }
 
 func TestDiffInstances_UserLabelsDiff(t *testing.T) {
+	t.Parallel()
 	desired := &api.DatabaseInstance{
 		Settings: &api.Settings{
 			UserLabels: map[string]string{
@@ -211,5 +217,25 @@ func TestDiffInstances_UserLabelsDiff(t *testing.T) {
 		if field.New != expected.New {
 			t.Errorf("For field %q, expected New=%v, got %v", field.ID, expected.New, field.New)
 		}
+	}
+}
+
+func TestDiffInstances_AvailabilityTypeCasing(t *testing.T) {
+	desired := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			AvailabilityType: "Zonal",
+		},
+	}
+
+	actual := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			AvailabilityType: "ZONAL",
+		},
+	}
+
+	diff := DiffInstances(desired, actual)
+
+	if diff.HasDiff() {
+		t.Errorf("DiffInstances() expected no diffs, but got: %v", diff.Fields)
 	}
 }

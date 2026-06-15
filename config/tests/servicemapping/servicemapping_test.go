@@ -106,6 +106,7 @@ func TestServiceHostName(t *testing.T) {
 }
 
 func TestDirectResourceConfigsForMigrationOnly(t *testing.T) {
+	t.Parallel()
 	smLoader := testservicemappingloader.New(t)
 	var allDirectRCs []string
 	gvks := k8s.SortGVKsByKind(supportedgvks.BasedOnAllServiceMappings(smLoader))
@@ -1185,6 +1186,7 @@ func TestUnreadableResourcesShouldHaveZeroReconciliationInterval(t *testing.T) {
 // TestReconciliationIntervalConsistency makes sure the configured reconciliation intervals have
 // the same value for all resource configs mapped to the same GVK.
 func TestReconciliationIntervalConsistency(t *testing.T) {
+	t.Parallel()
 	smLoader := testservicemappingloader.New(t)
 	for _, gvk := range supportedgvks.BasedOnAllServiceMappings(smLoader) {
 		rcs, err := smLoader.GetResourceConfigs(gvk)

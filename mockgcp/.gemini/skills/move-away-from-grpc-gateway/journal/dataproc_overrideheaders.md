@@ -1,0 +1,1 @@
+When migrating `mockdataproc`, I used `OverrideHeaders` to preserve the behavior of removing the `Cache-Control` header. This is useful for services that do not follow the standard GCP header patterns.

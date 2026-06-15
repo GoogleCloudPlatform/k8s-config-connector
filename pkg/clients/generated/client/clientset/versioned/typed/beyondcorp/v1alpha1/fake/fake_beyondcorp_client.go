@@ -32,15 +32,23 @@ type FakeBeyondcorpV1alpha1 struct {
 }
 
 func (c *FakeBeyondcorpV1alpha1) BeyondCorpAppConnections(namespace string) v1alpha1.BeyondCorpAppConnectionInterface {
-	return &FakeBeyondCorpAppConnections{c, namespace}
+	return newFakeBeyondCorpAppConnections(c, namespace)
 }
 
 func (c *FakeBeyondcorpV1alpha1) BeyondCorpAppConnectors(namespace string) v1alpha1.BeyondCorpAppConnectorInterface {
-	return &FakeBeyondCorpAppConnectors{c, namespace}
+	return newFakeBeyondCorpAppConnectors(c, namespace)
 }
 
 func (c *FakeBeyondcorpV1alpha1) BeyondCorpAppGateways(namespace string) v1alpha1.BeyondCorpAppGatewayInterface {
-	return &FakeBeyondCorpAppGateways{c, namespace}
+	return newFakeBeyondCorpAppGateways(c, namespace)
+}
+
+func (c *FakeBeyondcorpV1alpha1) BeyondCorpClientConnectorServices(namespace string) v1alpha1.BeyondCorpClientConnectorServiceInterface {
+	return newFakeBeyondCorpClientConnectorServices(c, namespace)
+}
+
+func (c *FakeBeyondcorpV1alpha1) BeyondCorpClientGateways(namespace string) v1alpha1.BeyondCorpClientGatewayInterface {
+	return newFakeBeyondCorpClientGateways(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

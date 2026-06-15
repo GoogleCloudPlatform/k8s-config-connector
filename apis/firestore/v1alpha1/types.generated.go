@@ -27,9 +27,11 @@ package v1alpha1
 type DailyRecurrence struct {
 }
 
+/* unreachable type Field_TTLConfig
 // +kcc:proto=google.firestore.admin.v1.Field.TtlConfig
 type Field_TTLConfig struct {
 }
+*/
 
 // +kcc:proto=google.firestore.admin.v1.Index.IndexField
 type Index_IndexField struct {
@@ -81,20 +83,25 @@ type WeeklyRecurrence struct {
 	Day *string `json:"day,omitempty"`
 }
 
+/* unreachable type ArrayValue
 // +kcc:proto=google.firestore.v1.ArrayValue
 type ArrayValue struct {
 	// Values in the array.
 	// +kcc:proto:field=google.firestore.v1.ArrayValue.values
 	Values []Value `json:"values,omitempty"`
 }
+*/
 
+/* unreachable type MapValue
 // +kcc:proto=google.firestore.v1.MapValue
 type MapValue struct {
 
 	// TODO: unsupported map type with key string and value message
 
 }
+*/
 
+/* unreachable type Value
 // +kcc:proto=google.firestore.v1.Value
 type Value struct {
 	// A null value.
@@ -155,7 +162,9 @@ type Value struct {
 	// +kcc:proto:field=google.firestore.v1.Value.map_value
 	MapValue *MapValue `json:"mapValue,omitempty"`
 }
+*/
 
+/* unreachable type LatLng
 // +kcc:proto=google.type.LatLng
 type LatLng struct {
 	// The latitude in degrees. It must be in the range [-90.0, +90.0].
@@ -166,6 +175,7 @@ type LatLng struct {
 	// +kcc:proto:field=google.type.LatLng.longitude
 	Longitude *float64 `json:"longitude,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.firestore.admin.v1.Field.TtlConfig
 type Field_TTLConfigObservedState struct {

@@ -52,7 +52,8 @@ all: test manager operator config-connector
 # Run tests
 .PHONY: test
 test: generate fmt vet manifests
-	./scripts/unit-test.sh
+	dev/ci/presubmits/unit-tests
+	dev/ci/presubmits/unit-tests-operator
 
 # Build config-connector binary
 .PHONY: config-connector
@@ -129,7 +130,7 @@ lint:
 	docker run --rm -v $(shell pwd):/app \
 		-v ${GOLANGCI_LINT_CACHE}:/root/.cache/golangci-lint \
 		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
-		golangci-lint run -v --timeout=10m && echo "✅ Linting passed successfully!" || (echo "❌ Linting failed! Please fix the errors above."; exit 1)
+		golangci-lint run -v --timeout=20m && echo "✅ Linting passed successfully!" || (echo "❌ Linting failed! Please fix the errors above."; exit 1)
 
 .PHONY: lint-custom
 lint-custom:
@@ -259,7 +260,12 @@ generate-go-client:
 # Generate google3 docs
 .PHONY: resource-docs
 resource-docs:
-	@go run ./scripts/generate-google3-docs/resource-reference/main.go
+	@go run ./scripts/generate-google3-docs/resource-reference/main.go --flavor=github
+	@go run ./scripts/generate-google3-docs/resource-lists/main.go
+
+.PHONY: google-resource-docs
+google-resource-docs:
+	@go run ./scripts/generate-google3-docs/resource-reference/main.go --flavor=google
 	@go run ./scripts/generate-google3-docs/resource-lists/main.go
 
 # Run against the configured Kubernetes cluster in ~/.kube/config
@@ -275,6 +281,7 @@ ensure:
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
 ready-pr: lint lint-custom manifests generate-go-client ensure fmt
+	python3 dev/tasks/generate_static_config.py
 
 # Should run all needed commands to prepare a release.
 .PHONY: release-check

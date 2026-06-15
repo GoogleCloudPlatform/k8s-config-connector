@@ -20,8 +20,8 @@ import (
 	"strings"
 	"time"
 
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -68,7 +68,7 @@ func (s *GroupService) CreateGroup(ctx context.Context, req *pb.CreateGroupReque
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Group).(*pb.Group)
+	obj := proto.CloneOf(req.Group)
 	obj.Name = fqn
 
 	populateDefaultsForGroup(obj)
@@ -94,7 +94,7 @@ func (s *GroupService) UpdateGroup(ctx context.Context, req *pb.UpdateGroupReque
 	}
 
 	// All fields are replaced except name
-	updated := proto.Clone(req.GetGroup()).(*pb.Group)
+	updated := proto.CloneOf(req.GetGroup())
 	updated.Name = existing.Name
 
 	populateDefaultsForGroup(updated)

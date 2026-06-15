@@ -132,6 +132,8 @@ func walkDepth(s *apiextensionsv1.JSONSchemaProps, depth int) any {
 		} else {
 			res = "map[string]any"
 		}
+	} else if s.Type == "object" {
+		res = "empty-object"
 	} else {
 		t := s.Type
 		if t == "" {
@@ -169,7 +171,7 @@ func walkDepth(s *apiextensionsv1.JSONSchemaProps, depth int) any {
 		}
 	}
 
-	if len(s.XValidations) > 0 {
+	if len(s.XValidations) > 0 || len(s.Required) > 0 {
 		m := make(map[string]any)
 		if mExisting, ok := res.(map[string]any); ok {
 			for k, v := range mExisting {
@@ -198,6 +200,9 @@ func walkDepth(s *apiextensionsv1.JSONSchemaProps, depth int) any {
 				val["optionalOldSelf"] = *v.OptionalOldSelf
 			}
 			m[fmt.Sprintf(":validation[%d]", i)] = val
+		}
+		for _, name := range s.Required {
+			m[fmt.Sprintf(":required.%s", name)] = "required"
 		}
 		return m
 	}
@@ -262,7 +267,40 @@ func isUnderStatus(path string) bool {
 
 // isValidationPath returns true if the path is within a validation rule.
 func isValidationPath(path string) bool {
-	return strings.Contains(path, ":validation[")
+	return strings.Contains(path, ":validation[") || strings.Contains(path, ":required.")
+}
+
+// checkStabilityLabel extracts the duplicate logic for validating cnrm.cloud.google.com/stability-level
+func checkStabilityLabel(oldCRD, newCRD *apiextensionsv1.CustomResourceDefinition) (diffs, notes []string) {
+	const stabilityLabel = "cnrm.cloud.google.com/stability-level"
+	oldStability := oldCRD.Labels[stabilityLabel]
+	newStability := newCRD.Labels[stabilityLabel]
+
+	newHasV1Beta1 := false
+	newOnlyV1Alpha1 := true
+	for _, v := range newCRD.Spec.Versions {
+		if v.Name == "v1beta1" {
+			newHasV1Beta1 = true
+		}
+		if v.Name != "v1alpha1" {
+			newOnlyV1Alpha1 = false
+		}
+	}
+
+	if oldStability != newStability {
+		// Allow alpha -> stable promotion if v1beta1 is now supported.
+		if oldStability == "alpha" && newStability == "stable" && newHasV1Beta1 {
+			notes = append(notes, fmt.Sprintf("label %q promoted: %q -> %q (allowed with v1beta1)", stabilityLabel, oldStability, newStability))
+		} else {
+			diffs = append(diffs, fmt.Sprintf("label %q changed: %q -> %q", stabilityLabel, oldStability, newStability))
+		}
+	}
+
+	if newOnlyV1Alpha1 && newStability != "alpha" {
+		diffs = append(diffs, fmt.Sprintf("label %q must be \"alpha\" when only v1alpha1 is supported (got %q)", stabilityLabel, newStability))
+	}
+
+	return diffs, notes
 }
 
 // CompareResult holds the outcome of a CRD comparison.
@@ -282,6 +320,10 @@ type CompareResult struct {
 //   - Adding spec.names.listKind is fine
 func compareEquivalence(oldCRD, newCRD *apiextensionsv1.CustomResourceDefinition) CompareResult {
 	var r CompareResult
+
+	d, n := checkStabilityLabel(oldCRD, newCRD)
+	r.Diffs = append(r.Diffs, d...)
+	r.Notes = append(r.Notes, n...)
 
 	// spec.names.listKind: adding is fine, changing is not.
 	oldListKind := oldCRD.Spec.Names.ListKind
@@ -320,22 +362,36 @@ func compareEquivalence(oldCRD, newCRD *apiextensionsv1.CustomResourceDefinition
 	return r
 }
 
+// isChildOf reports whether the given path is a child of the parentPrefix.
+// For example, "spec.obj.field" is a child of "spec.obj".
+func isChildOf(path, parentPrefix string) bool {
+	if parentPrefix == "" {
+		return false
+	}
+	return strings.HasPrefix(path, parentPrefix+".") || strings.HasPrefix(path, parentPrefix+"[")
+}
+
 // schemaEquivalenceDiff compares two flattened schemas and returns equivalence diffs and notes.
 func schemaEquivalenceDiff(version string, oldPaths, newPaths map[string]string) (diffs, notes []string) {
 	prefix := ""
 	if version != "" {
 		prefix = fmt.Sprintf("[%s] ", version)
 	}
+	isAlpha := version == "v1alpha1"
 
 	lastRemovedPrefix := ""
 	for _, path := range slices.Sorted(maps.Keys(oldPaths)) {
 		oldType := oldPaths[path]
 		newType, ok := newPaths[path]
 		if !ok {
-			if lastRemovedPrefix != "" && (strings.HasPrefix(path, lastRemovedPrefix+".") || strings.HasPrefix(path, lastRemovedPrefix+"[")) {
+			if isChildOf(path, lastRemovedPrefix) {
 				continue
 			}
-			diffs = append(diffs, fmt.Sprintf("%sfield removed: %s (was %s)", prefix, path, oldType))
+			if isAlpha {
+				notes = append(notes, fmt.Sprintf("%sfield removed: %s (was %s) (allowed for alpha)", prefix, path, oldType))
+			} else {
+				diffs = append(diffs, fmt.Sprintf("%sfield removed: %s (was %s)", prefix, path, oldType))
+			}
 			lastRemovedPrefix = path
 			continue
 		}
@@ -343,6 +399,8 @@ func schemaEquivalenceDiff(version string, oldPaths, newPaths map[string]string)
 		if oldType != newType {
 			if isAllowedTypeChange(path, oldType, newType) {
 				notes = append(notes, fmt.Sprintf("%sfield type changed: %s (%s -> %s) (allowed)", prefix, path, oldType, newType))
+			} else if isAlpha {
+				notes = append(notes, fmt.Sprintf("%sfield type changed: %s (%s -> %s) (allowed for alpha)", prefix, path, oldType, newType))
 			} else {
 				diffs = append(diffs, fmt.Sprintf("%sfield type changed: %s (%s -> %s)", prefix, path, oldType, newType))
 			}
@@ -354,22 +412,42 @@ func schemaEquivalenceDiff(version string, oldPaths, newPaths map[string]string)
 		if _, ok := oldPaths[path]; ok {
 			continue
 		}
-		if lastDiffPrefix != "" && (strings.HasPrefix(path, lastDiffPrefix+".") || strings.HasPrefix(path, lastDiffPrefix+"[")) {
+		if isChildOf(path, lastDiffPrefix) {
 			continue
 		}
+		newType := newPaths[path]
+		// Disallow new empty objects
+		if newType == "empty-object" {
+			loc := ""
+			if isUnderStatus(path) {
+				loc = " under status"
+			}
+			diffs = append(diffs, fmt.Sprintf("%sfield added%s is an empty object: %s", prefix, loc, path))
+			lastDiffPrefix = path
+			continue
+		}
+
 		if isUnderStatus(path) {
 			if isAllowedNewStatusField(path) {
 				if path == "status" {
 					notes = append(notes, fmt.Sprintf("%sstatus block added (allowed)", prefix))
 				} else {
-					notes = append(notes, fmt.Sprintf("%sfield added under status: %s (type: %s, allowed)", prefix, path, newPaths[path]))
+					notes = append(notes, fmt.Sprintf("%sfield added under status: %s (type: %s, allowed)", prefix, path, newType))
 				}
 			} else {
-				diffs = append(diffs, fmt.Sprintf("%sfield added under status: %s (type: %s)", prefix, path, newPaths[path]))
+				if isAlpha {
+					notes = append(notes, fmt.Sprintf("%sfield added under status: %s (type: %s, allowed for alpha)", prefix, path, newType))
+				} else {
+					diffs = append(diffs, fmt.Sprintf("%sfield added under status: %s (type: %s)", prefix, path, newType))
+				}
 				lastDiffPrefix = path
 			}
 		} else {
-			diffs = append(diffs, fmt.Sprintf("%sfield added: %s (type: %s)", prefix, path, newPaths[path]))
+			if isAlpha {
+				notes = append(notes, fmt.Sprintf("%sfield added: %s (type: %s, allowed for alpha)", prefix, path, newType))
+			} else {
+				diffs = append(diffs, fmt.Sprintf("%sfield added: %s (type: %s)", prefix, path, newType))
+			}
 			lastDiffPrefix = path
 		}
 	}
@@ -391,14 +469,24 @@ func isAllowedNewStatusField(path string) bool {
 }
 
 func isAllowedTypeChange(path, oldType, newType string) bool {
-	// If it is changed from integer to int32, then it should always be allowed.
-	if oldType == "integer" && newType == "int32" {
+	// We only allow certain safe "cleanup" changes in the status section.
+	if !isUnderStatus(path) {
+		return false
+	}
+
+	isInteger := func(t string) bool {
+		return t == "integer" || t == "int32" || t == "int64"
+	}
+
+	// In status, allow conversions between integer types (integer, int32, int64).
+	if isInteger(oldType) && isInteger(newType) {
+		// Specific disallowed case: narrowing from 64-bit to 32-bit.
+		if oldType == "int64" && newType == "int32" {
+			return false
+		}
 		return true
 	}
-	// If it is changed from integer to int64, it should be an allowed change if this happens to a status field.
-	if oldType == "integer" && newType == "int64" && isUnderStatus(path) {
-		return true
-	}
+
 	return false
 }
 
@@ -410,6 +498,10 @@ func isAllowedTypeChange(path, oldType, newType string) bool {
 //   - New fields may be added anywhere
 func compareBackwardCompatibility(oldCRD, newCRD *apiextensionsv1.CustomResourceDefinition) CompareResult {
 	var r CompareResult
+
+	d, n := checkStabilityLabel(oldCRD, newCRD)
+	r.Diffs = append(r.Diffs, d...)
+	r.Notes = append(r.Notes, n...)
 
 	oldVersions := getVersionSchemas(oldCRD)
 	newVersions := getVersionSchemas(newCRD)
@@ -455,7 +547,7 @@ func schemaBackwardCompatDiff(version string, oldPaths, newPaths map[string]stri
 		oldType := oldPaths[path]
 		newType, ok := newPaths[path]
 		if !ok {
-			if lastRemovedPrefix != "" && (strings.HasPrefix(path, lastRemovedPrefix+".") || strings.HasPrefix(path, lastRemovedPrefix+"[")) {
+			if isChildOf(path, lastRemovedPrefix) {
 				continue
 			}
 			diffs = append(diffs, fmt.Sprintf("%sfield removed: %s (was %s)", prefix, path, oldType))
@@ -479,7 +571,11 @@ func schemaBackwardCompatDiff(version string, oldPaths, newPaths map[string]stri
 			continue
 		}
 		if _, ok := oldPaths[path]; !ok {
-			notes = append(notes, fmt.Sprintf("%sfield added: %s (type: %s, allowed)", prefix, path, newPaths[path]))
+			if newPaths[path] == "empty-object" {
+				diffs = append(diffs, fmt.Sprintf("%sfield added is an empty object: %s", prefix, path))
+			} else {
+				notes = append(notes, fmt.Sprintf("%sfield added: %s (type: %s, allowed)", prefix, path, newPaths[path]))
+			}
 		}
 	}
 

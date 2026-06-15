@@ -62,7 +62,7 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.NodePool).(*pb.NodePool)
+	obj := proto.CloneOf(req.NodePool)
 
 	obj.SelfLink = buildSelfLink(ctx, fqn)
 
@@ -81,7 +81,7 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_CREATE_NODE_POOL,
-		TargetLink:    obj.SelfLink,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -263,6 +263,13 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 		obj.WindowsNodeConfig = &pb.WindowsNodeConfig{}
 	}
 
+	if obj.ConfidentialNodes != nil {
+		if obj.ConfidentialNodes.Enabled &&
+			obj.ConfidentialNodes.ConfidentialInstanceType == pb.ConfidentialNodes_CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED {
+			obj.ConfidentialNodes.ConfidentialInstanceType = pb.ConfidentialNodes_SEV
+		}
+	}
+
 	return nil
 }
 
@@ -343,7 +350,7 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	klog.Infof("UpdateNodePool %v", prototext.Format(req))
 
-	update := proto.Clone(req).(*pb.UpdateNodePoolRequest)
+	update := proto.CloneOf(req)
 	update.Name = ""
 
 	if update.Taints != nil {
@@ -363,7 +370,7 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	op := &pb.Operation{
 		Zone:       name.Location,
-		TargetLink: obj.SelfLink,
+		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -390,7 +397,7 @@ func (s *ClusterManagerV1) SetNodePoolSize(ctx context.Context, req *pb.SetNodeP
 
 	op := &pb.Operation{
 		Zone:       name.Location,
-		TargetLink: obj.SelfLink,
+		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -403,10 +410,35 @@ func (s *ClusterManagerV1) DeleteNodePool(ctx context.Context, req *pb.DeleteNod
 		return nil, err
 	}
 
+	clusterName := name.ClusterName()
+	clusterFqn := clusterName.String()
+	cluster := &pb.Cluster{}
+	if err := s.storage.Get(ctx, clusterFqn, cluster); err != nil {
+		return nil, err
+	}
+
 	fqn := name.String()
 
 	oldObj := &pb.NodePool{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		return nil, err
+	}
+
+	// Update the cluster's NodePools list after deletion
+	var newNodePools []*pb.NodePool
+	for _, np := range cluster.NodePools {
+		if np.Name != name.NodePool {
+			newNodePools = append(newNodePools, np)
+		}
+	}
+	cluster.NodePools = newNodePools
+
+	// To match realGCP, if the default node pool is deleted, remove NodeConfig on the cluster.
+	if name.NodePool == "default-pool" {
+		cluster.NodeConfig = nil
+	}
+
+	if err := s.storage.Update(ctx, clusterFqn, cluster); err != nil {
 		return nil, err
 	}
 
@@ -417,7 +449,7 @@ func (s *ClusterManagerV1) DeleteNodePool(ctx context.Context, req *pb.DeleteNod
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_DELETE_NODE_POOL,
-		TargetLink:    oldObj.SelfLink,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return oldObj, nil
@@ -433,6 +465,10 @@ type nodePoolName struct {
 
 func (n *nodePoolName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/clusters/" + n.Cluster + "/nodePools/" + n.NodePool
+}
+
+func (n *nodePoolName) LinkWithNumber() string {
+	return fmt.Sprintf("projects/%d/locations/%s/clusters/%s/nodePools/%s", n.Project.Number, n.Location, n.Cluster, n.NodePool)
 }
 
 func (n *nodePoolName) ClusterName() *clusterName {

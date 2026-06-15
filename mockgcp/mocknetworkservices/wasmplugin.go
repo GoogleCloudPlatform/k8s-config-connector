@@ -90,7 +90,7 @@ func (s *NetworkServicesServer) CreateWasmPlugin(ctx context.Context, req *pb.Cr
 
 	now := time.Now()
 
-	obj := proto.Clone(req.WasmPlugin).(*pb.WasmPlugin)
+	obj := proto.CloneOf(req.WasmPlugin)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -341,7 +341,7 @@ func (s *NetworkServicesServer) CreateWasmPluginVersion(ctx context.Context, req
 
 	now := time.Now()
 
-	obj := proto.Clone(req.WasmPluginVersion).(*pb.WasmPluginVersion)
+	obj := proto.CloneOf(req.WasmPluginVersion)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &NotebookRuntimeRef{}
 
-// NotebookRuntimeRef defines the resource reference to ColabRuntime, which "External" field
-// holds the GCP identifier for the KRM object.
+// NotebookRuntimeRef is a reference to a ColabRuntime.
 type NotebookRuntimeRef struct {
 	// A reference to an externally managed ColabRuntime resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/notebookRuntimes/{{notebookruntimeID}}".

@@ -68,6 +68,31 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 		if err != nil {
 			return nil, nil, fmt.Errorf("error resolving externally-managed fields: %w", err)
 		}
+
+		/*
+			Due to an existing TF limitation, KCC recommends against setting "remove-default-nodepool" alongside nodeConfig.
+			This field is only relevant to the default pool intended to be deleted, and should be managed in ContainerNodePool resource.
+
+			However, to unblock OrgPolicies/customer requirements when creating the ContainerCluster(b/489359646, b/491324027),
+			we introduced the opt-in "remove-default-node-pool-allow-node-config" annotation. This allows a ContainerCluster
+			to be created and reconciled with both "remove-default-node-pool" and nodeConfig specified.
+		*/
+		removeDefaultNodePoolDirective := "remove-default-node-pool"
+		removeDefaultNodePoolKey := k8s.FormatAnnotation(removeDefaultNodePoolDirective)
+		allowNodeConfigOverrideDirective := "remove-default-node-pool-allow-node-config"
+		allowNodeConfigOverrideKey := k8s.FormatAnnotation(allowNodeConfigOverrideDirective)
+		if r.GroupVersionKind().Kind == "ContainerCluster" {
+			if val, ok := k8s.GetAnnotation(removeDefaultNodePoolKey, r); ok && val == "true" {
+				// Check liveState to determine if it's initial creation or reconcile. If the resource is being created,
+				// we MUST NOT modify the desired configuration. We should assume all user specified values are required
+				// during cluster provisioning.
+				if liveState != nil && liveState.ID != "" {
+					if override, ok := k8s.GetAnnotation(allowNodeConfigOverrideKey, r); ok && override == "true" {
+						unstructured.RemoveNestedField(config, "nodeConfig")
+					}
+				}
+			}
+		}
 	}
 	if err := handleUserSpecifiedID(config, r, smLoader, c); err != nil {
 		return nil, nil, err

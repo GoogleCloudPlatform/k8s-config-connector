@@ -67,7 +67,7 @@ type AnywherecacheObservedStateStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. True if there is an active update operation against this cache instance. Subsequential update requests will be rejected if this field is true. Output only. */
+	/* Output only. True if there is an active update operation against this cache instance. Subsequent update requests will be rejected if this field is true. Output only. */
 	// +optional
 	PendingUpdate *bool `json:"pendingUpdate,omitempty"`
 

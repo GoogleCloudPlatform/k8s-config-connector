@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/backupdr/v1"
 	"github.com/google/uuid"
 )
 
@@ -63,7 +63,7 @@ func (s *BackupDRV1) CreateBackupPlanAssociation(ctx context.Context, req *pb.Cr
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.BackupPlanAssociation).(*pb.BackupPlanAssociation)
+	obj := proto.CloneOf(req.BackupPlanAssociation)
 
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())

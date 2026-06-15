@@ -32,15 +32,23 @@ type FakeDataprocV1alpha1 struct {
 }
 
 func (c *FakeDataprocV1alpha1) DataprocBatches(namespace string) v1alpha1.DataprocBatchInterface {
-	return &FakeDataprocBatches{c, namespace}
+	return newFakeDataprocBatches(c, namespace)
 }
 
 func (c *FakeDataprocV1alpha1) DataprocJobs(namespace string) v1alpha1.DataprocJobInterface {
-	return &FakeDataprocJobs{c, namespace}
+	return newFakeDataprocJobs(c, namespace)
 }
 
 func (c *FakeDataprocV1alpha1) DataprocNodeGroups(namespace string) v1alpha1.DataprocNodeGroupInterface {
-	return &FakeDataprocNodeGroups{c, namespace}
+	return newFakeDataprocNodeGroups(c, namespace)
+}
+
+func (c *FakeDataprocV1alpha1) DataprocSessions(namespace string) v1alpha1.DataprocSessionInterface {
+	return newFakeDataprocSessions(c, namespace)
+}
+
+func (c *FakeDataprocV1alpha1) DataprocSessionTemplates(namespace string) v1alpha1.DataprocSessionTemplateInterface {
+	return newFakeDataprocSessionTemplates(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

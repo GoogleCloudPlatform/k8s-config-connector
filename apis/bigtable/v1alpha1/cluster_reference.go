@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ClusterRef{}
 
-// ClusterRef defines the resource reference to BigtableCluster, which "External" field
-// holds the GCP identifier for the KRM object.
+// ClusterRef is a reference to a BigtableCluster.
 type ClusterRef struct {
 	// A reference to an externally managed BigtableCluster resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".

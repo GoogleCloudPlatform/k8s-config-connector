@@ -24,6 +24,9 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
+	kccscheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/klog/v2"
@@ -92,6 +95,28 @@ metadata:
   name: pubsubtopic-example
 spec:
   messageRetentionDuration: "3600s"
+`,
+			expectedEventType: []EventType{EventTypeReconcileStart, EventTypeReconcileEnd},
+		},
+		{
+			Group:     "iam.cnrm.cloud.google.com",
+			Kind:      "IAMPartialPolicy",
+			Namespace: ns.GetName(),
+			Name:      "iampartialpolicy-sample",
+		}: {
+			resourceSpec: `apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: iampartialpolicy-sample
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/mock-project
+  bindings:
+    - role: roles/viewer
+      members:
+        - member: domain:google.com
 `,
 			expectedEventType: []EventType{EventTypeReconcileStart, EventTypeReconcileEnd},
 		},
@@ -169,10 +194,10 @@ spec:
 				t.Logf("  diff %+v", event.diff)
 
 			case EventTypeReconcileStart:
-				t.Logf("  reconcileStart %+v", event.object)
+				t.Logf("  reconcileStart type=%s", event.reconcilerType)
 
 			case EventTypeReconcileEnd:
-				t.Logf("  reconcileEnd %+v", event.object)
+				t.Logf("  reconcileEnd type=%s", event.reconcilerType)
 
 			case EventTypeKubeAction:
 				t.Logf("  kubeAction %+v", event.kubeAction)
@@ -238,5 +263,40 @@ func MustSetNestedField(t *testing.T, obj *unstructured.Unstructured, path strin
 	fields := strings.Split(path, ".")
 	if err := unstructured.SetNestedField(obj.Object, value, fields...); err != nil {
 		t.Fatalf("setting nested field %v: %v", path, err)
+	}
+}
+
+func TestRecordKubeAction_TypedObject(t *testing.T) {
+	recorder := NewRecorder()
+	ctx := context.Background()
+
+	obj := &iamv1beta1.IAMPartialPolicy{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "test-policy",
+			Namespace: "test-namespace",
+		},
+	}
+
+	// This should not crash
+	recorder.RecordBlockedKubeMethod(ctx, kccscheme.Scheme, "update", obj)
+
+	gknn := GKNN{
+		Group:     "iam.cnrm.cloud.google.com",
+		Kind:      "IAMPartialPolicy",
+		Namespace: "test-namespace",
+		Name:      "test-policy",
+	}
+
+	info := recorder.getObjectInfo(gknn)
+	if len(info.events) != 1 {
+		t.Fatalf("expected 1 event, got %d", len(info.events))
+	}
+
+	event := info.events[0]
+	if event.eventType != EventTypeKubeAction {
+		t.Errorf("expected event type %v, got %v", EventTypeKubeAction, event.eventType)
+	}
+	if event.kubeAction.method != "update" {
+		t.Errorf("expected method update, got %v", event.kubeAction.method)
 	}
 }

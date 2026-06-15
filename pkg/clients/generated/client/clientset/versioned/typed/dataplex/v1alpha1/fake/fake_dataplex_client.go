@@ -31,24 +31,32 @@ type FakeDataplexV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeDataplexV1alpha1) DataplexDataTaxonomies(namespace string) v1alpha1.DataplexDataTaxonomyInterface {
+	return newFakeDataplexDataTaxonomies(c, namespace)
+}
+
 func (c *FakeDataplexV1alpha1) DataplexEntryGroups(namespace string) v1alpha1.DataplexEntryGroupInterface {
-	return &FakeDataplexEntryGroups{c, namespace}
+	return newFakeDataplexEntryGroups(c, namespace)
 }
 
 func (c *FakeDataplexV1alpha1) DataplexEntryTypes(namespace string) v1alpha1.DataplexEntryTypeInterface {
-	return &FakeDataplexEntryTypes{c, namespace}
+	return newFakeDataplexEntryTypes(c, namespace)
+}
+
+func (c *FakeDataplexV1alpha1) DataplexGlossaries(namespace string) v1alpha1.DataplexGlossaryInterface {
+	return newFakeDataplexGlossaries(c, namespace)
 }
 
 func (c *FakeDataplexV1alpha1) DataplexLakes(namespace string) v1alpha1.DataplexLakeInterface {
-	return &FakeDataplexLakes{c, namespace}
+	return newFakeDataplexLakes(c, namespace)
 }
 
 func (c *FakeDataplexV1alpha1) DataplexTasks(namespace string) v1alpha1.DataplexTaskInterface {
-	return &FakeDataplexTasks{c, namespace}
+	return newFakeDataplexTasks(c, namespace)
 }
 
 func (c *FakeDataplexV1alpha1) DataplexZones(namespace string) v1alpha1.DataplexZoneInterface {
-	return &FakeDataplexZones{c, namespace}
+	return newFakeDataplexZones(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

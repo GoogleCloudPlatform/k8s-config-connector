@@ -283,13 +283,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "job \"projects/${projectId}/locations/us-central1/jobs/batchjob-network-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "job \"projects/${projectId}/locations/us-central1/jobs/batchjob-network-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
@@ -342,7 +335,8 @@ X-Goog-User-Project: ${projectId}
     "network": {
       "networkInterfaces": [
         {
-          "network": "projects/${projectId}/global/networks/${networkID}"
+          "network": "projects/${projectId}/global/networks/${networkID}",
+          "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
         }
       ]
     }

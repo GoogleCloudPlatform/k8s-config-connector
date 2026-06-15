@@ -104,6 +104,10 @@ type NodepoolBlueGreenSettings struct {
 }
 
 type NodepoolConfidentialNodes struct {
+	/* Immutable. Defines the type of technology used by the confidential node. */
+	// +optional
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
+
 	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool. */
 	Enabled bool `json:"enabled"`
 }
@@ -399,6 +403,10 @@ type NodepoolNodeConfig struct {
 	// +optional
 	Taint []NodepoolTaint `json:"taint,omitempty"`
 
+	/* Parameters that can be configured on Windows nodes. */
+	// +optional
+	WindowsNodeConfig *NodepoolWindowsNodeConfig `json:"windowsNodeConfig,omitempty"`
+
 	/* The workload metadata configuration for this node. */
 	// +optional
 	WorkloadMetadataConfig *NodepoolWorkloadMetadataConfig `json:"workloadMetadataConfig,omitempty"`
@@ -495,6 +503,12 @@ type NodepoolUpgradeSettings struct {
 	/* Update strategy for the given nodepool. */
 	// +optional
 	Strategy *string `json:"strategy,omitempty"`
+}
+
+type NodepoolWindowsNodeConfig struct {
+	/* os_version specifies the Windows Server release version to be used on the node. */
+	// +optional
+	OsVersion *string `json:"osVersion,omitempty"`
 }
 
 type NodepoolWorkloadMetadataConfig struct {

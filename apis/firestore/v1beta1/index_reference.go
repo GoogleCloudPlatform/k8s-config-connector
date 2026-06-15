@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &FirestoreIndexRef{}
 
-// FirestoreIndexRef defines the resource reference to FirestoreIndex, which "External" field
-// holds the GCP identifier for the KRM object.
+// FirestoreIndexRef is a reference to a FirestoreIndex.
 type FirestoreIndexRef struct {
 	// A reference to an externally managed FirestoreIndex resource.
 	// Should be in the format "projects/{{projectID}}/databases/{{database}}/collectionGroups/{{collectionGroup}}/indexes/{{index}}".
@@ -42,7 +41,7 @@ type FirestoreIndexRef struct {
 }
 
 func init() {
-	refs.Register(&FirestoreIndexRef{})
+	refs.Register(&FirestoreIndexRef{}, &FirestoreIndex{})
 }
 
 func (r *FirestoreIndexRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *FirestoreIndexRef) GetExternal() string {
 
 func (r *FirestoreIndexRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *FirestoreIndexRef) ValidateExternal(ref string) error {

@@ -17,101 +17,97 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// BackupPlanIdentity defines the resource reference to BackupDRBackupPlan, which "External" field
-// holds the GCP identifier for the KRM object.
+var (
+	_ identity.IdentityV2 = &BackupPlanIdentity{}
+	_ identity.Resource   = &BackupDRBackupPlan{}
+)
+
+var BackupPlanIdentityFormat = gcpurls.Template[BackupPlanIdentity]("backupdr.googleapis.com", "projects/{project}/locations/{location}/backupPlans/{backupplan}")
+
+// BackupPlanIdentity is the identity of a GCP BackupDRBackupPlan resource.
+// +k8s:deepcopy-gen=false
 type BackupPlanIdentity struct {
-	parent *BackupPlanParent
-	id     string
+	Project    string
+	Location   string
+	BackupPlan string
 }
 
 func (i *BackupPlanIdentity) String() string {
-	return i.parent.String() + "/backupPlans/" + i.id
+	return BackupPlanIdentityFormat.ToString(*i)
 }
 
-func (i *BackupPlanIdentity) ID() string {
-	return i.id
-}
-
-func (i *BackupPlanIdentity) Parent() *BackupPlanParent {
-	return i.parent
-}
-
-type BackupPlanParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *BackupPlanParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds a BackupPlanIdentity from the Config Connector BackupPlan object.
-func NewBackupPlanIdentity(ctx context.Context, reader client.Reader, obj *BackupDRBackupPlan) (*BackupPlanIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (i *BackupPlanIdentity) FromExternal(ref string) error {
+	parsed, match, err := BackupPlanIdentityFormat.Parse(ref)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("format of BackupDRBackupPlan external=%q was not known (use %s): %w", ref, BackupPlanIdentityFormat.CanonicalForm(), err)
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	if !match {
+		return fmt.Errorf("format of BackupDRBackupPlan external=%q was not known (use %s)", ref, BackupPlanIdentityFormat.CanonicalForm())
 	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+	*i = *parsed
+	return nil
+}
+
+func (i *BackupPlanIdentity) Host() string {
+	return BackupPlanIdentityFormat.Host()
+}
+
+func (i *BackupPlanIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
+func getIdentityFromBackupPlanSpec(ctx context.Context, reader client.Reader, obj *BackupDRBackupPlan) (*BackupPlanIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &BackupPlanIdentity{
+		Project:    projectID,
+		Location:   location,
+		BackupPlan: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *BackupDRBackupPlan) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromBackupPlanSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseBackupPlanExternal(externalRef)
-		if err != nil {
+		statusIdentity := &BackupPlanIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
-	return &BackupPlanIdentity{
-		parent: &BackupPlanParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
-}
 
-func ParseBackupPlanExternal(external string) (parent *BackupPlanParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backupPlans" {
-		return nil, "", fmt.Errorf("format of BackupDRBackupPlan external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backupPlans/{{backupplanID}})", external)
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change BackupDRBackupPlan identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
-	parent = &BackupPlanParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+
+	return specIdentity, nil
 }

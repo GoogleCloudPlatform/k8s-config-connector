@@ -21,6 +21,7 @@ package aiplatform
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 func init() {
@@ -46,6 +47,54 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".container_spec.liveness_probe")
 	f.UnimplementedFields.Insert(".explanation_spec.explanation_parameters.output_indices")
 	f.UnimplementedFields.Insert(".metadata.list_value")
+
+	f.Unimplemented_NotYetTriaged(".checkpoints")
+	f.Unimplemented_NotYetTriaged(".checkpoints[].epoch")
+	f.Unimplemented_NotYetTriaged(".base_model_source.model_garden_source.skip_hf_model_cache")
+	f.Unimplemented_NotYetTriaged(".base_model_source.model_garden_source.version_id")
+	f.Unimplemented_NotYetTriaged(".explanation_spec.parameters.output_indices")
+	f.Unimplemented_NotYetTriaged(".container_spec.invoke_route_prefix")
+	f.Unimplemented_NotYetTriaged(".container_spec.startup_probe.tcp_socket")
+	f.Unimplemented_NotYetTriaged(".container_spec.startup_probe.failure_threshold")
+	f.Unimplemented_NotYetTriaged(".container_spec.health_probe.failure_threshold")
+	f.Unimplemented_NotYetTriaged(".container_spec.health_probe.grpc")
+	f.Unimplemented_NotYetTriaged(".container_spec.health_probe.tcp_socket")
+	f.Unimplemented_NotYetTriaged(".container_spec.health_probe.http_get")
+	f.Unimplemented_NotYetTriaged(".container_spec.startup_probe.grpc")
+	f.Unimplemented_NotYetTriaged(".container_spec.startup_probe.initial_delay_seconds")
+	f.Unimplemented_NotYetTriaged(".explanation_spec.parameters.examples.example_gcs_source.gcs_source")
+	f.Unimplemented_NotYetTriaged(".explanation_spec.parameters.examples.presets.query")
+
+	f.FilterSpec = func(in *pb.Model) {
+		if in.Metadata != nil {
+			clearUnsupportedValueFields(in.Metadata)
+		}
+		if in.ExplanationSpec != nil {
+			if in.ExplanationSpec.Metadata != nil {
+				for _, input := range in.ExplanationSpec.Metadata.Inputs {
+					for _, b := range input.InputBaselines {
+						clearUnsupportedValueFields(b)
+					}
+					for _, b := range input.EncodedBaselines {
+						clearUnsupportedValueFields(b)
+					}
+					if input.Visualization != nil {
+						input.Visualization.Type = 0
+						input.Visualization.Polarity = 0
+						input.Visualization.OverlayType = 0
+					}
+				}
+				for _, output := range in.ExplanationSpec.Metadata.Outputs {
+					clearUnsupportedValueFields(output.GetIndexDisplayNameMapping())
+				}
+			}
+			if in.ExplanationSpec.Parameters != nil {
+				if in.ExplanationSpec.Parameters.GetExamples() != nil {
+					clearUnsupportedValueFields(in.ExplanationSpec.Parameters.GetExamples().GetNearestNeighborSearchConfig())
+				}
+			}
+		}
+	}
 
 	f.SpecFields.Insert(".version_aliases")
 	f.SpecFields.Insert(".display_name")
@@ -79,4 +128,20 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Etag()
 
 	return f
+}
+
+func clearUnsupportedValueFields(v *structpb.Value) {
+	if v == nil {
+		return
+	}
+	switch k := v.Kind.(type) {
+	case *structpb.Value_ListValue:
+		v.Kind = nil // clear list_value since KRM doesn't support recursive/nested lists in Value
+	case *structpb.Value_StructValue:
+		if k.StructValue != nil {
+			for _, val := range k.StructValue.Fields {
+				clearUnsupportedValueFields(val)
+			}
+		}
+	}
 }

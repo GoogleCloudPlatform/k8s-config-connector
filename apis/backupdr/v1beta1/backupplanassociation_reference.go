@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &BackupPlanAssociationRef{}
 
-// BackupPlanAssociationRef defines the resource reference to BackupDRBackupPlanAssociation, which "External" field
-// holds the GCP identifier for the KRM object.
+// BackupPlanAssociationRef is a reference to a BackupDRBackupPlanAssociation.
 type BackupPlanAssociationRef struct {
 	// A reference to an externally managed BackupDRBackupPlanAssociation resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backupPlanAssociations/{{backupplanassociationID}}".

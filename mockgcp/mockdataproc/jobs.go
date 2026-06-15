@@ -70,7 +70,7 @@ func (s *jobControllerServer) SubmitJob(ctx context.Context, req *pb.SubmitJobRe
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetJob()).(*pb.Job)
+	obj := proto.CloneOf(req.GetJob())
 	if obj.Reference != nil {
 		obj.Reference.ProjectId = name.Project.ID
 	} else {

@@ -32,19 +32,19 @@ type FakeAccesscontextmanagerV1beta1 struct {
 }
 
 func (c *FakeAccesscontextmanagerV1beta1) AccessContextManagerAccessLevels(namespace string) v1beta1.AccessContextManagerAccessLevelInterface {
-	return &FakeAccessContextManagerAccessLevels{c, namespace}
+	return newFakeAccessContextManagerAccessLevels(c, namespace)
 }
 
 func (c *FakeAccesscontextmanagerV1beta1) AccessContextManagerAccessPolicies(namespace string) v1beta1.AccessContextManagerAccessPolicyInterface {
-	return &FakeAccessContextManagerAccessPolicies{c, namespace}
+	return newFakeAccessContextManagerAccessPolicies(c, namespace)
 }
 
 func (c *FakeAccesscontextmanagerV1beta1) AccessContextManagerServicePerimeters(namespace string) v1beta1.AccessContextManagerServicePerimeterInterface {
-	return &FakeAccessContextManagerServicePerimeters{c, namespace}
+	return newFakeAccessContextManagerServicePerimeters(c, namespace)
 }
 
 func (c *FakeAccesscontextmanagerV1beta1) AccessContextManagerServicePerimeterResources(namespace string) v1beta1.AccessContextManagerServicePerimeterResourceInterface {
-	return &FakeAccessContextManagerServicePerimeterResources{c, namespace}
+	return newFakeAccessContextManagerServicePerimeterResources(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

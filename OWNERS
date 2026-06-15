@@ -6,7 +6,6 @@ approvers:
   - justinsb
   - ldanielmadariaga
   - maqiuyujoyce
-  - xiaoweim
 reviewers:
   - acpana
   - anhdle-sso
@@ -17,9 +16,9 @@ reviewers:
   - justinsb
   - ldanielmadariaga
   - maqiuyujoyce
-  - xiaoweim
 emeritus:
   - diviner524
   - jasonvigil
   - jingyih
+  - xiaoweim
   - yuwenma

@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeGKEHubMembershipBindings implements GKEHubMembershipBindingInterface
-type FakeGKEHubMembershipBindings struct {
+// fakeGKEHubMembershipBindings implements GKEHubMembershipBindingInterface
+type fakeGKEHubMembershipBindings struct {
+	*gentype.FakeClientWithList[*v1alpha1.GKEHubMembershipBinding, *v1alpha1.GKEHubMembershipBindingList]
 	Fake *FakeGkehubV1alpha1
-	ns   string
 }
 
-var gkehubmembershipbindingsResource = v1alpha1.SchemeGroupVersion.WithResource("gkehubmembershipbindings")
-
-var gkehubmembershipbindingsKind = v1alpha1.SchemeGroupVersion.WithKind("GKEHubMembershipBinding")
-
-// Get takes name of the gKEHubMembershipBinding, and returns the corresponding gKEHubMembershipBinding object, and an error if there is any.
-func (c *FakeGKEHubMembershipBindings) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.GKEHubMembershipBinding, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(gkehubmembershipbindingsResource, c.ns, name), &v1alpha1.GKEHubMembershipBinding{})
-
-	if obj == nil {
-		return nil, err
+func newFakeGKEHubMembershipBindings(fake *FakeGkehubV1alpha1, namespace string) gkehubv1alpha1.GKEHubMembershipBindingInterface {
+	return &fakeGKEHubMembershipBindings{
+		gentype.NewFakeClientWithList[*v1alpha1.GKEHubMembershipBinding, *v1alpha1.GKEHubMembershipBindingList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("gkehubmembershipbindings"),
+			v1alpha1.SchemeGroupVersion.WithKind("GKEHubMembershipBinding"),
+			func() *v1alpha1.GKEHubMembershipBinding { return &v1alpha1.GKEHubMembershipBinding{} },
+			func() *v1alpha1.GKEHubMembershipBindingList { return &v1alpha1.GKEHubMembershipBindingList{} },
+			func(dst, src *v1alpha1.GKEHubMembershipBindingList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.GKEHubMembershipBindingList) []*v1alpha1.GKEHubMembershipBinding {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.GKEHubMembershipBindingList, items []*v1alpha1.GKEHubMembershipBinding) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.GKEHubMembershipBinding), err
-}
-
-// List takes label and field selectors, and returns the list of GKEHubMembershipBindings that match those selectors.
-func (c *FakeGKEHubMembershipBindings) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.GKEHubMembershipBindingList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(gkehubmembershipbindingsResource, gkehubmembershipbindingsKind, c.ns, opts), &v1alpha1.GKEHubMembershipBindingList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.GKEHubMembershipBindingList{ListMeta: obj.(*v1alpha1.GKEHubMembershipBindingList).ListMeta}
-	for _, item := range obj.(*v1alpha1.GKEHubMembershipBindingList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested gKEHubMembershipBindings.
-func (c *FakeGKEHubMembershipBindings) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(gkehubmembershipbindingsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a gKEHubMembershipBinding and creates it.  Returns the server's representation of the gKEHubMembershipBinding, and an error, if there is any.
-func (c *FakeGKEHubMembershipBindings) Create(ctx context.Context, gKEHubMembershipBinding *v1alpha1.GKEHubMembershipBinding, opts v1.CreateOptions) (result *v1alpha1.GKEHubMembershipBinding, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(gkehubmembershipbindingsResource, c.ns, gKEHubMembershipBinding), &v1alpha1.GKEHubMembershipBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.GKEHubMembershipBinding), err
-}
-
-// Update takes the representation of a gKEHubMembershipBinding and updates it. Returns the server's representation of the gKEHubMembershipBinding, and an error, if there is any.
-func (c *FakeGKEHubMembershipBindings) Update(ctx context.Context, gKEHubMembershipBinding *v1alpha1.GKEHubMembershipBinding, opts v1.UpdateOptions) (result *v1alpha1.GKEHubMembershipBinding, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(gkehubmembershipbindingsResource, c.ns, gKEHubMembershipBinding), &v1alpha1.GKEHubMembershipBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.GKEHubMembershipBinding), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeGKEHubMembershipBindings) UpdateStatus(ctx context.Context, gKEHubMembershipBinding *v1alpha1.GKEHubMembershipBinding, opts v1.UpdateOptions) (*v1alpha1.GKEHubMembershipBinding, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(gkehubmembershipbindingsResource, "status", c.ns, gKEHubMembershipBinding), &v1alpha1.GKEHubMembershipBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.GKEHubMembershipBinding), err
-}
-
-// Delete takes name of the gKEHubMembershipBinding and deletes it. Returns an error if one occurs.
-func (c *FakeGKEHubMembershipBindings) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(gkehubmembershipbindingsResource, c.ns, name, opts), &v1alpha1.GKEHubMembershipBinding{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeGKEHubMembershipBindings) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(gkehubmembershipbindingsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.GKEHubMembershipBindingList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched gKEHubMembershipBinding.
-func (c *FakeGKEHubMembershipBindings) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.GKEHubMembershipBinding, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(gkehubmembershipbindingsResource, c.ns, name, pt, data, subresources...), &v1alpha1.GKEHubMembershipBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.GKEHubMembershipBinding), err
 }

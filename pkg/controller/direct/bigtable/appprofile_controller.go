@@ -78,17 +78,15 @@ func (m *modelBigtableAppProfile) AdapterForObject(ctx context.Context, op *dire
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewAppProfileIdentity(ctx, reader, obj)
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := identity.(*krm.BigtableAppProfileIdentity)
 
 	// Get bigtable instance admin GCP client. Accepts the non-fully qualified project ID.
 	// E.G. "myproject" instead of "projects/myproject"
-	parentProjectId, err := m.getProjectId(id.Parent().ParentString())
-	if err != nil {
-		return nil, err
-	}
+	parentProjectId := id.Project
 	instanceAdminClient, err := m.client(ctx, parentProjectId)
 	if err != nil {
 		return nil, fmt.Errorf("error creating instance admin client: %w", err)
@@ -106,7 +104,7 @@ func (m *modelBigtableAppProfile) AdapterForURL(ctx context.Context, url string)
 }
 
 type BigtableAppProfileAdapter struct {
-	id        *krm.AppProfileIdentity
+	id        *krm.BigtableAppProfileIdentity
 	gcpClient *gcp.InstanceAdminClient
 	desired   *krm.BigtableAppProfile
 	actual    *bigtablepb.AppProfile
@@ -122,7 +120,7 @@ func (a *BigtableAppProfileAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting BigtableAppProfile", "name", a.id)
 
-	bigtableappprofilepb, err := a.gcpClient.GetAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID())
+	bigtableappprofilepb, err := a.gcpClient.GetAppProfile(ctx, a.id.Instance, a.id.AppProfile)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -174,8 +172,8 @@ func (a *BigtableAppProfileAdapter) Create(ctx context.Context, createOp *direct
 	}
 	profileConf := &gcp.ProfileConf{
 		Name:          "", /*Name is not used in the RPC*/
-		ProfileID:     a.id.ID(),
-		InstanceID:    a.id.ParentInstanceIdString(),
+		ProfileID:     a.id.AppProfile,
+		InstanceID:    a.id.Instance,
 		Etag:          resource.Etag,
 		Description:   resource.Description,
 		RoutingConfig: routingConfig,
@@ -272,7 +270,7 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 		log.V(2).Info("no changes to update", "name", a.id)
 	} else {
 		structuredreporting.ReportDiff(ctx, report)
-		err := a.gcpClient.UpdateAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID(), fieldsToUpdate)
+		err := a.gcpClient.UpdateAppProfile(ctx, a.id.Instance, a.id.AppProfile, fieldsToUpdate)
 		if err != nil {
 			return fmt.Errorf("updating BigtableAppProfile %s: %w", a.id, err)
 		}
@@ -303,14 +301,14 @@ func (a *BigtableAppProfileAdapter) Export(ctx context.Context) (*unstructured.U
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.InstanceRef = &krm.InstanceRef{External: a.id.ParentInstanceIdString()}
+	obj.Spec.InstanceRef = &krm.InstanceRef{External: a.id.Instance}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.AppProfile)
 	u.SetGroupVersionKind(krm.BigtableAppProfileGVK)
 
 	u.Object = uObj
@@ -322,7 +320,7 @@ func (a *BigtableAppProfileAdapter) Delete(ctx context.Context, deleteOp *direct
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting BigtableAppProfile", "name", a.id)
 
-	err := a.gcpClient.DeleteAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID())
+	err := a.gcpClient.DeleteAppProfile(ctx, a.id.Instance, a.id.AppProfile)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).

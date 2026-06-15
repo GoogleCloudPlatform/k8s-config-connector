@@ -26,8 +26,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// FolderIdentity defines the resource reference to StorageFolder, which "External" field
-// holds the GCP identifier for the KRM object.
+// FolderIdentity is the identity of a StorageFolder.
 type FolderIdentity struct {
 	parent *FolderParent
 	id     string

@@ -20,8 +20,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
-const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
-
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 var placeholderNameServers = []string{"ns-cloud-a1.googledomains.com.", "ns-cloud-a2.googledomains.com.", "ns-cloud-a3.googledomains.com.", "ns-cloud-a4.googledomains.com."}
@@ -38,10 +36,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		replacements.ReplacePath(".zoneContext.newValue.nameServers", placeholderNameServers)
 		replacements.ReplacePath(".zoneContext.oldValue.nameServers", placeholderNameServers)
 
-		replacements.ReplacePath(".creationTime", PlaceholderTimestamp)
-		replacements.ReplacePath(".managedZones[].creationTime", PlaceholderTimestamp)
-		replacements.ReplacePath(".zoneContext.newValue.creationTime", PlaceholderTimestamp)
-		replacements.ReplacePath(".zoneContext.oldValue.creationTime", PlaceholderTimestamp)
+		replacements.ReplacePath(".creationTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".managedZones[].creationTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".zoneContext.newValue.creationTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".zoneContext.oldValue.creationTime", mockgcpregistry.PlaceholderTimestamp)
 	}
 }
 
@@ -50,21 +48,30 @@ func isDNSAPI(url string) bool {
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	kind := ""
+	if !isDNSAPI(event.URL()) {
+		return
+	}
+
+	parentToKind := make(map[string]string)
 
 	event.VisitResponseStringValues(func(path string, value string) {
-		switch path {
-		case ".kind":
-			kind = value
+		if strings.HasSuffix(path, ".kind") {
+			parent := strings.TrimSuffix(path, ".kind")
+			parentToKind[parent] = value
 		}
 	})
 
-	if kind == "dns#managedZone" {
-		event.VisitResponseStringValues(func(path string, value string) {
-			switch path {
-			case ".id":
-				replacements.ReplaceStringValue(value, "${managedZoneId}")
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.HasSuffix(path, ".id") {
+			parent := strings.TrimSuffix(path, ".id")
+			if kind, ok := parentToKind[parent]; ok {
+				if kind == "dns#policy" {
+					replacements.ReplaceStringValue(value, "${dnsPolicyId}")
+				}
+				if kind == "dns#managedZone" {
+					replacements.ReplaceStringValue(value, "${managedZoneId}")
+				}
 			}
-		})
-	}
+		}
+	})
 }

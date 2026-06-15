@@ -22,11 +22,11 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/orgpolicy/apiv2/orgpolicypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/orgpolicy/v2"
-	"github.com/golang/protobuf/ptypes/empty"
 )
 
 func (s *orgPolicyV2) GetPolicy(ctx context.Context, req *pb.GetPolicyRequest) (*pb.Policy, error) {
@@ -57,7 +57,7 @@ func (s *orgPolicyV2) CreatePolicy(ctx context.Context, req *pb.CreatePolicyRequ
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Policy).(*pb.Policy)
+	obj := proto.CloneOf(req.Policy)
 	obj.Name = fqn
 	if obj.Spec != nil {
 		obj.Spec.UpdateTime = timestamppb.New(time.Now())
@@ -90,7 +90,7 @@ func (s *orgPolicyV2) UpdatePolicy(ctx context.Context, req *pb.UpdatePolicyRequ
 	}
 
 	// use the new object from update request
-	obj = proto.Clone(req.GetPolicy()).(*pb.Policy)
+	obj = proto.CloneOf(req.GetPolicy())
 	if obj.Spec != nil {
 		obj.Spec.UpdateTime = timestamppb.New(time.Now())
 		obj.Spec.Etag = fields.ComputeWeakEtag(obj.Spec)
@@ -107,7 +107,7 @@ func (s *orgPolicyV2) UpdatePolicy(ctx context.Context, req *pb.UpdatePolicyRequ
 	return obj, nil
 }
 
-func (s *orgPolicyV2) DeletePolicy(ctx context.Context, req *pb.DeletePolicyRequest) (*empty.Empty, error) {
+func (s *orgPolicyV2) DeletePolicy(ctx context.Context, req *pb.DeletePolicyRequest) (*emptypb.Empty, error) {
 	name, err := s.parsePolicyName(req.Name)
 	if err != nil {
 		return nil, err
@@ -120,7 +120,7 @@ func (s *orgPolicyV2) DeletePolicy(ctx context.Context, req *pb.DeletePolicyRequ
 		return nil, err
 	}
 
-	return &empty.Empty{}, nil
+	return &emptypb.Empty{}, nil
 }
 
 type PolicyName struct {

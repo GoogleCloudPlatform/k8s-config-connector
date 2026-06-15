@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workflowexecutions/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	workflowexecutionsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflowexecutions/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeWorkflowsExecutions implements WorkflowsExecutionInterface
-type FakeWorkflowsExecutions struct {
+// fakeWorkflowsExecutions implements WorkflowsExecutionInterface
+type fakeWorkflowsExecutions struct {
+	*gentype.FakeClientWithList[*v1alpha1.WorkflowsExecution, *v1alpha1.WorkflowsExecutionList]
 	Fake *FakeWorkflowexecutionsV1alpha1
-	ns   string
 }
 
-var workflowsexecutionsResource = v1alpha1.SchemeGroupVersion.WithResource("workflowsexecutions")
-
-var workflowsexecutionsKind = v1alpha1.SchemeGroupVersion.WithKind("WorkflowsExecution")
-
-// Get takes name of the workflowsExecution, and returns the corresponding workflowsExecution object, and an error if there is any.
-func (c *FakeWorkflowsExecutions) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.WorkflowsExecution, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(workflowsexecutionsResource, c.ns, name), &v1alpha1.WorkflowsExecution{})
-
-	if obj == nil {
-		return nil, err
+func newFakeWorkflowsExecutions(fake *FakeWorkflowexecutionsV1alpha1, namespace string) workflowexecutionsv1alpha1.WorkflowsExecutionInterface {
+	return &fakeWorkflowsExecutions{
+		gentype.NewFakeClientWithList[*v1alpha1.WorkflowsExecution, *v1alpha1.WorkflowsExecutionList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("workflowsexecutions"),
+			v1alpha1.SchemeGroupVersion.WithKind("WorkflowsExecution"),
+			func() *v1alpha1.WorkflowsExecution { return &v1alpha1.WorkflowsExecution{} },
+			func() *v1alpha1.WorkflowsExecutionList { return &v1alpha1.WorkflowsExecutionList{} },
+			func(dst, src *v1alpha1.WorkflowsExecutionList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.WorkflowsExecutionList) []*v1alpha1.WorkflowsExecution {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.WorkflowsExecutionList, items []*v1alpha1.WorkflowsExecution) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.WorkflowsExecution), err
-}
-
-// List takes label and field selectors, and returns the list of WorkflowsExecutions that match those selectors.
-func (c *FakeWorkflowsExecutions) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.WorkflowsExecutionList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(workflowsexecutionsResource, workflowsexecutionsKind, c.ns, opts), &v1alpha1.WorkflowsExecutionList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.WorkflowsExecutionList{ListMeta: obj.(*v1alpha1.WorkflowsExecutionList).ListMeta}
-	for _, item := range obj.(*v1alpha1.WorkflowsExecutionList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested workflowsExecutions.
-func (c *FakeWorkflowsExecutions) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(workflowsexecutionsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a workflowsExecution and creates it.  Returns the server's representation of the workflowsExecution, and an error, if there is any.
-func (c *FakeWorkflowsExecutions) Create(ctx context.Context, workflowsExecution *v1alpha1.WorkflowsExecution, opts v1.CreateOptions) (result *v1alpha1.WorkflowsExecution, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(workflowsexecutionsResource, c.ns, workflowsExecution), &v1alpha1.WorkflowsExecution{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.WorkflowsExecution), err
-}
-
-// Update takes the representation of a workflowsExecution and updates it. Returns the server's representation of the workflowsExecution, and an error, if there is any.
-func (c *FakeWorkflowsExecutions) Update(ctx context.Context, workflowsExecution *v1alpha1.WorkflowsExecution, opts v1.UpdateOptions) (result *v1alpha1.WorkflowsExecution, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(workflowsexecutionsResource, c.ns, workflowsExecution), &v1alpha1.WorkflowsExecution{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.WorkflowsExecution), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeWorkflowsExecutions) UpdateStatus(ctx context.Context, workflowsExecution *v1alpha1.WorkflowsExecution, opts v1.UpdateOptions) (*v1alpha1.WorkflowsExecution, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(workflowsexecutionsResource, "status", c.ns, workflowsExecution), &v1alpha1.WorkflowsExecution{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.WorkflowsExecution), err
-}
-
-// Delete takes name of the workflowsExecution and deletes it. Returns an error if one occurs.
-func (c *FakeWorkflowsExecutions) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(workflowsexecutionsResource, c.ns, name, opts), &v1alpha1.WorkflowsExecution{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeWorkflowsExecutions) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(workflowsexecutionsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.WorkflowsExecutionList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched workflowsExecution.
-func (c *FakeWorkflowsExecutions) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.WorkflowsExecution, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(workflowsexecutionsResource, c.ns, name, pt, data, subresources...), &v1alpha1.WorkflowsExecution{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.WorkflowsExecution), err
 }

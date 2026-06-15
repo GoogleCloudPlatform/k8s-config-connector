@@ -74,7 +74,7 @@ func (s *ProjectsV3) CreateProject(ctx context.Context, req *pb.CreateProjectReq
 	hasher.Write([]byte(projectID))
 	projectNumber := int64(hasher.Sum32()) // TODO: Check project number is unique? (and maybe require projects to be created)
 
-	project := proto.Clone(req.GetProject()).(*pb.Project)
+	project := proto.CloneOf(req.GetProject())
 	project.Name = "projects/" + strconv.FormatInt(projectNumber, 10)
 	project.ProjectId = projectID
 	project.DisplayName = req.GetProject().GetDisplayName()

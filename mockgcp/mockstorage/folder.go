@@ -65,7 +65,7 @@ func (s *folder) InsertFolder(ctx context.Context, req *pb.InsertFolderRequest) 
 	now := timestamppb.Now()
 
 	generation := int64(1)
-	obj := proto.Clone(req.GetFolder()).(*pb.Folder)
+	obj := proto.CloneOf(req.GetFolder())
 	obj.Bucket = &name.Bucket
 	obj.CreateTime = now
 	obj.UpdateTime = now

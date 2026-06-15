@@ -33,7 +33,7 @@ type UpdateMask struct {
 
 // NewUpdateMask creates a new UpdateMask from the given FieldMask.
 func NewUpdateMask(mask *fieldmaskpb.FieldMask) *UpdateMask {
-	mask = proto.Clone(mask).(*fieldmaskpb.FieldMask)
+	mask = proto.CloneOf(mask)
 
 	// Ensure the paths are in JSON format
 	for i := range mask.Paths {
@@ -97,6 +97,11 @@ func replace(original, update protoreflect.Message, fieldName string) error {
 	originalFd := findField(original, fieldName)
 	originalVal := original.Get(originalFd)
 	updateFd := findField(update, fieldName)
+	if !update.Has(updateFd) {
+		// If the field is in the mask but not in the update message, it should be cleared (AIP-134).
+		original.Clear(originalFd)
+		return nil
+	}
 	updateVal := update.Get(updateFd)
 
 	// Update Map

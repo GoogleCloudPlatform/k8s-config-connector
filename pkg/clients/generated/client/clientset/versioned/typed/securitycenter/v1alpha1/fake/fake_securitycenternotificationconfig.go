@@ -22,123 +22,36 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securitycenter/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeSecurityCenterNotificationConfigs implements SecurityCenterNotificationConfigInterface
-type FakeSecurityCenterNotificationConfigs struct {
+// fakeSecurityCenterNotificationConfigs implements SecurityCenterNotificationConfigInterface
+type fakeSecurityCenterNotificationConfigs struct {
+	*gentype.FakeClientWithList[*v1alpha1.SecurityCenterNotificationConfig, *v1alpha1.SecurityCenterNotificationConfigList]
 	Fake *FakeSecuritycenterV1alpha1
-	ns   string
 }
 
-var securitycenternotificationconfigsResource = v1alpha1.SchemeGroupVersion.WithResource("securitycenternotificationconfigs")
-
-var securitycenternotificationconfigsKind = v1alpha1.SchemeGroupVersion.WithKind("SecurityCenterNotificationConfig")
-
-// Get takes name of the securityCenterNotificationConfig, and returns the corresponding securityCenterNotificationConfig object, and an error if there is any.
-func (c *FakeSecurityCenterNotificationConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.SecurityCenterNotificationConfig, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(securitycenternotificationconfigsResource, c.ns, name), &v1alpha1.SecurityCenterNotificationConfig{})
-
-	if obj == nil {
-		return nil, err
+func newFakeSecurityCenterNotificationConfigs(fake *FakeSecuritycenterV1alpha1, namespace string) securitycenterv1alpha1.SecurityCenterNotificationConfigInterface {
+	return &fakeSecurityCenterNotificationConfigs{
+		gentype.NewFakeClientWithList[*v1alpha1.SecurityCenterNotificationConfig, *v1alpha1.SecurityCenterNotificationConfigList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("securitycenternotificationconfigs"),
+			v1alpha1.SchemeGroupVersion.WithKind("SecurityCenterNotificationConfig"),
+			func() *v1alpha1.SecurityCenterNotificationConfig { return &v1alpha1.SecurityCenterNotificationConfig{} },
+			func() *v1alpha1.SecurityCenterNotificationConfigList {
+				return &v1alpha1.SecurityCenterNotificationConfigList{}
+			},
+			func(dst, src *v1alpha1.SecurityCenterNotificationConfigList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.SecurityCenterNotificationConfigList) []*v1alpha1.SecurityCenterNotificationConfig {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.SecurityCenterNotificationConfigList, items []*v1alpha1.SecurityCenterNotificationConfig) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.SecurityCenterNotificationConfig), err
-}
-
-// List takes label and field selectors, and returns the list of SecurityCenterNotificationConfigs that match those selectors.
-func (c *FakeSecurityCenterNotificationConfigs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.SecurityCenterNotificationConfigList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(securitycenternotificationconfigsResource, securitycenternotificationconfigsKind, c.ns, opts), &v1alpha1.SecurityCenterNotificationConfigList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.SecurityCenterNotificationConfigList{ListMeta: obj.(*v1alpha1.SecurityCenterNotificationConfigList).ListMeta}
-	for _, item := range obj.(*v1alpha1.SecurityCenterNotificationConfigList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested securityCenterNotificationConfigs.
-func (c *FakeSecurityCenterNotificationConfigs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(securitycenternotificationconfigsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a securityCenterNotificationConfig and creates it.  Returns the server's representation of the securityCenterNotificationConfig, and an error, if there is any.
-func (c *FakeSecurityCenterNotificationConfigs) Create(ctx context.Context, securityCenterNotificationConfig *v1alpha1.SecurityCenterNotificationConfig, opts v1.CreateOptions) (result *v1alpha1.SecurityCenterNotificationConfig, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(securitycenternotificationconfigsResource, c.ns, securityCenterNotificationConfig), &v1alpha1.SecurityCenterNotificationConfig{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.SecurityCenterNotificationConfig), err
-}
-
-// Update takes the representation of a securityCenterNotificationConfig and updates it. Returns the server's representation of the securityCenterNotificationConfig, and an error, if there is any.
-func (c *FakeSecurityCenterNotificationConfigs) Update(ctx context.Context, securityCenterNotificationConfig *v1alpha1.SecurityCenterNotificationConfig, opts v1.UpdateOptions) (result *v1alpha1.SecurityCenterNotificationConfig, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(securitycenternotificationconfigsResource, c.ns, securityCenterNotificationConfig), &v1alpha1.SecurityCenterNotificationConfig{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.SecurityCenterNotificationConfig), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeSecurityCenterNotificationConfigs) UpdateStatus(ctx context.Context, securityCenterNotificationConfig *v1alpha1.SecurityCenterNotificationConfig, opts v1.UpdateOptions) (*v1alpha1.SecurityCenterNotificationConfig, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(securitycenternotificationconfigsResource, "status", c.ns, securityCenterNotificationConfig), &v1alpha1.SecurityCenterNotificationConfig{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.SecurityCenterNotificationConfig), err
-}
-
-// Delete takes name of the securityCenterNotificationConfig and deletes it. Returns an error if one occurs.
-func (c *FakeSecurityCenterNotificationConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(securitycenternotificationconfigsResource, c.ns, name, opts), &v1alpha1.SecurityCenterNotificationConfig{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeSecurityCenterNotificationConfigs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(securitycenternotificationconfigsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.SecurityCenterNotificationConfigList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched securityCenterNotificationConfig.
-func (c *FakeSecurityCenterNotificationConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.SecurityCenterNotificationConfig, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(securitycenternotificationconfigsResource, c.ns, name, pt, data, subresources...), &v1alpha1.SecurityCenterNotificationConfig{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.SecurityCenterNotificationConfig), err
 }

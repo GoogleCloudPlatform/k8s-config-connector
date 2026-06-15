@@ -16,26 +16,28 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/types"
-
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var ComputeSecurityPolicyGVK = schema.GroupVersionKind{
+	Group:   "compute.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "ComputeSecurityPolicy",
+}
+
+var _ refsv1beta1.Ref = &ComputeSecurityPolicyRef{}
 var _ refsv1beta1.ExternalNormalizer = &ComputeSecurityPolicyRef{}
-var ComputeSecurityPolicyGVK = GroupVersion.WithKind("ComputeSecurityPolicy")
 
-// ComputeSecurityPolicyRef defines the resource reference to ComputeSecurityPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// ComputeSecurityPolicyRef is a reference to a ComputeSecurityPolicy.
 type ComputeSecurityPolicyRef struct {
-
-	// The value of an externally managed ComputeSecurityPolicy resource
+	// A reference to an externally managed ComputeSecurityPolicy resource.
+	// Should be in the format "projects/{{projectID}}/global/securityPolicies/{{name}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeSecurityPolicy resource.
@@ -45,40 +47,64 @@ type ComputeSecurityPolicyRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+func init() {
+	refsv1beta1.Register(&ComputeSecurityPolicyRef{}, &ComputeSecurityPolicy{})
+}
+
+func (r *ComputeSecurityPolicyRef) GetGVK() schema.GroupVersionKind {
+	return ComputeSecurityPolicyGVK
+}
+
+func (r *ComputeSecurityPolicyRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ComputeSecurityPolicyRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ComputeSecurityPolicyRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *ComputeSecurityPolicyRef) ValidateExternal(ref string) error {
+	id := &ComputeSecurityPolicyIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ComputeSecurityPolicyRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ComputeSecurityPolicyIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *ComputeSecurityPolicyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromComputeSecurityPolicySpec(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
 // NormalizedExternal provision the "External" value for other resource that depends on ComputeSecurityPolicy.
 // If the "External" is given in the other resource's spec.ComputeSecurityPolicyRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual ComputeSecurityPolicy object from the cluster.
 func (r *ComputeSecurityPolicyRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", ComputeSecurityPolicyGVK.Kind)
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
 	}
-	// From given External
-	// For backward compatibility, we are not validating the external format.
-	// todo(yuhou): validate external when it's referenced by a pure direct resource
-	if r.External != "" {
-		return r.External, nil
-	}
-
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(ComputeSecurityPolicyGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", ComputeSecurityPolicyGVK, key, err)
-	}
-
-	// targetField: self_link
-	// todo(yuhou): use externalRef for resource that managed by direct controller
-	selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
-	if err != nil || selfLink == "" {
-		return "", fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", u.GetKind(), u.GetNamespace())
-	}
-	r.External = selfLink
 	return r.External, nil
 }

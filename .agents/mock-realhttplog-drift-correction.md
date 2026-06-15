@@ -1,7 +1,7 @@
 ---
 name: Mock RealHTTPLog Drift Correction
 description: Detects drift in real http logs from e2e tests and creates issues per test to align mockgcp behavior.
-schedule: "@daily"
+schedule: "never"
 skipPR: true
 ---
 

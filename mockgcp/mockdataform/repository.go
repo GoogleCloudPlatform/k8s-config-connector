@@ -62,7 +62,7 @@ func (r *RepositoryV1Beta1) CreateRepository(ctx context.Context, request *pb.Cr
 
 	fqn := name.String()
 
-	obj := proto.Clone(request.Repository).(*pb.Repository)
+	obj := proto.CloneOf(request.Repository)
 	obj.Name = fqn
 
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {

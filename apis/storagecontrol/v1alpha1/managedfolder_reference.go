@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ManagedFolderRef{}
 
-// ManagedFolderRef defines the resource reference to StorageManagedFolder, which "External" field
-// holds the GCP identifier for the KRM object.
+// ManagedFolderRef is a reference to a StorageManagedFolder.
 type ManagedFolderRef struct {
 	// A reference to an externally managed StorageManagedFolder resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/managedfolders/{{managedfolderID}}".

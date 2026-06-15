@@ -18,6 +18,7 @@ import (
 	"context"
 	"strings"
 
+	pb "cloud.google.com/go/parametermanager/apiv1/parametermanagerpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -25,7 +26,6 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/parametermanager/v1"
 )
 
 // Creates a new [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion].
@@ -46,7 +46,7 @@ func (s *ParameterManagerV1) CreateParameterVersion(ctx context.Context, req *pb
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.ParameterVersion).(*pb.ParameterVersion)
+	obj := proto.CloneOf(req.ParameterVersion)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	obj.UpdateTime = timestamppb.Now()
@@ -114,7 +114,7 @@ func (s *ParameterManagerV1) UpdateParameterVersion(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.ParameterVersion)
+	updated := proto.CloneOf(existing)
 	updated.Name = name.String()
 	updated.UpdateTime = timestamppb.Now()
 

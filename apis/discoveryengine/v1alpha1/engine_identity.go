@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// EngineIdentity defines the resource reference to DiscoveryEngineEngine, which "External" field
-// holds the GCP identifier for the KRM object.
+// EngineIdentity is the identity of a DiscoveryEngineEngine.
 type EngineIdentity struct {
 	parent *EngineParent
 	id     string
@@ -52,7 +51,7 @@ func (p *EngineParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a EngineIdentity from the Config Connector Engine object.
+// New builds an EngineIdentity from the Config Connector Engine object.
 func NewEngineIdentity(ctx context.Context, reader client.Reader, obj *DiscoveryEngineEngine) (*EngineIdentity, error) {
 
 	// Get Parent

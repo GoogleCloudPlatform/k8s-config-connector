@@ -1,6 +1,5 @@
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -22,33 +21,30 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools?alt=json&caPoolId=privatecacapool-${uniqueId}
+POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools?%24alt=json%3Benum-encoding%3Dint&caPoolId=privatecacapool-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "issuancePolicy": {
     "allowedIssuanceModes": {
-      "allowConfigBasedIssuance": false,
       "allowCsrBasedIssuance": true
     },
     "allowedKeyTypes": [
       {
         "rsa": {
-          "maxModulusSize": 128,
-          "minModulusSize": 64
+          "maxModulusSize": "128",
+          "minModulusSize": "64"
         }
       },
       {
         "ellipticCurve": {
-          "signatureAlgorithm": "ECDSA_P384"
+          "signatureAlgorithm": 2
         }
       }
     ],
     "baselineValues": {
       "additionalExtensions": [
         {
-          "critical": false,
           "objectId": {
             "objectIdPath": [
               1,
@@ -66,25 +62,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "maxIssuerPathLength": 7
       },
       "keyUsage": {
-        "baseKeyUsage": {
-          "certSign": false,
-          "contentCommitment": false,
-          "crlSign": false,
-          "dataEncipherment": false,
-          "decipherOnly": false,
-          "digitalSignature": false,
-          "encipherOnly": false,
-          "keyAgreement": false,
-          "keyEncipherment": false
-        },
-        "extendedKeyUsage": {
-          "clientAuth": false,
-          "codeSigning": false,
-          "emailProtection": false,
-          "ocspSigning": false,
-          "serverAuth": false,
-          "timeStamping": false
-        },
+        "baseKeyUsage": {},
+        "extendedKeyUsage": {},
         "unknownExtendedKeyUsages": [
           {
             "objectIdPath": [
@@ -124,7 +103,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         }
       ],
       "knownExtensions": [
-        "BASE_KEY_USAGE"
+        1
       ]
     }
   },
@@ -133,8 +112,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
-  "tier": "ENTERPRISE"
+  "tier": 1
 }
 
 200 OK
@@ -160,9 +138,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -279,9 +256,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -307,7 +283,7 @@ X-Xss-Protection: 0
       },
       {
         "ellipticCurve": {
-          "signatureAlgorithm": "ECDSA_P384"
+          "signatureAlgorithm": 2
         }
       }
     ],
@@ -370,7 +346,7 @@ X-Xss-Protection: 0
         }
       ],
       "knownExtensions": [
-        "BASE_KEY_USAGE"
+        1
       ]
     }
   },
@@ -380,31 +356,29 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
-  "tier": "ENTERPRISE"
+  "tier": 1
 }
 
 ---
 
-PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json&updateMask=issuancePolicy%2Clabels%2CpublishingOptions
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=issuancePolicy%2Clabels%2CpublishingOptions
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "issuancePolicy": {
     "allowedIssuanceModes": {
-      "allowConfigBasedIssuance": true,
-      "allowCsrBasedIssuance": false
+      "allowConfigBasedIssuance": true
     },
     "allowedKeyTypes": [
       {
         "rsa": {
-          "maxModulusSize": 256,
-          "minModulusSize": 128
+          "maxModulusSize": "256",
+          "minModulusSize": "128"
         }
       },
       {
         "ellipticCurve": {
-          "signatureAlgorithm": "ECDSA_P256"
+          "signatureAlgorithm": 1
         }
       }
     ],
@@ -487,7 +461,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         }
       ],
       "knownExtensions": [
-        "EXTENDED_KEY_USAGE"
+        2
       ]
     }
   },
@@ -497,11 +471,12 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
   "publishingOptions": {
     "publishCaCert": true,
     "publishCrl": true
-  }
+  },
+  "tier": 1
 }
 
 200 OK
@@ -527,9 +502,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -671,9 +645,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -699,7 +672,7 @@ X-Xss-Protection: 0
       },
       {
         "ellipticCurve": {
-          "signatureAlgorithm": "ECDSA_P256"
+          "signatureAlgorithm": 1
         }
       }
     ],
@@ -782,7 +755,7 @@ X-Xss-Protection: 0
         }
       ],
       "knownExtensions": [
-        "EXTENDED_KEY_USAGE"
+        2
       ]
     }
   },
@@ -797,14 +770,13 @@ X-Xss-Protection: 0
     "publishCaCert": true,
     "publishCrl": true
   },
-  "tier": "ENTERPRISE"
+  "tier": 1
 }
 
 ---
 
-DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -829,9 +801,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -856,29 +827,5 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
-}
-
----
-
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
   }
 }

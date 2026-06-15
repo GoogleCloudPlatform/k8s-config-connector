@@ -17,101 +17,96 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// NetworkAttachmentIdentity defines the resource reference to ComputeNetworkAttachment, which "External" field
-// holds the GCP identifier for the KRM object.
-type NetworkAttachmentIdentity struct {
-	parent *NetworkAttachmentParent
-	id     string
+var (
+	_ identity.IdentityV2 = &ComputeNetworkAttachmentIdentity{}
+	_ identity.Resource   = &ComputeNetworkAttachment{}
+)
+
+var ComputeNetworkAttachmentIdentityFormat = gcpurls.Template[ComputeNetworkAttachmentIdentity](
+	"compute.googleapis.com",
+	"projects/{project}/regions/{region}/networkAttachments/{networkattachment}",
+)
+
+// ComputeNetworkAttachmentIdentity is the identity of a GCP ComputeNetworkAttachment resource.
+// +k8s:deepcopy-gen=false
+type ComputeNetworkAttachmentIdentity struct {
+	Project           string
+	Region            string
+	NetworkAttachment string
 }
 
-func (i *NetworkAttachmentIdentity) String() string {
-	return i.parent.String() + "/networkAttachments/" + i.id
+func (i *ComputeNetworkAttachmentIdentity) String() string {
+	return ComputeNetworkAttachmentIdentityFormat.ToString(*i)
 }
 
-func (i *NetworkAttachmentIdentity) ID() string {
-	return i.id
-}
-
-func (i *NetworkAttachmentIdentity) Parent() *NetworkAttachmentParent {
-	return i.parent
-}
-
-type NetworkAttachmentParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *NetworkAttachmentParent) String() string {
-	return "projects/" + p.ProjectID + "/regions/" + p.Location
-}
-
-// New builds a NetworkAttachmentIdentity from the Config Connector NetworkAttachment object.
-func NewNetworkAttachmentIdentity(ctx context.Context, reader client.Reader, obj *ComputeNetworkAttachment) (*NetworkAttachmentIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (i *ComputeNetworkAttachmentIdentity) FromExternal(ref string) error {
+	parsed, match, err := ComputeNetworkAttachmentIdentityFormat.Parse(ref)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("format of ComputeNetworkAttachment external=%q was not known (use %s): %w", ref, ComputeNetworkAttachmentIdentityFormat.CanonicalForm(), err)
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	if !match {
+		return fmt.Errorf("format of ComputeNetworkAttachment external=%q was not known (use %s)", ref, ComputeNetworkAttachmentIdentityFormat.CanonicalForm())
 	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+	*i = *parsed
+	return nil
+}
+
+func (i *ComputeNetworkAttachmentIdentity) Host() string {
+	return ComputeNetworkAttachmentIdentityFormat.Host()
+}
+
+func getIdentityFromComputeNetworkAttachmentSpec(ctx context.Context, reader client.Reader, obj *ComputeNetworkAttachment) (*ComputeNetworkAttachmentIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &ComputeNetworkAttachmentIdentity{
+		Project:           projectID,
+		Region:            location,
+		NetworkAttachment: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *ComputeNetworkAttachment) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromComputeNetworkAttachmentSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseNetworkAttachmentExternal(externalRef)
-		if err != nil {
+		statusIdentity := &ComputeNetworkAttachmentIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
-	return &NetworkAttachmentIdentity{
-		parent: &NetworkAttachmentParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
-}
 
-func ParseNetworkAttachmentExternal(external string) (parent *NetworkAttachmentParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "networkAttachments" {
-		return nil, "", fmt.Errorf("format of ComputeNetworkAttachment external=%q was not known (use projects/{{projectID}}/regions/{{location}}/networkAttachments/{{networkattachmentID}})", external)
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change ComputeNetworkAttachment identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
-	parent = &NetworkAttachmentParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+
+	return specIdentity, nil
 }

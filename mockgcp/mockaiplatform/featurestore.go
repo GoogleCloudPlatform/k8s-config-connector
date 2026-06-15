@@ -27,8 +27,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
 )
 
 type featurestoreService struct {
@@ -66,7 +66,7 @@ func (s *featurestoreService) CreateFeaturestore(ctx context.Context, req *pb.Cr
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Featurestore).(*pb.Featurestore)
+	obj := proto.CloneOf(req.Featurestore)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)

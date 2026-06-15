@@ -27,8 +27,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/securesourcemanager/v1"
 )
 
 func (s *secureSourceManagerServer) GetInstance(ctx context.Context, req *pb.GetInstanceRequest) (*pb.Instance, error) {
@@ -61,7 +61,7 @@ func (s *secureSourceManagerServer) CreateInstance(ctx context.Context, req *pb.
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Instance).(*pb.Instance)
+	obj := proto.CloneOf(req.Instance)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)

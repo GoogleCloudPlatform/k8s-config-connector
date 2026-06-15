@@ -56,25 +56,33 @@ func (i *ComputeTargetHTTPSProxyIdentity) FromExternal(ref string) error {
 
 var _ identity.Resource = &ComputeTargetHTTPSProxy{}
 
-func (obj *ComputeTargetHTTPSProxy) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	// Get parent ID
-	parentID, err := obj.GetParentIdentity(ctx, reader)
+func getIdentityFromComputeTargetHTTPSProxySpec(ctx context.Context, reader client.Reader, obj client.Object) (*ComputeTargetHTTPSProxyIdentity, error) {
+	resourceID, err := refsv1beta1.GetResourceID(obj)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	// Get resource ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+
+	location, err := refsv1beta1.GetLocation(obj)
+	if err != nil || location == "" {
+		location = "global"
 	}
 
 	id := &ComputeTargetHTTPSProxyIdentity{
-		ParentID:   parentID,
+		ParentID:   &parent.ComputeParent{ProjectID: projectID, Location: location},
 		ResourceID: resourceID,
+	}
+	return id, nil
+}
+
+func (obj *ComputeTargetHTTPSProxy) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	id, err := getIdentityFromComputeTargetHTTPSProxySpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
 	}
 
 	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.

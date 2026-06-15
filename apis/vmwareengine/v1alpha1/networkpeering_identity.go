@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// NetworkPeeringIdentity defines the resource reference to VMwareEngineNetworkPeering, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkPeeringIdentity is the identity of a VMwareEngineNetworkPeering.
 type NetworkPeeringIdentity struct {
 	parent *NetworkPeeringParent
 	id     string

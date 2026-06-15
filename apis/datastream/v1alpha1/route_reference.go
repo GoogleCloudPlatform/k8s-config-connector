@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &RouteRef{}
 
-// RouteRef defines the resource reference to DatastreamRoute, which "External" field
-// holds the GCP identifier for the KRM object.
+// RouteRef is a reference to a DatastreamRoute.
 type RouteRef struct {
 	// A reference to an externally managed DatastreamRoute resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/privateConnections/{{privateconnectionID}}/routes/{{routeID}}".

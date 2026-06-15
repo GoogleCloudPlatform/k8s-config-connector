@@ -69,7 +69,7 @@ type BigtableAppProfileSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* InstanceRef defines the resource reference to BigtableInstance, which "External" field holds the GCP identifier for the KRM object. */
+	/* InstanceRef is a reference to a BigtableInstance. */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* The set of clusters to route to, if using multi cluster routing. The order is ignored; clusters will be tried in order of distance. If left empty, all clusters are eligible. */

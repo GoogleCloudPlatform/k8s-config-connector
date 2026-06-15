@@ -44,6 +44,32 @@ type ClusterAofConfig struct {
 	AppendFsync *string `json:"appendFsync,omitempty"`
 }
 
+type ClusterAutomatedBackupConfig struct {
+	/* Optional. The automated backup mode. If the mode is disabled, the other fields will be ignored. */
+	// +optional
+	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
+
+	/* Optional. Trigger automated backups at a fixed frequency. */
+	// +optional
+	FixedFrequencySchedule *ClusterFixedFrequencySchedule `json:"fixedFrequencySchedule,omitempty"`
+
+	/* Optional. How long to keep automated backups before the backups are deleted. The value should be between 1 day and 365 days. If not specified, the default value is 35 days. */
+	// +optional
+	Retention *string `json:"retention,omitempty"`
+}
+
+type ClusterFixedFrequencySchedule struct {
+	/* Required. The start time of every automated backup in UTC. It must be set to the start of an hour. This field is required. */
+	// +optional
+	StartTime *ClusterStartTime `json:"startTime,omitempty"`
+}
+
+type ClusterMaintenancePolicy struct {
+	/* Optional. Maintenance window that is applied to resources covered by this policy. Minimum 1. For the current version, the maximum number of weekly_maintenance_window is expected to be one. */
+	// +optional
+	WeeklyMaintenanceWindow []ClusterWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
+}
+
 type ClusterPersistenceConfig struct {
 	/* Optional. AOF configuration. This field will be ignored if mode is not AOF. */
 	// +optional
@@ -73,6 +99,34 @@ type ClusterRdbConfig struct {
 	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
 }
 
+type ClusterStartTime struct {
+	/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
+	// +optional
+	Hours *int32 `json:"hours,omitempty"`
+
+	/* Minutes of hour of day. Must be from 0 to 59. */
+	// +optional
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
+	// +optional
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	/* Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds. */
+	// +optional
+	Seconds *int32 `json:"seconds,omitempty"`
+}
+
+type ClusterWeeklyMaintenanceWindow struct {
+	/* Allows to define schedule that runs specified day of the week. */
+	// +optional
+	Day *string `json:"day,omitempty"`
+
+	/* Start time of the window in UTC. */
+	// +optional
+	StartTime *ClusterStartTime `json:"startTime,omitempty"`
+}
+
 type ClusterZoneDistributionConfig struct {
 	/* Optional. The mode of zone distribution. Defaults to MULTI_ZONE, when not specified. */
 	// +optional
@@ -88,12 +142,24 @@ type RedisClusterSpec struct {
 	// +optional
 	AuthorizationMode *string `json:"authorizationMode,omitempty"`
 
+	/* Optional. The automated backup config for the cluster. */
+	// +optional
+	AutomatedBackupConfig *ClusterAutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
 	/* Optional. The delete operation will fail when the value is set to true. */
 	// +optional
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
 
+	/* Optional. The KMS key name to encrypt data at rest. */
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* Immutable. Location of the resource. */
 	Location string `json:"location"`
+
+	/* Optional. ClusterMaintenancePolicy determines when to allow or deny updates. */
+	// +optional
+	MaintenancePolicy *ClusterMaintenancePolicy `json:"maintenancePolicy,omitempty"`
 
 	/* Optional. The type of a redis node in the cluster. NodeType determines the underlying machine-type of a redis node. */
 	// +optional
@@ -149,6 +215,44 @@ type ClusterDiscoveryEndpointsStatus struct {
 	PscConfig *ClusterPscConfigStatus `json:"pscConfig,omitempty"`
 }
 
+type ClusterEncryptionInfoStatus struct {
+	/* Output only. Type of encryption. */
+	// +optional
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	/* Output only. The state of the primary version of the KMS key perceived by the system. This field is not populated in backups. */
+	// +optional
+	KmsKeyPrimaryState *string `json:"kmsKeyPrimaryState,omitempty"`
+
+	/* Output only. KMS key versions that are being used to protect the data at-rest. */
+	// +optional
+	KmsKeyVersions []string `json:"kmsKeyVersions,omitempty"`
+
+	/* Output only. The most recent time when the encryption info was updated. */
+	// +optional
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+}
+
+type ClusterMaintenancePolicyStatus struct {
+	/* Output only. The time when the policy was created i.e. Maintenance Window or Deny Period was assigned. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. The time when the policy was updated i.e. Maintenance Window or Deny Period was updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type ClusterMaintenanceScheduleStatus struct {
+	/* Output only. The end time of any upcoming scheduled maintenance for this instance. */
+	// +optional
+	EndTime *string `json:"endTime,omitempty"`
+
+	/* Output only. The start time of any upcoming scheduled maintenance for this instance. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
+}
+
 type ClusterObservedStateStatus struct {
 	/* Output only. The timestamp associated with the cluster creation request. */
 	// +optional
@@ -158,6 +262,18 @@ type ClusterObservedStateStatus struct {
 	// +optional
 	DiscoveryEndpoints []ClusterDiscoveryEndpointsStatus `json:"discoveryEndpoints,omitempty"`
 
+	/* Output only. Encryption information for the client to retrieve. */
+	// +optional
+	EncryptionInfo *ClusterEncryptionInfoStatus `json:"encryptionInfo,omitempty"`
+
+	/* Optional. ClusterMaintenancePolicy determines when to allow or deny updates. */
+	// +optional
+	MaintenancePolicy *ClusterMaintenancePolicyStatus `json:"maintenancePolicy,omitempty"`
+
+	/* Output only. ClusterMaintenanceSchedule Output only Published maintenance schedule. */
+	// +optional
+	MaintenanceSchedule *ClusterMaintenanceScheduleStatus `json:"maintenanceSchedule,omitempty"`
+
 	/* Output only. Precise value of redis memory size in GB for the entire cluster. */
 	// +optional
 	PreciseSizeGb *float64 `json:"preciseSizeGb,omitempty"`
@@ -165,6 +281,10 @@ type ClusterObservedStateStatus struct {
 	/* Output only. PSC connections for discovery of the cluster topology and accessing the cluster. */
 	// +optional
 	PscConnections []ClusterPscConnectionsStatus `json:"pscConnections,omitempty"`
+
+	/* Output only. Service attachment details to configure Psc connections. */
+	// +optional
+	PscServiceAttachments []ClusterPscServiceAttachmentsStatus `json:"pscServiceAttachments,omitempty"`
 
 	/* Output only. Redis memory size in GB for the entire cluster rounded up to the next integer. */
 	// +optional
@@ -211,6 +331,16 @@ type ClusterPscConnectionsStatus struct {
 	PscConnectionID *string `json:"pscConnectionID,omitempty"`
 
 	/* Required. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}. */
+	// +optional
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+}
+
+type ClusterPscServiceAttachmentsStatus struct {
+	/* Output only. Type of a PSC connection targeting this service attachment. */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	/* Output only. Service attachment URI which your self-created PscConnection should use as target */
 	// +optional
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }

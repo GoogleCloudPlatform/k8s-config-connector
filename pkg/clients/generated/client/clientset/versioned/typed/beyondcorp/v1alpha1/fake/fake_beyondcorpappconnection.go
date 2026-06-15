@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/beyondcorp/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	beyondcorpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/beyondcorp/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBeyondCorpAppConnections implements BeyondCorpAppConnectionInterface
-type FakeBeyondCorpAppConnections struct {
+// fakeBeyondCorpAppConnections implements BeyondCorpAppConnectionInterface
+type fakeBeyondCorpAppConnections struct {
+	*gentype.FakeClientWithList[*v1alpha1.BeyondCorpAppConnection, *v1alpha1.BeyondCorpAppConnectionList]
 	Fake *FakeBeyondcorpV1alpha1
-	ns   string
 }
 
-var beyondcorpappconnectionsResource = v1alpha1.SchemeGroupVersion.WithResource("beyondcorpappconnections")
-
-var beyondcorpappconnectionsKind = v1alpha1.SchemeGroupVersion.WithKind("BeyondCorpAppConnection")
-
-// Get takes name of the beyondCorpAppConnection, and returns the corresponding beyondCorpAppConnection object, and an error if there is any.
-func (c *FakeBeyondCorpAppConnections) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BeyondCorpAppConnection, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(beyondcorpappconnectionsResource, c.ns, name), &v1alpha1.BeyondCorpAppConnection{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBeyondCorpAppConnections(fake *FakeBeyondcorpV1alpha1, namespace string) beyondcorpv1alpha1.BeyondCorpAppConnectionInterface {
+	return &fakeBeyondCorpAppConnections{
+		gentype.NewFakeClientWithList[*v1alpha1.BeyondCorpAppConnection, *v1alpha1.BeyondCorpAppConnectionList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("beyondcorpappconnections"),
+			v1alpha1.SchemeGroupVersion.WithKind("BeyondCorpAppConnection"),
+			func() *v1alpha1.BeyondCorpAppConnection { return &v1alpha1.BeyondCorpAppConnection{} },
+			func() *v1alpha1.BeyondCorpAppConnectionList { return &v1alpha1.BeyondCorpAppConnectionList{} },
+			func(dst, src *v1alpha1.BeyondCorpAppConnectionList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.BeyondCorpAppConnectionList) []*v1alpha1.BeyondCorpAppConnection {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.BeyondCorpAppConnectionList, items []*v1alpha1.BeyondCorpAppConnection) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.BeyondCorpAppConnection), err
-}
-
-// List takes label and field selectors, and returns the list of BeyondCorpAppConnections that match those selectors.
-func (c *FakeBeyondCorpAppConnections) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BeyondCorpAppConnectionList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(beyondcorpappconnectionsResource, beyondcorpappconnectionsKind, c.ns, opts), &v1alpha1.BeyondCorpAppConnectionList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.BeyondCorpAppConnectionList{ListMeta: obj.(*v1alpha1.BeyondCorpAppConnectionList).ListMeta}
-	for _, item := range obj.(*v1alpha1.BeyondCorpAppConnectionList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested beyondCorpAppConnections.
-func (c *FakeBeyondCorpAppConnections) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(beyondcorpappconnectionsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a beyondCorpAppConnection and creates it.  Returns the server's representation of the beyondCorpAppConnection, and an error, if there is any.
-func (c *FakeBeyondCorpAppConnections) Create(ctx context.Context, beyondCorpAppConnection *v1alpha1.BeyondCorpAppConnection, opts v1.CreateOptions) (result *v1alpha1.BeyondCorpAppConnection, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(beyondcorpappconnectionsResource, c.ns, beyondCorpAppConnection), &v1alpha1.BeyondCorpAppConnection{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BeyondCorpAppConnection), err
-}
-
-// Update takes the representation of a beyondCorpAppConnection and updates it. Returns the server's representation of the beyondCorpAppConnection, and an error, if there is any.
-func (c *FakeBeyondCorpAppConnections) Update(ctx context.Context, beyondCorpAppConnection *v1alpha1.BeyondCorpAppConnection, opts v1.UpdateOptions) (result *v1alpha1.BeyondCorpAppConnection, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(beyondcorpappconnectionsResource, c.ns, beyondCorpAppConnection), &v1alpha1.BeyondCorpAppConnection{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BeyondCorpAppConnection), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBeyondCorpAppConnections) UpdateStatus(ctx context.Context, beyondCorpAppConnection *v1alpha1.BeyondCorpAppConnection, opts v1.UpdateOptions) (*v1alpha1.BeyondCorpAppConnection, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(beyondcorpappconnectionsResource, "status", c.ns, beyondCorpAppConnection), &v1alpha1.BeyondCorpAppConnection{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BeyondCorpAppConnection), err
-}
-
-// Delete takes name of the beyondCorpAppConnection and deletes it. Returns an error if one occurs.
-func (c *FakeBeyondCorpAppConnections) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(beyondcorpappconnectionsResource, c.ns, name, opts), &v1alpha1.BeyondCorpAppConnection{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBeyondCorpAppConnections) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(beyondcorpappconnectionsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.BeyondCorpAppConnectionList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched beyondCorpAppConnection.
-func (c *FakeBeyondCorpAppConnections) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BeyondCorpAppConnection, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(beyondcorpappconnectionsResource, c.ns, name, pt, data, subresources...), &v1alpha1.BeyondCorpAppConnection{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BeyondCorpAppConnection), err
 }

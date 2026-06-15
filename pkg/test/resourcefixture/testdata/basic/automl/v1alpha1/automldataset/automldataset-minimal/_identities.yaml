@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: automl.cnrm.cloud.google.com
+  kind: AutoMLDataset
+  name: automldataset-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

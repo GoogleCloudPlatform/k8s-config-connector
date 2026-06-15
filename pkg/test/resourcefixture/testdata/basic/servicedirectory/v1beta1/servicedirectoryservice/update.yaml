@@ -20,4 +20,4 @@ metadata:
     label-two: value-two
 spec:
   namespaceRef:
-    name: servicedirectorynamespace-${uniqueId}
+    external: projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}

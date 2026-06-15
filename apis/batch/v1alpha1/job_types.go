@@ -212,7 +212,7 @@ type AllocationPolicy_NetworkInterface struct {
 	//  * projects/{project}/regions/{region}/subnetworks/{subnetwork}
 	//  * regions/{region}/subnetworks/{subnetwork}
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.NetworkInterface.subnetwork
-	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	// Default is false (with an external IP address). Required if
 	//  no external public IP address is attached to the VM. If no external

@@ -30,6 +30,7 @@ spec:
 ---
 
 kind: RunCLI
+DEFER-HTTP-LOG: true
 args: [ "powertools", "force-set-field", "--namespace=${projectId}", "--kind=StorageBucket", "--name=storagebucket-${uniqueId}", "spec.location=EU" ]
 
 ---

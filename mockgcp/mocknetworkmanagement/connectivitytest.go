@@ -30,9 +30,9 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
+	pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkmanagement/v1"
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
 type reachabilityService struct {
@@ -76,7 +76,7 @@ func (s *reachabilityService) CreateConnectivityTest(ctx context.Context, req *p
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Resource).(*pb.ConnectivityTest)
+	obj := proto.CloneOf(req.Resource)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

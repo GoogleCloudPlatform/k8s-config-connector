@@ -19,6 +19,8 @@
 // proto.service: google.cloud.eventarc.v1
 // resource: EventarcChannel:Channel
 // resource: EventarcGoogleChannelConfig:GoogleChannelConfig
+// resource: EventarcEnrollment:Enrollment
+// resource: EventarcChannelConnection:ChannelConnection
 
 package v1alpha1
 
@@ -46,6 +48,69 @@ type Channel struct {
 	//  `projects/* /locations/* /keyRings/* /cryptoKeys/*`.
 	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.crypto_key_name
 	CryptoKeyName *string `json:"cryptoKeyName,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.eventarc.v1.ChannelConnection", skipping
+
+// +kcc:proto=google.cloud.eventarc.v1.ChannelConnection
+type ChannelConnection struct {
+	// Required. The name of the connection.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The name of the connected subscriber Channel.
+	//  This is a weak reference to avoid cross project and cross accounts
+	//  references. This must be in
+	//  `projects/{project}/location/{location}/channels/{channel_id}` format.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.channel
+	Channel *string `json:"channel,omitempty"`
+
+	// Input only. Activation token for the channel. The token will be used
+	//  during the creation of ChannelConnection to bind the channel with the
+	//  provider project. This field will not be stored in the provider resource.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.activation_token
+	ActivationToken *string `json:"activationToken,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.eventarc.v1.Enrollment", skipping
+
+// +kcc:proto=google.cloud.eventarc.v1.Enrollment
+type Enrollment struct {
+	// Identifier. Resource name of the form
+	//  projects/{project}/locations/{location}/enrollments/{enrollment}
+	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Resource labels.
+	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Resource annotations.
+	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// Optional. Resource display name.
+	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. A CEL expression identifying which messages this enrollment
+	//  applies to.
+	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.cel_match
+	CelMatch *string `json:"celMatch,omitempty"`
+
+	// Required. Resource name of the message bus identifying the source of the
+	//  messages. It matches the form
+	//  projects/{project}/locations/{location}/messageBuses/{messageBus}.
+	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.message_bus
+	MessageBus *string `json:"messageBus,omitempty"`
+
+	// Required. Destination is the Pipeline that the Enrollment is delivering to.
+	//  It must point to the full resource name of a Pipeline. Format:
+	//  "projects/{PROJECT_ID}/locations/{region}/pipelines/{PIPELINE_ID)"
+	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.destination
+	Destination *string `json:"destination,omitempty"`
 }
 */
 
@@ -105,6 +170,51 @@ type ChannelObservedState struct {
 	//  physical zone separation
 	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.satisfies_pzs
 	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.eventarc.v1.ChannelConnection", skipping
+
+// +kcc:observedstate:proto=google.cloud.eventarc.v1.ChannelConnection
+type ChannelConnectionObservedState struct {
+	// Output only. Server assigned ID of the resource.
+	//  The server guarantees uniqueness and immutability until deleted.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The creation time.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last-modified time.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.eventarc.v1.Enrollment", skipping
+
+// +kcc:observedstate:proto=google.cloud.eventarc.v1.Enrollment
+type EnrollmentObservedState struct {
+	// Output only. Server assigned unique identifier for the channel. The value
+	//  is a UUID4 string and guaranteed to remain unchanged until the resource is
+	//  deleted.
+	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. This checksum is computed by the server based on the value of
+	//  other fields, and might be sent only on update and delete requests to
+	//  ensure that the client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. The creation time.
+	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last-modified time.
+	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
 

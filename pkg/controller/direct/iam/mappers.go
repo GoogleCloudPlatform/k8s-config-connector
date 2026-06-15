@@ -193,14 +193,21 @@ func DenyRule_FromProto(mapCtx *direct.MapContext, in *pb.DenyRule) *krmv1alpha1
 		return nil
 	}
 	out := &krmv1alpha1.DenyRule{}
-	out.DeniedPrincipals = in.DeniedPrincipals
-	out.ExceptionPrincipals = in.ExceptionPrincipals
-	out.DeniedPermissions = in.DeniedPermissions
-	out.ExceptionPermissions = in.ExceptionPermissions
+	if len(in.DeniedPrincipals) > 0 {
+		out.DeniedPrincipals = in.DeniedPrincipals
+	}
+	if len(in.ExceptionPrincipals) > 0 {
+		out.ExceptionPrincipals = in.ExceptionPrincipals
+	}
+	if len(in.DeniedPermissions) > 0 {
+		out.DeniedPermissions = in.DeniedPermissions
+	}
+	if len(in.ExceptionPermissions) > 0 {
+		out.ExceptionPermissions = in.ExceptionPermissions
+	}
 	out.DenialCondition = Expr_FromProto(mapCtx, in.GetDenialCondition())
 	return out
 }
-
 func DenyRule_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DenyRule) *pb.DenyRule {
 	if in == nil {
 		return nil

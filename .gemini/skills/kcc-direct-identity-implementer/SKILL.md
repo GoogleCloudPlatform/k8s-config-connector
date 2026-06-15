@@ -19,9 +19,11 @@ This skill guides the implementation of the IdentityV2 and ExternalIdentifier in
     - Use `identity.IdentityV2`.
     - Use `gcpurls.Template` for URL parsing.
     - Implement `ExternalIdentifier()`.
+    - Implement `ParentString() string` to return the GCP parent URI (e.g., `projects/{project}` or `projects/{project}/locations/{location}`).
 
-2.  **Parent References**:
-    Ensure the `Spec` struct has a `ProjectRef` (and `Location` if applicable) for the parent. Use the `refs.` package.
+2.  **Parent & Hierarchy Support**:
+    - Ensure the `Spec` struct has a `ProjectRef` (and `Location` if applicable).
+    - **Hierarchical Branching**: If the GCP resource supports multiple hierarchies (e.g., Global and Regional), implement logic in `String()` and `FromExternal()` to handle both. Use the presence of the `location` field in the Spec to determine which pattern to use.
 
 ## Journaling
-Append any template mapping complexities (e.g., multi-parent resources) to `.gemini/skills/kcc-direct-identity-implementer/journal.md`.
+Append any template mapping complexities (e.g., multi-parent or multi-hierarchy resources) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.

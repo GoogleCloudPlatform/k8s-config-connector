@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}' was not found",
+    "message": "environment \"projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -45,13 +45,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1beta1.OperationMetadata",
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateEnvironment",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}",
     "verb": "create"
   },
@@ -83,7 +81,6 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateEnvironment",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}",
     "verb": "create"
   },
@@ -141,13 +138,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1beta1.OperationMetadata",
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteEnvironment",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}",
     "verb": "delete"
   },
@@ -179,7 +174,6 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteEnvironment",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}",
     "verb": "delete"
   },

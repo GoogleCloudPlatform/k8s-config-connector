@@ -61,7 +61,7 @@ func (s *GlobalSslPolicyV1) Insert(ctx context.Context, req *pb.InsertSslPolicyR
 	fqn := name.String()
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetSslPolicyResource()).(*pb.SslPolicy)
+	obj := proto.CloneOf(req.GetSslPolicyResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id

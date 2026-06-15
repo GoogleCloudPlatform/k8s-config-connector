@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeManagedSSLCertificate
+  name: computemanagedsslcertificate-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

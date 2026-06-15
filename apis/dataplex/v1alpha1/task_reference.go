@@ -28,8 +28,7 @@ import (
 
 var _ refs.Ref = &TaskRef{}
 
-// TaskRef defines the resource reference to DataplexTask, which "External" field
-// holds the GCP identifier for the KRM object.
+// TaskRef is a reference to a DataplexTask.
 type TaskRef struct {
 	// A reference to an externally managed DataplexTask resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}/tasks/{{taskID}}".
@@ -43,7 +42,7 @@ type TaskRef struct {
 }
 
 func init() {
-	refs.Register(&TaskRef{})
+	refs.Register(&TaskRef{}, &DataplexTask{})
 }
 
 func (r *TaskRef) GetGVK() schema.GroupVersionKind {
@@ -63,6 +62,8 @@ func (r *TaskRef) GetExternal() string {
 
 func (r *TaskRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *TaskRef) ValidateExternal(ref string) error {

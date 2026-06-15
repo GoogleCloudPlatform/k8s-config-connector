@@ -21,8 +21,9 @@ metadata:
 spec:
   keyRingRef:
     name: kmscryptokey-${uniqueId}
-  purpose: ASYMMETRIC_SIGN
+  purpose: ENCRYPT_DECRYPT
   versionTemplate:
-    algorithm: EC_SIGN_P384_SHA384
+    algorithm: GOOGLE_SYMMETRIC_ENCRYPTION
     protectionLevel: SOFTWARE
+  rotationPeriod: 172800s
   importOnly: false

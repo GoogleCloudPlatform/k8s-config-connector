@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ServiceIdentity defines the resource reference to MetastoreService, which "External" field
-// holds the GCP identifier for the KRM object.
+// ServiceIdentity is the identity of a MetastoreService.
 type ServiceIdentity struct {
 	parent *ServiceParent
 	id     string

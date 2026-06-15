@@ -25,8 +25,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgrafeas/v1"
-	"github.com/golang/protobuf/ptypes/empty"
+	pb "google.golang.org/genproto/googleapis/grafeas/v1"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -51,6 +50,9 @@ func (s *ContainerAnalysisV1) GetNote(ctx context.Context, req *pb.GetNoteReques
 
 	obj := &pb.Note{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found")
+		}
 		return nil, err
 	}
 
@@ -66,7 +68,7 @@ func (s *ContainerAnalysisV1) CreateNote(ctx context.Context, req *pb.CreateNote
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Note).(*pb.Note)
+	obj := proto.CloneOf(req.Note)
 	obj.Name = fqn
 	obj.Kind = pb.NoteKind_ATTESTATION
 	now := timestamppb.Now()
@@ -91,11 +93,25 @@ func (s *ContainerAnalysisV1) UpdateNote(ctx context.Context, req *pb.UpdateNote
 	fqn := name.String()
 	obj := &pb.Note{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found")
+		}
 		return nil, err
 	}
 
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask().GetPaths()
+
+	if len(paths) == 0 {
+		if req.Note != nil {
+			paths = []string{
+				"short_description",
+				"long_description",
+				"related_url",
+				"attestation.hint.human_readable_name",
+			}
+		}
+	}
 
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
@@ -120,7 +136,7 @@ func (s *ContainerAnalysisV1) UpdateNote(ctx context.Context, req *pb.UpdateNote
 	return obj, nil
 }
 
-func (s *ContainerAnalysisV1) DeleteNote(ctx context.Context, req *pb.DeleteNoteRequest) (*empty.Empty, error) {
+func (s *ContainerAnalysisV1) DeleteNote(ctx context.Context, req *pb.DeleteNoteRequest) (*emptypb.Empty, error) {
 	name, err := s.parseNoteName(req.Name)
 	if err != nil {
 		return nil, err
@@ -130,6 +146,9 @@ func (s *ContainerAnalysisV1) DeleteNote(ctx context.Context, req *pb.DeleteNote
 
 	oldObj := &pb.Note{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found")
+		}
 		return nil, err
 	}
 

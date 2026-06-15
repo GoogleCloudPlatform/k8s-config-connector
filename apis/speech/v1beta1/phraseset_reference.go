@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &PhraseSetRef{}
 
-// PhraseSetRef defines the resource reference to SpeechPhraseSet, which "External" field
-// holds the GCP identifier for the KRM object.
+// PhraseSetRef is a reference to a SpeechPhraseSet.
 type PhraseSetRef struct {
 	// A reference to an externally managed SpeechPhraseSet resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/phraseSets/{{phrasesetID}}".

@@ -44,33 +44,23 @@ type DiskAsyncPrimaryDisk struct {
 }
 
 type DiskDiskEncryptionKey struct {
-	/* The encryption key used to encrypt the disk. Your project's Compute
-	Engine System service account
-	('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
-	must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
-	feature. See
-	https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys */
+	/* The encryption key used to encrypt the disk. Your project's Compute Engine System service account ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com') must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this feature. See https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys */
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	/* The service account used for the encryption request for the given KMS key.
-	If absent, the Compute Engine Service Agent service account is used. */
+	/* The service account used for the encryption request for the given KMS key. If absent, the Compute Engine Service Agent service account is used. */
 	// +optional
 	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 
-	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-	RFC 4648 base64 to either encrypt or decrypt this resource. */
+	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource. */
 	// +optional
 	RawKey *DiskRawKey `json:"rawKey,omitempty"`
 
-	/* Immutable. Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit
-	customer-supplied encryption key to either encrypt or decrypt
-	this resource. You can provide either the rawKey or the rsaEncryptedKey. */
+	/* Immutable. Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit customer-supplied encryption key to either encrypt or decrypt this resource. You can provide either the rawKey or the rsaEncryptedKey. */
 	// +optional
 	RsaEncryptedKey *DiskRsaEncryptedKey `json:"rsaEncryptedKey,omitempty"`
 
-	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
-	encryption key that protects this resource. */
+	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource. */
 	// +optional
 	Sha256 *string `json:"sha256,omitempty"`
 }
@@ -101,53 +91,37 @@ type DiskRsaEncryptedKey struct {
 }
 
 type DiskSourceImageEncryptionKey struct {
-	/* The encryption key used to encrypt the disk. Your project's Compute
-	Engine System service account
-	('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
-	must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
-	feature. See
-	https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys */
+	/* The encryption key used to encrypt the disk. Your project's Compute Engine System service account ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com') must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this feature. See https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys */
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	/* The service account used for the encryption request for the given KMS key.
-	If absent, the Compute Engine Service Agent service account is used. */
+	/* The service account used for the encryption request for the given KMS key. If absent, the Compute Engine Service Agent service account is used. */
 	// +optional
 	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 
-	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-	RFC 4648 base64 to either encrypt or decrypt this resource. */
+	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource. */
 	// +optional
 	RawKey *string `json:"rawKey,omitempty"`
 
-	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
-	encryption key that protects this resource. */
+	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource. */
 	// +optional
 	Sha256 *string `json:"sha256,omitempty"`
 }
 
 type DiskSourceSnapshotEncryptionKey struct {
-	/* The encryption key used to encrypt the disk. Your project's Compute
-	Engine System service account
-	('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
-	must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
-	feature. See
-	https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys */
+	/* The encryption key used to encrypt the disk. Your project's Compute Engine System service account ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com') must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this feature. See https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys */
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	/* The service account used for the encryption request for the given KMS key.
-	If absent, the Compute Engine Service Agent service account is used. */
+	/* The service account used for the encryption request for the given KMS key. If absent, the Compute Engine Service Agent service account is used. */
 	// +optional
 	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 
-	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-	RFC 4648 base64 to either encrypt or decrypt this resource. */
+	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource. */
 	// +optional
 	RawKey *string `json:"rawKey,omitempty"`
 
-	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
-	encryption key that protects this resource. */
+	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource. */
 	// +optional
 	Sha256 *string `json:"sha256,omitempty"`
 }
@@ -163,8 +137,7 @@ type ComputeDiskSpec struct {
 	// +optional
 	AsyncPrimaryDisk *DiskAsyncPrimaryDisk `json:"asyncPrimaryDisk,omitempty"`
 
-	/* Immutable. An optional description of this resource. Provide this property when
-	you create the resource. */
+	/* Immutable. An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
@@ -183,13 +156,11 @@ type ComputeDiskSpec struct {
 	// +optional
 	DiskEncryptionKey *DiskDiskEncryptionKey `json:"diskEncryptionKey,omitempty"`
 
-	/* Immutable. Whether this disk is using confidential compute mode.
-	Note: Only supported on hyperdisk skus, disk_encryption_key is required when setting to true. */
+	/* Immutable. Whether this disk is using confidential compute mode. Note: Only supported on hyperdisk skus, disk_encryption_key is required when setting to true. */
 	// +optional
 	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
 
-	/* Immutable. A list of features to enable on the guest operating system.
-	Applicable only for bootable disks. */
+	/* Immutable. A list of features to enable on the guest operating system. Applicable only for bootable disks. */
 	// +optional
 	GuestOsFeatures []DiskGuestOsFeatures `json:"guestOsFeatures,omitempty"`
 
@@ -212,11 +183,7 @@ type ComputeDiskSpec struct {
 	// +optional
 	MultiWriter *bool `json:"multiWriter,omitempty"`
 
-	/* Immutable. Physical block size of the persistent disk, in bytes. If not present
-	in a request, a default value is used. Currently supported sizes
-	are 4096 and 16384, other sizes may be added in the future.
-	If an unsupported value is requested, the error message will list
-	the supported values for the caller's project. */
+	/* Immutable. Physical block size of the persistent disk, in bytes. If not present in a request, a default value is used. Currently supported sizes are 4096 and 16384, other sizes may be added in the future. If an unsupported value is requested, the error message will list the supported values for the caller's project. */
 	// +optional
 	PhysicalBlockSizeBytes *int64 `json:"physicalBlockSizeBytes,omitempty"`
 
@@ -224,15 +191,11 @@ type ComputeDiskSpec struct {
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Indicates how many IOPS must be provisioned for the disk.
-	Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
-	allows for an update of IOPS every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it. */
+	/* Indicates how many IOPS must be provisioned for the disk. Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk allows for an update of IOPS every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it. */
 	// +optional
 	ProvisionedIops *int64 `json:"provisionedIops,omitempty"`
 
-	/* Indicates how much Throughput must be provisioned for the disk.
-	Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
-	allows for an update of Throughput every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it. */
+	/* Indicates how much Throughput must be provisioned for the disk. Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk allows for an update of Throughput every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it. */
 	// +optional
 	ProvisionedThroughput *int64 `json:"provisionedThroughput,omitempty"`
 
@@ -269,19 +232,15 @@ type ComputeDiskSpec struct {
 	// +optional
 	SourceDiskRef *v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
 
-	/* Immutable. The customer-supplied encryption key of the source image. Required if
-	the source image is protected by a customer-supplied encryption key. */
+	/* Immutable. The customer-supplied encryption key of the source image. Required if the source image is protected by a customer-supplied encryption key. */
 	// +optional
 	SourceImageEncryptionKey *DiskSourceImageEncryptionKey `json:"sourceImageEncryptionKey,omitempty"`
 
-	/* Immutable. The customer-supplied encryption key of the source snapshot. Required
-	if the source snapshot is protected by a customer-supplied encryption
-	key. */
+	/* Immutable. The customer-supplied encryption key of the source snapshot. Required if the source snapshot is protected by a customer-supplied encryption key. */
 	// +optional
 	SourceSnapshotEncryptionKey *DiskSourceSnapshotEncryptionKey `json:"sourceSnapshotEncryptionKey,omitempty"`
 
-	/* Immutable. URL of the disk type resource describing which disk type to use to
-	create the disk. Provide this when creating the disk. */
+	/* Immutable. URL of the disk type resource describing which disk type to use to create the disk. Provide this when creating the disk. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }
@@ -294,8 +253,7 @@ type ComputeDiskStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* The fingerprint used for optimistic locking of this resource.  Used
-	internally during updates. */
+	/* The fingerprint used for optimistic locking of this resource.  Used internally during updates. */
 	// +optional
 	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
 
@@ -314,31 +272,19 @@ type ComputeDiskStatus struct {
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 
-	/* The ID value of the disk used to create this image. This value may
-	be used to determine whether the image was taken from the current
-	or a previous instance of a given disk name. */
+	/* The ID value of the disk used to create this image. This value may be used to determine whether the image was taken from the current or a previous instance of a given disk name. */
 	// +optional
 	SourceDiskId *string `json:"sourceDiskId,omitempty"`
 
-	/* The ID value of the image used to create this disk. This value
-	identifies the exact image that was used to create this persistent
-	disk. For example, if you created the persistent disk from an image
-	that was later deleted and recreated under the same name, the source
-	image ID would identify the exact version of the image that was used. */
+	/* The ID value of the image used to create this disk. This value identifies the exact image that was used to create this persistent disk. For example, if you created the persistent disk from an image that was later deleted and recreated under the same name, the source image ID would identify the exact version of the image that was used. */
 	// +optional
 	SourceImageId *string `json:"sourceImageId,omitempty"`
 
-	/* The unique ID of the snapshot used to create this disk. This value
-	identifies the exact snapshot that was used to create this persistent
-	disk. For example, if you created the persistent disk from a snapshot
-	that was later deleted and recreated under the same name, the source
-	snapshot ID would identify the exact version of the snapshot that was
-	used. */
+	/* The unique ID of the snapshot used to create this disk. This value identifies the exact snapshot that was used to create this persistent disk. For example, if you created the persistent disk from a snapshot that was later deleted and recreated under the same name, the source snapshot ID would identify the exact version of the snapshot that was used. */
 	// +optional
 	SourceSnapshotId *string `json:"sourceSnapshotId,omitempty"`
 
-	/* Links to the users of the disk (attached instances) in form:
-	project/zones/zone/instances/instance. */
+	/* Links to the users of the disk (attached instances) in form: project/zones/zone/instances/instance. */
 	// +optional
 	Users []string `json:"users,omitempty"`
 }

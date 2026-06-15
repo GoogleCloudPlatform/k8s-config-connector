@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/batch/apiv1/batchpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/batch/v1"
 )
 
 func (s *BatchV1) GetJob(ctx context.Context, req *pb.GetJobRequest) (*pb.Job, error) {
@@ -61,7 +61,7 @@ func (s *BatchV1) CreateJob(ctx context.Context, req *pb.CreateJobRequest) (*pb.
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Job).(*pb.Job)
+	obj := proto.CloneOf(req.Job)
 	obj.Name = fqn
 	obj.Uid = "b9a676df-c595-4c81-9963-f44b8e44e50c"
 	obj.CreateTime = timestamppb.Now()

@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// PhraseSetIdentity defines the resource reference to SpeechPhraseSet, which "External" field
-// holds the GCP identifier for the KRM object.
+// PhraseSetIdentity is the identity of a SpeechPhraseSet.
 type PhraseSetIdentity struct {
 	parent *PhraseSetParent
 	id     string

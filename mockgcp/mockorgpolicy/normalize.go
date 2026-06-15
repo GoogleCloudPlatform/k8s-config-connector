@@ -15,8 +15,17 @@
 package mockorgpolicy
 
 import (
+	"regexp"
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 )
+
+// projectNumericPolicyPrefix matches Org Policy policy resource names that use a
+// numeric project id segment. Real and mock responses may differ (project id vs
+// project number); normalize to ${projectId} for golden HTTP comparisons.
+var projectNumericPolicyPrefix = regexp.MustCompile(`projects/[0-9]+/policies/`)
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
@@ -29,4 +38,23 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "orgpolicy.googleapis.com") {
+		return
+	}
+	if entry, ok := event.(*test.LogEntry); ok {
+		entry.Request.RemoveHeader("X-Goog-User-Project")
+	}
+	registerPolicyNameProjectCanonicalization(event.URL(), replacements)
+	event.VisitRequestStringValues(func(_ string, value string) {
+		registerPolicyNameProjectCanonicalization(value, replacements)
+	})
+	event.VisitResponseStringValues(func(_ string, value string) {
+		registerPolicyNameProjectCanonicalization(value, replacements)
+	})
+}
+
+func registerPolicyNameProjectCanonicalization(s string, replacements mockgcpregistry.NormalizingVisitor) {
+	for _, m := range projectNumericPolicyPrefix.FindAllString(s, -1) {
+		replacements.ReplaceStringValue(m, "projects/${projectId}/policies/")
+	}
 }

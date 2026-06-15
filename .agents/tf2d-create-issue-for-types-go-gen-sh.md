@@ -48,7 +48,7 @@ In a single run create at most one issue to avoid overwhelming the team.
 5. If an issue already exists for that Group and Kind, inject the issue labels if they dont exist.
 6. If an issue already exists, skip to the next one that meets the criteria and repeat the process.
 The issue should be marked as a subtask of the main epic for the migration effort: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/5954
-If more than 10 pending issues already exist for this task, do not create new issues to avoid overwhelming the team. Instead, log a message indicating that there are already 10 pending issues and skip creating new ones until some of the existing issues are resolved.
+If more than 20 pending issues already exist for this task, do not create new issues to avoid overwhelming the team. Instead, log a message indicating that there are already 20 pending issues and skip creating new ones until some of the existing issues are resolved.
 Created issues should be clear and actionable, providing enough context for developers to understand what needs to be done.
 
 IMPORTANT:
@@ -67,8 +67,9 @@ where `<Group>` and `<Kind>` are replaced with the actual Group and Kind of the 
 The issue should be labeled with the following labels:
 * `overseer` to indicate that the issue was created by Overseer.
 * `area/direct` to indicate that the issue is related to Direct migration.
+* `direct-migration` to trigger direct migration specific presubmit checks.
 * `priority/medium` to indicate the priority level of the issue.
-* `step/gen-types` to indicate the the step in generating a resource
+* `step/gen-types` to indicate the step in generating a resource.
 
 Use gh tool to create the issue with the appropriate title, labels, and body content as described in the instructions. Make sure to link the issue as a subtask to the main epic for tracking purposes.
 
@@ -136,11 +137,15 @@ Currently, `DataCatalogPolicyTag` is managed by the Terraform controller (marked
    - Running `dev/tasks/generate-types-and-mappers` will generate the mapper code once the `apis/datacatalog/v1beta1/policytag_types.go` file is generating an equivalent CRD.
    - Run `make all-binary` to ensure the generated mapper code compiles. Please fix any issue discovered by this compilation.
 
-9. **Update Migration Tracker**:
+- [ ] 9. **Update Migration Tracker**:
    - When creating a PR for this issue, please update the metadata for `DataCatalogPolicyTag` in `dev/migration-tracker/data.json`.
    - Change its `"state"` to `"In Progress"` and update the `"steps"` as they are completed.
 
-10. **Create PR**:
+- [ ] 10. **Run local validations**:
+   - Run `scripts/validate-prereqs.sh`, if the script fails the output will contain agent hints for fixing the errors.
+   - Run `./dev/ci/presubmits/tests-e2e-fixtures-datacatalog`
+
+- [ ] 11. **Create PR**:
    - Create a Pull Request with your changes.
    - Apply the same labels to the PR as are on this issue.
    - Include a link to the chore file (`.agents/tf2d-create-issue-for-types-go-gen-sh.md`) in the PR description.

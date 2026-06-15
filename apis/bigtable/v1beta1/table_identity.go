@@ -21,8 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
 
-// TableIdentity defines the resource reference to BigtableTable, which "External" field
-// holds the GCP identifier for the KRM object.
+// TableIdentity is the identity of a BigtableTable.
 type TableIdentity struct {
 	Parent *InstanceIdentity
 	Id     string

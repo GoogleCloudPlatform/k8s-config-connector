@@ -28,17 +28,16 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &DiscoveredServiceRef{}
 
-// DiscoveredServiceRef defines the resource reference to AppHubDiscoveredService, which "External" field
-// holds the GCP identifier for the KRM object.
+// DiscoveredServiceRef is a reference to an AppHubDiscoveredService.
 type DiscoveredServiceRef struct {
 	// A reference to an externally managed AppHubDiscoveredService resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/discoveredservices/{{discoveredserviceID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AppHubDiscoveredService resource.
+	// The name of an AppHubDiscoveredService resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AppHubDiscoveredService resource.
+	// The namespace of an AppHubDiscoveredService resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

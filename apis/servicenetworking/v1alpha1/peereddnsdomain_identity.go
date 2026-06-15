@@ -41,7 +41,7 @@ type PeeredDNSDomainIdentity struct {
 }
 
 func (i *PeeredDNSDomainIdentity) String() string {
-	return fmt.Sprintf("services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/%s", i.Network.Parent().ProjectID, i.Network.ID(), i.Name)
+	return fmt.Sprintf("services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/%s", i.Network.Project, i.Network.Network, i.Name)
 }
 
 func (i *PeeredDNSDomainIdentity) FromExternal(ref string) error {
@@ -54,8 +54,8 @@ func (i *PeeredDNSDomainIdentity) FromExternal(ref string) error {
 		tokens[5] == "networks" &&
 		tokens[7] == "peeredDnsDomains" {
 
-		network := &computev1beta1.NetworkIdentity{}
-		if _, err := computev1beta1.ParseComputeNetworkExternal("projects/" + tokens[3] + "/global/networks/" + tokens[6]); err != nil {
+		network, err := computev1beta1.ParseComputeNetworkExternal("projects/" + tokens[3] + "/global/networks/" + tokens[6])
+		if err != nil {
 			return fmt.Errorf("format of PeeredDNSDomain ref=%q was not known (use %q)", ref, "services/servicenetworking.googleapis.com/projects/<project>/global/networks/<networkID>/peeredDnsDomains/<name>")
 		}
 

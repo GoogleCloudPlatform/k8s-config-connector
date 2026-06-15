@@ -51,8 +51,7 @@ type ServiceDirectoryServiceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ServiceDirectoryService's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The resource name for the service in the
-	format 'projects/* /locations/* /namespaces/* /services/*'. */
+	/* The resource name for the service in the format 'projects/* /locations/* /namespaces/* /services/*'. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 

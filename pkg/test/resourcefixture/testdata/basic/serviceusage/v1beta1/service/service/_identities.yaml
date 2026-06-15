@@ -1,0 +1,12 @@
+- caisURL: //cloudresourcemanager.googleapis.com/projects/project-${uniqueId}
+  group: resourcemanager.cnrm.cloud.google.com
+  kind: Project
+  name: project-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //serviceusage.googleapis.com/projects/project-${uniqueId}/services/runtimeconfig.googleapis.com
+  group: serviceusage.cnrm.cloud.google.com
+  kind: Service
+  name: runtimeconfig.googleapis.com
+  namespace: ${uniqueId}
+  version: v1beta1

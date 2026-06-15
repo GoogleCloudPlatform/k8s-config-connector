@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// DataStoreIdentity defines the resource reference to DiscoveryEngineDataStore, which "External" field
-// holds the GCP identifier for the KRM object.
+// DataStoreIdentity is the identity of a DiscoveryEngineDataStore.
 type DataStoreIdentity struct {
 	parent *DataStoreParent
 	id     string

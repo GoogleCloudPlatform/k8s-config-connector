@@ -39,8 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type CryptokeyVersionTemplate struct {
-	/* The algorithm to use when creating a version based on this template.
-	See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v1/CryptoKeyVersionAlgorithm) for possible inputs. */
+	/* The algorithm to use when creating a version based on this template. See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v1/CryptoKeyVersionAlgorithm) for possible inputs. */
 	Algorithm string `json:"algorithm"`
 
 	/* Immutable. The protection level to use when creating a version based on this template. Possible values include "SOFTWARE", "HSM", "EXTERNAL", "EXTERNAL_VPC". Defaults to "SOFTWARE". */
@@ -49,8 +48,7 @@ type CryptokeyVersionTemplate struct {
 }
 
 type KMSCryptoKeySpec struct {
-	/* Immutable. The period of time that versions of this key spend in the DESTROY_SCHEDULED state before transitioning to DESTROYED.
-	If not specified at creation time, the default duration is 24 hours. */
+	/* Immutable. The period of time that versions of this key spend in the DESTROY_SCHEDULED state before transitioning to DESTROYED. If not specified at creation time, the default duration is 24 hours. */
 	// +optional
 	DestroyScheduledDuration *string `json:"destroyScheduledDuration,omitempty"`
 
@@ -61,10 +59,7 @@ type KMSCryptoKeySpec struct {
 	/* The KMSKeyRing that this key belongs to. */
 	KeyRingRef v1alpha1.ResourceRef `json:"keyRingRef"`
 
-	/* Immutable. The immutable purpose of this CryptoKey. See the
-	[purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-	for possible inputs.
-	Default value is "ENCRYPT_DECRYPT". */
+	/* Immutable. The immutable purpose of this CryptoKey. See the [purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose) for possible inputs. Default value is "ENCRYPT_DECRYPT". */
 	// +optional
 	Purpose *string `json:"purpose,omitempty"`
 
@@ -72,15 +67,11 @@ type KMSCryptoKeySpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Every time this period passes, generate a new CryptoKeyVersion and set it as the primary.
-	The first rotation will take place after the specified period. The rotation period has
-	the format of a decimal number with up to 9 fractional digits, followed by the
-	letter 's' (seconds). It must be greater than a day (ie, 86400). */
+	/* Every time this period passes, generate a new CryptoKeyVersion and set it as the primary. The first rotation will take place after the specified period. The rotation period has the format of a decimal number with up to 9 fractional digits, followed by the letter 's' (seconds). It must be greater than a day (ie, 86400). */
 	// +optional
 	RotationPeriod *string `json:"rotationPeriod,omitempty"`
 
-	/* Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions.
-	You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion. */
+	/* Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions. You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion. */
 	// +optional
 	SkipInitialVersionCreation *bool `json:"skipInitialVersionCreation,omitempty"`
 

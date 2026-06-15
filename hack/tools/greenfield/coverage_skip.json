@@ -1,0 +1,20 @@
+{
+  "skips": [
+    {
+      "pattern": "^actions\\.googleapis\\.com/.*",
+      "reason": "Assistant Actions were sunset on June 13, 2023."
+    },
+    {
+      "pattern": "^.*/.*Operation$",
+      "reason": "Operations are transient RPC results, not manageable KCC resources."
+    },
+    {
+      "pattern": "^.*/.*Location$",
+      "reason": "Locations are read-only metadata containers."
+    },
+    {
+      "pattern": ".*cloudasset.*/Feed$",
+      "reason": "Already implemented as hierarchical variants (ProjectFeed, FolderFeed, etc.)."
+    }
+  ]
+}

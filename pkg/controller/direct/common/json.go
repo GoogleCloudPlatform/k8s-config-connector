@@ -45,3 +45,20 @@ func APIToProto(in any, out proto.Message) error {
 	}
 	return nil
 }
+
+// DeepCopy makes a deep copy of an object using json.Marshal and json.Unmarshal.
+// It panics if the object implements proto.Message.
+func DeepCopy[T any](in T) T {
+	var out T
+	if _, ok := any(in).(proto.Message); ok {
+		panic("common.DeepCopy should not be used for proto.Message; use proto.CloneOf instead")
+	}
+	j, err := json.Marshal(in)
+	if err != nil {
+		panic(fmt.Sprintf("json.Marshal failed during DeepCopy of %T: %v", in, err))
+	}
+	if err := json.Unmarshal(j, &out); err != nil {
+		panic(fmt.Sprintf("json.Unmarshal failed during DeepCopy of %T: %v", in, err))
+	}
+	return out
+}

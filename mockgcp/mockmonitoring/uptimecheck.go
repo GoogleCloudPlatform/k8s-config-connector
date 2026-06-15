@@ -21,8 +21,8 @@ import (
 	"strings"
 	"time"
 
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -55,7 +55,7 @@ func (s *UptimeCheckService) GetUptimeCheckConfig(ctx context.Context, req *pb.G
 
 func redactUptimeCheckConfig(obj *pb.UptimeCheckConfig) *pb.UptimeCheckConfig {
 	// Fields containing sensitive information like authentication tokens or contact info are only partially populated on retrieval.
-	redacted := proto.Clone(obj).(*pb.UptimeCheckConfig)
+	redacted := proto.CloneOf(obj)
 	if authInfo := redacted.GetHttpCheck().GetAuthInfo(); authInfo != nil {
 		authInfo.Password = strings.Repeat("*", 6)
 	}
@@ -103,7 +103,7 @@ func (s *UptimeCheckService) CreateUptimeCheckConfig(ctx context.Context, req *p
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.UptimeCheckConfig).(*pb.UptimeCheckConfig)
+	obj := proto.CloneOf(req.UptimeCheckConfig)
 	obj.Name = fqn
 
 	populateDefaultsForUptimeCheckConfig(obj)
@@ -128,9 +128,14 @@ func (s *UptimeCheckService) UpdateUptimeCheckConfig(ctx context.Context, req *p
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.UptimeCheckConfig)
+	updated := proto.CloneOf(existing)
 
-	for _, path := range req.GetUpdateMask().GetPaths() {
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		paths = []string{"display_name", "period", "timeout", "content_matchers", "checker_type", "resource_group", "monitored_resource", "http_check", "tcp_check", "selected_regions"}
+	}
+
+	for _, path := range paths {
 		// TODO: Validate path?
 		if err := setField(updated, req.GetUptimeCheckConfig(), path); err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "error setting field %q: %v", path, err)

@@ -1,0 +1,38 @@
+apiVersion: dataflow.cnrm.cloud.google.com/v1beta1
+kind: DataflowFlexTemplateJob
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/on-delete: cancel
+    cnrm.cloud.google.com/project-id: ${projectId}
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: dataflowflextemplatejob-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  containerSpecGcsPath: gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery
+  parameters:
+    createDisposition: CREATE_NEVER
+    inputSubscription: projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}
+    outputTableSpec: ${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}
+    outputTopic: projects/${projectId}/topics/pubsubtopic0-${uniqueId}
+    schemaPath: gs://config-connector-samples/dataflowflextemplate/numbers.avsc
+  region: us-central1
+  subnetworkRef:
+    external: projects/${projectId}/regions/us-central1/subnetworks/default
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  jobId: ${jobID}
+  observedGeneration: 1
+  state: JOB_STATE_RUNNING
+  type: JOB_TYPE_STREAMING

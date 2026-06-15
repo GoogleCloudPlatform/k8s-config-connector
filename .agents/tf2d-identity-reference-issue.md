@@ -1,6 +1,6 @@
 ---
 name: Issue for Identity and Reference
-description: For TF/DCL resources to be migrated to Direct, if generate.sh and types.go PR is closed, create an issue for creating identity and reference files.
+description: Identify resources that do not implement the identity and reference pattern and create minimal issues for them.
 schedule: "@daily"
 skipPR: true
 ---
@@ -22,166 +22,54 @@ limitations under the License.
 
 # Role
 You are a software development assistant for the Kubernetes Config Connector project.
-You have access to the following tools:
-- GitHub CLI (`gh`)
-- git
-Use `gh` to perform your duties.
+You have access to the GitHub CLI (`gh`) and bash tools.
 
 # Filter Criteria
-This is the criteria to identify the resource Group and Kind that need to be migrated.
-
 Find resources that meet the following criteria:
-Look for issues labelled with `area/direct` and `step/gen-types` that are closed as completed within the last 7 days. These issues indicate that the generate.sh and types.go files have been created for a specific Group and Kind.
-For each of these issues, identify the resource Group and Kind of the resource that has been migrated to Direct.
+1. **Prioritization**: Priority is given to resources with no dependencies or those that are dependencies for many other unmigrated resources (Topological Order).
+2. **Absence of Task**: No GitHub issue (open or closed) should already exist for creating the identity/reference for this specific Group and Kind.
 
 # Task
-Use gh cli tool to create github issue.
-In a single run create at most one issue to avoid overwhelming the team.
-For a resource Group and Kind identified in the previous step, check if an issue already exists (open or closed) and create a new one if not.
-If an issue already exists for that resource Group and Kind, use `gh issue edit <issue> --add-label` to add the labels if they do not exist.
-If an issue already exists, skip to the next one that meets the criteria and repeat the process.
-The issue will be linked to the main epic by the cross-reference in the issue body.
-If more than 10 open issues labeled with 'overseer' and 'step/identity-reference' already exist, do not create new issues to avoid overwhelming the team. Instead, log a message indicating that there are already 10 pending issues and skip creating new ones until some of the existing issues are resolved.
-Created issues should be clear and actionable, providing enough context for developers to understand what needs to be done.
-IMPORTANT:
-* Before creating an issue for a resource, check if an issue already exists (open or closed) to avoid duplicates.
-* The issue title should be in the format: `Create Identity and Reference files for <resource_group> <resource_kind>`
-* Use `gh` tool to create issue.
-* Append a link to this chore file (`.agents/tf2d-identity-reference-issue.md`) at the end of the issue body for traceability.
 
-## Issue Title
+Your goal is to identify resources that need to be migrated to the identity and reference pattern, and to create minimal issues to track this work.
 
-Title should be: `Create Identity and Reference files for <resource_group> <resource_kind>`,
-where `<resource_group>` and `<resource_kind>` are replaced with the actual resource Group and Kind of the resource identified for migration.
+## 1. Throttle Check
+   - Count open issues labeled with `overseer` and `step/identity-reference`. If the count is 20 or more, STOP and log: "Throttle limit reached (20). Skipping issue generation."
+   - Check how many issues related to identity and reference have been opened today. To avoid overwhelming the team, **do not open more than 20 issues per day**. If the limit is reached, stop creating new issues.
 
-## Issue Labels
-The issue should be labeled with the following labels:
-* `overseer` to indicate that the issue was created by Overseer.
-* `area/direct` to indicate that the issue is related to Direct migration.
-* `priority/medium` to indicate the priority level of the issue.
-* `step/identity-reference` to indicate the step in the migration process.
+## 2. Identify Candidate
+   - Run `./hack/directmigration/find-missing-identity-reference.py --output candidates.txt`.
+   - Run `./hack/directmigration/topological-sort.py candidates.txt` to get the implementation order.
+   - Iterate through the sorted list, focusing only on the resources that were identified in `candidates.txt`.
 
-Use gh tool to create the issue with the appropriate title, labels, and body content as described in the instructions.
+## 3. Verify and De-duplicate
+- For each prioritized candidate:
+    - Search existing open and closed issues using `gh search issues` to ensure an issue for this resource hasn't already been created. Search for the exact resource name in the title. The issue title could be one of "Create Identity and Reference files for <group> <Kind>" and "Move <Kind> to identity and refs pattern".
+        - If an **Open** issue exists: Skip to the next candidate.
+        - If a **Closed** issue exists: Check its close reason. If closed as `not planned`, skip to the next candidate. If closed as `completed` (and the file is missing), proceed to recreate the issue.
+    - Pick the first candidate that passes both checks.
 
-## Issue Body
-The issue body should contain this text template with the appropriate resource Group, Kind, and API Version filled in.
-The body template is treated as markdown. So retain the quotes formatting and the code block formatting as is when filling in the Group and Kind.
-Replace the <issue_number> placeholder with the actual issue number of the identified source issue that created the generate.sh and types.go files for this resource.
-Dynamically determine the API version (e.g., v1beta1, v1alpha1) based on the directory structure created in the previous generation step.
-Convert `<kind>` to lowercase for file paths (e.g. `lowercase_kind`).
-Prefer the newer version and if not able to identify yse v1beta1.
+## 4. Create Minimal Issues
+For each identified resource, create a new issue using `gh`.
+
+### Issue Title
+`Move <ResourceKind> to identity and refs pattern`
+
+*(Replace `<ResourceKind>` with the actual Kind of the resource, e.g., `VertexAIDeploymentResourcePool`)*
+
+### Issue Labels
+Add the following labels to the created issue:
+- `overseer`
+- `area/direct`
+- `direct-migration`
+- `priority/medium`
+- `step/identity-reference`
+
+### Issue Body
+Use the following exact template for the issue body, replacing `<ResourceKind>` with the actual Kind of the resource, and apply the same labels to the PR as are on this issue:
 
 ------------ BEGIN ISSUE BODY TEMPLATE ------------
-As part of moving resources from terraform and DCL controllers to direct controllers (Epic #5954), we need to create the Go identity and reference for `${resource_group}${resource_name}`.
+Please follow the skill .gemini/skills/kcc-identity-reference/SKILL.md for <ResourceKind>
 
-Currently, `${resource_group}${resource_name}` is managed by the Terraform or DCL controller. The goal is to create the Go identity and reference in `apis/${resource_group}/v1beta1/` so that we can eventually migrate the controller implementation to the "direct" approach.
-
-### Instructions
-
-1.  **Add `apis/${resource_group}/v1beta1/${resource_name}_identity.go`**:
-    Create a file `apis/${resource_group}/v1beta1/${resource_name}_identity.go`.
-    The following are samples of similar identity files.
-    - `artifactregistry/v1beta1/artifactregistryrepository_identity.go`
-    - `apis/iam/v1beta1/serviceaccountkey_identity.go`
-    The correct identity URL formats can be found in the page https://docs.cloud.google.com/asset-inventory/docs/asset-names. Please use that url format in place of "URLKey/{keyValue}". Please break out a separate field for each curly brace delineated '{field}' in the format.
-    Please ensure the Identity class implements identity.IdentityV2.
-    implement the GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) method on the ${resource_group}${resource_name} resource
-The file likely includes something like the following
-Example:
-```go
-const (
-	// ${resource_group}${resource_name}IdentityURL is the format for the externalRef of a ${resource_group}${resource_name}.
-	${resource_group}${resource_name}IdentityURL = "URLKey/{keyValue}"
-)
-
-var (
-	_ identity.IdentityV2 = &${resource_group}${resource_name}Identity{}
-	_ identity.Resource   = &${resource_group}${resource_name}{}
-)
-
-var ${resource_group}${resource_name}IdentityFormat = gcpurls.Template[${resource_group}${resource_name}Identity](
-	"${resource_group}.googleapis.com",
-	${resource_group}${resource_name}IdentityURL,
-)
-
-// ${resource_group}${resource_name}Identity represents the identity of a ${resource_group}${resource_name}.
-// +k8s:deepcopy-gen=false
-type ${resource_group}${resource_name}Identity struct {
-	KeyValue string
-}
-```
-
-2. **Add `apis/${resource_group}/v1beta1/${resource_name}_identity_test.go`**:
-    Create a file `apis/${resource_group}/v1beta1/${resource_name}_identity_test.go`.
-    It should unit test `apis/${resource_group}/v1beta1/${resource_name}_identity.go`.
-    The following are samples of similar identity test files.
-    - `apis/artifactregistry/v1beta1/artifactregistryrepository_identity_test.go`
-    - `apis/iam/v1beta1/serviceaccountkey_identity_test.go`
-
-3. **Add `apis/${resource_group}/v1beta1/${resource_name}_reference.go`**:
-    Create a file `apis/${resource_group}/v1beta1/${resource_name}_reference.go`.
-    The following are samples of similar reference files.
-    - `apis/artifactregistry/v1beta1/artifactregistryrepository_reference.go`
-    - `apis/iam/v1beta1/serviceaccountkey_reference.go`
-Reference URL formats can be looked up from https://docs.cloud.google.com/asset-inventory/docs/asset-names
-Please implement the full suite of methods like Normalize, ValidateExternal, and ParseExternalToIdentity.
-The file likely includes something like the following
-Example:
-```go
-var ${resource_group}${resource_name}GVK = schema.GroupVersionKind{
-	Group:   "${resource_group}.cnrm.cloud.google.com",
-	Version: "v1beta1",
-	Kind:    "${resource_group}${resource_name}",
-}
-
-var _ refsv1beta1.Ref = &${resource_group}${resource_name}Ref{}
-
-// ${resource_group}${resource_name}Ref is a reference to a ${resource_group}${resource_name} resource.
-type ${resource_group}${resource_name}Ref struct {
-	// A reference to an externally managed ${resource_group}${resource_name} resource.
-	// Should be in the format "URLKey/{keyValue}".
-	External string `json:"external,omitempty"`
-
-	// The name of a ${resource_group}${resource_name} resource.
-	Name string `json:"name,omitempty"`
-
-	// The namespace of a ${resource_group}${resource_name} resource.
-	Namespace string `json:"namespace,omitempty"`
-}
-
-func init() {
-	refs.Register(&${resource_group}${resource_name}Ref{})
-}
-
-func (r *${resource_group}${resource_name}Ref) GetGVK() schema.GroupVersionKind {
-	return ${resource_group}${resource_name}GVK
-}
-```
-
-4. **Add `apis/${resource_group}/v1beta1/${resource_name}_reference_test.go`**:
-    Create a file `apis/${resource_group}/v1beta1/${resource_name}_reference_test.go`.
-    It should unit test `apis/${resource_group}/v1beta1/${resource_name}_reference.go`.
-    The following are samples of similar reference test files.
-    - `apis/artifactregistry/v1beta1/artifactregistryrepository_reference_test.go`
-    - `apis/bigquery/v1beta1/bigquerytable_reference_test.go`
-
-5.  **Copyright Headers**:
-    Ensure that new files have the correct copyright header with the current year (dynamically insert the current year):
-    ```go
-    // Copyright <current_year> Google LLC
-    ```
-    Please do *not* change the copyright on existing files.
-
-6. **Validate changes**:
-   - Running `make all-binary` and `make test` will ensure the new code compiles and the tests pass. Please fix any issue discovered by this compilation.
-
-7. **Create PR**:
-   - Create a Pull Request with your changes.
-   - Apply the same labels to the PR as are on this issue.
-   - Include a link to the chore file (`.agents/tf2d-identity-reference-issue.md`) in the PR description.
-   - Include `Fixes #<issue-number>` in the PR description.
-
-This issue is part of Epic #5954.
-
-This issue is a continuation of the #<issue_number> which created the generate.sh and types.go files for this resource. Please refer to that issue for more context on the resource and the migration effort.
+If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-identity-reference/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
 ------------ END ISSUE BODY TEMPLATE ------------

@@ -19,8 +19,7 @@ import (
 	"strings"
 )
 
-// ClusterIdentity defines the resource reference to DataprocCluster, which "External" field
-// holds the GCP identifier for the KRM object.
+// ClusterIdentity is the identity of a DataprocCluster.
 type ClusterIdentity struct {
 	parent *ClusterParent
 	id     string

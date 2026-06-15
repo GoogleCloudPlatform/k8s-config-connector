@@ -107,7 +107,7 @@ func (s *managedFolders) InsertManagedFolder(ctx context.Context, req *pb.Insert
 	}
 
 	generation := int64(1)
-	obj := proto.Clone(req.GetManagedFolder()).(*pb.ManagedFolder)
+	obj := proto.CloneOf(req.GetManagedFolder())
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.Metageneration = &generation

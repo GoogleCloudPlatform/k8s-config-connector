@@ -102,7 +102,15 @@ func (a *APIScaffolder) buildAPIArgs(resource *options.Resource) *apis.APIArgs {
 	if resource != nil {
 		args.Kind = resource.Kind
 
-		args.KindProtoTag = a.PackageProtoTag + "." + resource.ProtoName
+		if strings.Contains(resource.ProtoName, ".") {
+			args.KindProtoTag = resource.ProtoName
+		} else {
+			pkg := a.PackageProtoTag
+			if strings.Contains(pkg, ",") {
+				pkg = strings.Split(pkg, ",")[0]
+			}
+			args.KindProtoTag = pkg + "." + resource.ProtoName
+		}
 		args.ProtoResource = resource.ProtoName
 
 		args.ProtoMessageName = resource.ProtoMessageName()

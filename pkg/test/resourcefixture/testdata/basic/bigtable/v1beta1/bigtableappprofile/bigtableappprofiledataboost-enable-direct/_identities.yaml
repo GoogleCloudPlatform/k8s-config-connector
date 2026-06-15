@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: bigtable.cnrm.cloud.google.com
+  kind: BigtableInstance
+  name: profiledep${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //bigtable.googleapis.com/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}
+  group: bigtable.cnrm.cloud.google.com
+  kind: BigtableAppProfile
+  name: bigtableappprofile-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

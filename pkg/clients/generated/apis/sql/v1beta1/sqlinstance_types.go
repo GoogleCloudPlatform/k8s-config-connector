@@ -188,6 +188,7 @@ type InstanceIpConfiguration struct {
 	// +optional
 	Ipv4Enabled *bool `json:"ipv4Enabled,omitempty"`
 
+	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
 	// +optional
 	PrivateNetworkRef *v1alpha1.ResourceRef `json:"privateNetworkRef,omitempty"`
 

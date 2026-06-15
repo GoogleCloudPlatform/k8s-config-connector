@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ServiceBindingIdentity defines the resource reference to NetworkServicesServiceBinding, which "External" field
-// holds the GCP identifier for the KRM object.
+// ServiceBindingIdentity is the identity of a NetworkServicesServiceBinding.
 type ServiceBindingIdentity struct {
 	parent *ServiceBindingParent
 	id     string

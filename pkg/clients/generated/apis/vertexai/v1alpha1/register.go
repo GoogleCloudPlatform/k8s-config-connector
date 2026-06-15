@@ -59,6 +59,18 @@ var (
 		Kind:    reflect.TypeOf(VertexAIDataLabelingJob{}).Name(),
 	}
 
+	VertexAIDeploymentResourcePoolGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAIDeploymentResourcePool{}).Name(),
+	}
+
+	VertexAIExampleStoreGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAIExampleStore{}).Name(),
+	}
+
 	VertexAIFeaturestoreGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

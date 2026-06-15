@@ -47,8 +47,7 @@ type BigQueryReservationCapacityCommitmentSpec struct {
 	// +optional
 	EnforceSingleAdminProjectPerOrg *string `json:"enforceSingleAdminProjectPerOrg,omitempty"`
 
-	/* Immutable. The geographic location where the transfer config should reside.
-	Examples: US, EU, asia-northeast1. The default value is US. */
+	/* The location of this resource. */
 	Location string `json:"location"`
 
 	/* Capacity commitment plan. Valid values are at https://cloud.google.com/bigquery/docs/reference/reservations/rpc/google.cloud.bigquery.reservation.v1#commitmentplan. */
@@ -61,7 +60,7 @@ type BigQueryReservationCapacityCommitmentSpec struct {
 	// +optional
 	RenewalPlan *string `json:"renewalPlan,omitempty"`
 
-	/* Immutable. Optional. The capacityCommitmentId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The BigQueryReservationCapacityCommitment name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 

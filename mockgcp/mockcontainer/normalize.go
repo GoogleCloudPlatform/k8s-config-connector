@@ -15,15 +15,11 @@
 package mockcontainer
 
 import (
-	"fmt"
 	"net"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
-
-const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
@@ -43,17 +39,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		replacements.ReplacePath(".maintenancePolicy.resourceVersion", "abcd1234")
 
 		replacements.SortSlice(".monitoringConfig.componentConfig.enableSystemComponents")
-
-		replacements.TransformLRO(func(m map[string]any) {
-			targetLink, ok := m["targetLink"].(string)
-			if ok && targetLink != "" {
-				val, err := projects.ReplaceProjectWithProjectNumberTemplate(targetLink)
-				if err != nil {
-					panic(fmt.Sprintf("failed to replace project with project number template in targetLink: %v", err))
-				}
-				m["targetLink"] = val
-			}
-		})
 	}
 }
 

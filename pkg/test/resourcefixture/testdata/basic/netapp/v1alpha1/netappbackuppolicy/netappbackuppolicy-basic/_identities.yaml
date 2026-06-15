@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: netapp.cnrm.cloud.google.com
+  kind: NetAppBackupPolicy
+  name: netappbackuppolicy-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

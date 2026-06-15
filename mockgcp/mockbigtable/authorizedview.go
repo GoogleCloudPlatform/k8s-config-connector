@@ -64,7 +64,7 @@ func (s *tableAdminServer) CreateAuthorizedView(ctx context.Context, req *pb.Cre
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.AuthorizedView).(*pb.AuthorizedView)
+	obj := proto.CloneOf(req.AuthorizedView)
 	obj.Name = fqn
 	obj.Etag = "abcdef0123A="
 
@@ -95,7 +95,7 @@ func (s *tableAdminServer) UpdateAuthorizedView(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.AuthorizedView)
+	updated := proto.CloneOf(existing)
 
 	// Required. The set of fields to update.
 	paths := req.GetUpdateMask().GetPaths()

@@ -108,10 +108,11 @@ func (m *modelWorkstationConfig) AdapterForObject(ctx context.Context, op *direc
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewWorkstationConfigIdentity(ctx, reader, obj)
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := identity.(*krm.WorkstationConfigIdentity)
 
 	// Get workstations GCP client
 	gcpClient, err := m.client(ctx)
@@ -179,9 +180,14 @@ func (a *WorkstationConfigAdapter) Create(ctx context.Context, createOp *directb
 	// Set name manually, because it is not filled-in by WorkstationConfigSpec_ToProto.
 	resource.Name = a.id.String()
 
+	parentID := &krm.WorkstationClusterIdentity{
+		Project:            a.id.Project,
+		Location:           a.id.Location,
+		WorkstationCluster: a.id.WorkstationCluster,
+	}
 	req := &pb.CreateWorkstationConfigRequest{
-		Parent:              a.id.Parent().String(),
-		WorkstationConfigId: a.id.ID(),
+		Parent:              parentID.String(),
+		WorkstationConfigId: a.id.WorkstationConfig,
 		WorkstationConfig:   resource,
 	}
 	op, err := a.gcpClient.CreateWorkstationConfig(ctx, req)
@@ -280,13 +286,18 @@ func (a *WorkstationConfigAdapter) Export(ctx context.Context) (*unstructured.Un
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.Parent = &krm.WorkstationClusterRef{External: a.id.Parent().String()}
+	parentID := &krm.WorkstationClusterIdentity{
+		Project:            a.id.Project,
+		Location:           a.id.Location,
+		WorkstationCluster: a.id.WorkstationCluster,
+	}
+	obj.Spec.Parent = &krm.WorkstationClusterRef{External: parentID.String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.WorkstationConfig)
 	u.SetGroupVersionKind(krm.WorkstationConfigGVK)
 
 	u.Object = uObj

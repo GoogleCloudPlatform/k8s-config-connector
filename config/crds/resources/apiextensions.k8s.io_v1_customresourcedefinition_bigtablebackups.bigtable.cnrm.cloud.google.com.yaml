@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: bigtablebackups.bigtable.cnrm.cloud.google.com
 spec:
@@ -65,8 +66,7 @@ spec:
                 description: Indicates the backup type of the backup.
                 type: string
               clusterRef:
-                description: ClusterRef defines the resource reference to BigtableCluster,
-                  which "External" field holds the GCP identifier for the KRM object.
+                description: ClusterRef is a reference to a BigtableCluster.
                 oneOf:
                 - not:
                     required:

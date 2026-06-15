@@ -102,7 +102,7 @@ func (s *TagBindingsServer) CreateTagBinding(ctx context.Context, req *pb.Create
 		return nil, status.Errorf(codes.InvalidArgument, "invalid request: must specify TagValue or TagValueNamespacedName")
 	}
 
-	obj := proto.Clone(req.TagBinding).(*pb.TagBinding)
+	obj := proto.CloneOf(req.TagBinding)
 	obj.TagValue = tagValue.Name
 	obj.TagValueNamespacedName = tagValue.NamespacedName
 

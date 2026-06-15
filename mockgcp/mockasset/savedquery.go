@@ -31,7 +31,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/asset/v1"
+	pb "cloud.google.com/go/asset/apiv1/assetpb"
 )
 
 func (s *AssetService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryRequest) (*pb.SavedQuery, error) {
@@ -87,7 +87,7 @@ func (s *AssetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSaved
 		}
 	}
 
-	obj := proto.Clone(req.GetSavedQuery()).(*pb.SavedQuery)
+	obj := proto.CloneOf(req.GetSavedQuery())
 	obj.Name = reqName
 	obj.CreateTime = timestamppb.New(now)
 	obj.LastUpdateTime = timestamppb.New(now)

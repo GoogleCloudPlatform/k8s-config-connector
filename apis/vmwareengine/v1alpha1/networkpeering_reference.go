@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &NetworkPeeringRef{}
 
-// NetworkPeeringRef defines the resource reference to VMwareEngineNetworkPeering, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkPeeringRef is a reference to a VMwareEngineNetworkPeering.
 type NetworkPeeringRef struct {
 	// A reference to an externally managed VMwareEngineNetworkPeering resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/networkPeerings/{{networkpeeringID}}".

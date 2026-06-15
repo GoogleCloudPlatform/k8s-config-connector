@@ -1,0 +1,102 @@
+1c1
+< GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
+---
+> GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+23c23
+< POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?alt=json
+---
+> POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?%24alt=json%3Benum-encoding%3Dint
+33a34
+>     "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
+36c37,38
+<   "instanceId": "spannerinstance-${uniqueId}"
+---
+>   "instanceId": "spannerinstance-${uniqueId}",
+>   "parent": "projects/${projectId}"
+53c55
+<       "defaultBackupScheduleType": "AUTOMATIC",
+---
+>       "defaultBackupScheduleType": 2,
+55,56c57,58
+<       "edition": "STANDARD",
+<       "instanceType": "PROVISIONED",
+---
+>       "edition": 1,
+>       "instanceType": 1,
+72c74
+<       "state": "READY"
+---
+>       "state": 2
+81c83
+< GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/operations/${operationID}?alt=json
+---
+> GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/operations/${operationID}
+157c159
+< GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
+---
+> GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+172c174
+<   "defaultBackupScheduleType": "AUTOMATIC",
+---
+>   "defaultBackupScheduleType": 2,
+174,175c176,177
+<   "edition": "STANDARD",
+<   "instanceType": "PROVISIONED",
+---
+>   "edition": 1,
+>   "instanceType": 1,
+191c193
+<   "state": "READY",
+---
+>   "state": 2,
+197c199
+< PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
+---
+> PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+202a205
+>     "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
+208,209c211
+<     "name": "projects/${projectId}/instances/%!s(\u003cnil\u003e)",
+<     "nodeCount": 2,
+---
+>     "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
+229c231
+<       "defaultBackupScheduleType": "AUTOMATIC",
+---
+>       "defaultBackupScheduleType": 2,
+231,232c233,234
+<       "edition": "STANDARD",
+<       "instanceType": "PROVISIONED",
+---
+>       "edition": 1,
+>       "instanceType": 1,
+248c250
+<       "state": "READY",
+---
+>       "state": 2,
+258c260
+< GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/operations/${operationID}?alt=json
+---
+> GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/operations/${operationID}
+334c336
+< GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
+---
+> GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+349c351
+<   "defaultBackupScheduleType": "AUTOMATIC",
+---
+>   "defaultBackupScheduleType": 2,
+351,352c353,354
+<   "edition": "STANDARD",
+<   "instanceType": "PROVISIONED",
+---
+>   "edition": 1,
+>   "instanceType": 1,
+368c370
+<   "state": "READY",
+---
+>   "state": 2,
+374c376
+< DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
+---
+> DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

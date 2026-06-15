@@ -27,8 +27,7 @@ import (
 
 var _ identity.Identity = &ParameterIdentity{}
 
-// ParameterIdentity defines the resource reference to ParameterManagerParameter, which "External" field
-// holds the GCP identifier for the KRM object.
+// ParameterIdentity is the identity of a ParameterManagerParameter.
 type ParameterIdentity struct {
 	parent *parent.ProjectAndLocationParent
 	id     string

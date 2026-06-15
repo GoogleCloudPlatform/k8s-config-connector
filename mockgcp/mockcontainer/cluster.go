@@ -63,7 +63,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Cluster).(*pb.Cluster)
+	obj := proto.CloneOf(req.Cluster)
 
 	obj.Status = pb.Cluster_RUNNING
 
@@ -120,7 +120,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 
 	obj.ServicesIpv4Cidr = "34.118.224.0/20"
 
-	if err := s.populateClusterDefaults(name.Project, obj); err != nil {
+	if err := s.populateClusterDefaults(name.Project, obj, true); err != nil {
 		return nil, err
 	}
 
@@ -135,7 +135,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	}
 
 	for i, nodePool := range obj.NodePools {
-		nodePoolObj := proto.Clone(nodePool).(*pb.NodePool)
+		nodePoolObj := proto.CloneOf(nodePool)
 		if err := s.populateNodePoolDefaults(name.Project, obj, nodePoolObj); err != nil {
 			return nil, err
 		}
@@ -226,7 +226,7 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 
 	klog.Infof("UpdateCluster %v", prototext.Format(req))
 
-	update := proto.Clone(req.GetUpdate()).(*pb.ClusterUpdate)
+	update := proto.CloneOf(req.GetUpdate())
 
 	// We clear each field of the update as we go, so we know if we've missed one!
 
@@ -362,7 +362,8 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
 	}
 
-	if err := s.populateClusterDefaults(name.Project, obj); err != nil {
+	if err := s.populateClusterDefaults(name.Project, obj, false); err != nil {
+
 		return nil, err
 	}
 
@@ -400,7 +401,7 @@ func (s *ClusterManagerV1) SetLabels(ctx context.Context, req *pb.SetLabelsReque
 		return nil, status.Errorf(codes.FailedPrecondition, "label fingerprint does not match")
 	}
 
-	update := proto.Clone(existing).(*pb.Cluster)
+	update := proto.CloneOf(existing)
 	update.ResourceLabels = req.ResourceLabels
 
 	if err := s.storage.Update(ctx, fqn, update); err != nil {
@@ -473,12 +474,41 @@ func (s *ClusterManagerV1) DeleteCluster(ctx context.Context, req *pb.DeleteClus
 	})
 }
 
-func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData, obj *pb.Cluster) error {
-	if obj.NodeConfig == nil {
-		obj.NodeConfig = &pb.NodeConfig{}
+func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData, obj *pb.Cluster, isCreate bool) error {
+	hasDefaultPool := false
+	for _, np := range obj.NodePools {
+		if np.Name == "default-pool" {
+			hasDefaultPool = true
+			break
+		}
 	}
-	if err := s.populateNodeConfig(obj.NodeConfig); err != nil {
-		return err
+	if isCreate && len(obj.NodePools) == 0 {
+		hasDefaultPool = true
+	}
+
+	if obj.ConfidentialNodes != nil {
+		if obj.ConfidentialNodes.Enabled &&
+			obj.ConfidentialNodes.ConfidentialInstanceType == pb.ConfidentialNodes_CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED {
+			obj.ConfidentialNodes.ConfidentialInstanceType = pb.ConfidentialNodes_SEV
+		}
+	}
+
+	if hasDefaultPool {
+		if obj.NodeConfig == nil {
+			obj.NodeConfig = &pb.NodeConfig{}
+		}
+		if obj.ConfidentialNodes != nil && obj.ConfidentialNodes.Enabled {
+			if obj.NodeConfig.ConfidentialNodes == nil {
+				obj.NodeConfig.ConfidentialNodes = &pb.ConfidentialNodes{}
+			}
+			obj.NodeConfig.ConfidentialNodes.Enabled = true
+			obj.NodeConfig.ConfidentialNodes.ConfidentialInstanceType = obj.ConfidentialNodes.ConfidentialInstanceType
+		}
+		if err := s.populateNodeConfig(obj.NodeConfig); err != nil {
+			return err
+		}
+	} else {
+		obj.NodeConfig = nil
 	}
 
 	// Populate new fields based on deprecated fields

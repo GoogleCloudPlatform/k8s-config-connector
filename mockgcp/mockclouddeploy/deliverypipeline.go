@@ -31,9 +31,9 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/deploy/apiv1/deploypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/deploy/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/google/uuid"
 )
@@ -94,7 +94,7 @@ func (s *cloudDeploy) CreateDeliveryPipeline(ctx context.Context, req *pb.Create
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.DeliveryPipeline).(*pb.DeliveryPipeline)
+	obj := proto.CloneOf(req.DeliveryPipeline)
 	obj.Name = fqn
 
 	obj.Uid = uuid.NewString()
@@ -136,7 +136,7 @@ func (s *cloudDeploy) UpdateDeliveryPipeline(ctx context.Context, req *pb.Update
 	obj := &pb.DeliveryPipeline{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound && req.AllowMissing {
-			obj = proto.Clone(req.DeliveryPipeline).(*pb.DeliveryPipeline)
+			obj = proto.CloneOf(req.DeliveryPipeline)
 			obj.Name = fqn
 			obj.Uid = uuid.NewString()
 			obj.CreateTime = timestamppb.New(time.Now())

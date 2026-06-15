@@ -33,18 +33,18 @@ func KMSImportJobFuzzer() fuzztesting.KRMFuzzer {
 		KMSImportJobObservedState_FromProto, KMSImportJobObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".import_method")
-	f.SpecFields.Insert(".protection_level")
+	f.SpecField(".import_method")
+	f.SpecField(".protection_level")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".generate_time")
-	f.StatusFields.Insert(".expire_time")
-	f.StatusFields.Insert(".expire_event_time")
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".public_key")
-	f.StatusFields.Insert(".attestation")
+	f.StatusField(".create_time")
+	f.StatusField(".generate_time")
+	f.StatusField(".expire_time")
+	f.StatusField(".expire_event_time")
+	f.StatusField(".state")
+	f.StatusField(".public_key")
+	f.StatusField(".attestation")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.Unimplemented_Identity(".name") // special field
 	f.Unimplemented_NotYetTriaged(".crypto_key_backend")
 
 	return f

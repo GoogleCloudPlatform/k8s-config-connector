@@ -33,23 +33,23 @@ func computeNetworkAttachmentFuzzer() fuzztesting.KRMFuzzer {
 		ComputeNetworkAttachmentObservedState_v1alpha1_FromProto, ComputeNetworkAttachmentObservedState_v1alpha1_ToProto,
 	)
 
-	f.SpecFields.Insert(".connection_preference")
-	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".fingerprint")
-	f.SpecFields.Insert(".producer_accept_lists")
-	f.SpecFields.Insert(".producer_reject_lists")
-	f.SpecFields.Insert(".subnetworks")
+	f.SpecField(".connection_preference")
+	f.SpecField(".description")
+	f.SpecField(".fingerprint")
+	f.SpecField(".producer_accept_lists")
+	f.SpecField(".producer_reject_lists")
+	f.SpecField(".subnetworks")
 
-	f.StatusFields.Insert(".connection_endpoints")
-	f.StatusFields.Insert(".creation_timestamp")
-	f.StatusFields.Insert(".id")
-	f.StatusFields.Insert(".kind")
-	f.StatusFields.Insert(".region")
-	f.StatusFields.Insert(".self_link")
-	f.StatusFields.Insert(".self_link_with_id")
-	f.StatusFields.Insert(".network")
+	f.StatusField(".connection_endpoints")
+	f.StatusField(".creation_timestamp")
+	f.StatusField(".id")
+	f.StatusField(".kind")
+	f.StatusField(".region")
+	f.StatusField(".self_link")
+	f.StatusField(".self_link_with_id")
+	f.StatusField(".network")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.Unimplemented_Identity(".name")
 
 	return f
 }

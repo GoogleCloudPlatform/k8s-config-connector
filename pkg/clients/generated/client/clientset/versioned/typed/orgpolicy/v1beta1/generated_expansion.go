@@ -22,3 +22,5 @@
 package v1beta1
 
 type OrgPolicyCustomConstraintExpansion interface{}
+
+type OrgPolicyPolicyExpansion interface{}

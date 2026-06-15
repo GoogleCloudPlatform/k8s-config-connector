@@ -22,26 +22,24 @@ import (
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
-const NormalizedTimestamp = "2024-04-01T12:34:56.123456Z"
-
 func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.NormalizingVisitor) {
 	if !strings.Contains(url, "privateca.googleapis.com") {
 		return
 	}
 
-	visitor.ReplacePath(".createTime", NormalizedTimestamp)
-	visitor.ReplacePath(".updateTime", NormalizedTimestamp)
-	visitor.ReplacePath(".deleteTime", NormalizedTimestamp)
-	visitor.ReplacePath(".expireTime", NormalizedTimestamp)
-	visitor.ReplacePath(".endTime", NormalizedTimestamp)
+	visitor.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".deleteTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".expireTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
 
-	visitor.ReplacePath(".response.createTime", NormalizedTimestamp)
-	visitor.ReplacePath(".response.updateTime", NormalizedTimestamp)
-	visitor.ReplacePath(".response.deleteTime", NormalizedTimestamp)
-	visitor.ReplacePath(".response.expireTime", NormalizedTimestamp)
+	visitor.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".response.deleteTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".response.expireTime", mockgcpregistry.PlaceholderTimestamp)
 
-	visitor.ReplacePath(".metadata.createTime", NormalizedTimestamp)
-	visitor.ReplacePath(".metadata.endTime", NormalizedTimestamp)
+	visitor.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".metadata.requestedCancellation", false)
 	visitor.ReplacePath(".done", true)
 
@@ -50,8 +48,8 @@ func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.Norma
 	// SHA-256 hashes (fingerprint, digest) should be 64 hex characters
 	const sha256 = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 
-	visitor.ReplacePath(".caCertificateDescriptions[].subjectDescription.notBeforeTime", NormalizedTimestamp)
-	visitor.ReplacePath(".caCertificateDescriptions[].subjectDescription.notAfterTime", NormalizedTimestamp)
+	visitor.ReplacePath(".caCertificateDescriptions[].subjectDescription.notBeforeTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".caCertificateDescriptions[].subjectDescription.notAfterTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".caCertificateDescriptions[].subjectDescription.hexSerialNumber", "0123456789abcdef")
 	visitor.ReplacePath(".caCertificateDescriptions[].authorityKeyId.keyId", keyId)
 	visitor.ReplacePath(".caCertificateDescriptions[].subjectKeyId.keyId", keyId)
@@ -62,11 +60,11 @@ func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.Norma
 	visitor.ReplacePath(".accessUrls.caCertificateAccessUrl", "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/ca.crt")
 	visitor.ReplacePath(".accessUrls.crlAccessUrls[]", "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/crl")
 
-	visitor.ReplacePath(".status.caCertificateDescriptions[].subjectDescription.notBeforeTime", NormalizedTimestamp)
-	visitor.ReplacePath(".status.caCertificateDescriptions[].subjectDescription.notAfterTime", NormalizedTimestamp)
+	visitor.ReplacePath(".status.caCertificateDescriptions[].subjectDescription.notBeforeTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".status.caCertificateDescriptions[].subjectDescription.notAfterTime", mockgcpregistry.PlaceholderTimestamp)
 
-	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectDescription.notBeforeTime", NormalizedTimestamp)
-	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectDescription.notAfterTime", NormalizedTimestamp)
+	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectDescription.notBeforeTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectDescription.notAfterTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectDescription.hexSerialNumber", "0123456789abcdef")
 	visitor.ReplacePath(".response.caCertificateDescriptions[].authorityKeyId.keyId", keyId)
 	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectKeyId.keyId", keyId)

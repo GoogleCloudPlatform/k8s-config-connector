@@ -44,7 +44,7 @@ type workflowExecutionService struct {
 func (s *workflowExecutionService) CreateExecution(ctx context.Context, req *executionspb.CreateExecutionRequest) (*executionspb.Execution, error) {
 	fqn := req.GetParent() + "/executions/123456789"
 	now := time.Now()
-	obj := proto.Clone(req.GetExecution()).(*executionspb.Execution)
+	obj := proto.CloneOf(req.GetExecution())
 	obj.Name = fqn
 	obj.StartTime = timestamppb.New(now)
 	obj.EndTime = timestamppb.New(now.Add(2 * time.Minute))

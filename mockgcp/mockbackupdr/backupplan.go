@@ -30,9 +30,9 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/backupdr/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
@@ -63,7 +63,7 @@ func (s *BackupDRV1) CreateBackupPlan(ctx context.Context, req *pb.CreateBackupP
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.GetBackupPlan()).(*pb.BackupPlan)
+	obj := proto.CloneOf(req.GetBackupPlan())
 	obj.Name = fqn
 	now := time.Now()
 	obj.CreateTime = timestamppb.New(now)

@@ -51,6 +51,7 @@ import (
 
 // Looks for fields that looks like refs, but are not
 func TestMissingRefs(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)
@@ -145,6 +146,7 @@ func TestMissingRefs(t *testing.T) {
 // Looks for fields that looks like refs, but are in the status.
 // These fields should not be refs, they should be "external style" links.
 func TestNoRefsInStatus(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)
@@ -181,6 +183,7 @@ func TestNoRefsInStatus(t *testing.T) {
 }
 
 func TestCRDsDoNotHaveFooUrlRef(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)
@@ -217,6 +220,7 @@ func isRefFieldPath(fieldPath string) bool {
 
 // CRDs should not have parentFooRef fields; use fooRef even for parent references.
 func TestCRDsHaveParentRefs(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)
@@ -282,6 +286,7 @@ func TestCRDsHaveParentRefs(t *testing.T) {
 // For example, at the beginning of a field name, the acronym should be all lowercase, such as "httpGet".
 // Where used as a constant, all letters should be uppercase, such as "TCP" or "UDP".
 func TestCRDsAcronyms(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)
@@ -369,6 +374,7 @@ func TestCRDsAcronyms(t *testing.T) {
 
 // Avoid passing sensitive data as plain text in the CRD
 func TestNoSensitiveField(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)
@@ -484,6 +490,7 @@ func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback
 }
 
 func TestCRDCamelCase(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)
@@ -514,6 +521,7 @@ func TestCRDCamelCase(t *testing.T) {
 }
 
 func TestCRDShortNames(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading CRDs: %v", err)
@@ -824,6 +832,7 @@ func ToUnstruct(t *testing.T, bytes []byte) *unstructured.Unstructured {
 
 // TestCRDShortNamePluralization checks for obviously incorrect pluralization in shortNames
 func TestCRDShortNamePluralization(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading CRDs: %v", err)
@@ -869,6 +878,7 @@ func TestCRDShortNamePluralization(t *testing.T) {
 
 // TestMultiVersionCRDNoDiff checks for schema differences between versions of the same CRD.
 func TestMultiVersionCRDNoDiff(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading CRDs: %v", err)
@@ -948,6 +958,7 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 // TestSpecShouldNotContainEtag checks for fields in spec that contain 'etag'.
 // Etag is a server-generated value and should not be in the spec.
 func TestSpecShouldNotContainEtag(t *testing.T) {
+	t.Parallel()
 	t.Log("Running TestSpecShouldNotContainEtag")
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
@@ -1032,10 +1043,12 @@ func isVowel(r rune) bool {
 }
 
 func TestCRDObjectTypes(t *testing.T) {
+	t.Parallel()
 	// knownInvalidCRDs is a list of CRDs that currently fail the validation.
 	// We want to eventually fix these, but for now we allowlist them so the test passes.
 	// This allows us to detect new regressions.
 	knownInvalidCRDs := map[string]bool{
+		"billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com":                    true, // spec.amount.lastPeriodAmount is an empty object
 		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":   true, // status.observedState is an empty object
 		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                             true, // status.observedState.supportedExportFormats[] is an empty object
 		"apigeeenvironments.apigee.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
@@ -1048,12 +1061,13 @@ func TestCRDObjectTypes(t *testing.T) {
 		"bigtablelogicalviews.bigtable.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
 		"bigtablematerializedviews.bigtable.cnrm.cloud.google.com":                      true, // status.observedState is an empty object
 		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                          true, // spec.staticIPConnectivity and status.observedState are empty objects
+		"configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com":              true, // spec.rolloutStrategy.allAtOnce is an empty object
 		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                          true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
 		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                       true, // status.observedState is an empty object
 		"dataformrepositories.dataform.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
 		"dataprocjobs.dataproc.cnrm.cloud.google.com":                                   true, // spec.pysparkJob.loggingConfig is an empty object
-		"dataprocnodegroups.dataproc.cnrm.cloud.google.com":                             true, // status.observedState.nodeGroupConfig.managedGroupConfig is an empty object
 		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                 true, // spec.staticServiceIPConnectivity is an empty object
+		"discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com":                 true, // status.observedState is an empty object
 		"discoveryengineengines.discoveryengine.cnrm.cloud.google.com":                  true, // status.observedState is an empty object
 		"firestorebackupschedules.firestore.cnrm.cloud.google.com":                      true, // spec.dailyRecurrence is an empty object
 		"firestorefields.firestore.cnrm.cloud.google.com":                               true, // spec.indexConfig.indexes[].fields[].vectorConfig.flat is an empty object
@@ -1063,6 +1077,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"servicenetworkingpeereddnsdomains.servicenetworking.cnrm.cloud.google.com":     true, // status.observedState is an empty object
 		"spannerbackupschedules.spanner.cnrm.cloud.google.com":                          true, // spec.fullBackupSpec is an empty object
 		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                                true, // spec.metadata.config.algorithmConfig.bruteForceConfig is an empty object
+		"dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com":                                 true, // spec.actions[].publishToChronicle, publishToScc, and others are empty objects
 
 	}
 
@@ -1073,6 +1088,7 @@ func TestCRDObjectTypes(t *testing.T) {
 
 	for _, crd := range crds {
 		t.Run(crd.Name, func(t *testing.T) {
+			t.Parallel()
 			isKnownInvalid := knownInvalidCRDs[crd.Name]
 			invalidVersions := 0
 			for _, version := range crd.Spec.Versions {
@@ -1153,6 +1169,7 @@ func validateCRDProps(props *apiextensions.JSONSchemaProps, path string) error {
 }
 
 func TestIAMSupport(t *testing.T) {
+	t.Parallel()
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
 		t.Fatalf("error loading service mappings: %v", err)

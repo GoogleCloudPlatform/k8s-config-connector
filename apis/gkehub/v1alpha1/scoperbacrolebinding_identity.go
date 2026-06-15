@@ -35,8 +35,7 @@ var (
 	)
 )
 
-// GKEHubScopeRBACRoleBindingIdentity defines the resource reference to GKEHubScopeRBACRoleBinding, which "External" field
-// holds the GCP identifier for the KRM object.
+// GKEHubScopeRBACRoleBindingIdentity is the identity of a GKEHubScopeRBACRoleBinding.
 // +k8s:deepcopy-gen=false
 type GKEHubScopeRBACRoleBindingIdentity struct {
 	ProjectID         string
