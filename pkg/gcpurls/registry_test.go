@@ -112,6 +112,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//biglake.googleapis.com/projects/{}/locations/{}/catalogs/{}":                             true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":                        true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}":                  true,
+		"//hypercomputecluster.googleapis.com/projects/{}/locations/{}/clusters/{}":                 true,
 		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}":                                true,
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}":                                      true,
 		"//monitoring.googleapis.com/projects/{}/groups/{}":                                         true,

@@ -137,6 +137,7 @@ import (
 	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1alpha1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/healthcare/v1alpha1"
+	hypercomputeclusterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/hypercomputecluster/v1alpha1"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1alpha1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iap/v1beta1"
@@ -334,6 +335,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	gkehubv1alpha1.AddToScheme,
 	gkehubv1beta1.AddToScheme,
 	healthcarev1alpha1.AddToScheme,
+	hypercomputeclusterv1alpha1.AddToScheme,
 	iamv1alpha1.AddToScheme,
 	iamv1beta1.AddToScheme,
 	iapv1beta1.AddToScheme,

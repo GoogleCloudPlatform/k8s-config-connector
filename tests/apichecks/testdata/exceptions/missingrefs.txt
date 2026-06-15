@@ -73,6 +73,8 @@
 [refs] crd=healthcaredicomstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" should be a reference
 [refs] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" should be a reference
 [refs] crd=healthcarehl7v2stores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" should be a reference
+[refs] crd=hypercomputeclusterclusters.hypercomputecluster.cnrm.cloud.google.com version=v1alpha1: field ".spec.orchestrator.slurm.loginNodes.bootDisk.type" should be a reference
+[refs] crd=hypercomputeclusterclusters.hypercomputecluster.cnrm.cloud.google.com version=v1alpha1: field ".spec.orchestrator.slurm.nodeSets[].computeInstance.bootDisk.type" should be a reference
 [refs] crd=iamworkloadidentitypoolproviders.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.attributeMapping" should be a reference
 [refs] crd=kmscryptokeyversions.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKey" should be a reference
 [refs] crd=kmskeyringimportjobs.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyRing" should be a reference
