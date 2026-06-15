@@ -522,24 +522,6 @@ func WeekDayOfMonth_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.WeekDayOf
 	out.DayOfWeek = direct.Enum_ToProto[dayofweekpb.DayOfWeek](mapCtx, in.DayOfWeek)
 	return out
 }
-func WorkforceIdentityBasedManagementURI_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkforceIdentityBasedManagementURI) *krmbackupdrv1alpha1.WorkforceIdentityBasedManagementURI {
-	if in == nil {
-		return nil
-	}
-	out := &krmbackupdrv1alpha1.WorkforceIdentityBasedManagementURI{}
-	// MISSING: FirstPartyManagementURI
-	// MISSING: ThirdPartyManagementURI
-	return out
-}
-func WorkforceIdentityBasedManagementURI_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.WorkforceIdentityBasedManagementURI) *pb.WorkforceIdentityBasedManagementURI {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkforceIdentityBasedManagementURI{}
-	// MISSING: FirstPartyManagementURI
-	// MISSING: ThirdPartyManagementURI
-	return out
-}
 func WorkforceIdentityBasedManagementURIObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkforceIdentityBasedManagementURI) *krmbackupdrv1alpha1.WorkforceIdentityBasedManagementURIObservedState {
 	if in == nil {
 		return nil

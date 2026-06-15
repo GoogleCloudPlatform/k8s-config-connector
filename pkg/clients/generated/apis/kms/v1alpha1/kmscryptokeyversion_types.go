@@ -39,8 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type KMSCryptoKeyVersionSpec struct {
-	/* Immutable. The name of the cryptoKey associated with the CryptoKeyVersions.
-	Format: ''projects/{{project}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptoKey}}''. */
+	/* Immutable. The name of the cryptoKey associated with the CryptoKeyVersions. Format: ''projects/{{project}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptoKey}}''. */
 	CryptoKey string `json:"cryptoKey"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
@@ -102,8 +101,7 @@ type KMSCryptoKeyVersionStatus struct {
 	// +optional
 	Algorithm *string `json:"algorithm,omitempty"`
 
-	/* Statement that was generated and signed by the HSM at key creation time. Use this statement to verify attributes of the key as stored on the HSM, independently of Google.
-	Only provided for key versions with protectionLevel HSM. */
+	/* Statement that was generated and signed by the HSM at key creation time. Use this statement to verify attributes of the key as stored on the HSM, independently of Google. Only provided for key versions with protectionLevel HSM. */
 	// +optional
 	Attestation []CryptokeyversionAttestationStatus `json:"attestation,omitempty"`
 

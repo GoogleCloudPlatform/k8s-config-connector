@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(DevConnectAccountConnector{}).Name(),
 	}
 
+	DevConnectConnectionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DevConnectConnection{}).Name(),
+	}
+
 	DevConnectInsightsConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

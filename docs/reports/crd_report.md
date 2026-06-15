@@ -27,6 +27,7 @@
 | apigee.cnrm.cloud.google.com                  | ApigeeInstance                                  | True         | True        | False  | Direct     | True        |
 | apigee.cnrm.cloud.google.com                  | ApigeeNATAddress                                | True         | False       | False  | Terraform  | False       |
 | apigee.cnrm.cloud.google.com                  | ApigeeOrganization                              | False        | True        | False  | DCL        | True        |
+| apigeeregistry.cnrm.cloud.google.com          | ApigeeRegistryArtifact                          | True         | False       | False  | Direct     | True        |
 | apigeeregistry.cnrm.cloud.google.com          | ApigeeRegistryInstance                          | True         | False       | False  | Direct     | True        |
 | apigee.cnrm.cloud.google.com                  | ApigeeSyncAuthorization                         | True         | False       | False  | Terraform  | False       |
 | apihub.cnrm.cloud.google.com                  | APIHubAPI                                       | True         | False       | False  | Direct     | True        |
@@ -92,6 +93,7 @@
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationAttestor                     | False        | True        | False  | DCL        | False       |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPlatformPolicy               | True         | False       | False  | Direct     | True        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPolicy                       | False        | True        | False  | DCL        | False       |
+| contactcenterinsights.cnrm.cloud.google.com   | CCInsightsConversation                          | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com   | CCInsightsIssueModel                            | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com   | CCInsightsPhraseMatcher                         | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com   | CCInsightsView                                  | True         | False       | False  | Direct     | True        |
@@ -104,6 +106,7 @@
 | cloudasset.cnrm.cloud.google.com              | CloudAssetOrganizationFeed                      | True         | False       | False  | Terraform  | False       |
 | cloudasset.cnrm.cloud.google.com              | CloudAssetProjectFeed                           | True         | False       | False  | Terraform  | False       |
 | batch.cnrm.cloud.google.com                   | CloudBatchResourceAllowance                     | True         | False       | False  | Direct     | True        |
+| cloudbuild.cnrm.cloud.google.com              | CloudBuildConnection                            | True         | False       | False  | Direct     | True        |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildTrigger                               | False        | True        | False  | Terraform  | True        |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildWorkerPool                            | True         | True        | False  | Direct     | True        |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployAutomation                           | True         | False       | False  | Direct     | True        |
@@ -191,7 +194,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeServiceAttachment                        | False        | True        | False  | DCL        | False       |
 | compute.cnrm.cloud.google.com                 | ComputeSharedVPCHostProject                     | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeSharedVPCServiceProject                  | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeSnapshot                                 | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeSnapshot                                 | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeSSLCertificate                           | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeSSLPolicy                                | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeSubnetwork                               | False        | True        | False  | Terraform  | True        |
@@ -253,6 +256,7 @@
 | datastream.cnrm.cloud.google.com              | DatastreamStream                                | True         | False       | False  | Terraform  | False       |
 | deploymentmanager.cnrm.cloud.google.com       | DeploymentManagerDeployment                     | True         | False       | False  | Terraform  | False       |
 | developerconnect.cnrm.cloud.google.com        | DevConnectAccountConnector                      | True         | False       | False  | Direct     | True        |
+| developerconnect.cnrm.cloud.google.com        | DevConnectConnection                            | True         | False       | False  | Direct     | True        |
 | developerconnect.cnrm.cloud.google.com        | DevConnectInsightsConfig                        | True         | False       | False  | Direct     | True        |
 | devicestreaming.cnrm.cloud.google.com         | DeviceStreamingSession                          | True         | False       | False  | Direct     | True        |
 | dialogflow.cnrm.cloud.google.com              | DialogflowAgent                                 | True         | False       | False  | Terraform  | False       |
@@ -357,7 +361,7 @@
 | identityplatform.cnrm.cloud.google.com        | IdentityPlatformTenant                          | False        | True        | False  | DCL        | False       |
 | kms.cnrm.cloud.google.com                     | KMSAutokeyConfig                                | True         | True        | False  | Direct     | True        |
 | kms.cnrm.cloud.google.com                     | KMSCryptoKey                                    | False        | True        | False  | Terraform  | True        |
-| kms.cnrm.cloud.google.com                     | KMSCryptoKeyVersion                             | True         | False       | False  | Terraform  | False       |
+| kms.cnrm.cloud.google.com                     | KMSCryptoKeyVersion                             | True         | False       | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                     | KMSImportJob                                    | True         | True        | False  | Direct     | True        |
 | kms.cnrm.cloud.google.com                     | KMSKeyHandle                                    | True         | True        | False  | Direct     | True        |
 | kms.cnrm.cloud.google.com                     | KMSKeyRingImportJob                             | True         | False       | False  | Terraform  | False       |

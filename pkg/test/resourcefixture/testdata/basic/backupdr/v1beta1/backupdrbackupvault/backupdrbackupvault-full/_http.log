@@ -35,6 +35,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   "effectiveTime": "2025-08-17T10:00:00Z",
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "foo",
     "label-key": "label-value",
     "managed-by-cnrm": "true"
   }
@@ -100,6 +101,7 @@ X-Xss-Protection: 0
     "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
+      "custom-label": "foo",
       "label-key": "label-value",
       "managed-by-cnrm": "true"
     },
@@ -138,6 +140,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "foo",
     "label-key": "label-value",
     "managed-by-cnrm": "true"
   },
@@ -164,6 +167,7 @@ X-Goog-Request-Params: backup_vault.name=projects%2F${projectId}%2Flocations%2Fu
   "labels": {
     "another-label": "another-value",
     "cnrm-test": "true",
+    "custom-label": "bar",
     "label-key": "label-value",
     "managed-by-cnrm": "true"
   },
@@ -231,6 +235,7 @@ X-Xss-Protection: 0
     "labels": {
       "another-label": "another-value",
       "cnrm-test": "true",
+      "custom-label": "bar",
       "label-key": "label-value",
       "managed-by-cnrm": "true"
     },
@@ -270,6 +275,7 @@ X-Xss-Protection: 0
   "labels": {
     "another-label": "another-value",
     "cnrm-test": "true",
+    "custom-label": "bar",
     "label-key": "label-value",
     "managed-by-cnrm": "true"
   },

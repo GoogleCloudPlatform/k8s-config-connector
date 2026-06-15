@@ -41,6 +41,7 @@ go run . generate-types \
   --resource ComputeReservation:Reservation \
   --resource ComputeResourcePolicy:ResourcePolicy \
   --resource ComputeSecurityPolicy:SecurityPolicy \
+  --resource ComputeSnapshot:Snapshot \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
