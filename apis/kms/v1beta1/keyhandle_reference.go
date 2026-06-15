@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,14 +18,90 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// kmsKeyHandleRef defines the resource reference to KMSKeyHandle
+var _ refs.Ref = &KMSKeyHandleRef{}
+
+// KMSKeyHandleRef is a reference to a GCP KMSKeyHandle.
+type KMSKeyHandleRef struct {
+	// A reference to an externally managed KMSKeyHandle resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/keyHandles/{{keyHandleID}}".
+	External string `json:"external,omitempty"`
+
+	// The name of a KMSKeyHandle resource.
+	Name string `json:"name,omitempty"`
+
+	// The namespace of a KMSKeyHandle resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&KMSKeyHandleRef{})
+}
+
+func (r *KMSKeyHandleRef) GetGVK() schema.GroupVersionKind {
+	return KMSKeyHandleGVK
+}
+
+func (r *KMSKeyHandleRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *KMSKeyHandleRef) GetExternal() string {
+	return r.External
+}
+
+func (r *KMSKeyHandleRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *KMSKeyHandleRef) ValidateExternal(ref string) error {
+	id := &KMSKeyHandleIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *KMSKeyHandleRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &KMSKeyHandleIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *KMSKeyHandleRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*KMSKeyHandle](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromKMSKeyHandleSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
+// kmsKeyHandleRef defines the resource reference to KMSKeyHandle.
+// This unexported/legacy type is retained for backward compatibility where embedded inside KMSKeyRef_OneOf.
 type kmsKeyHandleRef struct {
 	// The name of a KMSKeyHandle resource.
 	Name string `json:"name,omitempty"`
