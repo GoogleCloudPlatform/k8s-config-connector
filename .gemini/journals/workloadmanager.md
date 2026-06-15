@@ -1,0 +1,5 @@
+### [2026-06-15] Isolated Proto Compilation for Greenfield Resource Types
+- **Context**: Implementing direct types, CRD, and IdentityV2 for `WorkloadManagerEvaluation` (Issue #10320).
+- **Problem**: Greenfield resources often belong to GCP services added in newer versions of `googleapis` than the repository-wide pinned SHA in `apis/git.versions`. Updating the global pinned SHA pulls in breaking protobuf changes for other resources (e.g., `firestore`, `sql`), causing compilation/generation panics across unchanged packages.
+- **Solution**: We isolated the proto compilation within the resource's `generate.sh` by calling `./generate-proto.sh df13ea51961ff225a825beab9ca112188de367a3` to build a specific `.pb` file for workloadmanager, and then passed `--proto-source-path` to `generate-types` pointing to that specific `.pb` file. We then reverted the global `apis/git.versions` to its safe, original value.
+- **Impact**: This allows successful generation and validation of new resource types while keeping all other APIs fully compileable and safe from breaking upstream changes.
