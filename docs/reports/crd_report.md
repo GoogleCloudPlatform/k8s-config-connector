@@ -331,6 +331,7 @@
 | filestore.cnrm.cloud.google.com               | FilestoreBackup                                 | False        | True        | False  | DCL        | False       |
 | filestore.cnrm.cloud.google.com               | FilestoreInstance                               | False        | True        | False  | DCL        | True        |
 | filestore.cnrm.cloud.google.com               | FilestoreSnapshot                               | True         | False       | False  | Terraform  | False       |
+| financialservices.cnrm.cloud.google.com       | FinancialServicesInstance                       | True         | False       | False  | Direct     | True        |
 | firebase.cnrm.cloud.google.com                | FirebaseAndroidApp                              | True         | False       | False  | Terraform  | False       |
 | firebasedatabase.cnrm.cloud.google.com        | FirebaseDatabaseInstance                        | True         | False       | False  | Terraform  | False       |
 | firebasehosting.cnrm.cloud.google.com         | FirebaseHostingChannel                          | True         | False       | False  | Terraform  | False       |
