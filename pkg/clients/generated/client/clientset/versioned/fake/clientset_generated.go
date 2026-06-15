@@ -385,6 +385,8 @@ import (
 	fakeworkflowexecutionsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflowexecutions/v1alpha1/fake"
 	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1"
 	fakeworkflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1/fake"
+	workloadmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workloadmanager/v1alpha1"
+	fakeworkloadmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workloadmanager/v1alpha1/fake"
 	workstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1beta1"
 	fakeworkstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1beta1/fake"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -1363,6 +1365,11 @@ func (c *Clientset) WorkflowexecutionsV1alpha1() workflowexecutionsv1alpha1.Work
 // WorkflowsV1alpha1 retrieves the WorkflowsV1alpha1Client
 func (c *Clientset) WorkflowsV1alpha1() workflowsv1alpha1.WorkflowsV1alpha1Interface {
 	return &fakeworkflowsv1alpha1.FakeWorkflowsV1alpha1{Fake: &c.Fake}
+}
+
+// WorkloadmanagerV1alpha1 retrieves the WorkloadmanagerV1alpha1Client
+func (c *Clientset) WorkloadmanagerV1alpha1() workloadmanagerv1alpha1.WorkloadmanagerV1alpha1Interface {
+	return &fakeworkloadmanagerv1alpha1.FakeWorkloadmanagerV1alpha1{Fake: &c.Fake}
 }
 
 // WorkstationsV1beta1 retrieves the WorkstationsV1beta1Client

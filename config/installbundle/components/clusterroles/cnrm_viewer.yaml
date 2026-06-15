@@ -1087,6 +1087,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - workloadmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - workstations.cnrm.cloud.google.com
   resources:
   - '*'
