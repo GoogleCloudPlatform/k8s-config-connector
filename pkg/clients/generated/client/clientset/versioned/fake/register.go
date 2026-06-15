@@ -129,6 +129,7 @@ import (
 	firebasestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebasestorage/v1alpha1"
 	firestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firestore/v1alpha1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firestore/v1beta1"
+	geminidataanalyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/geminidataanalytics/v1alpha1"
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkebackup/v1alpha1"
 	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1alpha1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
@@ -322,6 +323,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	firebasestoragev1alpha1.AddToScheme,
 	firestorev1alpha1.AddToScheme,
 	firestorev1beta1.AddToScheme,
+	geminidataanalyticsv1alpha1.AddToScheme,
 	gkebackupv1alpha1.AddToScheme,
 	gkehubv1alpha1.AddToScheme,
 	gkehubv1beta1.AddToScheme,
