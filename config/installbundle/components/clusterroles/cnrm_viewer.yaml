@@ -1015,6 +1015,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - sqladmin.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - storage.cnrm.cloud.google.com
   resources:
   - '*'
