@@ -771,6 +771,8 @@ cloud.google.com/go/gsuiteaddons v1.6.2/go.mod h1:K65m9XSgs8hTF3X9nNTPi8IQueljSd
 cloud.google.com/go/gsuiteaddons v1.6.3/go.mod h1:sCFJkZoMrLZT3JTb8uJqgKPNshH2tfXeCwTFRebTq48=
 cloud.google.com/go/gsuiteaddons v1.6.4/go.mod h1:rxtstw7Fx22uLOXBpsvb9DUbC+fiXs7rF4U29KHM/pE=
 cloud.google.com/go/gsuiteaddons v1.6.5/go.mod h1:Lo4P2IvO8uZ9W+RaC6s1JVxo42vgy+TX5a6hfBZ0ubs=
+cloud.google.com/go/gsuiteaddons v1.7.8 h1:Dayrv57XW8kZIvmQjAc89Tp7Kr3O9Am/hf6pXkTjYFY=
+cloud.google.com/go/gsuiteaddons v1.7.8/go.mod h1:DBKNHH4YXAdd/rd6zVvtOGAJNGo0ekOh+nIjTUDEJ5U=
 cloud.google.com/go/iam v0.1.0/go.mod h1:vcUNEa0pEm0qRVpmWepWaFMIAI8/hjB9mO8rNCJtF6c=
 cloud.google.com/go/iam v0.3.0/go.mod h1:XzJPvDayI+9zsASAFO68Hk07u3z+f+JrT2xXNdp4bnY=
 cloud.google.com/go/iam v0.5.0/go.mod h1:wPU9Vt0P4UmCux7mqtRu6jcpPAb74cP1fh50J3QpkUc=

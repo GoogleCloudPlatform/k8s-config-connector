@@ -47,6 +47,7 @@ require (
 	cloud.google.com/go/firestore v1.22.0
 	cloud.google.com/go/gkebackup v1.8.1
 	cloud.google.com/go/gkemulticloud v1.6.0
+	cloud.google.com/go/gsuiteaddons v1.7.8
 	cloud.google.com/go/iam v1.11.0
 	cloud.google.com/go/iap v1.12.0
 	cloud.google.com/go/kms v1.26.0
