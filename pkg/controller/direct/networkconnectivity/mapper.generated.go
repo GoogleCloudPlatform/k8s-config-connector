@@ -182,6 +182,58 @@ found existing non-generated mapping function "NetworkConnectivityInternalRangeS
 		return out
 	}
 */
+func NetworkConnectivityMulticloudDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MulticloudDataTransferConfig) *krm.NetworkConnectivityMulticloudDataTransferConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityMulticloudDataTransferConfigObservedState{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.DestinationsActiveCount = direct.LazyPtr(in.GetDestinationsActiveCount())
+	out.DestinationsCount = direct.LazyPtr(in.GetDestinationsCount())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Name
+	// MISSING: Services
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func NetworkConnectivityMulticloudDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityMulticloudDataTransferConfigObservedState) *pb.MulticloudDataTransferConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MulticloudDataTransferConfig{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.DestinationsActiveCount = direct.ValueOf(in.DestinationsActiveCount)
+	out.DestinationsCount = direct.ValueOf(in.DestinationsCount)
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: Name
+	// MISSING: Services
+	out.Uid = direct.ValueOf(in.Uid)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func NetworkConnectivityMulticloudDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.MulticloudDataTransferConfig) *krm.NetworkConnectivityMulticloudDataTransferConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityMulticloudDataTransferConfigSpec{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	// MISSING: Name
+	// MISSING: Services
+	return out
+}
+func NetworkConnectivityMulticloudDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityMulticloudDataTransferConfigSpec) *pb.MulticloudDataTransferConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MulticloudDataTransferConfig{}
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	// MISSING: Name
+	// MISSING: Services
+	return out
+}
 func NetworkConnectivityRegionalEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RegionalEndpoint) *krm.NetworkConnectivityRegionalEndpointObservedState {
 	if in == nil {
 		return nil

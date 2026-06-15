@@ -20,6 +20,7 @@
 // resource: NetworkConnectivityInternalRange:InternalRange
 // resource: NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy
 // resource: NetworkConnectivityRegionalEndpoint:RegionalEndpoint
+// resource: NetworkConnectivityMulticloudDataTransferConfig:MulticloudDataTransferConfig
 
 package v1alpha1
 
@@ -218,6 +219,51 @@ type Migration struct {
 	Target *string `json:"target,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig", skipping
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig
+type MulticloudDataTransferConfig struct {
+	// Output only. Time when the `MulticloudDataTransferConfig` resource was created.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Optional. A description of this resource.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. The number of `Destination` resources in use with the `MulticloudDataTransferConfig` resource.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.destinations_active_count
+	DestinationsActiveCount *int32 `json:"destinationsActiveCount,omitempty"`
+
+	// Output only. The number of `Destination` resources configured for the `MulticloudDataTransferConfig` resource.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.destinations_count
+	DestinationsCount *int32 `json:"destinationsCount,omitempty"`
+
+	// The etag is computed by the server, and might be sent with update and delete requests so that the client has an up-to-date value before proceeding.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Optional. User-defined labels.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Identifier. The name of the `MulticloudDataTransferConfig` resource. Format: `projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}`.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+
+	// Output only. The Google-generated unique ID for the `MulticloudDataTransferConfig` resource. This value is unique across all `MulticloudDataTransferConfig` resources. If a resource is deleted and another with the same name is created, the new resource is assigned a different and unique ID.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Time when the `MulticloudDataTransferConfig` resource was updated.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "PSCConfig", skipping
 
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.PscConfig
@@ -407,5 +453,27 @@ type ServiceConnectionPolicy struct {
 	// Output only. Time when the ServiceConnectionPolicy was updated.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* unreachable type StateMetadata
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.StateMetadata
+type StateMetadata struct {
+	// Output only. Accompanies only the transient states, which include `ADDING`, `DELETING`, and `SUSPENDING`, to denote the time until which the transient state of the resource will be effective. For instance, if the state is `ADDING`, this field shows the time when the resource state transitions to `ACTIVE`.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.StateMetadata.effective_time
+	EffectiveTime *string `json:"effectiveTime,omitempty"`
+
+	// Output only. The state of the resource.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.StateMetadata.state
+	State *string `json:"state,omitempty"`
+}
+*/
+
+/* unreachable type StateTimeline
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.StateTimeline
+type StateTimeline struct {
+	// Output only. The state and activation time details of the resource state.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.StateTimeline.states
+	States []StateMetadata `json:"states,omitempty"`
 }
 */
