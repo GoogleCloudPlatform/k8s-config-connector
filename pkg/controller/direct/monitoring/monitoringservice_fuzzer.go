@@ -33,7 +33,12 @@ func monitoringServiceFuzzer() fuzztesting.KRMFuzzer {
 		MonitoringServiceSpec_FromProto, MonitoringServiceSpec_ToProto,
 	)
 
-	// Spec fields
+	// Explicitly compare the KRM Spec fields with the GCP proto fields:
+	// - projectRef (KRM Spec only): used to determine GCP project scope (part of the resource name/URL path).
+	// - resourceID (KRM Spec only): mapped to the leaf part of GCP resource .name.
+	// - displayName (KRM Spec): maps to GCP .display_name.
+	// - telemetry (KRM Spec): maps to GCP .telemetry.
+	//   - telemetry.resourceName (KRM Spec): maps to GCP .telemetry.resource_name.
 	f.SpecField(".display_name")
 	f.SpecField(".telemetry")
 
