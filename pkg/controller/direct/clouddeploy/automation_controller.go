@@ -17,6 +17,7 @@ package clouddeploy
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
@@ -205,6 +206,8 @@ func (a *AutomationAdapter) Create(ctx context.Context, createOp *directbase.Cre
 		return err
 	}
 
+	a.desiredPb.Labels = common.ComputeGCPLabels(a.labels)
+
 	mapCtx := &direct.MapContext{}
 
 	req := &clouddeploypb.CreateAutomationRequest{
@@ -243,6 +246,7 @@ func (a *AutomationAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	mapCtx := &direct.MapContext{}
 
 	a.desiredPb.Name = a.id.String()
+	a.desiredPb.Labels = common.ComputeGCPLabels(a.labels)
 
 	// Preserve system labels (goog- or go-)
 	if a.actual.Labels != nil {
@@ -274,6 +278,12 @@ func (a *AutomationAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 			if len(desired.Rules) != len(actualClone.Rules) {
 				return true, nil
 			}
+
+			// The API might return rules in a different order.
+			// Sort by ID before comparing to avoid spurious diffs.
+			sortRules(desired.Rules)
+			sortRules(actualClone.Rules)
+
 			for i := range desired.Rules {
 				if !proto.Equal(desired.Rules[i], actualClone.Rules[i]) {
 					return true, nil
@@ -355,6 +365,7 @@ func (a *AutomationAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	u.SetGroupVersionKind(krm.CloudDeployAutomationGVK)
 
 	u.Object = uObj
+	u.SetLabels(a.actual.Labels)
 	return u, nil
 }
 
@@ -376,13 +387,33 @@ func (a *AutomationAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 
 	err = op.Wait(ctx)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete wait for non-existent Automation, assuming it was already deleted", "name", a.id.String())
-			return true, nil
-		}
 		return false, fmt.Errorf("waiting delete Automation %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully deleted Automation", "name", a.id.String())
 	return true, nil
+}
+
+func getRuleID(rule *clouddeploypb.AutomationRule) string {
+	if rule == nil {
+		return ""
+	}
+	if r := rule.GetPromoteReleaseRule(); r != nil {
+		return r.GetId()
+	}
+	if r := rule.GetAdvanceRolloutRule(); r != nil {
+		return r.GetId()
+	}
+	if r := rule.GetRepairRolloutRule(); r != nil {
+		return r.GetId()
+	}
+	if r := rule.GetTimedPromoteReleaseRule(); r != nil {
+		return r.GetId()
+	}
+	return ""
+}
+
+func sortRules(rules []*clouddeploypb.AutomationRule) {
+	sort.Slice(rules, func(i, j int) bool {
+		return getRuleID(rules[i]) < getRuleID(rules[j])
+	})
 }
