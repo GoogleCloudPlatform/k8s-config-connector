@@ -79,6 +79,7 @@ Create or update the file to match the canonical example. Key requirements:
    - **Do NOT** create a separate `<kind>_reference_test.go` file (as it typically duplicates the parsing and formatting tests of the identity). Instead, add any validation or format test cases directly to the identity unit tests.
    - You MUST use `github.com/google/go-cmp/cmp` (with the `cmp.Diff` function) when comparing structs or multiple fields in tests, to ensure precise, clear diff outputs on failures.
    - Always use the standard got/want mismatch format for failures, e.g. `(-want +got):\n%s`.
+   - **CRITICAL:** When creating/modifying an identity type, always run `TestGoldenIdentitiesYamlFiles` (defined in `pkg/cli/powertools/cais/cmd_test.go`) with `WRITE_GOLDEN_OUTPUT=1` using `WRITE_GOLDEN_OUTPUT=1 go test -v ./pkg/cli/powertools/cais/...` to generate or update the golden output `_identities.yaml` file(s) for the test fixtures. This prevents presubmit CI unit test failures.
 
 2. **Run Compilations and Linters**:
    - Ensure the code compiles and there are no lint errors. You MUST always run `go vet ./...` and `go build ./...` before sending the PR to verify that your changes have not introduced any compilation errors across the entire project.
