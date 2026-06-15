@@ -26,7 +26,8 @@ go run . generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
-  --resource DialogflowGenerator:Generator
+  --resource DialogflowGenerator:Generator \
+  --resource DialogflowConversationDataset:ConversationDataset
 
 # Change back to the repo root
 cd ${REPO_ROOT}

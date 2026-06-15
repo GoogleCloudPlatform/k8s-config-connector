@@ -35,6 +35,10 @@ func (c *FakeDialogflowV1alpha1) DialogflowAgents(namespace string) v1alpha1.Dia
 	return newFakeDialogflowAgents(c, namespace)
 }
 
+func (c *FakeDialogflowV1alpha1) DialogflowConversationDatasets(namespace string) v1alpha1.DialogflowConversationDatasetInterface {
+	return newFakeDialogflowConversationDatasets(c, namespace)
+}
+
 func (c *FakeDialogflowV1alpha1) DialogflowEntityTypes(namespace string) v1alpha1.DialogflowEntityTypeInterface {
 	return newFakeDialogflowEntityTypes(c, namespace)
 }
