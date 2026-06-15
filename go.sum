@@ -1487,6 +1487,8 @@ cloud.google.com/go/websecurityscanner v1.6.2/go.mod h1:7YgjuU5tun7Eg2kpKgGnDuEO
 cloud.google.com/go/websecurityscanner v1.6.3/go.mod h1:x9XANObUFR+83Cya3g/B9M/yoHVqzxPnFtgF8yYGAXw=
 cloud.google.com/go/websecurityscanner v1.6.4/go.mod h1:mUiyMQ+dGpPPRkHgknIZeCzSHJ45+fY4F52nZFDHm2o=
 cloud.google.com/go/websecurityscanner v1.6.5/go.mod h1:QR+DWaxAz2pWooylsBF854/Ijvuoa3FCyS1zBa1rAVQ=
+cloud.google.com/go/websecurityscanner v1.7.7 h1:udhvvDDRryM3nrITJk/eQe74D06KK2N3SF60/FH2njQ=
+cloud.google.com/go/websecurityscanner v1.7.7/go.mod h1:ng/PzARaus3Bj4Os4LpUnyYHsbtJky1HbBDmz148v1o=
 cloud.google.com/go/workflows v1.6.0/go.mod h1:6t9F5h/unJz41YqfBmqSASJSXccBLtD1Vwf+KmJENM0=
 cloud.google.com/go/workflows v1.7.0/go.mod h1:JhSrZuVZWuiDfKEFxU0/F1PQjmpnpcoISEXH2bcHC3M=
 cloud.google.com/go/workflows v1.8.0/go.mod h1:ysGhmEajwZxGn1OhGOGKsTXc5PyxOc0vfKf5Af+to4M=
