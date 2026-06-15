@@ -57,13 +57,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	gvk := obj.GroupVersionKind()
 	switch gvk.GroupKind() {
 	case schema.GroupKind{Group: "artifactregistry.cnrm.cloud.google.com", Kind: "ArtifactRegistryRepository"}:
-		caisScheme := cais.NewScheme()
-		caisResults, err := cais.GetCAISIdentities(h.Ctx, caisScheme, h.GetClient(), []*unstructured.Unstructured{obj})
-		if err == nil && len(caisResults) > 0 && caisResults[0].CAISURL != "unknown" {
-			exportURI = caisResults[0].CAISURL
-		} else {
-			h.T.Errorf("failed to get CAIS identity for ArtifactRegistryRepository: %v", err)
-		}
+		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
 		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
@@ -289,4 +283,18 @@ func resolveReference(h *create.Harness, obj *unstructured.Unstructured, refFiel
 		h.Fatalf("referenced %v object %v does not have status.externalRef set", gvk.Kind, key)
 	}
 	return external
+}
+
+func resolveCAISURI(h *create.Harness, obj *unstructured.Unstructured) string {
+	caisScheme := cais.NewScheme()
+	caisResults, err := cais.GetCAISIdentities(h.Ctx, caisScheme, h.GetClient(), []*unstructured.Unstructured{obj})
+	if err != nil {
+		h.T.Errorf("failed to get CAIS identity: %v", err)
+		return ""
+	}
+	if len(caisResults) == 0 || caisResults[0].CAISURL == "unknown" {
+		h.T.Errorf("failed to get CAIS identity: %v", err)
+		return ""
+	}
+	return caisResults[0].CAISURL
 }
