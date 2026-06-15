@@ -67,7 +67,7 @@ type RestoreFilter struct {
 }
 
 type RestoreGroupKind struct {
-	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group */
+	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group. */
 	// +optional
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 
@@ -168,7 +168,7 @@ type RestoreClusterResourceRestoreScopeStatus struct {
 }
 
 type RestoreExcludedGroupKindsStatus struct {
-	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group */
+	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group. */
 	// +optional
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 
@@ -178,7 +178,7 @@ type RestoreExcludedGroupKindsStatus struct {
 }
 
 type RestoreExcludedNamespacesStatus struct {
-	/* Optional. A list of Kubernetes Namespaces */
+	/* Optional. A list of Kubernetes Namespaces. */
 	// +optional
 	Namespaces []string `json:"namespaces,omitempty"`
 }
@@ -209,7 +209,7 @@ type RestoreGroupKindDependenciesStatus struct {
 }
 
 type RestoreGroupKindsStatus struct {
-	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group */
+	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group. */
 	// +optional
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 
@@ -290,7 +290,7 @@ type RestoreObservedStateStatus struct {
 }
 
 type RestoreRequiringStatus struct {
-	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group */
+	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group. */
 	// +optional
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 
@@ -374,7 +374,7 @@ type RestoreRestoreOrderStatus struct {
 }
 
 type RestoreSatisfyingStatus struct {
-	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group */
+	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group. */
 	// +optional
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 
@@ -390,7 +390,7 @@ type RestoreSelectedApplicationsStatus struct {
 }
 
 type RestoreSelectedGroupKindsStatus struct {
-	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group */
+	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group. */
 	// +optional
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 
@@ -400,7 +400,7 @@ type RestoreSelectedGroupKindsStatus struct {
 }
 
 type RestoreSelectedNamespacesStatus struct {
-	/* Optional. A list of Kubernetes Namespaces */
+	/* Optional. A list of Kubernetes Namespaces. */
 	// +optional
 	Namespaces []string `json:"namespaces,omitempty"`
 }
@@ -427,7 +427,7 @@ type RestoreSubstitutionRulesStatus struct {
 }
 
 type RestoreTargetGroupKindsStatus struct {
-	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group */
+	/* Optional. API group string of a Kubernetes resource, e.g. "apiextensions.k8s.io", "storage.k8s.io", etc. Note: use empty string for core API group. */
 	// +optional
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 

@@ -32,6 +32,7 @@ import (
 type GkebackupV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	GKEBackupBackupsGetter
+	GKEBackupBackupChannelsGetter
 	GKEBackupBackupPlansGetter
 	GKEBackupRestoresGetter
 	GKEBackupRestorePlansGetter
@@ -44,6 +45,10 @@ type GkebackupV1alpha1Client struct {
 
 func (c *GkebackupV1alpha1Client) GKEBackupBackups(namespace string) GKEBackupBackupInterface {
 	return newGKEBackupBackups(c, namespace)
+}
+
+func (c *GkebackupV1alpha1Client) GKEBackupBackupChannels(namespace string) GKEBackupBackupChannelInterface {
+	return newGKEBackupBackupChannels(c, namespace)
 }
 
 func (c *GkebackupV1alpha1Client) GKEBackupBackupPlans(namespace string) GKEBackupBackupPlanInterface {
