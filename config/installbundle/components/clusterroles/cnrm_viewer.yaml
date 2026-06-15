@@ -1023,6 +1023,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - vectorsearch.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - vertexai.cnrm.cloud.google.com
   resources:
   - '*'
