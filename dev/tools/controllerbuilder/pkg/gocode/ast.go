@@ -159,23 +159,18 @@ func (p *Package) inspect(packageName string, pkg *ast.Package) error {
 			return err
 		}
 		p.Comments = append(p.Comments, comments...)
-	}
 
-	ast.Inspect(pkg, func(n ast.Node) bool {
-		if n == nil {
-			return true
-		}
-		switch n := n.(type) {
-		case *ast.ImportSpec:
-			goPackage := n.Path.Value
+		for _, imp := range pkgFile.Imports {
+			goPackage := imp.Path.Value
 			goPackage, err := strconv.Unquote(goPackage)
 			if err != nil {
-				errs = append(errs, fmt.Errorf("unquoting import path %q: %w", n.Path.Value, err))
+				errs = append(errs, fmt.Errorf("unquoting import path %q: %w", imp.Path.Value, err))
+				continue
 			}
 
 			alias := ""
-			if n.Name != nil {
-				alias = n.Name.String()
+			if imp.Name != nil {
+				alias = imp.Name.String()
 			} else {
 				alias = lastComponent(goPackage)
 			}
@@ -185,6 +180,16 @@ func (p *Package) inspect(packageName string, pkg *ast.Package) error {
 				GoPackage: goPackage,
 				Alias:     alias,
 			})
+		}
+	}
+
+	ast.Inspect(pkg, func(n ast.Node) bool {
+		if n == nil {
+			return true
+		}
+		switch n := n.(type) {
+		case *ast.ImportSpec:
+			// Imports are already processed in the first pass
 
 		case *ast.TypeSpec:
 			switch def := n.Type.(type) {
@@ -239,21 +244,22 @@ func (p *Package) addStruct(name *ast.Ident, def *ast.StructType, comments []ast
 		tokens := strings.Split(s, ".")
 		if len(tokens) > 1 {
 			packageName := tokens[0]
-			// if packageName == "apiextensionsv1" {
-			//	structField.GoPackage = "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-			//	p.Imports = append(p.Imports, &GoImport{
-			//		GoPackage: structField.GoPackage,
-			//		Alias:     packageName,
-			//	})
-			// } else {
+			if packageName == "apiextensionsv1" {
+				structField.GoPackage = "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+				p.Imports = append(p.Imports, &GoImport{
+					GoPackage: structField.GoPackage,
+					Alias:     packageName,
+				})
+			} else {
 				for _, imp := range p.Imports {
 					if imp.Alias == packageName {
 						structField.GoPackage = imp.GoPackage
 						break
 					}
 				}
-			// }
+			}
 			if structField.GoPackage == "" {
+				fmt.Printf("packageName: %q, s: %q, goType: %q\n", packageName, s, goType)
 				for _, imp := range p.Imports {
 					fmt.Printf("imp: %+v\n", imp)
 				}
