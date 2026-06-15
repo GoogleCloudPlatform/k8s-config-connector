@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/deploy/apiv1"
@@ -206,7 +207,7 @@ func (a *AutomationAdapter) Create(ctx context.Context, createOp *directbase.Cre
 		return err
 	}
 
-	a.desiredPb.Labels = common.ComputeGCPLabels(a.labels)
+	a.desiredPb.Labels = label.NewGCPLabelsFromK8sLabels(a.labels)
 
 	mapCtx := &direct.MapContext{}
 
@@ -246,7 +247,7 @@ func (a *AutomationAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	mapCtx := &direct.MapContext{}
 
 	a.desiredPb.Name = a.id.String()
-	a.desiredPb.Labels = common.ComputeGCPLabels(a.labels)
+	a.desiredPb.Labels = label.NewGCPLabelsFromK8sLabels(a.labels)
 
 	// Preserve system labels (goog- or go-)
 	if a.actual.Labels != nil {
