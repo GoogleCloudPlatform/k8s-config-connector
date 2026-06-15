@@ -25,6 +25,7 @@ package networkservices
 
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmnetworkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
 	krmservicedirectoryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -103,16 +104,78 @@ func ExtensionChain_MatchCondition_FromProto(mapCtx *direct.MapContext, in *pb.E
 }
 */
 
-/* found existing non-generated mapping function "ExtensionChain_MatchCondition_ToProto", skipping
-func ExtensionChain_MatchCondition_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ExtensionChain_MatchCondition) *pb.ExtensionChain_MatchCondition {
+/*
+found existing non-generated mapping function "ExtensionChain_MatchCondition_ToProto", skipping
+
+	func ExtensionChain_MatchCondition_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ExtensionChain_MatchCondition) *pb.ExtensionChain_MatchCondition {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ExtensionChain_MatchCondition{}
+		out.CelExpression = direct.ValueOf(in.CelExpression)
+		return out
+	}
+*/
+func NetworkServicesAuthzExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthzExtension) *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ExtensionChain_MatchCondition{}
-	out.CelExpression = direct.ValueOf(in.CelExpression)
+	out := &krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-*/
+func NetworkServicesAuthzExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionObservedState) *pb.AuthzExtension {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzExtension{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func NetworkServicesAuthzExtensionSpec_FromProto(mapCtx *direct.MapContext, in *pb.AuthzExtension) *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.LoadBalancingScheme = direct.Enum_FromProto(mapCtx, in.GetLoadBalancingScheme())
+	out.Authority = direct.LazyPtr(in.GetAuthority())
+	if in.GetService() != "" {
+		out.ServiceRef = &krmcomputev1beta1.ComputeBackendServiceRef{External: in.GetService()}
+	}
+	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
+	out.FailOpen = direct.LazyPtr(in.GetFailOpen())
+	out.Metadata = direct.Struct_FromProto(mapCtx, in.GetMetadata())
+	out.ForwardHeaders = in.ForwardHeaders
+	out.WireFormat = direct.Enum_FromProto(mapCtx, in.GetWireFormat())
+	return out
+}
+func NetworkServicesAuthzExtensionSpec_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionSpec) *pb.AuthzExtension {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzExtension{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.LoadBalancingScheme = direct.Enum_ToProto[pb.LoadBalancingScheme](mapCtx, in.LoadBalancingScheme)
+	out.Authority = direct.ValueOf(in.Authority)
+	if in.ServiceRef != nil {
+		out.Service = in.ServiceRef.External
+	}
+	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
+	out.FailOpen = direct.ValueOf(in.FailOpen)
+	out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
+	out.ForwardHeaders = in.ForwardHeaders
+	out.WireFormat = direct.Enum_ToProto[pb.WireFormat](mapCtx, in.WireFormat)
+	return out
+}
 
 /* found existing non-generated mapping function "NetworkServicesGatewaySpec_FromProto", skipping
 func NetworkServicesGatewaySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krm.NetworkServicesGatewaySpec {

@@ -31,6 +31,10 @@ type FakeNetworkservicesV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeNetworkservicesV1alpha1) NetworkServicesAuthzExtensions(namespace string) v1alpha1.NetworkServicesAuthzExtensionInterface {
+	return newFakeNetworkServicesAuthzExtensions(c, namespace)
+}
+
 func (c *FakeNetworkservicesV1alpha1) NetworkServicesEdgeCacheKeysets(namespace string) v1alpha1.NetworkServicesEdgeCacheKeysetInterface {
 	return newFakeNetworkServicesEdgeCacheKeysets(c, namespace)
 }

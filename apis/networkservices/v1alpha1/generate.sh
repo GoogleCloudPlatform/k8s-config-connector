@@ -28,7 +28,8 @@ go run . generate-types \
     --api-version "networkservices.cnrm.cloud.google.com/v1alpha1" \
     --resource NetworkServicesServiceBinding:ServiceBinding \
     --resource NetworkServicesLBRouteExtension:LbRouteExtension \
-    --resource NetworkServicesWasmPlugin:WasmPlugin
+    --resource NetworkServicesWasmPlugin:WasmPlugin \
+    --resource NetworkServicesAuthzExtension:AuthzExtension
 
 
 go run . generate-mapper \
