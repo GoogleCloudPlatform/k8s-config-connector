@@ -116,3 +116,17 @@ func CloudAssetIAMPolicyAnalysisQuery_ResourceSelector_ToProto(mapCtx *direct.Ma
 	out.FullResourceName = CloudAssetIAMPolicyAnalysisQuery_ResourceSelector_FullResourceName_ToProto(mapCtx, in.FullResourceName)
 	return out
 }
+
+// CloudAssetSavedQueryStatus_FromProto converts the CloudAssetSavedQueryStatus field from its Protobuf representation.
+func CloudAssetSavedQueryStatus_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.CloudAssetSavedQueryStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudAssetSavedQueryStatus{}
+	out.ObservedState = &krm.CloudAssetSavedQueryObservedState{}
+	out.ObservedState.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.ObservedState.Creator = direct.LazyPtr(in.GetCreator())
+	out.ObservedState.LastUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastUpdateTime())
+	out.ObservedState.LastUpdater = direct.LazyPtr(in.GetLastUpdater())
+	return out
+}
