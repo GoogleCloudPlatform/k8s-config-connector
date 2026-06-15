@@ -2412,6 +2412,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - biglake.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - bigquery.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4179,6 +4191,14 @@ rules:
   - watch
 - apiGroups:
   - beyondcorp.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - biglake.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
