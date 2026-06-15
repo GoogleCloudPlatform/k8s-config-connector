@@ -20,11 +20,55 @@ import (
 	api "google.golang.org/api/apigee/v1"
 )
 
+func GoogleCloudApigeeV1Attribute_ToAPI(mapCtx *direct.MapContext, in *krm.GoogleCloudApigeeV1Attribute) *api.GoogleCloudApigeeV1Attribute {
+	if in == nil {
+		return nil
+	}
+	out := &api.GoogleCloudApigeeV1Attribute{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+
+func GoogleCloudApigeeV1Attribute_FromAPI(mapCtx *direct.MapContext, in *api.GoogleCloudApigeeV1Attribute) *krm.GoogleCloudApigeeV1Attribute {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GoogleCloudApigeeV1Attribute{}
+	out.Name = direct.LazyPtr(in.Name)
+	out.Value = direct.LazyPtr(in.Value)
+	return out
+}
+
+func GoogleCloudApigeeV1Attributes_ToAPI(mapCtx *direct.MapContext, in []krm.GoogleCloudApigeeV1Attribute) []*api.GoogleCloudApigeeV1Attribute {
+	if in == nil {
+		return nil
+	}
+	out := make([]*api.GoogleCloudApigeeV1Attribute, len(in))
+	for i, item := range in {
+		out[i] = GoogleCloudApigeeV1Attribute_ToAPI(mapCtx, &item)
+	}
+	return out
+}
+
+func GoogleCloudApigeeV1Attributes_FromAPI(mapCtx *direct.MapContext, in []*api.GoogleCloudApigeeV1Attribute) []krm.GoogleCloudApigeeV1Attribute {
+	if in == nil {
+		return nil
+	}
+	out := make([]krm.GoogleCloudApigeeV1Attribute, len(in))
+	for i, item := range in {
+		out[i] = *GoogleCloudApigeeV1Attribute_FromAPI(mapCtx, item)
+	}
+	return out
+}
+
 func ApigeeAPIProductObservedState_FromAPI(mapCtx *direct.MapContext, in *api.GoogleCloudApigeeV1ApiProduct) *krm.ApigeeAPIProductObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ApigeeAPIProductObservedState{}
+	out.CreatedAt = direct.LazyPtr(in.CreatedAt)
+	out.LastModifiedAt = direct.LazyPtr(in.LastModifiedAt)
 	return out
 }
 
@@ -33,6 +77,8 @@ func ApigeeAPIProductObservedState_ToAPI(mapCtx *direct.MapContext, in *krm.Apig
 		return nil
 	}
 	out := &api.GoogleCloudApigeeV1ApiProduct{}
+	out.CreatedAt = direct.ValueOf(in.CreatedAt)
+	out.LastModifiedAt = direct.ValueOf(in.LastModifiedAt)
 	return out
 }
 
@@ -41,7 +87,18 @@ func ApigeeAPIProductSpec_FromAPI(mapCtx *direct.MapContext, in *api.GoogleCloud
 		return nil
 	}
 	out := &krm.ApigeeAPIProductSpec{}
-	// Not fully implemented, as mock mappings are often stubbed out if not needed.
+	out.APIResources = in.ApiResources
+	out.ApprovalType = direct.LazyPtr(in.ApprovalType)
+	out.Attributes = GoogleCloudApigeeV1Attributes_FromAPI(mapCtx, in.Attributes)
+	out.Description = direct.LazyPtr(in.Description)
+	out.DisplayName = direct.LazyPtr(in.DisplayName)
+	out.Environments = in.Environments
+	out.Proxies = in.Proxies
+	out.Quota = direct.LazyPtr(in.Quota)
+	out.QuotaCounterScope = direct.LazyPtr(in.QuotaCounterScope)
+	out.QuotaInterval = direct.LazyPtr(in.QuotaInterval)
+	out.QuotaTimeUnit = direct.LazyPtr(in.QuotaTimeUnit)
+	out.Scopes = in.Scopes
 	return out
 }
 
@@ -50,5 +107,17 @@ func ApigeeAPIProductSpec_ToAPI(mapCtx *direct.MapContext, in *krm.ApigeeAPIProd
 		return nil
 	}
 	out := &api.GoogleCloudApigeeV1ApiProduct{}
+	out.ApiResources = in.APIResources
+	out.ApprovalType = direct.ValueOf(in.ApprovalType)
+	out.Attributes = GoogleCloudApigeeV1Attributes_ToAPI(mapCtx, in.Attributes)
+	out.Description = direct.ValueOf(in.Description)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Environments = in.Environments
+	out.Proxies = in.Proxies
+	out.Quota = direct.ValueOf(in.Quota)
+	out.QuotaCounterScope = direct.ValueOf(in.QuotaCounterScope)
+	out.QuotaInterval = direct.ValueOf(in.QuotaInterval)
+	out.QuotaTimeUnit = direct.ValueOf(in.QuotaTimeUnit)
+	out.Scopes = in.Scopes
 	return out
 }

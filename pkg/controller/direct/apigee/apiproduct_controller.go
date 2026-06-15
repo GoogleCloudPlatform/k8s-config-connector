@@ -17,6 +17,7 @@ package apigee
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
@@ -156,6 +157,54 @@ func (a *ApigeeAPIProductAdapter) Update(ctx context.Context, updateOp *directba
 	resource := ApigeeAPIProductSpec_ToAPI(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
+	}
+
+	hasChanges := false
+	if resource.DisplayName != a.actual.DisplayName {
+		hasChanges = true
+	}
+	if resource.Description != a.actual.Description {
+		hasChanges = true
+	}
+	if resource.ApprovalType != a.actual.ApprovalType {
+		hasChanges = true
+	}
+	if resource.Quota != a.actual.Quota {
+		hasChanges = true
+	}
+	if resource.QuotaCounterScope != a.actual.QuotaCounterScope {
+		hasChanges = true
+	}
+	if resource.QuotaInterval != a.actual.QuotaInterval {
+		hasChanges = true
+	}
+	if resource.QuotaTimeUnit != a.actual.QuotaTimeUnit {
+		hasChanges = true
+	}
+	if !reflect.DeepEqual(resource.ApiResources, a.actual.ApiResources) {
+		hasChanges = true
+	}
+	if !reflect.DeepEqual(resource.Environments, a.actual.Environments) {
+		hasChanges = true
+	}
+	if !reflect.DeepEqual(resource.Proxies, a.actual.Proxies) {
+		hasChanges = true
+	}
+	if !reflect.DeepEqual(resource.Scopes, a.actual.Scopes) {
+		hasChanges = true
+	}
+	if !reflect.DeepEqual(resource.Attributes, a.actual.Attributes) {
+		hasChanges = true
+	}
+
+	if !hasChanges {
+		log.V(2).Info("no field needs update", "name", a.id)
+		status := &krm.ApigeeAPIProductStatus{}
+		status.ObservedState = ApigeeAPIProductObservedState_FromAPI(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
 	updated, err := a.productsClient.Update(a.id.String(), resource).Context(ctx).Do()

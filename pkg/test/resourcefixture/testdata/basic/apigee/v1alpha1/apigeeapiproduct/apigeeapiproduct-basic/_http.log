@@ -1,0 +1,197 @@
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiprod-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "resource organizations/${projectId}/apiproducts/apigeeapiprod-${uniqueId} not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "approvalType": "auto",
+  "attributes": [
+    {
+      "name": "env",
+      "value": "test"
+    }
+  ],
+  "description": "A test API product created via KCC",
+  "displayName": "My Test API Product",
+  "name": "apigeeapiprod-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "approvalType": "auto",
+  "attributes": [
+    {
+      "name": "env",
+      "value": "test"
+    }
+  ],
+  "createdAt": "1711974896",
+  "description": "A test API product created via KCC",
+  "displayName": "My Test API Product",
+  "lastModifiedAt": "1711974896",
+  "name": "apigeeapiprod-${uniqueId}"
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiprod-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "approvalType": "auto",
+  "attributes": [
+    {
+      "name": "env",
+      "value": "test"
+    }
+  ],
+  "createdAt": "1711974896",
+  "description": "A test API product created via KCC",
+  "displayName": "My Test API Product",
+  "lastModifiedAt": "1711974896",
+  "name": "apigeeapiprod-${uniqueId}"
+}
+
+---
+
+PUT https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiprod-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "approvalType": "manual",
+  "attributes": [
+    {
+      "name": "env",
+      "value": "production"
+    }
+  ],
+  "description": "An updated test API product created via KCC",
+  "displayName": "My Updated Test API Product"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "approvalType": "manual",
+  "attributes": [
+    {
+      "name": "env",
+      "value": "production"
+    }
+  ],
+  "createdAt": "1711974896",
+  "description": "An updated test API product created via KCC",
+  "displayName": "My Updated Test API Product",
+  "lastModifiedAt": "1711974896",
+  "name": "apigeeapiprod-${uniqueId}"
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiprod-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "approvalType": "manual",
+  "attributes": [
+    {
+      "name": "env",
+      "value": "production"
+    }
+  ],
+  "createdAt": "1711974896",
+  "description": "An updated test API product created via KCC",
+  "displayName": "My Updated Test API Product",
+  "lastModifiedAt": "1711974896",
+  "name": "apigeeapiprod-${uniqueId}"
+}
+
+---
+
+DELETE https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiprod-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "approvalType": "manual",
+  "attributes": [
+    {
+      "name": "env",
+      "value": "production"
+    }
+  ],
+  "createdAt": "1711974896",
+  "description": "An updated test API product created via KCC",
+  "displayName": "My Updated Test API Product",
+  "lastModifiedAt": "1711974896",
+  "name": "apigeeapiprod-${uniqueId}"
+}
