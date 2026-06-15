@@ -131,7 +131,7 @@ type ComputeFirewallPolicyRuleStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeFirewallPolicyRule's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique Config Connector specifier for the resource in Google Cloud. */
+	/* A unique Config Connector specifier for the resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

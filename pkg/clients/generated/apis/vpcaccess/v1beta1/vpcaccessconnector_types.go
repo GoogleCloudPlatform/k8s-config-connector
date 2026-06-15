@@ -54,7 +54,7 @@ type VPCAccessConnectorSpec struct {
 	// +optional
 	IpCidrRange *string `json:"ipCidrRange,omitempty"`
 
-	/* Location represents the geographical location of the VPCAccessConnector. Specify a region name. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location represents the geographical location of the VPCAccessConnector. Specify a region name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* Immutable. Machine type of VM Instance underlying connector. Default is e2-micro. */

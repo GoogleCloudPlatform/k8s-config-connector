@@ -97,7 +97,7 @@ type CloudIdentityGroupStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* A unique Config Connector specifier for the resource in Google Cloud. */
+	/* A unique Config Connector specifier for the resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

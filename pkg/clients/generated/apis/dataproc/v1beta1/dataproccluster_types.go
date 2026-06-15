@@ -547,7 +547,7 @@ type DataprocClusterSpec struct {
 	// +optional
 	Config *ClusterConfig `json:"config,omitempty"`
 
-	/* Immutable. The location for the resource, usually a Google Cloud region. */
+	/* Immutable. The location for the resource, usually a GCP region. */
 	Location string `json:"location"`
 
 	/* Immutable. The Project that this resource belongs to. */

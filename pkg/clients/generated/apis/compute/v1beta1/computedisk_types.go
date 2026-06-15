@@ -176,7 +176,7 @@ type ComputeDiskSpec struct {
 	// +optional
 	Licenses []string `json:"licenses,omitempty"`
 
-	/* Location represents the geographical location of the ComputeDisk. Specify a region name or a zone name. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location represents the geographical location of the ComputeDisk. Specify a region name or a zone name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* Immutable. Indicates whether or not the disk can be read/write attached to more than one instance. */

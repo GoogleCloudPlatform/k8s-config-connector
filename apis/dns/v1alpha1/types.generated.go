@@ -57,8 +57,8 @@ type RRSetRoutingPolicyGeoPolicyGeoPolicyItem struct {
 	// are healthy. These can be specified along with `rrdata` within this item.
 	HealthCheckedTargets *RRSetRoutingPolicyHealthCheckTargets `json:"healthCheckedTargets,omitempty"`
 
-	// The geo-location granularity is a Google Cloud region. This location string should
-	// correspond to a Google Cloud region. e.g. "us-east1", "southamerica-east1", "asia-east1",
+	// The geo-location granularity is a GCP region. This location string should
+	// correspond to a GCP region. e.g. "us-east1", "southamerica-east1", "asia-east1",
 	// etc.
 	Location *string `json:"location,omitempty"`
 
@@ -251,7 +251,7 @@ type ResponsePolicyRule struct {
 
 	// Answer this query directly with DNS data. These ResourceRecordSets override any
 	// other DNS behavior for the matched name; in particular they override private
-	// zones, the public internet, and Google Cloud internal DNS. No SOA nor NS types are
+	// zones, the public internet, and GCP internal DNS. No SOA nor NS types are
 	// allowed.
 	LocalData *ResponsePolicyRuleLocalData `json:"localData,omitempty"`
 

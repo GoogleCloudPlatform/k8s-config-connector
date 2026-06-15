@@ -130,7 +130,7 @@ type ConfigControllerInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ConfigControllerInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. KrmApiHost Google Cloud self link used for identifying the underlying endpoint (GKE cluster currently). */
+	/* Output only. KrmApiHost GCP self link used for identifying the underlying endpoint (GKE cluster currently). */
 	// +optional
 	GkeResourceLink *string `json:"gkeResourceLink,omitempty"`
 

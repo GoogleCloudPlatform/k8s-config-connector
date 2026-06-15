@@ -92,7 +92,7 @@ type CloudIDSEndpointStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The observed state of the underlying Google Cloud resource. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
 	ObservedState *EndpointObservedStateStatus `json:"observedState,omitempty"`
 }

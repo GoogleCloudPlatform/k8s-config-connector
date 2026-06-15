@@ -52,7 +52,7 @@ type ComputeTargetHTTPProxySpec struct {
 	// +optional
 	HttpKeepAliveTimeoutSec *int64 `json:"httpKeepAliveTimeoutSec,omitempty"`
 
-	/* Location represents the geographical location of the ComputeTargetHTTPProxy. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location represents the geographical location of the ComputeTargetHTTPProxy. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* Immutable. This field only applies when the forwarding rule that references

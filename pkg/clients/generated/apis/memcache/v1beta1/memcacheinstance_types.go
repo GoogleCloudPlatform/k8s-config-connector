@@ -202,7 +202,7 @@ type InstanceMemcacheNodesStatus struct {
 	// +optional
 	State *string `json:"state,omitempty"`
 
-	/* Location (Google Cloud Zone) for the Memcached node. */
+	/* Location (GCP Zone) for the Memcached node. */
 	// +optional
 	Zone *string `json:"zone,omitempty"`
 }

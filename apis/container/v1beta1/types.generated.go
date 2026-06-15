@@ -150,7 +150,7 @@ type AddonsConfig struct {
 	DNSCacheConfig *DNSCacheConfig `json:"dnsCacheConfig,omitempty"`
 
 	// Configuration for the ConfigConnector add-on, a Kubernetes
-	//  extension to manage hosted Google Cloud services through the Kubernetes API
+	//  extension to manage hosted GCP services through the Kubernetes API
 	// +kcc:proto:field=google.container.v1.AddonsConfig.config_connector_config
 	ConfigConnectorConfig *ConfigConnectorConfig `json:"configConnectorConfig,omitempty"`
 
@@ -158,7 +158,7 @@ type AddonsConfig struct {
 	// +kcc:proto:field=google.container.v1.AddonsConfig.gce_persistent_disk_csi_driver_config
 	GCEPersistentDiskCsiDriverConfig *GCEPersistentDiskCsiDriverConfig `json:"gcePersistentDiskCsiDriverConfig,omitempty"`
 
-	// Configuration for the Google Cloud Filestore CSI driver.
+	// Configuration for the GCP Filestore CSI driver.
 	// +kcc:proto:field=google.container.v1.AddonsConfig.gcp_filestore_csi_driver_config
 	GcpFilestoreCsiDriverConfig *GcpFilestoreCsiDriverConfig `json:"gcpFilestoreCsiDriverConfig,omitempty"`
 
@@ -700,7 +700,7 @@ type Cluster struct {
 	// +kcc:proto:field=google.container.v1.Cluster.release_channel
 	ReleaseChannel *ReleaseChannel `json:"releaseChannel,omitempty"`
 
-	// Configuration for the use of Kubernetes Service Accounts in Google Cloud IAM
+	// Configuration for the use of Kubernetes Service Accounts in GCP IAM
 	//  policies.
 	// +kcc:proto:field=google.container.v1.Cluster.workload_identity_config
 	WorkloadIdentityConfig *WorkloadIdentityConfig `json:"workloadIdentityConfig,omitempty"`
@@ -948,7 +948,7 @@ type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConf
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.fqdns
 	Fqdns []string `json:"fqdns,omitempty"`
 
-	// Google Secret Manager (Google Cloud) certificate configuration.
+	// Google Secret Manager (GCP) certificate configuration.
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.gcp_secret_manager_certificate_config
 	GcpSecretManagerCertificateConfig *ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GcpSecretManagerCertificateConfig `json:"gcpSecretManagerCertificateConfig,omitempty"`
 }
@@ -985,7 +985,7 @@ type ControlPlaneEndpointsConfig struct {
 type ControlPlaneEndpointsConfig_DNSEndpointConfig struct {
 
 	// Controls whether user traffic is allowed over this endpoint. Note that
-	//  Google Cloud-managed services may still use the endpoint even if this is false.
+	//  GCP-managed services may still use the endpoint even if this is false.
 	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig.allow_external_traffic
 	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
 }
@@ -1400,7 +1400,7 @@ type GcfsConfig struct {
 /* unreachable type GcpFilestoreCsiDriverConfig
 // +kcc:proto=google.container.v1.GcpFilestoreCsiDriverConfig
 type GcpFilestoreCsiDriverConfig struct {
-	// Whether the Google Cloud Filestore CSI driver is enabled for this cluster.
+	// Whether the GCP Filestore CSI driver is enabled for this cluster.
 	// +kcc:proto:field=google.container.v1.GcpFilestoreCsiDriverConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }

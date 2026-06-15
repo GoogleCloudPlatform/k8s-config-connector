@@ -58,7 +58,7 @@ type ComputeInstanceGroupSpec struct {
 	// +optional
 	NamedPort []InstancegroupNamedPort `json:"namedPort,omitempty"`
 
-	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
+	/* ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 

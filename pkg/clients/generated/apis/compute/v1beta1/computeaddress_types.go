@@ -59,7 +59,7 @@ type ComputeAddressSpec struct {
 	// +optional
 	Ipv6EndpointType *string `json:"ipv6EndpointType,omitempty"`
 
-	/* Location represents the geographical location of the ComputeAddress. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location represents the geographical location of the ComputeAddress. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* The network in which to reserve the address. If global, the address must be within the RFC1918 IP space. The network cannot be deleted if there are any reserved IP ranges referring to it. This field can only be used with INTERNAL type with the VPC_PEERING and IPSEC_INTERCONNECT purposes. */

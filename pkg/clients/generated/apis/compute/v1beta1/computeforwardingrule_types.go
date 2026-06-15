@@ -47,7 +47,7 @@ type ForwardingruleFilterLabels struct {
 }
 
 type ForwardingruleIpAddress struct {
-	/* ComputeAddressRef is a reference to a GCP ComputeAddress. */
+	/* ComputeAddressRef is a reference to a Google Cloud ComputeAddress. */
 	// +optional
 	AddressRef *v1alpha1.ResourceRef `json:"addressRef,omitempty"`
 
@@ -376,7 +376,7 @@ type ComputeForwardingRuleStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* A unique Config Connector specifier for the resource in Google Cloud. */
+	/* A unique Config Connector specifier for the resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

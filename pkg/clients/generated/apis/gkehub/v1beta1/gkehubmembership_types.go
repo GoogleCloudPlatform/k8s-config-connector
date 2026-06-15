@@ -150,7 +150,7 @@ type MembershipKubernetesMetadataStatus struct {
 	// +optional
 	NodeCount *int64 `json:"nodeCount,omitempty"`
 
-	/* Output only. Node providerID as reported by the first node in the list of nodes on the Kubernetes endpoint. On Kubernetes platforms that support zero-node clusters (like GKE-on-Google Cloud), the node_count will be zero and the node_provider_id will be empty. */
+	/* Output only. Node providerID as reported by the first node in the list of nodes on the Kubernetes endpoint. On Kubernetes platforms that support zero-node clusters (like GKE-on-GCP), the node_count will be zero and the node_provider_id will be empty. */
 	// +optional
 	NodeProviderId *string `json:"nodeProviderId,omitempty"`
 

@@ -262,7 +262,7 @@ type IngestionDataSourceSettings_AwsKinesis struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.AwsKinesis.aws_role_arn
 	AwsRoleArn *string `json:"awsRoleArn,omitempty"`
 
-	// Required. The Google Cloud service account to be used for Federated Identity
+	// Required. The GCP service account to be used for Federated Identity
 	//  authentication with Kinesis (via a `AssumeRoleWithWebIdentity` call for
 	//  the provided role). The `aws_role_arn` must be set up with
 	//  `accounts.google.com:sub` equals to this service account number.
@@ -291,7 +291,7 @@ type IngestionDataSourceSettings_AwsMsk struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.AwsMsk.aws_role_arn
 	AwsRoleArn *string `json:"awsRoleArn,omitempty"`
 
-	// Required. The Google Cloud service account to be used for Federated Identity
+	// Required. The GCP service account to be used for Federated Identity
 	//  authentication with Amazon MSK (via a `AssumeRoleWithWebIdentity` call
 	//  for the provided role). The `aws_role_arn` must be set up with
 	//  `accounts.google.com:sub` equals to this service account number.
@@ -330,7 +330,7 @@ type IngestionDataSourceSettings_AzureEventHubs struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.AzureEventHubs.subscription_id
 	SubscriptionID *string `json:"subscriptionID,omitempty"`
 
-	// Optional. The Google Cloud service account to be used for Federated Identity
+	// Optional. The GCP service account to be used for Federated Identity
 	//  authentication.
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.AzureEventHubs.gcp_service_account
 	GcpServiceAccount *string `json:"gcpServiceAccount,omitempty"`
@@ -418,7 +418,7 @@ type IngestionDataSourceSettings_ConfluentCloud struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.ConfluentCloud.identity_pool_id
 	IdentityPoolID *string `json:"identityPoolID,omitempty"`
 
-	// Required. The Google Cloud service account to be used for Federated Identity
+	// Required. The GCP service account to be used for Federated Identity
 	//  authentication with `identity_pool_id`.
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.ConfluentCloud.gcp_service_account
 	GcpServiceAccount *string `json:"gcpServiceAccount,omitempty"`

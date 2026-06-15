@@ -136,7 +136,7 @@ type CloudIdentityMembershipStatus struct {
 	// +optional
 	DisplayName *MembershipDisplayNameStatus `json:"displayName,omitempty"`
 
-	/* A unique Config Connector specifier for the resource in Google Cloud. */
+	/* A unique Config Connector specifier for the resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

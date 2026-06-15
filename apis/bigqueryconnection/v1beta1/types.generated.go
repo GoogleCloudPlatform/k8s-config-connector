@@ -347,7 +347,7 @@ type CloudResourcePropertiesObservedState struct {
 	//  when it is created. After creation, customers delegate permissions
 	//  to the service account. When the connection is used in the context of an
 	//  operation in BigQuery, the service account will be used to connect to the
-	//  desired resources in Google Cloud.
+	//  desired resources in GCP.
 	//
 	//  The account ID is in the form of:
 	//    <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
