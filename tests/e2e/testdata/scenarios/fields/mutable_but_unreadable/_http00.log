@@ -1,5 +1,7 @@
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: metric_name=projects%2F${projectId}%2Fmetrics%2Flogginglogmetric-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -21,9 +23,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://logging.googleapis.com/v2/projects/${projectId}/metrics?alt=json&prettyPrint=false
+POST https://logging.googleapis.com/v2/projects/${projectId}/metrics?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
   "bucketOptions": {
@@ -43,17 +46,16 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "labels": [
       {
         "description": "a label description",
-        "key": "testkey",
-        "valueType": "STRING"
+        "key": "testkey"
       }
     ],
-    "launchStage": "EARLY_ACCESS",
+    "launchStage": 1,
     "metadata": {
       "ingestDelay": "1s",
       "samplePeriod": "1s"
     },
-    "metricKind": "DELTA",
-    "valueType": "DISTRIBUTION"
+    "metricKind": 2,
+    "valueType": 5
   },
   "name": "logginglogmetric-${uniqueId}",
   "valueExtractor": "EXTRACT(jsonPayload.response)"
@@ -91,11 +93,11 @@ X-Xss-Protection: 0
         "key": "testkey"
       }
     ],
-    "metricKind": "DELTA",
+    "metricKind": 2,
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "unit": "1",
-    "valueType": "DISTRIBUTION"
+    "valueType": 5
   },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -104,93 +106,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "explicitBuckets": {
-      "bounds": [
-        1.5,
-        4.5
-      ]
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "testkey": "EXTRACT(jsonPayload.request)"
-  },
-  "metricDescriptor": {
-    "displayName": "a concise name",
-    "labels": [
-      {
-        "description": "a label description",
-        "key": "testkey"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "1",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "bucketOptions": {
-    "explicitBuckets": {
-      "bounds": [
-        1.5,
-        4.5
-      ]
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "testkey": "EXTRACT(jsonPayload.request)"
-  },
-  "metricDescriptor": {
-    "displayName": "a concise name",
-    "labels": [
-      {
-        "description": "a label description",
-        "key": "testkey",
-        "valueType": "STRING"
-      }
-    ],
-    "launchStage": "EARLY_ACCESS",
-    "metadata": {
-      "ingestDelay": "1s",
-      "samplePeriod": "1s"
-    },
-    "metricKind": "DELTA",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
+X-Goog-Request-Params: metric_name=projects%2F${projectId}%2Fmetrics%2Flogginglogmetric-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -224,59 +143,11 @@ X-Xss-Protection: 0
         "key": "testkey"
       }
     ],
-    "metricKind": "DELTA",
+    "metricKind": 2,
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "unit": "1",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "explicitBuckets": {
-      "bounds": [
-        1.5,
-        4.5
-      ]
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "testkey": "EXTRACT(jsonPayload.request)"
-  },
-  "metricDescriptor": {
-    "displayName": "a concise name",
-    "labels": [
-      {
-        "description": "a label description",
-        "key": "testkey"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "1",
-    "valueType": "DISTRIBUTION"
+    "valueType": 5
   },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",

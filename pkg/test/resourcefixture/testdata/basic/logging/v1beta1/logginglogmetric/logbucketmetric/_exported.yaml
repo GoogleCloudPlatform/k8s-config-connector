@@ -15,24 +15,20 @@ spec:
     hasMass: REGEXP_EXTRACT(jsonPayload.request, ".*([1-9]).*")
     mass: EXTRACT(jsonPayload.request)
     sku: EXTRACT(jsonPayload.id)
-  loggingLogBucketRef:
-    external: projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}
   metricDescriptor:
     displayName: updated-sample-descriptor
     labels:
-    - description: whether the item has a mass
-      key: hasMass
-      valueType: BOOL
     - description: amount of matter
       key: mass
       valueType: STRING
+    - description: whether the item has a mass
+      key: hasMass
+      valueType: BOOL
     - description: identifying number for item
       key: sku
       valueType: INT64
-    launchStage: ""
     metricKind: DELTA
     unit: s
     valueType: DISTRIBUTION
-  projectRef:
-    external: ${projectId}
+  projectRef: {}
   valueExtractor: EXTRACT(jsonPayload.response)

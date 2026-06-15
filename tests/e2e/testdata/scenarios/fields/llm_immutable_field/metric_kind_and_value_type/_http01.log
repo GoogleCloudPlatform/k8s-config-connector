@@ -1,5 +1,7 @@
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: metric_name=projects%2F${projectId}%2Fmetrics%2Flogginglogmetric-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -35,11 +37,11 @@ X-Xss-Protection: 0
         "key": "testkey"
       }
     ],
-    "metricKind": "DELTA",
+    "metricKind": 2,
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "unit": "1",
-    "valueType": "DISTRIBUTION"
+    "valueType": 5
   },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -48,9 +50,10 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: metric_name=projects%2F${projectId}%2Fmetrics%2Flogginglogmetric-${uniqueId}
 
 {
   "bucketOptions": {
@@ -61,7 +64,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       ]
     }
   },
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "an updated description",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
   "labelExtractors": {
@@ -72,20 +74,18 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "labels": [
       {
         "description": "a label description",
-        "key": "testkey",
-        "valueType": "STRING"
+        "key": "testkey"
       }
     ],
-    "launchStage": "EARLY_ACCESS",
+    "launchStage": 1,
     "metadata": {
       "ingestDelay": "1s",
       "samplePeriod": "1s"
     },
-    "metricKind": "CUMULATIVE",
-    "valueType": "INT64"
+    "metricKind": 3,
+    "valueType": 2
   },
   "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
   "valueExtractor": "EXTRACT(jsonPayload.response)"
 }
 
@@ -123,11 +123,11 @@ X-Xss-Protection: 0
         "key": "testkey"
       }
     ],
-    "metricKind": "CUMULATIVE",
+    "metricKind": 3,
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "unit": "1",
-    "valueType": "INT64"
+    "valueType": 2
   },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -136,8 +136,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: metric_name=projects%2F${projectId}%2Fmetrics%2Flogginglogmetric-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -173,11 +175,11 @@ X-Xss-Protection: 0
         "key": "testkey"
       }
     ],
-    "metricKind": "CUMULATIVE",
+    "metricKind": 3,
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "unit": "1",
-    "valueType": "INT64"
+    "valueType": 2
   },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",

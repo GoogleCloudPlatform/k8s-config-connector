@@ -15,6 +15,7 @@
 # IntelliJ/Goland config
 .idea
 *.iml
+*.prof
 
 # Google Terraform Provider binary
 #terraform-provider-google-beta

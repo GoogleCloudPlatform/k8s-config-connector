@@ -8,15 +8,10 @@ spec:
       bounds:
       - 1.5
       - 4.5
-  description: ""
-  disabled: false
   filter: resource.type=gae_app AND severity<=ERROR
   metricDescriptor:
-    displayName: ""
-    launchStage: ""
     metricKind: DELTA
     unit: "1"
     valueType: DISTRIBUTION
-  projectRef:
-    external: ${projectId}
+  projectRef: {}
   valueExtractor: EXTRACT(jsonPayload.response)

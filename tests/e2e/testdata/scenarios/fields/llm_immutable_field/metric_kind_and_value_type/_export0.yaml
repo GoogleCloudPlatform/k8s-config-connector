@@ -9,7 +9,6 @@ spec:
       - 1.5
       - 4.5
   description: a description
-  disabled: false
   filter: resource.type=gae_app AND severity<=ERROR
   labelExtractors:
     testkey: EXTRACT(jsonPayload.request)
@@ -19,10 +18,8 @@ spec:
     - description: a label description
       key: testkey
       valueType: STRING
-    launchStage: ""
     metricKind: DELTA
     unit: "1"
     valueType: DISTRIBUTION
-  projectRef:
-    external: ${projectId}
+  projectRef: {}
   valueExtractor: EXTRACT(jsonPayload.response)

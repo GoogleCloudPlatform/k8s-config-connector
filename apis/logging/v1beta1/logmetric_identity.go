@@ -41,6 +41,10 @@ func (i *LoggingLogMetricIdentity) String() string {
 	return LoggingLogMetricIdentityFormat.ToString(*i)
 }
 
+func (i *LoggingLogMetricIdentity) ParentString() string {
+	return "projects/" + i.Project
+}
+
 func (i *LoggingLogMetricIdentity) FromExternal(ref string) error {
 	parsed, match, err := LoggingLogMetricIdentityFormat.Parse(ref)
 	if err != nil {
