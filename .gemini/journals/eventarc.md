@@ -10,3 +10,10 @@
   var EventarcChannelConnectionIdentityFormat = gcpurls.Template[EventarcChannelConnectionIdentity]("eventarc.googleapis.com", "projects/{project}/locations/{location}/channelConnections/{channelconnection}")
   ```
 - **Impact**: Future implementers of KCC Direct resources using `gcpurls.Template` must ensure that all template placeholders match their corresponding struct field names case-insensitively (e.g. avoid underscores in the template placeholder unless the struct field itself contains underscores).
+
+### [2026-06-15] Handling underscores in gcpurls.Template placeholders with struct fields
+- **Context**: Implementing direct types and IdentityV2 for `EventarcGoogleApiSource` (Issue #10266).
+- **Problem**: The GCP resource path segment name has underscores (`googleApiSources/{google_api_source}`). If the struct field is camel-cased to `GoogleApiSource`, `strings.ToLower(f.Name)` evaluates to `googleapisource`, which fails to match `{google_api_source}` casing-insensitive, causing initialization panics.
+- **Solution**: Named the struct field with an explicit underscore: `Google_api_source string`. This allows the lowercase of the struct field `google_api_source` to perfectly match the placeholder `{google_api_source}`, resolving the mapping successfully.
+- **Impact**: Future developers can safely keep underscores in the GCP template placeholders by declaring fields in Go with matching underscores (e.g., `Google_api_source`), allowing clean alignment with canonical GCP URL formats.
+
