@@ -27,6 +27,7 @@
 | apigee.cnrm.cloud.google.com                  | ApigeeInstance                                  | True         | True        | False  | Direct     | True        |
 | apigee.cnrm.cloud.google.com                  | ApigeeNATAddress                                | True         | False       | False  | Terraform  | False       |
 | apigee.cnrm.cloud.google.com                  | ApigeeOrganization                              | False        | True        | False  | DCL        | True        |
+| apigeeregistry.cnrm.cloud.google.com          | ApigeeRegistryArtifact                          | True         | False       | False  | Direct     | True        |
 | apigeeregistry.cnrm.cloud.google.com          | ApigeeRegistryInstance                          | True         | False       | False  | Direct     | True        |
 | apigee.cnrm.cloud.google.com                  | ApigeeSyncAuthorization                         | True         | False       | False  | Terraform  | False       |
 | apihub.cnrm.cloud.google.com                  | APIHubAPI                                       | True         | False       | False  | Direct     | True        |
@@ -232,6 +233,7 @@
 | dataform.cnrm.cloud.google.com                | DataformRepository                              | True         | True        | False  | Direct     | True        |
 | datafusion.cnrm.cloud.google.com              | DataFusionInstance                              | False        | True        | False  | DCL        | False       |
 | datalabeling.cnrm.cloud.google.com            | DataLabelingAnnotationSpecSet                   | True         | False       | False  | Direct     | True        |
+| datalabeling.cnrm.cloud.google.com            | DataLabelingDataset                             | True         | False       | False  | Direct     | True        |
 | datalabeling.cnrm.cloud.google.com            | DataLabelingInstruction                         | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexDataTaxonomy                            | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexEntryGroup                              | True         | False       | False  | Direct     | True        |

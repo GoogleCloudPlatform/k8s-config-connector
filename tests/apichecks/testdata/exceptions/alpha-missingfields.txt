@@ -106,6 +106,10 @@
 [missing_field] crd=apigeeaddonsconfigs.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.addonsConfig.integrationConfig.enabled" is not set in unstructured objects
 [missing_field] crd=apigeeaddonsconfigs.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.addonsConfig.monetizationConfig.enabled" is not set in unstructured objects
 [missing_field] crd=apigeenataddresses.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceId" is not set in unstructured objects
+[missing_field] crd=apigeeregistryartifacts.apigeeregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.contents" is not set in unstructured objects
+[missing_field] crd=apigeeregistryartifacts.apigeeregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=apigeeregistryartifacts.apigeeregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.mimeType" is not set in unstructured objects
+[missing_field] crd=apigeeregistryartifacts.apigeeregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apigeeregistryinstances.apigeeregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.cmekKeyNameRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apigeeregistryinstances.apigeeregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=apigeeregistryinstances.apigeeregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
@@ -1282,6 +1286,9 @@
 [missing_field] crd=datalabelingannotationspecsets.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=datalabelingannotationspecsets.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=datalabelingannotationspecsets.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=datalabelingdatasets.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=datalabelingdatasets.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=datalabelingdatasets.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=datalabelinginstructions.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.csvInstruction.gcsFileURI" is not set in unstructured objects
 [missing_field] crd=datalabelinginstructions.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataType" is not set in unstructured objects
 [missing_field] crd=datalabelinginstructions.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
