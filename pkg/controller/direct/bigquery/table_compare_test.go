@@ -17,6 +17,7 @@ package bigquery
 import (
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	bigquery "google.golang.org/api/bigquery/v2"
 )
 
@@ -83,5 +84,161 @@ func TestPolicyTagsEqual(t *testing.T) {
 				t.Errorf("policyTagsEqual() = %v, want %v", got, tt.want)
 			}
 		})
+	}
+}
+
+func TestTableEq_MultipleDiffs(t *testing.T) {
+	a := &bigquery.Table{
+		Description:  "description a",
+		FriendlyName: "friendly name a",
+		Labels:       map[string]string{"label1": "value1"},
+	}
+	b := &bigquery.Table{
+		Description:  "description b",
+		FriendlyName: "friendly name b",
+		Labels:       map[string]string{"label1": "value2"},
+	}
+
+	diff := &structuredreporting.Diff{}
+	equal, err := TableEq(a, b, diff)
+	if err != nil {
+		t.Fatalf("TableEq failed: %v", err)
+	}
+
+	if equal {
+		t.Errorf("TableEq returned true, want false")
+	}
+
+	expectedDiffCount := 3
+	if len(diff.Fields) != expectedDiffCount {
+		t.Errorf("got %d diffs, want %d", len(diff.Fields), expectedDiffCount)
+		for _, f := range diff.Fields {
+			t.Logf("diff field: %s", f.ID)
+		}
+	}
+}
+
+func TestTableFieldsSchemaEqual_MultipleDiffs(t *testing.T) {
+	a := []*bigquery.TableFieldSchema{
+		{
+			Name:        "field1",
+			Description: "desc1",
+			Type:        "STRING",
+		},
+		{
+			Name:        "field2",
+			Description: "desc2",
+			Type:        "INTEGER",
+		},
+	}
+	b := []*bigquery.TableFieldSchema{
+		{
+			Name:        "field1",
+			Description: "desc1_changed",
+			Type:        "STRING",
+		},
+		{
+			Name:        "field2",
+			Description: "desc2",
+			Type:        "STRING", // changed
+		},
+	}
+
+	diff := &structuredreporting.Diff{}
+	equal, err := tableFieldsSchemaEqual(a, b, "schema.fields", diff)
+	if err != nil {
+		t.Fatalf("tableFieldsSchemaEqual failed: %v", err)
+	}
+
+	if equal {
+		t.Errorf("tableFieldsSchemaEqual returned true, want false")
+	}
+
+	expectedDiffCount := 2
+	if len(diff.Fields) != expectedDiffCount {
+		t.Errorf("got %d diffs, want %d", len(diff.Fields), expectedDiffCount)
+		for _, f := range diff.Fields {
+			t.Logf("diff field: %s", f.ID)
+		}
+	}
+
+	foundField1 := false
+	foundField2 := false
+	for _, f := range diff.Fields {
+		if f.ID == "schema.fields[field1].description" {
+			foundField1 = true
+		}
+		if f.ID == "schema.fields[field2].type" {
+			foundField2 = true
+		}
+	}
+
+	if !foundField1 {
+		t.Errorf("missing diff for field1 description")
+	}
+	if !foundField2 {
+		t.Errorf("missing diff for field2 type")
+	}
+}
+
+func TestTableEq_TimePartitioning(t *testing.T) {
+	a := &bigquery.Table{
+		TimePartitioning: &bigquery.TimePartitioning{
+			Type:  "DAY",
+			Field: "f1",
+		},
+	}
+	b := &bigquery.Table{
+		TimePartitioning: &bigquery.TimePartitioning{
+			Type:  "DAY",
+			Field: "f2",
+		},
+	}
+
+	diff := &structuredreporting.Diff{}
+	equal, err := TableEq(a, b, diff)
+	if err != nil {
+		t.Fatalf("TableEq failed: %v", err)
+	}
+
+	if equal {
+		t.Errorf("TableEq returned true, want false")
+	}
+
+	if len(diff.Fields) != 1 {
+		t.Errorf("got %d diffs, want 1", len(diff.Fields))
+	} else if diff.Fields[0].ID != "time_partitioning" {
+		t.Errorf("got diff ID %s, want time_partitioning", diff.Fields[0].ID)
+	}
+}
+
+func TestTableEq_TimePartitioning_IgnoreRequirePartitionFilter(t *testing.T) {
+	a := &bigquery.Table{
+		TimePartitioning: &bigquery.TimePartitioning{
+			Type:                   "DAY",
+			Field:                  "f1",
+			RequirePartitionFilter: true,
+		},
+	}
+	b := &bigquery.Table{
+		TimePartitioning: &bigquery.TimePartitioning{
+			Type:                   "DAY",
+			Field:                  "f1",
+			RequirePartitionFilter: false,
+		},
+	}
+
+	diff := &structuredreporting.Diff{}
+	equal, err := TableEq(a, b, diff)
+	if err != nil {
+		t.Fatalf("TableEq failed: %v", err)
+	}
+
+	if !equal {
+		t.Errorf("TableEq returned false, want true (RequirePartitionFilter under TimePartitioning should be ignored)")
+	}
+
+	if len(diff.Fields) != 0 {
+		t.Errorf("got %d diffs, want 0", len(diff.Fields))
 	}
 }
