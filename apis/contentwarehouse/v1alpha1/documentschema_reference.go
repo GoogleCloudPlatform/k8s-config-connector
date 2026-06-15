@@ -42,7 +42,7 @@ type ContentWarehouseSchemaRef struct {
 }
 
 func init() {
-	refs.Register(&ContentWarehouseSchemaRef{})
+	refs.Register(&ContentWarehouseSchemaRef{}, &ContentWarehouseSchema{})
 }
 
 func (r *ContentWarehouseSchemaRef) GetGVK() schema.GroupVersionKind {

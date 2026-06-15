@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -65,17 +65,34 @@ func NewMemoryEventSink() *MemoryEventSink {
 type MemoryEventSink struct {
 	mutex      sync.Mutex
 	HTTPEvents []*LogEntry `json:"httpEvents,omitempty"`
+	paused     bool
 }
 
 func (s *MemoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) { //nolint:revive
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
+	if s.paused {
+		return
+	}
+
 	// HACK: Filter oauth events
 	if strings.Contains(entry.Request.URL, "oauth2.googleapis.com") {
 		return
 	}
 	s.HTTPEvents = append(s.HTTPEvents, entry)
+}
+
+func (s *MemoryEventSink) Pause() {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	s.paused = true
+}
+
+func (s *MemoryEventSink) Resume() {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	s.paused = false
 }
 
 func (s LogEntries) FormatHTTP() string {

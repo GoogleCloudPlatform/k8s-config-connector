@@ -41,7 +41,7 @@ type ComputeResourcePolicyRef struct {
 }
 
 func init() {
-	refs.Register(&ComputeResourcePolicyRef{})
+	refs.Register(&ComputeResourcePolicyRef{}, &ComputeResourcePolicy{})
 }
 
 func (r *ComputeResourcePolicyRef) GetGVK() schema.GroupVersionKind {

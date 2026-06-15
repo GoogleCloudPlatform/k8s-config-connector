@@ -33,23 +33,23 @@ func backupDRManagementServerFuzzer() fuzztesting.KRMFuzzer {
 		BackupDRManagementServerObservedState_v1alpha1_FromProto, BackupDRManagementServerObservedState_v1alpha1_ToProto,
 	)
 
-	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".labels")
-	f.SpecFields.Insert(".type")
-	f.SpecFields.Insert(".networks")
+	f.SpecField(".description")
+	f.Unimplemented_LabelsAnnotations(".labels")
+	f.SpecField(".type")
+	f.SpecField(".networks")
 
-	f.StatusFields.Insert(".management_uri")
-	f.StatusFields.Insert(".workforce_identity_based_management_uri")
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".oauth2_client_id")
-	f.StatusFields.Insert(".workforce_identity_based_oauth2_client_id")
-	f.StatusFields.Insert(".ba_proxy_uri")
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
+	f.StatusField(".management_uri")
+	f.StatusField(".workforce_identity_based_management_uri")
+	f.StatusField(".state")
+	f.StatusField(".oauth2_client_id")
+	f.StatusField(".workforce_identity_based_oauth2_client_id")
+	f.StatusField(".ba_proxy_uri")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
 
-	f.UnimplementedFields.Insert(".name") // special field
-	f.UnimplementedFields.Insert(".satisfies_pzs")
-	f.UnimplementedFields.Insert(".satisfies_pzi")
+	f.Unimplemented_Identity(".name") // special field
+	f.Unimplemented_NotYetTriaged(".satisfies_pzs")
+	f.Unimplemented_NotYetTriaged(".satisfies_pzi")
 	f.Unimplemented_Etag()
 
 	return f

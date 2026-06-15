@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/zones/us-central1-a/futureReservations/computefuturereservation-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeFutureReservation
+  name: computefuturereservation-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -42,7 +42,7 @@ type DataflowJobRef struct {
 }
 
 func init() {
-	refs.Register(&DataflowJobRef{})
+	refs.Register(&DataflowJobRef{}, &DataflowJob{})
 }
 
 func (r *DataflowJobRef) GetGVK() schema.GroupVersionKind {

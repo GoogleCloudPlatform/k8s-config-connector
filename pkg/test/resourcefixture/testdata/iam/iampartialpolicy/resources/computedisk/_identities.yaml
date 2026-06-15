@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeDisk
+  name: computedisk-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMPartialPolicy
+  name: iampartialpolicy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

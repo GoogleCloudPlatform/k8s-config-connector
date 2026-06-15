@@ -41,7 +41,7 @@ type NetworkServicesLBRouteExtensionRef struct {
 }
 
 func init() {
-	refs.Register(&NetworkServicesLBRouteExtensionRef{})
+	refs.Register(&NetworkServicesLBRouteExtensionRef{}, &NetworkServicesLBRouteExtension{})
 }
 
 func (r *NetworkServicesLBRouteExtensionRef) GetGVK() schema.GroupVersionKind {

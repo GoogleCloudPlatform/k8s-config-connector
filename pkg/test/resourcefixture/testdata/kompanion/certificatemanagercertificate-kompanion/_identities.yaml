@@ -1,0 +1,6 @@
+- caisURL: //certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}
+  group: certificatemanager.cnrm.cloud.google.com
+  kind: CertificateManagerCertificate
+  name: certificatemanagercertificate-kompanion-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

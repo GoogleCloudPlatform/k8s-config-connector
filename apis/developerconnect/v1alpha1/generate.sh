@@ -26,6 +26,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.developerconnect.v1 \
   --api-version developerconnect.cnrm.cloud.google.com/v1alpha1 \
+  --resource DevConnectConnection:Connection \
   --resource DevConnectInsightsConfig:InsightsConfig \
   --resource DevConnectAccountConnector:AccountConnector \
   --prune-unused-types=false

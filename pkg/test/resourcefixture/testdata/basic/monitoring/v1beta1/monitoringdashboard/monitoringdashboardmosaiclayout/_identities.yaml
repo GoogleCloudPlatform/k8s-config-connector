@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringAlertPolicy
+  name: monitoringalertpolicy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //monitoring.googleapis.com/projects/${projectId}/dashboards/monitoringdashboardmosaiclayout-${uniqueId}
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringDashboard
+  name: monitoringdashboardmosaiclayout-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

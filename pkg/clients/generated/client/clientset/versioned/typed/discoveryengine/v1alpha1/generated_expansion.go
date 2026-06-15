@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type DiscoveryEngineControlExpansion interface{}
+
 type DiscoveryEngineConversationExpansion interface{}
 
 type DiscoveryEngineDataStoreExpansion interface{}

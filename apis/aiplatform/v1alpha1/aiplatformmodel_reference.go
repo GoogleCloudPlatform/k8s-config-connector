@@ -41,7 +41,7 @@ type AIPlatformModelRef struct {
 }
 
 func init() {
-	refs.Register(&AIPlatformModelRef{})
+	refs.Register(&AIPlatformModelRef{}, &AIPlatformModel{})
 }
 
 func (r *AIPlatformModelRef) GetGVK() schema.GroupVersionKind {

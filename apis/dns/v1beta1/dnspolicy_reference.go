@@ -41,7 +41,7 @@ type DNSPolicyRef struct {
 }
 
 func init() {
-	refs.Register(&DNSPolicyRef{})
+	refs.Register(&DNSPolicyRef{}, &DNSPolicy{})
 }
 
 func (r *DNSPolicyRef) GetGVK() schema.GroupVersionKind {

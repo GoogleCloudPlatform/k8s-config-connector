@@ -42,7 +42,7 @@ type StorageBucketRef struct {
 }
 
 func init() {
-	refs.Register(&StorageBucketRef{})
+	refs.Register(&StorageBucketRef{}, &StorageBucket{})
 }
 
 func (r *StorageBucketRef) GetGVK() schema.GroupVersionKind {

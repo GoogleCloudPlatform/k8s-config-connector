@@ -1,0 +1,12 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/computenetwork-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetwork
+  name: computenetwork-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //alloydb.googleapis.com/projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}
+  group: alloydb.cnrm.cloud.google.com
+  kind: AlloyDBCluster
+  name: alloydbcluster-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

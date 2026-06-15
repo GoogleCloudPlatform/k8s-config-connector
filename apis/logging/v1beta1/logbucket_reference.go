@@ -47,7 +47,7 @@ type LoggingLogBucketRef struct {
 }
 
 func init() {
-	refs.Register(&LoggingLogBucketRef{})
+	refs.Register(&LoggingLogBucketRef{}, &LoggingLogBucket{})
 }
 
 func (r *LoggingLogBucketRef) GetGVK() schema.GroupVersionKind {

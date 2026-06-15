@@ -35,7 +35,7 @@ the test will fail the first time, but then should pass the second time (with th
 - **Fallback Analysis**: If no explicit hint is found, review the `FAIL:` or `ERROR:` lines summarized by the script to diagnose the root cause (e.g., compilation error, linter failure, or unexpected golden diff).
 
 #### B. Approver Feedback
-The script filters comments and reviews specifically from KCC project approvers in `OWNERS` (`acpana`, `barney-s`, `cheftako`, `fedebongio`, `justinsb`, `ldanielmadariaga`, `maqiuyujoyce`, `xiaoweim`).
+The script filters comments and reviews specifically from KCC project approvers in `OWNERS` (`acpana`, `barney-s`, `cheftako`, `fedebongio`, `justinsb`, `ldanielmadariaga`, `maqiuyujoyce`).
 - Carefully read their feedback.
 - Make the requested code changes or clarifications.
 

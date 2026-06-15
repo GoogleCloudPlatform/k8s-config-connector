@@ -1,0 +1,25 @@
+- caisURL: unknown
+  group: sql.cnrm.cloud.google.com
+  kind: SQLInstance
+  name: sqlinstance-sample-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: sql.cnrm.cloud.google.com
+  kind: SQLDatabase
+  name: sqldatabase-sample-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: sql.cnrm.cloud.google.com
+  kind: SQLUser
+  name: sqluser-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  error: not yet supported
+  group: bigqueryconnection.cnrm.cloud.google.com
+  kind: BigQueryConnectionConnection
+  name: bigqueryconnectionconnection-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

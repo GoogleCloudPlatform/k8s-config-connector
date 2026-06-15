@@ -1,0 +1,6 @@
+- caisURL: //cloudkms.googleapis.com/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}
+  group: kms.cnrm.cloud.google.com
+  kind: KMSKeyRing
+  name: key-ring-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

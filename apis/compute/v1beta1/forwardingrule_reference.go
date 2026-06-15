@@ -43,7 +43,7 @@ type ForwardingRuleRef struct {
 }
 
 func init() {
-	refs.Register(&ForwardingRuleRef{})
+	refs.Register(&ForwardingRuleRef{}, &ComputeForwardingRule{})
 }
 
 func (r *ForwardingRuleRef) GetGVK() schema.GroupVersionKind {

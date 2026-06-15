@@ -42,7 +42,7 @@ type AuthorizedViewRef struct {
 }
 
 func init() {
-	refs.Register(&AuthorizedViewRef{})
+	refs.Register(&AuthorizedViewRef{}, &BigtableAuthorizedView{})
 }
 
 func (r *AuthorizedViewRef) GetGVK() schema.GroupVersionKind {

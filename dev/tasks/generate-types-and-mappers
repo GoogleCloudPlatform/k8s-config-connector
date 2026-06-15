@@ -48,6 +48,10 @@ for f in $(find apis -name "generate.sh" | sort); do
         echo "Skipping ${f}"
         continue
     fi
+    if [[ "${f}" == *"contentwarehouse"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
     if [[ "${f}" == *"datastream"* ]]; then
         echo "Skipping ${f}"
         continue

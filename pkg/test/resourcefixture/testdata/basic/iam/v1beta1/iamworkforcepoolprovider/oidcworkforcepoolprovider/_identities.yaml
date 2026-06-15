@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMWorkforcePool
+  name: iamworkforcepool-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMWorkforcePoolProvider
+  name: iamwfpp-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

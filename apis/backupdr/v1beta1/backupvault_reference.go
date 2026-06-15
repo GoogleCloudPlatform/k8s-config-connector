@@ -42,7 +42,7 @@ type BackupVaultRef struct {
 }
 
 func init() {
-	refs.Register(&BackupVaultRef{})
+	refs.Register(&BackupVaultRef{}, &BackupDRBackupVault{})
 }
 
 func (r *BackupVaultRef) GetGVK() schema.GroupVersionKind {

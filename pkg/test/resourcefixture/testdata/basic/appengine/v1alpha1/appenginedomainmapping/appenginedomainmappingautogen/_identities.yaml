@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: appengine.cnrm.cloud.google.com
+  kind: AppEngineDomainMapping
+  name: appenginedomainmapping-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

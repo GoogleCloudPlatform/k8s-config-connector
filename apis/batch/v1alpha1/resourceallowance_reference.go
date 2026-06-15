@@ -41,7 +41,7 @@ type CloudBatchResourceAllowanceRef struct {
 }
 
 func init() {
-	refs.Register(&CloudBatchResourceAllowanceRef{})
+	refs.Register(&CloudBatchResourceAllowanceRef{}, &CloudBatchResourceAllowance{})
 }
 
 func (r *CloudBatchResourceAllowanceRef) GetGVK() schema.GroupVersionKind {

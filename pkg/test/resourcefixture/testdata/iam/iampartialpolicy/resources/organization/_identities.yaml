@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: resourcemanager.cnrm.cloud.google.com
+  kind: Organization
+  name: organization-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMPartialPolicy
+  name: iampartialpolicy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

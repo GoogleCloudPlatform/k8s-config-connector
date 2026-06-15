@@ -47,7 +47,7 @@ type PubSubTopicRef struct {
 }
 
 func init() {
-	refs.Register(&PubSubTopicRef{})
+	refs.Register(&PubSubTopicRef{}, &PubSubTopic{})
 }
 
 func (r *PubSubTopicRef) GetGVK() schema.GroupVersionKind {

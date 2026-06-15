@@ -42,7 +42,7 @@ type ServiceDirectoryNamespaceRef struct {
 }
 
 func init() {
-	refs.Register(&ServiceDirectoryNamespaceRef{})
+	refs.Register(&ServiceDirectoryNamespaceRef{}, &ServiceDirectoryNamespace{})
 }
 
 func (r *ServiceDirectoryNamespaceRef) GetGVK() schema.GroupVersionKind {

@@ -47,7 +47,7 @@ type MonitoringAlertPolicyRef struct {
 }
 
 func init() {
-	refs.Register(&MonitoringAlertPolicyRef{})
+	refs.Register(&MonitoringAlertPolicyRef{}, nil)
 }
 
 func (r *MonitoringAlertPolicyRef) GetGVK() schema.GroupVersionKind {

@@ -41,7 +41,7 @@ type BigQueryAnalyticsHubDataExchangeRef struct {
 }
 
 func init() {
-	refs.Register(&BigQueryAnalyticsHubDataExchangeRef{})
+	refs.Register(&BigQueryAnalyticsHubDataExchangeRef{}, &BigQueryAnalyticsHubDataExchange{})
 }
 
 func (r *BigQueryAnalyticsHubDataExchangeRef) GetGVK() schema.GroupVersionKind {
