@@ -623,6 +623,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - file.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - filestore.cnrm.cloud.google.com
   resources:
   - '*'

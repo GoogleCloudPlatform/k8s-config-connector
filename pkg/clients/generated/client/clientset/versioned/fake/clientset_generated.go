@@ -221,6 +221,8 @@ import (
 	fakeeventarcv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1alpha1/fake"
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1"
 	fakeeventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1/fake"
+	filev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/file/v1alpha1"
+	fakefilev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/file/v1alpha1/fake"
 	filestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1alpha1"
 	fakefilestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1alpha1/fake"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1beta1"
@@ -953,6 +955,11 @@ func (c *Clientset) EventarcV1alpha1() eventarcv1alpha1.EventarcV1alpha1Interfac
 // EventarcV1beta1 retrieves the EventarcV1beta1Client
 func (c *Clientset) EventarcV1beta1() eventarcv1beta1.EventarcV1beta1Interface {
 	return &fakeeventarcv1beta1.FakeEventarcV1beta1{Fake: &c.Fake}
+}
+
+// FileV1alpha1 retrieves the FileV1alpha1Client
+func (c *Clientset) FileV1alpha1() filev1alpha1.FileV1alpha1Interface {
+	return &fakefilev1alpha1.FakeFileV1alpha1{Fake: &c.Fake}
 }
 
 // FilestoreV1alpha1 retrieves the FilestoreV1alpha1Client

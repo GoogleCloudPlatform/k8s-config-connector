@@ -121,6 +121,7 @@ import (
 	essentialcontactsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/essentialcontacts/v1beta1"
 	eventarcv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/eventarc/v1alpha1"
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/eventarc/v1beta1"
+	filev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/file/v1alpha1"
 	filestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/filestore/v1alpha1"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/filestore/v1beta1"
 	firebasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebase/v1alpha1"
@@ -314,6 +315,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	essentialcontactsv1beta1.AddToScheme,
 	eventarcv1alpha1.AddToScheme,
 	eventarcv1beta1.AddToScheme,
+	filev1alpha1.AddToScheme,
 	filestorev1alpha1.AddToScheme,
 	filestorev1beta1.AddToScheme,
 	firebasev1alpha1.AddToScheme,

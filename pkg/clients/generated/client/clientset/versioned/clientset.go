@@ -124,6 +124,7 @@ import (
 	essentialcontactsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/essentialcontacts/v1beta1"
 	eventarcv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1alpha1"
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1"
+	filev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/file/v1alpha1"
 	filestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1alpha1"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1beta1"
 	firebasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebase/v1alpha1"
@@ -313,6 +314,7 @@ type Interface interface {
 	EssentialcontactsV1beta1() essentialcontactsv1beta1.EssentialcontactsV1beta1Interface
 	EventarcV1alpha1() eventarcv1alpha1.EventarcV1alpha1Interface
 	EventarcV1beta1() eventarcv1beta1.EventarcV1beta1Interface
+	FileV1alpha1() filev1alpha1.FileV1alpha1Interface
 	FilestoreV1alpha1() filestorev1alpha1.FilestoreV1alpha1Interface
 	FilestoreV1beta1() filestorev1beta1.FilestoreV1beta1Interface
 	FirebaseV1alpha1() firebasev1alpha1.FirebaseV1alpha1Interface
@@ -500,6 +502,7 @@ type Clientset struct {
 	essentialcontactsV1beta1        *essentialcontactsv1beta1.EssentialcontactsV1beta1Client
 	eventarcV1alpha1                *eventarcv1alpha1.EventarcV1alpha1Client
 	eventarcV1beta1                 *eventarcv1beta1.EventarcV1beta1Client
+	fileV1alpha1                    *filev1alpha1.FileV1alpha1Client
 	filestoreV1alpha1               *filestorev1alpha1.FilestoreV1alpha1Client
 	filestoreV1beta1                *filestorev1beta1.FilestoreV1beta1Client
 	firebaseV1alpha1                *firebasev1alpha1.FirebaseV1alpha1Client
@@ -1078,6 +1081,11 @@ func (c *Clientset) EventarcV1alpha1() eventarcv1alpha1.EventarcV1alpha1Interfac
 // EventarcV1beta1 retrieves the EventarcV1beta1Client
 func (c *Clientset) EventarcV1beta1() eventarcv1beta1.EventarcV1beta1Interface {
 	return c.eventarcV1beta1
+}
+
+// FileV1alpha1 retrieves the FileV1alpha1Client
+func (c *Clientset) FileV1alpha1() filev1alpha1.FileV1alpha1Interface {
+	return c.fileV1alpha1
 }
 
 // FilestoreV1alpha1 retrieves the FilestoreV1alpha1Client
@@ -1935,6 +1943,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.fileV1alpha1, err = filev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.filestoreV1alpha1, err = filestorev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2387,6 +2399,7 @@ func New(c rest.Interface) *Clientset {
 	cs.essentialcontactsV1beta1 = essentialcontactsv1beta1.New(c)
 	cs.eventarcV1alpha1 = eventarcv1alpha1.New(c)
 	cs.eventarcV1beta1 = eventarcv1beta1.New(c)
+	cs.fileV1alpha1 = filev1alpha1.New(c)
 	cs.filestoreV1alpha1 = filestorev1alpha1.New(c)
 	cs.filestoreV1beta1 = filestorev1beta1.New(c)
 	cs.firebaseV1alpha1 = firebasev1alpha1.New(c)

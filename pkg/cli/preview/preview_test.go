@@ -52,7 +52,26 @@ func TestPreview(t *testing.T) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	harness := create.NewHarness(ctx, t, create.WithKubeTarget("envtest"), create.WithGCPTarget("mock"))
+	harness := create.NewHarness(ctx, t,
+		create.WithKubeTarget("envtest"),
+		create.WithGCPTarget("mock"),
+		create.FilterCRDs(func(gk schema.GroupKind) bool {
+			switch gk.Group {
+			case "pubsub.cnrm.cloud.google.com":
+				return gk.Kind == "PubSubTopic"
+			case "iam.cnrm.cloud.google.com":
+				return gk.Kind == "IAMPartialPolicy" || gk.Kind == "IAMPolicy" || gk.Kind == "IAMPolicyMember"
+			case "spanner.cnrm.cloud.google.com":
+				return gk.Kind == "SpannerInstance" || gk.Kind == "SpannerDatabase"
+			case "core.cnrm.cloud.google.com":
+				return true
+			case "resourcemanager.cnrm.cloud.google.com":
+				return gk.Kind == "Project"
+			default:
+				return false
+			}
+		}),
+	)
 
 	// Create KCC objects
 	ns := &unstructured.Unstructured{}

@@ -932,6 +932,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - file.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - filestore.cnrm.cloud.google.com
   resources:
   - '*'

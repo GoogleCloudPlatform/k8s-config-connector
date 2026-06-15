@@ -303,6 +303,7 @@
 | eventarc.cnrm.cloud.google.com                | EventarcEnrollment                              | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcGoogleChannelConfig                     | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcTrigger                                 | False        | True        | False  | DCL        | False       |
+| file.cnrm.cloud.google.com                    | FilestoreBackup                                 | True         | False       | False  | Direct     | True        |
 | filestore.cnrm.cloud.google.com               | FilestoreBackup                                 | False        | True        | False  | DCL        | False       |
 | filestore.cnrm.cloud.google.com               | FilestoreInstance                               | False        | True        | False  | DCL        | False       |
 | filestore.cnrm.cloud.google.com               | FilestoreSnapshot                               | True         | False       | False  | Terraform  | False       |
