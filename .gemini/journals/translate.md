@@ -1,0 +1,5 @@
+### [2026-06-15] TranslateAdaptiveMtDataset Direct Types Scaffolding
+- **Context**: Implementing initial direct KRM types, CRD, and IdentityV2 for `TranslateAdaptiveMtDataset` (Kind: `TranslateAdaptiveMtDataset`) under `apis/translate/v1alpha1`.
+- **Problem**: The issue specified `--service google.cloud.translate.v1`, but `generate-types` failed to locate `AdaptiveMtDataset` in that service. In `proto-list-final.yaml`, the proto path was defined as `google.cloud.translation.v3.AdaptiveMtDataset` under `google.cloud.translation.v3`.
+- **Solution**: Updated `generate.sh` to use `--service google.cloud.translation.v3`. This targeted the correct proto package and successfully generated the base types file. We then hand-crafted the Spec, Status, and ObservedState fields in `adaptivemtdataset_types.go`, including `DisplayName`, `SourceLanguageCode`, `TargetLanguageCode`, `CreateTime`, `UpdateTime`, and `ExampleCount`.
+- **Impact**: Provides standard types scaffolding, Kubernetes CRD generation, and IdentityV2/Reference implementation for the `TranslateAdaptiveMtDataset` direct resource.
