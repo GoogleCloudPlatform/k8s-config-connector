@@ -106,6 +106,12 @@ func main() {
 					} else {
 						fmt.Printf("FAIL: %s (log: %s)\n", t, logPath)
 					}
+					fmt.Printf("--- LOGS FOR FAILING TEST %s ---\n", t)
+					os.Stdout.Write(output)
+					if !bytes.HasSuffix(output, []byte("\n")) {
+						fmt.Println()
+					}
+					fmt.Printf("--- END LOGS FOR FAILING TEST %s ---\n", t)
 					success = false
 				} else {
 					fmt.Printf("PASS: %s (%v)\n", t, duration.Round(time.Millisecond))
