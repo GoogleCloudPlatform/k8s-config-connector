@@ -564,8 +564,8 @@ spec:
                 description: Optional. Whether or not the `Target` requires approval.
                 type: boolean
               resourceID:
-                description: The GCP resource identifier. If not given, the metadata.name
-                  will be used.
+                description: The Google Cloud resource identifier. If not given, the
+                  metadata.name will be used.
                 type: string
               run:
                 description: Information specifying a Cloud Run deployment target.

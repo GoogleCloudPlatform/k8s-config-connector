@@ -33,7 +33,7 @@ var CertificateManagerCertificateIdentityFormat = gcpurls.Template[CertificateMa
 
 // +k8s:deepcopy-gen=false
 
-// CertificateManagerCertificateIdentity is the identity of a GCP CertificateManagerCertificate resource.
+// CertificateManagerCertificateIdentity is the identity of a Google Cloud CertificateManagerCertificate resource.
 type CertificateManagerCertificateIdentity struct {
 	Project     string
 	Location    string

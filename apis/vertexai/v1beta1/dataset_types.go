@@ -65,11 +65,11 @@ type VertexAIDatasetStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *VertexAIDatasetObservedState `json:"observedState,omitempty"`
 }
 
-// VertexAIDatasetObservedState is the state of the VertexAIDataset resource as most recently observed in GCP.
+// VertexAIDatasetObservedState is the state of the VertexAIDataset resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.Dataset
 type VertexAIDatasetObservedState struct {
 	// Output only. Timestamp when this Dataset was created.

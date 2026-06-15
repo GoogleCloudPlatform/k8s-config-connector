@@ -20,7 +20,7 @@ import (
 )
 
 type CommonSpec struct {
-	// The GCP resource identifier. If not given, the metadata.name will be used.
+	// The Google Cloud resource identifier. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// TODO: Do we still need a CommonSpec for resources that do not need project dependency? Those seems to be exceptional any ways.

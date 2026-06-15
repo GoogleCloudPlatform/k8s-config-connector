@@ -33,7 +33,7 @@ var (
 var DataprocSessionTemplateIdentityFormat = gcpurls.Template[DataprocSessionTemplateIdentity]("dataproc.googleapis.com", "projects/{project}/locations/{location}/sessionTemplates/{template}")
 
 // +k8s:deepcopy-gen=false
-// DataprocSessionTemplateIdentity is the identity of a GCP DataprocSessionTemplate resource.
+// DataprocSessionTemplateIdentity is the identity of a Google Cloud DataprocSessionTemplate resource.
 type DataprocSessionTemplateIdentity struct {
 	Project  string
 	Location string

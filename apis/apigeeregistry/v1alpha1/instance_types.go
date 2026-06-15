@@ -54,7 +54,7 @@ type Instance_Config struct {
 
 // +kcc:observedstate:proto=google.cloud.apigeeregistry.v1.Instance.Config
 type Instance_ConfigObservedState struct {
-	// Output only. The GCP location where the Instance resides.
+	// Output only. The Google Cloud location where the Instance resides.
 	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Instance.Config.location
 	Location *string `json:"location,omitempty"`
 }
@@ -68,14 +68,14 @@ type ApigeeRegistryInstanceStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ApigeeRegistryInstance resource in GCP.
+	// A unique specifier for the ApigeeRegistryInstance resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ApigeeRegistryInstanceObservedState `json:"observedState,omitempty"`
 }
 
-// ApigeeRegistryInstanceObservedState is the state of the ApigeeRegistryInstance resource as most recently observed in GCP.
+// ApigeeRegistryInstanceObservedState is the state of the ApigeeRegistryInstance resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.apigeeregistry.v1.Instance
 type ApigeeRegistryInstanceObservedState struct {
 	// Output only. Creation timestamp.

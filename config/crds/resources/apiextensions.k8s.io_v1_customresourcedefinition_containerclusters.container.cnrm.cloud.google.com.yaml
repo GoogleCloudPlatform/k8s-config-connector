@@ -1042,7 +1042,7 @@ spec:
                 - enabled
                 type: object
               networkRef:
-                description: ComputeNetworkRef is a reference to a GCP ComputeNetwork.
+                description: ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.
                 oneOf:
                 - not:
                     required:
@@ -1822,7 +1822,8 @@ spec:
                 - enabled
                 type: object
               subnetworkRef:
-                description: ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.
+                description: ComputeSubnetworkRef is a reference to a Google Cloud
+                  ComputeSubnetwork.
                 oneOf:
                 - not:
                     required:

@@ -38,7 +38,7 @@ var (
 
 // +k8s:deepcopy-gen=false
 
-// LoggingLinkIdentity is the identity of a GCP LoggingLink resource.
+// LoggingLinkIdentity is the identity of a Google Cloud LoggingLink resource.
 type LoggingLinkIdentity struct {
 	Project        string
 	Folder         string

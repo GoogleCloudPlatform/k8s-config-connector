@@ -107,7 +107,7 @@ spec:
                       should be specified, but not both.
                     items:
                       description: CertificateManagerDNSAuthorizationRef is a reference
-                        to a GCP CertificateManagerDNSAuthorization.
+                        to a Google Cloud CertificateManagerDNSAuthorization.
                       oneOf:
                       - not:
                           required:
@@ -528,7 +528,7 @@ spec:
                       should be specified, but not both.
                     items:
                       description: CertificateManagerDNSAuthorizationRef is a reference
-                        to a GCP CertificateManagerDNSAuthorization.
+                        to a Google Cloud CertificateManagerDNSAuthorization.
                       oneOf:
                       - not:
                           required:

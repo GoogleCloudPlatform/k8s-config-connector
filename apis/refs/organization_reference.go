@@ -14,7 +14,7 @@
 
 package refs
 
-// OrganizationRef is a reference to a GCP Organization.
+// OrganizationRef is a reference to a Google Cloud Organization.
 type OrganizationRef struct {
 	/* The 'name' field of an organization, when not managed by Config Connector. */
 	// +optional

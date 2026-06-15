@@ -116,7 +116,7 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *Metastore
 			return nil, fmt.Errorf("parent service changed, expect %s, got %s (immutable field)", actualParent.ServiceID, serviceID)
 		}
 		if actualResourceID != resourceID {
-			// Resource ID (backup name) might be mutable or immutable depending on GCP API. Assume immutable based on original code.
+			// Resource ID (backup name) might be mutable or immutable depending on Google Cloud API. Assume immutable based on original code.
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %q, since it has already been assigned to %q in externalRef",
 				resourceID, actualResourceID)
 		}

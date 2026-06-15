@@ -28,7 +28,7 @@ import (
 var _ refs.Ref = &ContentWarehouseSchemaRef{}
 
 // ContentWarehouseSchemaRef defines the resource reference to ContentWarehouseSchema, which "External" field
-// holds the GCP identifier for the KRM object.
+// holds the Google Cloud identifier for the KRM object.
 type ContentWarehouseSchemaRef struct {
 	// A reference to an externally managed ContentWarehouseSchema resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/documentSchemas/{{document_schema}}"

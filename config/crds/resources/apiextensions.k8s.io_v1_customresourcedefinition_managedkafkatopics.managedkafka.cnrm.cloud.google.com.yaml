@@ -146,8 +146,8 @@ spec:
                 format: int32
                 type: integer
               resourceID:
-                description: The GCP resource identifier. If not given, the metadata.name
-                  will be used.
+                description: The Google Cloud resource identifier. If not given, the
+                  metadata.name will be used.
                 type: string
             required:
             - clusterRef
@@ -327,8 +327,8 @@ spec:
                 format: int32
                 type: integer
               resourceID:
-                description: The GCP resource identifier. If not given, the metadata.name
-                  will be used.
+                description: The Google Cloud resource identifier. If not given, the
+                  metadata.name will be used.
                 type: string
             required:
             - clusterRef

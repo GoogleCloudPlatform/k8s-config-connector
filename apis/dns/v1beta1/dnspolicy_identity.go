@@ -31,7 +31,7 @@ var (
 
 var DNSPolicyIdentityFormat = gcpurls.Template[DNSPolicyIdentity]("dns.googleapis.com", "projects/{project}/policies/{policy}")
 
-// DNSPolicyIdentity is the identity of a GCP DNSPolicy.
+// DNSPolicyIdentity is the identity of a Google Cloud DNSPolicy.
 // +k8s:deepcopy-gen=false
 type DNSPolicyIdentity struct {
 	Project string

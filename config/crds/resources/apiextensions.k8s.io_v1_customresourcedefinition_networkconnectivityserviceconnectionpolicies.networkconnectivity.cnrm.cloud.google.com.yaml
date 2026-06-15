@@ -145,7 +145,8 @@ spec:
                     description: 'The resource paths of subnetworks to use for IP
                       address management. Example: projects/{projectNumOrId}/regions/{region}/subnetworks/{resourceId}.'
                     items:
-                      description: ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.
+                      description: ComputeSubnetworkRef is a reference to a Google
+                        Cloud ComputeSubnetwork.
                       oneOf:
                       - not:
                           required:

@@ -14,7 +14,7 @@
 
 package refs
 
-// FolderRef is a reference to a GCP Folder.
+// FolderRef is a reference to a Google Cloud Folder.
 type FolderRef struct {
 	/* The 'name' field of a folder, when not managed by Config Connector. */
 	// +optional

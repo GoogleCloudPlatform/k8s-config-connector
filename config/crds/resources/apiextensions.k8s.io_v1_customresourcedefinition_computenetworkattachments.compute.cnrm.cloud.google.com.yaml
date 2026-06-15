@@ -191,7 +191,8 @@ spec:
                   provided by the service consumer to use for endpoints in the producers
                   that connect to this network attachment.
                 items:
-                  description: ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.
+                  description: ComputeSubnetworkRef is a reference to a Google Cloud
+                    ComputeSubnetwork.
                   oneOf:
                   - not:
                       required:

@@ -26,14 +26,14 @@ import (
 var _ refsv1beta1.Ref = &BatchJobRef{}
 
 type BatchJobRef struct {
-	// External represents a fully-qualified GCP resource name.
+	// External represents a fully-qualified Google Cloud resource name.
 	//   Format: projects/{{project}}/locations/{{location}}/jobs/{{value}}
 	// +optional
 	External string `json:"external,omitempty"`
-	// Name represents the name of the GCP resource.
+	// Name represents the name of the Google Cloud resource.
 	// +optional
 	Name string `json:"name,omitempty"`
-	// Namespace represents the namespace of the GCP resource.
+	// Namespace represents the namespace of the Google Cloud resource.
 	// +optional
 	Namespace string `json:"namespace,omitempty"`
 }

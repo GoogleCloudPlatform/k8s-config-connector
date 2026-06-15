@@ -59,14 +59,14 @@ type ApigeeRegistryArtifactStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ApigeeRegistryArtifact resource in GCP.
+	// A unique specifier for the ApigeeRegistryArtifact resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ApigeeRegistryArtifactObservedState `json:"observedState,omitempty"`
 }
 
-// ApigeeRegistryArtifactObservedState is the state of the ApigeeRegistryArtifact resource as most recently observed in GCP.
+// ApigeeRegistryArtifactObservedState is the state of the ApigeeRegistryArtifact resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.apigeeregistry.v1.Artifact
 type ApigeeRegistryArtifactObservedState struct {
 	// Output only. Creation timestamp.

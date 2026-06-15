@@ -35,7 +35,7 @@ var (
 var ZonalComputeDiskIdentityFormat = gcpurls.Template[ComputeDiskIdentity]("compute.googleapis.com", "projects/{project}/zones/{zone}/disks/{disk}")
 var RegionalComputeDiskIdentityFormat = gcpurls.Template[ComputeDiskIdentity]("compute.googleapis.com", "projects/{project}/regions/{region}/disks/{disk}")
 
-// ComputeDiskIdentity is the identity of a GCP ComputeDisk resource.
+// ComputeDiskIdentity is the identity of a Google Cloud ComputeDisk resource.
 // +k8s:deepcopy-gen=false
 type ComputeDiskIdentity struct {
 	Project string

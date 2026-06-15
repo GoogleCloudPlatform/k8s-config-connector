@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &ApigeeRegistryArtifactRef{}
 
-// ApigeeRegistryArtifactRef is a reference to a GCP ApigeeRegistryArtifact.
+// ApigeeRegistryArtifactRef is a reference to a Google Cloud ApigeeRegistryArtifact.
 type ApigeeRegistryArtifactRef struct {
 	// A reference to an externally managed ApigeeRegistryArtifact resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/artifacts/{{artifact}}".
 	External string `json:"external,omitempty"`

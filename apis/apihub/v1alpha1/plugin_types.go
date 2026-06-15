@@ -56,14 +56,14 @@ type APIHubPluginStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the APIHubPlugin resource in GCP.
+	// A unique specifier for the APIHubPlugin resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *APIHubPluginObservedState `json:"observedState,omitempty"`
 }
 
-// APIHubPluginObservedState is the state of the APIHubPlugin resource as most recently observed in GCP.
+// APIHubPluginObservedState is the state of the APIHubPlugin resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.apihub.v1.Plugin
 type APIHubPluginObservedState struct {
 	// Output only. Represents the state of the plugin.

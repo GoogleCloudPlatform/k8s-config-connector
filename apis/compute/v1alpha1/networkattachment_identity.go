@@ -35,7 +35,7 @@ var ComputeNetworkAttachmentIdentityFormat = gcpurls.Template[ComputeNetworkAtta
 	"projects/{project}/regions/{region}/networkAttachments/{networkattachment}",
 )
 
-// ComputeNetworkAttachmentIdentity is the identity of a GCP ComputeNetworkAttachment resource.
+// ComputeNetworkAttachmentIdentity is the identity of a Google Cloud ComputeNetworkAttachment resource.
 // +k8s:deepcopy-gen=false
 type ComputeNetworkAttachmentIdentity struct {
 	Project           string

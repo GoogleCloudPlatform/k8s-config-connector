@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &DataflowJobRef{}
 
-// DataflowJobRef is a reference to a GCP DataflowJob.
+// DataflowJobRef is a reference to a Google Cloud DataflowJob.
 type DataflowJobRef struct {
 	// A reference to an externally managed DataflowJob resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}}".

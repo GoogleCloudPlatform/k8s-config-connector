@@ -33,7 +33,7 @@ var (
 
 var ComputeSubnetworkIdentityFormat = gcpurls.Template[ComputeSubnetworkIdentity]("compute.googleapis.com", "projects/{project}/regions/{region}/subnetworks/{subnetwork}")
 
-// ComputeSubnetworkIdentity is the identity of a GCP ComputeSubnetwork resource.
+// ComputeSubnetworkIdentity is the identity of a Google Cloud ComputeSubnetwork resource.
 // +k8s:deepcopy-gen=false
 type ComputeSubnetworkIdentity struct {
 	Project    string

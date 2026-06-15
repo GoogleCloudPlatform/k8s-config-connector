@@ -304,7 +304,7 @@ spec:
                     type: object
                   projects:
                     items:
-                      description: ProjectRef is a reference to a GCP Project.
+                      description: ProjectRef is a reference to a Google Cloud Project.
                       oneOf:
                       - not:
                           required:
@@ -343,7 +343,8 @@ spec:
                     type: array
                   subaccounts:
                     items:
-                      description: BillingAccountRef is a reference to a GCP BillingAccount.
+                      description: BillingAccountRef is a reference to a Google Cloud
+                        BillingAccount.
                       oneOf:
                       - not:
                           required:

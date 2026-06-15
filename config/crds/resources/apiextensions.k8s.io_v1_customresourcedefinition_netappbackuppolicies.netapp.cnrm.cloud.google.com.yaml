@@ -115,8 +115,8 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The GCP resource identifier. If not given, the metadata.name
-                  will be used.
+                description: The Google Cloud resource identifier. If not given, the
+                  metadata.name will be used.
                 type: string
               weeklyBackupLimit:
                 description: Number of weekly backups to keep. Note that the sum of

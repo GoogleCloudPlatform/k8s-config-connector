@@ -40,7 +40,7 @@ type ProjectParent struct {
 
 var _ ParentBuilder = &ProjectRef{}
 
-// Project specifies the resource's GCP hierarchy (Project/Folder/Organization).
+// Project specifies the resource's Google Cloud hierarchy (Project/Folder/Organization).
 // +kubebuilder:object:generate:=true
 type ProjectRef struct {
 	/* The `projectID` field of a project, when not managed by Config Connector. */

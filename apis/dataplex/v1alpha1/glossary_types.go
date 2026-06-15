@@ -57,14 +57,14 @@ type DataplexGlossaryStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DataplexGlossary resource in GCP.
+	// A unique specifier for the DataplexGlossary resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DataplexGlossaryObservedState `json:"observedState,omitempty"`
 }
 
-// DataplexGlossaryObservedState is the state of the DataplexGlossary resource as most recently observed in GCP.
+// DataplexGlossaryObservedState is the state of the DataplexGlossary resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.Glossary
 type DataplexGlossaryObservedState struct {
 	// Output only. System generated unique id for the Glossary. This ID will be

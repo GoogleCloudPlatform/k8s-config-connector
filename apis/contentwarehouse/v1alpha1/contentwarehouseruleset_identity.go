@@ -32,7 +32,7 @@ var (
 
 var ContentWarehouseRuleSetIdentityFormat = gcpurls.Template[ContentWarehouseRuleSetIdentity]("contentwarehouse.googleapis.com", "projects/{project}/locations/{location}/ruleSets/{ruleset}")
 
-// ContentWarehouseRuleSetIdentity is the identity of a GCP ContentWarehouseRuleSet resource.
+// ContentWarehouseRuleSetIdentity is the identity of a Google Cloud ContentWarehouseRuleSet resource.
 // +k8s:deepcopy-gen=false
 type ContentWarehouseRuleSetIdentity struct {
 	Project  string

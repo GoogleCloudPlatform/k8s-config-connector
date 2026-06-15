@@ -32,7 +32,7 @@ var (
 
 var DatabaseMigrationPrivateConnectionIdentityFormat = gcpurls.Template[DatabaseMigrationPrivateConnectionIdentity]("datamigration.googleapis.com", "projects/{project}/locations/{location}/privateConnections/{privateconnection}")
 
-// DatabaseMigrationPrivateConnectionIdentity is the identity of a GCP DatabaseMigrationPrivateConnection resource.
+// DatabaseMigrationPrivateConnectionIdentity is the identity of a Google Cloud DatabaseMigrationPrivateConnection resource.
 // +k8s:deepcopy-gen=false
 type DatabaseMigrationPrivateConnectionIdentity struct {
 	Project           string
