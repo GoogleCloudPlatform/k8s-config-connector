@@ -515,6 +515,7 @@
 | vertexai.cnrm.cloud.google.com                | VertexAIMetadataStore                           | True         | True        | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com              | VertexAISpecialistPool                          | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                | VertexAITensorboard                             | True         | False       | False  | Terraform  | False       |
+| vmmigration.cnrm.cloud.google.com             | VMMigrationGroup                                | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAccessRule                  | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAddress                     | True         | True        | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetworkPeering                      | True         | False       | False  | Direct     | True        |
