@@ -2343,6 +2343,25 @@
 [missing_field] crd=gkebackuprestores.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumeDataRestorePolicyOverrides[].selectedPVCs.namespacedNames[].namespace" is not set in unstructured objects
 [missing_field] crd=gkehubscoperbacrolebindings.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.rbacRoleBindingID" is not set in unstructured objects
 [missing_field] crd=gkehubscoperbacrolebindings.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.role.customRole" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.authorization.adminGroups[].group" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.authorization.adminUsers[].username" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.binaryAuthorization.evaluationMode" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.distribution" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.fleet.membership" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.fleet.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingConfig.componentConfig.enableComponents[]" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.monitoringConfig.cloudMonitoringConfig.enabled" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.monitoringConfig.managedPrometheusConfig.enabled" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.oidcConfig.issuerURL" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.oidcConfig.jwks" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.platformVersion" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.proxyConfig.kubernetesSecret.name" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.proxyConfig.kubernetesSecret.namespace" is not set in unstructured objects
+[missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.securityPostureConfig.vulnerabilityMode" is not set in unstructured objects
 [missing_field] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" is not set in unstructured objects
 [missing_field] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultConsentTtl" is not set in unstructured objects
 [missing_field] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableConsentCreateOnUpdate" is not set in unstructured objects
