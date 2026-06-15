@@ -31,6 +31,10 @@ type FakeGkehubV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeGkehubV1alpha1) GKEHubFleets(namespace string) v1alpha1.GKEHubFleetInterface {
+	return newFakeGKEHubFleets(c, namespace)
+}
+
 func (c *FakeGkehubV1alpha1) GKEHubMembershipBindings(namespace string) v1alpha1.GKEHubMembershipBindingInterface {
 	return newFakeGKEHubMembershipBindings(c, namespace)
 }

@@ -18,4 +18,15 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# Hand-written types, no proto generation yet.
+# To regenerate the types, uncomment the lines below and run this script.
+# NOTE: Requires googleapis SHA pointing to a version containing GKEHub Fleet (e.g. HEAD).
+#
+# REPO_ROOT="$(git rev-parse --show-toplevel)"
+# cd ${REPO_ROOT}/dev/tools/controllerbuilder
+#
+# ./generate-proto.sh HEAD
+#
+# go run . generate-types \
+#   --service google.cloud.gkehub.v1 \
+#   --api-version gkehub.cnrm.cloud.google.com/v1alpha1 \
+#   --resource GKEHubFleet:Fleet
