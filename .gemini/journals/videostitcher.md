@@ -1,0 +1,5 @@
+### [2026-06-15] Video Stitcher Service Proto Package Mismatch
+- **Context**: Implementing direct types for `VideoStitcherCdnKey` (Issue #10310)
+- **Problem**: Running `generate.sh` with `--service google.cloud.videostitcher.v1` failed with `failed to find the proto message google.cloud.videostitcher.v1.CdnKey: proto: not found`.
+- **Solution**: Inspected the googleapis repository under `.build/third_party/` and found that the package name declared in the proto files (such as `cdn_keys.proto` and `video_stitcher_service.proto`) is actually `google.cloud.video.stitcher.v1` (with dots between `video` and `stitcher`), even though the service directory name is often referred to as `videostitcher` elsewhere. Updating the `--service` flag in `generate.sh` and the `+kcc:proto` annotation in `doc.go` to use `google.cloud.video.stitcher.v1` successfully resolved the type generation.
+- **Impact**: Any future work on `videostitcher` controllers, mappers, or new resource types must use the correct proto package name `google.cloud.video.stitcher.v1` for the generator tool and annotations to operate correctly.
