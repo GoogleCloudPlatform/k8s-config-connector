@@ -650,7 +650,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						// Try to export the resource (and compare against golden file)
 						exportedYAML := exportResource(h, obj, &Expectations{})
 
-						fileName := fmt.Sprintf("_generated_export_%v.golden", testName) // TODO: Including the test name creates busywork
+						fileName := "_exported.yaml"
 						if options.FallbackToOldController {
 							fileName = "_exported_old_controller.golden.yaml"
 						}
