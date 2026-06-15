@@ -30,7 +30,7 @@ spec:
   networkRef:
     name: computenetwork-1-${uniqueId}
   loadBalancingScheme: ""
-  allowPscGlobalAccess: true
+  allowPscGlobalAccess: false
   ipAddress:
     addressRef:
       # PSC forwarding rule requires address's self_link instead of address
