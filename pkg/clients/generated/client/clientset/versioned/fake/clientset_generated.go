@@ -323,6 +323,8 @@ import (
 	fakepubsublitev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1alpha1/fake"
 	pubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1beta1"
 	fakepubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1beta1/fake"
+	rapidmigrationassessmentv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/rapidmigrationassessment/v1alpha1"
+	fakerapidmigrationassessmentv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/rapidmigrationassessment/v1alpha1/fake"
 	recaptchaenterprisev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1alpha1"
 	fakerecaptchaenterprisev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1alpha1/fake"
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
@@ -1208,6 +1210,11 @@ func (c *Clientset) PubsubliteV1alpha1() pubsublitev1alpha1.PubsubliteV1alpha1In
 // PubsubliteV1beta1 retrieves the PubsubliteV1beta1Client
 func (c *Clientset) PubsubliteV1beta1() pubsublitev1beta1.PubsubliteV1beta1Interface {
 	return &fakepubsublitev1beta1.FakePubsubliteV1beta1{Fake: &c.Fake}
+}
+
+// RapidmigrationassessmentV1alpha1 retrieves the RapidmigrationassessmentV1alpha1Client
+func (c *Clientset) RapidmigrationassessmentV1alpha1() rapidmigrationassessmentv1alpha1.RapidmigrationassessmentV1alpha1Interface {
+	return &fakerapidmigrationassessmentv1alpha1.FakeRapidmigrationassessmentV1alpha1{Fake: &c.Fake}
 }
 
 // RecaptchaenterpriseV1alpha1 retrieves the RecaptchaenterpriseV1alpha1Client

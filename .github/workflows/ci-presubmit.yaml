@@ -2256,6 +2256,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-rapidmigrationassessment:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-rapidmigrationassessment"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-rapidmigrationassessment
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-rapidmigrationassessment
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-recaptchaenterprise:
     runs-on: ubuntu-latest
     needs: unit-tests
