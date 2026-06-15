@@ -3144,6 +3144,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - financialservices.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - firebase.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4691,6 +4703,14 @@ rules:
   - watch
 - apiGroups:
   - filestore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - financialservices.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
