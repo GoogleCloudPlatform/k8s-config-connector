@@ -14,8 +14,8 @@ cloud.google.com/go/alloydb v1.26.0 h1:UTzyumJ8tEo0CqwzLkV4WMGnCxvvhw3BDy1nXfCt9
 cloud.google.com/go/alloydb v1.26.0/go.mod h1:oqHGc/Xb5fWtH+wIDpu2wcPJX9oML/fGJuH/sp8ysyo=
 cloud.google.com/go/analytics v0.30.1 h1:souLxu9tQHzF+0NDpKoIw4pl2WQ9K2JfkdPPs36BfXw=
 cloud.google.com/go/analytics v0.30.1/go.mod h1:V/FnINU5kMOsttZnKPnXfKi6clJUHTEXUKQjHxcNK8A=
-cloud.google.com/go/apigateway v1.7.7 h1:ehKUTy+QFsb3n07fEi18S2dpDDjCV4UlRyrbwfZV3Zk=
-cloud.google.com/go/apigateway v1.7.7/go.mod h1:j1bCmrUK1BzVHpiIyTApxB7cRyhivKzltqLmp6j6i7U=
+cloud.google.com/go/apigateway v1.12.0 h1:fpSMzMpRFOS3OAQBdiX3LIKNEGYe0ley2EI+lGaCK2s=
+cloud.google.com/go/apigateway v1.12.0/go.mod h1:f3Sk8Tdh1Ty5HR7kgbWB6Yu1M82LM+nIr5DTMZnLZWk=
 cloud.google.com/go/apikeys v1.2.7 h1:JbdXKvx6i4zyGKmG+hPgtmFIoT5j3CIUgByJypFT1XY=
 cloud.google.com/go/apikeys v1.2.7/go.mod h1:A2yBJ+/0m3kDZaxJ27Wqw21pzr4wxoE8tTHbXpGepjk=
 cloud.google.com/go/apphub v0.4.0 h1:RJ38Qn1lIQH2YOQUboeVX9zUcPpG00NuzRrbowFeup0=
