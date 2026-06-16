@@ -59,10 +59,7 @@ var protoMessagesNotMappedToGoStruct = map[string]string{
 	"google.protobuf.StringValue": "string",
 	"google.protobuf.BoolValue":   "bool",
 	"google.protobuf.Struct":      "apiextensionsv1.JSON",
-	"google.rpc.Status":                      "common.Status",
-	"google.protobuf.Value":                  "apiextensionsv1.JSON",
-	"google.cloud.aiplatform.v1.Schema":      "apiextensionsv1.JSON",
-	"google.cloud.aiplatform.v1beta1.Schema": "apiextensionsv1.JSON",
+	"google.rpc.Status":           "common.Status",
 }
 
 // This acronym list contains both acronym (including initialism) and abbreviation.

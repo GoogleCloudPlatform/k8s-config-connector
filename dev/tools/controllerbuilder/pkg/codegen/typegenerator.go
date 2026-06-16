@@ -50,7 +50,10 @@ type OutputMessageDetails struct {
 	OutputFields []protoreflect.FieldDescriptor
 }
 
+var currentGoPackage string
+
 func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Proto) *TypeGenerator {
+	currentGoPackage = goPackage
 	g := &TypeGenerator{
 		goPackage:             goPackage,
 		api:                   api,
@@ -512,6 +515,14 @@ func AsSnakeCase(s string) string {
 
 func GoNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 	fullName := string(msg.FullName())
+
+	if strings.Contains(currentGoPackage, "vertexai") {
+		if fullName == "google.protobuf.Value" ||
+			fullName == "google.cloud.aiplatform.v1.Schema" ||
+			fullName == "google.cloud.aiplatform.v1beta1.Schema" {
+			return "apiextensionsv1.JSON"
+		}
+	}
 
 	// Some special-case values that are not obvious how to map in KRM
 	if goType, ok := protoMessagesNotMappedToGoStruct[fullName]; ok {
