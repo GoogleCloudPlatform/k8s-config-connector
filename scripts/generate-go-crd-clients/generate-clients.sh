@@ -28,6 +28,9 @@ cd "${REPO_ROOT}"
 echo "Generating go types"
 go run ./scripts/generate-go-crd-clients
 
+echo "Formatting Google Cloud terminology in client API comments..."
+./dev/tasks/format_terminology.py
+
 # Generate deepcopy etc
 echo "Generating deepcopy for go types"
 go generate ./pkg/clients/...
@@ -57,6 +60,9 @@ go run k8s.io/code-generator/cmd/client-gen@v0.36.1 \
   --output-dir ./pkg/clients/generated/client/clientset \
   --output-pkg github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset \
   --go-header-file ${REPO_ROOT}/hack/boilerplate_client_alpha.go.txt
+
+echo "Formatting Google Cloud terminology across all generated clients..."
+./dev/tasks/format_terminology.py
 
 echo "Applying gofmt"
 cd ${REPO_ROOT}
