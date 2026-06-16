@@ -411,7 +411,7 @@ state: string
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+            <p>ObservedState is the state of the resource as most recently observed in Google Cloud.</p>
         </td>
     </tr>
     <tr>

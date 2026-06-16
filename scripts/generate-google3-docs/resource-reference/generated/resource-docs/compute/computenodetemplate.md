@@ -298,7 +298,7 @@ selfLink: string
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique specifier for the ComputeNodeTemplate resource in GCP.</p>
+            <p>A unique specifier for the ComputeNodeTemplate resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>

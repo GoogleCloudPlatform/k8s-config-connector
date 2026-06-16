@@ -255,7 +255,7 @@ updateTime: string
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique Config Connector specifier for the resource in GCP.</p>
+            <p>A unique Config Connector specifier for the resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>
