@@ -433,6 +433,19 @@ func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.Reso
 		}
 	}
 
+	// _exported_object.diff
+	{
+		oldPath := filepath.Join(dir, "_exported_old_controller.golden.yaml")
+		newPath := filepath.Join(dir, "_exported.yaml")
+
+		if fileExists(oldPath) && fileExists(newPath) {
+			diff := computeDiff(oldPath, newPath)
+			h.CompareGoldenFile(filepath.Join(dir, "_exported_object.diff"), diff)
+		} else {
+			h.AssertGoldenFileNotFound(filepath.Join(dir, "_exported_object.diff"))
+		}
+	}
+
 }
 
 type ScenarioOptions struct {
