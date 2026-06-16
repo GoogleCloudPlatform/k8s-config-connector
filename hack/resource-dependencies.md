@@ -182,7 +182,7 @@ Resources in this list must be created in the order the list is in:
 - APIGatewayAPIConfig
 - APIGatewayGateway
 - APIKeysKey
-- AccessContextManagerServicePerimeter (missing _reference.go only)
+- AccessContextManagerServicePerimeter
 - BeyondCorpAppConnection
 - BeyondCorpAppConnector
 - BeyondCorpAppGateway

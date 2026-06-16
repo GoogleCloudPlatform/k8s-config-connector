@@ -36,6 +36,24 @@ func TestComputeSecurityPolicyIdentity_FromExternal(t *testing.T) {
 			},
 		},
 		{
+			name: "valid regional reference",
+			ref:  "projects/my-project/regions/us-central1/securityPolicies/my-policy",
+			want: &ComputeSecurityPolicyIdentity{
+				Project: "my-project",
+				Region:  "us-central1",
+				Name:    "my-policy",
+			},
+		},
+		{
+			name: "full regional url",
+			ref:  "https://compute.googleapis.com/projects/my-project/regions/us-central1/securityPolicies/my-policy",
+			want: &ComputeSecurityPolicyIdentity{
+				Project: "my-project",
+				Region:  "us-central1",
+				Name:    "my-policy",
+			},
+		},
+		{
 			name:    "invalid reference format",
 			ref:     "invalid/format",
 			wantErr: true,
