@@ -99,7 +99,7 @@ type ComputeSubnetworkSpec struct {
 	// +optional
 	Purpose *string `json:"purpose,omitempty"`
 
-	/* Immutable. The GCP region for this subnetwork. */
+	/* Immutable. The Google Cloud region for this subnetwork. */
 	Region string `json:"region"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

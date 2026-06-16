@@ -90,14 +90,14 @@ type NetworkConnectivityInternalRangeStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the NetworkConnectivityInternalRange resource in GCP.
+	// A unique specifier for the NetworkConnectivityInternalRange resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *NetworkConnectivityInternalRangeObservedState `json:"observedState,omitempty"`
 }
 
-// NetworkConnectivityInternalRangeObservedState is the state of the NetworkConnectivityInternalRange resource as most recently observed in GCP.
+// NetworkConnectivityInternalRangeObservedState is the state of the NetworkConnectivityInternalRange resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.InternalRange
 type NetworkConnectivityInternalRangeObservedState struct {
 	// Output only. The list of resources that refer to this internal range. Resources that use the internal range for their range allocation are referred to as users of the range. Other resources mark themselves as users while doing so by creating a reference to this internal range. Having a user, based on this reference, prevents deletion of the internal range referred to. Can be empty.

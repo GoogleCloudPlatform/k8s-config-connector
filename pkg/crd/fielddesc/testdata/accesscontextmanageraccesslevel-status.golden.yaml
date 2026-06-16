@@ -94,7 +94,7 @@ children:
   - externalRef
   shortname: externalRef
   description: A unique specifier for the AccessContextManagerAccessLevel resource
-    in GCP.
+    in Google Cloud.
   type: string
   format: ""
   requirementlevel: Optional
@@ -118,7 +118,7 @@ children:
   - observedState
   shortname: observedState
   description: ObservedState is the state of the resource as most recently observed
-    in GCP.
+    in Google Cloud.
   type: object
   format: ""
   requirementlevel: Optional

@@ -183,7 +183,7 @@ type IAMDenyPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IAMDenyPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the IAMDenyPolicy resource in GCP. */
+	/* A unique specifier for the IAMDenyPolicy resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -191,7 +191,7 @@ type IAMDenyPolicyStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *DenypolicyObservedStateStatus `json:"observedState,omitempty"`
 }

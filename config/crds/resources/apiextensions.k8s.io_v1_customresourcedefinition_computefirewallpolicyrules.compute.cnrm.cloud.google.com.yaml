@@ -220,7 +220,8 @@ spec:
                 type: integer
               targetResources:
                 items:
-                  description: ComputeNetworkRef is a reference to a GCP ComputeNetwork.
+                  description: ComputeNetworkRef is a reference to a Google Cloud
+                    ComputeNetwork.
                   oneOf:
                   - not:
                       required:
@@ -313,7 +314,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique Config Connector specifier for the resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               kind:
                 description: Type of the resource. Always `compute#firewallPolicyRule`

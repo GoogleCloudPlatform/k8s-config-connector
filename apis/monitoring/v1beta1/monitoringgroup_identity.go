@@ -31,7 +31,7 @@ var (
 
 var MonitoringGroupIdentityFormat = gcpurls.Template[MonitoringGroupIdentity]("monitoring.googleapis.com", "projects/{project}/groups/{group}")
 
-// MonitoringGroupIdentity is the identity of a GCP MonitoringGroup resource.
+// MonitoringGroupIdentity is the identity of a Google Cloud MonitoringGroup resource.
 // +k8s:deepcopy-gen=false
 type MonitoringGroupIdentity struct {
 	Project string

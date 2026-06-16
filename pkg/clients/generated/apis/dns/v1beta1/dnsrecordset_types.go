@@ -68,7 +68,7 @@ type RecordsetHealthCheckedTargets struct {
 }
 
 type RecordsetInternalLoadBalancers struct {
-	/* ComputeAddressRef is a reference to a GCP ComputeAddress. */
+	/* ComputeAddressRef is a reference to a Google Cloud ComputeAddress. */
 	IpAddressRef v1alpha1.ResourceRef `json:"ipAddressRef"`
 
 	/* The configured IP protocol of the load balancer. This value is case-sensitive. Possible values: ["tcp", "udp"]. */
@@ -77,13 +77,13 @@ type RecordsetInternalLoadBalancers struct {
 	/* The type of load balancer. This value is case-sensitive. Possible values: ["regionalL4ilb", "regionalL7ilb", "globalL7ilb"]. */
 	LoadBalancerType string `json:"loadBalancerType"`
 
-	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
+	/* ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork. */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
 	/* The configured port of the load balancer. */
 	Port string `json:"port"`
 
-	/* ProjectRef is a reference to a GCP Project. */
+	/* ProjectRef is a reference to a Google Cloud Project. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	// +optional

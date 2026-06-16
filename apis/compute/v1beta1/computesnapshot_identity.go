@@ -34,7 +34,7 @@ var (
 var GlobalComputeSnapshotIdentityFormat = gcpurls.Template[ComputeSnapshotIdentity]("compute.googleapis.com", "projects/{project}/global/snapshots/{snapshot}")
 var RegionalComputeSnapshotIdentityFormat = gcpurls.Template[ComputeSnapshotIdentity]("compute.googleapis.com", "projects/{project}/regions/{region}/snapshots/{snapshot}")
 
-// ComputeSnapshotIdentity is the identity of a GCP ComputeSnapshot resource.
+// ComputeSnapshotIdentity is the identity of a Google Cloud ComputeSnapshot resource.
 // +k8s:deepcopy-gen=false
 type ComputeSnapshotIdentity struct {
 	Project  string

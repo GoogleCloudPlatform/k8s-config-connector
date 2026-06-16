@@ -67,14 +67,14 @@ type StorageAnywhereCacheStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the StorageAnywhereCache resource in GCP.
+	// A unique specifier for the StorageAnywhereCache resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *StorageAnywhereCacheObservedState `json:"observedState,omitempty"`
 }
 
-// StorageAnywhereCacheObservedState is the state of the StorageAnywhereCache resource as most recently observed in GCP.
+// StorageAnywhereCacheObservedState is the state of the StorageAnywhereCache resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.storage.control.v2.AnywhereCache
 type StorageAnywhereCacheObservedState struct {
 	// Output only. Cache state including "running", "creating", "disabled" and "paused".

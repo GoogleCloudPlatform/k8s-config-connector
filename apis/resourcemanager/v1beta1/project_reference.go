@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &ProjectRef{}
 
-// ProjectRef is a reference to a GCP Project.
+// ProjectRef is a reference to a Google Cloud Project.
 type ProjectRef struct {
 	// A reference to an externally managed Project resource.
 	// Should be in the format "projects/{{projectID}}".

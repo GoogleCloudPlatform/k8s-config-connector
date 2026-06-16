@@ -113,14 +113,14 @@ type CCInsightsConversationStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the CCInsightsConversation resource in GCP.
+	// A unique specifier for the CCInsightsConversation resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *CCInsightsConversationObservedState `json:"observedState,omitempty"`
 }
 
-// CCInsightsConversationObservedState is the state of the CCInsightsConversation resource as most recently observed in GCP.
+// CCInsightsConversationObservedState is the state of the CCInsightsConversation resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.Conversation
 type CCInsightsConversationObservedState struct {
 	// Output only. The time at which the conversation was created.

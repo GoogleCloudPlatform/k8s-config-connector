@@ -110,14 +110,14 @@ type VMwareEngineNetworkPeeringStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the VMwareEngineNetworkPeering resource in GCP.
+	// A unique specifier for the VMwareEngineNetworkPeering resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *VMwareEngineNetworkPeeringObservedState `json:"observedState,omitempty"`
 }
 
-// VMwareEngineNetworkPeeringObservedState is the state of the VMwareEngineNetworkPeering resource as most recently observed in GCP.
+// VMwareEngineNetworkPeeringObservedState is the state of the VMwareEngineNetworkPeering resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.vmwareengine.v1.NetworkPeering
 type VMwareEngineNetworkPeeringObservedState struct {
 	// Output only. The resource name of the network peering. NetworkPeering is a

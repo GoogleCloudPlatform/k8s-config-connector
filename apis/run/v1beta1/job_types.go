@@ -38,7 +38,7 @@ type RunJobSpec struct {
 	// The RunJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Optional. User-provided annotations, which are stored in GCP.
+	// Optional. User-provided annotations, which are stored in Google Cloud.
 	Annotations map[string]string `json:"annotations,omitempty"`
 
 	// Optional. Settings for Binary Authorization feature.
@@ -64,19 +64,19 @@ type RunJobStatus struct {
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
-	// LastModifiedCookie contains hashes of the last applied spec and the last observed GCP state.
+	// LastModifiedCookie contains hashes of the last applied spec and the last observed Google Cloud state.
 	// The format is "<spec-hash>/<gcp-hash>".
-	// This is used by the controller to detect if the user's desired state has changed or if the GCP resource has drifted.
+	// This is used by the controller to detect if the user's desired state has changed or if the Google Cloud resource has drifted.
 	// +optional
 	LastModifiedCookie *string `json:"lastModifiedCookie,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the RunJob resource in GCP.
+	// A unique specifier for the RunJob resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *RunJobObservedState `json:",inline"`
 }
 
@@ -691,7 +691,7 @@ type Condition struct {
 	// +kcc:proto:field=google.cloud.run.v2.Condition.severity
 	Severity *string `json:"severity,omitempty"`
 
-	// Note: `Reason`, `RevisionReason` and `ExecutionReason` are OneOf fields. The GCP proto uses a single interface field
+	// Note: `Reason`, `RevisionReason` and `ExecutionReason` are OneOf fields. The Google Cloud proto uses a single interface field
 	// but the KCC (DCL-based) has split them into individual fields.
 
 	// A common (service-level) reason for this condition.

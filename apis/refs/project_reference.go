@@ -30,7 +30,7 @@ var ProjectGVK = schema.GroupVersionKind{
 	Kind:    "Project",
 }
 
-// ProjectRef is a reference to a GCP Project.
+// ProjectRef is a reference to a Google Cloud Project.
 type ProjectRef struct {
 	/* The `projectID` field of a project, when not managed by Config Connector. */
 	External string `json:"external,omitempty"`

@@ -148,7 +148,8 @@ spec:
                 description: Output only. Creation time.
                 type: string
               externalRef:
-                description: A unique specifier for the TagsTagKey resource in GCP.
+                description: A unique specifier for the TagsTagKey resource in Google
+                  Cloud.
                 type: string
               name:
                 description: The generated numeric id for the TagKey.

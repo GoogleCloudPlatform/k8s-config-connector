@@ -220,7 +220,7 @@ selfManaged:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>CertificateManagerDNSAuthorizationRef is a reference to a GCP CertificateManagerDNSAuthorization.</p>
+            <p>CertificateManagerDNSAuthorizationRef is a reference to a Google Cloud CertificateManagerDNSAuthorization.</p>
         </td>
     </tr>
     <tr>
@@ -432,7 +432,7 @@ If unsure, choose this option.
 EDGE_CACHE: Certificates with scope EDGE_CACHE are special-purposed certificates,
 served from non-core Google data centers.
 
-ALL_REGIONS: Certificates with ALL_REGIONS scope are served from all GCP regions (You can only use ALL_REGIONS with global certs).
+ALL_REGIONS: Certificates with ALL_REGIONS scope are served from all Google Cloud regions (You can only use ALL_REGIONS with global certs).
 see https://cloud.google.com/compute/docs/regions-zones.</p>
         </td>
     </tr>
@@ -735,7 +735,7 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The observed state of the underlying GCP resource.</p>
+            <p>The observed state of the underlying Google Cloud resource.</p>
         </td>
     </tr>
     <tr>

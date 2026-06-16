@@ -48,17 +48,17 @@ type ServiceIdentityStatus struct {
 	Email *string `json:"email,omitempty"`
 
 	/* NOTYET:terraform-compat
-	// A unique specifier for the ServiceIdentity resource in GCP.
+	// A unique specifier for the ServiceIdentity resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 	*/
 
 	/* NOTYET:terraform-compat
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ServiceIdentityObservedState `json:"observedState,omitempty"`
 	*/
 }
 
-// ServiceIdentityObservedState is the state of the ServiceIdentity resource as most recently observed in GCP.
+// ServiceIdentityObservedState is the state of the ServiceIdentity resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.api.serviceusage.v1beta1.ServiceIdentity
 type ServiceIdentityObservedState struct {
 	// The email address of the service account that a service producer would use

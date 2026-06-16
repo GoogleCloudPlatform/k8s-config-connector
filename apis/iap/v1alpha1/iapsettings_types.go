@@ -92,15 +92,15 @@ type IAPSettingsStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the IAPSettings resource in GCP.
+	// A unique specifier for the IAPSettings resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	// NOTYET: there is no output only field
 	// ObservedState *IAPSettingsObservedState `json:"observedState,omitempty"`
 }
 
-// IAPSettingsObservedState is the state of the IAPSettings resource as most recently observed in GCP.
+// IAPSettingsObservedState is the state of the IAPSettings resource as most recently observed in Google Cloud.
 // +kcc:proto=google.cloud.iap.v1.IapSettings
 // NOTYET: there is no output only field
 // type IAPSettingsObservedState struct {

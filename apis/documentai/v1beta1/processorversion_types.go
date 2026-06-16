@@ -63,14 +63,14 @@ type DocumentAIProcessorVersionStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DocumentAI resource in GCP.
+	// A unique specifier for the DocumentAI resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DocumentAIProcessorVersionObservedState `json:"observedState,omitempty"`
 }
 
-// DocumentAIProcessorVersionObservedState is the state of the DocumentAIProcessorVersion resource as most recently observed in GCP.
+// DocumentAIProcessorVersionObservedState is the state of the DocumentAIProcessorVersion resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.documentai.v1.ProcessorVersion
 type DocumentAIProcessorVersionObservedState struct {
 	// Output only. The state of the processor version.

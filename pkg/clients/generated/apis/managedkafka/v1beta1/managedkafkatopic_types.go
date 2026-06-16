@@ -58,7 +58,7 @@ type ManagedKafkaTopicSpec struct {
 	/* Required. Immutable. The number of replicas of each partition. A replication factor of 3 is recommended for high availability. */
 	ReplicationFactor int32 `json:"replicationFactor"`
 
-	/* The GCP resource identifier. If not given, the metadata.name will be used. */
+	/* The Google Cloud resource identifier. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -67,7 +67,7 @@ type ManagedKafkaTopicStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ManagedKafkaTopic's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the ManagedKafkaTopic resource in GCP. */
+	/* A unique specifier for the ManagedKafkaTopic resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

@@ -129,8 +129,8 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The GCP resource identifier. If not given, the metadata.name
-                  will be used.
+                description: The Google Cloud resource identifier. If not given, the
+                  metadata.name will be used.
                 type: string
               type:
                 description: 'The processor type, such as: `OCR_PROCESSOR`, `INVOICE_PROCESSOR`.
@@ -172,7 +172,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the DocumentAIProcessor resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -184,7 +184,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   createTime:
                     description: The time the processor was created.

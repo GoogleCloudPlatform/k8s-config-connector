@@ -91,7 +91,7 @@ spec:
               location:
                 description: 'Location represents the geographical location of the
                   ComputeAddress. Specify a region name or "global" for global resources.
-                  Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
+                  Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               networkRef:
                 description: The network in which to reserve the address. If global,
@@ -246,7 +246,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   address:
                     description: Immutable. The static external IP address represented

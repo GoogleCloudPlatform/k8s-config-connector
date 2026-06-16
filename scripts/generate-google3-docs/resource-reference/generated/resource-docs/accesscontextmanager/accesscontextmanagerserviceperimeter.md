@@ -308,7 +308,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>(Optional) A list of AccessLevel resource names that allow resources within the ServicePerimeter to be accessed from the internet. AccessLevels listed must be in the same policy as this ServicePerimeter. Referencing a nonexistent AccessLevel is a syntax error. If no AccessLevel names are listed, resources within the perimeter can only be accessed via GCP calls with request origins within the perimeter. For Service Perimeter Bridge, must be empty.</p>
+            <p>(Optional) A list of AccessLevel resource names that allow resources within the ServicePerimeter to be accessed from the internet. AccessLevels listed must be in the same policy as this ServicePerimeter. Referencing a nonexistent AccessLevel is a syntax error. If no AccessLevel names are listed, resources within the perimeter can only be accessed via Google Cloud calls with request origins within the perimeter. For Service Perimeter Bridge, must be empty.</p>
         </td>
     </tr>
     <tr>
@@ -978,7 +978,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>(Optional) A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed.</p>
+            <p>(Optional) A list of Google Cloud resources that are inside of the service perimeter. Currently only projects are allowed.</p>
         </td>
     </tr>
     <tr>
@@ -998,7 +998,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>(Optional) A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed.</p>
+            <p>(Optional) A list of Google Cloud resources that are inside of the service perimeter. Currently only projects are allowed.</p>
         </td>
     </tr>
     <tr>
@@ -1038,7 +1038,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>GCP services that are subject to the Service Perimeter restrictions. Must contain a list of services. For example, if 'storage.googleapis.com' is specified, access to the storage buckets inside the perimeter must meet the perimeter's access restrictions.</p>
+            <p>Google Cloud services that are subject to the Service Perimeter restrictions. Must contain a list of services. For example, if 'storage.googleapis.com' is specified, access to the storage buckets inside the perimeter must meet the perimeter's access restrictions.</p>
         </td>
     </tr>
     <tr>
@@ -1108,7 +1108,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>(Optional) A list of AccessLevel resource names that allow resources within the ServicePerimeter to be accessed from the internet. AccessLevels listed must be in the same policy as this ServicePerimeter. Referencing a nonexistent AccessLevel is a syntax error. If no AccessLevel names are listed, resources within the perimeter can only be accessed via GCP calls with request origins within the perimeter. For Service Perimeter Bridge, must be empty.</p>
+            <p>(Optional) A list of AccessLevel resource names that allow resources within the ServicePerimeter to be accessed from the internet. AccessLevels listed must be in the same policy as this ServicePerimeter. Referencing a nonexistent AccessLevel is a syntax error. If no AccessLevel names are listed, resources within the perimeter can only be accessed via Google Cloud calls with request origins within the perimeter. For Service Perimeter Bridge, must be empty.</p>
         </td>
     </tr>
     <tr>
@@ -1778,7 +1778,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>(Optional) A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed.</p>
+            <p>(Optional) A list of Google Cloud resources that are inside of the service perimeter. Currently only projects are allowed.</p>
         </td>
     </tr>
     <tr>
@@ -1798,7 +1798,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>(Optional) A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed.</p>
+            <p>(Optional) A list of Google Cloud resources that are inside of the service perimeter. Currently only projects are allowed.</p>
         </td>
     </tr>
     <tr>
@@ -1838,7 +1838,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>GCP services that are subject to the Service Perimeter restrictions. Must contain a list of services. For example, if 'storage.googleapis.com' is specified, access to the storage buckets inside the perimeter must meet the perimeter's access restrictions.</p>
+            <p>Google Cloud services that are subject to the Service Perimeter restrictions. Must contain a list of services. For example, if 'storage.googleapis.com' is specified, access to the storage buckets inside the perimeter must meet the perimeter's access restrictions.</p>
         </td>
     </tr>
     <tr>
@@ -1996,7 +1996,7 @@ updateTime: string
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique specifier for the AccessContextManagerServicePerimeter resource in GCP.</p>
+            <p>A unique specifier for the AccessContextManagerServicePerimeter resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>

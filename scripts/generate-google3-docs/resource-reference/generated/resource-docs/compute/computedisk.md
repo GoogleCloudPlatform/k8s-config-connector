@@ -588,7 +588,7 @@ you do not need to provide a key to use the disk later.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Location represents the geographical location of the ComputeDisk. Specify a region name or a zone name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)</p>
+            <p>Location represents the geographical location of the ComputeDisk. Specify a region name or a zone name. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)</p>
         </td>
     </tr>
     <tr>

@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &BackupVaultRef{}
 
-// BackupVaultRef is a reference to a GCP BackupDRBackupVault.
+// BackupVaultRef is a reference to a Google Cloud BackupDRBackupVault.
 type BackupVaultRef struct {
 	// A reference to an externally managed BackupDRBackupVault resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backupVaults/{{backupvaultID}}".

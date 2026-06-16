@@ -55,10 +55,10 @@ type ComputeNetworkPeeringSpec struct {
 	// +optional
 	ImportSubnetRoutesWithPublicIp *bool `json:"importSubnetRoutesWithPublicIp,omitempty"`
 
-	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
+	/* ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork. */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
+	/* ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork. */
 	PeerNetworkRef v1alpha1.ResourceRef `json:"peerNetworkRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

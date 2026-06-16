@@ -753,7 +753,7 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique specifier for the BigQueryConnectionConnection resource in GCP.</p>
+            <p>A unique specifier for the BigQueryConnectionConnection resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>
@@ -767,7 +767,7 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+            <p>ObservedState is the state of the resource as most recently observed in Google Cloud.</p>
         </td>
     </tr>
     <tr>
@@ -851,7 +851,7 @@ observedState:
  when it is created. After creation, customers delegate permissions
  to the service account. When the connection is used in the context of an
  operation in BigQuery, the service account will be used to connect to the
- desired resources in GCP.
+ desired resources in Google Cloud.
 
  The account ID is in the form of:
    <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com</p>

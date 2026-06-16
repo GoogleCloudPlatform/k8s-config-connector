@@ -97,6 +97,9 @@ for f in $(find apis -name "generate.sh" | sort); do
     ./${f}
 done
 
+echo "Formatting Google Cloud terminology in comments..."
+./dev/tasks/format_terminology.py
+
 # Now we generate CRDs
 unset SKIP_GENERATE_CRDS
 unset SKIP_GENERATE_PROTOS

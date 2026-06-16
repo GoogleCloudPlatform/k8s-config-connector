@@ -57,14 +57,14 @@ type DatastreamRouteStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DatastreamRoute resource in GCP.
+	// A unique specifier for the DatastreamRoute resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DatastreamRouteObservedState `json:"observedState,omitempty"`
 }
 
-// DatastreamRouteObservedState is the state of the DatastreamRoute resource as most recently observed in GCP.
+// DatastreamRouteObservedState is the state of the DatastreamRoute resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.datastream.v1.Route
 type DatastreamRouteObservedState struct {
 	// Output only. The resource's name.

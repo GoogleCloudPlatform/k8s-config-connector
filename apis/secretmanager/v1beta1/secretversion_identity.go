@@ -31,8 +31,8 @@ type SecretVersionIdentity struct {
 }
 
 // HasKnownID tells whether Config Connector knows the resource identity.
-// If not, Config Connector saves one GCP GET call, and starts the CREATE call directly.
-// This is mostly for GCP services that do not allow user to specify ID, but assign an ID when creating the object.
+// If not, Config Connector saves one Google Cloud GET call, and starts the CREATE call directly.
+// This is mostly for Google Cloud services that do not allow user to specify ID, but assign an ID when creating the object.
 func (i *SecretVersionIdentity) HasKnownID() bool {
 	return *i.serviceGeneratedIDKnown
 }

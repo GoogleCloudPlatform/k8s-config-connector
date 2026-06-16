@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &MonitoringMonitoredProjectRef{}
 
-// MonitoringMonitoredProjectRef is a reference to a GCP MonitoringMonitoredProject.
+// MonitoringMonitoredProjectRef is a reference to a Google Cloud MonitoringMonitoredProject.
 type MonitoringMonitoredProjectRef struct {
 	// A reference to an externally managed MonitoringMonitoredProject resource.
 	// Should be in the format "locations/global/metricsScopes/{{metricsScope}}/projects/{{project}}".

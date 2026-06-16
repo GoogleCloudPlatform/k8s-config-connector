@@ -136,8 +136,8 @@ spec:
                   type: object
                 type: array
               resourceRef:
-                description: Immutable. Required. The GCP resource to set the IAM
-                  policy on (e.g. organization, project...)
+                description: Immutable. Required. The Google Cloud resource to set
+                  the IAM policy on (e.g. organization, project...)
                 oneOf:
                 - not:
                     required:

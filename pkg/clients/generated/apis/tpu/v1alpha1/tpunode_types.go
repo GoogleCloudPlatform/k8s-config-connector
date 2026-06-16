@@ -91,7 +91,7 @@ type TPUNodeSpec struct {
 	// +optional
 	UseServiceNetworking *bool `json:"useServiceNetworking,omitempty"`
 
-	/* Immutable. The GCP location for the TPU. If it is not provided, the provider zone is used. */
+	/* Immutable. The Google Cloud location for the TPU. If it is not provided, the provider zone is used. */
 	Zone string `json:"zone"`
 }
 

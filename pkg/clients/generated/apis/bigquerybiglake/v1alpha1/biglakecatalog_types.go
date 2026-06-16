@@ -64,7 +64,7 @@ type BigLakeCatalogStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigLakeCatalog's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BigLakeCatalog resource in GCP. */
+	/* A unique specifier for the BigLakeCatalog resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -72,7 +72,7 @@ type BigLakeCatalogStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *BiglakecatalogObservedStateStatus `json:"observedState,omitempty"`
 }

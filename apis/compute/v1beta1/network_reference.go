@@ -43,7 +43,7 @@ var ComputeNetworkGVK = schema.GroupVersionKind{
 
 var _ refs.Ref = &ComputeNetworkRef{}
 
-// ComputeNetworkRef is a reference to a GCP ComputeNetwork.
+// ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.
 type ComputeNetworkRef struct {
 	// A reference to an externally managed ComputeNetwork resource.
 	// Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".

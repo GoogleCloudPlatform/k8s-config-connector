@@ -106,19 +106,19 @@ type SpannerInstanceStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the SpannerInstance resource in GCP.
+	// A unique specifier for the SpannerInstance resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* Instance status: 'CREATING' or 'READY'. */
 	// +optional
 	State *string `json:"state,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *SpannerInstanceObservedState `json:"observedState,omitempty"`
 }
 
-// SpannerInstanceObservedState is the state of the SpannerInstance resource as most recently observed in GCP.
+// SpannerInstanceObservedState is the state of the SpannerInstance resource as most recently observed in Google Cloud.
 type SpannerInstanceObservedState struct {
 	// NumNodes and ProcessUnits is output fields with AutoScaler is set.
 	NumNodes        *int32 `json:"numNodes,omitempty"`

@@ -47,7 +47,7 @@ type ForwardingruleFilterLabels struct {
 }
 
 type ForwardingruleIpAddress struct {
-	/* ComputeAddressRef is a reference to a GCP ComputeAddress. */
+	/* ComputeAddressRef is a reference to a Google Cloud ComputeAddress. */
 	// +optional
 	AddressRef *v1alpha1.ResourceRef `json:"addressRef,omitempty"`
 
@@ -227,7 +227,7 @@ type ComputeForwardingRuleSpec struct {
 	// +optional
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
 
-	/* Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* Immutable. Opaque filter criteria used by Loadbalancer to restrict routing
@@ -376,7 +376,7 @@ type ComputeForwardingRuleStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* A unique Config Connector specifier for the resource in GCP. */
+	/* A unique Config Connector specifier for the resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

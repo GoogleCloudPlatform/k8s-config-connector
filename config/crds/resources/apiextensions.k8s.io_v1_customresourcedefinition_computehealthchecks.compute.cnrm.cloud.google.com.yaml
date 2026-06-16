@@ -237,7 +237,7 @@ spec:
               location:
                 description: 'Location represents the geographical location of the
                   ComputeHealthCheck. Specify a region name or "global" for global
-                  resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
+                  resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               logConfig:
                 description: Configure logging on this health check.

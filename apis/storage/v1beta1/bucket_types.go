@@ -234,7 +234,7 @@ type StorageBucketStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	ObservedState *StorageBucketObservedState `json:"observedState,omitempty"`
 
 	/* The URI of the created resource. */
@@ -244,7 +244,7 @@ type StorageBucketStatus struct {
 	Url *string `json:"url,omitempty"`
 }
 
-// StorageBucketObservedState is the state of the StorageBucket resource as most recently observed in GCP.
+// StorageBucketObservedState is the state of the StorageBucket resource as most recently observed in Google Cloud.
 type StorageBucketObservedState struct {
 	/* The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy. */
 	SoftDeletePolicy *StorageBucketSoftDeletePolicyObservedState `json:"softDeletePolicy,omitempty"`

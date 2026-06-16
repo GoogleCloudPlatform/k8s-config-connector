@@ -178,7 +178,8 @@ spec:
                         type: string
                     type: object
                   storageBucketRef:
-                    description: StorageBucketRef is a reference to a GCP StorageBucket.
+                    description: StorageBucketRef is a reference to a Google Cloud
+                      StorageBucket.
                     oneOf:
                     - not:
                         required:

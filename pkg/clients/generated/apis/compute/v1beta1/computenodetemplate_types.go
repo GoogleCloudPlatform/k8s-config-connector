@@ -105,7 +105,7 @@ type ComputeNodeTemplateStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* A unique specifier for the ComputeNodeTemplate resource in GCP. */
+	/* A unique specifier for the ComputeNodeTemplate resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

@@ -170,7 +170,7 @@ spec:
                 type: string
               externalRef:
                 description: A unique Config Connector specifier for the resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               name:
                 description: The [resource name](https://cloud.google.com/apis/design/resource_names)
@@ -186,7 +186,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   additionalGroupKeys:
                     description: Additional group keys associated with the Group.

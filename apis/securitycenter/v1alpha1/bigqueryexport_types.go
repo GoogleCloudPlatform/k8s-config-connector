@@ -59,14 +59,14 @@ type SecurityCenterBigQueryExportStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the SecurityCenterBigQueryExport resource in GCP.
+	// A unique specifier for the SecurityCenterBigQueryExport resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *SecurityCenterBigQueryExportObservedState `json:"observedState,omitempty"`
 }
 
-// SecurityCenterBigQueryExportObservedState is the state of the SecurityCenterBigQueryExport resource as most recently observed in GCP.
+// SecurityCenterBigQueryExportObservedState is the state of the SecurityCenterBigQueryExport resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.securitycenter.v1.BigQueryExport
 type SecurityCenterBigQueryExportObservedState struct {
 	// Output only. The time at which the BigQuery export was created.

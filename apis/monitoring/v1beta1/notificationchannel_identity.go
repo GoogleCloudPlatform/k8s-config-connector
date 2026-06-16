@@ -32,7 +32,7 @@ var (
 
 var MonitoringNotificationChannelIdentityFormat = gcpurls.Template[MonitoringNotificationChannelIdentity]("monitoring.googleapis.com", "projects/{project}/notificationChannels/{notificationchannel}")
 
-// MonitoringNotificationChannelIdentity is the identity of a GCP MonitoringNotificationChannel resource.
+// MonitoringNotificationChannelIdentity is the identity of a Google Cloud MonitoringNotificationChannel resource.
 // +k8s:deepcopy-gen=false
 type MonitoringNotificationChannelIdentity struct {
 	Project             string

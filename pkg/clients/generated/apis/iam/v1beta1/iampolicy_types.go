@@ -86,7 +86,7 @@ type IAMPolicySpec struct {
 	// +optional
 	Bindings []PolicyBindings `json:"bindings,omitempty"`
 
-	/* Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...) */
+	/* Immutable. Required. The Google Cloud resource to set the IAM policy on (e.g. organization, project...) */
 	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
 }
 

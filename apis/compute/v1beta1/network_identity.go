@@ -33,7 +33,7 @@ var (
 
 var ComputeNetworkIdentityFormat = gcpurls.Template[NetworkIdentity]("compute.googleapis.com", "projects/{project}/global/networks/{network}")
 
-// NetworkIdentity is the identity of a GCP ComputeNetwork resource.
+// NetworkIdentity is the identity of a Google Cloud ComputeNetwork resource.
 // +k8s:deepcopy-gen=false
 type NetworkIdentity struct {
 	Project string

@@ -90,14 +90,14 @@ type DLPDiscoveryConfigStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DLPDiscoveryConfig resource in GCP.
+	// A unique specifier for the DLPDiscoveryConfig resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DLPDiscoveryConfigObservedState `json:"observedState,omitempty"`
 }
 
-// DLPDiscoveryConfigObservedState is the state of the DLPDiscoveryConfig resource as most recently observed in GCP.
+// DLPDiscoveryConfigObservedState is the state of the DLPDiscoveryConfig resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.privacy.dlp.v2.DiscoveryConfig
 type DLPDiscoveryConfigObservedState struct {
 	// Target to match against for determining what to scan and how frequently.

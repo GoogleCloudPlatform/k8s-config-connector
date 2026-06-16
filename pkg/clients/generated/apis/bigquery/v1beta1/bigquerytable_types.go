@@ -388,7 +388,7 @@ type BigQueryTableSpec struct {
 	// +optional
 	FriendlyName *string `json:"friendlyName,omitempty"`
 
-	/* When using `alpha.cnrm.cloud.google.com/reconciler:direct` annotion, use labels field to set the labels for this resource on GCP. Otherwise, use .metadata.labels. Please refer to https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4274 for context. The labels associated with this table. You can use these to organize and group your tables. Label keys and values can be no longer than 63 characters, can only contain lowercase letters, numeric characters, underscores and dashes. International characters are allowed. Label values are optional. Label keys must start with a letter and each label in the list must have a different key. */
+	/* When using `alpha.cnrm.cloud.google.com/reconciler:direct` annotion, use labels field to set the labels for this resource on Google Cloud. Otherwise, use .metadata.labels. Please refer to https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4274 for context. The labels associated with this table. You can use these to organize and group your tables. Label keys and values can be no longer than 63 characters, can only contain lowercase letters, numeric characters, underscores and dashes. International characters are allowed. Label values are optional. Label keys must start with a letter and each label in the list must have a different key. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
@@ -444,7 +444,7 @@ type BigQueryTableStatus struct {
 	// +optional
 	Etag *string `json:"etag,omitempty"`
 
-	/* A unique specifier for the BigQueryTable resource in GCP. */
+	/* A unique specifier for the BigQueryTable resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -472,7 +472,7 @@ type BigQueryTableStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *TableObservedStateStatus `json:"observedState,omitempty"`
 

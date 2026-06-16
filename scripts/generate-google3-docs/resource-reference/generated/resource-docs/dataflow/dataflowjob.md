@@ -228,7 +228,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
+            <p>ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -338,7 +338,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.</p>
+            <p>ComputeSubnetworkRef is a reference to a Google Cloud ComputeSubnetwork.</p>
         </td>
     </tr>
     <tr>

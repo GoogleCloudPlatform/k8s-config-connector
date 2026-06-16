@@ -564,8 +564,8 @@ spec:
                 description: Optional. Whether or not the `Target` requires approval.
                 type: boolean
               resourceID:
-                description: The GCP resource identifier. If not given, the metadata.name
-                  will be used.
+                description: The Google Cloud resource identifier. If not given, the
+                  metadata.name will be used.
                 type: string
               run:
                 description: Information specifying a Cloud Run deployment target.
@@ -611,7 +611,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the CloudDeployTarget resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -623,7 +623,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   createTime:
                     description: Output only. Time at which the `Target` was created.

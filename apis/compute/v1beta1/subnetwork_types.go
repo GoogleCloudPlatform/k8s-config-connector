@@ -76,7 +76,7 @@ type ComputeSubnetworkSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.purpose
 	Purpose *string `json:"purpose,omitempty"`
 
-	// Immutable. The GCP region for this subnetwork.
+	// Immutable. The Google Cloud region for this subnetwork.
 	// +required
 	Region *string `json:"region"`
 

@@ -32,7 +32,7 @@ var (
 
 var ManagementServerIdentityFormat = gcpurls.Template[ManagementServerIdentity]("backupdr.googleapis.com", "projects/{project}/locations/{location}/managementServers/{managementserver}")
 
-// ManagementServerIdentity is the identity of a GCP BackupDRManagementServer resource.
+// ManagementServerIdentity is the identity of a Google Cloud BackupDRManagementServer resource.
 // +k8s:deepcopy-gen=false
 type ManagementServerIdentity struct {
 	Project          string

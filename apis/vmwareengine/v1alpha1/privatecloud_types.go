@@ -62,14 +62,14 @@ type VMwareEnginePrivateCloudStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the VMwareEnginePrivateCloud resource in GCP.
+	// A unique specifier for the VMwareEnginePrivateCloud resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *VMwareEnginePrivateCloudObservedState `json:"observedState,omitempty"`
 }
 
-// VMwareEnginePrivateCloudObservedState is the state of the VMwareEnginePrivateCloud resource as most recently observed in GCP.
+// VMwareEnginePrivateCloudObservedState is the state of the VMwareEnginePrivateCloud resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.vmwareengine.v1.PrivateCloud
 type VMwareEnginePrivateCloudObservedState struct {
 	// Output only. The resource name of this private cloud.

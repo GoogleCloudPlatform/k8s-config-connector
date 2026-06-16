@@ -80,7 +80,7 @@ type CertificateManagerDNSAuthorizationStatus struct {
 	// +optional
 	DnsResourceRecord []DnsauthorizationDnsResourceRecordStatus `json:"dnsResourceRecord,omitempty"`
 
-	/* A unique specifier for the CertificateManagerDNSAuthorization resource in GCP. */
+	/* A unique specifier for the CertificateManagerDNSAuthorization resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

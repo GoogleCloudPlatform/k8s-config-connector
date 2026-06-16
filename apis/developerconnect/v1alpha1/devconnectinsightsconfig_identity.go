@@ -107,7 +107,7 @@ func (obj *DevConnectInsightsConfig) GetIdentity(ctx context.Context, reader cli
 	return specIdentity, nil
 }
 
-// ExternalIdentifier returns the GCP external identifier (the GCP URL).
+// ExternalIdentifier returns the Google Cloud external identifier (the Google Cloud URL).
 func (obj *DevConnectInsightsConfig) ExternalIdentifier() *string {
 	if obj.Status.ExternalRef != nil {
 		return obj.Status.ExternalRef

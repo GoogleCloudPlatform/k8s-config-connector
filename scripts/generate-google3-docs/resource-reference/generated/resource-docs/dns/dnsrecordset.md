@@ -330,7 +330,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
+            <p>ComputeAddressRef is a reference to a Google Cloud ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -390,7 +390,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
+            <p>ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -440,7 +440,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ProjectRef is a reference to a GCP Project.</p>
+            <p>ProjectRef is a reference to a Google Cloud Project.</p>
         </td>
     </tr>
     <tr>
@@ -650,7 +650,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
+            <p>ComputeAddressRef is a reference to a Google Cloud ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -710,7 +710,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
+            <p>ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -760,7 +760,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ProjectRef is a reference to a GCP Project.</p>
+            <p>ProjectRef is a reference to a Google Cloud Project.</p>
         </td>
     </tr>
     <tr>
@@ -950,7 +950,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
+            <p>ComputeAddressRef is a reference to a Google Cloud ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -1010,7 +1010,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
+            <p>ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -1060,7 +1060,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ProjectRef is a reference to a GCP Project.</p>
+            <p>ProjectRef is a reference to a Google Cloud Project.</p>
         </td>
     </tr>
     <tr>
@@ -1200,7 +1200,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
+            <p>ComputeAddressRef is a reference to a Google Cloud ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -1260,7 +1260,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
+            <p>ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -1310,7 +1310,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ProjectRef is a reference to a GCP Project.</p>
+            <p>ProjectRef is a reference to a Google Cloud Project.</p>
         </td>
     </tr>
     <tr>

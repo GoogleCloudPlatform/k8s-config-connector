@@ -81,9 +81,9 @@ type ComputeVPNTunnelSpec struct {
 	// +optional
 	PeerExternalGatewayRef *v1alpha1.ResourceRef `json:"peerExternalGatewayRef,omitempty"`
 
-	/* The peer side HA GCP VPN gateway to which this VPN tunnel is
+	/* The peer side HA Google Cloud VPN gateway to which this VPN tunnel is
 	connected. If provided, the VPN tunnel will automatically use the
-	same VPN gateway interface ID in the peer GCP VPN gateway. */
+	same VPN gateway interface ID in the peer Google Cloud VPN gateway. */
 	// +optional
 	PeerGCPGatewayRef *v1alpha1.ResourceRef `json:"peerGCPGatewayRef,omitempty"`
 

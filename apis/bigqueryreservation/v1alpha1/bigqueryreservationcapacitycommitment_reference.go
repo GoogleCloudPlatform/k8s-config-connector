@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &BigQueryReservationCapacityCommitmentRef{}
 
-// BigQueryReservationCapacityCommitmentRef is a reference to a GCP BigQueryReservationCapacityCommitment.
+// BigQueryReservationCapacityCommitmentRef is a reference to a Google Cloud BigQueryReservationCapacityCommitment.
 type BigQueryReservationCapacityCommitmentRef struct {
 	// A reference to an externally managed BigQueryReservationCapacityCommitment resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/capacityCommitments/{{capacityCommitmentID}}".

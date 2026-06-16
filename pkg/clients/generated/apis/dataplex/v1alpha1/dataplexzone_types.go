@@ -174,7 +174,7 @@ type DataplexZoneStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataplexZone's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DataplexZone resource in GCP. */
+	/* A unique specifier for the DataplexZone resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -182,7 +182,7 @@ type DataplexZoneStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *ZoneObservedStateStatus `json:"observedState,omitempty"`
 }

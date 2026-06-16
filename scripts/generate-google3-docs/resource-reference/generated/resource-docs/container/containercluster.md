@@ -1307,7 +1307,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false.</p>
+            <p>Controls whether user traffic is allowed over this endpoint. Note that Google Cloud-managed services may still use the endpoint even if this is false.</p>
         </td>
     </tr>
     <tr>
@@ -2427,7 +2427,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
+            <p>ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -3957,7 +3957,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.</p>
+            <p>ComputeSubnetworkRef is a reference to a Google Cloud ComputeSubnetwork.</p>
         </td>
     </tr>
     <tr>
@@ -4017,7 +4017,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Configuration for the use of Kubernetes Service Accounts in GCP IAM policies.</p>
+            <p>Configuration for the use of Kubernetes Service Accounts in Google Cloud IAM policies.</p>
         </td>
     </tr>
     <tr>
@@ -4162,7 +4162,7 @@ tpuIpv4CidrBlock: string
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The observed state of the underlying GCP resource.</p>
+            <p>The observed state of the underlying Google Cloud resource.</p>
         </td>
     </tr>
     <tr>

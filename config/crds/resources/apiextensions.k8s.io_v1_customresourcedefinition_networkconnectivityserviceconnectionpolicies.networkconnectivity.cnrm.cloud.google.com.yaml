@@ -145,7 +145,8 @@ spec:
                     description: 'The resource paths of subnetworks to use for IP
                       address management. Example: projects/{projectNumOrId}/regions/{region}/subnetworks/{resourceId}.'
                     items:
-                      description: ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.
+                      description: ComputeSubnetworkRef is a reference to a Google
+                        Cloud ComputeSubnetwork.
                       oneOf:
                       - not:
                           required:
@@ -221,7 +222,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the NetworkConnectivityServiceConnectionPolicy
-                  resource in GCP.
+                  resource in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -233,7 +234,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   createTime:
                     description: Output only. Time when the ServiceConnectionMap was

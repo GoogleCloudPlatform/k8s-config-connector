@@ -100,14 +100,14 @@ type CloudDeployTargetStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the CloudDeployTarget resource in GCP.
+	// A unique specifier for the CloudDeployTarget resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *CloudDeployTargetObservedState `json:"observedState,omitempty"`
 }
 
-// CloudDeployTargetObservedState is the state of the CloudDeployTarget resource as most recently observed in GCP.
+// CloudDeployTargetObservedState is the state of the CloudDeployTarget resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.deploy.v1.Target
 type CloudDeployTargetObservedState struct {
 	// Output only. Resource id of the `Target`.

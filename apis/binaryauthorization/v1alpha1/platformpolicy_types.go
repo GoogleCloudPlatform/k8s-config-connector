@@ -52,14 +52,14 @@ type BinaryAuthorizationPlatformPolicyStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the BinaryAuthorizationPlatformPolicy resource in GCP.
+	// A unique specifier for the BinaryAuthorizationPlatformPolicy resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *BinaryAuthorizationPlatformPolicyObservedState `json:"observedState,omitempty"`
 }
 
-// BinaryAuthorizationPlatformPolicyObservedState is the state of the BinaryAuthorizationPlatformPolicy resource as most recently observed in GCP.
+// BinaryAuthorizationPlatformPolicyObservedState is the state of the BinaryAuthorizationPlatformPolicy resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.binaryauthorization.v1.PlatformPolicy
 type BinaryAuthorizationPlatformPolicyObservedState struct {
 	// +kcc:proto:field=google.cloud.binaryauthorization.v1.PlatformPolicy.name

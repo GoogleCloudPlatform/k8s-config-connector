@@ -100,14 +100,14 @@ type APIQuotaPreferenceStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the APIQuotaPreference resource in GCP.
+	// A unique specifier for the APIQuotaPreference resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *APIQuotaPreferenceObservedState `json:"observedState,omitempty"`
 }
 
-// APIQuotaPreferenceObservedState is the state of the APIQuotaPreference resource as most recently observed in GCP.
+// APIQuotaPreferenceObservedState is the state of the APIQuotaPreference resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.api.cloudquotas.v1beta.QuotaPreference
 type APIQuotaPreferenceObservedState struct {
 	// Required. Preferred quota configuration.

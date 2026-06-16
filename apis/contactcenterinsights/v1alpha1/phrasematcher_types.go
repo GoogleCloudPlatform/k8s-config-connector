@@ -119,14 +119,14 @@ type CCInsightsPhraseMatcherStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the CCInsightsPhraseMatcher resource in GCP.
+	// A unique specifier for the CCInsightsPhraseMatcher resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *CCInsightsPhraseMatcherObservedState `json:"observedState,omitempty"`
 }
 
-// CCInsightsPhraseMatcherObservedState is the state of the CCInsightsPhraseMatcher resource as most recently observed in GCP.
+// CCInsightsPhraseMatcherObservedState is the state of the CCInsightsPhraseMatcher resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.PhraseMatcher
 type CCInsightsPhraseMatcherObservedState struct {
 	// Output only. Immutable. The revision ID of the phrase matcher.

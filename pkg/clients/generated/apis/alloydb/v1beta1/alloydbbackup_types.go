@@ -93,7 +93,7 @@ type AlloyDBBackupStatus struct {
 	// +optional
 	Etag *string `json:"etag,omitempty"`
 
-	/* A unique specifier for the AlloyDBBackup resource in GCP. */
+	/* A unique specifier for the AlloyDBBackup resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

@@ -147,7 +147,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the DiscoveryEngineIdentityMappingStore
-                  resource in GCP.
+                  resource in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -159,7 +159,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   cmekConfig:
                     description: Output only. CMEK-related information for the Identity

@@ -87,7 +87,7 @@ type TagsTagKeyStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* A unique specifier for the TagsTagKey resource in GCP. */
+	/* A unique specifier for the TagsTagKey resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

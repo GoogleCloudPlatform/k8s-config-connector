@@ -222,7 +222,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the DataplexZone resource in GCP.
+                description: A unique specifier for the DataplexZone resource in Google
+                  Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -234,7 +235,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   assetStatus:
                     description: Output only. Aggregated status of the underlying

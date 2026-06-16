@@ -62,14 +62,14 @@ type NotebooksExecutionStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the NotebooksExecution resource in GCP.
+	// A unique specifier for the NotebooksExecution resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *NotebooksExecutionObservedState `json:"observedState,omitempty"`
 }
 
-// NotebooksExecutionObservedState is the state of the NotebooksExecution resource as most recently observed in GCP.
+// NotebooksExecutionObservedState is the state of the NotebooksExecution resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.notebooks.v1.Execution
 type NotebooksExecutionObservedState struct {
 	// Output only. Name of this execution.

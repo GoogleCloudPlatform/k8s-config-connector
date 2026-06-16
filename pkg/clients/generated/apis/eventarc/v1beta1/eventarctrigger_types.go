@@ -151,7 +151,7 @@ type EventarcTriggerSpec struct {
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/* Immutable. Optional. In order to deliver messages, Eventarc may use other GCP products as transport intermediary. This field contains a reference to that transport intermediary. This information can be used for debugging purposes. */
+	/* Immutable. Optional. In order to deliver messages, Eventarc may use other Google Cloud products as transport intermediary. This field contains a reference to that transport intermediary. This information can be used for debugging purposes. */
 	// +optional
 	Transport *TriggerTransport `json:"transport,omitempty"`
 }

@@ -85,7 +85,7 @@ type ResourceConfig struct {
 	// used as the TF resource's `id` field.
 	IDTemplate string `json:"idTemplate,omitempty"`
 
-	// The resource name is the One Platform / GCP resource name, when this value is true, it means the IDTemplate
+	// The resource name is the One Platform / Google Cloud resource name, when this value is true, it means the IDTemplate
 	// can be converted to a regex and used to match against a given URL to determine if it is a name for the given
 	// ResourceConfig. If this flag is true then the ID Template is used by "config-connector export" to match against
 	// URLs.
@@ -98,7 +98,7 @@ type ResourceConfig struct {
 	// by the user. Resources with this set do not support acquisition.
 	ServerGeneratedIDField string `json:"serverGeneratedIDField,omitempty"`
 
-	// Locationality categorizes the GCP resources as global, regional, or zonal. It's only applicable to the effort of
+	// Locationality categorizes the Google Cloud resources as global, regional, or zonal. It's only applicable to the effort of
 	// unifying multiple locational TF resources into one, e.g. KCC could have a single ComputeAddress CRD to represent
 	// two TF/GCE resources - compute address and global compute address. The location field in ComputeAddress CRD is used to specify
 	// whether it is a global address or regional address. If unset, it's assumed that there is no multiple TF locational resources
@@ -116,7 +116,7 @@ type ResourceConfig struct {
 	ResourceID ResourceID `json:"resourceID,omitempty"`
 
 	// ResourceReferences configures the mapping of fields in the Terraform resource that
-	// implicitly define references to other GCP resources into explicit Kubernetes-style
+	// implicitly define references to other Google Cloud resources into explicit Kubernetes-style
 	// references.
 	ResourceReferences []ReferenceConfig `json:"resourceReferences,omitempty"`
 
@@ -151,7 +151,7 @@ type ResourceConfig struct {
 	// container annotations, they should not specify Containers.
 	//
 	// Containers describes all the container mappings this resource understands. Config Connector maps Kubernetes
-	// namespaces to the abstract GCP container objects they are scoped by via namespaces. For most resource types,
+	// namespaces to the abstract Google Cloud container objects they are scoped by via namespaces. For most resource types,
 	// this is a project, but certain resources live outside the scope of a project, like folders or projects
 	// themselves. Containers are expressed as annotations on a given Namespace, though users may provide
 	// resource-level overrides.
@@ -288,7 +288,7 @@ type ReferenceConfig struct {
 	// be specified if the inlined TypeConfig is filled out.
 	//
 	// If the value for the reference is not specified in the KRM spec, it is
-	// possible that a default value may be set by GCP. This default reference
+	// possible that a default value may be set by Google Cloud. This default reference
 	// value will be populated in the KRM resource's spec. In cases where a
 	// resource reference has multiple types, the first type in this list will
 	// become the default TypeConfig for that value.

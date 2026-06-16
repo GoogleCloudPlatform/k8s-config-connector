@@ -438,7 +438,7 @@ type JobVpcAccess struct {
 }
 
 type RunJobSpec struct {
-	/* Optional. User-provided annotations, which are stored in GCP. */
+	/* Optional. User-provided annotations, which are stored in Google Cloud. */
 	// +optional
 	Annotations map[string]string `json:"annotations,omitempty"`
 
@@ -558,11 +558,11 @@ type RunJobStatus struct {
 	// +optional
 	ExpireTime *string `json:"expireTime,omitempty"`
 
-	/* A unique specifier for the RunJob resource in GCP. */
+	/* A unique specifier for the RunJob resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* LastModifiedCookie contains hashes of the last applied spec and the last observed GCP state. The format is "<spec-hash>/<gcp-hash>". This is used by the controller to detect if the user's desired state has changed or if the GCP resource has drifted. */
+	/* LastModifiedCookie contains hashes of the last applied spec and the last observed Google Cloud state. The format is "<spec-hash>/<gcp-hash>". This is used by the controller to detect if the user's desired state has changed or if the Google Cloud resource has drifted. */
 	// +optional
 	LastModifiedCookie *string `json:"lastModifiedCookie,omitempty"`
 

@@ -416,7 +416,7 @@ type GKEHubFeatureMembershipStatus struct {
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
-// GKEHubFeatureMembershipObservedState is the state of the GKEHubFeatureMembership resource as most recently observed in GCP.
+// GKEHubFeatureMembershipObservedState is the state of the GKEHubFeatureMembership resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.gkehub.v1beta.MembershipFeatureSpec
 type GKEHubFeatureMembershipObservedState struct {
 }

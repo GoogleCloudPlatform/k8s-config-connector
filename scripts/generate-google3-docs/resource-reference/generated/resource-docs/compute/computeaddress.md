@@ -163,7 +163,7 @@ subnetworkRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Location represents the geographical location of the ComputeAddress. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)</p>
+            <p>Location represents the geographical location of the ComputeAddress. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)</p>
         </td>
     </tr>
     <tr>
@@ -407,7 +407,7 @@ users:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+            <p>ObservedState is the state of the resource as most recently observed in Google Cloud.</p>
         </td>
     </tr>
     <tr>

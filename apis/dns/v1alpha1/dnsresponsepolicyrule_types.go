@@ -56,7 +56,7 @@ type DNSResponsePolicyRuleSpec struct {
 	DnsName string `json:"dnsName"`
 
 	/* Answer this query directly with DNS data. These ResourceRecordSets override any other DNS behavior for the matched name;
-	in particular they override private zones, the public internet, and GCP internal DNS. No SOA nor NS types are allowed. */
+	in particular they override private zones, the public internet, and Google Cloud internal DNS. No SOA nor NS types are allowed. */
 	// +optional
 	LocalData *ResponsepolicyruleLocalData `json:"localData,omitempty"`
 

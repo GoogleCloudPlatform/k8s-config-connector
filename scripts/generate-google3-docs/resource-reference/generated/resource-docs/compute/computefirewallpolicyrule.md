@@ -485,7 +485,7 @@ targetServiceAccounts:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
+            <p>ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -648,7 +648,7 @@ ruleTupleCount: integer
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique Config Connector specifier for the resource in GCP.</p>
+            <p>A unique Config Connector specifier for the resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>

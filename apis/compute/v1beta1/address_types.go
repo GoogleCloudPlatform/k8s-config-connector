@@ -53,7 +53,7 @@ type ComputeAddressSpec struct {
 
 	/* Location represents the geographical location of the
 	   ComputeAddress. Specify a region name or "global" for global resources.
-	   Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	   Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	// +required
 	Location string `json:"location"`
 
@@ -131,7 +131,7 @@ type ComputeAddressStatus struct {
 	// +optional
 	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	// +optional
 	ObservedState *ComputeAddressObservedState `json:"observedState,omitempty"`
 
@@ -143,7 +143,7 @@ type ComputeAddressStatus struct {
 	Users []string `json:"users,omitempty"`
 }
 
-// ComputeAddressObservedState is the state of the ComputeAddress resource as most recently observed in GCP.
+// ComputeAddressObservedState is the state of the ComputeAddress resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.compute.v1.Address
 type ComputeAddressObservedState struct {
 	/* Immutable. The static external IP address represented by this resource.

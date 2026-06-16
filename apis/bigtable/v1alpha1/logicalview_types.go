@@ -51,7 +51,7 @@ type BigtableLogicalViewStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the BigtableLogicalView resource in GCP.
+	// A unique specifier for the BigtableLogicalView resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// The unique name of the BigtableLogicalView. Values are of the form
@@ -59,11 +59,11 @@ type BigtableLogicalViewStatus struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.LogicalView.name
 	Name *string `json:"name,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *BigtableLogicalViewObservedState `json:"observedState,omitempty"`
 }
 
-// BigtableLogicalViewObservedState is the state of the BigtableLogicalView resource as most recently observed in GCP.
+// BigtableLogicalViewObservedState is the state of the BigtableLogicalView resource as most recently observed in Google Cloud.
 // +kcc:proto=google.bigtable.admin.v2.LogicalView
 type BigtableLogicalViewObservedState struct{}
 

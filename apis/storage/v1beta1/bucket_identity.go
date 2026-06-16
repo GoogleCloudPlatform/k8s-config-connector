@@ -37,7 +37,7 @@ var (
 // StorageBucketURLFormat is the format for the externalRef of a StorageBucket.
 const StorageBucketURLFormat = "projects/{{project}}/buckets/{{bucket}}"
 
-// StorageBucketIdentity is the identity of a GCP StorageBucket resource.
+// StorageBucketIdentity is the identity of a Google Cloud StorageBucket resource.
 // +k8s:deepcopy-gen=false
 type StorageBucketIdentity struct {
 	Project string

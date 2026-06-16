@@ -37,7 +37,7 @@ var (
 )
 
 // +k8s:deepcopy-gen=false
-// PrivilegedAccessManagerEntitlementIdentity is the identity of a GCP PrivilegedAccessManagerEntitlement resource.
+// PrivilegedAccessManagerEntitlementIdentity is the identity of a Google Cloud PrivilegedAccessManagerEntitlement resource.
 type PrivilegedAccessManagerEntitlementIdentity struct {
 	Project      string
 	Folder       string

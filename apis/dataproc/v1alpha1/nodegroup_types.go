@@ -106,14 +106,14 @@ type DataprocNodeGroupStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DataprocNodeGroup resource in GCP.
+	// A unique specifier for the DataprocNodeGroup resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DataprocNodeGroupObservedState `json:"observedState,omitempty"`
 }
 
-// DataprocNodeGroupObservedState is the state of the DataprocNodeGroup resource as most recently observed in GCP.
+// DataprocNodeGroupObservedState is the state of the DataprocNodeGroup resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.NodeGroup
 type DataprocNodeGroupObservedState struct {
 	// Optional. The node group instance group configuration.

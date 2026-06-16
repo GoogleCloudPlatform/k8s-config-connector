@@ -185,13 +185,13 @@ type DataflowFlexTemplateJobStatus struct {
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* NOTYET - keeping compatibility with terraform
-	// A unique specifier for the DataflowFlexTemplateJob resource in GCP.
+	// A unique specifier for the DataflowFlexTemplateJob resource in Google Cloud.
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 	*/
 
 	/* NOTYET - keeping compatibility with terraform
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	// +optional
 	ObservedState *DataflowFlexTemplateJobObservedState `json:"observedState,omitempty"`
 	*/

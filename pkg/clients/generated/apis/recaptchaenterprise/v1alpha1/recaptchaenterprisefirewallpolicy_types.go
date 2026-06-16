@@ -121,7 +121,7 @@ type ReCAPTCHAEnterpriseFirewallPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ReCAPTCHAEnterpriseFirewallPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the ReCAPTCHAEnterpriseFirewallPolicy resource in GCP. */
+	/* A unique specifier for the ReCAPTCHAEnterpriseFirewallPolicy resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

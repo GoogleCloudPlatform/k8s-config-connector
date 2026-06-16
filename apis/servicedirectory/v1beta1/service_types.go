@@ -47,7 +47,7 @@ type ServiceDirectoryServiceStatus struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// ServiceDirectoryServiceObservedState is the state of the ServiceDirectoryService resource as most recently observed in GCP.
+// ServiceDirectoryServiceObservedState is the state of the ServiceDirectoryService resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.servicedirectory.v1beta1.Service
 type ServiceDirectoryServiceObservedState struct {
 }

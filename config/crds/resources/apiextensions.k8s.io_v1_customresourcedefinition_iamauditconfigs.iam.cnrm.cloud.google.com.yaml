@@ -82,8 +82,8 @@ spec:
                   type: object
                 type: array
               resourceRef:
-                description: Immutable. Required. The GCP resource to set the IAMAuditConfig
-                  on (e.g. project).
+                description: Immutable. Required. The Google Cloud resource to set
+                  the IAMAuditConfig on (e.g. project).
                 properties:
                   apiVersion:
                     description: APIVersion of the referenced resource

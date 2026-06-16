@@ -85,7 +85,7 @@ type ComputeTargetHTTPSProxySpec struct {
 
 	// Location represents the geographical location of the
 	// ComputeTargetHTTPSProxy. Specify a region name or "global" for global
-	// resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
+	// resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
 	// +required
 	Location *string `json:"location"`
 
@@ -146,7 +146,7 @@ type ComputeTargetHTTPSProxyStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ComputeTargetHTTPSProxy resource in GCP.
+	// A unique specifier for the ComputeTargetHTTPSProxy resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// Creation timestamp in RFC3339 text format.
@@ -161,11 +161,11 @@ type ComputeTargetHTTPSProxyStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ComputeTargetHTTPSProxyObservedState `json:"observedState,omitempty"`
 }
 
-// ComputeTargetHTTPSProxyObservedState is the state of the ComputeTargetHTTPSProxy resource as most recently observed in GCP.
+// ComputeTargetHTTPSProxyObservedState is the state of the ComputeTargetHTTPSProxy resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.compute.v1.TargetHttpsProxy
 type ComputeTargetHTTPSProxyObservedState struct {
 	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking.

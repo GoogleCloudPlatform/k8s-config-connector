@@ -20,3 +20,4 @@ After running the generator (via `generate.sh`), you must verify and enforce the
   *(Note: See greenfield/brownfield skills for the correct `stability-level` label to append.)*
 - **Status Fields**: `status.observedGeneration` must be exactly `*int64`.
 - **Reference Fields**: Ensure that fields referencing other GCP/KCC resources are implemented as proper KCC reference fields (e.g., using `pubsubv1beta1.PubSubTopicRef` or `refsv1beta1.KMSCryptoKeyRef`), following the `Ref` suffix naming convention. You **MUST NOT** add new exceptions to `tests/apichecks/testdata/exceptions/missingrefs.txt`. All reference-like fields must be implemented as proper references.
+- **Terminology**: In all docstrings, comments, field descriptions, and error messages, use "Google Cloud" instead of "GCP".

@@ -80,7 +80,7 @@ type VertexAIExampleStoreStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAIExampleStore's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the VertexAIExampleStore resource in GCP. */
+	/* A unique specifier for the VertexAIExampleStore resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -88,7 +88,7 @@ type VertexAIExampleStoreStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *ExamplestoreObservedStateStatus `json:"observedState,omitempty"`
 }

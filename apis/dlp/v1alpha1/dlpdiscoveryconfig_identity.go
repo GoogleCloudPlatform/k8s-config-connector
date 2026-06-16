@@ -32,7 +32,7 @@ var (
 
 var DLPDiscoveryConfigIdentityFormat = gcpurls.Template[DLPDiscoveryConfigIdentity]("dlp.googleapis.com", "projects/{project}/locations/{location}/discoveryConfigs/{discoveryconfig}")
 
-// DLPDiscoveryConfigIdentity is the identity of a GCP DLPDiscoveryConfig resource.
+// DLPDiscoveryConfigIdentity is the identity of a Google Cloud DLPDiscoveryConfig resource.
 // +k8s:deepcopy-gen=false
 type DLPDiscoveryConfigIdentity struct {
 	Project         string

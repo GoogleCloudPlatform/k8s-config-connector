@@ -355,7 +355,7 @@ type DNSConfig struct {
 
 // +kcc:proto=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig
 type ControlPlaneEndpointsConfig_DNSEndpointConfig struct {
-	/* Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false. */
+	/* Controls whether user traffic is allowed over this endpoint. Note that Google Cloud-managed services may still use the endpoint even if this is false. */
 	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig.allow_external_traffic
 	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
 
@@ -1554,7 +1554,7 @@ type ContainerClusterSpec struct {
 	// +kcc:proto:field=google.container.v1.Cluster.vertical_pod_autoscaling
 	VerticalPodAutoscaling *VerticalPodAutoscaling `json:"verticalPodAutoscaling,omitempty"`
 
-	/* Configuration for the use of Kubernetes Service Accounts in GCP IAM policies. */
+	/* Configuration for the use of Kubernetes Service Accounts in Google Cloud IAM policies. */
 	// +kcc:proto:field=google.container.v1.Cluster.workload_identity_config
 	WorkloadIdentityConfig *WorkloadIdentityConfig `json:"workloadIdentityConfig,omitempty"`
 }
@@ -1626,7 +1626,7 @@ type ContainerClusterStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The observed state of the underlying GCP resource. */
+	/* The observed state of the underlying Google Cloud resource. */
 	ObservedState *ClusterObservedState `json:"observedState,omitempty"`
 
 	Operation *string `json:"operation,omitempty"`

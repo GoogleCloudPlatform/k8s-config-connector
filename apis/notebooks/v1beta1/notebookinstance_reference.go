@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &NotebookInstanceRef{}
 
-// NotebookInstanceRef is a reference to a GCP NotebookInstance.
+// NotebookInstanceRef is a reference to a Google Cloud NotebookInstance.
 type NotebookInstanceRef struct {
 	// A reference to an externally managed NotebookInstance resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}"
 	External string `json:"external,omitempty"`

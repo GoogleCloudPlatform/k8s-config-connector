@@ -51,7 +51,7 @@ type FirebaseProjectStatus struct {
 	/* Conditions represent the latest available observations of the
 	   FirebaseProject's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The GCP project display name. */
+	/* The Google Cloud project display name. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 

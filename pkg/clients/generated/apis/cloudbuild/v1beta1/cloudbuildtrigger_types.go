@@ -811,7 +811,7 @@ type CloudBuildTriggerStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* A unique specifier for the CloudBuildTrigger resource in GCP. */
+	/* A unique specifier for the CloudBuildTrigger resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -819,7 +819,7 @@ type CloudBuildTriggerStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *TriggerObservedStateStatus `json:"observedState,omitempty"`
 

@@ -305,7 +305,7 @@ range of the subnet or network configured for this forwarding rule.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
+            <p>ComputeAddressRef is a reference to a Google Cloud ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -420,7 +420,7 @@ Must set to empty for private service connect forwarding rule. For more informat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)</p>
+            <p>Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)</p>
         </td>
     </tr>
     <tr>
@@ -1257,7 +1257,7 @@ target: string
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique Config Connector specifier for the resource in GCP.</p>
+            <p>A unique Config Connector specifier for the resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>

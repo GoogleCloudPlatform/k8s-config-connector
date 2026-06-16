@@ -378,14 +378,14 @@ type WorkstationConfigStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the WorkstationConfig resource in GCP.
+	// A unique specifier for the WorkstationConfig resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *WorkstationConfigObservedState `json:"observedState,omitempty"`
 }
 
-// WorkstationConfigObservedState is the state of the WorkstationConfig resource as most recently observed in GCP.
+// WorkstationConfigObservedState is the state of the WorkstationConfig resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig
 type WorkstationConfigObservedState struct {
 	// Output only. A system-assigned unique identifier for this workstation
@@ -421,14 +421,14 @@ type WorkstationConfigObservedState struct {
 	GCPConditions []WorkstationServiceGCPCondition `json:"gcpConditions,omitempty"`
 }
 
-// WorkstationConfigObservedState is the state of the WorkstationConfig_Host resource as most recently observed in GCP.
+// WorkstationConfigObservedState is the state of the WorkstationConfig_Host resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig.Host
 type WorkstationConfig_HostObservedState struct {
 	// Output only. Observed state of the Compute Engine runtime host for the workstation configuration.
 	GceInstance *WorkstationConfig_Host_GceInstanceObservedState `json:"gceInstance,omitempty"`
 }
 
-// WorkstationConfigObservedState is the state of the WorkstationConfig_Host_GceInstanceObservedState resource as most recently observed in GCP.
+// WorkstationConfigObservedState is the state of the WorkstationConfig_Host_GceInstanceObservedState resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance
 type WorkstationConfig_Host_GceInstanceObservedState struct {
 	// Output only. Number of instances currently available in the pool for

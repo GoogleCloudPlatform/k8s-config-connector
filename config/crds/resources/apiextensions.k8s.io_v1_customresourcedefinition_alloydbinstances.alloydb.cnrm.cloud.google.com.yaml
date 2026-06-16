@@ -344,7 +344,7 @@ spec:
                 type: string
               externalRef:
                 description: A unique specifier for the AlloyDBInstance resource in
-                  GCP.
+                  Google Cloud.
                 type: string
               ipAddress:
                 description: The IP address for the Instance. This is the connection
@@ -363,7 +363,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   connectionPoolConfig:
                     description: Output for Managed Connection Pool (MCP).
@@ -739,7 +739,7 @@ spec:
                 type: string
               externalRef:
                 description: A unique specifier for the AlloyDBInstance resource in
-                  GCP.
+                  Google Cloud.
                 type: string
               ipAddress:
                 description: The IP address for the Instance. This is the connection
@@ -758,7 +758,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   connectionPoolConfig:
                     description: Output for Managed Connection Pool (MCP).

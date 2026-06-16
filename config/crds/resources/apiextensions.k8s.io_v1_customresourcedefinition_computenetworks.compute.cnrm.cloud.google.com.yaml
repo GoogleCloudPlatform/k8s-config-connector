@@ -151,7 +151,7 @@ spec:
                 type: array
               gatewayIpv4:
                 description: The gateway address for default routing out of the network.
-                  This value is selected by GCP.
+                  This value is selected by Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

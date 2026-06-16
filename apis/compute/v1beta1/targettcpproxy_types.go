@@ -41,7 +41,7 @@ type ComputeTargetTCPProxySpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// The geographical location of the ComputeTargetTCPProxy.
-	// Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
+	// Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
 	Location *string `json:"location,omitempty"`
 
 	// Immutable. This field only applies when the forwarding rule that references
@@ -67,7 +67,7 @@ type ComputeTargetTCPProxyStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ComputeTargetTCPProxy resource in GCP.
+	// A unique specifier for the ComputeTargetTCPProxy resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// Creation timestamp in RFC3339 text format.
@@ -83,7 +83,7 @@ type ComputeTargetTCPProxyStatus struct {
 	SelfLink *string `json:"selfLink,omitempty"`
 }
 
-// ComputeTargetTCPProxyObservedState is the state of the ComputeTargetTCPProxy resource as most recently observed in GCP.
+// ComputeTargetTCPProxyObservedState is the state of the ComputeTargetTCPProxy resource as most recently observed in Google Cloud.
 type ComputeTargetTCPProxyObservedState struct {
 }
 

@@ -52,7 +52,7 @@ type CloudIdentityMembershipSpec struct {
 type CloudIdentityMembershipStatus struct {
 	commonv1alpha1.CommonStatus `json:",inline"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	// ObservedState *CloudIdentityMembershipObservedState `json:"observedState,omitempty"`
 
 	// Output only. The time when the `Membership` was created.
@@ -80,10 +80,10 @@ type CloudIdentityMembershipStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-// CloudIdentityMembershipObservedState is the state of the CloudIdentityMembership resource as most recently observed in GCP.
+// CloudIdentityMembershipObservedState is the state of the CloudIdentityMembership resource as most recently observed in Google Cloud.
 // +kcc:proto=google.apps.cloudidentity.groups.v1beta1.Membership
 type CloudIdentityMembershipObservedState struct {
-	// The name of the Membership resource in GCP. Server generated.
+	// The name of the Membership resource in Google Cloud. Server generated.
 	// Shall be of the form `groups/{group_id}/memberships/{membership_id}`.
 	// Name string `json:"name,omitempty"`
 

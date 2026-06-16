@@ -242,7 +242,7 @@ type ConnectionCloudResourceStatus struct {
 	when it is created. After creation, customers delegate permissions
 	to the service account. When the connection is used in the context of an
 	operation in BigQuery, the service account will be used to connect to the
-	desired resources in GCP.
+	desired resources in Google Cloud.
 
 	The account ID is in the form of:
 	<service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com */
@@ -309,7 +309,7 @@ type BigQueryConnectionConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryConnectionConnection's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BigQueryConnectionConnection resource in GCP. */
+	/* A unique specifier for the BigQueryConnectionConnection resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -317,7 +317,7 @@ type BigQueryConnectionConnectionStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *ConnectionObservedStateStatus `json:"observedState,omitempty"`
 }

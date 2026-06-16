@@ -30,7 +30,7 @@ type EntryIdentity struct {
 	id     string
 }
 
-// String returns the GCP resource name for the DataCatalogEntry.
+// String returns the Google Cloud resource name for the DataCatalogEntry.
 func (i *EntryIdentity) String() string {
 	return i.parent.String() + "/entries/" + i.id
 }
@@ -52,7 +52,7 @@ type EntryParent struct {
 	EntryGroupID string
 }
 
-// String returns the GCP resource name for the parent EntryGroup.
+// String returns the Google Cloud resource name for the parent EntryGroup.
 func (p *EntryParent) String() string {
 	return fmt.Sprintf("projects/%s/locations/%s/entryGroups/%s", p.ProjectID, p.Location, p.EntryGroupID)
 }

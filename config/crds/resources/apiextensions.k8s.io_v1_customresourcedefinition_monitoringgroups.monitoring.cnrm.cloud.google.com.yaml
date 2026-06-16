@@ -77,7 +77,7 @@ spec:
                   that are clusters.
                 type: boolean
               parentRef:
-                description: MonitoringGroupRef is a reference to a GCP MonitoringGroup.
+                description: MonitoringGroupRef is a reference to a Google Cloud MonitoringGroup.
                 oneOf:
                 - not:
                     required:
