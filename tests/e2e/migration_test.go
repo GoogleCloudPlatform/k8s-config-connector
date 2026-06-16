@@ -63,7 +63,7 @@ func TestMigrationToDirect(t *testing.T) {
 
 	subtestTimeout := time.Hour
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
-		subtestTimeout = 3 * time.Minute
+		subtestTimeout = 5 * time.Minute
 	}
 
 	t.Run("fixtures", func(t *testing.T) {

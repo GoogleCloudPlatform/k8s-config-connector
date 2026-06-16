@@ -19,4 +19,4 @@ metadata:
   labels:
     label-two: "value-one"
 spec:
-  description: "A sample hub"
+  description: "An updated sample hub"
