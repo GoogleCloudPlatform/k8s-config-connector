@@ -165,7 +165,11 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	default:
 		h.Logf("exporting resource %q", exportURI)
 		if err := export.Execute(h.Ctx, &exportParams); err != nil {
-			h.Errorf("error from export.Execute of %q: %v", exportURI, err)
+			if options.DisableDirectExport {
+				h.Logf("ignoring error from export.Execute of %q under fallback/old controller: %v", exportURI, err)
+			} else {
+				h.Errorf("error from export.Execute of %q: %v", exportURI, err)
+			}
 			return ""
 		}
 	}
