@@ -27,6 +27,8 @@ import (
 type errorClient struct {
 }
 
+var _ client.Client = &errorClient{}
+
 // Some packages, like 'gcpclient' make use of krmtotf which is tightly coupled with the controller-runtime client.
 // However, krmtotf does not actually need the client if all the resources passed in have all references resolved, etc.
 // To enable usage of the library but also to avoid panics, this erroring client can be passed to krmtotf methods.
@@ -56,6 +58,10 @@ func (e *errorClient) Update(_ context.Context, obj client.Object, _ ...client.U
 
 func (e *errorClient) Patch(_ context.Context, obj client.Object, _ client.Patch, _ ...client.PatchOption) error {
 	return fmt.Errorf("unexpected call to client.Patch(...) for object with kind %v", obj.GetObjectKind())
+}
+
+func (e *errorClient) Apply(_ context.Context, obj runtime.ApplyConfiguration, _ ...client.ApplyOption) error {
+	return fmt.Errorf("unexpected call to client.Apply(...) for object %v", obj)
 }
 
 func (e *errorClient) DeleteAllOf(_ context.Context, obj client.Object, _ ...client.DeleteAllOfOption) error {

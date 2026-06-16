@@ -1,0 +1,333 @@
+GET https://kube-apiserver/api/v1
+Accept: application/json, */*
+Accept-Encoding: gzip
+
+
+200 OK
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+// discovery response removed for length
+
+---
+
+GET https://kube-apiserver/api?timeout=32s
+Accept: application/json;g=apidiscovery.k8s.io;v=v2;as=APIGroupDiscoveryList,application/json;g=apidiscovery.k8s.io;v=v2beta1;as=APIGroupDiscoveryList,application/json
+Accept-Encoding: gzip
+Kubectl-Command: kubectl apply
+
+
+200 OK
+Cache-Control: public
+Content-Type: application/json;g=apidiscovery.k8s.io;v=v2;as=APIGroupDiscoveryList
+Etag: (removed)
+Vary: Accept
+
+// discovery response removed for length
+
+---
+
+GET https://kube-apiserver/apis?timeout=32s
+Accept: application/json;g=apidiscovery.k8s.io;v=v2;as=APIGroupDiscoveryList,application/json;g=apidiscovery.k8s.io;v=v2beta1;as=APIGroupDiscoveryList,application/json
+Accept-Encoding: gzip
+Kubectl-Command: kubectl apply
+
+
+200 OK
+Cache-Control: public
+Content-Type: application/json;g=apidiscovery.k8s.io;v=v2;as=APIGroupDiscoveryList
+Etag: (removed)
+Vary: Accept
+
+// discovery response removed for length
+
+---
+
+GET https://kube-apiserver/api/v1/namespaces/ns1
+Accept: application/json
+Accept-Encoding: gzip
+Kubectl-Command: kubectl apply
+
+
+200 OK
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "creationTimestamp": "2025-04-01T00:00:00Z",
+    "labels": {
+      "kubernetes.io/metadata.name": "ns1"
+    },
+    "managedFields": [
+      {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:labels": {
+              ".": {},
+              "f:kubernetes.io/metadata.name": {}
+            }
+          }
+        },
+        "manager": "applier.test",
+        "operation": "Update",
+        "time": "2025-04-01T00:00:00Z"
+      }
+    ],
+    "name": "ns1",
+    "resourceVersion": "1000",
+    "uid": "fake-uid"
+  },
+  "spec": {
+    "finalizers": [
+      "kubernetes"
+    ]
+  },
+  "status": {
+    "phase": "Active"
+  }
+}
+
+---
+
+GET https://kube-apiserver/openapi/v3?timeout=32s
+Accept: application/json, */*
+Accept-Encoding: gzip
+Kubectl-Command: kubectl apply
+
+
+200 OK
+Accept-Ranges: bytes
+Cache-Control: no-cache, private
+Content-Type: text/plain; charset=utf-8
+Last-Modified: (removed)
+
+// discovery response removed for length
+
+---
+
+GET https://kube-apiserver/openapi/v3/api/v1?hash=some-hash&timeout=32s
+Accept: application/json
+Accept-Encoding: gzip
+Kubectl-Command: kubectl apply
+
+
+200 OK
+Accept-Ranges: bytes
+Cache-Control: public, immutable
+Content-Type: application/json
+Etag: (removed)
+Expires: (removed)
+Last-Modified: (removed)
+Vary: Accept
+
+// discovery response removed for length
+
+---
+
+PATCH https://kube-apiserver/api/v1/namespaces/ns1?fieldManager=kubectl-client-side-apply&fieldValidation=Ignore
+Accept: application/json
+Accept-Encoding: gzip
+Content-Type: application/strategic-merge-patch+json
+Kubectl-Command: kubectl apply
+
+{
+  "metadata": {
+    "annotations": {
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{},\"name\":\"ns1\"}}\n"
+    }
+  }
+}
+
+200 OK
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "annotations": {
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{},\"name\":\"ns1\"}}\n"
+    },
+    "creationTimestamp": "2025-04-01T00:00:00Z",
+    "labels": {
+      "kubernetes.io/metadata.name": "ns1"
+    },
+    "managedFields": [
+      {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:labels": {
+              ".": {},
+              "f:kubernetes.io/metadata.name": {}
+            }
+          }
+        },
+        "manager": "applier.test",
+        "operation": "Update",
+        "time": "2025-04-01T00:00:00Z"
+      },
+      {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:annotations": {
+              ".": {},
+              "f:kubectl.kubernetes.io/last-applied-configuration": {}
+            }
+          }
+        },
+        "manager": "kubectl-client-side-apply",
+        "operation": "Update",
+        "time": "2025-04-01T00:00:00Z"
+      }
+    ],
+    "name": "ns1",
+    "resourceVersion": "1002",
+    "uid": "fake-uid"
+  },
+  "spec": {
+    "finalizers": [
+      "kubernetes"
+    ]
+  },
+  "status": {
+    "phase": "Active"
+  }
+}
+
+---
+
+GET https://kube-apiserver/api/v1/namespaces/ns2
+Accept: application/json
+Accept-Encoding: gzip
+Kubectl-Command: kubectl apply
+
+
+200 OK
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "creationTimestamp": "2025-04-01T00:00:00Z",
+    "labels": {
+      "kubernetes.io/metadata.name": "ns2"
+    },
+    "managedFields": [
+      {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:labels": {
+              ".": {},
+              "f:kubernetes.io/metadata.name": {}
+            }
+          }
+        },
+        "manager": "applier.test",
+        "operation": "Update",
+        "time": "2025-04-01T00:00:00Z"
+      }
+    ],
+    "name": "ns2",
+    "resourceVersion": "1001",
+    "uid": "fake-uid"
+  },
+  "spec": {
+    "finalizers": [
+      "kubernetes"
+    ]
+  },
+  "status": {
+    "phase": "Active"
+  }
+}
+
+---
+
+PATCH https://kube-apiserver/api/v1/namespaces/ns2?fieldManager=kubectl-client-side-apply&fieldValidation=Ignore
+Accept: application/json
+Accept-Encoding: gzip
+Content-Type: application/strategic-merge-patch+json
+Kubectl-Command: kubectl apply
+
+{
+  "metadata": {
+    "annotations": {
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{},\"name\":\"ns2\"}}\n"
+    }
+  }
+}
+
+200 OK
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "annotations": {
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{},\"name\":\"ns2\"}}\n"
+    },
+    "creationTimestamp": "2025-04-01T00:00:00Z",
+    "labels": {
+      "kubernetes.io/metadata.name": "ns2"
+    },
+    "managedFields": [
+      {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:labels": {
+              ".": {},
+              "f:kubernetes.io/metadata.name": {}
+            }
+          }
+        },
+        "manager": "applier.test",
+        "operation": "Update",
+        "time": "2025-04-01T00:00:00Z"
+      },
+      {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:annotations": {
+              ".": {},
+              "f:kubectl.kubernetes.io/last-applied-configuration": {}
+            }
+          }
+        },
+        "manager": "kubectl-client-side-apply",
+        "operation": "Update",
+        "time": "2025-04-01T00:00:00Z"
+      }
+    ],
+    "name": "ns2",
+    "resourceVersion": "1003",
+    "uid": "fake-uid"
+  },
+  "spec": {
+    "finalizers": [
+      "kubernetes"
+    ]
+  },
+  "status": {
+    "phase": "Active"
+  }
+}

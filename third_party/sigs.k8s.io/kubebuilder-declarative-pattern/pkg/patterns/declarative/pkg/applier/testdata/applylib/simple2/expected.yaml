@@ -1,0 +1,159 @@
+GET https://kube-apiserver/api/v1
+Accept: application/json, */*
+
+
+200 OK
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+// discovery response removed for length
+
+---
+
+PATCH https://kube-apiserver/api/v1/namespaces/ns1?fieldManager=kdp-test&force=false
+Accept: application/json
+Content-Type: application/apply-patch+yaml
+
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "labels": {
+      "applyset.kubernetes.io/part-of": "applyset-XYWvxXDUlCqMdjmmY1arThcdGiF0cvBW6sAfSMWYUdE-v1"
+    },
+    "name": "ns1"
+  }
+}
+
+200 OK
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "creationTimestamp": "2025-04-01T00:00:00Z",
+    "labels": {
+      "applyset.kubernetes.io/part-of": "applyset-XYWvxXDUlCqMdjmmY1arThcdGiF0cvBW6sAfSMWYUdE-v1",
+      "kubernetes.io/metadata.name": "ns1"
+    },
+    "managedFields": [
+      {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:labels": {
+              "f:applyset.kubernetes.io/part-of": {}
+            }
+          }
+        },
+        "manager": "kdp-test",
+        "operation": "Apply",
+        "time": "2025-04-01T00:00:00Z"
+      },
+      {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:labels": {
+              ".": {},
+              "f:kubernetes.io/metadata.name": {}
+            }
+          }
+        },
+        "manager": "applier.test",
+        "operation": "Update",
+        "time": "2025-04-01T00:00:00Z"
+      }
+    ],
+    "name": "ns1",
+    "resourceVersion": "1000",
+    "uid": "fake-uid"
+  },
+  "spec": {
+    "finalizers": [
+      "kubernetes"
+    ]
+  },
+  "status": {
+    "phase": "Active"
+  }
+}
+
+---
+
+PATCH https://kube-apiserver/api/v1/namespaces/ns2?fieldManager=kdp-test&force=false
+Accept: application/json
+Content-Type: application/apply-patch+yaml
+
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "labels": {
+      "applyset.kubernetes.io/part-of": "applyset-XYWvxXDUlCqMdjmmY1arThcdGiF0cvBW6sAfSMWYUdE-v1"
+    },
+    "name": "ns2"
+  }
+}
+
+200 OK
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "creationTimestamp": "2025-04-01T00:00:00Z",
+    "labels": {
+      "applyset.kubernetes.io/part-of": "applyset-XYWvxXDUlCqMdjmmY1arThcdGiF0cvBW6sAfSMWYUdE-v1",
+      "kubernetes.io/metadata.name": "ns2"
+    },
+    "managedFields": [
+      {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:labels": {
+              "f:applyset.kubernetes.io/part-of": {}
+            }
+          }
+        },
+        "manager": "kdp-test",
+        "operation": "Apply",
+        "time": "2025-04-01T00:00:00Z"
+      },
+      {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:labels": {
+              ".": {},
+              "f:kubernetes.io/metadata.name": {}
+            }
+          }
+        },
+        "manager": "applier.test",
+        "operation": "Update",
+        "time": "2025-04-01T00:00:00Z"
+      }
+    ],
+    "name": "ns2",
+    "resourceVersion": "1001",
+    "uid": "fake-uid"
+  },
+  "spec": {
+    "finalizers": [
+      "kubernetes"
+    ]
+  },
+  "status": {
+    "phase": "Active"
+  }
+}
