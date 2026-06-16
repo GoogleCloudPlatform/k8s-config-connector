@@ -38,7 +38,7 @@
 >   "defaultPartitionExpirationMs": "3800000",
 >   "defaultTableExpirationMs": "3800000",
 552a552
->   "isCaseInsensitive": false,
+>   "isCaseInsensitive": true,
 557d556
 <   "location": "US",
 583a583,586
@@ -47,14 +47,14 @@
 >     {
 >       "role": "OWNER",
 601a605
->   "isCaseInsensitive": false,
+>   "isCaseInsensitive": true,
 641a646,649
 >       "specialGroup": "projectOwners"
 >     },
 >     {
 >       "role": "OWNER",
 659a668
->   "isCaseInsensitive": false,
+>   "isCaseInsensitive": true,
 675,676c684,746
 < DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 < Content-Type: application/json
@@ -105,7 +105,7 @@
 >   "etag": "abcdef0123A=",
 >   "friendlyName": "bigquerydataset-fullyconfigured-updated",
 >   "id": "000000000000000000000",
->   "isCaseInsensitive": false,
+>   "isCaseInsensitive": true,
 >   "kind": "bigquery#dataset",
 >   "labels": {
 >     "cnrm-test": "true",

@@ -24,8 +24,10 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	bigquery "cloud.google.com/go/bigquery"
@@ -94,11 +96,45 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	if err != nil {
 		return nil, err
 	}
+
+	// Normalize references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	mapCtx := &direct.MapContext{}
+	desired := BigQueryDatasetSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	desired.Labels = label.GCPLabels(obj)
+
+	// Resolve KMS key reference. KMSCryptoKeyRef does not implement the refs.Ref interface,
+	// so it cannot be normalized automatically by common.NormalizeReferences.
+	// Therefore, we must resolve it manually using refs.ResolveKMSCryptoKeyRef.
+	if obj.Spec.DefaultEncryptionConfiguration != nil {
+		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
+		if err != nil {
+			return nil, err
+		}
+		if desired.DefaultEncryptionConfig == nil {
+			desired.DefaultEncryptionConfig = &bigquery.EncryptionConfig{}
+		}
+		desired.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
+	}
+
+	var isCaseInsensitive *bool
+	if obj.Spec.IsCaseInsensitive != nil {
+		isCaseInsensitive = direct.LazyPtr(*obj.Spec.IsCaseInsensitive)
+	}
+
 	return &Adapter{
-		id:         id,
-		gcpService: gcpService,
-		desired:    obj,
-		reader:     reader,
+		id:                id,
+		gcpService:        gcpService,
+		desired:           desired,
+		isCaseInsensitive: isCaseInsensitive,
+		reader:            reader,
 	}, nil
 }
 
@@ -108,11 +144,12 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id         *krm.DatasetIdentity
-	gcpService *bigquery.Client
-	desired    *krm.BigQueryDataset
-	actual     *bigquery.DatasetMetadata
-	reader     client.Reader
+	id                *krm.DatasetIdentity
+	gcpService        *bigquery.Client
+	desired           *bigquery.DatasetMetadata
+	isCaseInsensitive *bool
+	actual            *bigquery.DatasetMetadata
+	reader            client.Reader
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -139,24 +176,9 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("creating Dataset", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
-	desiredDataset := BigQueryDatasetSpec_ToProto(mapCtx, &a.desired.Spec)
-	desiredDataset.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		desiredDataset.Labels[k] = v
-	}
-	desiredDataset.Labels["managed-by-cnrm"] = "true"
-
-	// Resolve KMS key reference
-	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return err
-		}
-		desiredDataset.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
-	}
 	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
 
-	if err := dsHandler.Create(ctx, desiredDataset); err != nil {
+	if err := dsHandler.Create(ctx, a.desired); err != nil {
 		return fmt.Errorf("Error creating Dataset %s: %w", a.id.Dataset, err)
 	}
 	log.V(2).Info("successfully created Dataset", "name", a.id.Dataset)
@@ -194,87 +216,65 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	u := updateOp.GetUnstructured()
-
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Dataset", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
-	// Convert KRM object to proto message
-	desiredKRM := a.desired.DeepCopy()
-	desired := BigQueryDatasetSpec_ToProto(mapCtx, &desiredKRM.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	// Resolve KMS key reference
-	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return err
-		}
-		desired.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
-	}
-
 	resource := cloneBigQueryDatasetMetadate(a.actual)
-	// Check for immutable fields
-	if desiredKRM.Spec.Location != nil && !reflect.DeepEqual(desired.Location, resource.Location) {
-		return fmt.Errorf("BigQueryDataset %s/%s location cannot be changed, actual: %s, desired: %s", u.GetNamespace(), u.GetName(), resource.Location, desired.Location)
-	}
 	// Find diff
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	updateMask := &fieldmaskpb.FieldMask{}
-	if desired.Description != "" && !reflect.DeepEqual(desired.Description, resource.Description) {
-		report.AddField("description", resource.Description, desired.Description)
-		resource.Description = desired.Description
+	if a.desired.Description != "" && !reflect.DeepEqual(a.desired.Description, resource.Description) {
+		report.AddField("description", resource.Description, a.desired.Description)
+		resource.Description = a.desired.Description
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
-	if desired.Name != "" && !reflect.DeepEqual(desired.Name, resource.Name) {
-		report.AddField("friendly_name", resource.Name, desired.Name)
-		resource.Name = desired.Name
+	if a.desired.Name != "" && !reflect.DeepEqual(a.desired.Name, resource.Name) {
+		report.AddField("friendly_name", resource.Name, a.desired.Name)
+		resource.Name = a.desired.Name
 		updateMask.Paths = append(updateMask.Paths, "friendly_name")
 	}
-	if desired.DefaultPartitionExpiration != 0 && !reflect.DeepEqual(desired.DefaultPartitionExpiration, resource.DefaultPartitionExpiration) {
-		report.AddField("default_partition_expiration", resource.DefaultPartitionExpiration, desired.DefaultPartitionExpiration)
-		resource.DefaultPartitionExpiration = desired.DefaultPartitionExpiration
+	if a.desired.DefaultPartitionExpiration != 0 && !reflect.DeepEqual(a.desired.DefaultPartitionExpiration, resource.DefaultPartitionExpiration) {
+		report.AddField("default_partition_expiration", resource.DefaultPartitionExpiration, a.desired.DefaultPartitionExpiration)
+		resource.DefaultPartitionExpiration = a.desired.DefaultPartitionExpiration
 		updateMask.Paths = append(updateMask.Paths, "default_partition_expiration")
 	}
-	if desired.DefaultTableExpiration != 0 && !reflect.DeepEqual(desired.DefaultTableExpiration, resource.DefaultTableExpiration) {
-		report.AddField("default_table_expiration", resource.DefaultTableExpiration, desired.DefaultTableExpiration)
-		resource.DefaultTableExpiration = desired.DefaultTableExpiration
+	if a.desired.DefaultTableExpiration != 0 && !reflect.DeepEqual(a.desired.DefaultTableExpiration, resource.DefaultTableExpiration) {
+		report.AddField("default_table_expiration", resource.DefaultTableExpiration, a.desired.DefaultTableExpiration)
+		resource.DefaultTableExpiration = a.desired.DefaultTableExpiration
 		updateMask.Paths = append(updateMask.Paths, "default_table_expiration")
 	}
-	if desired.DefaultCollation != "" && !reflect.DeepEqual(desired.DefaultCollation, resource.DefaultCollation) {
-		report.AddField("default_collation", resource.DefaultCollation, desired.DefaultCollation)
-		resource.DefaultCollation = desired.DefaultCollation
+	if a.desired.DefaultCollation != "" && !reflect.DeepEqual(a.desired.DefaultCollation, resource.DefaultCollation) {
+		report.AddField("default_collation", resource.DefaultCollation, a.desired.DefaultCollation)
+		resource.DefaultCollation = a.desired.DefaultCollation
 		updateMask.Paths = append(updateMask.Paths, "default_collation")
 	}
-	if desired.DefaultEncryptionConfig != nil && resource.DefaultEncryptionConfig != nil && !reflect.DeepEqual(desired.DefaultEncryptionConfig, resource.DefaultEncryptionConfig) {
-		report.AddField("default_encryption_configuration", resource.DefaultEncryptionConfig, desired.DefaultEncryptionConfig)
-		resource.DefaultEncryptionConfig.KMSKeyName = desired.DefaultEncryptionConfig.KMSKeyName
+	if a.desired.DefaultEncryptionConfig != nil && resource.DefaultEncryptionConfig != nil && !reflect.DeepEqual(a.desired.DefaultEncryptionConfig, resource.DefaultEncryptionConfig) {
+		report.AddField("default_encryption_configuration", resource.DefaultEncryptionConfig, a.desired.DefaultEncryptionConfig)
+		resource.DefaultEncryptionConfig.KMSKeyName = a.desired.DefaultEncryptionConfig.KMSKeyName
 		updateMask.Paths = append(updateMask.Paths, "default_encryption_configuration")
 	}
-	if desiredKRM.Spec.IsCaseInsensitive != nil && !reflect.DeepEqual(desired.IsCaseInsensitive, resource.IsCaseInsensitive) {
-		report.AddField("is_case_sensitive", resource.IsCaseInsensitive, desired.IsCaseInsensitive)
-		resource.IsCaseInsensitive = desired.IsCaseInsensitive
+	if a.isCaseInsensitive != nil && !reflect.DeepEqual(*a.isCaseInsensitive, resource.IsCaseInsensitive) {
+		report.AddField("is_case_sensitive", resource.IsCaseInsensitive, *a.isCaseInsensitive)
+		resource.IsCaseInsensitive = *a.isCaseInsensitive
 		updateMask.Paths = append(updateMask.Paths, "is_case_sensitive")
 	}
-	if desired.StorageBillingModel != "" && !reflect.DeepEqual(desired.StorageBillingModel, resource.StorageBillingModel) {
-		report.AddField("storage_billing_model", resource.StorageBillingModel, desired.StorageBillingModel)
-		resource.StorageBillingModel = desired.StorageBillingModel
+	if a.desired.StorageBillingModel != "" && !reflect.DeepEqual(a.desired.StorageBillingModel, resource.StorageBillingModel) {
+		report.AddField("storage_billing_model", resource.StorageBillingModel, a.desired.StorageBillingModel)
+		resource.StorageBillingModel = a.desired.StorageBillingModel
 		updateMask.Paths = append(updateMask.Paths, "storage_billing_model")
 	}
 	// If we do not set a value, the GCP service defaults to 168
 	// If the existing value is 168, it means that we did not set this field at creation and it defaults to 168.
 	// So if the desired value is 0, it means that we do not intend to update this field.
-	if desired.MaxTimeTravel != 0 && !reflect.DeepEqual(desired.MaxTimeTravel, resource.MaxTimeTravel) && (resource.MaxTimeTravel != 168 && desired.MaxTimeTravel != 0) {
-		report.AddField("max_time_travel", resource.MaxTimeTravel, desired.MaxTimeTravel)
-		resource.MaxTimeTravel = desired.MaxTimeTravel
+	if a.desired.MaxTimeTravel != 0 && !reflect.DeepEqual(a.desired.MaxTimeTravel, resource.MaxTimeTravel) && (resource.MaxTimeTravel != 168 && a.desired.MaxTimeTravel != 0) {
+		report.AddField("max_time_travel", resource.MaxTimeTravel, a.desired.MaxTimeTravel)
+		resource.MaxTimeTravel = a.desired.MaxTimeTravel
 		updateMask.Paths = append(updateMask.Paths, "max_time_travel")
 	}
-	if desired.Access != nil && resource.Access != nil && len(desired.Access) > 0 && !reflect.DeepEqual(desired.Access, resource.Access) {
-		report.AddField("access", resource.Access, desired.Access)
-		for _, access := range desired.Access {
+	if a.desired.Access != nil && resource.Access != nil && len(a.desired.Access) > 0 && !reflect.DeepEqual(a.desired.Access, resource.Access) {
+		report.AddField("access", resource.Access, a.desired.Access)
+		for _, access := range a.desired.Access {
 			resource.Access = append(resource.Access, access)
 		}
 	}
@@ -286,7 +286,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	// Compute the dataset metadate for update request
 	datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
+	for k, v := range a.desired.Labels {
 		datasetMetadataToUpdate.SetLabel(k, v)
 	}
 	datasetMetadataToUpdate.SetLabel("managed-by-cnrm", "true")
