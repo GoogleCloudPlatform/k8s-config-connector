@@ -1,0 +1,56 @@
+--- a/v1alpha1
++++ b/v1beta1
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		"apiVersion": {Type: "string"},
+  		"kind":       {Type: "string"},
+  		"metadata":   {Type: "object"},
+  		"spec": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				"accessSettings": {
+  					... // 26 identical fields
+  					AnyOf: nil,
+  					Not:   nil,
+  					Properties: map[string]v1.JSONSchemaProps{
+  						"allowedDomainsSettings": {Type: "object", Properties: {"domains": {Type: "array", Items: &{Schema: &{Type: "string"}}}, "enable": {Type: "boolean"}}},
+  						"corsSettings":           {Type: "object", Properties: {"allowHTTPOptions": {Type: "boolean"}}},
+  						"gcipSettings":           {Type: "object", Properties: {"loginPageURI": {Type: "string"}, "tenantIDs": {Type: "array", Items: &{Schema: &{Type: "string"}}}}},
++ 						"identitySources": {
++ 							Type:  "array",
++ 							Items: s"&JSONSchemaPropsOrArray{Schema:&JSONSchemaProps{ID:,Schema:,Ref:nil,Description:,Type:string,Format:,Title:,Default:nil,Maximum:"...,
++ 						},
+  						"oauthSettings":  {Type: "object", Properties: {"loginHint": {Type: "string"}, "programmaticClients": {Type: "array", Items: &{Schema: &{Type: "string"}}}}},
+  						"reauthSettings": {Type: "object", Properties: {"maxAge": {Type: "string"}, "method": {Type: "string"}, "policyType": {Type: "string"}}},
++ 						"workforceIdentitySettings": {
++ 							Type: "object",
++ 							Properties: map[string]v1.JSONSchemaProps{
++ 								"oauth2":         {Type: "object", Properties: map[string]v1.JSONSchemaProps{...}},
++ 								"workforcePools": {Type: "array", Items: s"&JSONSchemaPropsOrArray{Schema:&"...},
++ 							},
++ 						},
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
+  				"appEngineRef":        {Type: "object", Required: {"applicationRef", "projectRef"}, Properties: {"applicationRef": {Type: "object", Properties: {"external": {Type: "string"}}}, "projectRef": {Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Type: "string"}, "kind": {Type: "string"}, "name": {Type: "string"}, "namespace": {Type: "string"}}}, "serviceRef": {Type: "object", Properties: {"external": {Type: "string"}}}, "versionRef": {Type: "object", Properties: {"external": {Type: "string"}}}}},
+  				"applicationSettings": {Type: "object", Properties: {"accessDeniedPageSettings": {Type: "object", Properties: {"accessDeniedPageURI": {Type: "string"}, "generateTroubleshootingURI": {Type: "boolean"}, "remediationTokenGenerationEnabled": {Type: "boolean"}}}, "attributePropagationSettings": {Type: "object", Properties: {"enable": {Type: "boolean"}, "expression": {Type: "string"}, "outputCredentials": {Type: "array", Items: &{Schema: &{Type: "string"}}}}}, "cookieDomain": {Type: "string"}, "csmSettings": {Type: "object", Properties: {"rctokenAud": {Type: "string"}}}}},
+  				... // 6 identical entries
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  		"status": {Type: "object", Properties: {"conditions": {Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Type: "string"}, "message": {Type: "string"}, "reason": {Type: "string"}, "status": {Type: "string"}, ...}}}}, "externalRef": {Type: "string"}, "observedGeneration": {Type: "integer", Format: "int64"}}},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }
+

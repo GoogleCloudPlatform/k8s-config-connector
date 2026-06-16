@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:fuzz-gen
-// proto.message: google.cloud.iap.v1.IapSettings
+// proto.message: google.cloud.iap.v1.Brand
 
 package iap
 
@@ -23,25 +23,20 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(iapsettingsFuzzer())
+	fuzztesting.RegisterKRMSpecFuzzer(iapBrandFuzzer())
 }
 
-func iapsettingsFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.IapSettings{},
-		IAPSettingsSpec_v1beta1_FromProto, IAPSettingsSpec_v1beta1_ToProto,
+func iapBrandFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.Brand{},
+		IAPBrandSpec_v1beta1_FromProto, IAPBrandSpec_v1beta1_ToProto,
 	)
 
 	// Spec fields
-	f.SpecFields.Insert(".access_settings")
-	f.SpecFields.Insert(".application_settings")
+	f.SpecFields.Insert(".application_title")
+	f.SpecFields.Insert(".support_email")
 
 	f.IdentityField(".name")
-
-	f.Unimplemented_NotYetTriaged(".access_settings.identity_sources")
-	f.Unimplemented_NotYetTriaged(".access_settings.workforce_identity_settings")
-	f.Unimplemented_NotYetTriaged(".access_settings.oauth_settings.client_id")
-	f.Unimplemented_NotYetTriaged(".access_settings.oauth_settings.client_secret_sha256")
-	f.Unimplemented_NotYetTriaged(".access_settings.oauth_settings.client_secret")
+	f.Unimplemented_NotYetTriaged(".org_internal_only")
 
 	return f
 }

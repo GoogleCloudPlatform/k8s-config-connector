@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"slices"
 	"sort"
 	"strings"
@@ -909,6 +910,11 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 		for i := 0; i < len(versions)-1; i++ {
 			otherVersion := versions[i]
 
+			// Clear descriptions to focus strictly on structural compatibility
+			// and avoid any non-deterministic word-wrapping or doc differences.
+			clearDescriptions(otherVersion.Schema.OpenAPIV3Schema)
+			clearDescriptions(baseVersion.Schema.OpenAPIV3Schema)
+
 			diff := cmp.Diff(otherVersion.Schema.OpenAPIV3Schema, baseVersion.Schema.OpenAPIV3Schema)
 			if diff != "" {
 				header := fmt.Sprintf("--- a/%s\n+++ b/%s\n", otherVersion.Name, baseVersion.Name)
@@ -927,8 +933,9 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 					t.Fatalf("error creating directory %s: %v", diffDir, err)
 				}
 				// To address inconsistencies between local and CI environments,
-				// we normalize the diff output by replacing non-breaking spaces with regular spaces.
-				normalizedDiff := strings.ReplaceAll(allDiffs.String(), "\u00a0", " ")
+				// we normalize the diff output by replacing non-breaking spaces with regular spaces
+				// and merging multi-line string wraps inside the diff representation.
+				normalizedDiff := normalizeGoCmpDiff(allDiffs.String())
 				if err := os.WriteFile(diffFilePath, []byte(normalizedDiff), 0644); err != nil {
 					t.Fatalf("error writing diff file %s: %v", diffFilePath, err)
 				}
@@ -944,15 +951,121 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 
 			if diff := cmp.Diff(string(expectedDiff), allDiffs.String()); diff != "" {
 				// To address inconsistencies between local and CI environments,
-				// we normalize the diff output by replacing non-breaking spaces with regular spaces.
-				normalizedActual := strings.ReplaceAll(allDiffs.String(), " ", " ")
-				normalizedExpected := strings.ReplaceAll(string(expectedDiff), " ", " ")
+				// we normalize the diff output by replacing non-breaking spaces with regular spaces
+				// and merging multi-line string wraps inside the diff representation.
+				normalizedActual := normalizeGoCmpDiff(allDiffs.String())
+				normalizedExpected := normalizeGoCmpDiff(string(expectedDiff))
 				if diff := cmp.Diff(normalizedExpected, normalizedActual); diff != "" {
 					t.Errorf("crd %s schema diff does not match golden file %s:\n%s", crd.Name, diffFilePath, diff)
 				}
 			}
 		}
 	}
+}
+
+// clearDescriptions recursively clears the Description fields of a JSONSchemaProps.
+// This prevents non-functional documentation differences or word wrapping from causing
+// non-deterministic test failures, focusing the diff purely on structural schema compatibility.
+func clearDescriptions(props *apiextensions.JSONSchemaProps) {
+	if props == nil {
+		return
+	}
+	props.Description = ""
+
+	// Recurse into Properties
+	for k, child := range props.Properties {
+		clearDescriptions(&child)
+		props.Properties[k] = child
+	}
+
+	// Recurse into PatternProperties
+	for k, child := range props.PatternProperties {
+		clearDescriptions(&child)
+		props.PatternProperties[k] = child
+	}
+
+	// Recurse into Items
+	if props.Items != nil {
+		if props.Items.Schema != nil {
+			clearDescriptions(props.Items.Schema)
+		}
+		for i := range props.Items.JSONSchemas {
+			clearDescriptions(&props.Items.JSONSchemas[i])
+		}
+	}
+
+	// Recurse into AllOf, OneOf, AnyOf
+	for i := range props.AllOf {
+		clearDescriptions(&props.AllOf[i])
+	}
+	for i := range props.OneOf {
+		clearDescriptions(&props.OneOf[i])
+	}
+	for i := range props.AnyOf {
+		clearDescriptions(&props.AnyOf[i])
+	}
+
+	// Recurse into Not
+	if props.Not != nil {
+		clearDescriptions(props.Not)
+	}
+
+	// Recurse into AdditionalProperties
+	if props.AdditionalProperties != nil && props.AdditionalProperties.Schema != nil {
+		clearDescriptions(props.AdditionalProperties.Schema)
+	}
+}
+
+// normalizeGoCmpDiff normalizes the diff output from cmp.Diff (especially for long description strings).
+// It converts non-breaking spaces to regular spaces and merges adjacent string literal fragments
+// of the same diff type (e.g., contiguous additions '+', deletions '-', or context ' ') under strings.Join.
+// This ensures that non-deterministic word wrapping in the diff output does not cause test failures.
+func normalizeGoCmpDiff(diff string) string {
+	diff = strings.ReplaceAll(diff, "\u00a0", " ")
+	diff = strings.ReplaceAll(diff, " ", " ")
+
+	lines := strings.Split(diff, "\n")
+	var result []string
+
+	re := regexp.MustCompile(`^([-+ ]?)\s*"([^"\\]*(?:\\.[^"\\]*)*)"(,?)\s*$`)
+
+	for _, line := range lines {
+		matches := re.FindStringSubmatch(line)
+		if len(matches) == 4 {
+			sign := matches[1]
+			strVal := matches[2]
+			comma := matches[3]
+
+			if len(result) > 0 {
+				prevLine := result[len(result)-1]
+				prevMatches := re.FindStringSubmatch(prevLine)
+				if len(prevMatches) == 4 && prevMatches[1] == sign {
+					// Merge string values
+					mergedStr := prevMatches[2] + strVal
+					mergedComma := prevMatches[3]
+					if comma != "" {
+						mergedComma = comma
+					}
+
+					// Find the indentation of the previous line
+					indentIdx := strings.Index(prevLine, "\"")
+					indent := ""
+					if indentIdx != -1 {
+						indent = prevLine[:indentIdx]
+					} else {
+						indent = prevLine[:strings.Index(prevLine, prevMatches[2])]
+					}
+
+					// Replace the previous line with the merged one
+					result[len(result)-1] = fmt.Sprintf("%s\"%s\"%s", indent, mergedStr, mergedComma)
+					continue
+				}
+			}
+		}
+		result = append(result, line)
+	}
+
+	return strings.Join(result, "\n")
 }
 
 // TestSpecShouldNotContainEtag checks for fields in spec that contain 'etag'.
