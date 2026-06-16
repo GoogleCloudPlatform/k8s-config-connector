@@ -94,11 +94,14 @@
 < PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json&updateMask=description
 ---
 > PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
-295d258
+295,324d258
 <   "cleanupPolicies": {},
-296a260
->   "format": 1,
-302,332c266
+<   "description": "test repository description 2",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
 <   "virtualRepositoryConfig": {
 <     "upstreamPolicies": [
 <       {
@@ -122,13 +125,11 @@
 < 
 < {
 <   "createTime": "2024-04-01T12:34:56.123456Z",
-<   "description": "test repository description 2",
+326c260
 <   "format": "DOCKER",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "label-one": "value-one",
-<     "managed-by-cnrm": "true"
-<   },
+---
+>   "format": 1,
+332c266
 <   "mode": "VIRTUAL_REPOSITORY",
 ---
 >   "mode": 2,
@@ -161,24 +162,8 @@
 <     "enablementState": "SCANNING_UNSUPPORTED",
 ---
 >     "enablementState": 1,
-444c365
-< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
----
-> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
-459c380
-<   "format": "DOCKER",
----
->   "format": 1,
-465c386
-<   "mode": "STANDARD_REPOSITORY",
----
->   "mode": 1,
-471c392
-<     "enablementState": "SCANNING_DISABLED",
----
->     "enablementState": 2,
-479,501c400
-< DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
+444,489c365
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
 < Content-Type: application/json
 < 
 < 200 OK
@@ -192,60 +177,65 @@
 < X-Xss-Protection: 0
 < 
 < {
-<   "metadata": {
-<     "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "description": "test repository description 2",
+<   "format": "DOCKER",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
 <   },
-<   "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+<   "mode": "VIRTUAL_REPOSITORY",
+<   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+<   "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
+<   "satisfiesPzi": true,
+<   "updateTime": "2024-04-01T12:34:56.123456Z",
+<   "virtualRepositoryConfig": {
+<     "upstreamPolicies": [
+<       {
+<         "id": "upstream-repo",
+<         "priority": 1,
+<         "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
+<       }
+<     ]
+<   },
+<   "vulnerabilityScanningConfig": {
+<     "enablementState": "SCANNING_UNSUPPORTED",
+<     "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
+<     "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+<   }
 < }
 < 
 < ---
 < 
-< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
----
-> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-517c416
-<   "format": "DOCKER",
----
->   "format": 1,
-523c422
-<   "mode": "VIRTUAL_REPOSITORY",
----
->   "mode": 2,
-538c437
-<     "enablementState": "SCANNING_UNSUPPORTED",
----
->     "enablementState": 1,
-546c445,467
-< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
----
-> DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
-> Content-Type: application/json
-> 
-> 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
->   "metadata": {
->     "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
->   },
->   "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
-> }
-> 
-> ---
-> 
-> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
-572c493
 < DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
 ---
 > DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-594c515
+511c387
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+537c413
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+552c428
+<   "format": "DOCKER",
+---
+>   "format": 1,
+558c434
+<   "mode": "STANDARD_REPOSITORY",
+---
+>   "mode": 1,
+564c440
+<     "enablementState": "SCANNING_DISABLED",
+---
+>     "enablementState": 2,
+572c448
+< DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
+---
+> DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+594c470
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 ---
 > GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
