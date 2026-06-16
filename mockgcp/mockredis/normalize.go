@@ -44,7 +44,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.crossClusterReplicationConfig.primaryCluster.uid", "0123456789abcdef")
 	replacements.ReplacePath(".response.crossClusterReplicationConfig.secondaryClusters[].uid", "0123456789abcdef")
 
-	replacements.ReplacePath(".status.observedState.uid", "0123456789abcdef")
 	replacements.ReplacePath(".status.observedState.pscConnections[].pscConnectionID", "${pscConnectionID}")
 	replacements.ReplacePath(".status.observedState.pscConnections[].address", "10.11.12.13")
 	replacements.ReplacePath(".status.observedState.discoveryEndpoints[].address", "10.11.12.13")

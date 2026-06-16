@@ -17,10 +17,11 @@ package mockredis
 import (
 	"context"
 	"fmt"
-	"github.com/google/uuid"
 	"math/rand/v2"
 	"strings"
 	"time"
+
+	"github.com/google/uuid"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"

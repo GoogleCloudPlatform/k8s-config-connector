@@ -66,6 +66,18 @@ automatedBackupConfig:
       nanos: integer
       seconds: integer
   retention: string
+crossClusterReplicationConfig:
+  clusterRole: string
+  primaryCluster:
+    clusterRef:
+      external: string
+      name: string
+      namespace: string
+  secondaryClusters:
+  - clusterRef:
+      external: string
+      name: string
+      namespace: string
 deletionProtectionEnabled: boolean
 kmsKeyRef:
   external: string
@@ -214,6 +226,141 @@ zoneDistributionConfig:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Optional. How long to keep automated backups before the backups are deleted. The value should be between 1 day and 365 days. If not specified, the default value is 35 days.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. Cross cluster replication config.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig.clusterRole</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The role of the cluster in cross cluster replication.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig.primaryCluster</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Details of the primary cluster that is used as the replication source for
+ this secondary cluster.
+
+ This field is only set for a secondary cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig.primaryCluster.clusterRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig.primaryCluster.clusterRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed RedisCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig.primaryCluster.clusterRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a RedisCluster resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig.primaryCluster.clusterRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a RedisCluster resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig.secondaryClusters</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>List of secondary clusters that are replicating from this primary cluster.
+
+ This field is only set for a primary cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig.secondaryClusters[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig.secondaryClusters[].clusterRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig.secondaryClusters[].clusterRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed RedisCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig.secondaryClusters[].clusterRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a RedisCluster resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossClusterReplicationConfig.secondaryClusters[].clusterRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a RedisCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -654,6 +801,21 @@ externalRef: string
 observedGeneration: integer
 observedState:
   createTime: string
+  crossClusterReplicationConfig:
+    membership:
+      primaryCluster:
+        cluster: string
+        uid: string
+      secondaryClusters:
+      - cluster: string
+        uid: string
+    primaryCluster:
+      cluster: string
+      uid: string
+    secondaryClusters:
+    - cluster: string
+      uid: string
+    updateTime: string
   discoveryEndpoints:
   - address: string
     port: integer
@@ -773,6 +935,139 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Output only. The timestamp associated with the cluster creation request.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. Cross cluster replication config.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.membership</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. An output only view of all the member clusters participating
+ in the cross cluster replication. This view will be provided by every
+ member cluster irrespective of its cluster role(primary or secondary).
+
+ A primary cluster can provide information about all the secondary clusters
+ replicating from it. However, a secondary cluster only knows about the
+ primary cluster from which it is replicating. However, for scenarios, where
+ the primary cluster is unavailable(e.g. regional outage), a GetCluster
+ request can be sent to any other member cluster and this field will list
+ all the member clusters participating in cross cluster replication.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.membership.primaryCluster</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. The primary cluster that acts as the source of replication for the secondary clusters.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.membership.primaryCluster.cluster</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.membership.primaryCluster.uid</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The unique identifier of the remote cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.membership.secondaryClusters</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Output only. The list of secondary clusters replicating from the primary cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.membership.secondaryClusters[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.membership.secondaryClusters[].cluster</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.membership.secondaryClusters[].uid</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The unique identifier of the remote cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.primaryCluster</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Details of the primary cluster that is used as the replication source for
+ this secondary cluster.
+
+ This field is only set for a secondary cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.primaryCluster.cluster</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.primaryCluster.uid</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The unique identifier of the remote cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.secondaryClusters</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>List of secondary clusters that are replicating from this primary cluster.
+
+ This field is only set for a primary cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.secondaryClusters[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.secondaryClusters[].cluster</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.secondaryClusters[].uid</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The unique identifier of the remote cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossClusterReplicationConfig.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The last time cross cluster replication config was updated.</p>
         </td>
     </tr>
     <tr>
