@@ -31,7 +31,8 @@ import (
 )
 
 type Expectations struct {
-	Location bool // location or region
+	Location            bool // location or region
+	DisableDirectExport bool
 }
 
 func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectations *Expectations) string {
@@ -150,6 +151,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	exportParams := h.ExportParams()
 	exportParams.IAMFormat = "partialpolicy"
 	exportParams.ResourceFormat = "krm"
+	exportParams.DisableDirectExport = expectations.DisableDirectExport
 	outputDir := h.TempDir()
 	outputPath := filepath.Join(outputDir, "export.yaml")
 	exportParams.Output = outputPath
