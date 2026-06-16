@@ -21,7 +21,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd "${REPO_ROOT}/dev/tools/controllerbuilder"
 
-# We need a newer googleapis to get Folder (required because of shared package/multiversion mappers)
+# We need a newer googleapis to get Folder
 PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
@@ -38,13 +38,15 @@ fi
 
 go run . generate-types \
   --service google.cloud.dataform.v1beta1 \
-  --api-version dataform.cnrm.cloud.google.com/v1beta1 \
-  --resource DataformRepository:Repository \
+  --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
+  --overlay ${REPO_ROOT}/apis/dataform/v1alpha1/overlay.proto \
+  --resource DataformFolder:Folder \
   --proto-source-path ${PROTO_OUT}
 
 go run . generate-mapper \
   --service google.cloud.dataform.v1beta1 \
-  --api-version dataform.cnrm.cloud.google.com/v1beta1 \
+  --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
+  --overlay ${REPO_ROOT}/apis/dataform/v1alpha1/overlay.proto \
   --proto-source-path ${PROTO_OUT}
 
 cd "${REPO_ROOT}"
