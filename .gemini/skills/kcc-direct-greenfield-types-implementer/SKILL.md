@@ -41,6 +41,7 @@ Apply the baseline validations from `kcc-direct-base-types-implementer`, plus th
 - **Enums**: 
   - Use `*string` for the Go type of proto enum fields (do NOT use custom wrapped string types).
   - Use `// +kubebuilder:validation:Enum=VALUE1;VALUE2` to provide validation in the CRD while keeping the Go type simple.
+- **Terminology**: Replace any occurrences of "GCP" with "Google Cloud" in all comments, field descriptions, and docstrings.
 
 ### 4. Journaling
 Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
