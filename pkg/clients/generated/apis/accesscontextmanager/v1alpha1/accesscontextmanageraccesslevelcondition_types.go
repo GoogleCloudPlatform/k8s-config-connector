@@ -39,18 +39,15 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type AccesslevelconditionDevicePolicy struct {
-	/* Immutable. A list of allowed device management levels.
-	An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPECIFIED", "NONE", "BASIC", "COMPLETE"]. */
+	/* Immutable. A list of allowed device management levels. An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPECIFIED", "NONE", "BASIC", "COMPLETE"]. */
 	// +optional
 	AllowedDeviceManagementLevels []string `json:"allowedDeviceManagementLevels,omitempty"`
 
-	/* Immutable. A list of allowed encryptions statuses.
-	An empty list allows all statuses. Possible values: ["ENCRYPTION_UNSPECIFIED", "ENCRYPTION_UNSUPPORTED", "UNENCRYPTED", "ENCRYPTED"]. */
+	/* Immutable. A list of allowed encryptions statuses. An empty list allows all statuses. Possible values: ["ENCRYPTION_UNSPECIFIED", "ENCRYPTION_UNSUPPORTED", "UNENCRYPTED", "ENCRYPTED"]. */
 	// +optional
 	AllowedEncryptionStatuses []string `json:"allowedEncryptionStatuses,omitempty"`
 
-	/* Immutable. A list of allowed OS versions.
-	An empty list allows all types and all versions. */
+	/* Immutable. A list of allowed OS versions. An empty list allows all types and all versions. */
 	// +optional
 	OsConstraints []AccesslevelconditionOsConstraints `json:"osConstraints,omitempty"`
 
@@ -62,16 +59,13 @@ type AccesslevelconditionDevicePolicy struct {
 	// +optional
 	RequireCorpOwned *bool `json:"requireCorpOwned,omitempty"`
 
-	/* Immutable. Whether or not screenlock is required for the DevicePolicy
-	to be true. Defaults to false. */
+	/* Immutable. Whether or not screenlock is required for the DevicePolicy to be true. Defaults to false. */
 	// +optional
 	RequireScreenLock *bool `json:"requireScreenLock,omitempty"`
 }
 
 type AccesslevelconditionOsConstraints struct {
-	/* Immutable. The minimum allowed OS version. If not set, any version
-	of this OS satisfies the constraint.
-	Format: "major.minor.patch" such as "10.5.301", "9.2.1". */
+	/* Immutable. The minimum allowed OS version. If not set, any version of this OS satisfies the constraint. Format: "major.minor.patch" such as "10.5.301", "9.2.1". */
 	// +optional
 	MinimumVersion *string `json:"minimumVersion,omitempty"`
 
@@ -80,25 +74,15 @@ type AccesslevelconditionOsConstraints struct {
 }
 
 type AccessContextManagerAccessLevelConditionSpec struct {
+	/* Immutable. The AccessContextManagerAccessLevel that this condition is bound to. */
 	// +optional
 	AccessLevelRef *v1alpha1.ResourceRef `json:"accessLevelRef,omitempty"`
 
-	/* Immutable. Device specific restrictions, all restrictions must hold for
-	the Condition to be true. If not specified, all devices are
-	allowed. */
+	/* Immutable. Device specific restrictions, all restrictions must hold for the Condition to be true. If not specified, all devices are allowed. */
 	// +optional
 	DevicePolicy *AccesslevelconditionDevicePolicy `json:"devicePolicy,omitempty"`
 
-	/* Immutable. A list of CIDR block IP subnetwork specification. May be IPv4
-	or IPv6.
-	Note that for a CIDR IP address block, the specified IP address
-	portion must be properly truncated (i.e. all the host bits must
-	be zero) or the input is considered malformed. For example,
-	"192.0.2.0/24" is accepted but "192.0.2.1/24" is not. Similarly,
-	for IPv6, "2001:db8::/32" is accepted whereas "2001:db8::1/32"
-	is not. The originating IP of a request must be in one of the
-	listed subnets in order for this Condition to be true.
-	If empty, all IP addresses are allowed. */
+	/* Immutable. A list of CIDR block IP subnetwork specification. May be IPv4 or IPv6. Note that for a CIDR IP address block, the specified IP address portion must be properly truncated (i.e. all the host bits must be zero) or the input is considered malformed. For example, "192.0.2.0/24" is accepted but "192.0.2.1/24" is not. Similarly, for IPv6, "2001:db8::/32" is accepted whereas "2001:db8::1/32" is not. The originating IP of a request must be in one of the listed subnets in order for this Condition to be true. If empty, all IP addresses are allowed. */
 	// +optional
 	IpSubnetworks []string `json:"ipSubnetworks,omitempty"`
 
@@ -113,23 +97,15 @@ type AccessContextManagerAccessLevelConditionSpec struct {
 	// +optional
 	Members []string `json:"members,omitempty"`
 
-	/* Immutable. Whether to negate the Condition. If true, the Condition becomes
-	a NAND over its non-empty fields, each field must be false for
-	the Condition overall to be satisfied. Defaults to false. */
+	/* Immutable. Whether to negate the Condition. If true, the Condition becomes a NAND over its non-empty fields, each field must be false for the Condition overall to be satisfied. Defaults to false. */
 	// +optional
 	Negate *bool `json:"negate,omitempty"`
 
-	/* Immutable. The request must originate from one of the provided
-	countries/regions.
-	Format: A valid ISO 3166-1 alpha-2 code. */
+	/* Immutable. The request must originate from one of the provided countries/regions. Format: A valid ISO 3166-1 alpha-2 code. */
 	// +optional
 	Regions []string `json:"regions,omitempty"`
 
-	/* Immutable. A list of other access levels defined in the same Policy,
-	referenced by resource name. Referencing an AccessLevel which
-	does not exist is an error. All access levels listed must be
-	granted for the Condition to be true.
-	Format: accessPolicies/{policy_id}/accessLevels/{short_name}. */
+	/* Immutable. A list of other access levels defined in the same Policy, referenced by resource name. Referencing an AccessLevel which does not exist is an error. All access levels listed must be granted for the Condition to be true. Format: accessPolicies/{policy_id}/accessLevels/{short_name}. */
 	// +optional
 	RequiredAccessLevels []string `json:"requiredAccessLevels,omitempty"`
 

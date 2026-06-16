@@ -17,9 +17,9 @@ kind: IAMServiceAccount
 metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-  name: iamserviceaccount-${uniqueId}
+  name: sa-${uniqueId}
 spec:
-  resourceID: iamserviceaccount${uniqueId}
+  resourceID: sa-${uniqueId}
 ---
 apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
 kind: AccessContextManagerAccessLevel
@@ -31,9 +31,9 @@ spec:
   accessPolicyRef:
     external: accessPolicies/578359180191
   basic:
-  - conditions:
+    conditions:
     - devicePolicy:
-      - osConstraints:
+        osConstraints:
         - osType: DESKTOP_CHROME_OS
         requireScreenLock: true
       regions:

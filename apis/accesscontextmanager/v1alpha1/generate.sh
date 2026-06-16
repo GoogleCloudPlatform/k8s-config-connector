@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,12 +25,12 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 go run . generate-types \
-    --config ${REPO_ROOT}/apis/accesscontextmanager/v1beta1/generatetypes.yaml
+    --config ${REPO_ROOT}/apis/accesscontextmanager/v1alpha1/generatetypes.yaml
 
 go run . generate-mapper \
     --multiversion \
     --service google.identity.accesscontextmanager.v1 \
-    --api-version accesscontextmanager.cnrm.cloud.google.com/v1beta1
+    --api-version accesscontextmanager.cnrm.cloud.google.com/v1alpha1
 
 
 cd ${REPO_ROOT}

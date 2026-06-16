@@ -938,6 +938,13 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			switch gvk.GroupKind() {
 			case schema.GroupKind{Group: "", Kind: "Secret"}:
 
+			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessPolicy"}:
+			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessLevel"}:
+			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessLevelCondition"}:
+			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerServicePerimeter"}:
+			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerServicePerimeterResource"}:
+			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerGCPUserAccessBinding"}:
+
 			case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBCluster"}:
 			case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBInstance"}:
 			case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBUser"}:

@@ -20,7 +20,7 @@ spec:
   accessLevelRef:
     name: accesscontextmanageraccesslevel-${uniqueId}
   devicePolicy:
-  - osConstraints:
+    osConstraints:
     - osType: DESKTOP_CHROME_OS
     requireAdminApproval: false
     requireCorpOwned: true
