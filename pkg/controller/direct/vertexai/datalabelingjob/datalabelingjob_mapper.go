@@ -16,6 +16,7 @@ package datalabelingjob
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
@@ -23,6 +24,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/genproto/googleapis/type/money"
 	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/structpb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
@@ -139,23 +141,45 @@ func Money_ToProto(mapCtx *direct.MapContext, in *krm.Money) *money.Money {
 	return out
 }
 
-func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.Status {
+func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *common.DeprecatedStatusWithDetails {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Status{}
+	out := &common.DeprecatedStatusWithDetails{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	out.Message = direct.LazyPtr(in.GetMessage())
+	out.Details = direct.Slice_FromProto(mapCtx, in.GetDetails(), DeprecatedAny_FromProto)
 	return out
 }
 
-func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *status.Status {
+func Status_ToProto(mapCtx *direct.MapContext, in *common.DeprecatedStatusWithDetails) *status.Status {
 	if in == nil {
 		return nil
 	}
 	out := &status.Status{}
 	out.Code = direct.ValueOf(in.Code)
 	out.Message = direct.ValueOf(in.Message)
+	out.Details = direct.Slice_ToProto(mapCtx, in.Details, DeprecatedAny_ToProto)
+	return out
+}
+
+func DeprecatedAny_ToProto(mapCtx *direct.MapContext, in *common.DeprecatedAny) *anypb.Any {
+	if in == nil {
+		return nil
+	}
+	out := &anypb.Any{}
+	out.TypeUrl = direct.ValueOf(in.TypeURL)
+	out.Value = in.Value
+	return out
+}
+
+func DeprecatedAny_FromProto(mapCtx *direct.MapContext, in *anypb.Any) *common.DeprecatedAny {
+	if in == nil {
+		return nil
+	}
+	out := &common.DeprecatedAny{}
+	out.TypeURL = direct.LazyPtr(in.GetTypeUrl())
+	out.Value = in.GetValue()
 	return out
 }
 

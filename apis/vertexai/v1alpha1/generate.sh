@@ -25,19 +25,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 go run . generate-types \
-    --service google.cloud.aiplatform.v1beta1 \
+    --service google.cloud.aiplatform.v1beta1,google.cloud.aiplatform.v1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
+    --include-skipped-output \
     --resource VertexAIFeaturestore:Featurestore \
     --resource VertexAIMetadataStore:MetadataStore \
     --resource VertexAIDeploymentResourcePool:DeploymentResourcePool \
-    --resource VertexAIExampleStore:ExampleStore
+    --resource VertexAIExampleStore:ExampleStore \
+    --resource VertexAIDataLabelingJob:DataLabelingJob
 
 # go run . generate-mapper     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1
-
-go run . generate-types \
-    --service google.cloud.aiplatform.v1 \
-    --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
-    --resource VertexAIDataLabelingJob:DataLabelingJob
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
