@@ -238,11 +238,36 @@ spec:
               location:
                 description: The location of this resource.
                 type: string
-              model:
+              modelRef:
                 description: Immutable. The name of the `Model` to use for cached
                   content. Currently, only the published Gemini base models are supported,
                   in form of projects/{PROJECT}/locations/{LOCATION}/publishers/google/models/{MODEL}
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed AIPlatformModel
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/models/{{modelID}}".
+                    type: string
+                  name:
+                    description: The name of an AIPlatformModel resource.
+                    type: string
+                  namespace:
+                    description: The namespace of an AIPlatformModel resource.
+                    type: string
+                type: object
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
