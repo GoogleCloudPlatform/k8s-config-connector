@@ -436,7 +436,7 @@ func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.Reso
 	// _exported_object.diff
 	{
 		oldPath := filepath.Join(dir, "_exported_old_controller.golden.yaml")
-		newPath := filepath.Join(dir, "_generated_export_"+fixture.Name+".golden")
+		newPath := filepath.Join(dir, "_exported.yaml")
 
 		if fileExists(oldPath) && fileExists(newPath) {
 			diff := computeDiff(oldPath, newPath)
