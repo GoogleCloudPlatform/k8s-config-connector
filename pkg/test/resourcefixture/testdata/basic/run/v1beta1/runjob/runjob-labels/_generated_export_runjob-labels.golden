@@ -11,7 +11,7 @@ spec:
     taskCount: 1
     template:
       containers:
-      - image: us-docker.pkg.dev/cloudrun/container/hello
+      - image: us-docker.pkg.dev/cloudrun/container/hello:latest
         resources:
           limits:
             cpu: 1000m
