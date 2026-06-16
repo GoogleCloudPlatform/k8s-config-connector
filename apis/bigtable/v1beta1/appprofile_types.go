@@ -69,7 +69,7 @@ type BigtableAppProfileStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the BigtableAppProfile resource in GCP.
+	// A unique specifier for the BigtableAppProfile resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// The unique name of the app profile. Values are of the form
@@ -77,11 +77,11 @@ type BigtableAppProfileStatus struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.name
 	Name *string `json:"name,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	// ObservedState *BigtableAppProfileObservedState `json:"observedState,omitempty"`
 }
 
-// BigtableAppProfileObservedState is the state of the BigtableAppProfile resource as most recently observed in GCP.
+// BigtableAppProfileObservedState is the state of the BigtableAppProfile resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.bigtable.admin.v2.AppProfile
 type BigtableAppProfileObservedState struct {
 }

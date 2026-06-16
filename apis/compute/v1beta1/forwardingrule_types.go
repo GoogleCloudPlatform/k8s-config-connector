@@ -112,7 +112,7 @@ type Target struct {
 	TargetVPNGatewayRef *refsv1beta1.ComputeTargetVPNGatewayRef `json:"targetVPNGatewayRef,omitempty"`
 }
 
-// MemorystoreInstanceServiceAttachment defines the resource reference to the GCP identifier
+// MemorystoreInstanceServiceAttachment defines the resource reference to the Google Cloud identifier
 // for the ServiceAttachment managed by the MemorystoreInstance pointed by the MemorystoreInstanceRef.
 // +k8s:deepcopy-gen=true
 type MemorystoreInstanceServiceAttachment struct {
@@ -237,7 +237,7 @@ type ComputeForwardingRuleSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.load_balancing_scheme
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
 
-	/* Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location *string `json:"location"`
 
 	/* Immutable. Opaque filter criteria used by Loadbalancer to restrict routing

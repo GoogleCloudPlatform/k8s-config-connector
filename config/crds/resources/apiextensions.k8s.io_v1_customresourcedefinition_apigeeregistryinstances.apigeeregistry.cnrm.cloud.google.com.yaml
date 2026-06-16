@@ -176,7 +176,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the ApigeeRegistryInstance resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -188,14 +188,14 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   config:
                     description: Required. Config of the Instance.
                     properties:
                       location:
-                        description: Output only. The GCP location where the Instance
-                          resides.
+                        description: Output only. The Google Cloud location where
+                          the Instance resides.
                         type: string
                     type: object
                   createTime:

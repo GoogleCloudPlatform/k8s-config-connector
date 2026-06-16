@@ -165,7 +165,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the BigtableTable resource in
-                  GCP.
+                  Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

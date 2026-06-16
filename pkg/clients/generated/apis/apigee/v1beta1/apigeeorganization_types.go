@@ -80,7 +80,7 @@ type ApigeeOrganizationSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Required. Name of the GCP project in which to associate the Apigee organization. */
+	/* Required. Name of the Google Cloud project in which to associate the Apigee organization. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Properties defined in the Apigee organization profile. */
@@ -126,7 +126,7 @@ type ApigeeOrganizationStatus struct {
 	// +optional
 	ExpiresAt *int64 `json:"expiresAt,omitempty"`
 
-	/* A unique specifier for the ApigeeOrganization resource in GCP. */
+	/* A unique specifier for the ApigeeOrganization resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -138,7 +138,7 @@ type ApigeeOrganizationStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *OrganizationObservedStateStatus `json:"observedState,omitempty"`
 

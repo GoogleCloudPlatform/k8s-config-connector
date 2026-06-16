@@ -107,7 +107,7 @@ spec:
                       should be specified, but not both.
                     items:
                       description: CertificateManagerDNSAuthorizationRef is a reference
-                        to a GCP CertificateManagerDNSAuthorization.
+                        to a Google Cloud CertificateManagerDNSAuthorization.
                       oneOf:
                       - not:
                           required:
@@ -242,7 +242,7 @@ spec:
                   EDGE_CACHE: Certificates with scope EDGE_CACHE are special-purposed certificates,
                   served from non-core Google data centers.
 
-                  ALL_REGIONS: Certificates with ALL_REGIONS scope are served from all GCP regions (You can only use ALL_REGIONS with global certs).
+                  ALL_REGIONS: Certificates with ALL_REGIONS scope are served from all Google Cloud regions (You can only use ALL_REGIONS with global certs).
                   see https://cloud.google.com/compute/docs/regions-zones.
                 type: string
               selfManaged:
@@ -388,7 +388,7 @@ spec:
                 format: int64
                 type: integer
               observedState:
-                description: The observed state of the underlying GCP resource.
+                description: The observed state of the underlying Google Cloud resource.
                 properties:
                   managed:
                     description: Immutable. Configuration and state of a Managed Certificate.
@@ -528,7 +528,7 @@ spec:
                       should be specified, but not both.
                     items:
                       description: CertificateManagerDNSAuthorizationRef is a reference
-                        to a GCP CertificateManagerDNSAuthorization.
+                        to a Google Cloud CertificateManagerDNSAuthorization.
                       oneOf:
                       - not:
                           required:
@@ -663,7 +663,7 @@ spec:
                   EDGE_CACHE: Certificates with scope EDGE_CACHE are special-purposed certificates,
                   served from non-core Google data centers.
 
-                  ALL_REGIONS: Certificates with ALL_REGIONS scope are served from all GCP regions (You can only use ALL_REGIONS with global certs).
+                  ALL_REGIONS: Certificates with ALL_REGIONS scope are served from all Google Cloud regions (You can only use ALL_REGIONS with global certs).
                   see https://cloud.google.com/compute/docs/regions-zones.
                 type: string
               selfManaged:
@@ -809,7 +809,7 @@ spec:
                 format: int64
                 type: integer
               observedState:
-                description: The observed state of the underlying GCP resource.
+                description: The observed state of the underlying Google Cloud resource.
                 properties:
                   managed:
                     description: Immutable. Configuration and state of a Managed Certificate.

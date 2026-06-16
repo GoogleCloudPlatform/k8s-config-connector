@@ -7,8 +7,8 @@ The `apis/bigquerybiglake/v1alpha1/` implementation serves as the canonical exam
 ## High-Level Goal
 
 The primary objective is to refactor every resource to follow a consistent pattern for:
-1.  **Identity Management**: How a resource's unique GCP identity is constructed and parsed.
-2.  **Parent Hierarchy**: How a resource declares its parent in the GCP resource hierarchy.
+1.  **Identity Management**: How a resource's unique Google Cloud identity is constructed and parsed.
+2.  **Parent Hierarchy**: How a resource declares its parent in the Google Cloud resource hierarchy.
 3.  **Resource References**: How other resources can create dependencies and references.
 
 ## The Refactoring Pattern
@@ -17,12 +17,12 @@ For each resource (e.g., `FooBar`), the following file structure and components 
 
 1.  **`foo_bar_identity.go`**:
     *   Defines a `FooBarIdentity` struct that implements the `identity.Identity` interface.
-    *   This struct is responsible for parsing and constructing the full GCP resource identifier string (e.g., `projects/{{p}}/locations/{{l}}/fooBars/{{id}}`).
+    *   This struct is responsible for parsing and constructing the full Google Cloud resource identifier string (e.g., `projects/{{p}}/locations/{{l}}/fooBars/{{id}}`).
     *   The main `FooBar` resource struct (in `foo_bar_types.go`) will implement the `identity.Resource` interface by providing a `GetIdentity()` method. This method resolves the resource's identity from its `spec` and `status`.
 
 2.  **`foo_bar_reference.go`**:
     *   Defines a `FooBarRef` struct that implements the `refsv1beta1.Ref` interface.
-    *   This struct provides a standardized way for other resources to reference a `FooBar` resource, supporting both internal (K8s `name`/`namespace`) and external (full GCP ID) references.
+    *   This struct provides a standardized way for other resources to reference a `FooBar` resource, supporting both internal (K8s `name`/`namespace`) and external (full Google Cloud ID) references.
 
 3.  **`foo_bar_types.go`**:
     *   The `FooBarSpec` within this file will be updated to use the new reference structs for defining its parent.

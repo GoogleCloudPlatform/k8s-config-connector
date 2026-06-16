@@ -152,7 +152,8 @@ spec:
                   range of the subnet or network configured for this forwarding rule.
                 properties:
                   addressRef:
-                    description: ComputeAddressRef is a reference to a GCP ComputeAddress.
+                    description: ComputeAddressRef is a reference to a Google Cloud
+                      ComputeAddress.
                     oneOf:
                     - not:
                         required:
@@ -227,7 +228,7 @@ spec:
               location:
                 description: 'Location represents the geographical location of the
                   ComputeForwardingRule. Specify a region name or "global" for global
-                  resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
+                  resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               metadataFilters:
                 description: |-

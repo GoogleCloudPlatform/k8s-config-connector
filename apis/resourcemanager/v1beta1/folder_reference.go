@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &FolderRef{}
 
-// FolderRef is a reference to a GCP Folder.
+// FolderRef is a reference to a Google Cloud Folder.
 type FolderRef struct {
 	// A reference to an externally managed Folder resource.
 	// Should be in the format "folders/{{folderID}}".

@@ -32,7 +32,7 @@ var (
 
 var CCInsightsViewIdentityFormat = gcpurls.Template[CCInsightsViewIdentity]("contactcenterinsights.googleapis.com", "projects/{project}/locations/{location}/views/{view}")
 
-// CCInsightsViewIdentity is the identity of a GCP CCInsightsView resource.
+// CCInsightsViewIdentity is the identity of a Google Cloud CCInsightsView resource.
 // +k8s:deepcopy-gen=false
 type CCInsightsViewIdentity struct {
 	Project  string

@@ -31,7 +31,7 @@ var (
 
 var KMSCryptoKeyIdentityFormat = gcpurls.Template[KMSCryptoKeyIdentity]("cloudkms.googleapis.com", "projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{cryptokey}")
 
-// KMSCryptoKeyIdentity is the identity of a GCP KMSCryptoKey resource.
+// KMSCryptoKeyIdentity is the identity of a Google Cloud KMSCryptoKey resource.
 // +k8s:deepcopy-gen=false
 type KMSCryptoKeyIdentity struct {
 	Project   string

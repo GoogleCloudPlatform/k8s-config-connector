@@ -67,7 +67,7 @@ type SecretManagerSecretVersionSpec struct {
 	// +optional
 	IsSecretDataBase64 *bool `json:"isSecretDataBase64,omitempty"`
 
-	/* The service-generated SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service. If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number from `status.observedState.version` */
+	/* The service-generated SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service. If not given, Config Connector adds a new secret version to the Google Cloud service, and you can find out the version number from `status.observedState.version` */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -178,7 +178,7 @@ type SecretManagerSecretVersionStatus struct {
 	// +optional
 	DestroyTime *string `json:"destroyTime,omitempty"`
 
-	/* A unique specifier for the SecretManagerSecretVersion resource in GCP. */
+	/* A unique specifier for the SecretManagerSecretVersion resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -190,7 +190,7 @@ type SecretManagerSecretVersionStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *SecretversionObservedStateStatus `json:"observedState,omitempty"`
 

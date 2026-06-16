@@ -67,14 +67,14 @@ type EssentialContactsContactStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the EssentialContactsContact resource in GCP.
+	// A unique specifier for the EssentialContactsContact resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *EssentialContactsContactObservedState `json:"observedState,omitempty"`
 }
 
-// EssentialContactsContactObservedState is the state of the EssentialContactsContact resource as most recently observed in GCP.
+// EssentialContactsContactObservedState is the state of the EssentialContactsContact resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.essentialcontacts.v1.Contact
 type EssentialContactsContactObservedState struct {
 

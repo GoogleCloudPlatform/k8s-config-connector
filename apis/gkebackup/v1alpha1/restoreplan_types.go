@@ -220,14 +220,14 @@ type GKEBackupRestorePlanStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the GKEBackupRestorePlan resource in GCP.
+	// A unique specifier for the GKEBackupRestorePlan resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *GKEBackupRestorePlanObservedState `json:"observedState,omitempty"`
 }
 
-// GKEBackupRestorePlanObservedState is the state of the GKEBackupRestorePlan resource as most recently observed in GCP.
+// GKEBackupRestorePlanObservedState is the state of the GKEBackupRestorePlan resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.gkebackup.v1.RestorePlan
 type GKEBackupRestorePlanObservedState struct {
 	// Output only. The full name of the RestorePlan resource.

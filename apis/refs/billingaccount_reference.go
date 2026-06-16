@@ -14,7 +14,7 @@
 
 package refs
 
-// BillingAccountRef is a reference to a GCP BillingAccount.
+// BillingAccountRef is a reference to a Google Cloud BillingAccount.
 type BillingAccountRef struct {
 	/* The 'name' field of a billing account, when not managed by Config Connector. */
 	// +optional

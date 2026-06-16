@@ -87,7 +87,7 @@ type ApigeeOrganizationSpec struct {
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Organization.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Required. Name of the GCP project in which to associate the Apigee organization.
+	// Required. Name of the Google Cloud project in which to associate the Apigee organization.
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Organization.project_id
 	// +required
 	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
@@ -232,10 +232,10 @@ type ApigeeOrganizationStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ApigeeOrganization resource in GCP.
+	// A unique specifier for the ApigeeOrganization resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ApigeeOrganizationObservedState `json:"observedState,omitempty"`
 
 	/* NOTYET: Perhaps add this once direct controller is implemented. Or, we may only add it to observedState.
@@ -287,7 +287,7 @@ type ApigeeOrganizationStatus struct {
 	SubscriptionType *string `json:"subscriptionType,omitempty"`
 }
 
-// ApigeeOrganizationObservedState is the state of the ApigeeOrganization resource as most recently observed in GCP.
+// ApigeeOrganizationObservedState is the state of the ApigeeOrganization resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Organization
 type ApigeeOrganizationObservedState struct {
 	/* NOTYET: Add this once direct controller is implemented

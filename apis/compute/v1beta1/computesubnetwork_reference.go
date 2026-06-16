@@ -29,7 +29,7 @@ import (
 
 var _ refs.Ref = &ComputeSubnetworkRef{}
 
-// ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.
+// ComputeSubnetworkRef is a reference to a Google Cloud ComputeSubnetwork.
 type ComputeSubnetworkRef struct {
 	// A reference to an externally managed ComputeSubnetwork resource.
 	// Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".

@@ -121,7 +121,7 @@ type BigQueryDatasetStatus struct {
 	// Output only. A hash of the resource.
 	Etag *string `json:"etag,omitempty"`
 
-	// A unique specifier for the BigQueryAnalyticsHubDataExchangeListing resource in GCP.
+	// A unique specifier for the BigQueryAnalyticsHubDataExchangeListing resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// Output only. The date when this dataset was last modified, in milliseconds
@@ -136,7 +136,7 @@ type BigQueryDatasetStatus struct {
 	//  use this URL in Get or Update requests to the resource.
 	SelfLink *string `json:"selfLink,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *BigQueryDatasetObservedState `json:"observedState,omitempty"`
 }
 
@@ -144,7 +144,7 @@ type BigQueryDatasetStatus struct {
 // +kcc:observedstate:proto=google.cloud.bigquery.v2.dataset
 type BigQueryDatasetObservedState struct {
 
-	// Optional. If the location is not specified in the spec, the GCP server defaults to a location and will be captured here.
+	// Optional. If the location is not specified in the spec, the Google Cloud server defaults to a location and will be captured here.
 	Location *string `json:"location,omitempty"`
 }
 

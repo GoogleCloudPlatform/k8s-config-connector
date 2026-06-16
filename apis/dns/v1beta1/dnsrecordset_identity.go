@@ -34,7 +34,7 @@ var (
 	DNSRecordSetIdentityFallbackFormat = gcpurls.Template[DNSRecordSetIdentity]("dns.googleapis.com", "projects/{project}/managedZones/{managedZone}/rrsets/{name}")
 )
 
-// DNSRecordSetIdentity is the identity of a GCP DNSRecordSet resource.
+// DNSRecordSetIdentity is the identity of a Google Cloud DNSRecordSet resource.
 // +k8s:deepcopy-gen=false
 type DNSRecordSetIdentity struct {
 	Project     string

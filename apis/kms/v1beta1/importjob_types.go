@@ -53,14 +53,14 @@ type KMSImportJobStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the KMSImportJob resource in GCP.
+	// A unique specifier for the KMSImportJob resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *KMSImportJobObservedState `json:"observedState,omitempty"`
 }
 
-// KMSImportJobObservedState is the state of the KMSImportJob resource as most recently observed in GCP.
+// KMSImportJobObservedState is the state of the KMSImportJob resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.kms.v1.ImportJob
 type KMSImportJobObservedState struct {
 

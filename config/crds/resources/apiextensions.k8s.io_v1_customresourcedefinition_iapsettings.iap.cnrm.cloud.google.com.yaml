@@ -507,7 +507,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the IAPSettings resource in GCP.
+                description: A unique specifier for the IAPSettings resource in Google
+                  Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -1008,7 +1009,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the IAPSettings resource in GCP.
+                description: A unique specifier for the IAPSettings resource in Google
+                  Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

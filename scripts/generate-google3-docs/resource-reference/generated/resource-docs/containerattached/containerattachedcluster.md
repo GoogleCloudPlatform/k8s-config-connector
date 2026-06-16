@@ -402,9 +402,9 @@ resourceID: string
             <p>Required. OpenID Connect (OIDC) discovery information of the target cluster.
 
 Kubernetes Service Account (KSA) tokens are JWT tokens signed by the cluster
-API server. This field indicates how GCP services	validate KSA tokens in order
+API server. This field indicates how Google Cloud services	validate KSA tokens in order
 to allow system workloads (such as GKE Connect and telemetry agents) to
-authenticate back to GCP.
+authenticate back to Google Cloud.
 
 Both clusters with public and private issuer URLs are supported.
 Clusters with public issuers only need to specify the 'issuerUrl' field
@@ -649,7 +649,7 @@ workloadIdentityConfig:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+            <p>ObservedState is the state of the resource as most recently observed in Google Cloud.</p>
         </td>
     </tr>
     <tr>

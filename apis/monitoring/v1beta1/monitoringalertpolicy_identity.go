@@ -31,7 +31,7 @@ var (
 
 var MonitoringAlertPolicyIdentityFormat = gcpurls.Template[MonitoringAlertPolicyIdentity]("monitoring.googleapis.com", "projects/{project}/alertPolicies/{alertpolicy}")
 
-// MonitoringAlertPolicyIdentity is the identity of a GCP MonitoringAlertPolicy resource.
+// MonitoringAlertPolicyIdentity is the identity of a Google Cloud MonitoringAlertPolicy resource.
 // +k8s:deepcopy-gen=false
 type MonitoringAlertPolicyIdentity struct {
 	Project     string
@@ -43,7 +43,7 @@ func (i *MonitoringAlertPolicyIdentity) String() string {
 }
 
 func (i *MonitoringAlertPolicyIdentity) FromExternal(ref string) error {
-	// This relative format is a very special case and unusual for a GCP API.
+	// This relative format is a very special case and unusual for a Google Cloud API.
 	// For example, the IncidentList resource under Monitoring Dashboard explicitly
 	// asks that we do NOT pass the project in the policy name (e.g. use alertPolicies/utilization).
 	// Reference: https://docs.cloud.google.com/monitoring/api/ref_v3/rest/v1/projects.dashboards#incidentlist

@@ -260,7 +260,7 @@ selfLink: string
         <td><code>gatewayIpv4</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The gateway address for default routing out of the network. This value is selected by GCP.</p>
+            <p>The gateway address for default routing out of the network. This value is selected by Google Cloud.</p>
         </td>
     </tr>
     <tr>

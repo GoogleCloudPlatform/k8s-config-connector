@@ -127,14 +127,14 @@ type ManagedKafkaClusterStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ManagedKafkaCluster resource in GCP.
+	// A unique specifier for the ManagedKafkaCluster resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ManagedKafkaClusterObservedState `json:"observedState,omitempty"`
 }
 
-// ManagedKafkaClusterObservedState is the state of the ManagedKafkaCluster resource as most recently observed in GCP.
+// ManagedKafkaClusterObservedState is the state of the ManagedKafkaCluster resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.managedkafka.v1.Cluster
 type ManagedKafkaClusterObservedState struct {
 	// Output only. The time when the cluster was created.

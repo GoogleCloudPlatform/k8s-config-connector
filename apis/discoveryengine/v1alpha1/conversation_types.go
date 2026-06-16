@@ -60,14 +60,14 @@ type DiscoveryEngineConversationStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DiscoveryEngineConversation resource in GCP.
+	// A unique specifier for the DiscoveryEngineConversation resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DiscoveryEngineConversationObservedState `json:"observedState,omitempty"`
 }
 
-// DiscoveryEngineConversationObservedState is the state of the DiscoveryEngineConversation resource as most recently observed in GCP.
+// DiscoveryEngineConversationObservedState is the state of the DiscoveryEngineConversation resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Conversation
 type DiscoveryEngineConversationObservedState struct {
 	// Output only. The time the conversation started.

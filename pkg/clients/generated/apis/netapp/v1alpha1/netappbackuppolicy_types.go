@@ -60,7 +60,7 @@ type NetAppBackupPolicySpec struct {
 	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The GCP resource identifier. If not given, the metadata.name will be used. */
+	/* The Google Cloud resource identifier. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -87,7 +87,7 @@ type NetAppBackupPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetAppBackupPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the NetAppBackupPolicy resource in GCP. */
+	/* A unique specifier for the NetAppBackupPolicy resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -95,7 +95,7 @@ type NetAppBackupPolicyStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *BackuppolicyObservedStateStatus `json:"observedState,omitempty"`
 }

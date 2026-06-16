@@ -80,7 +80,7 @@ type BigQueryAnalyticsHubDataExchangeStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryAnalyticsHubDataExchange's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BigQueryAnalyticsHubDataExchange resource in GCP. */
+	/* A unique specifier for the BigQueryAnalyticsHubDataExchange resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -88,7 +88,7 @@ type BigQueryAnalyticsHubDataExchangeStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *DataexchangeObservedStateStatus `json:"observedState,omitempty"`
 }

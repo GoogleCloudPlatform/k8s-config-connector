@@ -107,7 +107,7 @@ func NewContactIdentity(ctx context.Context, reader client.Reader, obj *Essentia
 	//    intention is to create the resource.
 	// 2. When 'spec.resourceID' is set, the intention is to acquire an existing
 	//    resource.
-	//    2.1. When 'spec.resourceID' is set but the corresponding GCP resource
+	//    2.1. When 'spec.resourceID' is set but the corresponding Google Cloud resource
 	//         is not found, then it is a real error.
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 

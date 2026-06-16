@@ -34,7 +34,7 @@ var CertificateManagerDNSAuthorizationIdentityFormat = gcpurls.Template[Certific
 
 // +k8s:deepcopy-gen=false
 
-// CertificateManagerDNSAuthorizationIdentity is the identity of a GCP CertificateManagerDNSAuthorization resource.
+// CertificateManagerDNSAuthorizationIdentity is the identity of a Google Cloud CertificateManagerDNSAuthorization resource.
 type CertificateManagerDNSAuthorizationIdentity struct {
 	Project          string
 	Location         string

@@ -328,7 +328,7 @@ type ComputeSecurityPolicyStatus struct {
 	SelfLink *string `json:"selfLink,omitempty"`
 }
 
-// ComputeSecurityPolicyObservedState is the state of the ComputeSecurityPolicy resource as most recently observed in GCP.
+// ComputeSecurityPolicyObservedState is the state of the ComputeSecurityPolicy resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicy
 type ComputeSecurityPolicyObservedState struct {
 }

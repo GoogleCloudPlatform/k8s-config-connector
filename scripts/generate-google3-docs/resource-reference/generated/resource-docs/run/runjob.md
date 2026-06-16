@@ -232,7 +232,7 @@ template:
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>Optional. User-provided annotations, which are stored in GCP.</p>
+            <p>Optional. User-provided annotations, which are stored in Google Cloud.</p>
         </td>
     </tr>
     <tr>
@@ -1910,14 +1910,14 @@ updateTime: string
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique specifier for the RunJob resource in GCP.</p>
+            <p>A unique specifier for the RunJob resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>
         <td><code>lastModifiedCookie</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>LastModifiedCookie contains hashes of the last applied spec and the last observed GCP state. The format is "<spec-hash>/<gcp-hash>". This is used by the controller to detect if the user's desired state has changed or if the GCP resource has drifted.</p>
+            <p>LastModifiedCookie contains hashes of the last applied spec and the last observed Google Cloud state. The format is "<spec-hash>/<gcp-hash>". This is used by the controller to detect if the user's desired state has changed or if the Google Cloud resource has drifted.</p>
         </td>
     </tr>
     <tr>

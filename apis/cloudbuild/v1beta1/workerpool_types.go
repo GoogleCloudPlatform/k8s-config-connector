@@ -118,7 +118,7 @@ type PrivatePoolV1Config_NetworkConfigStatus struct {
 type CloudBuildWorkerPoolStatus struct {
 	commonv1alpha1.CommonStatus `json:",inline"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *CloudBuildWorkerPoolObservedState `json:"observedState,omitempty"`
 }

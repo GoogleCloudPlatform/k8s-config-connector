@@ -655,7 +655,7 @@ observedState: {}
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique specifier for the AccessContextManagerAccessLevel resource in GCP.</p>
+            <p>A unique specifier for the AccessContextManagerAccessLevel resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>
@@ -669,7 +669,7 @@ observedState: {}
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+            <p>ObservedState is the state of the resource as most recently observed in Google Cloud.</p>
         </td>
     </tr>
 </tbody>

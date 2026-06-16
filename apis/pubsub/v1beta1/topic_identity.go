@@ -33,7 +33,7 @@ var PubSubTopicIdentityFormat = gcpurls.Template[PubSubTopicIdentity]("pubsub.go
 
 // +k8s:deepcopy-gen=false
 
-// PubSubTopicIdentity is the identity of a GCP PubSubTopic resource.
+// PubSubTopicIdentity is the identity of a Google Cloud PubSubTopic resource.
 type PubSubTopicIdentity struct {
 	Project string
 	Topic   string

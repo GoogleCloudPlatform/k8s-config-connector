@@ -33,7 +33,7 @@ var (
 
 var ComputeNodeTemplateIdentityFormat = gcpurls.Template[ComputeNodeTemplateIdentity]("compute.googleapis.com", "projects/{project}/regions/{region}/nodeTemplates/{nodeTemplate}")
 
-// ComputeNodeTemplateIdentity is the identity of a GCP ComputeNodeTemplate resource.
+// ComputeNodeTemplateIdentity is the identity of a Google Cloud ComputeNodeTemplate resource.
 // +k8s:deepcopy-gen=false
 type ComputeNodeTemplateIdentity struct {
 	Project      string

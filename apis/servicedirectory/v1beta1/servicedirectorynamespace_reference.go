@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &ServiceDirectoryNamespaceRef{}
 
-// ServiceDirectoryNamespaceRef is a reference to a GCP ServiceDirectoryNamespace.
+// ServiceDirectoryNamespaceRef is a reference to a Google Cloud ServiceDirectoryNamespace.
 type ServiceDirectoryNamespaceRef struct {
 	// A reference to an externally managed ServiceDirectoryNamespace resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/namespaces/{{namespaceID}}".

@@ -731,7 +731,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the AlloyDBCluster resource in
-                  GCP.
+                  Google Cloud.
                 type: string
               migrationSource:
                 description: Output only. Cluster created via DMS migration.
@@ -768,7 +768,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   clusterType:
                     description: Output only. The type of the cluster. This is an
@@ -1500,7 +1500,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the AlloyDBCluster resource in
-                  GCP.
+                  Google Cloud.
                 type: string
               migrationSource:
                 description: Output only. Cluster created via DMS migration.
@@ -1537,7 +1537,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   clusterType:
                     description: Output only. The type of the cluster. This is an

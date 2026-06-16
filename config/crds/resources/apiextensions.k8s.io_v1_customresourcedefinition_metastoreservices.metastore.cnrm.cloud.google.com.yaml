@@ -389,7 +389,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the MetastoreService resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -401,7 +401,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   artifactGCSURI:
                     description: Output only. A Cloud Storage URI (starting with `gs://`)

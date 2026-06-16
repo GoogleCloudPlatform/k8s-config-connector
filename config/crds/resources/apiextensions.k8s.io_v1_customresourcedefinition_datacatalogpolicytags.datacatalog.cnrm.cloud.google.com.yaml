@@ -177,7 +177,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the DataCatalogPolicyTag resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               name:
                 description: 'Resource name of this policy tag, whose format is: "projects/{project}/locations/{region}/taxonomies/{taxonomy}/policyTags/{policytag}".'
@@ -192,7 +192,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 type: object
             type: object
         required:

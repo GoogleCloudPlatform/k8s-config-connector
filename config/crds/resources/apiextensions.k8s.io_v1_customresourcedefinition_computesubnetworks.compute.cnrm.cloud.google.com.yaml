@@ -175,7 +175,7 @@ spec:
                   Envoy load balancers. If unspecified, the purpose defaults to 'PRIVATE_RFC_1918'.
                 type: string
               region:
-                description: Immutable. The GCP region for this subnetwork.
+                description: Immutable. The Google Cloud region for this subnetwork.
                 type: string
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for

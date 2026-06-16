@@ -77,14 +77,14 @@ type BigQueryDataPolicyStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the BigQueryDataPolicy resource in GCP.
+	// A unique specifier for the BigQueryDataPolicy resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *BigQueryDataPolicyObservedState `json:"observedState,omitempty"`
 }
 
-// BigQueryDataPolicyObservedState is the state of the BigQueryDataPolicy resource as most recently observed in GCP.
+// BigQueryDataPolicyObservedState is the state of the BigQueryDataPolicy resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.bigquery.datapolicies.v1beta1.DataPolicy
 type BigQueryDataPolicyObservedState struct {
 }

@@ -30,7 +30,7 @@ type TagIdentity struct {
 	id     string
 }
 
-// String returns the full GCP resource name for the Tag.
+// String returns the full Google Cloud resource name for the Tag.
 func (i *TagIdentity) String() string {
 	// Format: projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tagID}
 	return i.parent.String() + "/tags/" + i.id
@@ -55,7 +55,7 @@ type TagParent struct {
 	EntryID      string
 }
 
-// String returns the GCP resource name for the parent DataCatalogEntry.
+// String returns the Google Cloud resource name for the parent DataCatalogEntry.
 func (p *TagParent) String() string {
 	// Format: projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}
 	return fmt.Sprintf("projects/%s/locations/%s/entryGroups/%s/entries/%s",
@@ -94,7 +94,7 @@ func NewTagIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogT
 	//    intention is to create the resource.
 	// 2. When 'spec.resourceID' is set, the intention is to acquire an existing
 	//    resource.
-	//    2.1. When 'spec.resourceID' is set but the corresponding GCP resource
+	//    2.1. When 'spec.resourceID' is set but the corresponding Google Cloud resource
 	//         is not found, then it is a real error.
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
@@ -127,9 +127,9 @@ func NewTagIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogT
 
 		// Check if the resourceID derived from spec/metadata matches the resourceID from status
 		if resourceID != "" && actualResourceID != resourceID {
-			// This indicates an attempt to change the tag's ID after it has been established in GCP.
+			// This indicates an attempt to change the tag's ID after it has been established in Google Cloud.
 			// The `spec.resourceID` or `metadata.name` determines the *desired* ID.
-			// The `status.externalRef` reflects the *actual* ID in GCP. Changing this is not allowed.
+			// The `status.externalRef` reflects the *actual* ID in Google Cloud. Changing this is not allowed.
 			return nil, fmt.Errorf("cannot change tag ID from %q (derived from status.externalRef) to %q (derived from spec.resourceID/metadata.name)",
 				actualResourceID, resourceID)
 		}
@@ -143,7 +143,7 @@ func NewTagIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogT
 	}, nil
 }
 
-// ParseTagExternal parses the full GCP resource name string for a DataCatalogTag
+// ParseTagExternal parses the full Google Cloud resource name string for a DataCatalogTag
 // into its parent components and the tag ID.
 func ParseTagExternal(external string) (parent *TagParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")

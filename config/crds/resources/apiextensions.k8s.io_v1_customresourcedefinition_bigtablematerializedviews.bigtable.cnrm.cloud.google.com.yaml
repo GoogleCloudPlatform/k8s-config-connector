@@ -135,7 +135,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the BigtableMaterializedView resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               name:
                 description: The unique name of the BigtableMaterializedView. Values
@@ -151,7 +151,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 type: object
             type: object
         required:

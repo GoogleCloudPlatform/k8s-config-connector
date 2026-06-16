@@ -65,14 +65,14 @@ type ContentWarehouseSchemaStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ContentWarehouseSchema resource in GCP.
+	// A unique specifier for the ContentWarehouseSchema resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ContentWarehouseSchemaObservedState `json:"observedState,omitempty"`
 }
 
-// ContentWarehouseSchemaObservedState is the state of the ContentWarehouseSchema resource as most recently observed in GCP.
+// ContentWarehouseSchemaObservedState is the state of the ContentWarehouseSchema resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.contentwarehouse.v1.DocumentSchema
 // +kubebuilder:pruning:PreserveUnknownFields
 // +kubebuilder:validation:XPreserveUnknownFields

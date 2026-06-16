@@ -78,7 +78,7 @@ spec:
                 description: Immutable.
                 type: boolean
               networkRef:
-                description: ComputeNetworkRef is a reference to a GCP ComputeNetwork.
+                description: ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.
                 oneOf:
                 - not:
                     required:
@@ -106,7 +106,7 @@ spec:
                     type: string
                 type: object
               peerNetworkRef:
-                description: ComputeNetworkRef is a reference to a GCP ComputeNetwork.
+                description: ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.
                 oneOf:
                 - not:
                     required:

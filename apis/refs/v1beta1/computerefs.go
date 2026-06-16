@@ -28,7 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// TrimComputeURIPrefix trims known GCP Compute Engine URL and URI prefixes
+// TrimComputeURIPrefix trims known Google Cloud Compute Engine URL and URI prefixes
 // to normalize the resource path to projects/{{project}}/... format.
 // This is robust and ensures unknown values/prefixes are not silently ignored.
 //

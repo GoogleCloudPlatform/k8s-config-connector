@@ -34,7 +34,7 @@ var (
 	DNSResponsePolicyIdentityFallbackFormat = gcpurls.Template[DNSResponsePolicyIdentity]("dns.googleapis.com", "projects/{project}/responsePolicies/{responsePolicy}")
 )
 
-// DNSResponsePolicyIdentity is the identity of a GCP DNSResponsePolicy.
+// DNSResponsePolicyIdentity is the identity of a Google Cloud DNSResponsePolicy.
 // +k8s:deepcopy-gen=false
 type DNSResponsePolicyIdentity struct {
 	Project        string

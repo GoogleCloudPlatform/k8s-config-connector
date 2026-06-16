@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &LoggingLogSinkRef{}
 
-// LoggingLogSinkRef is a reference to a GCP LoggingLogSink.
+// LoggingLogSinkRef is a reference to a Google Cloud LoggingLogSink.
 type LoggingLogSinkRef struct {
 	// A reference to an externally managed LoggingLogSink resource.
 	// Should be in the format "projects/{{projectID}}/sinks/{{sinkID}}".

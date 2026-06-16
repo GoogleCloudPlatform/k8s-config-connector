@@ -58,14 +58,14 @@ type DeviceStreamingSessionStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DeviceStreamingSession resource in GCP.
+	// A unique specifier for the DeviceStreamingSession resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DeviceStreamingSessionObservedState `json:"observedState,omitempty"`
 }
 
-// DeviceStreamingSessionObservedState is the state of the DeviceStreamingSession resource as most recently observed in GCP.
+// DeviceStreamingSessionObservedState is the state of the DeviceStreamingSession resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.devicestreaming.v1.DeviceSession
 type DeviceStreamingSessionObservedState struct {
 	// Output only. The title of the DeviceSession to be presented in the UI.

@@ -91,7 +91,7 @@ type ComputeNetworkStatus struct {
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// The gateway address for default routing out of the network. This value
-	// is selected by GCP.
+	// is selected by Google Cloud.
 	GatewayIPV4 *string `json:"gatewayIpv4,omitempty"`
 
 	// The self link of the ComputeNetwork.

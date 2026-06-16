@@ -106,7 +106,7 @@ func (obj *NetworkSecurityMirroringDeployment) GetIdentity(ctx context.Context, 
 	return specIdentity, nil
 }
 
-// ExternalIdentifier returns the GCP external identifier (the GCP URL).
+// ExternalIdentifier returns the Google Cloud external identifier (the Google Cloud URL).
 func (obj *NetworkSecurityMirroringDeployment) ExternalIdentifier() *string {
 	if obj.Status.ExternalRef != nil {
 		return obj.Status.ExternalRef

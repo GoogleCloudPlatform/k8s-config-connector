@@ -97,11 +97,11 @@ type PrivilegedAccessManagerEntitlementStatus struct {
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// A unique specifier for the PrivilegedAccessManagerEntitlement resource in
-	// GCP.
+	// Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in
-	// GCP.
+	// Google Cloud.
 	// +optional
 	ObservedState *PrivilegedAccessManagerEntitlementObservedState `json:"observedState,omitempty"`
 }

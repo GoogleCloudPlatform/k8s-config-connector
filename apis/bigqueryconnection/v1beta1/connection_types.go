@@ -88,10 +88,10 @@ type BigQueryConnectionConnectionStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the BigQueryConnectionConnection resource in GCP.
+	// A unique specifier for the BigQueryConnectionConnection resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *BigQueryConnectionConnectionObservedState `json:"observedState,omitempty"`
 }
 
@@ -285,7 +285,7 @@ type CloudResourcePropertiesStatus struct {
 	//  when it is created. After creation, customers delegate permissions
 	//  to the service account. When the connection is used in the context of an
 	//  operation in BigQuery, the service account will be used to connect to the
-	//  desired resources in GCP.
+	//  desired resources in Google Cloud.
 	//
 	//  The account ID is in the form of:
 	//    <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com

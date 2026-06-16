@@ -35,7 +35,7 @@ var ComputeNetworkEdgeSecurityServiceIdentityFormat = gcpurls.Template[ComputeNe
 	"projects/{project}/regions/{region}/networkEdgeSecurityServices/{networkEdgeSecurityService}",
 )
 
-// ComputeNetworkEdgeSecurityServiceIdentity is the identity of a GCP ComputeNetworkEdgeSecurityService resource.
+// ComputeNetworkEdgeSecurityServiceIdentity is the identity of a Google Cloud ComputeNetworkEdgeSecurityService resource.
 // +k8s:deepcopy-gen=false
 type ComputeNetworkEdgeSecurityServiceIdentity struct {
 	Project                    string

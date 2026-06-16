@@ -49,14 +49,14 @@ type APIQuotaAdjusterSettingsStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the APIQuotaAdjusterSettings resource in GCP.
+	// A unique specifier for the APIQuotaAdjusterSettings resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *APIQuotaAdjusterSettingsObservedState `json:"observedState,omitempty"`
 }
 
-// APIQuotaAdjusterSettingsObservedState is the state of the APIQuotaAdjusterSettings resource as most recently observed in GCP.
+// APIQuotaAdjusterSettingsObservedState is the state of the APIQuotaAdjusterSettings resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.api.cloudquotas.v1beta.QuotaAdjusterSettings
 type APIQuotaAdjusterSettingsObservedState struct {
 	// Output only. The timestamp when the QuotaAdjusterSettings was last updated.

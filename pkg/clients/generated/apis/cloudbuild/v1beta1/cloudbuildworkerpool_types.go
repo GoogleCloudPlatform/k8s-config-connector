@@ -84,7 +84,7 @@ type CloudBuildWorkerPoolSpec struct {
 	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The GCP resource identifier. If not given, the metadata.name will be used. */
+	/* The Google Cloud resource identifier. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -146,7 +146,7 @@ type CloudBuildWorkerPoolStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *WorkerpoolObservedStateStatus `json:"observedState,omitempty"`
 }

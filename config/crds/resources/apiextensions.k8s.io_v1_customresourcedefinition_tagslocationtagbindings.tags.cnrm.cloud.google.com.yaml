@@ -169,7 +169,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the TagsLocationTagBinding resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               name:
                 description: 'The generated id for the TagBinding. This is a string
@@ -332,7 +332,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the TagsLocationTagBinding resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               name:
                 description: 'The generated id for the TagBinding. This is a string

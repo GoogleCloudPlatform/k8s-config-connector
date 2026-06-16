@@ -116,7 +116,7 @@ secretRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The service-generated SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service. If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number from `status.observedState.version`</p>
+            <p>The service-generated SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service. If not given, Config Connector adds a new secret version to the Google Cloud service, and you can find out the version number from `status.observedState.version`</p>
         </td>
     </tr>
     <tr>
@@ -332,7 +332,7 @@ version: string
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique specifier for the SecretManagerSecretVersion resource in GCP.</p>
+            <p>A unique specifier for the SecretManagerSecretVersion resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>
@@ -353,7 +353,7 @@ version: string
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+            <p>ObservedState is the state of the resource as most recently observed in Google Cloud.</p>
         </td>
     </tr>
     <tr>

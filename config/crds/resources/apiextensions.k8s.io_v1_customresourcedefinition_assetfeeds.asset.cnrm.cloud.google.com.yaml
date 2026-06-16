@@ -291,7 +291,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the AssetFeed resource in GCP.
+                description: A unique specifier for the AssetFeed resource in Google
+                  Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -575,7 +576,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the AssetFeed resource in GCP.
+                description: A unique specifier for the AssetFeed resource in Google
+                  Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

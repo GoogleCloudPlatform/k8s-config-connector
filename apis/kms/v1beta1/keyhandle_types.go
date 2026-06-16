@@ -53,14 +53,14 @@ type KMSKeyHandleStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the KMSKeyHandle resource in GCP.
+	// A unique specifier for the KMSKeyHandle resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *KMSKeyHandleObservedState `json:"observedState,omitempty"`
 }
 
-// KMSKeyHandleObservedState is the state of the KMSKeyHandle resource as most recently observed in GCP.
+// KMSKeyHandleObservedState is the state of the KMSKeyHandle resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.kms.v1.KeyHandle
 type KMSKeyHandleObservedState struct {
 	KMSKey *string `json:"kmsKey,omitempty"`

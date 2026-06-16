@@ -51,7 +51,7 @@ type ProcessorParent struct {
 func (p *ProcessorParent) String() string {
 	if p.ProjectNumber != "" {
 		// if project number is available, means service has already generated the ID,
-		// use project number instead of project ID because GCP API only accepts project number once the resource is created
+		// use project number instead of project ID because Google Cloud API only accepts project number once the resource is created
 		return "projects/" + p.ProjectNumber + "/locations/" + p.Location
 	}
 	return "projects/" + p.ProjectID + "/locations/" + p.Location

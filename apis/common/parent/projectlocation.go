@@ -29,7 +29,7 @@ const (
 	ProjectAndLocationURL = "projects/{{projectID}}/locations/{{location}}"
 )
 
-// ProjectAndLocationParent specifies the resource reference to a GCP Project and Location.
+// ProjectAndLocationParent specifies the resource reference to a Google Cloud Project and Location.
 type ProjectAndLocationParent struct {
 	ProjectID string
 	Location  string
@@ -63,7 +63,7 @@ func (p *ProjectAndLocationParent) FromExternal(ref string) error {
 	return nil
 }
 
-// ProjectAndLocationParent specifies the resource's GCP hierarchy (Project/Folder/Organization) and its geographical location.
+// ProjectAndLocationParent specifies the resource's Google Cloud hierarchy (Project/Folder/Organization) and its geographical location.
 // +kubebuilder:object:generate:=true
 type ProjectAndLocationRef struct {
 	// The Project that this resource belongs to.

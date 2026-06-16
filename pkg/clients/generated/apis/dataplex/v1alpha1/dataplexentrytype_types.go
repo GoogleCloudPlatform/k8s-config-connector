@@ -111,7 +111,7 @@ type DataplexEntryTypeStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataplexEntryType's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DataplexEntryType resource in GCP. */
+	/* A unique specifier for the DataplexEntryType resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -119,7 +119,7 @@ type DataplexEntryTypeStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *EntrytypeObservedStateStatus `json:"observedState,omitempty"`
 }

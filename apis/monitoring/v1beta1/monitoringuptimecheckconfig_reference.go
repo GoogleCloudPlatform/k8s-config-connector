@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &MonitoringUptimeCheckConfigRef{}
 
-// MonitoringUptimeCheckConfigRef is a reference to a GCP MonitoringUptimeCheckConfig.
+// MonitoringUptimeCheckConfigRef is a reference to a Google Cloud MonitoringUptimeCheckConfig.
 type MonitoringUptimeCheckConfigRef struct {
 	// A reference to an externally managed MonitoringUptimeCheckConfig resource.
 	// Should be in the format "projects/{{projectID}}/uptimeCheckConfigs/{{uptimeCheckConfigID}}".

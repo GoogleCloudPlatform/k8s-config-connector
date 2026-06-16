@@ -33,7 +33,7 @@ var PubSubSubscriptionIdentityFormat = gcpurls.Template[PubSubSubscriptionIdenti
 
 // +k8s:deepcopy-gen=false
 
-// PubSubSubscriptionIdentity is the identity of a GCP PubSubSubscription resource.
+// PubSubSubscriptionIdentity is the identity of a Google Cloud PubSubSubscription resource.
 type PubSubSubscriptionIdentity struct {
 	Project      string
 	Subscription string

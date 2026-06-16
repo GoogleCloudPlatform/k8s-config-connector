@@ -39,7 +39,7 @@ var (
 
 // +k8s:deepcopy-gen=false
 
-// LoggingLogSinkIdentity is the identity of a GCP LoggingLogSink resource.
+// LoggingLogSinkIdentity is the identity of a Google Cloud LoggingLogSink resource.
 type LoggingLogSinkIdentity struct {
 	Project        string
 	Folder         string

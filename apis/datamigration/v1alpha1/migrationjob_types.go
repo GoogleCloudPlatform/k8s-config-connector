@@ -134,14 +134,14 @@ type DatabaseMigrationMigrationJobStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DatabaseMigrationMigrationJob resource in GCP.
+	// A unique specifier for the DatabaseMigrationMigrationJob resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DatabaseMigrationMigrationJobObservedState `json:"observedState,omitempty"`
 }
 
-// DatabaseMigrationMigrationJobObservedState is the state of the DatabaseMigrationMigrationJob resource as most recently observed in GCP.
+// DatabaseMigrationMigrationJobObservedState is the state of the DatabaseMigrationMigrationJob resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.MigrationJob
 type DatabaseMigrationMigrationJobObservedState struct {
 	// Output only. The timestamp when the migration job resource was created.

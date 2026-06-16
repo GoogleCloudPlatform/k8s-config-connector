@@ -32,7 +32,7 @@ var (
 
 var KMSKeyHandleIdentityFormat = gcpurls.Template[KMSKeyHandleIdentity]("cloudkms.googleapis.com", "projects/{project}/locations/{location}/keyHandles/{keyHandle}")
 
-// KMSKeyHandleIdentity is the identity of a GCP KMSKeyHandle resource.
+// KMSKeyHandleIdentity is the identity of a Google Cloud KMSKeyHandle resource.
 // +k8s:deepcopy-gen=false
 type KMSKeyHandleIdentity struct {
 	Project   string

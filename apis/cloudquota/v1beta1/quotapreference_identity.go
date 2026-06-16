@@ -42,7 +42,7 @@ func (i *QuotaPreferenceIdentity) Parent() *QuotaPreferenceParent {
 	return i.parent
 }
 
-// QuotaPreferenceParent defines the GCP project, folder or organization.
+// QuotaPreferenceParent defines the Google Cloud project, folder or organization.
 type QuotaPreferenceParent struct {
 	ProjectID      string
 	OrganizationID string

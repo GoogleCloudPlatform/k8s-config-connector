@@ -1,6 +1,6 @@
 # How to add a missing field
 
-When the GCP service adds a field to their proto, we must also add the corresponding field to our CRDs.  We also need to make sure that our code passes the field through.
+When the Google Cloud service adds a field to their proto, we must also add the corresponding field to our CRDs.  We also need to make sure that our code passes the field through.
 
 Begin by identifying the proto field, look for it in `./.build/third_party/googleapis/`.  For example, if adding support for DNS Endpoints to ContainerCluster,
 you should look for the field `DNSEndpointConfig dns_endpoint_config = 1;` in `.build/third_party/googleapis/google/container/v1/cluster_service.proto`.  It is nested under ControlPlaneEndpointsConfig.

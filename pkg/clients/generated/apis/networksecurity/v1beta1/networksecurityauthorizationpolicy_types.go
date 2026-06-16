@@ -113,7 +113,7 @@ type NetworkSecurityAuthorizationPolicyStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* A unique specifier for the NetworkSecurityAuthorizationPolicy resource in GCP. */
+	/* A unique specifier for the NetworkSecurityAuthorizationPolicy resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

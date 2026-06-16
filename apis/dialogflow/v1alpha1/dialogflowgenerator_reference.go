@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &DialogflowGeneratorRef{}
 
-// DialogflowGeneratorRef is a reference to a GCP DialogflowGenerator.
+// DialogflowGeneratorRef is a reference to a Google Cloud DialogflowGenerator.
 type DialogflowGeneratorRef struct {
 	// A reference to an externally managed DialogflowGenerator resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/generators/{{generatorID}}".
 	External string `json:"external,omitempty"`

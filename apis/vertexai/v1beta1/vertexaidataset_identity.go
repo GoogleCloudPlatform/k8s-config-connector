@@ -32,7 +32,7 @@ var (
 
 var VertexAIDatasetIdentityFormat = gcpurls.Template[VertexAIDatasetIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/datasets/{dataset}")
 
-// VertexAIDatasetIdentity is the identity of a GCP VertexAIDataset resource.
+// VertexAIDatasetIdentity is the identity of a Google Cloud VertexAIDataset resource.
 // +k8s:deepcopy-gen=false
 type VertexAIDatasetIdentity struct {
 	Project  string

@@ -32,7 +32,7 @@ var (
 
 var FolderIdentityFormat = gcpurls.Template[FolderIdentity]("cloudresourcemanager.googleapis.com", "folders/{folder}")
 
-// FolderIdentity is the identity of a GCP Folder resource.
+// FolderIdentity is the identity of a Google Cloud Folder resource.
 // +k8s:deepcopy-gen=false
 type FolderIdentity struct {
 	Folder string

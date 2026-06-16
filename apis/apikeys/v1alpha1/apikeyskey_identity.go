@@ -66,7 +66,7 @@ func getIdentityFromAPIKeysKeySpec(ctx context.Context, reader client.Reader, ob
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	// APIKeysKey has no location in KRM spec. It's always "global" in GCP API URLs.
+	// APIKeysKey has no location in KRM spec. It's always "global" in Google Cloud API URLs.
 	location := "global"
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)

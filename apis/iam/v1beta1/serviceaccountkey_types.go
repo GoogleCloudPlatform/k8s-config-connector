@@ -76,7 +76,7 @@ type IAMServiceAccountKeyStatus struct {
 	ValidBefore *string `json:"validBefore,omitempty"`
 }
 
-// IAMServiceAccountKeyObservedState is the state of the IAMServiceAccountKey resource as most recently observed in GCP.
+// IAMServiceAccountKeyObservedState is the state of the IAMServiceAccountKey resource as most recently observed in Google Cloud.
 // +kcc:proto=google.iam.admin.v1.ServiceAccountKey
 type IAMServiceAccountKeyObservedState struct {
 }

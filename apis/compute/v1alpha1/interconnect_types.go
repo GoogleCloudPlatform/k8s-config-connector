@@ -102,14 +102,14 @@ type ComputeInterconnectStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ComputeInterconnect resource in GCP.
+	// A unique specifier for the ComputeInterconnect resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ComputeInterconnectObservedState `json:"observedState,omitempty"`
 }
 
-// ComputeInterconnectObservedState is the state of the ComputeInterconnect resource as most recently observed in GCP.
+// ComputeInterconnectObservedState is the state of the ComputeInterconnect resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.compute.v1.Interconnect
 type ComputeInterconnectObservedState struct {
 	// [Output only] List of features available for this Interconnect connection, which can take one of the following values: - IF_MACSEC If present then the Interconnect connection is provisioned on MACsec capable hardware ports. If not present then the Interconnect connection is provisioned on non-MACsec capable ports and MACsec isn't supported and enabling MACsec fails.

@@ -95,7 +95,7 @@ type AccessContextManagerServicePerimeterConfig struct {
 	must be in the same policy as this ServicePerimeter.
 	Referencing a nonexistent AccessLevel is a syntax error. If no
 	AccessLevel names are listed, resources within the perimeter can
-	only be accessed via GCP calls with request origins within the
+	only be accessed via Google Cloud calls with request origins within the
 	perimeter. For Service Perimeter Bridge, must be empty. */
 	// +optional
 	AccessLevels []AccessLevelRef `json:"accessLevels,omitempty"`
@@ -114,12 +114,12 @@ type AccessContextManagerServicePerimeterConfig struct {
 	// +optional
 	IngressPolicies []AccessContextManagerServicePerimeterIngressPolicy `json:"ingressPolicies,omitempty"`
 
-	/* (Optional) A list of GCP resources that are inside of the service perimeter.
+	/* (Optional) A list of Google Cloud resources that are inside of the service perimeter.
 	Currently only projects are allowed. */
 	// +optional
 	Resources []AccessContextManagerServicePerimeterResource `json:"resources,omitempty"`
 
-	/* GCP services that are subject to the Service Perimeter
+	/* Google Cloud services that are subject to the Service Perimeter
 	restrictions. Must contain a list of services. For example, if
 	'storage.googleapis.com' is specified, access to the storage
 	buckets inside the perimeter must meet the perimeter's access
@@ -293,7 +293,7 @@ type AccessContextManagerServicePerimeterIngressResource struct {
 }
 
 type AccessContextManagerServicePerimeterResource struct {
-	/* (Optional) A list of GCP resources that are inside of the service perimeter.
+	/* (Optional) A list of Google Cloud resources that are inside of the service perimeter.
 	Currently only projects are allowed. */
 	// +optional
 	ProjectRef *ServicePerimeterProjectRef `json:"projectRef,omitempty"`
@@ -334,7 +334,7 @@ type AccessContextManagerServicePerimeterStatus struct {
 	// +kubebuilder:validation:Format=""
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the AccessContextManagerServicePerimeter resource in GCP.
+	// A unique specifier for the AccessContextManagerServicePerimeter resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* Time the AccessPolicy was created in UTC. */

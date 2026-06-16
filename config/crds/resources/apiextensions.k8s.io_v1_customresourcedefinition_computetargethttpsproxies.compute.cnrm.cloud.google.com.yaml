@@ -148,7 +148,7 @@ spec:
               location:
                 description: 'Location represents the geographical location of the
                   ComputeTargetHTTPSProxy. Specify a region name or "global" for global
-                  resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
+                  resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               proxyBind:
                 description: Immutable. This field only applies when the forwarding
@@ -339,7 +339,7 @@ spec:
                 type: string
               externalRef:
                 description: A unique specifier for the ComputeTargetHTTPSProxy resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -350,7 +350,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   fingerprint:
                     description: Fingerprint of this resource. A hash of the contents

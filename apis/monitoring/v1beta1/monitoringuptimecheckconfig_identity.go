@@ -31,7 +31,7 @@ var (
 
 var MonitoringUptimeCheckConfigIdentityFormat = gcpurls.Template[MonitoringUptimeCheckConfigIdentity]("monitoring.googleapis.com", "projects/{project}/uptimeCheckConfigs/{uptimecheckconfig}")
 
-// MonitoringUptimeCheckConfigIdentity is the identity of a GCP MonitoringUptimeCheckConfig resource.
+// MonitoringUptimeCheckConfigIdentity is the identity of a Google Cloud MonitoringUptimeCheckConfig resource.
 // +k8s:deepcopy-gen=false
 type MonitoringUptimeCheckConfigIdentity struct {
 	Project           string

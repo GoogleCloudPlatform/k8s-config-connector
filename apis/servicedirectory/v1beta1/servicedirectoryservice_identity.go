@@ -35,7 +35,7 @@ var ServiceDirectoryServiceIdentityFormat = gcpurls.Template[ServiceDirectorySer
 
 // +k8s:deepcopy-gen=false
 
-// ServiceDirectoryServiceIdentity is the identity of a GCP ServiceDirectoryService resource.
+// ServiceDirectoryServiceIdentity is the identity of a Google Cloud ServiceDirectoryService resource.
 type ServiceDirectoryServiceIdentity struct {
 	Project   string
 	Location  string

@@ -41,7 +41,7 @@ func (i *QuotaAdjusterSettingsIdentity) Parent() *QuotaAdjusterSettingsParent {
 	return i.parent
 }
 
-// QuotaAdjusterSettingsParent defines the GCP project, location for the given QuotaAdjusterSettings resource.
+// QuotaAdjusterSettingsParent defines the Google Cloud project, location for the given QuotaAdjusterSettings resource.
 type QuotaAdjusterSettingsParent struct {
 	ProjectID string
 }

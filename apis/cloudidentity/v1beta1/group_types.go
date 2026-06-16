@@ -78,11 +78,11 @@ type CloudIdentityGroupStatus struct {
 	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Group.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *CloudIdentityGroupObservedState `json:"observedState,omitempty"`
 }
 
-// CloudIdentityGroupObservedState is the state of the CloudIdentityGroup resource as most recently observed in GCP.
+// CloudIdentityGroupObservedState is the state of the CloudIdentityGroup resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.apps.cloudidentity.groups.v1beta1.Group
 type CloudIdentityGroupObservedState struct {
 	// Additional group keys associated with the Group.

@@ -281,7 +281,7 @@ spec:
                 type: string
               externalRef:
                 description: A unique specifier for the ComputeReservation resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

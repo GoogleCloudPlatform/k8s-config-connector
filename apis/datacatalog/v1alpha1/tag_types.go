@@ -67,14 +67,14 @@ type DataCatalogTagStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DataCatalogTag resource in GCP.
+	// A unique specifier for the DataCatalogTag resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DataCatalogTagObservedState `json:"observedState,omitempty"`
 }
 
-// DataCatalogTagObservedState is the state of the DataCatalogTag resource as most recently observed in GCP.
+// DataCatalogTagObservedState is the state of the DataCatalogTag resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.datacatalog.v1.Tag
 type DataCatalogTagObservedState struct {
 	// Output only. The display name of the tag template.

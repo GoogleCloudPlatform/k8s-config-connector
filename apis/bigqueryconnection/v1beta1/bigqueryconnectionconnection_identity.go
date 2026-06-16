@@ -32,7 +32,7 @@ var (
 
 var BigQueryConnectionConnectionIdentityFormat = gcpurls.Template[BigQueryConnectionConnectionIdentity]("bigqueryconnection.googleapis.com", "projects/{project}/locations/{location}/connections/{connection}")
 
-// BigQueryConnectionConnectionIdentity is the identity of a GCP BigQueryConnectionConnection resource.
+// BigQueryConnectionConnectionIdentity is the identity of a Google Cloud BigQueryConnectionConnection resource.
 // +k8s:deepcopy-gen=false
 type BigQueryConnectionConnectionIdentity struct {
 	Project    string
