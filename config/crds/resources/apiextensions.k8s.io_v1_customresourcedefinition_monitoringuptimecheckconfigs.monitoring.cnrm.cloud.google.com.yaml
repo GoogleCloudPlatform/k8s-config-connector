@@ -290,14 +290,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The group of resources being monitored. Should
-                          be only the `[GROUP_ID]`, and not the full-path `projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]`.
+                        description: A reference to an externally managed MonitoringGroup
+                          resource. Should be in the format "projects/{{projectID}}/groups/{{groupID}}".
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The name of a MonitoringGroup resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The namespace of a MonitoringGroup resource.
                         type: string
                     type: object
                   resourceType:

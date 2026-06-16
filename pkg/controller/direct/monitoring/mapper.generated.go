@@ -78,6 +78,36 @@ func MonitoredResource_ToProto(mapCtx *direct.MapContext, in *krm.MonitoredResou
 }
 */
 
+/* found existing non-generated mapping function "MonitoringGroupSpec_FromProto", skipping
+func MonitoringGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.Group) *krm.MonitoringGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringGroupSpec{}
+	// MISSING: Name
+	out.DisplayName = in.GetDisplayName()
+	// MISSING: ParentName
+	out.Filter = in.GetFilter()
+	out.IsCluster = direct.LazyPtr(in.GetIsCluster())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "MonitoringGroupSpec_ToProto", skipping
+func MonitoringGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringGroupSpec) *pb.Group {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Group{}
+	// MISSING: Name
+	out.DisplayName = MonitoringGroupSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	// MISSING: ParentName
+	out.Filter = MonitoringGroupSpec_Filter_ToProto(mapCtx, in.Filter)
+	out.IsCluster = direct.ValueOf(in.IsCluster)
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "MonitoringMetricDescriptorSpec_FromProto", skipping
 func MonitoringMetricDescriptorSpec_FromProto(mapCtx *direct.MapContext, in *metricpb.MetricDescriptor) *krm.MonitoringMetricDescriptorSpec {
 	if in == nil {

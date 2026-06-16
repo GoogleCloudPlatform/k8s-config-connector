@@ -111,6 +111,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":                        true,
 		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}":                                true,
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}":                                      true,
+		"//monitoring.googleapis.com/projects/{}/groups/{}":                                         true,
 		"//monitoring.googleapis.com/projects/{}/metricDescriptors/{}":                              true,
 		"//monitoring.googleapis.com/projects/{}/services/{}":                                       true,
 		"//monitoring.googleapis.com/locations/global/metricsScopes/{}/projects/{}":                 true,
