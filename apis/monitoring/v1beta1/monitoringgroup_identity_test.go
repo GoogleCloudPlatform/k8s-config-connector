@@ -66,3 +66,15 @@ func TestMonitoringGroupIdentity_FromExternal(t *testing.T) {
 		})
 	}
 }
+
+func TestMonitoringGroupIdentity_ParentString(t *testing.T) {
+	identity := &MonitoringGroupIdentity{
+		Project: "my-project",
+		Group:   "my-group",
+	}
+	want := "projects/my-project"
+	got := identity.ParentString()
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("ParentString() mismatch (-want +got):\n%s", diff)
+	}
+}
