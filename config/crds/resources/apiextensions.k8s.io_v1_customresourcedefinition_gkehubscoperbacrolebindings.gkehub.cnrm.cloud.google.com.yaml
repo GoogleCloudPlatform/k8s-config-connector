@@ -165,7 +165,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the GKEHubScopeRBACRoleBinding
-                  resource in GCP.
+                  resource in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -177,7 +177,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   createTime:
                     description: Output only. The time at which this rbac role binding

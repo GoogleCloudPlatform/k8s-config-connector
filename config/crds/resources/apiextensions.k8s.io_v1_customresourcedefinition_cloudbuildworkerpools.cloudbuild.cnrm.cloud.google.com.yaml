@@ -202,7 +202,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique Config Connector specifier for the resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -214,7 +214,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   createTime:
                     description: The creation timestamp of the workerpool.
@@ -451,7 +451,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique Config Connector specifier for the resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -463,7 +463,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   createTime:
                     description: The creation timestamp of the workerpool.

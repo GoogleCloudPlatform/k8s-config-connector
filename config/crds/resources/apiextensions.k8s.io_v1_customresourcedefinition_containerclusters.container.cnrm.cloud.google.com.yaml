@@ -492,8 +492,8 @@ spec:
                     properties:
                       allowExternalTraffic:
                         description: Controls whether user traffic is allowed over
-                          this endpoint. Note that GCP-managed services may still
-                          use the endpoint even if this is false.
+                          this endpoint. Note that Google Cloud-managed services may
+                          still use the endpoint even if this is false.
                         type: boolean
                       enableK8sTokensViaDns:
                         description: Controls whether the k8s token auth is allowed
@@ -1862,7 +1862,7 @@ spec:
                 type: object
               workloadIdentityConfig:
                 description: Configuration for the use of Kubernetes Service Accounts
-                  in GCP IAM policies.
+                  in Google Cloud IAM policies.
                 properties:
                   identityNamespace:
                     description: DEPRECATED. This field will be removed in a future
@@ -1926,7 +1926,7 @@ spec:
                 format: int64
                 type: integer
               observedState:
-                description: The observed state of the underlying GCP resource.
+                description: The observed state of the underlying Google Cloud resource.
                 properties:
                   controlPlaneEndpointsConfig:
                     description: Configuration for all of the cluster's control plane

@@ -228,7 +228,7 @@ spec:
               location:
                 description: 'Location represents the geographical location of the
                   ComputeForwardingRule. Specify a region name or "global" for global
-                  resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
+                  resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               metadataFilters:
                 description: |-
@@ -777,7 +777,7 @@ spec:
                 type: string
               externalRef:
                 description: A unique Config Connector specifier for the resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               labelFingerprint:
                 description: The fingerprint used for optimistic locking of this resource.  Used
