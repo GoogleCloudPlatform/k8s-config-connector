@@ -242,17 +242,17 @@ type ComputeResourcePolicyStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ComputeResourcePolicy resource in GCP.
+	// A unique specifier for the ComputeResourcePolicy resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ComputeResourcePolicyObservedState `json:"observedState,omitempty"`
 
 	// The server-defined URL of this resource.
 	SelfLink *string `json:"selfLink,omitempty"`
 }
 
-// ComputeResourcePolicyObservedState is the state of the ComputeResourcePolicy resource as most recently observed in GCP.
+// ComputeResourcePolicyObservedState is the state of the ComputeResourcePolicy resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicy
 type ComputeResourcePolicyObservedState struct {
 	// [Output Only] Creation timestamp in RFC3339 text format.

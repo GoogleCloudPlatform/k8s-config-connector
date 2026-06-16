@@ -59,14 +59,14 @@ type APIGatewayAPIStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the APIGatewayAPI resource in GCP.
+	// A unique specifier for the APIGatewayAPI resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *APIGatewayAPIObservedState `json:"observedState,omitempty"`
 }
 
-// APIGatewayAPIObservedState is the state of the APIGatewayAPI resource as most recently observed in GCP.
+// APIGatewayAPIObservedState is the state of the APIGatewayAPI resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.apigateway.v1.Api
 type APIGatewayAPIObservedState struct {
 

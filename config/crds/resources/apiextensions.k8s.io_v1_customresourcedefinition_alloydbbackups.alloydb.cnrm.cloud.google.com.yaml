@@ -202,7 +202,7 @@ spec:
                 type: string
               externalRef:
                 description: A unique specifier for the AlloyDBBackup resource in
-                  GCP.
+                  Google Cloud.
                 type: string
               name:
                 description: 'Output only. The name of the backup resource with the
@@ -415,7 +415,7 @@ spec:
                 type: string
               externalRef:
                 description: A unique specifier for the AlloyDBBackup resource in
-                  GCP.
+                  Google Cloud.
                 type: string
               name:
                 description: 'Output only. The name of the backup resource with the

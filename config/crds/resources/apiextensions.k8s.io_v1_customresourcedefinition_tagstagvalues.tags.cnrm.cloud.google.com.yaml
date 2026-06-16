@@ -150,7 +150,8 @@ spec:
                 description: Output only. Creation time.
                 type: string
               externalRef:
-                description: A unique specifier for the TagsTagValue resource in GCP.
+                description: A unique specifier for the TagsTagValue resource in Google
+                  Cloud.
                 type: string
               name:
                 description: Immutable. Resource name for TagValue in the format `tagValues/456`.

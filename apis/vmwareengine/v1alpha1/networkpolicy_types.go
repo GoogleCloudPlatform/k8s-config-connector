@@ -65,14 +65,14 @@ type VMwareEngineNetworkPolicyStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the VMwareEngineNetworkPolicy resource in GCP.
+	// A unique specifier for the VMwareEngineNetworkPolicy resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *VMwareEngineNetworkPolicyObservedState `json:"observedState,omitempty"`
 }
 
-// VMwareEngineNetworkPolicyObservedState is the state of the VMwareEngineNetworkPolicy resource as most recently observed in GCP.
+// VMwareEngineNetworkPolicyObservedState is the state of the VMwareEngineNetworkPolicy resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.vmwareengine.v1.NetworkPolicy
 type VMwareEngineNetworkPolicyObservedState struct {
 	// Output only. The resource name of this network policy.

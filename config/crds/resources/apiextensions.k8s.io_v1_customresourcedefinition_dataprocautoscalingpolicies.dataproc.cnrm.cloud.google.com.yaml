@@ -310,7 +310,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the DataprocAutoscalingPolicy
-                  resource in GCP.
+                  resource in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

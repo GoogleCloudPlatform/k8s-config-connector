@@ -31,7 +31,7 @@ var (
 
 var DNSManagedZoneIdentityFormat = gcpurls.Template[DNSManagedZoneIdentity]("dns.googleapis.com", "projects/{project}/managedZones/{managedZone}")
 
-// DNSManagedZoneIdentity is the identity of a GCP DNS ManagedZone.
+// DNSManagedZoneIdentity is the identity of a Google Cloud DNS ManagedZone.
 // +k8s:deepcopy-gen=false
 type DNSManagedZoneIdentity struct {
 	Project     string

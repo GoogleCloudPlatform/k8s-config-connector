@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &CertificateManagerDNSAuthorizationRef{}
 
-// CertificateManagerDNSAuthorizationRef is a reference to a GCP CertificateManagerDNSAuthorization.
+// CertificateManagerDNSAuthorizationRef is a reference to a Google Cloud CertificateManagerDNSAuthorization.
 type CertificateManagerDNSAuthorizationRef struct {
 	// A reference to an externally managed CertificateManagerDNSAuthorization resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/dnsAuthorizations/{{dnsAuthorizationID}}".

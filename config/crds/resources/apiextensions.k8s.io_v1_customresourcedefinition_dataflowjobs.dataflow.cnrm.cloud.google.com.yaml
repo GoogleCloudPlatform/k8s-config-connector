@@ -115,7 +115,7 @@ spec:
                 format: int64
                 type: integer
               networkRef:
-                description: ComputeNetworkRef is a reference to a GCP ComputeNetwork.
+                description: ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.
                 oneOf:
                 - not:
                     required:
@@ -183,7 +183,8 @@ spec:
                     type: string
                 type: object
               subnetworkRef:
-                description: ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.
+                description: ComputeSubnetworkRef is a reference to a Google Cloud
+                  ComputeSubnetwork.
                 oneOf:
                 - not:
                     required:

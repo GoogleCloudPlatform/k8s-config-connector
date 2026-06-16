@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &CCInsightsConversationRef{}
 
-// CCInsightsConversationRef is a reference to a GCP CCInsightsConversation.
+// CCInsightsConversationRef is a reference to a Google Cloud CCInsightsConversation.
 type CCInsightsConversationRef struct {
 	// A reference to an externally managed CCInsightsConversation resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/conversations/{{conversationID}}".

@@ -67,7 +67,7 @@ spec:
                 additionalProperties:
                   type: string
                 description: Optional. User-provided annotations, which are stored
-                  in GCP.
+                  in Google Cloud.
                 type: object
               binaryAuthorization:
                 description: Optional. Settings for Binary Authorization feature.
@@ -1063,13 +1063,14 @@ spec:
                   it will be permanently deleted.
                 type: string
               externalRef:
-                description: A unique specifier for the RunJob resource in GCP.
+                description: A unique specifier for the RunJob resource in Google
+                  Cloud.
                 type: string
               lastModifiedCookie:
                 description: LastModifiedCookie contains hashes of the last applied
-                  spec and the last observed GCP state. The format is "<spec-hash>/<gcp-hash>".
+                  spec and the last observed Google Cloud state. The format is "<spec-hash>/<gcp-hash>".
                   This is used by the controller to detect if the user's desired state
-                  has changed or if the GCP resource has drifted.
+                  has changed or if the Google Cloud resource has drifted.
                 type: string
               lastModifier:
                 description: Output only. Email address of the last authenticated

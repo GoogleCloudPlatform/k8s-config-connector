@@ -78,7 +78,7 @@ type IAMPartialPolicyBinding struct {
 
 // IAMPartialPolicySpec defines the desired state of IAMPartialPolicy
 type IAMPartialPolicySpec struct {
-	// Immutable. Required. The GCP resource to set the IAM policy on (e.g.
+	// Immutable. Required. The Google Cloud resource to set the IAM policy on (e.g.
 	// organization, project...)
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="resourceRef is immutable"
 	ResourceReference ResourceReference `json:"resourceRef"`

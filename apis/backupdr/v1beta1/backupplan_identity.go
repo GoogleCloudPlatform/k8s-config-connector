@@ -32,7 +32,7 @@ var (
 
 var BackupPlanIdentityFormat = gcpurls.Template[BackupPlanIdentity]("backupdr.googleapis.com", "projects/{project}/locations/{location}/backupPlans/{backupplan}")
 
-// BackupPlanIdentity is the identity of a GCP BackupDRBackupPlan resource.
+// BackupPlanIdentity is the identity of a Google Cloud BackupDRBackupPlan resource.
 // +k8s:deepcopy-gen=false
 type BackupPlanIdentity struct {
 	Project    string

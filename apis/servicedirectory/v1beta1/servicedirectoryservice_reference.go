@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &ServiceDirectoryServiceRef{}
 
-// ServiceDirectoryServiceRef is a reference to a GCP ServiceDirectoryService.
+// ServiceDirectoryServiceRef is a reference to a Google Cloud ServiceDirectoryService.
 type ServiceDirectoryServiceRef struct {
 	// A reference to an externally managed ServiceDirectoryService resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/namespaces/{{namespaceID}}/services/{{serviceID}}".

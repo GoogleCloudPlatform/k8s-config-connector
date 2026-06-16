@@ -147,11 +147,11 @@ type ContainerAttachedClusterStatus struct {
 	// A set of errors found in the cluster.
 	Errors []AttachedClusterError `json:"errors,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ContainerAttachedClusterObservedState `json:"observedState,omitempty"`
 }
 
-// ContainerAttachedClusterObservedState is the state of the ContainerAttachedCluster resource as most recently observed in GCP.
+// ContainerAttachedClusterObservedState is the state of the ContainerAttachedCluster resource as most recently observed in Google Cloud.
 type ContainerAttachedClusterObservedState struct {
 	// Output only. The name of the managed Hub Membership resource associated to
 	//  this cluster.

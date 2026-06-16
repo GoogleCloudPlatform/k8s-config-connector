@@ -65,10 +65,10 @@ type DataCatalogTaxonomyStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DataCatalogTaxonomy resource in GCP.
+	// A unique specifier for the DataCatalogTaxonomy resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DataCatalogTaxonomyObservedState `json:"observedState,omitempty"`
 }
 
@@ -105,7 +105,7 @@ type TaxonomySystemTimestamps struct {
 	ExpireTime *string `json:"expiredTime,omitempty"`
 }
 
-// DataCatalogTaxonomyObservedState is the state of the DataCatalogTaxonomy resource as most recently observed in GCP.
+// DataCatalogTaxonomyObservedState is the state of the DataCatalogTaxonomy resource as most recently observed in Google Cloud.
 // +kcc:proto=google.cloud.datacatalog.v1.Taxonomy
 type DataCatalogTaxonomyObservedState struct {
 	// Output only. Number of policy tags in this taxonomy.

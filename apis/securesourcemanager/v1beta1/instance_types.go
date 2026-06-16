@@ -61,11 +61,11 @@ type SecureSourceManagerInstanceStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the SecureSourceManagerInstance resource in GCP.
+	// A unique specifier for the SecureSourceManagerInstance resource in Google Cloud.
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	// +optional
 	ObservedState *SecureSourceManagerInstanceObservedState `json:"observedState,omitempty"`
 }

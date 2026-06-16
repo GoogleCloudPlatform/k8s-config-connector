@@ -64,14 +64,14 @@ type PubSubSnapshotStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the PubSubSnapshot resource in GCP.
+	// A unique specifier for the PubSubSnapshot resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *PubSubSnapshotObservedState `json:"observedState,omitempty"`
 }
 
-// PubSubSnapshotObservedState is the state of the PubSubSnapshot resource as most recently observed in GCP.
+// PubSubSnapshotObservedState is the state of the PubSubSnapshot resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.pubsub.v1.Snapshot
 type PubSubSnapshotObservedState struct {
 	// Optional. The snapshot is guaranteed to exist up until this time.

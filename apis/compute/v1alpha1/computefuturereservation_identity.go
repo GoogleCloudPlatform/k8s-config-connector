@@ -35,7 +35,7 @@ var ComputeFutureReservationIdentityFormat = gcpurls.Template[ComputeFutureReser
 	"projects/{project}/zones/{zone}/futureReservations/{futureReservation}",
 )
 
-// ComputeFutureReservationIdentity is the identity of a GCP ComputeFutureReservation resource.
+// ComputeFutureReservationIdentity is the identity of a Google Cloud ComputeFutureReservation resource.
 // +k8s:deepcopy-gen=false
 type ComputeFutureReservationIdentity struct {
 	Project           string

@@ -35,7 +35,7 @@ var ComputeInterconnectIdentityFormat = gcpurls.Template[ComputeInterconnectIden
 	"projects/{project}/global/interconnects/{interconnect}",
 )
 
-// ComputeInterconnectIdentity is the identity of a GCP ComputeInterconnect resource.
+// ComputeInterconnectIdentity is the identity of a Google Cloud ComputeInterconnect resource.
 // +k8s:deepcopy-gen=false
 type ComputeInterconnectIdentity struct {
 	Project      string

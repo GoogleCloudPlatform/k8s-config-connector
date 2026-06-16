@@ -57,14 +57,14 @@ type BillingAccountStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the BillingAccount resource in GCP.
+	// A unique specifier for the BillingAccount resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *BillingAccountObservedState `json:"observedState,omitempty"`
 }
 
-// BillingAccountObservedState is the state of the BillingAccount resource as most recently observed in GCP.
+// BillingAccountObservedState is the state of the BillingAccount resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.billing.v1.BillingAccount
 type BillingAccountObservedState struct {
 	// Output only. The resource name of the billing account. The resource name

@@ -118,7 +118,7 @@ spec:
                                 properties:
                                   ipAddressRef:
                                     description: ComputeAddressRef is a reference
-                                      to a GCP ComputeAddress.
+                                      to a Google Cloud ComputeAddress.
                                     oneOf:
                                     - not:
                                         required:
@@ -161,7 +161,7 @@ spec:
                                     type: string
                                   networkRef:
                                     description: ComputeNetworkRef is a reference
-                                      to a GCP ComputeNetwork.
+                                      to a Google Cloud ComputeNetwork.
                                     oneOf:
                                     - not:
                                         required:
@@ -195,8 +195,8 @@ spec:
                                     description: The configured port of the load balancer.
                                     type: string
                                   projectRef:
-                                    description: ProjectRef is a reference to a GCP
-                                      Project.
+                                    description: ProjectRef is a reference to a Google
+                                      Cloud Project.
                                     oneOf:
                                     - not:
                                         required:
@@ -329,7 +329,7 @@ spec:
                                     properties:
                                       ipAddressRef:
                                         description: ComputeAddressRef is a reference
-                                          to a GCP ComputeAddress.
+                                          to a Google Cloud ComputeAddress.
                                         oneOf:
                                         - not:
                                             required:
@@ -372,7 +372,7 @@ spec:
                                         type: string
                                       networkRef:
                                         description: ComputeNetworkRef is a reference
-                                          to a GCP ComputeNetwork.
+                                          to a Google Cloud ComputeNetwork.
                                         oneOf:
                                         - not:
                                             required:
@@ -408,7 +408,7 @@ spec:
                                         type: string
                                       projectRef:
                                         description: ProjectRef is a reference to
-                                          a GCP Project.
+                                          a Google Cloud Project.
                                         oneOf:
                                         - not:
                                             required:
@@ -535,7 +535,7 @@ spec:
                               properties:
                                 ipAddressRef:
                                   description: ComputeAddressRef is a reference to
-                                    a GCP ComputeAddress.
+                                    a Google Cloud ComputeAddress.
                                   oneOf:
                                   - not:
                                       required:
@@ -577,7 +577,7 @@ spec:
                                   type: string
                                 networkRef:
                                   description: ComputeNetworkRef is a reference to
-                                    a GCP ComputeNetwork.
+                                    a Google Cloud ComputeNetwork.
                                   oneOf:
                                   - not:
                                       required:
@@ -610,8 +610,8 @@ spec:
                                   description: The configured port of the load balancer.
                                   type: string
                                 projectRef:
-                                  description: ProjectRef is a reference to a GCP
-                                    Project.
+                                  description: ProjectRef is a reference to a Google
+                                    Cloud Project.
                                   oneOf:
                                   - not:
                                       required:
@@ -704,7 +704,7 @@ spec:
                                 properties:
                                   ipAddressRef:
                                     description: ComputeAddressRef is a reference
-                                      to a GCP ComputeAddress.
+                                      to a Google Cloud ComputeAddress.
                                     oneOf:
                                     - not:
                                         required:
@@ -747,7 +747,7 @@ spec:
                                     type: string
                                   networkRef:
                                     description: ComputeNetworkRef is a reference
-                                      to a GCP ComputeNetwork.
+                                      to a Google Cloud ComputeNetwork.
                                     oneOf:
                                     - not:
                                         required:
@@ -781,8 +781,8 @@ spec:
                                     description: The configured port of the load balancer.
                                     type: string
                                   projectRef:
-                                    description: ProjectRef is a reference to a GCP
-                                      Project.
+                                    description: ProjectRef is a reference to a Google
+                                      Cloud Project.
                                     oneOf:
                                     - not:
                                         required:

@@ -122,7 +122,7 @@ type ComputeReservationStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ComputeReservation resource in GCP.
+	// A unique specifier for the ComputeReservation resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// Full or partial URL to a parent commitment. This field displays for reservations that are tied to a commitment.
@@ -141,11 +141,11 @@ type ComputeReservationStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.status
 	Status *string `json:"status,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	// ObservedState *ComputeReservationObservedState `json:"observedState,omitempty"`
 }
 
-// ComputeReservationObservedState is the state of the ComputeReservation resource as most recently observed in GCP.
+// ComputeReservationObservedState is the state of the ComputeReservation resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.compute.v1.Reservation
 /*
 type ComputeReservationObservedState struct {

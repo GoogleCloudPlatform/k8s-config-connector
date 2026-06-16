@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &MonitoringMetricDescriptorRef{}
 
-// MonitoringMetricDescriptorRef is a reference to a GCP MonitoringMetricDescriptor.
+// MonitoringMetricDescriptorRef is a reference to a Google Cloud MonitoringMetricDescriptor.
 type MonitoringMetricDescriptorRef struct {
 	// A reference to an externally managed MonitoringMetricDescriptor resource.
 	// Should be in the format "projects/{{projectID}}/metricDescriptors/{{metricID}}".

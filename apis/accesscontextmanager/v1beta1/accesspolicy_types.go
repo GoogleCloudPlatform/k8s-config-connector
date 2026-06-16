@@ -51,7 +51,7 @@ type AccessContextManagerAccessPolicyStatus struct {
 	UpdateTime string `json:"updateTime,omitempty"`
 }
 
-// AccessContextManagerAccessPolicyObservedState is the state of the AccessContextManagerAccessPolicy resource as most recently observed in GCP.
+// AccessContextManagerAccessPolicyObservedState is the state of the AccessContextManagerAccessPolicy resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.identity.accesscontextmanager.v1.AccessPolicy
 type AccessContextManagerAccessPolicyObservedState struct {
 }

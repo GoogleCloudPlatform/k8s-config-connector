@@ -703,7 +703,7 @@ type BigQueryTableSpec struct {
 	View *ViewDefinition `json:"view,omitempty"`
 
 	// When using `alpha.cnrm.cloud.google.com/reconciler:direct` annotion, use labels field
-	// to set the labels for this resource on GCP.
+	// to set the labels for this resource on Google Cloud.
 	// Otherwise, use .metadata.labels.
 	// Please refer to https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4274 for context.
 	// The labels associated with this table. You can use these to organize and
@@ -788,10 +788,10 @@ type BigQueryTableStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the BigQueryTable resource in GCP.
+	// A unique specifier for the BigQueryTable resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *BigQueryTableObservedState `json:"observedState,omitempty"`
 
 	// Output only. The time when this table was created, in milliseconds since
@@ -848,7 +848,7 @@ type BigQueryTableStatus struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// BigQueryTableObservedState is the state of the BigQueryTable resource as most recently observed in GCP.
+// BigQueryTableObservedState is the state of the BigQueryTable resource as most recently observed in Google Cloud.
 // +kcc:proto=google.cloud.bigquery.v2.Table
 type BigQueryTableObservedState struct {
 	// NOT YET

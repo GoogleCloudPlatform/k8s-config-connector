@@ -220,7 +220,8 @@ spec:
                 type: integer
               targetResources:
                 items:
-                  description: ComputeNetworkRef is a reference to a GCP ComputeNetwork.
+                  description: ComputeNetworkRef is a reference to a Google Cloud
+                    ComputeNetwork.
                   oneOf:
                   - not:
                       required:

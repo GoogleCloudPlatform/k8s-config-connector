@@ -32,7 +32,7 @@ var (
 
 var ProjectIdentityFormat = gcpurls.Template[ProjectIdentity]("cloudresourcemanager.googleapis.com", "projects/{project}")
 
-// ProjectIdentity is the identity of a GCP Project resource.
+// ProjectIdentity is the identity of a Google Cloud Project resource.
 // +k8s:deepcopy-gen=false
 type ProjectIdentity struct {
 	Project string

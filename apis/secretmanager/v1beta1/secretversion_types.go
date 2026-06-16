@@ -29,7 +29,7 @@ type SecretManagerSecretVersionSpec struct {
 	SecretRef *SecretRef `json:"secretRef,omitempty"`
 
 	// The service-generated SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service.
-	// If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number
+	// If not given, Config Connector adds a new secret version to the Google Cloud service, and you can find out the version number
 	// from `status.observedState.version`
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -68,10 +68,10 @@ type SecretManagerSecretVersionStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the SecretManagerSecretVersion resource in GCP.
+	// A unique specifier for the SecretManagerSecretVersion resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *SecretManagerSecretVersionObservedState `json:"observedState,omitempty"`
 
 	// DEPRECATING NOTE: Please use status.observedState.createTime instead.
@@ -87,7 +87,7 @@ type SecretManagerSecretVersionStatus struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// SecretManagerSecretVersionObserved is the state of the SecretManagerSecretVersion resource as most recently observed in GCP.
+// SecretManagerSecretVersionObserved is the state of the SecretManagerSecretVersion resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.secretmanager.v1.SecretVersion
 type SecretManagerSecretVersionObservedState struct {
 	// Output only. The time at which the

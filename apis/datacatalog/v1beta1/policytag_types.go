@@ -58,10 +58,10 @@ type DataCatalogPolicyTagStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DataCatalogPolicyTag resource in GCP.
+	// A unique specifier for the DataCatalogPolicyTag resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DataCatalogPolicyTagObservedState `json:"observedState,omitempty"`
 
 	/* Resource name of this policy tag, whose format is:
@@ -74,7 +74,7 @@ type DataCatalogPolicyTagStatus struct {
 	ChildPolicyTags []string `json:"childPolicyTags,omitempty"`
 }
 
-// DataCatalogPolicyTagObservedState is the state of the DataCatalogPolicyTag resource as most recently observed in GCP.
+// DataCatalogPolicyTagObservedState is the state of the DataCatalogPolicyTag resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.datacatalog.v1.PolicyTag
 type DataCatalogPolicyTagObservedState struct {
 }

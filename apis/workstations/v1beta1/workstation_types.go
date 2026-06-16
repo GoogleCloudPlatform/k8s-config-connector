@@ -52,16 +52,16 @@ type WorkstationStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the Workstation resource in GCP.
+	// A unique specifier for the Workstation resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *WorkstationObservedState `json:"observedState,omitempty"`
 }
 
 // WorkstationSpec defines the desired state of Workstation
 // +kcc:proto=google.cloud.workstations.v1.Workstation
-// WorkstationObservedState is the state of the Workstation resource as most recently observed in GCP.
+// WorkstationObservedState is the state of the Workstation resource as most recently observed in Google Cloud.
 type WorkstationObservedState struct {
 	// Output only. A system-assigned unique identifier for this workstation.
 	UID *string `json:"uid,omitempty"`

@@ -950,10 +950,10 @@ type CloudBuildTriggerStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the CloudBuildTrigger resource in GCP.
+	// A unique specifier for the CloudBuildTrigger resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *CloudBuildTriggerObservedState `json:"observedState,omitempty"`
 
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildTrigger.create_time
@@ -964,7 +964,7 @@ type CloudBuildTriggerStatus struct {
 	TriggerId *string `json:"triggerId,omitempty"`
 }
 
-// CloudBuildTriggerObservedState is the state of the CloudBuildTrigger resource as most recently observed in GCP.
+// CloudBuildTriggerObservedState is the state of the CloudBuildTrigger resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.BuildTrigger
 type CloudBuildTriggerObservedState struct {
 	// Output only. Unique identifier of the trigger.

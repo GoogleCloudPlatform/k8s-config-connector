@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &ContentWarehouseRuleSetRef{}
 
-// ContentWarehouseRuleSetRef is a reference to a GCP ContentWarehouseRuleSet.
+// ContentWarehouseRuleSetRef is a reference to a Google Cloud ContentWarehouseRuleSet.
 type ContentWarehouseRuleSetRef struct {
 	// A reference to an externally managed ContentWarehouseRuleSet resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/ruleSets/{{ruleSetID}}".

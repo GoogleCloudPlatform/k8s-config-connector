@@ -432,14 +432,14 @@ type DataprocJobStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DataprocJob resource in GCP.
+	// A unique specifier for the DataprocJob resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DataprocJobObservedState `json:"observedState,omitempty"`
 }
 
-// DataprocJobObservedState is the state of the DataprocJob resource as most recently observed in GCP.
+// DataprocJobObservedState is the state of the DataprocJob resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.Job
 type DataprocJobObservedState struct {
 	// Required. Job information, including how, when, and where to

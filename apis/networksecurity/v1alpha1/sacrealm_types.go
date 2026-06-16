@@ -55,14 +55,14 @@ type NetworkSecuritySACRealmStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the NetworkSecuritySACRealm resource in GCP.
+	// A unique specifier for the NetworkSecuritySACRealm resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *NetworkSecuritySACRealmObservedState `json:"observedState,omitempty"`
 }
 
-// NetworkSecuritySACRealmObservedState is the state of the NetworkSecuritySACRealm resource as most recently observed in GCP.
+// NetworkSecuritySACRealmObservedState is the state of the NetworkSecuritySACRealm resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.networksecurity.v1.SACRealm
 type NetworkSecuritySACRealmObservedState struct {
 	// Output only. Timestamp when the realm was created.

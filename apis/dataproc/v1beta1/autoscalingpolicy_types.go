@@ -228,7 +228,7 @@ type DataprocAutoscalingPolicyStatus struct {
 	// +kubebuilder:validation:Format=""
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DataprocAutoscalingPolicy resource in GCP.
+	// A unique specifier for the DataprocAutoscalingPolicy resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 }
 

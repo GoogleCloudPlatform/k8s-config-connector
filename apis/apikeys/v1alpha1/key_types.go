@@ -52,16 +52,16 @@ type APIKeysKeyStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the APIKeysKey resource in GCP.
+	// A unique specifier for the APIKeysKey resource in Google Cloud.
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	// +optional
 	ObservedState *APIKeysKeyObservedState `json:"observedState,omitempty"`
 }
 
-// APIKeysKeyObservedState is the state of the APIKeysKey resource as most recently observed in GCP.
+// APIKeysKeyObservedState is the state of the APIKeysKey resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.api.apikeys.v2.Key
 type APIKeysKeyObservedState struct {
 	// Output only. Unique id in UUID4 format.

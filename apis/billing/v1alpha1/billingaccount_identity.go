@@ -31,7 +31,7 @@ var (
 
 var BillingAccountIdentityFormat = gcpurls.Template[BillingAccountIdentity]("cloudbilling.googleapis.com", "billingAccounts/{billingAccount}")
 
-// BillingAccountIdentity is the identity of a GCP BillingAccount resource.
+// BillingAccountIdentity is the identity of a Google Cloud BillingAccount resource.
 // +k8s:deepcopy-gen=false
 type BillingAccountIdentity struct {
 	BillingAccount string

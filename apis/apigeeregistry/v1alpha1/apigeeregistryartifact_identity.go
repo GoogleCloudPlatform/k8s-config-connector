@@ -34,7 +34,7 @@ var ApigeeRegistryArtifactIdentityFormat = gcpurls.Template[ApigeeRegistryArtifa
 
 // +k8s:deepcopy-gen=false
 
-// ApigeeRegistryArtifactIdentity is the identity of a GCP ApigeeRegistryArtifact resource.
+// ApigeeRegistryArtifactIdentity is the identity of a Google Cloud ApigeeRegistryArtifact resource.
 type ApigeeRegistryArtifactIdentity struct {
 	Project  string
 	Location string

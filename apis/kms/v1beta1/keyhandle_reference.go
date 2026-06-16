@@ -31,7 +31,7 @@ import (
 
 var _ refs.Ref = &KMSKeyHandleRef{}
 
-// KMSKeyHandleRef is a reference to a GCP KMSKeyHandle.
+// KMSKeyHandleRef is a reference to a Google Cloud KMSKeyHandle.
 type KMSKeyHandleRef struct {
 	// A reference to an externally managed KMSKeyHandle resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/keyHandles/{{keyHandleID}}".

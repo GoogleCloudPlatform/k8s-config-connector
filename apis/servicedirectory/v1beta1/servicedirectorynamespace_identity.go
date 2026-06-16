@@ -35,7 +35,7 @@ var ServiceDirectoryNamespaceIdentityFormat = gcpurls.Template[ServiceDirectoryN
 
 // +k8s:deepcopy-gen=false
 
-// ServiceDirectoryNamespaceIdentity is the identity of a GCP ServiceDirectoryNamespace resource.
+// ServiceDirectoryNamespaceIdentity is the identity of a Google Cloud ServiceDirectoryNamespace resource.
 type ServiceDirectoryNamespaceIdentity struct {
 	Project   string
 	Location  string

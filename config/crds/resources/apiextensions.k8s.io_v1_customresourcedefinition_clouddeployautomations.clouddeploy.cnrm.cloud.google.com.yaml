@@ -138,8 +138,8 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The GCP resource identifier. If not given, the metadata.name
-                  will be used.
+                description: The Google Cloud resource identifier. If not given, the
+                  metadata.name will be used.
                 type: string
               rules:
                 description: Required. List of Automation rules associated with the
@@ -443,7 +443,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the CloudDeployAutomation resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -455,7 +455,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   createTime:
                     description: Output only. Time at which the automation was created.

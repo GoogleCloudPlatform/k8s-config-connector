@@ -152,7 +152,8 @@ spec:
                   range of the subnet or network configured for this forwarding rule.
                 properties:
                   addressRef:
-                    description: ComputeAddressRef is a reference to a GCP ComputeAddress.
+                    description: ComputeAddressRef is a reference to a Google Cloud
+                      ComputeAddress.
                     oneOf:
                     - not:
                         required:

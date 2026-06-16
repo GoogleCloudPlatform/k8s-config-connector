@@ -35,7 +35,7 @@ var KMSKeyRingIdentityFormat = gcpurls.Template[KMSKeyRingIdentity]("cloudkms.go
 
 // +k8s:deepcopy-gen=false
 
-// KMSKeyRingIdentity is the identity of a GCP KMSKeyRing resource.
+// KMSKeyRingIdentity is the identity of a Google Cloud KMSKeyRing resource.
 type KMSKeyRingIdentity struct {
 	Project  string
 	Location string

@@ -32,7 +32,7 @@ var (
 
 var DialogflowGeneratorIdentityFormat = gcpurls.Template[DialogflowGeneratorIdentity]("dialogflow.googleapis.com", "projects/{project}/locations/{location}/generators/{generator}")
 
-// DialogflowGeneratorIdentity is the identity of a GCP DialogflowGenerator resource.
+// DialogflowGeneratorIdentity is the identity of a Google Cloud DialogflowGenerator resource.
 // +k8s:deepcopy-gen=false
 type DialogflowGeneratorIdentity struct {
 	Project   string

@@ -259,7 +259,7 @@ type Endpoint struct {
 	Name *string `json:"name,omitempty"`
 
 	// Aliases for this endpoint, these will be served by the same UrlMap as the
-	//  parent endpoint, and will be provisioned in the GCP stack for the Regional
+	//  parent endpoint, and will be provisioned in the Google Cloud stack for the Regional
 	//  Endpoints.
 	// +kcc:proto:field=google.api.Endpoint.aliases
 	Aliases []string `json:"aliases,omitempty"`

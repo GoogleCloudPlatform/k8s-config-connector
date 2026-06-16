@@ -345,7 +345,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   fleetMembership:
                     description: |-

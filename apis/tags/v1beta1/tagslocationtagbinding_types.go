@@ -51,14 +51,14 @@ type TagsLocationTagBindingStatus struct {
 	// The generated id for the TagBinding. This is a string of the form: tagBindings/{full-resource-name}/{tag-value-name}.
 	Name *string `json:"name,omitempty"`
 
-	// A unique specifier for the TagsLocationTagBinding resource in GCP.
+	// A unique specifier for the TagsLocationTagBinding resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	// ObservedState *TagsLocationTagBindingObservedState `json:"observedState,omitempty"`
 }
 
-// TagsLocationTagBindingObservedState is the state of the TagsLocationTagBinding resource as most recently observed in GCP.
+// TagsLocationTagBindingObservedState is the state of the TagsLocationTagBinding resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.resourcemanager.v3.TagBinding
 type TagsLocationTagBindingObservedState struct {
 	// Output only. The name of the TagBinding. This is a String of the form:

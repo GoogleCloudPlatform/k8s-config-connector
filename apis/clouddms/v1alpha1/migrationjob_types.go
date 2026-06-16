@@ -130,14 +130,14 @@ type CloudDMSMigrationJobStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the CloudDMSMigrationJob resource in GCP.
+	// A unique specifier for the CloudDMSMigrationJob resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *CloudDMSMigrationJobObservedState `json:"observedState,omitempty"`
 }
 
-// CloudDMSMigrationJobObservedState is the state of the CloudDMSMigrationJob resource as most recently observed in GCP.
+// CloudDMSMigrationJobObservedState is the state of the CloudDMSMigrationJob resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.MigrationJob
 type CloudDMSMigrationJobObservedState struct {
 }

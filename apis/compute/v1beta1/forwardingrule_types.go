@@ -112,7 +112,7 @@ type Target struct {
 	TargetVPNGatewayRef *refsv1beta1.ComputeTargetVPNGatewayRef `json:"targetVPNGatewayRef,omitempty"`
 }
 
-// MemorystoreInstanceServiceAttachment defines the resource reference to the GCP identifier
+// MemorystoreInstanceServiceAttachment defines the resource reference to the Google Cloud identifier
 // for the ServiceAttachment managed by the MemorystoreInstance pointed by the MemorystoreInstanceRef.
 // +k8s:deepcopy-gen=true
 type MemorystoreInstanceServiceAttachment struct {

@@ -230,7 +230,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the BigqueryReservationAssignment
-                  resource in GCP.
+                  resource in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -242,7 +242,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   state:
                     description: State of the assignment.
@@ -461,7 +461,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the BigqueryReservationAssignment
-                  resource in GCP.
+                  resource in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -473,7 +473,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   state:
                     description: State of the assignment.

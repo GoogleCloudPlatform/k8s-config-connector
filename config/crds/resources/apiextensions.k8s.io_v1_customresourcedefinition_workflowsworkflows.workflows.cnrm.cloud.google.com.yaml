@@ -231,7 +231,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the Workflow resource in GCP.
+                description: A unique specifier for the Workflow resource in Google
+                  Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -243,7 +244,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   createTime:
                     description: The timestamp for when the workflow was created.

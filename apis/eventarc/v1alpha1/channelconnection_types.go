@@ -49,14 +49,14 @@ type EventarcChannelConnectionStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the EventarcChannelConnection resource in GCP.
+	// A unique specifier for the EventarcChannelConnection resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *EventarcChannelConnectionObservedState `json:"observedState,omitempty"`
 }
 
-// EventarcChannelConnectionObservedState is the state of the EventarcChannelConnection resource as most recently observed in GCP.
+// EventarcChannelConnectionObservedState is the state of the EventarcChannelConnection resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.eventarc.v1.ChannelConnection
 type EventarcChannelConnectionObservedState struct {
 	// Output only. Server assigned ID of the resource.

@@ -69,14 +69,14 @@ type DialogflowGeneratorStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DialogflowGenerator resource in GCP.
+	// A unique specifier for the DialogflowGenerator resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DialogflowGeneratorObservedState `json:"observedState,omitempty"`
 }
 
-// DialogflowGeneratorObservedState is the state of the DialogflowGenerator resource as most recently observed in GCP.
+// DialogflowGeneratorObservedState is the state of the DialogflowGenerator resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.dialogflow.v2.Generator
 type DialogflowGeneratorObservedState struct {
 	// Output only. Creation time of this generator.

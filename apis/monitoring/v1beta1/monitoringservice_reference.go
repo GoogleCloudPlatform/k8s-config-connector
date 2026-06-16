@@ -27,7 +27,7 @@ import (
 
 var _ refs.Ref = &MonitoringServiceRef{}
 
-// MonitoringServiceRef is a reference to a GCP MonitoringService.
+// MonitoringServiceRef is a reference to a Google Cloud MonitoringService.
 type MonitoringServiceRef struct {
 	// A reference to an externally managed MonitoringService resource. Should be in the format "projects/{{projectID}}/services/{{serviceID}}".
 	External string `json:"external,omitempty"`

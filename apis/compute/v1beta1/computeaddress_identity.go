@@ -34,7 +34,7 @@ var (
 var ComputeGlobalAddressIdentityFormat = gcpurls.Template[ComputeAddressIdentity]("compute.googleapis.com", "projects/{project}/global/addresses/{address}")
 var ComputeRegionalAddressIdentityFormat = gcpurls.Template[ComputeAddressIdentity]("compute.googleapis.com", "projects/{project}/regions/{region}/addresses/{address}")
 
-// ComputeAddressIdentity is the identity of a GCP ComputeAddress resource.
+// ComputeAddressIdentity is the identity of a Google Cloud ComputeAddress resource.
 // +k8s:deepcopy-gen=false
 type ComputeAddressIdentity struct {
 	Project string

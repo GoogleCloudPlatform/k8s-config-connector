@@ -244,7 +244,7 @@ type StorageBucketStatus struct {
 	Url *string `json:"url,omitempty"`
 }
 
-// StorageBucketObservedState is the state of the StorageBucket resource as most recently observed in GCP.
+// StorageBucketObservedState is the state of the StorageBucket resource as most recently observed in Google Cloud.
 type StorageBucketObservedState struct {
 	/* The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy. */
 	SoftDeletePolicy *StorageBucketSoftDeletePolicyObservedState `json:"softDeletePolicy,omitempty"`

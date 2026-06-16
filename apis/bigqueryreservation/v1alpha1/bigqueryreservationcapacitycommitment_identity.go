@@ -32,7 +32,7 @@ var (
 
 var BigQueryReservationCapacityCommitmentIdentityFormat = gcpurls.Template[BigQueryReservationCapacityCommitmentIdentity]("bigqueryreservation.googleapis.com", "projects/{project}/locations/{location}/capacityCommitments/{capacityCommitment}")
 
-// BigQueryReservationCapacityCommitmentIdentity is the identity of a GCP BigQueryReservationCapacityCommitment resource.
+// BigQueryReservationCapacityCommitmentIdentity is the identity of a Google Cloud BigQueryReservationCapacityCommitment resource.
 // +k8s:deepcopy-gen=false
 type BigQueryReservationCapacityCommitmentIdentity struct {
 	Project            string

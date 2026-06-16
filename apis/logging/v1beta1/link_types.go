@@ -36,7 +36,7 @@ type LoggingLinkSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// NOTYET:  This field requires further investigation.
-	// KCC should not support creating 2 different KCC/GCP objects from the same controller.
+	// KCC should not support creating 2 different KCC/Google Cloud objects from the same controller.
 	//
 	// The information of a BigQuery Dataset. When a link is created, a BigQuery
 	//  dataset is created along with it, in the same project as the LogBucket it's
@@ -55,10 +55,10 @@ type LoggingLinkStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the LoggingLink resource in GCP.
+	// A unique specifier for the LoggingLink resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *LoggingLinkObservedState `json:"observedState,omitempty"`
 }
 

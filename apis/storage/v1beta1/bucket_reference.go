@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &StorageBucketRef{}
 
-// StorageBucketRef is a reference to a GCP StorageBucket.
+// StorageBucketRef is a reference to a Google Cloud StorageBucket.
 type StorageBucketRef struct {
 	// A reference to an externally managed StorageBucket resource.
 	// Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".

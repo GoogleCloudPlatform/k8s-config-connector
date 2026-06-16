@@ -34,7 +34,7 @@ var (
 var ComputeGlobalForwardingRuleIdentityFormat = gcpurls.Template[ComputeForwardingRuleIdentity]("compute.googleapis.com", "projects/{project}/global/forwardingRules/{forwardingrule}")
 var ComputeRegionalForwardingRuleIdentityFormat = gcpurls.Template[ComputeForwardingRuleIdentity]("compute.googleapis.com", "projects/{project}/regions/{region}/forwardingRules/{forwardingrule}")
 
-// ComputeForwardingRuleIdentity is the identity of a GCP ComputeForwardingRule resource.
+// ComputeForwardingRuleIdentity is the identity of a Google Cloud ComputeForwardingRule resource.
 // +k8s:deepcopy-gen=false
 type ComputeForwardingRuleIdentity struct {
 	Project        string

@@ -110,14 +110,14 @@ type SpannerInstanceConfigStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the SpannerInstanceConfig resource in GCP.
+	// A unique specifier for the SpannerInstanceConfig resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *SpannerInstanceConfigObservedState `json:"observedState,omitempty"`
 }
 
-// SpannerInstanceConfigObservedState is the state of the SpannerInstanceConfig resource as most recently observed in GCP.
+// SpannerInstanceConfigObservedState is the state of the SpannerInstanceConfig resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.spanner.admin.instance.v1.InstanceConfig
 type SpannerInstanceConfigObservedState struct {
 	// Output only. Whether this instance configuration is a Google-managed or

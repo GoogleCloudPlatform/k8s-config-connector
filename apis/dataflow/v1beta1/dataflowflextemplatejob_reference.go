@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &DataflowFlexTemplateJobRef{}
 
-// DataflowFlexTemplateJobRef is a reference to a GCP DataflowFlexTemplateJob.
+// DataflowFlexTemplateJobRef is a reference to a Google Cloud DataflowFlexTemplateJob.
 type DataflowFlexTemplateJobRef struct {
 	// A reference to an externally managed DataflowFlexTemplateJob resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}}".

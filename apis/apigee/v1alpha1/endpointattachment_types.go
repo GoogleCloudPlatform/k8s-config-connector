@@ -53,14 +53,14 @@ type ApigeeEndpointAttachmentStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ApigeeEndpointAttachment resource in GCP.
+	// A unique specifier for the ApigeeEndpointAttachment resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ApigeeEndpointAttachmentObservedState `json:"observedState,omitempty"`
 }
 
-// ApigeeEndpointAttachmentObservedState is the state of the ApigeeEndpointAttachment resource as most recently observed in GCP.
+// ApigeeEndpointAttachmentObservedState is the state of the ApigeeEndpointAttachment resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EndpointAttachment
 type ApigeeEndpointAttachmentObservedState struct {
 	// Output only. State of the endpoint attachment connection to the service attachment.

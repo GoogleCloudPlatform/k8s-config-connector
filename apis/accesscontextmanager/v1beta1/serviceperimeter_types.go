@@ -334,7 +334,7 @@ type AccessContextManagerServicePerimeterStatus struct {
 	// +kubebuilder:validation:Format=""
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the AccessContextManagerServicePerimeter resource in GCP.
+	// A unique specifier for the AccessContextManagerServicePerimeter resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* Time the AccessPolicy was created in UTC. */

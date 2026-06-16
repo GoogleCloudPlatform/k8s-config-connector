@@ -29,7 +29,7 @@ import (
 
 var _ refs.Ref = &ComputeAddressRef{}
 
-// ComputeAddressRef is a reference to a GCP ComputeAddress.
+// ComputeAddressRef is a reference to a Google Cloud ComputeAddress.
 type ComputeAddressRef struct {
 	// A reference to an externally managed ComputeAddress resource.
 	// Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}"

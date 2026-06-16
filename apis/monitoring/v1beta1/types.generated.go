@@ -299,17 +299,17 @@ type InternalChecker struct {
 	// +kcc:proto:field=google.monitoring.v3.InternalChecker.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// The [GCP VPC network](https://cloud.google.com/vpc/docs/vpc) where the
+	// The [Google Cloud VPC network](https://cloud.google.com/vpc/docs/vpc) where the
 	//  internal resource lives (ex: "default").
 	// +kcc:proto:field=google.monitoring.v3.InternalChecker.network
 	Network *string `json:"network,omitempty"`
 
-	// The GCP zone the Uptime check should egress from. Only respected for
+	// The Google Cloud zone the Uptime check should egress from. Only respected for
 	//  internal Uptime checks, where internal_network is specified.
 	// +kcc:proto:field=google.monitoring.v3.InternalChecker.gcp_zone
 	GcpZone *string `json:"gcpZone,omitempty"`
 
-	// The GCP project ID where the internal checker lives. Not necessary
+	// The Google Cloud project ID where the internal checker lives. Not necessary
 	//  the same as the Metrics Scope project.
 	// +kcc:proto:field=google.monitoring.v3.InternalChecker.peer_project_id
 	PeerProjectID *string `json:"peerProjectID,omitempty"`

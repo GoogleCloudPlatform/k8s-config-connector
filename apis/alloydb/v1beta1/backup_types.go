@@ -73,7 +73,7 @@ type AlloyDBBackupStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the AlloyDBBackup resource in GCP.
+	// A unique specifier for the AlloyDBBackup resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* If true, indicates that the service is actively updating the resource. This can happen due to user-triggered updates or system actions like failover or maintenance. */
@@ -93,7 +93,7 @@ type AlloyDBBackupStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-// AlloyDBBackupObservedState is the state of the AlloyDBBackup resource as most recently observed in GCP.
+// AlloyDBBackupObservedState is the state of the AlloyDBBackup resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Backup
 type AlloyDBBackupObservedState struct {
 }
