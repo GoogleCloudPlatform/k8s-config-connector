@@ -125,8 +125,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed cryptoKeyVersion.
-                      Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}/cryptoKeyVersions/{{version}}`.
+                    description: A reference to an externally managed KMSCryptoKeyVersion
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}/cryptoKeyVersions/{{cryptokeyversion}}".
                     type: string
                   name:
                     description: The name of a KMSCryptoKeyVersion resource.
@@ -593,8 +593,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed cryptoKeyVersion.
-                      Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}/cryptoKeyVersions/{{version}}`.
+                    description: A reference to an externally managed KMSCryptoKeyVersion
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}/cryptoKeyVersions/{{cryptokeyversion}}".
                     type: string
                   name:
                     description: The name of a KMSCryptoKeyVersion resource.
