@@ -48,6 +48,7 @@ go run . generate-types \
   --resource NetworkSecuritySACRealm:SACRealm \
   --resource NetworkSecuritySecurityProfile:SecurityProfile \
   --resource NetworkSecurityFirewallEndpointAssociation:FirewallEndpointAssociation \
+  --resource NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy \
   --proto-source-path ${PROTO_OUT}
 
 # Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)
@@ -56,5 +57,14 @@ go run . generate-types \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkSecurityPartnerSSERealm:PartnerSSERealm \
   --proto-source-path ${PROTO_OUT}
+
+# TODO(user): Uncomment the generate-mapper call once cloud.google.com/go/networksecurity/apiv1
+# is available in the KCC imported Google Go SDK. Currently, the SDK v0.16.0 only contains apiv1beta1
+# which lacks TlsInspectionPolicy. Running this will result in compilation errors due to missing package.
+# go run . generate-mapper \
+#   --service google.cloud.networksecurity.v1 \
+#   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
+#   --proto-source-path ${PROTO_OUT} \
+#   --multiversion
 
 cd ${REPO_ROOT}
