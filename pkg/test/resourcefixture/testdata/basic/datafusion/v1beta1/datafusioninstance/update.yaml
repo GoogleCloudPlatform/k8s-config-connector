@@ -20,7 +20,7 @@ metadata:
   labels:
     label-one: "value-two"
 spec:
-  description: A test Data Fusion instance.
+  description: An updated test Data Fusion instance.
   displayName: Test Data Fusion Instance
   type: BASIC
   location: us-central1
