@@ -86,7 +86,7 @@ type Reconciler struct {
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 }
 
-func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator, additionalPredicate predicate.Predicate) (k8s.SchemaReferenceUpdater, error) {
+func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator) (k8s.SchemaReferenceUpdater, error) {
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
@@ -103,9 +103,6 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 		},
 	}
 	predicateList := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
-	if additionalPredicate != nil {
-		predicateList = append(predicateList, additionalPredicate)
-	}
 	_, err = builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
@@ -169,7 +166,11 @@ func NewReconciler(mgr manager.Manager,
 	}, nil
 }
 
-func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
+func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
+	return r.DoReconcile(ctx, req)
+}
+
+func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
 
 	r.schemaRefMu.RLock()
 	defer r.schemaRefMu.RUnlock()

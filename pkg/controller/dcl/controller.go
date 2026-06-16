@@ -103,15 +103,11 @@ type Reconciler struct {
 }
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter,
-	dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator,
-	additionalPredicate predicate.Predicate) (k8s.SchemaReferenceUpdater, error) {
+	dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator) (k8s.SchemaReferenceUpdater, error) {
 	if jitterGenerator == nil {
 		return nil, fmt.Errorf("jitter generator not initialized")
 	}
 	predicates := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
-	if additionalPredicate != nil {
-		predicates = append(predicates, additionalPredicate)
-	}
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))

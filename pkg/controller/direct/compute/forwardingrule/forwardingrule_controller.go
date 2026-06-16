@@ -32,7 +32,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -42,30 +41,11 @@ import (
 const ctrlName = "forwardingrule-controller"
 
 func init() {
-	rg := &ForwardingRuleReconcileGate{}
-	registry.RegisterModelWithReconcileGate(krm.ComputeForwardingRuleGVK, NewForwardingRuleModel, rg)
+	registry.RegisterModel(krm.ComputeForwardingRuleGVK, NewForwardingRuleModel)
 }
 
 func NewForwardingRuleModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
 	return &forwardingRuleModel{config: config}, nil
-}
-
-type ForwardingRuleReconcileGate struct {
-	optIn kccpredicate.OptInToDirectReconciliation
-}
-
-var _ kccpredicate.ReconcileGate = &ForwardingRuleReconcileGate{}
-
-func (r *ForwardingRuleReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
-	if r.optIn.ShouldReconcile(o) {
-		return true
-	}
-	obj := &krm.ComputeForwardingRule{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
-		return false
-	}
-	// Run the direct reconciler only when spec.Target.GoogleAPIsBundle is specified
-	return obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIsBundle != nil
 }
 
 type forwardingRuleModel struct {

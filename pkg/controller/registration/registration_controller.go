@@ -33,15 +33,14 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
-	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/unmanageddetector"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -54,7 +53,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
-	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
@@ -128,6 +126,7 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 		defaulters:        rd.Defaulters,
 		jitterGenerator:   rd.JitterGen,
 		dependencyTracker: rd.DependencyTracker,
+		reconcilers:       make(map[schema.GroupVersionKind]*parent.Reconcilers),
 	}
 	c, err := crcontroller.New(opts.ControllerName, mgr,
 		crcontroller.Options{
@@ -158,6 +157,7 @@ type ReconcileRegistration struct {
 	defaulters        []k8s.Defaulter
 	jitterGenerator   jitter.Generator
 	dependencyTracker *gcpwatch.DependencyTracker
+	reconcilers       map[schema.GroupVersionKind]*parent.Reconcilers
 
 	mu sync.Mutex
 }
@@ -255,33 +255,6 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 	}
 
 	var schemaUpdater k8s.SchemaReferenceUpdater
-	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
-		groupKind := gvk.GroupKind()
-
-		model, err := registry.GetModel(groupKind)
-		if err != nil {
-			return nil, fmt.Errorf("error getting model for %v: %w", groupKind, err)
-		}
-
-		if err := directbase.AddController(r.mgr, gvk, model,
-			directbase.Deps{
-				JitterGenerator: r.jitterGenerator,
-				Defaulters:      r.defaulters,
-				// for iam controllers
-				IAMAdapterDeps: &directbase.IAMAdapterDeps{
-					KubeClient: r.Client,
-					ControllerDeps: &controller.Deps{
-						TFProvider:   r.provider,
-						TFLoader:     r.smLoader,
-						DCLConfig:    r.dclConfig,
-						DCLConverter: r.dclConverter,
-					},
-				},
-			}); err != nil {
-			return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
-		}
-		return schemaUpdater, nil
-	}
 
 	// Depending on which resource it is, we need to register a different controller.
 	switch gvk.Kind {
@@ -311,74 +284,54 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 			}
 		}
 
-		hasDirectController := registry.IsDirectByGK(gvk.GroupKind())
-		hasTerraformController := crd.Labels[crdgeneration.TF2CRDLabel] == "true"
-		hasDCLController := crd.Labels[k8s.DCL2CRDLabel] == "true"
-
-		var useDirectReconcilerPredicate predicate.Predicate
-		var useLegacyPredicate predicate.Predicate
-
-		// If we have a choice of controllers, construct predicates to choose between them
-		if hasDirectController && (hasTerraformController || hasDCLController) {
-			if reconcileGate := registry.GetReconcileGate(gvk.GroupKind()); reconcileGate != nil {
-				// If reconcile gate is enabled for this gvk, generate a controller-runtime predicate that will
-				// run the direct reconciler only when the reconcile gate returns true.
-				useDirectReconcilerPredicate = kccpredicate.NewReconcilePredicate(r.mgr.GetClient(), gvk, reconcileGate)
-				useLegacyPredicate = kccpredicate.NewInverseReconcilePredicate(r.mgr.GetClient(), gvk, reconcileGate)
-			} else {
-				logger.Error(fmt.Errorf("no predicate where we have multiple controllers"), "skipping direct controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
-				hasDirectController = false
-			}
-		}
-
-		// register controllers for direct CRDs
-		if hasDirectController {
-			model, err := registry.GetModel(gvk.GroupKind())
-			if err != nil {
-				return nil, err
-			}
-			deps := directbase.Deps{
-				Defaulters:         r.defaulters,
-				JitterGenerator:    r.jitterGenerator,
-				ReconcilePredicate: useDirectReconcilerPredicate,
-
-				// for iam controllers
-				IAMAdapterDeps: &directbase.IAMAdapterDeps{
-					KubeClient: r.Client,
-					ControllerDeps: &controller.Deps{
-						TFProvider:   r.provider,
-						TFLoader:     r.smLoader,
-						DCLConfig:    r.dclConfig,
-						DCLConverter: r.dclConverter,
-					},
-				},
-			}
-			if err := directbase.AddController(r.mgr, gvk, model, deps); err != nil {
-				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
-			}
-		}
-		// register controllers for dcl-based CRDs
-		if hasDCLController {
-			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters, r.jitterGenerator, useLegacyPredicate)
-			if err != nil {
-				return nil, fmt.Errorf("error adding dcl controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
-			}
-			return su, nil
-		}
-		// register controllers for tf-based CRDs
-		if hasTerraformController {
-			su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator, useLegacyPredicate)
-			if err != nil {
-				return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
-			}
-			return su, nil
-		}
-
-		if !hasDCLController && !hasTerraformController && !hasDirectController {
+		// register the parent controller for all supported resources.
+		if config, err := resourceconfig.LoadConfig().GetControllersForGVK(gvk); err != nil {
 			logger.Error(fmt.Errorf("unrecognized CRD: %v", crd.Spec.Names.Kind), "skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
 			return nil, nil
+		} else {
+			reconcilers := &parent.Reconcilers{}
+			var err error
+			for _, reconcilerType := range config.SupportedControllers {
+				switch reconcilerType {
+				case k8s.ReconcilerTypeTerraform:
+					reconcilers.TF, err = tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, nil, nil, r.defaulters, r.jitterGenerator)
+					if err != nil {
+						return nil, fmt.Errorf("error creating new terraform reconciler: %w", err)
+					}
+				case k8s.ReconcilerTypeDCL:
+					reconcilers.DCL, err = dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, nil, nil, r.defaulters, r.jitterGenerator)
+					if err != nil {
+						return nil, fmt.Errorf("error creating new dcl reconciler: %w", err)
+					}
+				case k8s.ReconcilerTypeDirect:
+					model, err := registry.GetModel(gvk.GroupKind())
+					if err != nil {
+						return nil, fmt.Errorf("error getting model for gvk %v: %w", gvk, err)
+					}
+					deps := directbase.Deps{
+						Defaulters:      r.defaulters,
+						JitterGenerator: r.jitterGenerator,
+						IAMAdapterDeps: &directbase.IAMAdapterDeps{
+							KubeClient: r.Client,
+							ControllerDeps: &controller.Deps{
+								TFProvider:   r.provider,
+								TFLoader:     r.smLoader,
+								DCLConfig:    r.dclConfig,
+								DCLConverter: r.dclConverter,
+							},
+						},
+					}
+					reconcilers.Direct, err = directbase.NewReconciler(r.mgr, nil, nil, gvk, model, deps)
+					if err != nil {
+						return nil, fmt.Errorf("error creating new direct reconciler: %w", err)
+					}
+				}
+			}
+			r.reconcilers[gvk] = reconcilers
+			if err := parent.Add(r.mgr, gvk, reconcilers.TF, reconcilers.DCL, reconcilers.Direct); err != nil {
+				return nil, fmt.Errorf("error adding parent controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
+			}
 		}
-
 	}
 	return schemaUpdater, nil
 }

@@ -28,12 +28,15 @@ import (
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/controller"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 	testmocks "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/mocks"
+	k8sreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	"github.com/go-logr/logr"
 	"github.com/google/go-cmp/cmp"
 	v1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/dynamic"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -1376,4 +1379,44 @@ func newConfigConnectorContextReconcilerWithCustomizationWatcher(m ctrl.Manager)
 			Log:         logr.Discard(),
 		})
 	return r
+}
+
+func TestControllerOverridesField(t *testing.T) {
+	t.Parallel()
+	ccc := &corev1beta1.ConfigConnectorContext{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
+			Namespace: "foo-ns",
+		},
+		Spec: corev1beta1.ConfigConnectorContextSpec{
+			Experiments: &corev1beta1.Experiments{
+				ControllerOverrides: map[string]k8sreconciler.ReconcilerType{
+					"BigQueryDataset.bigquery.cnrm.cloud.google.com":              "direct",    // default is terraform
+					"AlloyDBClusters.alloydb.cnrm.cloud.google.com":               "direct",    // default is terraform
+					"CloudIdentityGroups.cloudidentity.cnrm.cloud.google.com":     "terraform", // default is direct
+					"SQLInstances.sql.cnrm.cloud.google.com":                      "terraform", // default is direct
+					"CloudIdentityMembership.cloudidentity.cnrm.cloud.google.com": "dcl",       // default is direct
+					"UnknownResource.example.cnrm.cloud.google.com":               "direct",    // invalid resource
+					"AlloyDBInstance.alloydb.cnrm.cloud.google.com":               "unknown",   // invalid controller type
+					"example.cnrm.cloud.google.com":                               "unknown",   // invalid resource and invalid controller
+					"SpannerInstance.spanner.cnrm.cloud.google.com":               "terraform", // default is terraform
+					"GKEHubFeature.gkehub.cnrm.cloud.google.com":                  "dcl",       // default is dcl
+					"ComputeInstance.compute.cnrm.cloud.google.com":               "direct",    // direct is not supported for this resource
+				},
+			},
+		},
+	}
+
+	unstructuredCCC, err := runtime.DefaultUnstructuredConverter.ToUnstructured(ccc)
+	if err != nil {
+		t.Fatalf("error converting to unstructured: %v", err)
+	}
+
+	_, found, err := unstructured.NestedMap(unstructuredCCC, "spec", "experiments", "controllerOverrides")
+	if err != nil {
+		t.Fatalf("error getting nested map: %v", err)
+	}
+	if !found {
+		t.Fatalf("field .spec.experiments.controllerOverrides not found in unstructured object")
+	}
 }
