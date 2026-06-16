@@ -476,15 +476,9 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 
 	old, _, _ := unstructured.NestedMap(u.Object, "status")
 	if old != nil {
-		if val, ok := old["conditions"]; ok {
-			status["conditions"] = val
-		}
-		if val, ok := old["observedGeneration"]; ok {
-			status["observedGeneration"] = val
-		}
-		if val, ok := old["externalRef"]; ok {
-			status["externalRef"] = val
-		}
+		status["conditions"] = old["conditions"]
+		status["observedGeneration"] = old["observedGeneration"]
+		status["externalRef"] = old["externalRef"]
 	}
 
 	u.Object["status"] = status
