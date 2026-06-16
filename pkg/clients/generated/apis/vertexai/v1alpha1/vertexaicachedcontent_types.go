@@ -494,7 +494,7 @@ type VertexAICachedContentSpec struct {
 
 	/* Immutable. The name of the `Model` to use for cached content. Currently, only the published Gemini base models are supported, in form of projects/{PROJECT}/locations/{LOCATION}/publishers/google/models/{MODEL} */
 	// +optional
-	Model *string `json:"model,omitempty"`
+	ModelRef *v1alpha1.ResourceRef `json:"modelRef,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`

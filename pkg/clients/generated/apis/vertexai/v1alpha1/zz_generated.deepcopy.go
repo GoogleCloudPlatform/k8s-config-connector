@@ -2011,9 +2011,9 @@ func (in *VertexAICachedContentSpec) DeepCopyInto(out *VertexAICachedContentSpec
 		*out = new(string)
 		**out = **in
 	}
-	if in.Model != nil {
-		in, out := &in.Model, &out.Model
-		*out = new(string)
+	if in.ModelRef != nil {
+		in, out := &in.ModelRef, &out.ModelRef
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	out.ProjectRef = in.ProjectRef
