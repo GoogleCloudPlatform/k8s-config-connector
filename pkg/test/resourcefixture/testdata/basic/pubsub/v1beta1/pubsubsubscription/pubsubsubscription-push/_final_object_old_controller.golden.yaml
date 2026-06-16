@@ -4,25 +4,17 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: pubsubsubscription-${uniqueId}
   namespace: ${uniqueId}
 spec:
   ackDeadlineSeconds: 300
-  cloudStorageConfig:
-    avroConfig:
-      writeMetadata: false
-    bucketRef:
-      name: storagebucket-2-${uniqueId}
-    filenamePrefix: test-prefix-updated
-    filenameSuffix: test-suffix-updated
-    maxBytes: 102400
-    maxDuration: 400s
   deadLetterPolicy:
     deadLetterTopicRef:
       name: pubsubtopic-${uniqueId}
@@ -32,6 +24,17 @@ spec:
     ttl: 1296000s
   filter: attributes.type = "key"
   messageRetentionDuration: 302400s
+  pushConfig:
+    attributes:
+      new-attr: new-val
+      x-goog-version: v1beta2
+    noWrapper:
+      writeMetadata: false
+    oidcToken:
+      audience: https://updated.example.com/push-audience
+      serviceAccountEmail: gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com
+    pushEndpoint: https://updated.example.com/push
+  resourceID: pubsubsubscription-${uniqueId}
   retainAckedMessages: false
   retryPolicy:
     maximumBackoff: 300s
@@ -45,4 +48,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 2
+  observedGeneration: 3

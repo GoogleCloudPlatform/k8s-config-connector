@@ -4,24 +4,25 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
-    label-one: value-two
-  name: pubsubsubscription-${uniqueId}
+    label-one: value-one
+    newkey: newval
+  name: pubsubsubscription-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  bigqueryConfig:
-    dropUnknownFields: false
-    tableRef:
-      name: bigquerytable-2-${uniqueId}
-    useTopicSchema: false
-    writeMetadata: false
+  ackDeadlineSeconds: 20
+  enableExactlyOnceDelivery: true
+  messageRetentionDuration: 86400s
+  resourceID: pubsubsubscription-sample-${uniqueId}
+  retainAckedMessages: false
   topicRef:
-    name: pubsubtopic-${uniqueId}
+    name: pubsubtopic-sample-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -29,4 +30,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 2
+  observedGeneration: 3

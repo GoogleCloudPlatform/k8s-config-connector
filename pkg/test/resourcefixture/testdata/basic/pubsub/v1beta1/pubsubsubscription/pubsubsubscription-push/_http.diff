@@ -1,0 +1,78 @@
+239c239
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+262c262
+< PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+280a281
+>   "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+281a283,285
+>     "attributes": {
+>       "x-goog-version": "v1"
+>     },
+344c348
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+350c354
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+373c377
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+418c422
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+424c428
+< PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json&updateMask=pushConfig%2CackDeadlineSeconds%2CmessageRetentionDuration%2CretainAckedMessages%2CexpirationPolicy%2CdeadLetterPolicy%2CretryPolicy
+---
+> PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+433a438
+>     "enableMessageOrdering": true,
+436a442
+>     "filter": "attributes.type = \"key\"",
+441a448
+>     "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+444,447c451,452
+<         "new-attr": "new-val"
+<       },
+<       "noWrapper": {
+<         "writeMetadata": false
+---
+>         "new-attr": "new-val",
+>         "x-goog-version": "v1beta2"
+448a454
+>       "noWrapper": {},
+458,459c464,467
+<     }
+<   }
+---
+>     },
+>     "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+>   },
+>   "updateMask": "ackDeadlineSeconds,deadLetterPolicy,expirationPolicy,messageRetentionDuration,pushConfig,retainAckedMessages,retryPolicy"
+492c500
+<       "x-goog-version": "v1"
+---
+>       "x-goog-version": "v1beta2"
+505c513
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+511c519
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+553c561
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+559c567
+< DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
