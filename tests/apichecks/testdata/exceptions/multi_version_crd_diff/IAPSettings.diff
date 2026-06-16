@@ -1,0 +1,350 @@
+--- a/v1alpha1
++++ b/v1beta1
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		"apiVersion": {Description: "APIVersion defines the versioned schema of this representation o"..., Type: "string"},
+  		"kind":       {Description: "Kind is a string value representing the REST resource this objec"..., Type: "string"},
+  		"metadata":   {Type: "object"},
+  		"spec": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				"accessSettings": {
+  					... // 26 identical fields
+  					AnyOf: nil,
+  					Not:   nil,
+  					Properties: map[string]v1.JSONSchemaProps{
+  						"allowedDomainsSettings": {
+  							ID:     "",
+  							Schema: "",
+  							Ref:    nil,
+  							Description: strings.Join({
++ 								"Optional. ",
+  								"Settings to configure and enable allowed domains.",
+  							}, ""),
+  							Type:   "object",
+  							Format: "",
+  							... // 20 identical fields
+  							AnyOf: nil,
+  							Not:   nil,
+  							Properties: map[string]v1.JSONSchemaProps{
+  								"domains": {
+  									ID:          "",
+  									Schema:      "",
+  									Ref:         nil,
+- 									Description: "List of trusted domains.",
++ 									Description: "Optional. List of trusted domains.",
+  									Type:        "array",
+  									Format:      "",
+  									... // 38 identical fields
+  								},
+  								"enable": {
+  									ID:     "",
+  									Schema: "",
+  									Ref:    nil,
+  									Description: strings.Join({
++ 										"Optional. ",
+  										"Configuration for customers to opt in for the feature.",
+  									}, ""),
+  									Type:   "boolean",
+  									Format: "",
+  									... // 38 identical fields
+  								},
+  							},
+  							AdditionalProperties: nil,
+  							PatternProperties:    nil,
+  							... // 13 identical fields
+  						},
+  						"corsSettings": {
+  							ID:     "",
+  							Schema: "",
+  							Ref:    nil,
+  							Description: strings.Join({
++ 								"Optional. ",
+  								"Configuration to allow cross-origin requests via IAP.",
+  							}, ""),
+  							Type:   "object",
+  							Format: "",
+  							... // 20 identical fields
+  							AnyOf: nil,
+  							Not:   nil,
+  							Properties: map[string]v1.JSONSchemaProps{
+  								"allowHTTPOptions": {
+  									ID:     "",
+  									Schema: "",
+  									Ref:    nil,
+  									Description: strings.Join({
+  										"Configuration to allow HTTP ",
++ 										"`",
+  										"OPTIONS",
++ 										"`",
+  										" calls to skip",
++ 										" authentication and",
+  										" authorization. If undefined, IAP will not apply any special log",
+  										"ic to ",
++ 										"`",
+  										"OPTIONS",
++ 										"`",
+  										" requests.",
+  									}, ""),
+  									Type:   "boolean",
+  									Format: "",
+  									... // 38 identical fields
+  								},
+  							},
+  							AdditionalProperties: nil,
+  							PatternProperties:    nil,
+  							... // 13 identical fields
+  						},
+  						"gcipSettings": {
+  							ID:     "",
+  							Schema: "",
+  							Ref:    nil,
+  							Description: strings.Join({
++ 								"Optional. ",
+  								"GCIP claims and endpoint configurations for 3p identity provider",
+  								"s.",
+  							}, ""),
+  							Type:   "object",
+  							Format: "",
+  							... // 38 identical fields
+  						},
++ 						"identitySources": {
++ 							Description: "Optional. Identity sources that IAP can use to authenticate the end user. Only one identity source can be configured.",
++ 							Type:        "array",
++ 							Items:       s"&JSONSchemaPropsOrArray{Schema:&JSONSchemaProps{ID:,Schema:,Ref:nil,Description:,Type:string,Format:,Title:,Default:nil,Maximum:"...,
++ 						},
+  						"oauthSettings": {
+  							ID:     "",
+  							Schema: "",
+  							Ref:    nil,
+  							Description: strings.Join({
++ 								"Optional. ",
+  								"Settings to configure IAP's OAuth behavior.",
+  							}, ""),
+  							Type:   "object",
+  							Format: "",
+  							... // 20 identical fields
+  							AnyOf: nil,
+  							Not:   nil,
+  							Properties: map[string]v1.JSONSchemaProps{
+  								"loginHint": {Description: "Domain hint to send as hd=? parameter in OAuth request flow. Ena"..., Type: "string"},
+  								"programmaticClients": {
+  									ID:     "",
+  									Schema: "",
+  									Ref:    nil,
+  									Description: strings.Join({
+- 										"List of OAuth client IDs allowed to programmatically authenticat",
+- 										"e with IAP",
++ 										"Optional. List of client ids allowed to use IAP programmatically",
+  										".",
+  									}, ""),
+  									Type:   "array",
+  									Format: "",
+  									... // 38 identical fields
+  								},
+  							},
+  							AdditionalProperties: nil,
+  							PatternProperties:    nil,
+  							... // 13 identical fields
+  						},
+  						"reauthSettings": {
+  							ID:     "",
+  							Schema: "",
+  							Ref:    nil,
+  							Description: strings.Join({
++ 								"Optional. ",
+  								"Settings to configure reauthentication policies in IAP.",
+  							}, ""),
+  							Type:   "object",
+  							Format: "",
+  							... // 20 identical fields
+  							AnyOf: nil,
+  							Not:   nil,
+  							Properties: map[string]v1.JSONSchemaProps{
+  								"maxAge": {
+  									ID:     "",
+  									Schema: "",
+  									Ref:    nil,
+  									Description: strings.Join({
++ 										"Optional. ",
+  										"Reauth session lifetime, how long before a user has to reauthent",
+  										"icate again.",
+  									}, ""),
+  									Type:   "string",
+  									Format: "",
+  									... // 38 identical fields
+  								},
+  								"method": {
+  									ID:          "",
+  									Schema:      "",
+  									Ref:         nil,
+- 									Description: "Reauth method requested.",
++ 									Description: "Optional. Reauth method requested.",
+  									Type:        "string",
+  									Format:      "",
+  									... // 38 identical fields
+  								},
+  								"policyType": {
+  									ID:     "",
+  									Schema: "",
+  									Ref:    nil,
+  									Description: strings.Join({
++ 										"Optional. ",
+  										"How IAP determines the effective policy in cases of hierarchi",
++ 										"c",
+  										"al policies. Policies are merged from higher in the hierarchy to",
+  										" lower in the hierarchy.",
+  									}, ""),
+  									Type:   "string",
+  									Format: "",
+  									... // 38 identical fields
+  								},
+  							},
+  							AdditionalProperties: nil,
+  							PatternProperties:    nil,
+  							... // 13 identical fields
+  						},
++ 						"workforceIdentitySettings": {
++ 							Description: "Optional. Settings to configure the workforce identity federation, including workforce pools and OAuth 2.0 settings.",
++ 							Type:        "object",
++ 							Properties: map[string]v1.JSONSchemaProps{
++ 								"oauth2": {
++ 									Description: "OAuth 2.0 settings for IAP to pe"...,
++ 									Type:        "object",
++ 									Properties:  map[string]v1.JSONSchemaProps{...},
++ 								},
++ 								"workforcePools": {
++ 									Description: "The workforce pool resources. On"...,
++ 									Type:        "array",
++ 									Items:       s"&JSONSchemaPropsOrArray{Schema:&"...,
++ 								},
++ 							},
++ 						},
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
+  				"appEngineRef": {Description: "Project-wide App Engine service settings", Type: "object", Required: {"applicationRef", "projectRef"}, Properties: {"applicationRef": {Type: "object", Properties: {"external": {Description: "Format: projects/{projects_id}/iap_web/appengine-{app_id}", Type: "string"}}}, "projectRef": {Description: "The Project that this resource belongs to.", Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The `projectID` field of a project, when not managed by Config C"..., Type: "string"}, "kind": {Description: "The kind of the Project resource; optional but must be `Project`"..., Type: "string"}, "name": {Description: "The `name` field of a `Project` resource.", Type: "string"}, "namespace": {Description: "The `namespace` field of a `Project` resource.", Type: "string"}}, ...}, "serviceRef": {Description: "Optional. If specified, settings apply to the service", Type: "object", Properties: {"external": {Description: "Format: projects/{projects_id}/iap_web/appengine-{app_id}/servic"..., Type: "string"}}}, "versionRef": {Description: "Optional. If specified, settings apply to the version", Type: "object", Properties: {"external": {Description: "Format: projects/{projects_id}/iap_web/appengine-{app_id}/servic"..., Type: "string"}}}}, ...},
+  				"applicationSettings": {
+  					... // 26 identical fields
+  					AnyOf: nil,
+  					Not:   nil,
+  					Properties: map[string]v1.JSONSchemaProps{
+  						"accessDeniedPageSettings": {
+  							ID:     "",
+  							Schema: "",
+  							Ref:    nil,
+  							Description: strings.Join({
++ 								"Optional. ",
+  								"Customization for Access Denied page.",
+  							}, ""),
+  							Type:   "object",
+  							Format: "",
+  							... // 38 identical fields
+  						},
+  						"attributePropagationSettings": {
+  							ID:     "",
+  							Schema: "",
+  							Ref:    nil,
+  							Description: strings.Join({
++ 								"Optional. ",
+  								"Settings to configure attribute propagation.",
+  							}, ""),
+  							Type:   "object",
+  							Format: "",
+  							... // 20 identical fields
+  							AnyOf: nil,
+  							Not:   nil,
+  							Properties: map[string]v1.JSONSchemaProps{
+  								"enable": {
+  									ID:     "",
+  									Schema: "",
+  									Ref:    nil,
+  									Description: strings.Join({
++ 										"Optional. ",
+  										"Whether the provided attribute propagation settings should be ev",
+  										"aluated on user requests. If set to true, attributes returned fr",
+  										... // 67 identical bytes
+  									}, ""),
+  									Type:   "boolean",
+  									Format: "",
+  									... // 38 identical fields
+  								},
+  								"expression": {
+  									ID:     "",
+  									Schema: "",
+  									Ref:    nil,
+  									Description: strings.Join({
++ 										"Optional. ",
+  										"Raw string CEL expression. Must return a list of attributes. A",
+- 										" maximum of\n",
++ 										"\n maximum of",
+  										" 45 attributes can be selected. Expressions can select different",
+- 										" attribute\n",
++ 										"\n attribute",
+  										" types from `attributes`: `attributes.saml_attributes`,\n `attrib",
+  										"utes.iap_attributes`. The following functions are supported:\n\n  ",
+  										... // 1012 identical bytes
+  									}, ""),
+  									Type:   "string",
+  									Format: "",
+  									... // 38 identical fields
+  								},
+  								"outputCredentials": {
+  									ID:     "",
+  									Schema: "",
+  									Ref:    nil,
+  									Description: strings.Join({
++ 										"Optional. ",
+  										"Which output credentials attributes selected by the CEL expressi",
+  										"on should be propagated in. All attributes will be fully duplica",
+  										"ted in each selected output credential.",
+  									}, ""),
+  									Type:   "array",
+  									Format: "",
+  									... // 38 identical fields
+  								},
+  							},
+  							AdditionalProperties: nil,
+  							PatternProperties:    nil,
+  							... // 13 identical fields
+  						},
+  						"cookieDomain": {Description: "The Domain value to set for cookies generated by IAP. This value"..., Type: "string"},
+  						"csmSettings": {
+  							ID:     "",
+  							Schema: "",
+  							Ref:    nil,
+  							Description: strings.Join({
++ 								"Optional. ",
+  								"Settings to configure IAP's behavior for a service mesh.",
+  							}, ""),
+  							Type:   "object",
+  							Format: "",
+  							... // 38 identical fields
+  						},
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
+  				"computeServiceRef": {Description: "Project-wide Compute service settings", Type: "object", Required: {"projectRef"}, Properties: {"projectRef": {Description: "The Project that this resource belongs to.", Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The `projectID` field of a project, when not managed by Config C"..., Type: "string"}, "kind": {Description: "The kind of the Project resource; optional but must be `Project`"..., Type: "string"}, "name": {Description: "The `name` field of a `Project` resource.", Type: "string"}, "namespace": {Description: "The `namespace` field of a `Project` resource.", Type: "string"}}, ...}, "region": {Description: "Optional. If specified, settings apply to the region", Type: "string"}, "serviceRef": {Description: "Optional. If specified, settings apply to the service", Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The value of an externally managed ComputeBackendService resource.", Type: "string"}, "name": {Description: "The name of a ComputeBackendService resource.", Type: "string"}, "namespace": {Description: "The namespace of a ComputeBackendService resource.", Type: "string"}}, ...}}, ...},
+  				"folderRef":         {Description: "Folder-level settings", Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The 'name' field of a folder, when not managed by Config Connect"..., Type: "string"}, "name": {Description: "The 'name' field of a 'Folder' resource. This field must be set "..., Type: "string"}, "namespace": {Description: "The 'namespace' field of a 'Folder' resource. If unset, the name"..., Type: "string"}}, ...},
+  				... // 4 identical entries
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  		"status": {Description: "IAPSettingsStatus defines the config connector machine state of "..., Type: "object", Properties: {"conditions": {Description: "Conditions represent the latest available observations of the ob"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}}, "externalRef": {Description: "A unique specifier for the IAPSettings resource in GCP.", Type: "string"}, "observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer", Format: "int64"}}},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }
+
