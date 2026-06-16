@@ -1056,6 +1056,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com":        true, // spec.cloudResource is an empty object
 		"bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com":                 true, // status.observedState is an empty object
 		"bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com":        true, // spec.scheduleOptionsV2.manualSchedule is an empty object
+		"bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com":   true, // spec.tasks[*].translationTaskDetails.teradataOptions is an empty object
 		"bigquerytables.bigquery.cnrm.cloud.google.com":                                 true, // status.observedState is an empty object
 		"bigtableauthorizedviews.bigtable.cnrm.cloud.google.com":                        true, // status.observedState is an empty object
 		"bigtablelogicalviews.bigtable.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
@@ -1064,6 +1065,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com":              true, // spec.rolloutStrategy.allAtOnce is an empty object
 		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                          true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
 		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                       true, // status.observedState is an empty object
+		"dataformfolders.dataform.cnrm.cloud.google.com":                                true, // status.observedState is an empty object
 		"dataformrepositories.dataform.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
 		"dataprocjobs.dataproc.cnrm.cloud.google.com":                                   true, // spec.pysparkJob.loggingConfig is an empty object
 		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                 true, // spec.staticServiceIPConnectivity is an empty object

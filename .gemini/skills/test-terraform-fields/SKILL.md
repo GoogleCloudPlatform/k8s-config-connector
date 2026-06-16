@@ -19,7 +19,7 @@ A complete test fixture directory contains:
 - **`update.yaml` (optional)**: The KRM resource definition with updates applied after initial creation.
 - **`_http.log`**: Golden HTTP/gRPC request/response traffic log generated during E2E reconciliation.
 - **`_generated_object_[testname].golden.yaml`**: Golden file representing the final KRM object status/spec in the Kube API server.
-- **`_generated_export_[testname].golden` (optional)**: Golden exported KRM representation.
+- **`_exported.yaml` (optional)**: Golden exported KRM representation.
 
 ---
 
@@ -232,7 +232,7 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
      ```
 8. **CI/CD & Golden File Traps (Gotchas)**:
    - **Accidental Binary Profile Artifacts (`heap.prof`)**: When running recorder or memory profile footprint tests (e.g., `TestProfileRecorderFootprint`), binary profile outputs like `heap.prof` may be written to the test directory (`cmd/recorder/pprof/.../heap.prof`). Always ensure these binary files are deleted and never committed to git.
-   - **Selective Presubmit Harness & `WRITE_GOLDEN_OUTPUT=1` Trap**: Running specialized presubmit subsets (e.g., `test-pause`) with `WRITE_GOLDEN_OUTPUT=1` can inadvertently delete golden files belonging to skipped phases (e.g., `_generated_export_*.golden`). Ensure you only regenerate golden files using the appropriate comprehensive test scope, or inspect git diffs to revert unintended deletions.
+   - **Selective Presubmit Harness & `WRITE_GOLDEN_OUTPUT=1` Trap**: Running specialized presubmit subsets (e.g., `test-pause`) with `WRITE_GOLDEN_OUTPUT=1` can inadvertently delete golden files belonging to skipped phases (e.g., `_exported.yaml`). Ensure you only regenerate golden files using the appropriate comprehensive test scope, or inspect git diffs to revert unintended deletions.
 
 
 

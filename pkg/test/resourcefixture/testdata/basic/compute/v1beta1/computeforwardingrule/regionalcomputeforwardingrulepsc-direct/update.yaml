@@ -21,7 +21,7 @@ metadata:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: computeforwardingrule-${uniqueId}
 spec:
-  description: "A VPC private service connect forwarding rule"
+  description: "An updated VPC private service connect forwarding rule"
   target:
     serviceAttachmentRef:
       name: computeserviceattachment-${uniqueId}

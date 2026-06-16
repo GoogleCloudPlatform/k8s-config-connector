@@ -20,4 +20,4 @@ spec:
   template:
     template:
       containers:
-      - image: us-docker.pkg.dev/cloudrun/container/hello
+      - image: us-docker.pkg.dev/cloudrun/container/hello:latest

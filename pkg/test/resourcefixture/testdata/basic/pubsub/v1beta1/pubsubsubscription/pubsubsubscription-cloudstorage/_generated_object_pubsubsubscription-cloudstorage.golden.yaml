@@ -4,11 +4,10 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: pubsubsubscription-${uniqueId}
@@ -33,7 +32,6 @@ spec:
     ttl: 1296000s
   filter: attributes.type = "key"
   messageRetentionDuration: 302400s
-  resourceID: pubsubsubscription-${uniqueId}
   retainAckedMessages: false
   retryPolicy:
     maximumBackoff: 300s
@@ -47,4 +45,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 3
+  observedGeneration: 2

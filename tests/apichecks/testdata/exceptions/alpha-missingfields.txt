@@ -468,6 +468,10 @@
 [missing_field] crd=bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.view.datasetId" is not set in unstructured objects
 [missing_field] crd=bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.view.projectId" is not set in unstructured objects
 [missing_field] crd=bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.view.tableId" is not set in unstructured objects
+[missing_field] crd=bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.tasks" is not set in unstructured objects
 [missing_field] crd=bigqueryreservationcapacitycommitments.bigqueryreservation.cnrm.cloud.google.com version=v1alpha1: field ".spec.enforceSingleAdminProjectPerOrg" is not set in unstructured objects
 [missing_field] crd=bigqueryreservationcapacitycommitments.bigqueryreservation.cnrm.cloud.google.com version=v1alpha1: field ".spec.renewalPlan" is not set in unstructured objects
 [missing_field] crd=bigtableclusters.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.clusterConfig.clusterAutoscalingConfig.autoscalingLimits.maxServeNodes" is not set in unstructured objects
@@ -1290,6 +1294,8 @@
 [missing_field] crd=datacatalogentrygroups.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.transferredToDataplex" is not set in unstructured objects
 [missing_field] crd=datacatalogtags.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.column" is not set in unstructured objects
 [missing_field] crd=datacatalogtagtemplates.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.isPubliclyReadable" is not set in unstructured objects
+[missing_field] crd=dataformfolders.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=dataformfolders.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=datalabelingannotationspecsets.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotationSpecs[].description" is not set in unstructured objects
 [missing_field] crd=datalabelingannotationspecsets.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotationSpecs[].displayName" is not set in unstructured objects
 [missing_field] crd=datalabelingannotationspecsets.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
@@ -1778,6 +1784,10 @@
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.supportedLanguageCodes[]" is not set in unstructured objects
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.tier" is not set in unstructured objects
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone" is not set in unstructured objects
+[missing_field] crd=dialogflowconversationdatasets.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=dialogflowconversationdatasets.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=dialogflowconversationdatasets.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=dialogflowconversationdatasets.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowcxagents.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.avatarUri" is not set in unstructured objects
 [missing_field] crd=dialogflowcxagents.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultLanguageCode" is not set in unstructured objects
 [missing_field] crd=dialogflowcxagents.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
@@ -2879,6 +2889,16 @@
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.bigQuerySource.inputURI" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.dense" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.entityIDColumns[]" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.staticDataSource" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.timeSeries.timestampColumn" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAgentType" is not set in unstructured objects
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.enablePrivateServiceConnect" is not set in unstructured objects
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.projectAllowlist[]" is not set in unstructured objects
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.pscAutomationConfigs[].networkRef" is not set; neither 'external' nor 'name' are set

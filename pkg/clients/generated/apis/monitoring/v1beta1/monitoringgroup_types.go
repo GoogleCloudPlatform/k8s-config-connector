@@ -49,6 +49,7 @@ type MonitoringGroupSpec struct {
 	// +optional
 	IsCluster *bool `json:"isCluster,omitempty"`
 
+	/* MonitoringGroupRef is a reference to a GCP MonitoringGroup. */
 	// +optional
 	ParentRef *v1alpha1.ResourceRef `json:"parentRef,omitempty"`
 

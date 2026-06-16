@@ -21,7 +21,7 @@ metadata:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: rule${uniqueId}
 spec:
-  description: "A global forwarding rule"
+  description: "An updated global forwarding rule"
   location: global
   target:
     # a supported Google APIs bundle (global-only)

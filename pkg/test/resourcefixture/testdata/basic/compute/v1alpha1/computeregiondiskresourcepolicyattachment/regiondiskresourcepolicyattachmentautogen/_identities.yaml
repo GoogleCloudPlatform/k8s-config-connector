@@ -12,7 +12,7 @@
   name: computedisk-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/snapshots/computesnapshot${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeSnapshot
   name: computesnapshot-${uniqueId}

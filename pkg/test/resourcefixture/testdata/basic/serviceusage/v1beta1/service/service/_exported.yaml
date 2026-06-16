@@ -4,5 +4,5 @@ metadata:
   name: runtimeconfig.googleapis.com
 spec:
   projectRef:
-    external: project-${uniqueId}
+    external: projects/project-${uniqueId}
   resourceID: runtimeconfig.googleapis.com

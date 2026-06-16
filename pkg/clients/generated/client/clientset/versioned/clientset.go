@@ -57,6 +57,7 @@ import (
 	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1beta1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1"
+	bigquerymigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerymigration/v1alpha1"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1alpha1"
 	bigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1beta1"
 	bigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1alpha1"
@@ -97,6 +98,7 @@ import (
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
+	dataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1alpha1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
 	datalabelingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalabeling/v1alpha1"
@@ -246,6 +248,7 @@ type Interface interface {
 	BigqueryconnectionV1beta1() bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Interface
 	BigquerydatapolicyV1alpha1() bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Interface
 	BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Interface
+	BigquerymigrationV1alpha1() bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Interface
 	BigqueryreservationV1alpha1() bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Interface
 	BigqueryreservationV1beta1() bigqueryreservationv1beta1.BigqueryreservationV1beta1Interface
 	BigtableV1alpha1() bigtablev1alpha1.BigtableV1alpha1Interface
@@ -286,6 +289,7 @@ type Interface interface {
 	DatacatalogV1alpha1() datacatalogv1alpha1.DatacatalogV1alpha1Interface
 	DatacatalogV1beta1() datacatalogv1beta1.DatacatalogV1beta1Interface
 	DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface
+	DataformV1alpha1() dataformv1alpha1.DataformV1alpha1Interface
 	DataformV1beta1() dataformv1beta1.DataformV1beta1Interface
 	DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface
 	DatalabelingV1alpha1() datalabelingv1alpha1.DatalabelingV1alpha1Interface
@@ -433,6 +437,7 @@ type Clientset struct {
 	bigqueryconnectionV1beta1       *bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Client
 	bigquerydatapolicyV1alpha1      *bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Client
 	bigquerydatatransferV1beta1     *bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Client
+	bigquerymigrationV1alpha1       *bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Client
 	bigqueryreservationV1alpha1     *bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Client
 	bigqueryreservationV1beta1      *bigqueryreservationv1beta1.BigqueryreservationV1beta1Client
 	bigtableV1alpha1                *bigtablev1alpha1.BigtableV1alpha1Client
@@ -473,6 +478,7 @@ type Clientset struct {
 	datacatalogV1alpha1             *datacatalogv1alpha1.DatacatalogV1alpha1Client
 	datacatalogV1beta1              *datacatalogv1beta1.DatacatalogV1beta1Client
 	dataflowV1beta1                 *dataflowv1beta1.DataflowV1beta1Client
+	dataformV1alpha1                *dataformv1alpha1.DataformV1alpha1Client
 	dataformV1beta1                 *dataformv1beta1.DataformV1beta1Client
 	datafusionV1beta1               *datafusionv1beta1.DatafusionV1beta1Client
 	datalabelingV1alpha1            *datalabelingv1alpha1.DatalabelingV1alpha1Client
@@ -745,6 +751,11 @@ func (c *Clientset) BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.Bi
 	return c.bigquerydatatransferV1beta1
 }
 
+// BigquerymigrationV1alpha1 retrieves the BigquerymigrationV1alpha1Client
+func (c *Clientset) BigquerymigrationV1alpha1() bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Interface {
+	return c.bigquerymigrationV1alpha1
+}
+
 // BigqueryreservationV1alpha1 retrieves the BigqueryreservationV1alpha1Client
 func (c *Clientset) BigqueryreservationV1alpha1() bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Interface {
 	return c.bigqueryreservationV1alpha1
@@ -943,6 +954,11 @@ func (c *Clientset) DatacatalogV1beta1() datacatalogv1beta1.DatacatalogV1beta1In
 // DataflowV1beta1 retrieves the DataflowV1beta1Client
 func (c *Clientset) DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface {
 	return c.dataflowV1beta1
+}
+
+// DataformV1alpha1 retrieves the DataformV1alpha1Client
+func (c *Clientset) DataformV1alpha1() dataformv1alpha1.DataformV1alpha1Interface {
+	return c.dataformV1alpha1
 }
 
 // DataformV1beta1 retrieves the DataformV1beta1Client
@@ -1667,6 +1683,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.bigquerymigrationV1alpha1, err = bigquerymigrationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.bigqueryreservationV1alpha1, err = bigqueryreservationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1824,6 +1844,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.dataflowV1beta1, err = dataflowv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.dataformV1alpha1, err = dataformv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2320,6 +2344,7 @@ func New(c rest.Interface) *Clientset {
 	cs.bigqueryconnectionV1beta1 = bigqueryconnectionv1beta1.New(c)
 	cs.bigquerydatapolicyV1alpha1 = bigquerydatapolicyv1alpha1.New(c)
 	cs.bigquerydatatransferV1beta1 = bigquerydatatransferv1beta1.New(c)
+	cs.bigquerymigrationV1alpha1 = bigquerymigrationv1alpha1.New(c)
 	cs.bigqueryreservationV1alpha1 = bigqueryreservationv1alpha1.New(c)
 	cs.bigqueryreservationV1beta1 = bigqueryreservationv1beta1.New(c)
 	cs.bigtableV1alpha1 = bigtablev1alpha1.New(c)
@@ -2360,6 +2385,7 @@ func New(c rest.Interface) *Clientset {
 	cs.datacatalogV1alpha1 = datacatalogv1alpha1.New(c)
 	cs.datacatalogV1beta1 = datacatalogv1beta1.New(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.New(c)
+	cs.dataformV1alpha1 = dataformv1alpha1.New(c)
 	cs.dataformV1beta1 = dataformv1beta1.New(c)
 	cs.datafusionV1beta1 = datafusionv1beta1.New(c)
 	cs.datalabelingV1alpha1 = datalabelingv1alpha1.New(c)

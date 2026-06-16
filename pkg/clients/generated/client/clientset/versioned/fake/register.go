@@ -54,6 +54,7 @@ import (
 	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryconnection/v1beta1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatapolicy/v1alpha1"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1beta1"
+	bigquerymigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerymigration/v1alpha1"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1alpha1"
 	bigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1beta1"
 	bigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1alpha1"
@@ -94,6 +95,7 @@ import (
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataflow/v1beta1"
+	dataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1alpha1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datafusion/v1beta1"
 	datalabelingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datalabeling/v1alpha1"
@@ -247,6 +249,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	bigqueryconnectionv1beta1.AddToScheme,
 	bigquerydatapolicyv1alpha1.AddToScheme,
 	bigquerydatatransferv1beta1.AddToScheme,
+	bigquerymigrationv1alpha1.AddToScheme,
 	bigqueryreservationv1alpha1.AddToScheme,
 	bigqueryreservationv1beta1.AddToScheme,
 	bigtablev1alpha1.AddToScheme,
@@ -287,6 +290,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	datacatalogv1alpha1.AddToScheme,
 	datacatalogv1beta1.AddToScheme,
 	dataflowv1beta1.AddToScheme,
+	dataformv1alpha1.AddToScheme,
 	dataformv1beta1.AddToScheme,
 	datafusionv1beta1.AddToScheme,
 	datalabelingv1alpha1.AddToScheme,

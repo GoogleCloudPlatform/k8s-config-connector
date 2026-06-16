@@ -17,8 +17,17 @@ package serviceusage
 import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/serviceusage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	gcp "google.golang.org/api/serviceusage/v1"
 	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1beta1"
 )
+
+func ServiceSpec_ToAPI(mapCtx *direct.MapContext, in *krm.ServiceSpec) *gcp.GoogleApiServiceusageV1Service {
+	if in == nil {
+		return nil
+	}
+	out := &gcp.GoogleApiServiceusageV1Service{}
+	return out
+}
 
 func ServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.ServiceSpec {
 	if in == nil {

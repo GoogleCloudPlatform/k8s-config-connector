@@ -1,6 +1,5 @@
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -26,7 +25,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -52,7 +50,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -78,7 +75,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -123,7 +119,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -158,7 +153,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -193,7 +187,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -228,7 +221,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -263,7 +255,6 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -287,7 +278,6 @@ X-Xss-Protection: 0
 
 PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -318,7 +308,6 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -341,7 +330,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -368,7 +356,6 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "iamConfiguration": {
@@ -431,7 +418,6 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -476,7 +462,6 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -503,7 +488,6 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "iamConfiguration": {
@@ -566,7 +550,6 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -610,9 +593,8 @@ Vary: X-Origin
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -634,9 +616,8 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "ackDeadlineSeconds": 600,
@@ -644,10 +625,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "avroConfig": {
       "writeMetadata": true
     },
-    "bucket": "storagebucket-1-${uniqueId}",
+    "bucket": "projects/${projectId}/buckets/storagebucket-1-${uniqueId}",
     "filenamePrefix": "test-prefix",
     "filenameSuffix": "test-suffix",
-    "maxBytes": 10240,
+    "maxBytes": "10240",
     "maxDuration": "600s"
   },
   "deadLetterPolicy": {
@@ -664,6 +645,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "messageRetentionDuration": "604800s",
+  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
   "retainAckedMessages": true,
   "retryPolicy": {
     "maximumBackoff": "600s",
@@ -688,12 +670,12 @@ X-Xss-Protection: 0
     "avroConfig": {
       "writeMetadata": true
     },
-    "bucket": "storagebucket-1-${uniqueId}",
+    "bucket": "projects/${projectId}/buckets/storagebucket-1-${uniqueId}",
     "filenamePrefix": "test-prefix",
     "filenameSuffix": "test-suffix",
     "maxBytes": "10240",
     "maxDuration": "600s",
-    "state": "ACTIVE"
+    "state": 1
   },
   "deadLetterPolicy": {
     "deadLetterTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
@@ -716,15 +698,14 @@ X-Xss-Protection: 0
     "maximumBackoff": "600s",
     "minimumBackoff": "10s"
   },
-  "state": "ACTIVE",
+  "state": 1,
   "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
 }
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -746,9 +727,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -766,12 +746,12 @@ X-Xss-Protection: 0
     "avroConfig": {
       "writeMetadata": true
     },
-    "bucket": "storagebucket-1-${uniqueId}",
+    "bucket": "projects/${projectId}/buckets/storagebucket-1-${uniqueId}",
     "filenamePrefix": "test-prefix",
     "filenameSuffix": "test-suffix",
     "maxBytes": "10240",
     "maxDuration": "600s",
-    "state": "ACTIVE"
+    "state": 1
   },
   "deadLetterPolicy": {
     "deadLetterTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
@@ -794,44 +774,48 @@ X-Xss-Protection: 0
     "maximumBackoff": "600s",
     "minimumBackoff": "10s"
   },
-  "state": "ACTIVE",
+  "state": 1,
   "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
 }
 
 ---
 
-PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json&updateMask=cloudStorageConfig%2CackDeadlineSeconds%2CmessageRetentionDuration%2CretainAckedMessages%2CexpirationPolicy%2CdeadLetterPolicy%2CretryPolicy
+PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "subscription": {
     "ackDeadlineSeconds": 300,
     "cloudStorageConfig": {
-      "bucket": "storagebucket-2-${uniqueId}",
+      "avroConfig": {},
+      "bucket": "projects/${projectId}/buckets/storagebucket-2-${uniqueId}",
       "filenamePrefix": "test-prefix-updated",
       "filenameSuffix": "test-suffix-updated",
-      "maxBytes": 102400,
-      "maxDuration": "400s",
-      "state": "ACTIVE"
+      "maxBytes": "102400",
+      "maxDuration": "400s"
     },
     "deadLetterPolicy": {
       "deadLetterTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
       "maxDeliveryAttempts": 50
     },
+    "enableMessageOrdering": true,
     "expirationPolicy": {
       "ttl": "1296000s"
     },
+    "filter": "attributes.type = \"key\"",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
     "messageRetentionDuration": "302400s",
+    "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
     "retryPolicy": {
       "maximumBackoff": "300s",
       "minimumBackoff": "5s"
-    }
-  }
+    },
+    "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+  },
+  "updateMask": "ackDeadlineSeconds,cloudStorageConfig,deadLetterPolicy,expirationPolicy,messageRetentionDuration,retainAckedMessages,retryPolicy"
 }
 
 200 OK
@@ -847,12 +831,12 @@ X-Xss-Protection: 0
 {
   "ackDeadlineSeconds": 400,
   "cloudStorageConfig": {
-    "bucket": "storagebucket-2-${uniqueId}",
+    "bucket": "projects/${projectId}/buckets/storagebucket-2-${uniqueId}",
     "filenamePrefix": "test-prefix-updated",
     "filenameSuffix": "test-suffix-updated",
     "maxBytes": "102400",
     "maxDuration": "400s",
-    "state": "ACTIVE",
+    "state": 1,
     "textConfig": {}
   },
   "deadLetterPolicy": {
@@ -879,15 +863,14 @@ X-Xss-Protection: 0
     "maximumBackoff": "300s",
     "minimumBackoff": "5s"
   },
-  "state": "ACTIVE",
+  "state": 1,
   "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
 }
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -902,12 +885,12 @@ X-Xss-Protection: 0
 {
   "ackDeadlineSeconds": 400,
   "cloudStorageConfig": {
-    "bucket": "storagebucket-2-${uniqueId}",
+    "bucket": "projects/${projectId}/buckets/storagebucket-2-${uniqueId}",
     "filenamePrefix": "test-prefix-updated",
     "filenameSuffix": "test-suffix-updated",
     "maxBytes": "102400",
     "maxDuration": "400s",
-    "state": "ACTIVE",
+    "state": 1,
     "textConfig": {}
   },
   "deadLetterPolicy": {
@@ -930,15 +913,14 @@ X-Xss-Protection: 0
     "maximumBackoff": "300s",
     "minimumBackoff": "5s"
   },
-  "state": "ACTIVE",
+  "state": 1,
   "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
 }
 
 ---
 
-DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -955,7 +937,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1000,7 +981,6 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1019,7 +999,6 @@ Vary: X-Origin
 ---
 
 DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json
@@ -1032,7 +1011,6 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1077,7 +1055,6 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1096,7 +1073,6 @@ Vary: X-Origin
 ---
 
 DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json
@@ -1110,7 +1086,6 @@ Vary: X-Origin
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1134,7 +1109,6 @@ X-Xss-Protection: 0
 
 DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

@@ -87,6 +87,8 @@ import (
 	fakebigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1/fake"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1"
 	fakebigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1/fake"
+	bigquerymigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerymigration/v1alpha1"
+	fakebigquerymigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerymigration/v1alpha1/fake"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1alpha1"
 	fakebigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1alpha1/fake"
 	bigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1beta1"
@@ -167,6 +169,8 @@ import (
 	fakedatacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1/fake"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
 	fakedataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1/fake"
+	dataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1alpha1"
+	fakedataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1alpha1/fake"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1"
 	fakedataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1/fake"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
@@ -620,6 +624,11 @@ func (c *Clientset) BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.Bi
 	return &fakebigquerydatatransferv1beta1.FakeBigquerydatatransferV1beta1{Fake: &c.Fake}
 }
 
+// BigquerymigrationV1alpha1 retrieves the BigquerymigrationV1alpha1Client
+func (c *Clientset) BigquerymigrationV1alpha1() bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Interface {
+	return &fakebigquerymigrationv1alpha1.FakeBigquerymigrationV1alpha1{Fake: &c.Fake}
+}
+
 // BigqueryreservationV1alpha1 retrieves the BigqueryreservationV1alpha1Client
 func (c *Clientset) BigqueryreservationV1alpha1() bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Interface {
 	return &fakebigqueryreservationv1alpha1.FakeBigqueryreservationV1alpha1{Fake: &c.Fake}
@@ -818,6 +827,11 @@ func (c *Clientset) DatacatalogV1beta1() datacatalogv1beta1.DatacatalogV1beta1In
 // DataflowV1beta1 retrieves the DataflowV1beta1Client
 func (c *Clientset) DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface {
 	return &fakedataflowv1beta1.FakeDataflowV1beta1{Fake: &c.Fake}
+}
+
+// DataformV1alpha1 retrieves the DataformV1alpha1Client
+func (c *Clientset) DataformV1alpha1() dataformv1alpha1.DataformV1alpha1Interface {
+	return &fakedataformv1alpha1.FakeDataformV1alpha1{Fake: &c.Fake}
 }
 
 // DataformV1beta1 retrieves the DataformV1beta1Client
