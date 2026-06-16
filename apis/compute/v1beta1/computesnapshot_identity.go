@@ -42,8 +42,12 @@ type ComputeSnapshotIdentity struct {
 	Snapshot string
 }
 
+func (i *ComputeSnapshotIdentity) IsRegional() bool {
+	return i.Region != ""
+}
+
 func (i *ComputeSnapshotIdentity) String() string {
-	if i.Region != "" {
+	if i.IsRegional() {
 		return RegionalComputeSnapshotIdentityFormat.ToString(*i)
 	}
 	return GlobalComputeSnapshotIdentityFormat.ToString(*i)
@@ -67,7 +71,7 @@ func (i *ComputeSnapshotIdentity) Host() string {
 }
 
 func (i *ComputeSnapshotIdentity) ParentString() string {
-	if i.Region != "" {
+	if i.IsRegional() {
 		return fmt.Sprintf("projects/%s/regions/%s", i.Project, i.Region)
 	}
 	return fmt.Sprintf("projects/%s/global", i.Project)
