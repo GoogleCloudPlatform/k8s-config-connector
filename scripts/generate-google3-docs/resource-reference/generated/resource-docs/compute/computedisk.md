@@ -788,7 +788,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed ComputeSnapshot resource. Should be in the format "projects/{{project}}/global/snapshots/{{name}}".</p>
+            <p>A reference to an externally managed ComputeSnapshot resource. Should be in the format "projects/{{projectID}}/global/snapshots/{{snapshotID}}" or "projects/{{projectID}}/regions/{{region}}/snapshots/{{snapshotID}}".</p>
         </td>
     </tr>
     <tr>

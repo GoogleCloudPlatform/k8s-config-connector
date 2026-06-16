@@ -19,6 +19,7 @@
 // proto.service: google.cloud.dialogflow.v2
 // resource: DialogflowKnowledgeBase:KnowledgeBase
 // resource: DialogflowGenerator:Generator
+// resource: DialogflowConversationDataset:ConversationDataset
 
 package v1alpha1
 
@@ -27,6 +28,15 @@ type ConversationContext struct {
 	// Optional. List of message transcripts in the conversation.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.ConversationContext.message_entries
 	MessageEntries []MessageEntry `json:"messageEntries,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.ConversationInfo
+type ConversationInfo struct {
+	// Optional. The language code of the conversation data within this dataset.
+	//  See https://cloud.google.com/apis/design/standard_fields for more
+	//  information. Supports all UTF-8 languages.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ConversationInfo.language_code
+	LanguageCode *string `json:"languageCode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.v2.FewShotExample
@@ -62,6 +72,15 @@ type FreeFormSuggestion struct {
 	// Required. Free form suggestion.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.FreeFormSuggestion.response
 	Response *string `json:"response,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.GcsSources
+type GCSSources struct {
+	// Required. Google Cloud Storage URIs for the inputs. A URI is of the form:
+	//  `gs://bucket/object-prefix-or-name`
+	//  Whether a prefix or name is used depends on the use case.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GcsSources.uris
+	Uris []string `json:"uris,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.v2.GeneratorSuggestion
@@ -109,6 +128,15 @@ type InferenceParameter struct {
 	//  random responses. Acceptable value is [0.0, 1.0], default to 0.95.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.InferenceParameter.top_p
 	TopP *float64 `json:"topP,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.InputConfig
+type InputConfig struct {
+	// The Cloud Storage URI has the form gs://<Google Cloud Storage bucket
+	//  name>//agent*.json. Wildcards are allowed and will be expanded into all
+	//  matched JSON files, which will be read as one conversation per file.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.InputConfig.gcs_source
+	GCSSource *GCSSources `json:"gcsSource,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.v2.MessageEntry

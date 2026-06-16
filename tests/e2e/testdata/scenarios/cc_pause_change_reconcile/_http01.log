@@ -129,3 +129,40 @@ X-Xss-Protection: 0
     "lastEnableTime": "2024-04-01T12:34:56.123456Z"
   }
 }
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Frepositories%2Fartifactregistryrepository-sample-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "description 1",
+  "format": 1,
+  "labels": {
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "mode": 1,
+  "name": "projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-sample-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/artifactregistryrepository-sample-${uniqueId}",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": 2,
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

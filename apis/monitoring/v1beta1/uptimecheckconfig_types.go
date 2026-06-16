@@ -23,15 +23,6 @@ import (
 
 var MonitoringUptimeCheckConfigGVK = GroupVersion.WithKind("MonitoringUptimeCheckConfig")
 
-type MonitoringGroupRef struct {
-	// The group of resources being monitored. Should be only the `[GROUP_ID]`, and not the full-path `projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]`.
-	External string `json:"external,omitempty"`
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
 // +kcc:proto=google.monitoring.v3.UptimeCheckConfig.ContentMatcher
 type UptimeCheckConfig_ContentMatcher struct {
 	// String, regex or JSON content to match. Maximum 1024 bytes. An empty `content` string indicates no content matching is to be performed.

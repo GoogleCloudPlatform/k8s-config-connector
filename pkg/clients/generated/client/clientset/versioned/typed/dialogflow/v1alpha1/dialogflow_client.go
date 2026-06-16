@@ -32,6 +32,7 @@ import (
 type DialogflowV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	DialogflowAgentsGetter
+	DialogflowConversationDatasetsGetter
 	DialogflowEntityTypesGetter
 	DialogflowFulfillmentsGetter
 	DialogflowGeneratorsGetter
@@ -46,6 +47,10 @@ type DialogflowV1alpha1Client struct {
 
 func (c *DialogflowV1alpha1Client) DialogflowAgents(namespace string) DialogflowAgentInterface {
 	return newDialogflowAgents(c, namespace)
+}
+
+func (c *DialogflowV1alpha1Client) DialogflowConversationDatasets(namespace string) DialogflowConversationDatasetInterface {
+	return newDialogflowConversationDatasets(c, namespace)
 }
 
 func (c *DialogflowV1alpha1Client) DialogflowEntityTypes(namespace string) DialogflowEntityTypeInterface {

@@ -105,7 +105,7 @@ func (in *ServiceDirectoryEndpointSpec) DeepCopyInto(out *ServiceDirectoryEndpoi
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.ResourceID != nil {

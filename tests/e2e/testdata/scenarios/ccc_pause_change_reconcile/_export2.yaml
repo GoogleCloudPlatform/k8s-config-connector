@@ -1,0 +1,9 @@
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: projects-${projectId}-locations-us-west1-repositories-artifactregistryrepository-sample-${uniqueId}
+spec:
+  description: description 1
+  format: DOCKER
+  location: ""
+  mode: STANDARD_REPOSITORY
