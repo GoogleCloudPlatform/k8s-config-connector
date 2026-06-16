@@ -144,25 +144,41 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 		updated, err := mutateObject(ctx, s.storage, fqn, func(obj *pb.Cluster) error {
 			s.setStatus(obj, pb.ClusterStatus_RUNNING)
 
-			obj.Config.EndpointConfig = &pb.EndpointConfig{}
+			if obj.Config.EndpointConfig == nil {
+				obj.Config.EndpointConfig = &pb.EndpointConfig{}
+			}
 			if obj.Config.GceClusterConfig == nil {
 				obj.Config.GceClusterConfig = &pb.GceClusterConfig{}
 			}
 			if obj.Config.GceClusterConfig.InternalIpOnly == nil {
 				obj.Config.GceClusterConfig.InternalIpOnly = PtrTo(true)
 			}
-			obj.Config.GceClusterConfig.NetworkUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/global/networks/default"
-			obj.Config.GceClusterConfig.ServiceAccountScopes = []string{"https://www.googleapis.com/auth/cloud-platform"}
-			obj.Config.MasterConfig.DiskConfig.BootDiskSizeGb = 1000
+			if obj.Config.GceClusterConfig.NetworkUri == "" {
+				obj.Config.GceClusterConfig.NetworkUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/global/networks/default"
+			}
+			if len(obj.Config.GceClusterConfig.ServiceAccountScopes) == 0 {
+				obj.Config.GceClusterConfig.ServiceAccountScopes = []string{"https://www.googleapis.com/auth/cloud-platform"}
+			}
+			if obj.Config.MasterConfig.DiskConfig.BootDiskSizeGb == 0 {
+				obj.Config.MasterConfig.DiskConfig.BootDiskSizeGb = 1000
+			}
 
 			if obj.Config.GceClusterConfig.ShieldedInstanceConfig == nil {
 				obj.Config.GceClusterConfig.ShieldedInstanceConfig = &pb.ShieldedInstanceConfig{}
 			}
-			obj.Config.GceClusterConfig.ShieldedInstanceConfig.EnableIntegrityMonitoring = PtrTo(true)
-			obj.Config.GceClusterConfig.ShieldedInstanceConfig.EnableSecureBoot = PtrTo(true)
-			obj.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm = PtrTo(true)
+			if obj.Config.GceClusterConfig.ShieldedInstanceConfig.EnableIntegrityMonitoring == nil {
+				obj.Config.GceClusterConfig.ShieldedInstanceConfig.EnableIntegrityMonitoring = PtrTo(true)
+			}
+			if obj.Config.GceClusterConfig.ShieldedInstanceConfig.EnableSecureBoot == nil {
+				obj.Config.GceClusterConfig.ShieldedInstanceConfig.EnableSecureBoot = PtrTo(true)
+			}
+			if obj.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm == nil {
+				obj.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm = PtrTo(true)
+			}
 
-			obj.Config.GceClusterConfig.ZoneUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone
+			if obj.Config.GceClusterConfig.ZoneUri == "" {
+				obj.Config.GceClusterConfig.ZoneUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone
+			}
 
 			s.populateLabels(obj, name)
 			return nil
@@ -283,15 +299,27 @@ func (s *clusterControllerServer) populateDefaultsForCluster(obj *pb.Cluster, na
 	if obj.Config.WorkerConfig.DiskConfig == nil {
 		obj.Config.WorkerConfig.DiskConfig = &pb.DiskConfig{}
 	}
-	obj.Config.WorkerConfig.DiskConfig.BootDiskSizeGb = 1000
-	obj.Config.WorkerConfig.DiskConfig.BootDiskType = "pd-standard"
-	obj.Config.WorkerConfig.MachineTypeUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone + "/machineTypes/n2-standard-4"
+	if obj.Config.WorkerConfig.DiskConfig.BootDiskSizeGb == 0 {
+		obj.Config.WorkerConfig.DiskConfig.BootDiskSizeGb = 1000
+	}
+	if obj.Config.WorkerConfig.DiskConfig.BootDiskType == "" {
+		obj.Config.WorkerConfig.DiskConfig.BootDiskType = "pd-standard"
+	}
+	if obj.Config.WorkerConfig.MachineTypeUri == "" {
+		obj.Config.WorkerConfig.MachineTypeUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone + "/machineTypes/n2-standard-4"
+	}
 	if obj.Config.WorkerConfig.NumInstances == 0 {
 		obj.Config.WorkerConfig.NumInstances = 2
 	}
-	obj.Config.WorkerConfig.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
-	obj.Config.WorkerConfig.MinCpuPlatform = "AUTOMATIC"
-	obj.Config.WorkerConfig.ImageUri = DefaultImageURI
+	if obj.Config.WorkerConfig.Preemptibility == pb.InstanceGroupConfig_PREEMPTIBILITY_UNSPECIFIED {
+		obj.Config.WorkerConfig.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
+	}
+	if obj.Config.WorkerConfig.MinCpuPlatform == "" {
+		obj.Config.WorkerConfig.MinCpuPlatform = "AUTOMATIC"
+	}
+	if obj.Config.WorkerConfig.ImageUri == "" {
+		obj.Config.WorkerConfig.ImageUri = DefaultImageURI
+	}
 
 	obj.Config.MasterConfig = s.populateInstanceGroupConfig(obj.Config.MasterConfig, name, true)
 
