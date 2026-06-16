@@ -84,6 +84,9 @@ func getIdentityFromKMSCryptoKeyVersionSpec(ctx context.Context, reader client.R
 		return nil, fmt.Errorf(".spec.cryptoKey must be set")
 	}
 
+	// We use a self-contained format template (cryptoKeyFormat) to parse obj.Spec.CryptoKey rather than
+	// importing the KMSCryptoKeyIdentity format from the v1beta1 package. This prevents a circular go import
+	// dependency, because v1beta1 types sometimes need to reference v1alpha1 definitions (or vice-versa).
 	parsed, match, err := cryptoKeyFormat.Parse(obj.Spec.CryptoKey)
 	if err != nil {
 		return nil, fmt.Errorf("cannot parse .spec.cryptoKey: %w", err)

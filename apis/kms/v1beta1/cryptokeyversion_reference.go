@@ -48,9 +48,8 @@ type KMSCryptoKeyVersionRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on KMSCryptoKeyVersionRef.
-// If the "External" is given in the other resource's spec.KMSCryptoKeyVersionRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual KMSCryptoKeyVersionRef object from the cluster.
+// Deprecated: NormalizedExternal is kept for backwards compatibility with existing controllers/callers.
+// Prefer implementing and using refs.Ref on newer resources instead.
 func (r *KMSCryptoKeyVersionRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", KMSCryptoKeyVersionGVK.Kind)
