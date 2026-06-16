@@ -1053,6 +1053,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                             true, // status.observedState.supportedExportFormats[] is an empty object
 		"apigeeenvironments.apigee.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
 		"apigeeorganizations.apigee.cnrm.cloud.google.com":                              true, // status.observedState is an empty object
+		"artifactregistryvpcscconfigs.artifactregistry.cnrm.cloud.google.com":           true, // status.observedState is an empty object
 		"bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com":        true, // spec.cloudResource is an empty object
 		"bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com":                 true, // status.observedState is an empty object
 		"bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com":        true, // spec.scheduleOptionsV2.manualSchedule is an empty object

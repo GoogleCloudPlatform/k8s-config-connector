@@ -355,6 +355,9 @@
 [missing_field] crd=apphubserviceprojectattachments.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=apphubserviceprojectattachments.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apphubserviceprojectattachments.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceProjectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=artifactregistryvpcscconfigs.artifactregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=artifactregistryvpcscconfigs.artifactregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=artifactregistryvpcscconfigs.artifactregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcscPolicy" is not set in unstructured objects
 [missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.billingAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.complianceRegime" is not set in unstructured objects
 [missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects

@@ -116,6 +116,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//monitoring.googleapis.com/projects/{}/metricDescriptors/{}":                              true,
 		"//monitoring.googleapis.com/projects/{}/services/{}":                                       true,
 		"//monitoring.googleapis.com/locations/global/metricsScopes/{}/projects/{}":                 true,
+		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig":                    true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
