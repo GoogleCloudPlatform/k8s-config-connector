@@ -95,6 +95,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":       true,
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}":                    true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
+		"//datalabeling.googleapis.com/projects/{}/evaluationJobs/{}":                               true,
 		"//iam.googleapis.com/policies/{}/denypolicies/{}":                                          true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/sacRealms/{}":                    true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":                    true,
