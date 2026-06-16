@@ -103,7 +103,7 @@ BLOCKED_KINDS=(
     "ApiHubCuration"
     "ApiHubAttribute"
     "ApiHubInstance"
-    "ApigeeRegistryApi"
+    "ApigeeRegistryAPI"
     "BigQueryAnalyticsHubDataExchange"
     "AIStreamsCluster"
     "VertexAIModelDeploymentMonitoringJob"
