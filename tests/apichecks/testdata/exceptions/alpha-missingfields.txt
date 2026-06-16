@@ -106,11 +106,6 @@
 [missing_field] crd=apigeeaddonsconfigs.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.addonsConfig.integrationConfig.enabled" is not set in unstructured objects
 [missing_field] crd=apigeeaddonsconfigs.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.addonsConfig.monetizationConfig.enabled" is not set in unstructured objects
 [missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiResources[]" is not set in unstructured objects
-[missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.approvalType" is not set in unstructured objects
-[missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributes[].name" is not set in unstructured objects
-[missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributes[].value" is not set in unstructured objects
-[missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.environments[]" is not set in unstructured objects
 [missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.graphqlOperationGroup.operationConfigType" is not set in unstructured objects
 [missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.graphqlOperationGroup.operationConfigs[].apiSource" is not set in unstructured objects
@@ -147,7 +142,6 @@
 [missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.operationGroup.operationConfigs[].quota.interval" is not set in unstructured objects
 [missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.operationGroup.operationConfigs[].quota.limit" is not set in unstructured objects
 [missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.operationGroup.operationConfigs[].quota.timeUnit" is not set in unstructured objects
-[missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.proxies[]" is not set in unstructured objects
 [missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.quota" is not set in unstructured objects
 [missing_field] crd=apigeeapiproducts.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.quotaCounterScope" is not set in unstructured objects
