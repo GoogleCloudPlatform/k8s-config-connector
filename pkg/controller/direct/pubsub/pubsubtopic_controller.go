@@ -119,8 +119,21 @@ func (m *TopicModel) AdapterForObject(ctx context.Context, op *directbase.Adapte
 }
 
 func (m *TopicModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.PubSubTopicIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx, id.Project)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pubSubTopicAdapter{
+		gcpClient: gcpClient,
+		id:        id,
+	}, nil
 }
 
 type pubSubTopicAdapter struct {
