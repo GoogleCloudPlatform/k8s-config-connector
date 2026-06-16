@@ -233,6 +233,8 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
 8. **CI/CD & Golden File Traps (Gotchas)**:
    - **Accidental Binary Profile Artifacts (`heap.prof`)**: When running recorder or memory profile footprint tests (e.g., `TestProfileRecorderFootprint`), binary profile outputs like `heap.prof` may be written to the test directory (`cmd/recorder/pprof/.../heap.prof`). Always ensure these binary files are deleted and never committed to git.
    - **Selective Presubmit Harness & `WRITE_GOLDEN_OUTPUT=1` Trap**: Running specialized presubmit subsets (e.g., `test-pause`) with `WRITE_GOLDEN_OUTPUT=1` can inadvertently delete golden files belonging to skipped phases (e.g., `_exported.yaml`). Ensure you only regenerate golden files using the appropriate comprehensive test scope, or inspect git diffs to revert unintended deletions.
+   - **Accidental Staging of Unrelated Logs**: When E2E fixture tests run locally (via `hack/record-gcp`, `hack/compare-mock`, or direct `go test`), other fixtures in the same compute/service package may produce local differences in their `_http_old_controller.log` or `_http.diff` logs. **Never commit changes or `.diff` files for unrelated fixtures.** Inspect `git diff` before staging and revert them.
+   - **Missing `_identities.yaml`**: Newly created E2E fixtures dynamically generate a `_identities.yaml` identity registry file when run. Ensure this file is staged and committed along with your E2E fixture, or the CI presubmits will fail.
 
 
 
