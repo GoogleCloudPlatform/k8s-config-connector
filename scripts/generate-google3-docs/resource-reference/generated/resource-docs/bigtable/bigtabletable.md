@@ -314,7 +314,7 @@ observedGeneration: integer
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique specifier for the BigtableTable resource in GCP.</p>
+            <p>A unique specifier for the BigtableTable resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>

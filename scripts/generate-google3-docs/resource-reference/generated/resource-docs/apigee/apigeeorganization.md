@@ -221,7 +221,7 @@ runtimeType: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. Name of the GCP project in which to associate the Apigee organization.</p>
+            <p>Required. Name of the Google Cloud project in which to associate the Apigee organization.</p>
         </td>
     </tr>
     <tr>
@@ -463,7 +463,7 @@ subscriptionType: string
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique specifier for the ApigeeOrganization resource in GCP.</p>
+            <p>A unique specifier for the ApigeeOrganization resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>
@@ -484,7 +484,7 @@ subscriptionType: string
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+            <p>ObservedState is the state of the resource as most recently observed in Google Cloud.</p>
         </td>
     </tr>
     <tr>

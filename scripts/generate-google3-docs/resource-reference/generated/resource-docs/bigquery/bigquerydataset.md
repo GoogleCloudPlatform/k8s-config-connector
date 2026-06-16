@@ -687,7 +687,7 @@ selfLink: string
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique specifier for the BigQueryAnalyticsHubDataExchangeListing resource in GCP.</p>
+            <p>A unique specifier for the BigQueryAnalyticsHubDataExchangeListing resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>
@@ -708,14 +708,14 @@ selfLink: string
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+            <p>ObservedState is the state of the resource as most recently observed in Google Cloud.</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.location</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. If the location is not specified in the spec, the GCP server defaults to a location and will be captured here.</p>
+            <p>Optional. If the location is not specified in the spec, the Google Cloud server defaults to a location and will be captured here.</p>
         </td>
     </tr>
     <tr>

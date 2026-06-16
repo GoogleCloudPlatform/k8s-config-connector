@@ -220,7 +220,7 @@ selfManaged:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>CertificateManagerDNSAuthorizationRef is a reference to a GCP CertificateManagerDNSAuthorization.</p>
+            <p>CertificateManagerDNSAuthorizationRef is a reference to a Google Cloud CertificateManagerDNSAuthorization.</p>
         </td>
     </tr>
     <tr>

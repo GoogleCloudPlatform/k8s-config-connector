@@ -345,7 +345,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The GCP resource identifier. If not given, the metadata.name will be used.</p>
+            <p>The Google Cloud resource identifier. If not given, the metadata.name will be used.</p>
         </td>
     </tr>
 </tbody>
@@ -428,7 +428,7 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique specifier for the ManagedKafkaCluster resource in GCP.</p>
+            <p>A unique specifier for the ManagedKafkaCluster resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>
@@ -442,7 +442,7 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+            <p>ObservedState is the state of the resource as most recently observed in Google Cloud.</p>
         </td>
     </tr>
     <tr>

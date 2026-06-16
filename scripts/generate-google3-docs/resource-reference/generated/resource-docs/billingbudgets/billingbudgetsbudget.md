@@ -504,7 +504,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ProjectRef is a reference to a GCP Project.</p>
+            <p>ProjectRef is a reference to a Google Cloud Project.</p>
         </td>
     </tr>
     <tr>
@@ -574,7 +574,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>BillingAccountRef is a reference to a GCP BillingAccount.</p>
+            <p>BillingAccountRef is a reference to a Google Cloud BillingAccount.</p>
         </td>
     </tr>
     <tr>

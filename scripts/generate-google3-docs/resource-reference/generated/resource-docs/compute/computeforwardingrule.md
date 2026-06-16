@@ -305,7 +305,7 @@ range of the subnet or network configured for this forwarding rule.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
+            <p>ComputeAddressRef is a reference to a Google Cloud ComputeAddress.</p>
         </td>
     </tr>
     <tr>

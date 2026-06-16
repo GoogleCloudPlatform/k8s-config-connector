@@ -297,7 +297,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>StorageBucketRef is a reference to a GCP StorageBucket.</p>
+            <p>StorageBucketRef is a reference to a Google Cloud StorageBucket.</p>
         </td>
     </tr>
     <tr>
