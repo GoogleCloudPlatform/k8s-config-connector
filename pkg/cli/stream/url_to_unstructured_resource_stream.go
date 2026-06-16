@@ -31,12 +31,13 @@ import (
 )
 
 type URLToUnstructuredResourceStream struct {
-	url           string
-	done          bool
-	gcpClient     gcpclient.Client
-	smLoader      *servicemappingloader.ServiceMappingLoader
-	tfProvider    *schema.Provider
-	httpClient    *http.Client
+	url        string
+	done       bool
+	gcpClient  gcpclient.Client
+	smLoader   *servicemappingloader.ServiceMappingLoader
+	tfProvider *schema.Provider
+	httpClient *http.Client
+	// disableDirect forces a fallback to the old terraform/dcl export logic
 	disableDirect bool
 
 	controllerConfig *config.ControllerConfig

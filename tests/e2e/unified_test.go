@@ -661,7 +661,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						}
 
 						// Try to export the resource (and compare against golden file)
-						exportedYAML := exportResource(h, obj, &Expectations{
+						exportedYAML := exportResource(h, obj, &exportOptions{
 							DisableDirectExport: options.FallbackToOldController,
 						})
 

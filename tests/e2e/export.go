@@ -30,12 +30,12 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-type Expectations struct {
-	Location            bool // location or region
+type exportOptions struct {
+	ExpectLocation      bool // location or region
 	DisableDirectExport bool
 }
 
-func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectations *Expectations) string {
+func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *exportOptions) string {
 	exportURI := ""
 
 	projectID := resolveProjectID(h, obj)
@@ -48,7 +48,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	if err != nil {
 		h.T.Error(fmt.Errorf("retrieving location from obj: %w", err))
 	}
-	if !found && expectations.Location {
+	if !found && options.ExpectLocation {
 		h.T.Error("expected to find location or region in obj but did not find it")
 	}
 
@@ -151,7 +151,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	exportParams := h.ExportParams()
 	exportParams.IAMFormat = "partialpolicy"
 	exportParams.ResourceFormat = "krm"
-	exportParams.DisableDirectExport = expectations.DisableDirectExport
+	exportParams.DisableDirectExport = options.DisableDirectExport
 	outputDir := h.TempDir()
 	outputPath := filepath.Join(outputDir, "export.yaml")
 	exportParams.Output = outputPath
@@ -176,7 +176,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 }
 
 func exportResourceAsUnstructured(h *create.Harness, obj *unstructured.Unstructured) *unstructured.Unstructured {
-	s := exportResource(h, obj, &Expectations{})
+	s := exportResource(h, obj, &exportOptions{})
 	if s == "" {
 		return nil
 	}
