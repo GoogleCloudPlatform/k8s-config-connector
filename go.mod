@@ -12,6 +12,7 @@ require (
 	cloud.google.com/go/alloydb v1.26.0
 	cloud.google.com/go/analytics v0.30.1
 	cloud.google.com/go/apigateway v1.7.7
+	cloud.google.com/go/apigeeregistry v0.10.0
 	cloud.google.com/go/apihub v1.0.0
 	cloud.google.com/go/apikeys v1.2.7
 	cloud.google.com/go/apphub v0.4.0

@@ -13,21 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 set -o errexit
 set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-source "${REPO_ROOT}/dev/tools/goimports.sh"
+
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
   --service google.cloud.apigeeregistry.v1 \
   --api-version apigeeregistry.cnrm.cloud.google.com/v1alpha1 \
   --resource ApigeeRegistryInstance:Instance \
-  --resource ApigeeRegistryArtifact:Artifact
+  --resource ApigeeRegistryAPI:Api
 
-cd ${REPO_ROOT}
-dev/tasks/generate-crds
-
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w apis/apigeeregistry/v1alpha1/
+go run . generate-mapper --service google.cloud.apigeeregistry.v1 --api-version apigeeregistry.cnrm.cloud.google.com/v1alpha1
