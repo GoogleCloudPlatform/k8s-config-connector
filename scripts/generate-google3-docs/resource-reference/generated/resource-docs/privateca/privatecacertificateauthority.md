@@ -155,7 +155,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable.</p>
+            <p>Immutable. Optional. The PrivateCACAPool that includes this CertificateAuthority.</p>
         </td>
     </tr>
     <tr>
@@ -165,9 +165,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The caPool for the resource
-
-Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (format: `projects/{{project}}/locations/{{location}}/caPools/{{name}}`).</p>
+            <p>A reference to an externally managed PrivateCACAPool resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/caPools/{{caPoolID}}".</p>
         </td>
     </tr>
     <tr>
@@ -177,7 +175,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a PrivateCACAPool resource.</p>
         </td>
     </tr>
     <tr>
@@ -187,7 +185,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a PrivateCACAPool resource.</p>
         </td>
     </tr>
     <tr>
@@ -207,7 +205,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Required. Specifies some of the values in a certificate that are related to the subject.</p>
+            <p>Required. Specifies some of the values in a certificate that are related to the subject.</p>
         </td>
     </tr>
     <tr>
@@ -217,7 +215,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Required. Contains distinguished name fields such as the common name, location and organization.</p>
+            <p>Required. Contains distinguished name fields such as the common name, location and organization.</p>
         </td>
     </tr>
     <tr>
@@ -227,7 +225,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The "common name" of the subject.</p>
+            <p>The "common name" of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -237,7 +235,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The country code of the subject.</p>
+            <p>The country code of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -247,7 +245,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The locality or city of the subject.</p>
+            <p>The locality or city of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -257,7 +255,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The organization of the subject.</p>
+            <p>The organization of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -267,7 +265,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The organizational_unit of the subject.</p>
+            <p>The organizational_unit of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -277,7 +275,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The postal code of the subject.</p>
+            <p>The postal code of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -287,7 +285,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The province, territory, or regional state of the subject.</p>
+            <p>The province, territory, or regional state of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -297,7 +295,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The street address of the subject.</p>
+            <p>The street address of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -307,7 +305,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. The subject alternative name fields.</p>
+            <p>Optional. The subject alternative name fields.</p>
         </td>
     </tr>
     <tr>
@@ -317,7 +315,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Immutable. Contains additional subject alternative name values.</p>
+            <p>Contains additional subject alternative name values.</p>
         </td>
     </tr>
     <tr>
@@ -337,7 +335,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error).</p>
+            <p>Optional. Indicates whether or not this extension is critical.</p>
         </td>
     </tr>
     <tr>
@@ -347,7 +345,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Required. The OID for this X.509 extension.</p>
+            <p>Required. The OID for this X.509 extension.</p>
         </td>
     </tr>
     <tr>
@@ -357,7 +355,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>Immutable. Required. The parts of an OID path. The most significant parts of the path come first.</p>
+            <p>Required. The parts of an OID path.</p>
         </td>
     </tr>
     <tr>
@@ -377,7 +375,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Required. The value of this X.509 extension.</p>
+            <p>Required. The value of this X.509 extension.</p>
         </td>
     </tr>
     <tr>
@@ -387,7 +385,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Contains only valid, fully-qualified host names.</p>
+            <p>Contains only valid, fully-qualified host names.</p>
         </td>
     </tr>
     <tr>
@@ -407,7 +405,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Contains only valid RFC 2822 E-mail addresses.</p>
+            <p>Contains only valid RFC 2822 E-mail addresses.</p>
         </td>
     </tr>
     <tr>
@@ -427,7 +425,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses.</p>
+            <p>Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses.</p>
         </td>
     </tr>
     <tr>
@@ -447,7 +445,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Contains only valid RFC 3986 URIs.</p>
+            <p>Contains only valid RFC 3986 URIs.</p>
         </td>
     </tr>
     <tr>
@@ -467,7 +465,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Required. Describes how some of the technical X.509 fields in a certificate should be populated.</p>
+            <p>Required. Describes how some of the technical X.509 fields in a certificate should be populated.</p>
         </td>
     </tr>
     <tr>
@@ -477,7 +475,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Immutable. Optional. Describes custom X.509 extensions.</p>
+            <p>Optional. Describes custom X.509 extensions.</p>
         </td>
     </tr>
     <tr>
@@ -497,7 +495,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error).</p>
+            <p>Optional. Indicates whether or not this extension is critical.</p>
         </td>
     </tr>
     <tr>
@@ -507,7 +505,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Required. The OID for this X.509 extension.</p>
+            <p>Required. The OID for this X.509 extension.</p>
         </td>
     </tr>
     <tr>
@@ -517,7 +515,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>Immutable. Required. The parts of an OID path. The most significant parts of the path come first.</p>
+            <p>Required. The parts of an OID path.</p>
         </td>
     </tr>
     <tr>
@@ -537,7 +535,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Required. The value of this X.509 extension.</p>
+            <p>Required. The value of this X.509 extension.</p>
         </td>
     </tr>
     <tr>
@@ -547,7 +545,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. Describes options in this X509Parameters that are relevant in a CA certificate.</p>
+            <p>Optional. Describes options in this X509Parameters that are relevant in a CA certificate.</p>
         </td>
     </tr>
     <tr>
@@ -557,7 +555,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.</p>
+            <p>Optional. Refers to the "CA" boolean field in the X.509 extension. When this value is missing, the basic constraints extension will be omitted from the certificate.</p>
         </td>
     </tr>
     <tr>
@@ -567,7 +565,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Optional. Refers to the path length restriction X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the CA certificate.</p>
+            <p>Optional. Refers to the path length constraint field in the X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the certificate.</p>
         </td>
     </tr>
     <tr>
@@ -577,7 +575,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Optional. When true, the "path length constraint" in Basic Constraints extension will be set to 0. if both max_issuer_path_length and zero_max_issuer_path_length are unset, the max path length will be omitted from the CA certificate.</p>
+            <p>Optional. When true, the "path length constraint" in Basic Constraints extension will be set to 0. if both max_issuer_path_length and zero_max_issuer_path_length are unset, the max path length will be omitted from the CA certificate.</p>
         </td>
     </tr>
     <tr>
@@ -587,7 +585,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. Indicates the intended use for keys that correspond to a certificate.</p>
+            <p>Optional. Indicates the intended use for keys that correspond to a certificate.</p>
         </td>
     </tr>
     <tr>
@@ -597,7 +595,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Describes high-level ways in which a key may be used.</p>
+            <p>Describes high-level ways in which a key may be used.</p>
         </td>
     </tr>
     <tr>
@@ -607,7 +605,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used to sign certificates.</p>
+            <p>The key may be used to sign certificates.</p>
         </td>
     </tr>
     <tr>
@@ -617,7 +615,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation".</p>
+            <p>The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation".</p>
         </td>
     </tr>
     <tr>
@@ -627,7 +625,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used sign certificate revocation lists.</p>
+            <p>The key may be used sign certificate revocation lists.</p>
         </td>
     </tr>
     <tr>
@@ -637,7 +635,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used to encipher data.</p>
+            <p>The key may be used to encipher data.</p>
         </td>
     </tr>
     <tr>
@@ -647,7 +645,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used to decipher only.</p>
+            <p>The key may be used to decipher only.</p>
         </td>
     </tr>
     <tr>
@@ -657,7 +655,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used for digital signatures.</p>
+            <p>The key may be used for digital signatures.</p>
         </td>
     </tr>
     <tr>
@@ -667,7 +665,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used to encipher only.</p>
+            <p>The key may be used to encipher only.</p>
         </td>
     </tr>
     <tr>
@@ -677,7 +675,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used in a key agreement protocol.</p>
+            <p>The key may be used in a key agreement protocol.</p>
         </td>
     </tr>
     <tr>
@@ -687,7 +685,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used to encipher other keys.</p>
+            <p>The key may be used to encipher other keys.</p>
         </td>
     </tr>
     <tr>
@@ -697,7 +695,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Detailed scenarios in which a key may be used.</p>
+            <p>Detailed scenarios in which a key may be used.</p>
         </td>
     </tr>
     <tr>
@@ -707,7 +705,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS.</p>
+            <p>Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS.</p>
         </td>
     </tr>
     <tr>
@@ -717,7 +715,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication".</p>
+            <p>Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication".</p>
         </td>
     </tr>
     <tr>
@@ -727,7 +725,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection".</p>
+            <p>Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection".</p>
         </td>
     </tr>
     <tr>
@@ -737,7 +735,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses".</p>
+            <p>Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses".</p>
         </td>
     </tr>
     <tr>
@@ -747,7 +745,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS.</p>
+            <p>Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS.</p>
         </td>
     </tr>
     <tr>
@@ -757,7 +755,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time".</p>
+            <p>Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time".</p>
         </td>
     </tr>
     <tr>
@@ -767,7 +765,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Immutable. Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message.</p>
+            <p>Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message.</p>
         </td>
     </tr>
     <tr>
@@ -787,7 +785,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>Immutable. Required. The parts of an OID path. The most significant parts of the path come first.</p>
+            <p>Required. The parts of an OID path.</p>
         </td>
     </tr>
     <tr>
@@ -807,7 +805,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Immutable. Optional. Describes the X.509 certificate policy object identifiers, per https://tools.ietf.org/html/rfc5280#section-4.2.1.4.</p>
+            <p>Optional. Describes the X.509 certificate policy object identifiers.</p>
         </td>
     </tr>
     <tr>
@@ -827,7 +825,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>Immutable. Required. The parts of an OID path. The most significant parts of the path come first.</p>
+            <p>Required. The parts of an OID path.</p>
         </td>
     </tr>
     <tr>
@@ -847,7 +845,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable.</p>
+            <p>Immutable. Optional. The StorageBucket where this CertificateAuthority's CA certificate is published.</p>
         </td>
     </tr>
     <tr>
@@ -857,9 +855,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The name of a Cloud Storage bucket where this CertificateAuthority will publish content, such as the CA certificate and CRLs. This must be a bucket name, without any prefixes (such as `gs://`) or suffixes (such as `.googleapis.com`). For example, to use a bucket named `my-bucket`, you would simply specify `my-bucket`. If not specified, a managed bucket will be created.
-
-Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).</p>
+            <p>A reference to an externally managed StorageBucket resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>
@@ -869,7 +865,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a StorageBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -879,7 +875,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a StorageBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -899,7 +895,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The algorithm to use for creating a managed Cloud KMS key for a for a simplified experience. All managed keys will be have their ProtectionLevel as `HSM`. Possible values: RSA_PSS_2048_SHA256, RSA_PSS_3072_SHA256, RSA_PSS_4096_SHA256, RSA_PKCS1_2048_SHA256, RSA_PKCS1_3072_SHA256, RSA_PKCS1_4096_SHA256, EC_P256_SHA256, EC_P384_SHA384</p>
+            <p>Optional. The algorithm to use for creating a managed Cloud KMS key.</p>
         </td>
     </tr>
     <tr>
@@ -909,7 +905,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable.</p>
+            <p>Optional. The resource name for an existing Cloud KMS CryptoKeyVersion.</p>
         </td>
     </tr>
     <tr>
@@ -919,7 +915,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The resource name for an existing Cloud KMS CryptoKeyVersion in the format `projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*`. This option enables full flexibility in the key's capabilities and properties.</p>
+            <p>A reference to an externally managed cryptoKeyVersion. Should be in the format `projects/{{project}}/locations/{{location}}/keyRings/{{keyRing}}/cryptoKeys/{{cryptoKey}}/cryptoKeyVersions/{{version}}`.</p>
         </td>
     </tr>
     <tr>
@@ -929,8 +925,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[WARNING] KMSCryptoKeyVersion not yet supported in Config Connector, use 'external' field to reference existing resources.
-Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKeyVersion` resource.</p>
         </td>
     </tr>
     <tr>
@@ -940,7 +935,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKeyVersion` resource.</p>
         </td>
     </tr>
     <tr>
@@ -960,7 +955,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The location for the resource</p>
+            <p>The location of this resource.</p>
         </td>
     </tr>
     <tr>
@@ -970,7 +965,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The Project that this resource belongs to.</p>
+            <p>The project that this resource belongs to.</p>
         </td>
     </tr>
     <tr>
@@ -980,9 +975,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -992,7 +985,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1002,7 +995,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1012,7 +1005,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+            <p>The PrivateCACertificateAuthority name. If not given, the metadata.name will be used.</p>
         </td>
     </tr>
     <tr>
@@ -1184,7 +1177,7 @@ updateTime: string
         <td><code>caCertificateDescriptions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Output only. A structured description of this CertificateAuthority's CA certificate and its issuers. Ordered as self-to-root.</p>
+            <p>Output only. A structured description of this CertificateAuthority's CA certificate and its issuers. Ordered as self-to-root. Ordered as self-to-root.</p>
         </td>
     </tr>
     <tr>
@@ -1268,7 +1261,7 @@ updateTime: string
         <td><code>caCertificateDescriptions[].publicKey.key</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. A public key. The padding and encoding must match with the `KeyFormat` value specified for the `format` field.</p>
+            <p>Required. A public key.</p>
         </td>
     </tr>
     <tr>
@@ -1394,21 +1387,21 @@ updateTime: string
         <td><code>caCertificateDescriptions[].subjectDescription.subjectAltName.customSans[].critical</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error).</p>
+            <p>Optional. Indicates whether or not this extension is critical.</p>
         </td>
     </tr>
     <tr>
         <td><code>caCertificateDescriptions[].subjectDescription.subjectAltName.customSans[].objectId</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. The OID for this X.509 extension.</p>
+            <p>Optional. The OID for this X.509 extension.</p>
         </td>
     </tr>
     <tr>
         <td><code>caCertificateDescriptions[].subjectDescription.subjectAltName.customSans[].objectId.objectIdPath</code></td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>Required. The parts of an OID path. The most significant parts of the path come first.</p>
+            <p>Optional. The parts of an OID path.</p>
         </td>
     </tr>
     <tr>
@@ -1422,7 +1415,7 @@ updateTime: string
         <td><code>caCertificateDescriptions[].subjectDescription.subjectAltName.customSans[].value</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The value of this X.509 extension.</p>
+            <p>Optional. The value of this X.509 extension.</p>
         </td>
     </tr>
     <tr>
@@ -1520,21 +1513,21 @@ updateTime: string
         <td><code>caCertificateDescriptions[].x509Description.additionalExtensions[].critical</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error).</p>
+            <p>Optional. Indicates whether or not this extension is critical.</p>
         </td>
     </tr>
     <tr>
         <td><code>caCertificateDescriptions[].x509Description.additionalExtensions[].objectId</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. The OID for this X.509 extension.</p>
+            <p>Optional. The OID for this X.509 extension.</p>
         </td>
     </tr>
     <tr>
         <td><code>caCertificateDescriptions[].x509Description.additionalExtensions[].objectId.objectIdPath</code></td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>Required. The parts of an OID path. The most significant parts of the path come first.</p>
+            <p>Optional. The parts of an OID path.</p>
         </td>
     </tr>
     <tr>
@@ -1548,14 +1541,14 @@ updateTime: string
         <td><code>caCertificateDescriptions[].x509Description.additionalExtensions[].value</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The value of this X.509 extension.</p>
+            <p>Optional. The value of this X.509 extension.</p>
         </td>
     </tr>
     <tr>
         <td><code>caCertificateDescriptions[].x509Description.aiaOcspServers</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the "Authority Information Access" extension in the certificate.</p>
+            <p>Optional. Describes lists of Ocsps servers in "Authority Information Access" extension.</p>
         </td>
     </tr>
     <tr>
@@ -1576,14 +1569,14 @@ updateTime: string
         <td><code>caCertificateDescriptions[].x509Description.caOptions.isCa</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.</p>
+            <p>Optional. Refers to the "CA" field in the Basic Constraints extension. If this is true, the certificate is a CA certificate, and can be used to sign other certificates.</p>
         </td>
     </tr>
     <tr>
         <td><code>caCertificateDescriptions[].x509Description.caOptions.maxIssuerPathLength</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Optional. Refers to the path length restriction X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the CA certificate.</p>
+            <p>Optional. Refers to the path length constraint field in the Basic Constraints extension. This constraint specifies the maximum number of non-self-issued intermediate certificates that may follow this certificate in a valid certification path.</p>
         </td>
     </tr>
     <tr>
@@ -1730,7 +1723,7 @@ updateTime: string
         <td><code>caCertificateDescriptions[].x509Description.keyUsage.unknownExtendedKeyUsages[].objectIdPath</code></td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>Required. The parts of an OID path. The most significant parts of the path come first.</p>
+            <p>Optional. The parts of an OID path.</p>
         </td>
     </tr>
     <tr>
@@ -1744,7 +1737,7 @@ updateTime: string
         <td><code>caCertificateDescriptions[].x509Description.policyIds</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Optional. Describes the X.509 certificate policy object identifiers, per https://tools.ietf.org/html/rfc5280#section-4.2.1.4.</p>
+            <p>Optional. Describes the X.509 certificate policy object identifiers.</p>
         </td>
     </tr>
     <tr>
@@ -1758,7 +1751,7 @@ updateTime: string
         <td><code>caCertificateDescriptions[].x509Description.policyIds[].objectIdPath</code></td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>Required. The parts of an OID path. The most significant parts of the path come first.</p>
+            <p>Optional. The parts of an OID path.</p>
         </td>
     </tr>
     <tr>
@@ -1772,7 +1765,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -1828,7 +1821,7 @@ updateTime: string
         <td><code>config.publicKey</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Optional. The public key that corresponds to this config. This is, for example, used when issuing Certificates, but not when creating a self-signed CertificateAuthority or CertificateAuthority CSR.</p>
+            <p>Optional. The public key that corresponds to this config.</p>
         </td>
     </tr>
     <tr>
@@ -1842,7 +1835,7 @@ updateTime: string
         <td><code>config.publicKey.key</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. A public key. The padding and encoding must match with the `KeyFormat` value specified for the `format` field.</p>
+            <p>Required. A public key.</p>
         </td>
     </tr>
     <tr>
@@ -1926,14 +1919,14 @@ updateTime: string
         <td><code>subordinateConfig.certificateAuthority</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. This can refer to a CertificateAuthority in the same project that was used to create a subordinate CertificateAuthority. This field is used for information and usability purposes only. The resource name is in the format `projects/*/locations/*/caPools/*/certificateAuthorities/*`.</p>
+            <p>Required. This can refer to a CertificateAuthority that was used to sign the subordinate CA.</p>
         </td>
     </tr>
     <tr>
         <td><code>subordinateConfig.pemIssuerChain</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. Contains the PEM certificate chain for the issuers of this CertificateAuthority, but not pem certificate for this CA itself.</p>
+            <p>Required. Contains the certificate chain of the subordinate CA's issuer.</p>
         </td>
     </tr>
     <tr>

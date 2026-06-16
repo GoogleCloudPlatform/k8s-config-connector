@@ -1996,7 +1996,7 @@ func (in *CertificateauthorityCaOptions) DeepCopyInto(out *CertificateauthorityC
 	}
 	if in.MaxIssuerPathLength != nil {
 		in, out := &in.MaxIssuerPathLength, &out.MaxIssuerPathLength
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.ZeroMaxIssuerPathLength != nil {
