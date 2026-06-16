@@ -22,7 +22,7 @@ type AutoscalingConfig struct {
 	// Required. The autoscaling targets for an instance.
 	AutoscalingTargets *AutoscalingConfig_AutoscalingTargets `json:"autoscalingTargets,omitempty"`
 	/*
-		NOT YET supported in GCP API
+		NOT YET supported in Google Cloud API
 		// Optional. Optional asymmetric autoscaling options.
 		//  Replicas matching the replica selection criteria will be autoscaled
 		//  independently from other replicas. The autoscaler will scale the replicas

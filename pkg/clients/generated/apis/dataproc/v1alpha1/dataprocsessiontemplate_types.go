@@ -222,7 +222,7 @@ type DataprocSessionTemplateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataprocSessionTemplate's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DataprocSessionTemplate resource in GCP. */
+	/* A unique specifier for the DataprocSessionTemplate resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -230,7 +230,7 @@ type DataprocSessionTemplateStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *SessiontemplateObservedStateStatus `json:"observedState,omitempty"`
 }

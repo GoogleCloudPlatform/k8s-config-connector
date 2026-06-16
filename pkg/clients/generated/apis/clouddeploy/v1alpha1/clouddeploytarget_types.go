@@ -235,7 +235,7 @@ type CloudDeployTargetSpec struct {
 	// +optional
 	RequireApproval *bool `json:"requireApproval,omitempty"`
 
-	/* The GCP resource identifier. If not given, the metadata.name will be used. */
+	/* The Google Cloud resource identifier. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -270,7 +270,7 @@ type CloudDeployTargetStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudDeployTarget's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the CloudDeployTarget resource in GCP. */
+	/* A unique specifier for the CloudDeployTarget resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -278,7 +278,7 @@ type CloudDeployTargetStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *TargetObservedStateStatus `json:"observedState,omitempty"`
 }

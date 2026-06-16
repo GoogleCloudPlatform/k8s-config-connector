@@ -49,7 +49,7 @@ type ComputeNetworkEndpointGroupSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Location represents the geographical location of the ComputeNetworkEndpointGroup. Specify a zone name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location represents the geographical location of the ComputeNetworkEndpointGroup. Specify a zone name. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* Immutable. Type of network endpoints in this network endpoint group.

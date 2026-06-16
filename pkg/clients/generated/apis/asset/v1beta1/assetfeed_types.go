@@ -130,7 +130,7 @@ type AssetFeedStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AssetFeed's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the AssetFeed resource in GCP. */
+	/* A unique specifier for the AssetFeed resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

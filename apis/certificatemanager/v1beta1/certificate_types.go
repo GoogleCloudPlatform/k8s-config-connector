@@ -179,7 +179,7 @@ type CertificateManagerCertificateSpec struct {
 	EDGE_CACHE: Certificates with scope EDGE_CACHE are special-purposed certificates,
 	served from non-core Google data centers.
 
-	ALL_REGIONS: Certificates with ALL_REGIONS scope are served from all GCP regions (You can only use ALL_REGIONS with global certs).
+	ALL_REGIONS: Certificates with ALL_REGIONS scope are served from all Google Cloud regions (You can only use ALL_REGIONS with global certs).
 	see https://cloud.google.com/compute/docs/regions-zones. */
 	// +optional
 	Scope *string `json:"scope,omitempty"`
@@ -258,7 +258,7 @@ type CertificateManagerCertificateStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The observed state of the underlying GCP resource. */
+	/* The observed state of the underlying Google Cloud resource. */
 	// +optional
 	ObservedState *CertificateObservedStateStatus `json:"observedState,omitempty"`
 }

@@ -203,7 +203,7 @@ type BigQueryDatasetSpec struct {
 }
 
 type DatasetObservedStateStatus struct {
-	/* Optional. If the location is not specified in the spec, the GCP server defaults to a location and will be captured here. */
+	/* Optional. If the location is not specified in the spec, the Google Cloud server defaults to a location and will be captured here. */
 	// +optional
 	Location *string `json:"location,omitempty"`
 }
@@ -220,7 +220,7 @@ type BigQueryDatasetStatus struct {
 	// +optional
 	Etag *string `json:"etag,omitempty"`
 
-	/* A unique specifier for the BigQueryAnalyticsHubDataExchangeListing resource in GCP. */
+	/* A unique specifier for the BigQueryAnalyticsHubDataExchangeListing resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -232,7 +232,7 @@ type BigQueryDatasetStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *DatasetObservedStateStatus `json:"observedState,omitempty"`
 

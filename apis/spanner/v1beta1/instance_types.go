@@ -113,7 +113,7 @@ type SpannerInstanceStatus struct {
 	// +optional
 	State *string `json:"state,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *SpannerInstanceObservedState `json:"observedState,omitempty"`
 }

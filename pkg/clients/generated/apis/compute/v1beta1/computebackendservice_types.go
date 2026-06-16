@@ -840,7 +840,7 @@ type ComputeBackendServiceSpec struct {
 	// +optional
 	LocalityLbPolicy *string `json:"localityLbPolicy,omitempty"`
 
-	/* Location represents the geographical location of the ComputeBackendService. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location represents the geographical location of the ComputeBackendService. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* This field denotes the logging options for the load balancer traffic served by this backend service.

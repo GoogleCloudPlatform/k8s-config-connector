@@ -231,7 +231,7 @@ type IAPSettingsStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IAPSettings's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the IAPSettings resource in GCP. */
+	/* A unique specifier for the IAPSettings resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

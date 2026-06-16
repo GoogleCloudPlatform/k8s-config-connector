@@ -102,7 +102,7 @@ type NetworkSecurityBackendAuthenticationConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkSecurityBackendAuthenticationConfig's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the NetworkSecurityBackendAuthenticationConfig resource in GCP. */
+	/* A unique specifier for the NetworkSecurityBackendAuthenticationConfig resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -110,7 +110,7 @@ type NetworkSecurityBackendAuthenticationConfigStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *BackendauthenticationconfigObservedStateStatus `json:"observedState,omitempty"`
 }

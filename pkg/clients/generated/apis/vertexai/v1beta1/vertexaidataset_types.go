@@ -85,7 +85,7 @@ type VertexAIDatasetStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *DatasetObservedStateStatus `json:"observedState,omitempty"`
 }

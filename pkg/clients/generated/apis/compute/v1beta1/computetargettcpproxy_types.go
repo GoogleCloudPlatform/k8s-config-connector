@@ -46,7 +46,7 @@ type ComputeTargetTCPProxySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The geographical location of the ComputeTargetTCPProxy. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* The geographical location of the ComputeTargetTCPProxy. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	// +optional
 	Location *string `json:"location,omitempty"`
 
@@ -71,7 +71,7 @@ type ComputeTargetTCPProxyStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* A unique specifier for the ComputeTargetTCPProxy resource in GCP. */
+	/* A unique specifier for the ComputeTargetTCPProxy resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

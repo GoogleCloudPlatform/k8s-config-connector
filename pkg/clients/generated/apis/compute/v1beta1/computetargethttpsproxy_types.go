@@ -55,7 +55,7 @@ type ComputeTargetHTTPSProxySpec struct {
 	// +optional
 	HttpKeepAliveTimeoutSec *int64 `json:"httpKeepAliveTimeoutSec,omitempty"`
 
-	/* Location represents the geographical location of the ComputeTargetHTTPSProxy. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location represents the geographical location of the ComputeTargetHTTPSProxy. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* Immutable. This field only applies when the forwarding rule that references this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
@@ -100,7 +100,7 @@ type ComputeTargetHTTPSProxyStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* A unique specifier for the ComputeTargetHTTPSProxy resource in GCP. */
+	/* A unique specifier for the ComputeTargetHTTPSProxy resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -108,7 +108,7 @@ type ComputeTargetHTTPSProxyStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *TargethttpsproxyObservedStateStatus `json:"observedState,omitempty"`
 

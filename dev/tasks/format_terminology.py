@@ -14,8 +14,9 @@
 # limitations under the License.
 
 """
-Scans Go source files in apis/ and pkg/apis/ and updates standalone occurrences
-of 'GCP' to 'Google Cloud' within Go comments and docstrings.
+Scans Go source files across apis/, pkg/apis/, and pkg/clients/ and updates
+standalone occurrences of 'GCP' to 'Google Cloud' within Go comments and
+docstrings (handling both // and /* ... */ block comments).
 """
 
 import os
@@ -23,39 +24,31 @@ import re
 
 def process_file(filepath):
     with open(filepath, 'r') as f:
-        lines = f.readlines()
+        content = f.read()
     
-    modified = False
-    new_lines = []
-    
-    for line in lines:
+    def replace_in_comment(match):
+        comment_text = match.group(0)
         # Skip compiler/generator directives
-        if line.lstrip().startswith('// +') or line.lstrip().startswith('//go:'):
-            new_lines.append(line)
-            continue
-            
-        new_line = line
-        # If line is entirely a comment
-        if line.lstrip().startswith('//'):
-            new_line = re.sub(r'\bGCP\b', 'Google Cloud', line)
-        # Or if line has an end-of-line comment (not containing string literals/URLs)
-        elif '//' in line and not '"' in line and not '`' in line:
-            parts = line.split('//', 1)
-            new_comment = re.sub(r'\bGCP\b', 'Google Cloud', '//' + parts[1])
-            new_line = parts[0] + new_comment
-            
-        if new_line != line:
-            modified = True
-        new_lines.append(new_line)
+        if comment_text.startswith('// +') or comment_text.startswith('//go:'):
+            return comment_text
+        # Replace standalone GCP
+        return re.sub(r'\bGCP\b', 'Google Cloud', comment_text)
         
-    if modified:
+    # Match either /* ... */ or // ...
+    new_content = re.sub(r'/\*[\s\S]*?\*/|//.*', replace_in_comment, content)
+    
+    if new_content != content:
         print(f"Formatted terminology in: {filepath}")
         with open(filepath, 'w') as f:
-            f.writelines(new_lines)
+            f.write(new_content)
 
 def main():
     repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    dirs_to_scan = [os.path.join(repo_root, 'apis'), os.path.join(repo_root, 'pkg/apis')]
+    dirs_to_scan = [
+        os.path.join(repo_root, 'apis'),
+        os.path.join(repo_root, 'pkg/apis'),
+        os.path.join(repo_root, 'pkg/clients/generated/apis'),
+    ]
     for root_dir in dirs_to_scan:
         for folder, _, files in os.walk(root_dir):
             for file in files:

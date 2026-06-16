@@ -144,7 +144,7 @@ type ComputeReservationStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* A unique specifier for the ComputeReservation resource in GCP. */
+	/* A unique specifier for the ComputeReservation resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

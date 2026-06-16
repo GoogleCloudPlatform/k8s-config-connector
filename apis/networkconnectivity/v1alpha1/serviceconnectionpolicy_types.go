@@ -89,11 +89,11 @@ type NetworkConnectivityServiceConnectionPolicyStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* A unique specifier for the NetworkConnectivityServiceConnectionPolicy resource in GCP.*/
+	/* A unique specifier for the NetworkConnectivityServiceConnectionPolicy resource in Google Cloud.*/
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *NetworkConnectivityServiceConnectionPolicyObservedState `json:"observedState,omitempty"`
 }

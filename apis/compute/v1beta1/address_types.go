@@ -53,7 +53,7 @@ type ComputeAddressSpec struct {
 
 	/* Location represents the geographical location of the
 	   ComputeAddress. Specify a region name or "global" for global resources.
-	   Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	   Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	// +required
 	Location string `json:"location"`
 

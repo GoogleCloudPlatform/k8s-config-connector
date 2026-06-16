@@ -237,7 +237,7 @@ type ComputeForwardingRuleSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.load_balancing_scheme
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
 
-	/* Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location *string `json:"location"`
 
 	/* Immutable. Opaque filter criteria used by Loadbalancer to restrict routing

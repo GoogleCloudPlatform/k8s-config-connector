@@ -45,7 +45,7 @@ type AccessContextManagerServicePerimeterResourceSpec struct {
 	Referencing a resource name leads to recursive reference and Config Connector does not support the feature for now. */
 	PerimeterNameRef v1alpha1.ResourceRef `json:"perimeterNameRef"`
 
-	/* A GCP resource that is inside of the service perimeter. */
+	/* A Google Cloud resource that is inside of the service perimeter. */
 	ResourceRef v1alpha1.ResourceRef `json:"resourceRef"`
 }
 

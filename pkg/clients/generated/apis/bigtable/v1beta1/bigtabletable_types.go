@@ -80,7 +80,7 @@ type BigtableTableStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableTable's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BigtableTable resource in GCP. */
+	/* A unique specifier for the BigtableTable resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

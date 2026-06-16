@@ -123,7 +123,7 @@ type VMwareEngineNetworkPeeringStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VMwareEngineNetworkPeering's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the VMwareEngineNetworkPeering resource in GCP. */
+	/* A unique specifier for the VMwareEngineNetworkPeering resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -131,7 +131,7 @@ type VMwareEngineNetworkPeeringStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *NetworkpeeringObservedStateStatus `json:"observedState,omitempty"`
 }

@@ -39,7 +39,7 @@ type CommonStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* A unique Config Connector specifier for the resource in GCP.*/
+	/* A unique Config Connector specifier for the resource in Google Cloud.*/
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 }
