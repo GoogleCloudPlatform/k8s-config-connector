@@ -2883,6 +2883,16 @@
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.bigQuerySource.inputURI" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.dense" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.entityIDColumns[]" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.staticDataSource" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.timeSeries.timestampColumn" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAgentType" is not set in unstructured objects
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.enablePrivateServiceConnect" is not set in unstructured objects
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.projectAllowlist[]" is not set in unstructured objects
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.pscAutomationConfigs[].networkRef" is not set; neither 'external' nor 'name' are set

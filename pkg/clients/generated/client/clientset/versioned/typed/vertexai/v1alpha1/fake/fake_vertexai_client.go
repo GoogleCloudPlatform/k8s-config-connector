@@ -43,6 +43,10 @@ func (c *FakeVertexaiV1alpha1) VertexAIExampleStores(namespace string) v1alpha1.
 	return newFakeVertexAIExampleStores(c, namespace)
 }
 
+func (c *FakeVertexaiV1alpha1) VertexAIFeatureGroups(namespace string) v1alpha1.VertexAIFeatureGroupInterface {
+	return newFakeVertexAIFeatureGroups(c, namespace)
+}
+
 func (c *FakeVertexaiV1alpha1) VertexAIFeaturestores(namespace string) v1alpha1.VertexAIFeaturestoreInterface {
 	return newFakeVertexAIFeaturestores(c, namespace)
 }
