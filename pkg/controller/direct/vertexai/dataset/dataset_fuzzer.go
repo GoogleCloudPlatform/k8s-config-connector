@@ -9,14 +9,14 @@
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
+// See the License for the9 specific language governing permissions and
 // limitations under the License.
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.aiplatform.v1beta1.Dataset
 // api.group: vertexai.cnrm.cloud.google.com
 
-package vertexai
+package dataset
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"

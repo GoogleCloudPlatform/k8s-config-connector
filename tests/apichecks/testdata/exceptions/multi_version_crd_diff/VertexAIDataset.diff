@@ -1,0 +1,227 @@
+--- a/v1alpha1
++++ b/v1beta1
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		"apiVersion": {Description: "APIVersion defines the versioned schema of this representation o"..., Type: "string"},
+  		"kind":       {Description: "Kind is a string value representing the REST resource this objec"..., Type: "string"},
+  		"metadata":   {Type: "object"},
+  		"spec": {
+  			... // 20 identical fields
+  			MaxProperties: nil,
+  			MinProperties: nil,
+  			Required: []string{
+- 				"location",
++ 				"displayName",
++ 				"metadataSchemaUri",
+  				"projectRef",
+  			},
+  			Items: nil,
+  			AllOf: nil,
+  			OneOf: nil,
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+- 				"description": {Description: "The description of the Dataset.", Type: "string"},
+  				"displayName": {
+  					ID:     "",
+  					Schema: "",
+  					Ref:    nil,
+  					Description: strings.Join({
+- 						"Required. ",
+  						"The user-defined name of the Dataset. The name can be up to 128 ",
+  						"characters long and can consist of any UTF-8 characters.",
+  					}, ""),
+  					Type:   "string",
+  					Format: "",
+  					... // 38 identical fields
+  				},
+  				"encryptionSpec": {
+  					ID:     "",
+  					Schema: "",
+  					Ref:    nil,
+  					Description: strings.Join({
++ 						"Immutable. ",
+  						"Customer-managed encryption key spec for a Dataset. If set, this",
+  						" Dataset and all sub-resources of this Dataset will be secured b",
+  						"y this key.",
+  					}, ""),
+  					Type:   "object",
+  					Format: "",
+  					... // 14 identical fields
+  					MaxProperties: nil,
+  					MinProperties: nil,
+- 					Required:      []string{"kmsKeyRef"},
++ 					Required:      nil,
+  					Items:         nil,
+  					AllOf:         nil,
+  					OneOf:         nil,
+  					AnyOf:         nil,
+  					Not:           nil,
+  					Properties: map[string]v1.JSONSchemaProps{
++ 						"kmsKeyNameRef": {
++ 							Description: "Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: pro"...,
++ 							Type:        "object",
++ 							OneOf: []v1.JSONSchemaProps{
++ 								{Required: []string{...}, Not: s"&JSONSchemaProps{ID:,Schema:,Ref"...},
++ 								{Required: []string{...}, Not: s"&JSONSchemaProps{ID:,Schema:,Ref"...},
++ 							},
++ 							Properties: map[string]v1.JSONSchemaProps{
++ 								"external":  {Description: "A reference to an externally man"..., Type: "string"},
++ 								"name":      {Description: "The `name` of a `KMSCryptoKey` r"..., Type: "string"},
++ 								"namespace": {Description: "The `namespace` of a `KMSCryptoK"..., Type: "string"},
++ 							},
++ 						},
+- 						"kmsKeyRef": {
+- 							Description: "Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to "...,
+- 							Type:        "object",
+- 							OneOf: []v1.JSONSchemaProps{
+- 								{Required: []string{...}, Not: s"&JSONSchemaProps{ID:,Schema:,Ref"...},
+- 								{Required: []string{...}, Not: s"&JSONSchemaProps{ID:,Schema:,Ref"...},
+- 							},
+- 							Properties: map[string]v1.JSONSchemaProps{
+- 								"external":  {Description: "A reference to an externally man"..., Type: "string"},
+- 								"name":      {Description: "The `name` of a `KMSCryptoKey` r"..., Type: "string"},
+- 								"namespace": {Description: "The `namespace` of a `KMSCryptoK"..., Type: "string"},
+- 							},
+- 						},
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
+- 				"labels": {
+- 					Description: (
+- 						"""
+- 						The labels with user-defined metadata to organize your Datasets.
+- 						
+- 						Label keys and values can be no longer than 64 characters
+- 						(Unicode codepoints), can only contain lowercase letters, numeric
+- 						characters, underscores and dashes. International characters are allowed.
+- 						No more than 64 user labels can be associated with one Dataset (System
+- 						labels are excluded).
+- 						
+- 						See https://goo.gl/xmQnxf for more information and examples of labels.
+- 						System reserved label keys are prefixed with "aiplatform.googleapis.com/"
+- 						and are immutable. Following system labels exist for each Dataset:
+- 						
+- 						* "aiplatform.googleapis.com/dataset_metadata_schema": output only, its
+- 						  value is the
+- 						  [metadata_schema's][google.cloud.aiplatform.v1beta1.Dataset.metadata_schema_uri]
+- 						  title.
+- 						"""
+- 					),
+- 					Type:                 "object",
+- 					AdditionalProperties: s"&JSONSchemaPropsOrBool{Allows:true,Schema:&JSONSchemaProps{ID:,Schema:,Ref:nil,Description:,Type:string,Format:,Title:,Default:n"...,
+- 				},
+- 				"location": {Description: "The location of this resource.", Type: "string"},
+- 				"metadata": {
+- 					Description:            "Required. Additional information about the Dataset.",
+- 					XPreserveUnknownFields: &true,
+- 				},
+- 				"metadataSchemaURI": {
+- 					Description: "Required. Points to a YAML file stored on Google Cloud Storage describing additional information about the Dataset. The schema i"...,
+- 					Type:        "string",
+- 				},
++ 				"metadataSchemaUri": {
++ 					Description: "Immutable. Points to a YAML file stored on Google Cloud Storage describing additional information about the Dataset. The schema "...,
++ 					Type:        "string",
++ 				},
+  				"projectRef": {
+  					... // 26 identical fields
+  					AnyOf: nil,
+  					Not:   nil,
+  					Properties: map[string]v1.JSONSchemaProps{
+  						"external": {Description: "The `projectID` field of a project, when not managed by Config C"..., Type: "string"},
+- 						"kind": {
+- 							Description: "The kind of the Project resource; optional but must be `Project` if provided.",
+- 							Type:        "string",
+- 						},
+  						"name":      {Description: "The `name` field of a `Project` resource.", Type: "string"},
+  						"namespace": {Description: "The `namespace` field of a `Project` resource.", Type: "string"},
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
++ 				"region": {
++ 					Description: "Immutable. The region of the dataset. eg us-central1.",
++ 					Type:        "string",
++ 				},
+  				"resourceID": {
+  					ID:     "",
+  					Schema: "",
+  					Ref:    nil,
+  					Description: strings.Join({
+- 						"The VertexAIDataset name. If not given, the metadata.name will b",
+- 						"e used",
++ 						"Immutable. Optional. The service-generated name of the resource.",
++ 						" Used for acquisition only. Leave unset to create a new resource",
+  						".",
+  					}, ""),
+  					Type:   "string",
+  					Format: "",
+  					... // 38 identical fields
+  				},
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  		"status": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				"conditions": {Description: "Conditions represent the latest available observations of the ob"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}},
+- 				"externalRef": {
+- 					Description: "A unique specifier for the VertexAIDataset resource in GCP.",
+- 					Type:        "string",
+- 				},
+  				"observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer", Format: "int64"},
+  				"observedState": {
+  					... // 26 identical fields
+  					AnyOf: nil,
+  					Not:   nil,
+  					Properties: map[string]v1.JSONSchemaProps{
+  						"createTime": {Description: "Output only. Timestamp when this Dataset was created.", Type: "string"},
+- 						"dataItemCount": {
+- 							Description: "Output only. The number of DataItems in this Dataset. Only apply for non-structured Dataset.",
+- 							Type:        "integer",
+- 							Format:      "int64",
+- 						},
+- 						"metadataArtifact": {
+- 							Description: "Output only. The resource name of the Artifact that was created in MetadataStore when creating the Dataset. The Artifact resourc"...,
+- 							Type:        "string",
+- 						},
++ 						"name": {
++ 							Description: "Output only. The resource name of the Dataset instance.",
++ 							Type:        "string",
++ 						},
+- 						"savedQueries": {
+- 							Description: "All SavedQueries belong to the Dataset will be returned in List/Get Dataset response. The annotation_specs field will not be pop"...,
+- 							Type:        "array",
+- 							Items:       s"&JSONSchemaPropsOrArray{Schema:&JSONSchemaProps{ID:,Schema:,Ref:nil,Description:,Type:object,Format:,Title:,Default:nil,Maximum:"...,
+- 						},
+- 						"updateTime": {
+- 							Description: "Output only. Timestamp when this Dataset was last updated.",
+- 							Type:        "string",
+- 						},
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }
+

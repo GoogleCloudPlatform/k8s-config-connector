@@ -10,18 +10,21 @@
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
+# See the License for the9 specific language governing permissions and
 # limitations under the License.
+
 
 set -o errexit
 set -o nounset
 set -o pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
+REPO_ROOT="/workspaces/k8s-config-connector"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
+
+rm -f ${REPO_ROOT}/apis/vertexai/v1alpha1/zz_generated.deepcopy.go
 
 go run . generate-types \
     --service google.cloud.aiplatform.v1beta1 \
@@ -31,7 +34,8 @@ go run . generate-types \
     --resource VertexAIDeploymentResourcePool:DeploymentResourcePool \
     --resource VertexAIExampleStore:ExampleStore \
     --resource VertexAIFeatureGroup:FeatureGroup \
-    --resource VertexAIDataLabelingJob:DataLabelingJob
+    --resource VertexAIDataLabelingJob:DataLabelingJob \
+    --resource VertexAIDataset:Dataset
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

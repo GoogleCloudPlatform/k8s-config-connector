@@ -365,8 +365,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				case protoreflect.MessageKind:
 					krmElemTypeName := strings.TrimPrefix(krmField.Type, "*")
 					fromProtoElemFunc = krmElemTypeName + versionSpecifier + "_FromProto"
-					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
-						fromProtoElemFunc = krmFromProtoFunctionName(protoField, krmField.Name)
+					if expectedType, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+						if krmElemTypeName == expectedType {
+							fromProtoElemFunc = krmFromProtoFunctionName(protoField, krmField.Name)
+						}
 					}
 				case protoreflect.EnumKind:
 					fromProtoElemFunc = "direct. "
@@ -393,8 +395,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				case protoreflect.MessageKind:
 					krmElemTypeName := strings.TrimPrefix(krmSliceElemType, "*")
 					functionName := krmElemTypeName + versionSpecifier + "_FromProto"
-					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
-						functionName = krmFromProtoFunctionName(protoField, krmField.Name)
+					if expectedType, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+						if krmElemTypeName == expectedType {
+							functionName = krmFromProtoFunctionName(protoField, krmField.Name)
+						}
 					}
 					fmt.Fprintf(out, "\tif v := in.%s; v != nil {\n", protoAccessor)
 					if strings.HasPrefix(krmSliceElemType, "*") {
@@ -520,8 +524,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				// special handling for proto messages that mapped to KRM string
-				if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
-					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
+				if expectedType, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+					if krmTypeName == expectedType {
+						functionName = krmFromProtoFunctionName(protoField, krmField.Name)
+					}
 				}
 
 				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
@@ -655,8 +661,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
 					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
-					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
-						functionName = krmToProtoFunctionName(protoField, krmField.Name)
+					if expectedType, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+						if krmElemTypeName == expectedType {
+							functionName = krmToProtoFunctionName(protoField, krmField.Name)
+						}
 					}
 					fmt.Fprintf(out, "\t\tout.%s = %s(mapCtx, in.%s[0])\n", protoFieldName, functionName, krmFieldName)
 
@@ -697,8 +705,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
 					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
-					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
-						functionName = krmToProtoFunctionName(protoField, krmField.Name)
+					if expectedType, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+						if krmElemTypeName == expectedType {
+							functionName = krmToProtoFunctionName(protoField, krmField.Name)
+						}
 					}
 					toProtoElemFunc = functionName
 					protoSliceElemType = "*" + v.goPackageForProto(protoField.Message().ParentFile()) + "." + protoNameForType(protoField.Message())
@@ -817,8 +827,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				// special handling for proto messages that mapped to KRM string
-				if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
-					functionName = krmToProtoFunctionName(protoField, krmField.Name)
+				if expectedType, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+					if krmTypeName == expectedType {
+						functionName = krmToProtoFunctionName(protoField, krmField.Name)
+					}
 				}
 
 				oneof := protoField.ContainingOneof()
@@ -1113,6 +1125,10 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.StringTimestamp_FromProto"
 	case "google.protobuf.Struct":
 		return "direct.Struct_FromProto"
+	case "google.protobuf.Value":
+		return "direct.Value_FromProto"
+	case "google.protobuf.ListValue":
+		return "direct.ListValue_FromProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_FromProto"
 	case "google.protobuf.Int64Value":
@@ -1147,6 +1163,10 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.StringTimestamp_ToProto"
 	case "google.protobuf.Struct":
 		return "direct.Struct_ToProto"
+	case "google.protobuf.Value":
+		return "direct.Value_ToProto"
+	case "google.protobuf.ListValue":
+		return "direct.ListValue_ToProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_ToProto"
 	case "google.protobuf.Int64Value":

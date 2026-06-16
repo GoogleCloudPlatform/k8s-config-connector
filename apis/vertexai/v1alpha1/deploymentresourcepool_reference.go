@@ -41,7 +41,7 @@ type VertexAIDeploymentResourcePoolRef struct {
 }
 
 func init() {
-	refs.Register(&VertexAIDeploymentResourcePoolRef{}, &VertexAIDeploymentResourcePool{})
+	refs.Register(&VertexAIDeploymentResourcePoolRef{})
 }
 
 func (r *VertexAIDeploymentResourcePoolRef) GetGVK() schema.GroupVersionKind {

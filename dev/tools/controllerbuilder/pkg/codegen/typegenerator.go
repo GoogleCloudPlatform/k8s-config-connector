@@ -240,6 +240,8 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
+		
+		out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 
 		goTypeName := GoNameForProtoMessage(msg)
 		skipGenerated := true
@@ -298,6 +300,8 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
+
+		out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 
 		goTypeName := goNameForOutputProtoMessage(msg)
 		skipGenerated := true

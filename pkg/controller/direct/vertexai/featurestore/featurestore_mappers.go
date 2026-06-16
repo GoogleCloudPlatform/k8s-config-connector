@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package vertexai
+package featurestore
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"
 )
 
 func VertexAIFeaturestoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krm.VertexAIFeaturestoreObservedState {
@@ -55,7 +56,7 @@ func VertexAIFeaturestoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Featur
 	out.Labels = in.Labels
 	out.OnlineServingConfig = Featurestore_OnlineServingConfig_FromProto(mapCtx, in.GetOnlineServingConfig())
 	out.OnlineStorageTTLDays = direct.LazyPtr(in.GetOnlineStorageTtlDays())
-	out.EncryptionSpec = EncryptionSpecV1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.EncryptionSpec = vertexai.EncryptionSpecV1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out
@@ -69,7 +70,7 @@ func VertexAIFeaturestoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexA
 	out.Labels = in.Labels
 	out.OnlineServingConfig = Featurestore_OnlineServingConfig_ToProto(mapCtx, in.OnlineServingConfig)
 	out.OnlineStorageTtlDays = direct.ValueOf(in.OnlineStorageTTLDays)
-	out.EncryptionSpec = EncryptionSpecV1alpha1_ToProto(mapCtx, in.EncryptionSpec)
+	out.EncryptionSpec = vertexai.EncryptionSpecV1alpha1_ToProto(mapCtx, in.EncryptionSpec)
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out

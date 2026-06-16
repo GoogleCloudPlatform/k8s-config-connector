@@ -49,7 +49,7 @@ type VertexAITensorboardRef struct {
 }
 
 func init() {
-	refs.Register(&VertexAITensorboardRef{}, nil)
+	refs.Register(&VertexAITensorboardRef{})
 }
 
 func (r *VertexAITensorboardRef) GetGVK() schema.GroupVersionKind {
