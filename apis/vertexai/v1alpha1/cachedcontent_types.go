@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -29,7 +30,7 @@ type VertexAICachedContentSpec struct {
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The VertexAICachedContent name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -51,7 +52,7 @@ type VertexAICachedContentSpec struct {
 	// only the published Gemini base models are supported, in form of
 	// projects/{PROJECT}/locations/{LOCATION}/publishers/google/models/{MODEL}
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.model
-	Model *string `json:"model,omitempty"`
+	ModelRef *aiplatformv1alpha1.AIPlatformModelRef `json:"modelRef,omitempty"`
 
 	// Optional. Input only. Immutable. Developer set system instruction. Currently, text only
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.system_instruction
