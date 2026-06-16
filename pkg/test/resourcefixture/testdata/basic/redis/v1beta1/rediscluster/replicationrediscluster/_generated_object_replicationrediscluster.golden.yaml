@@ -67,17 +67,15 @@ status:
       network: projects/${projectId}/global/networks/${networkID}
       projectID: ${projectId}
       pscConnectionID: ${pscConnectionID}
-      serviceAttachment: projects/207866822093/regions/us-central1/serviceAttachments/gcp-memorystore-auto-fad362572d31615d-psc-sa
     - address: 10.11.12.13
       forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
       network: projects/${projectId}/global/networks/${networkID}
       projectID: ${projectId}
       pscConnectionID: ${pscConnectionID}
-      serviceAttachment: projects/207866822093/regions/us-central1/serviceAttachments/gcp-memorystore-auto-fad362572d31615d-psc-sa-2
     pscServiceAttachments:
     - connectionType: CONNECTION_TYPE_DISCOVERY
-      serviceAttachment: projects/207866822093/regions/us-central1/serviceAttachments/gcp-memorystore-auto-fad362572d31615d-psc-sa
-    - serviceAttachment: projects/207866822093/regions/us-central1/serviceAttachments/gcp-memorystore-auto-fad362572d31615d-psc-sa-2
-    sizeGb: 20
+      serviceAttachment: projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa
+    - serviceAttachment: projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2
+    sizeGb: 19
     state: ACTIVE
     uid: 0123456789abcdef
