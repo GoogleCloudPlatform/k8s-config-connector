@@ -25,7 +25,7 @@ spec:
   location: global
   target:
     # a supported Google APIs bundle (global-only)
-    googleAPIsBundle: "all-apis"
+    googleAPIsBundle: "vpc-sc"
   loadBalancingScheme: ""
   ipAddress:
     addressRef:
