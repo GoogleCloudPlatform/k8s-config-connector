@@ -16,7 +16,7 @@
   name: servicenetworkingconnection-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //backupdr.googleapis.com/projects/${projectId}/locations/us-east1/managementServers/backupdrmanagementserver-${uniqueId}
   group: backupdr.cnrm.cloud.google.com
   kind: BackupDRManagementServer
   name: backupdrmanagementserver-${uniqueId}

@@ -64,10 +64,11 @@ func (m *modelManagementServer) AdapterForObject(ctx context.Context, op *direct
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewManagementServerIdentity(ctx, reader, obj)
+	idRaw, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := idRaw.(*krm.ManagementServerIdentity)
 
 	// Get backupdr GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
@@ -139,8 +140,8 @@ func (a *ManagementServerAdapter) Create(ctx context.Context, createOp *directba
 	}
 
 	req := &pb.CreateManagementServerRequest{
-		Parent:             a.id.Parent().String(),
-		ManagementServerId: a.id.ID(),
+		Parent:             a.id.ParentString(),
+		ManagementServerId: a.id.ManagementServer,
 		ManagementServer:   resource,
 	}
 	op, err := a.gcpClient.CreateManagementServer(ctx, req)
@@ -225,8 +226,8 @@ func (a *ManagementServerAdapter) Export(ctx context.Context) (*unstructured.Uns
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
