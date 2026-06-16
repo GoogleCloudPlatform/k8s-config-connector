@@ -188,6 +188,11 @@ func (in *ComputeAddressSpec) DeepCopyInto(out *ComputeAddressSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.IpCollection != nil {
+		in, out := &in.IpCollection, &out.IpCollection
+		*out = new(string)
+		**out = **in
+	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
 		*out = new(ComputeNetworkRef)

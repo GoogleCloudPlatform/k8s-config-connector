@@ -77,6 +77,10 @@ spec:
               description:
                 description: Immutable. An optional description of this resource.
                 type: string
+              ipCollection:
+                description: Immutable. Reference to the source of external IPv4 addresses,
+                  like a PublicDelegatedPrefix(PDP) for BYOIP.
+                type: string
               ipVersion:
                 description: 'Immutable. The IP Version that will be used by this
                   address. The default value is ''IPV4''. Possible values: ["IPV4",

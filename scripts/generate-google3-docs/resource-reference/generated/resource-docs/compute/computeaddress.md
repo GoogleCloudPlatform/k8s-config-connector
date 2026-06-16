@@ -82,6 +82,7 @@ the `spec.location` field. To manage a regional ComputeAddress, use a region nam
 address: string
 addressType: string
 description: string
+ipCollection: string
 ipVersion: string
 ipv6EndpointType: string
 location: string
@@ -134,6 +135,16 @@ subnetworkRef:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. An optional description of this resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipCollection</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. Reference to the source of external IPv4 addresses, like a PublicDelegatedPrefix(PDP) for BYOIP.</p>
         </td>
     </tr>
     <tr>

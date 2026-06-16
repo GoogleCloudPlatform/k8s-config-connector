@@ -51,6 +51,11 @@ type ComputeAddressSpec struct {
 	// +optional
 	IPV6EndpointType *string `json:"ipv6EndpointType,omitempty"`
 
+	/* Immutable. Reference to the source of external IPv4 addresses,
+	   like a PublicDelegatedPrefix(PDP) for BYOIP. */
+	// +optional
+	IpCollection *string `json:"ipCollection,omitempty"`
+
 	/* Location represents the geographical location of the
 	   ComputeAddress. Specify a region name or "global" for global resources.
 	   Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
