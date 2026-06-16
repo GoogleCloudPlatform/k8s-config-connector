@@ -22,7 +22,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 121,
+    "sortOrder": 123,
     "downstreamCount": 0
   },
   {
@@ -48,7 +48,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 122,
+    "sortOrder": 124,
     "downstreamCount": 0
   },
   {
@@ -75,7 +75,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 126,
+    "sortOrder": 130,
     "downstreamCount": 0
   },
   {
@@ -102,7 +102,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 45,
+    "sortOrder": 46,
     "downstreamCount": 2
   },
   {
@@ -128,7 +128,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 129,
+    "sortOrder": 133,
     "downstreamCount": 0
   },
   {
@@ -176,7 +176,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 130,
+    "sortOrder": 134,
     "downstreamCount": 0
   },
   {
@@ -205,7 +205,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 131,
+    "sortOrder": 135,
     "downstreamCount": 0
   },
   {
@@ -229,7 +229,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 132,
+    "sortOrder": 136,
     "downstreamCount": 0
   },
   {
@@ -255,7 +255,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 133,
+    "sortOrder": 137,
     "downstreamCount": 0
   },
   {
@@ -284,7 +284,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 46,
+    "sortOrder": 47,
     "downstreamCount": 2
   },
   {
@@ -310,7 +310,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 135,
+    "sortOrder": 139,
     "downstreamCount": 0
   },
   {
@@ -334,7 +334,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 137,
+    "sortOrder": 141,
     "downstreamCount": 0
   },
   {
@@ -360,7 +360,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 47,
+    "sortOrder": 48,
     "downstreamCount": 2
   },
   {
@@ -384,7 +384,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 141,
+    "sortOrder": 145,
     "downstreamCount": 0
   },
   {
@@ -435,7 +435,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 142,
+    "sortOrder": 148,
     "downstreamCount": 0
   },
   {
@@ -459,7 +459,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 143,
+    "sortOrder": 149,
     "downstreamCount": 0
   },
   {
@@ -483,7 +483,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 144,
+    "sortOrder": 150,
     "downstreamCount": 0
   },
   {
@@ -509,7 +509,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 145,
+    "sortOrder": 151,
     "downstreamCount": 0
   },
   {
@@ -533,7 +533,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 146,
+    "sortOrder": 152,
     "downstreamCount": 0
   },
   {
@@ -559,7 +559,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 147,
+    "sortOrder": 153,
     "downstreamCount": 0
   },
   {
@@ -586,7 +586,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 151,
+    "sortOrder": 157,
     "downstreamCount": 0
   },
   {
@@ -612,7 +612,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 160,
+    "sortOrder": 166,
     "downstreamCount": 0
   },
   {
@@ -638,7 +638,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 161,
+    "sortOrder": 167,
     "downstreamCount": 0
   },
   {
@@ -664,7 +664,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 162,
+    "sortOrder": 168,
     "downstreamCount": 0
   },
   {
@@ -690,7 +690,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 169,
+    "sortOrder": 176,
     "downstreamCount": 0
   },
   {
@@ -744,7 +744,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
-    "sortOrder": 171,
+    "sortOrder": 178,
     "downstreamCount": 0
   },
   {
@@ -772,7 +772,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 172,
+    "sortOrder": 179,
     "downstreamCount": 0
   },
   {
@@ -798,7 +798,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 174,
+    "sortOrder": 181,
     "downstreamCount": 0
   },
   {
@@ -825,7 +825,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 175,
+    "sortOrder": 182,
     "downstreamCount": 0
   },
   {
@@ -853,7 +853,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 81,
+    "sortOrder": 82,
     "downstreamCount": 1
   },
   {
@@ -880,7 +880,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 176,
+    "sortOrder": 183,
     "downstreamCount": 0
   },
   {
@@ -907,7 +907,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 179,
+    "sortOrder": 186,
     "downstreamCount": 0
   },
   {
@@ -959,7 +959,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 50,
+    "sortOrder": 51,
     "downstreamCount": 2
   },
   {
@@ -985,7 +985,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 182,
+    "sortOrder": 189,
     "downstreamCount": 0
   },
   {
@@ -1011,7 +1011,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 183,
+    "sortOrder": 190,
     "downstreamCount": 0
   },
   {
@@ -1037,7 +1037,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 185,
+    "sortOrder": 192,
     "downstreamCount": 0
   },
   {
@@ -1047,23 +1047,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 187,
+    "sortOrder": 197,
     "downstreamCount": 0
   },
   {
@@ -1073,23 +1074,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 189,
+    "sortOrder": 199,
     "downstreamCount": 0
   },
   {
@@ -1106,7 +1108,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -1114,8 +1116,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 190,
+    "notes": "Missing _reference.go",
+    "sortOrder": 200,
     "downstreamCount": 0
   },
   {
@@ -1141,7 +1143,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 192,
+    "sortOrder": 202,
     "downstreamCount": 0
   },
   {
@@ -1165,7 +1167,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 193,
+    "sortOrder": 203,
     "downstreamCount": 0
   },
   {
@@ -1191,7 +1193,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 194,
+    "sortOrder": 204,
     "downstreamCount": 0
   },
   {
@@ -1219,7 +1221,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
-    "sortOrder": 196,
+    "sortOrder": 207,
     "downstreamCount": 0
   },
   {
@@ -1245,7 +1247,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 203,
+    "sortOrder": 214,
     "downstreamCount": 0
   },
   {
@@ -1272,7 +1274,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 204,
+    "sortOrder": 215,
     "downstreamCount": 0
   },
   {
@@ -1299,7 +1301,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 205,
+    "sortOrder": 216,
     "downstreamCount": 0
   },
   {
@@ -1323,7 +1325,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 206,
+    "sortOrder": 217,
     "downstreamCount": 0
   },
   {
@@ -1347,7 +1349,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 207,
+    "sortOrder": 218,
     "downstreamCount": 0
   },
   {
@@ -1373,7 +1375,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 209,
+    "sortOrder": 220,
     "downstreamCount": 0
   },
   {
@@ -1391,8 +1393,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -1400,7 +1402,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 52,
+    "sortOrder": 53,
     "downstreamCount": 2
   },
   {
@@ -1426,7 +1428,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 213,
+    "sortOrder": 224,
     "downstreamCount": 0
   },
   {
@@ -1479,7 +1481,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 214,
+    "sortOrder": 225,
     "downstreamCount": 0
   },
   {
@@ -1537,7 +1539,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 215,
+    "sortOrder": 226,
     "downstreamCount": 0
   },
   {
@@ -1557,8 +1559,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -1566,7 +1568,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 493,
+    "sortOrder": 524,
     "downstreamCount": 4
   },
   {
@@ -1593,7 +1595,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 496,
+    "sortOrder": 525,
     "downstreamCount": 0
   },
   {
@@ -1617,7 +1619,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 216,
+    "sortOrder": 227,
     "downstreamCount": 0
   },
   {
@@ -1634,7 +1636,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -1642,8 +1644,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 217,
+    "notes": "Missing _reference.go",
+    "sortOrder": 228,
     "downstreamCount": 0
   },
   {
@@ -1695,7 +1697,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 218,
+    "sortOrder": 229,
     "downstreamCount": 0
   },
   {
@@ -1732,7 +1734,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 86,
+    "sortOrder": 88,
     "downstreamCount": 1
   },
   {
@@ -1758,7 +1760,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 221,
+    "sortOrder": 232,
     "downstreamCount": 0
   },
   {
@@ -1784,7 +1786,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 222,
+    "sortOrder": 233,
     "downstreamCount": 0
   },
   {
@@ -1807,7 +1809,7 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
+    "notes": "Missing _reference.go",
     "sortOrder": 13,
     "downstreamCount": 11
   },
@@ -1832,7 +1834,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 223,
+    "sortOrder": 234,
     "downstreamCount": 0
   },
   {
@@ -1883,7 +1885,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 495,
+    "sortOrder": 526,
     "downstreamCount": 4
   },
   {
@@ -1904,8 +1906,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -1930,7 +1932,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -1938,7 +1940,7 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
+    "notes": "Missing _reference.go",
     "sortOrder": 15,
     "downstreamCount": 10
   },
@@ -1968,7 +1970,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 87,
+    "sortOrder": 89,
     "downstreamCount": 1
   },
   {
@@ -1994,7 +1996,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 224,
+    "sortOrder": 235,
     "downstreamCount": 0
   },
   {
@@ -2075,7 +2077,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 226,
+    "sortOrder": 237,
     "downstreamCount": 0
   },
   {
@@ -2101,7 +2103,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 227,
+    "sortOrder": 238,
     "downstreamCount": 0
   },
   {
@@ -2125,8 +2127,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 6,
-    "downstreamCount": 101
+    "sortOrder": 5,
+    "downstreamCount": 123
   },
   {
     "group": "compute",
@@ -2153,7 +2155,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 230,
+    "sortOrder": 241,
     "downstreamCount": 0
   },
   {
@@ -2206,7 +2208,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 231,
+    "sortOrder": 242,
     "downstreamCount": 0
   },
   {
@@ -2233,7 +2235,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 232,
+    "sortOrder": 243,
     "downstreamCount": 0
   },
   {
@@ -2260,7 +2262,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 233,
+    "sortOrder": 244,
     "downstreamCount": 0
   },
   {
@@ -2277,7 +2279,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -2285,8 +2287,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 234,
+    "notes": "Missing _reference.go",
+    "sortOrder": 245,
     "downstreamCount": 0
   },
   {
@@ -2313,7 +2315,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 235,
+    "sortOrder": 246,
     "downstreamCount": 0
   },
   {
@@ -2340,7 +2342,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 236,
+    "sortOrder": 247,
     "downstreamCount": 0
   },
   {
@@ -2356,15 +2358,15 @@
     "state": "Not Started",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 88,
+    "notes": "",
+    "sortOrder": 90,
     "downstreamCount": 1
   },
   {
@@ -2388,7 +2390,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 237,
+    "sortOrder": 248,
     "downstreamCount": 0
   },
   {
@@ -2412,7 +2414,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 238,
+    "sortOrder": 249,
     "downstreamCount": 0
   },
   {
@@ -2436,7 +2438,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 239,
+    "sortOrder": 250,
     "downstreamCount": 0
   },
   {
@@ -2462,7 +2464,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 240,
+    "sortOrder": 251,
     "downstreamCount": 0
   },
   {
@@ -2489,7 +2491,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 241,
+    "sortOrder": 252,
     "downstreamCount": 0
   },
   {
@@ -2513,7 +2515,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 242,
+    "sortOrder": 253,
     "downstreamCount": 0
   },
   {
@@ -2539,7 +2541,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 243,
+    "sortOrder": 254,
     "downstreamCount": 0
   },
   {
@@ -2566,7 +2568,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 494,
+    "sortOrder": 527,
     "downstreamCount": 0
   },
   {
@@ -2594,7 +2596,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 244,
+    "sortOrder": 255,
     "downstreamCount": 0
   },
   {
@@ -2611,7 +2613,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -2619,8 +2621,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 245,
+    "notes": "Missing _reference.go",
+    "sortOrder": 256,
     "downstreamCount": 0
   },
   {
@@ -2646,7 +2648,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 246,
+    "sortOrder": 257,
     "downstreamCount": 0
   },
   {
@@ -2673,7 +2675,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 247,
+    "sortOrder": 258,
     "downstreamCount": 0
   },
   {
@@ -2697,7 +2699,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 248,
+    "sortOrder": 259,
     "downstreamCount": 0
   },
   {
@@ -2723,7 +2725,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 249,
+    "sortOrder": 260,
     "downstreamCount": 0
   },
   {
@@ -2778,7 +2780,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 89,
+    "sortOrder": 91,
     "downstreamCount": 1
   },
   {
@@ -2805,7 +2807,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 250,
+    "sortOrder": 261,
     "downstreamCount": 0
   },
   {
@@ -2832,7 +2834,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 251,
+    "sortOrder": 262,
     "downstreamCount": 0
   },
   {
@@ -2856,7 +2858,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 252,
+    "sortOrder": 263,
     "downstreamCount": 0
   },
   {
@@ -2904,7 +2906,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 10,
+    "sortOrder": 11,
     "downstreamCount": 13
   },
   {
@@ -2930,7 +2932,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 53,
+    "sortOrder": 54,
     "downstreamCount": 2
   },
   {
@@ -2954,7 +2956,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 253,
+    "sortOrder": 264,
     "downstreamCount": 0
   },
   {
@@ -2980,7 +2982,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 254,
+    "sortOrder": 265,
     "downstreamCount": 0
   },
   {
@@ -2997,8 +2999,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -3024,14 +3026,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 9,
     "downstreamCount": 23
   },
@@ -3058,7 +3060,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 54,
+    "sortOrder": 55,
     "downstreamCount": 2
   },
   {
@@ -3084,7 +3086,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 55,
+    "sortOrder": 56,
     "downstreamCount": 2
   },
   {
@@ -3111,7 +3113,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 56,
+    "sortOrder": 57,
     "downstreamCount": 2
   },
   {
@@ -3139,7 +3141,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 255,
+    "sortOrder": 266,
     "downstreamCount": 0
   },
   {
@@ -3166,7 +3168,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 256,
+    "sortOrder": 267,
     "downstreamCount": 0
   },
   {
@@ -3193,7 +3195,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 57,
+    "sortOrder": 58,
     "downstreamCount": 2
   },
   {
@@ -3220,7 +3222,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 58,
+    "sortOrder": 59,
     "downstreamCount": 2
   },
   {
@@ -3328,7 +3330,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 59,
+    "sortOrder": 60,
     "downstreamCount": 2
   },
   {
@@ -3355,7 +3357,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 257,
+    "sortOrder": 268,
     "downstreamCount": 0
   },
   {
@@ -3379,7 +3381,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 259,
+    "sortOrder": 270,
     "downstreamCount": 0
   },
   {
@@ -3405,7 +3407,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 260,
+    "sortOrder": 271,
     "downstreamCount": 0
   },
   {
@@ -3431,7 +3433,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
-    "sortOrder": 261,
+    "sortOrder": 272,
     "downstreamCount": 0
   },
   {
@@ -3459,7 +3461,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 60,
+    "sortOrder": 61,
     "downstreamCount": 2
   },
   {
@@ -3488,7 +3490,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 262,
+    "sortOrder": 273,
     "downstreamCount": 0
   },
   {
@@ -3515,7 +3517,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 263,
+    "sortOrder": 276,
     "downstreamCount": 0
   },
   {
@@ -3541,7 +3543,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 90,
+    "sortOrder": 93,
     "downstreamCount": 1
   },
   {
@@ -3569,7 +3571,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 264,
+    "sortOrder": 278,
     "downstreamCount": 0
   },
   {
@@ -3595,7 +3597,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 265,
+    "sortOrder": 279,
     "downstreamCount": 0
   },
   {
@@ -3622,7 +3624,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 91,
+    "sortOrder": 94,
     "downstreamCount": 1
   },
   {
@@ -3649,7 +3651,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 266,
+    "sortOrder": 280,
     "downstreamCount": 0
   },
   {
@@ -3668,8 +3670,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -3677,7 +3679,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 267,
+    "sortOrder": 281,
     "downstreamCount": 0
   },
   {
@@ -3694,8 +3696,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -3703,7 +3705,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 268,
+    "sortOrder": 282,
     "downstreamCount": 0
   },
   {
@@ -3720,7 +3722,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -3728,8 +3730,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 269,
+    "notes": "Missing _reference.go",
+    "sortOrder": 283,
     "downstreamCount": 0
   },
   {
@@ -3755,7 +3757,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 270,
+    "sortOrder": 284,
     "downstreamCount": 0
   },
   {
@@ -3781,7 +3783,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 93,
+    "sortOrder": 96,
     "downstreamCount": 1
   },
   {
@@ -3808,7 +3810,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 273,
+    "sortOrder": 287,
     "downstreamCount": 0
   },
   {
@@ -3837,7 +3839,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 276,
+    "sortOrder": 294,
     "downstreamCount": 0
   },
   {
@@ -3865,7 +3867,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 277,
+    "sortOrder": 295,
     "downstreamCount": 0
   },
   {
@@ -3891,7 +3893,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
-    "sortOrder": 283,
+    "sortOrder": 303,
     "downstreamCount": 0
   },
   {
@@ -3951,7 +3953,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 288,
+    "sortOrder": 308,
     "downstreamCount": 0
   },
   {
@@ -3977,7 +3979,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 289,
+    "sortOrder": 309,
     "downstreamCount": 0
   },
   {
@@ -4003,7 +4005,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 292,
+    "sortOrder": 312,
     "downstreamCount": 0
   },
   {
@@ -4029,7 +4031,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 293,
+    "sortOrder": 313,
     "downstreamCount": 0
   },
   {
@@ -4053,7 +4055,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 296,
+    "sortOrder": 318,
     "downstreamCount": 0
   },
   {
@@ -4079,7 +4081,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 297,
+    "sortOrder": 319,
     "downstreamCount": 0
   },
   {
@@ -4103,7 +4105,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 298,
+    "sortOrder": 320,
     "downstreamCount": 0
   },
   {
@@ -4127,7 +4129,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 299,
+    "sortOrder": 321,
     "downstreamCount": 0
   },
   {
@@ -4151,7 +4153,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 300,
+    "sortOrder": 322,
     "downstreamCount": 0
   },
   {
@@ -4175,7 +4177,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 301,
+    "sortOrder": 323,
     "downstreamCount": 0
   },
   {
@@ -4199,7 +4201,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 302,
+    "sortOrder": 324,
     "downstreamCount": 0
   },
   {
@@ -4225,7 +4227,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 303,
+    "sortOrder": 326,
     "downstreamCount": 0
   },
   {
@@ -4251,7 +4253,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 304,
+    "sortOrder": 327,
     "downstreamCount": 0
   },
   {
@@ -4277,7 +4279,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 305,
+    "sortOrder": 329,
     "downstreamCount": 0
   },
   {
@@ -4301,7 +4303,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 310,
+    "sortOrder": 336,
     "downstreamCount": 0
   },
   {
@@ -4328,7 +4330,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 64,
+    "sortOrder": 65,
     "downstreamCount": 2
   },
   {
@@ -4356,7 +4358,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 313,
+    "sortOrder": 339,
     "downstreamCount": 0
   },
   {
@@ -4383,7 +4385,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 314,
+    "sortOrder": 340,
     "downstreamCount": 0
   },
   {
@@ -4409,7 +4411,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 96,
+    "sortOrder": 98,
     "downstreamCount": 1
   },
   {
@@ -4436,7 +4438,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 315,
+    "sortOrder": 341,
     "downstreamCount": 0
   },
   {
@@ -4465,7 +4467,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 320,
+    "sortOrder": 346,
     "downstreamCount": 0
   },
   {
@@ -4491,7 +4493,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 321,
+    "sortOrder": 347,
     "downstreamCount": 0
   },
   {
@@ -4518,7 +4520,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 322,
+    "sortOrder": 348,
     "downstreamCount": 0
   },
   {
@@ -4544,7 +4546,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 323,
+    "sortOrder": 349,
     "downstreamCount": 0
   },
   {
@@ -4570,7 +4572,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 324,
+    "sortOrder": 350,
     "downstreamCount": 0
   },
   {
@@ -4596,7 +4598,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 325,
+    "sortOrder": 351,
     "downstreamCount": 0
   },
   {
@@ -4620,7 +4622,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 326,
+    "sortOrder": 352,
     "downstreamCount": 0
   },
   {
@@ -4646,7 +4648,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 327,
+    "sortOrder": 353,
     "downstreamCount": 0
   },
   {
@@ -4670,7 +4672,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 97,
+    "sortOrder": 99,
     "downstreamCount": 1
   },
   {
@@ -4696,7 +4698,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 328,
+    "sortOrder": 354,
     "downstreamCount": 0
   },
   {
@@ -4720,7 +4722,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 329,
+    "sortOrder": 355,
     "downstreamCount": 0
   },
   {
@@ -4745,7 +4747,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 333,
+    "sortOrder": 359,
     "downstreamCount": 0
   },
   {
@@ -4770,7 +4772,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 1,
-    "downstreamCount": 337
+    "downstreamCount": 367
   },
   {
     "group": "gkehub",
@@ -4795,7 +4797,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 100,
+    "sortOrder": 102,
     "downstreamCount": 1
   },
   {
@@ -4819,7 +4821,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 66,
+    "sortOrder": 67,
     "downstreamCount": 2
   },
   {
@@ -4843,7 +4845,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 339,
+    "sortOrder": 365,
     "downstreamCount": 0
   },
   {
@@ -4867,7 +4869,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 340,
+    "sortOrder": 366,
     "downstreamCount": 0
   },
   {
@@ -4893,7 +4895,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 341,
+    "sortOrder": 367,
     "downstreamCount": 0
   },
   {
@@ -4917,7 +4919,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 342,
+    "sortOrder": 368,
     "downstreamCount": 0
   },
   {
@@ -4941,7 +4943,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 343,
+    "sortOrder": 369,
     "downstreamCount": 0
   },
   {
@@ -4967,7 +4969,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 344,
+    "sortOrder": 370,
     "downstreamCount": 0
   },
   {
@@ -4991,7 +4993,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
-    "sortOrder": 345,
+    "sortOrder": 371,
     "downstreamCount": 0
   },
   {
@@ -5015,7 +5017,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 346,
+    "sortOrder": 372,
     "downstreamCount": 0
   },
   {
@@ -5043,7 +5045,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
-    "sortOrder": 348,
+    "sortOrder": 374,
     "downstreamCount": 0
   },
   {
@@ -5067,7 +5069,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
-    "sortOrder": 349,
+    "sortOrder": 375,
     "downstreamCount": 0
   },
   {
@@ -5094,7 +5096,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
-    "sortOrder": 350,
+    "sortOrder": 376,
     "downstreamCount": 0
   },
   {
@@ -5119,7 +5121,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 7,
-    "downstreamCount": 49
+    "downstreamCount": 51
   },
   {
     "group": "iam",
@@ -5144,7 +5146,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 351,
+    "sortOrder": 377,
     "downstreamCount": 0
   },
   {
@@ -5168,7 +5170,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 101,
+    "sortOrder": 103,
     "downstreamCount": 1
   },
   {
@@ -5194,7 +5196,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 352,
+    "sortOrder": 378,
     "downstreamCount": 0
   },
   {
@@ -5220,7 +5222,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 102,
+    "sortOrder": 104,
     "downstreamCount": 1
   },
   {
@@ -5247,7 +5249,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 353,
+    "sortOrder": 379,
     "downstreamCount": 0
   },
   {
@@ -5271,7 +5273,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 103,
+    "sortOrder": 105,
     "downstreamCount": 1
   },
   {
@@ -5297,7 +5299,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 354,
+    "sortOrder": 380,
     "downstreamCount": 0
   },
   {
@@ -5323,7 +5325,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 356,
+    "sortOrder": 382,
     "downstreamCount": 0
   },
   {
@@ -5349,7 +5351,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 357,
+    "sortOrder": 383,
     "downstreamCount": 0
   },
   {
@@ -5375,7 +5377,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 358,
+    "sortOrder": 384,
     "downstreamCount": 0
   },
   {
@@ -5399,7 +5401,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 359,
+    "sortOrder": 385,
     "downstreamCount": 0
   },
   {
@@ -5425,7 +5427,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 360,
+    "sortOrder": 386,
     "downstreamCount": 0
   },
   {
@@ -5449,7 +5451,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 104,
+    "sortOrder": 106,
     "downstreamCount": 1
   },
   {
@@ -5475,7 +5477,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 361,
+    "sortOrder": 387,
     "downstreamCount": 0
   },
   {
@@ -5501,7 +5503,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 362,
+    "sortOrder": 388,
     "downstreamCount": 0
   },
   {
@@ -5527,7 +5529,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 363,
+    "sortOrder": 389,
     "downstreamCount": 0
   },
   {
@@ -5537,23 +5539,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "KMSKeyRing"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 5,
+    "sortOrder": 6,
     "downstreamCount": 122
   },
   {
@@ -5568,7 +5571,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -5576,8 +5579,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 365,
+    "notes": "Missing _reference.go",
+    "sortOrder": 391,
     "downstreamCount": 0
   },
   {
@@ -5587,17 +5590,18 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
@@ -5625,7 +5629,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 368,
+    "sortOrder": 394,
     "downstreamCount": 0
   },
   {
@@ -5649,7 +5653,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 369,
+    "sortOrder": 395,
     "downstreamCount": 0
   },
   {
@@ -5677,7 +5681,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 43,
+    "sortOrder": 44,
     "downstreamCount": 3
   },
   {
@@ -5687,24 +5691,25 @@
     "controllerType": "DCL",
     "defaultController": "DCL",
     "supportedControllers": [
-      "DCL"
+      "DCL",
+      "Direct"
     ],
     "dependencies": [
       "Folder",
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 371,
+    "sortOrder": 397,
     "downstreamCount": 0
   },
   {
@@ -5714,6 +5719,7 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
@@ -5724,18 +5730,18 @@
       "PubSubTopic",
       "StorageBucket"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 373,
+    "sortOrder": 399,
     "downstreamCount": 0
   },
   {
@@ -5764,7 +5770,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 374,
+    "sortOrder": 400,
     "downstreamCount": 0
   },
   {
@@ -5790,7 +5796,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 375,
+    "sortOrder": 401,
     "downstreamCount": 0
   },
   {
@@ -5816,7 +5822,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 378,
+    "sortOrder": 404,
     "downstreamCount": 0
   },
   {
@@ -5840,7 +5846,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 105,
+    "sortOrder": 107,
     "downstreamCount": 1
   },
   {
@@ -5857,8 +5863,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -5866,7 +5872,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 106,
+    "sortOrder": 108,
     "downstreamCount": 1
   },
   {
@@ -5883,8 +5889,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -5892,7 +5898,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 383,
+    "sortOrder": 410,
     "downstreamCount": 0
   },
   {
@@ -5907,8 +5913,8 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -5916,7 +5922,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 384,
+    "sortOrder": 411,
     "downstreamCount": 0
   },
   {
@@ -5940,7 +5946,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 385,
+    "sortOrder": 412,
     "downstreamCount": 0
   },
   {
@@ -5957,8 +5963,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -5966,7 +5972,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 107,
+    "sortOrder": 109,
     "downstreamCount": 1
   },
   {
@@ -5993,7 +5999,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 386,
+    "sortOrder": 413,
     "downstreamCount": 0
   },
   {
@@ -6020,7 +6026,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 387,
+    "sortOrder": 414,
     "downstreamCount": 0
   },
   {
@@ -6046,7 +6052,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 108,
+    "sortOrder": 110,
     "downstreamCount": 1
   },
   {
@@ -6073,7 +6079,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 393,
+    "sortOrder": 420,
     "downstreamCount": 0
   },
   {
@@ -6099,7 +6105,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 395,
+    "sortOrder": 422,
     "downstreamCount": 0
   },
   {
@@ -6125,7 +6131,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 397,
+    "sortOrder": 424,
     "downstreamCount": 0
   },
   {
@@ -6151,7 +6157,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 402,
+    "sortOrder": 430,
     "downstreamCount": 0
   },
   {
@@ -6177,7 +6183,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 403,
+    "sortOrder": 431,
     "downstreamCount": 0
   },
   {
@@ -6203,7 +6209,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 404,
+    "sortOrder": 432,
     "downstreamCount": 0
   },
   {
@@ -6229,7 +6235,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 405,
+    "sortOrder": 433,
     "downstreamCount": 0
   },
   {
@@ -6255,7 +6261,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 406,
+    "sortOrder": 434,
     "downstreamCount": 0
   },
   {
@@ -6282,7 +6288,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 407,
+    "sortOrder": 435,
     "downstreamCount": 0
   },
   {
@@ -6308,7 +6314,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 408,
+    "sortOrder": 436,
     "downstreamCount": 0
   },
   {
@@ -6335,7 +6341,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 409,
+    "sortOrder": 437,
     "downstreamCount": 0
   },
   {
@@ -6361,7 +6367,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 411,
+    "sortOrder": 439,
     "downstreamCount": 0
   },
   {
@@ -6388,7 +6394,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 413,
+    "sortOrder": 441,
     "downstreamCount": 0
   },
   {
@@ -6415,7 +6421,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 414,
+    "sortOrder": 442,
     "downstreamCount": 0
   },
   {
@@ -6441,7 +6447,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 417,
+    "sortOrder": 446,
     "downstreamCount": 0
   },
   {
@@ -6467,7 +6473,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 418,
+    "sortOrder": 447,
     "downstreamCount": 0
   },
   {
@@ -6493,7 +6499,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 419,
+    "sortOrder": 448,
     "downstreamCount": 0
   },
   {
@@ -6517,7 +6523,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 420,
+    "sortOrder": 449,
     "downstreamCount": 0
   },
   {
@@ -6544,7 +6550,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 68,
+    "sortOrder": 69,
     "downstreamCount": 2
   },
   {
@@ -6573,7 +6579,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 424,
+    "sortOrder": 453,
     "downstreamCount": 0
   },
   {
@@ -6602,7 +6608,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 111,
+    "sortOrder": 113,
     "downstreamCount": 1
   },
   {
@@ -6628,7 +6634,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 112,
+    "sortOrder": 114,
     "downstreamCount": 1
   },
   {
@@ -6655,7 +6661,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 3,
-    "downstreamCount": 332
+    "downstreamCount": 362
   },
   {
     "group": "pubsublite",
@@ -6680,7 +6686,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 426,
+    "sortOrder": 455,
     "downstreamCount": 0
   },
   {
@@ -6706,7 +6712,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 427,
+    "sortOrder": 456,
     "downstreamCount": 0
   },
   {
@@ -6732,7 +6738,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 428,
+    "sortOrder": 457,
     "downstreamCount": 0
   },
   {
@@ -6742,18 +6748,19 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "Project"
     ],
-    "state": "In Progress",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
-      "controller": false,
+      "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
@@ -6776,8 +6783,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -6785,7 +6792,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 69,
+    "sortOrder": 70,
     "downstreamCount": 2
   },
   {
@@ -6795,20 +6802,21 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "KMSCryptoKey",
       "PubSubSchema"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
@@ -6838,7 +6846,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 431,
+    "sortOrder": 460,
     "downstreamCount": 0
   },
   {
@@ -6864,7 +6872,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 433,
+    "sortOrder": 462,
     "downstreamCount": 0
   },
   {
@@ -6890,7 +6898,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 434,
+    "sortOrder": 463,
     "downstreamCount": 0
   },
   {
@@ -6917,7 +6925,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 435,
+    "sortOrder": 464,
     "downstreamCount": 0
   },
   {
@@ -6947,7 +6955,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 436,
+    "sortOrder": 465,
     "downstreamCount": 0
   },
   {
@@ -6975,7 +6983,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 437,
+    "sortOrder": 466,
     "downstreamCount": 0
   },
   {
@@ -6999,7 +7007,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 438,
+    "sortOrder": 467,
     "downstreamCount": 0
   },
   {
@@ -7023,7 +7031,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 439,
+    "sortOrder": 468,
     "downstreamCount": 0
   },
   {
@@ -7047,7 +7055,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 440,
+    "sortOrder": 469,
     "downstreamCount": 0
   },
   {
@@ -7074,7 +7082,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 70,
+    "sortOrder": 71,
     "downstreamCount": 2
   },
   {
@@ -7101,7 +7109,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 441,
+    "sortOrder": 470,
     "downstreamCount": 0
   },
   {
@@ -7125,7 +7133,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 445,
+    "sortOrder": 474,
     "downstreamCount": 0
   },
   {
@@ -7149,7 +7157,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 446,
+    "sortOrder": 475,
     "downstreamCount": 0
   },
   {
@@ -7175,8 +7183,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 11,
-    "downstreamCount": 13
+    "sortOrder": 10,
+    "downstreamCount": 15
   },
   {
     "group": "servicedirectory",
@@ -7193,7 +7201,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -7201,8 +7209,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 447,
+    "notes": "Missing _reference.go",
+    "sortOrder": 476,
     "downstreamCount": 0
   },
   {
@@ -7228,7 +7236,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 114,
+    "sortOrder": 116,
     "downstreamCount": 1
   },
   {
@@ -7238,23 +7246,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ServiceDirectoryNamespace"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 448,
+    "sortOrder": 477,
     "downstreamCount": 0
   },
   {
@@ -7280,7 +7289,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 71,
+    "sortOrder": 72,
     "downstreamCount": 2
   },
   {
@@ -7306,7 +7315,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 449,
+    "sortOrder": 478,
     "downstreamCount": 0
   },
   {
@@ -7332,7 +7341,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 451,
+    "sortOrder": 480,
     "downstreamCount": 0
   },
   {
@@ -7358,7 +7367,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 452,
+    "sortOrder": 481,
     "downstreamCount": 0
   },
   {
@@ -7385,7 +7394,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 115,
+    "sortOrder": 117,
     "downstreamCount": 1
   },
   {
@@ -7410,7 +7419,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 72,
+    "sortOrder": 73,
     "downstreamCount": 2
   },
   {
@@ -7423,6 +7432,7 @@
       "Terraform"
     ],
     "dependencies": [
+      "ComputeNetwork",
       "KMSCryptoKey"
     ],
     "state": "In Progress",
@@ -7462,7 +7472,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 459,
+    "sortOrder": 488,
     "downstreamCount": 0
   },
   {
@@ -7488,7 +7498,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 460,
+    "sortOrder": 489,
     "downstreamCount": 0
   },
   {
@@ -7514,7 +7524,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 462,
+    "sortOrder": 491,
     "downstreamCount": 0
   },
   {
@@ -7540,7 +7550,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 464,
+    "sortOrder": 493,
     "downstreamCount": 0
   },
   {
@@ -7566,7 +7576,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 465,
+    "sortOrder": 494,
     "downstreamCount": 0
   },
   {
@@ -7592,7 +7602,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 466,
+    "sortOrder": 495,
     "downstreamCount": 0
   },
   {
@@ -7618,7 +7628,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 467,
+    "sortOrder": 496,
     "downstreamCount": 0
   },
   {
@@ -7645,7 +7655,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
-    "sortOrder": 469,
+    "sortOrder": 498,
     "downstreamCount": 0
   },
   {
@@ -7672,7 +7682,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 470,
+    "sortOrder": 499,
     "downstreamCount": 0
   },
   {
@@ -7697,7 +7707,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 471,
+    "sortOrder": 500,
     "downstreamCount": 0
   },
   {
@@ -7722,7 +7732,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 73,
+    "sortOrder": 74,
     "downstreamCount": 2
   },
   {
@@ -7749,7 +7759,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 475,
+    "sortOrder": 504,
     "downstreamCount": 0
   },
   {
@@ -7767,8 +7777,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -7776,7 +7786,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 477,
+    "sortOrder": 506,
     "downstreamCount": 0
   },
   {
@@ -7804,7 +7814,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 479,
+    "sortOrder": 508,
     "downstreamCount": 0
   },
   {
@@ -7828,7 +7838,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 482,
+    "sortOrder": 512,
     "downstreamCount": 0
   },
   {
@@ -7852,7 +7862,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 483,
+    "sortOrder": 513,
     "downstreamCount": 0
   },
   {
@@ -7878,7 +7888,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 484,
+    "sortOrder": 514,
     "downstreamCount": 0
   },
   {
@@ -7904,7 +7914,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 485,
+    "sortOrder": 515,
     "downstreamCount": 0
   },
   {
@@ -7930,7 +7940,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 487,
+    "sortOrder": 518,
     "downstreamCount": 0
   }
 ]
