@@ -1056,6 +1056,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com":        true, // spec.cloudResource is an empty object
 		"bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com":                 true, // status.observedState is an empty object
 		"bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com":        true, // spec.scheduleOptionsV2.manualSchedule is an empty object
+		"bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com":   true, // spec.tasks[*].translationTaskDetails.teradataOptions is an empty object
 		"bigquerytables.bigquery.cnrm.cloud.google.com":                                 true, // status.observedState is an empty object
 		"bigtableauthorizedviews.bigtable.cnrm.cloud.google.com":                        true, // status.observedState is an empty object
 		"bigtablelogicalviews.bigtable.cnrm.cloud.google.com":                           true, // status.observedState is an empty object

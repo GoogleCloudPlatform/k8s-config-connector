@@ -57,6 +57,7 @@ import (
 	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1beta1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1"
+	bigquerymigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerymigration/v1alpha1"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1alpha1"
 	bigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1beta1"
 	bigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1alpha1"
@@ -246,6 +247,7 @@ type Interface interface {
 	BigqueryconnectionV1beta1() bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Interface
 	BigquerydatapolicyV1alpha1() bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Interface
 	BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Interface
+	BigquerymigrationV1alpha1() bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Interface
 	BigqueryreservationV1alpha1() bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Interface
 	BigqueryreservationV1beta1() bigqueryreservationv1beta1.BigqueryreservationV1beta1Interface
 	BigtableV1alpha1() bigtablev1alpha1.BigtableV1alpha1Interface
@@ -433,6 +435,7 @@ type Clientset struct {
 	bigqueryconnectionV1beta1       *bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Client
 	bigquerydatapolicyV1alpha1      *bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Client
 	bigquerydatatransferV1beta1     *bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Client
+	bigquerymigrationV1alpha1       *bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Client
 	bigqueryreservationV1alpha1     *bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Client
 	bigqueryreservationV1beta1      *bigqueryreservationv1beta1.BigqueryreservationV1beta1Client
 	bigtableV1alpha1                *bigtablev1alpha1.BigtableV1alpha1Client
@@ -743,6 +746,11 @@ func (c *Clientset) BigquerydatapolicyV1alpha1() bigquerydatapolicyv1alpha1.Bigq
 // BigquerydatatransferV1beta1 retrieves the BigquerydatatransferV1beta1Client
 func (c *Clientset) BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Interface {
 	return c.bigquerydatatransferV1beta1
+}
+
+// BigquerymigrationV1alpha1 retrieves the BigquerymigrationV1alpha1Client
+func (c *Clientset) BigquerymigrationV1alpha1() bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Interface {
+	return c.bigquerymigrationV1alpha1
 }
 
 // BigqueryreservationV1alpha1 retrieves the BigqueryreservationV1alpha1Client
@@ -1667,6 +1675,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.bigquerymigrationV1alpha1, err = bigquerymigrationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.bigqueryreservationV1alpha1, err = bigqueryreservationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2320,6 +2332,7 @@ func New(c rest.Interface) *Clientset {
 	cs.bigqueryconnectionV1beta1 = bigqueryconnectionv1beta1.New(c)
 	cs.bigquerydatapolicyV1alpha1 = bigquerydatapolicyv1alpha1.New(c)
 	cs.bigquerydatatransferV1beta1 = bigquerydatatransferv1beta1.New(c)
+	cs.bigquerymigrationV1alpha1 = bigquerymigrationv1alpha1.New(c)
 	cs.bigqueryreservationV1alpha1 = bigqueryreservationv1alpha1.New(c)
 	cs.bigqueryreservationV1beta1 = bigqueryreservationv1beta1.New(c)
 	cs.bigtableV1alpha1 = bigtablev1alpha1.New(c)
