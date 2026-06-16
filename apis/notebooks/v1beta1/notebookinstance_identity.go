@@ -32,7 +32,7 @@ var (
 
 var NotebookInstanceIdentityFormat = gcpurls.Template[NotebookInstanceIdentity]("notebooks.googleapis.com", "projects/{project}/locations/{location}/instances/{instance}")
 
-// NotebookInstanceIdentity is the identity of a GCP NotebookInstance resource.
+// NotebookInstanceIdentity is the identity of a Google Cloud NotebookInstance resource.
 // +k8s:deepcopy-gen=false
 type NotebookInstanceIdentity struct {
 	Project  string

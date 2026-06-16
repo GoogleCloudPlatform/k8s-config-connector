@@ -21,9 +21,9 @@ type ControllerArgs struct {
 	KCCVersion string
 	// The ConfigConnector Kind
 	Kind string
-	// The GCP resource name. Normally the same with the `Kind` without KCCService.
+	// The Google Cloud resource name. Normally the same with the `Kind` without KCCService.
 	ProtoResource string
-	// The GCP API version.
+	// The Google Cloud API version.
 	ProtoVersion string
 }
 
@@ -139,7 +139,7 @@ type {{.ProtoResource}}Adapter struct {
 
 var _ directbase.Adapter = &{{.ProtoResource}}Adapter{}
 
-// Find retrieves the GCP resource.
+// Find retrieves the Google Cloud resource.
 // Return true means the object is found. This triggers Adapter ` + "`" + `Update` + "`" + ` call.
 // Return false means the object is not found. This triggers Adapter ` + "`" + `Create` + "`" + ` call.
 // Return a non-nil error requeues the requests. 
@@ -160,7 +160,7 @@ func (a *{{.ProtoResource}}Adapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-// Create creates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.  
+// Create creates the resource in Google Cloud based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the Google Cloud response.  
 func (a *{{.ProtoResource}}Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating {{.ProtoResource}}", "name", a.id)
@@ -196,7 +196,7 @@ func (a *{{.ProtoResource}}Adapter) Create(ctx context.Context, createOp *direct
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-// Update updates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.  
+// Update updates the resource in Google Cloud based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the Google Cloud response.  
 func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating {{.ProtoResource}}", "name", a.id)
@@ -260,7 +260,7 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
-// Export maps the GCP object to a Config Connector resource ` + "`" + `spec` + "`" + `. 
+// Export maps the Google Cloud object to a Config Connector resource ` + "`" + `spec` + "`" + `. 
 func (a *{{.ProtoResource}}Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
@@ -287,7 +287,7 @@ func (a *{{.ProtoResource}}Adapter) Export(ctx context.Context) (*unstructured.U
 	return u, nil
 }
 
-// Delete the resource from GCP service when the corresponding Config Connector resource is deleted. 
+// Delete the resource from Google Cloud service when the corresponding Config Connector resource is deleted. 
 func (a *{{.ProtoResource}}Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting {{.ProtoResource}}", "name", a.id)

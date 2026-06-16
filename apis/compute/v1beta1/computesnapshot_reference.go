@@ -34,7 +34,7 @@ var ComputeSnapshotGVK = schema.GroupVersionKind{
 
 var _ refs.Ref = &ComputeSnapshotRef{}
 
-// ComputeSnapshotRef is a reference to a GCP ComputeSnapshot.
+// ComputeSnapshotRef is a reference to a Google Cloud ComputeSnapshot.
 type ComputeSnapshotRef struct {
 	// A reference to an externally managed ComputeSnapshot resource. Should be in the format "projects/{{projectID}}/global/snapshots/{{snapshotID}}" or "projects/{{projectID}}/regions/{{region}}/snapshots/{{snapshotID}}".
 	External string `json:"external,omitempty"`

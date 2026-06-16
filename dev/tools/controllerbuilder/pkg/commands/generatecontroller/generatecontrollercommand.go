@@ -38,7 +38,8 @@ type GenerateControllerOptions struct {
 
 func (o *GenerateControllerOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().Var(&o.Resource, "resource", "the KRM Kind and the equivalent proto resource separated with a colon.  e.g. for resource google.storage.v1.Bucket, the flag should be `StorageBucket:Bucket`.")
-	cmd.Flags().StringVarP(&o.ServiceName, "service", "s", "", "the GCP service name")}
+	cmd.Flags().StringVarP(&o.ServiceName, "service", "s", "", "the Google Cloud service name")
+}
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	opt := &GenerateControllerOptions{
@@ -85,7 +86,7 @@ func RunController(ctx context.Context, o *GenerateControllerOptions) error {
 	gcpTokens := strings.Split(o.ServiceName, ".")
 	version := gcpTokens[len(gcpTokens)-1]
 	if version[0] != 'v' {
-		return fmt.Errorf("--service does not contain GCP version")
+		return fmt.Errorf("--service does not contain Google Cloud version")
 	}
 	serviceName := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com")
 	cArgs := &cctemplate.ControllerArgs{

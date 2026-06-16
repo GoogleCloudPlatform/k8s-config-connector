@@ -32,7 +32,7 @@ var (
 
 var MonitoringMonitoredProjectIdentityFormat = gcpurls.Template[MonitoringMonitoredProjectIdentity]("monitoring.googleapis.com", "locations/global/metricsScopes/{metricsScope}/projects/{project}")
 
-// MonitoringMonitoredProjectIdentity is the identity of a GCP MonitoringMonitoredProject resource.
+// MonitoringMonitoredProjectIdentity is the identity of a Google Cloud MonitoringMonitoredProject resource.
 // +k8s:deepcopy-gen=false
 type MonitoringMonitoredProjectIdentity struct {
 	MetricsScope string

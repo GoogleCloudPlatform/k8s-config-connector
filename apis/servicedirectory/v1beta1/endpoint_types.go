@@ -62,7 +62,7 @@ type ServiceDirectoryEndpointStatus struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// ServiceDirectoryEndpointObservedState is the state of the ServiceDirectoryEndpoint resource as most recently observed in GCP.
+// ServiceDirectoryEndpointObservedState is the state of the ServiceDirectoryEndpoint resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.servicedirectory.v1beta1.Endpoint
 type ServiceDirectoryEndpointObservedState struct {
 }

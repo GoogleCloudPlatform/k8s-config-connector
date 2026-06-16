@@ -28,7 +28,7 @@ import (
 
 var _ refs.Ref = &MonitoringGroupRef{}
 
-// MonitoringGroupRef is a reference to a GCP MonitoringGroup.
+// MonitoringGroupRef is a reference to a Google Cloud MonitoringGroup.
 type MonitoringGroupRef struct {
 	// A reference to an externally managed MonitoringGroup resource.
 	// Should be in the format "projects/{{projectID}}/groups/{{groupID}}".
