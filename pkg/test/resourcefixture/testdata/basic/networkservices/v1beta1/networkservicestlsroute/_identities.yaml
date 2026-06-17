@@ -4,7 +4,7 @@
   name: networkservicesmesh-1-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //networkservices.googleapis.com/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}
   group: networkservices.cnrm.cloud.google.com
   kind: NetworkServicesGateway
   name: networkservicesgateway-1-${uniqueId}
@@ -16,7 +16,7 @@
   name: networkservicesmesh-2-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //networkservices.googleapis.com/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}
   group: networkservices.cnrm.cloud.google.com
   kind: NetworkServicesGateway
   name: networkservicesgateway-2-${uniqueId}
