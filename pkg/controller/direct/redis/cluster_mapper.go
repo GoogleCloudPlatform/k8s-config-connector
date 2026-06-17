@@ -119,6 +119,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	out.PSCConfigs = direct.Slice_FromProto(mapCtx, in.PscConfigs, PscConfigSpec_FromProto)
 	out.NodeType = direct.Enum_FromProto(mapCtx, in.GetNodeType())
 	out.PersistenceConfig = ClusterPersistenceConfig_FromProto(mapCtx, in.GetPersistenceConfig())
+	out.CrossClusterReplicationConfig = CrossClusterReplicationConfig_FromProto(mapCtx, in.GetCrossClusterReplicationConfig())
 	out.RedisConfigs = in.RedisConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
@@ -127,6 +128,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
 	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
+
 	return out
 }
 
@@ -142,6 +144,7 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 	out.PscConfigs = direct.Slice_ToProto(mapCtx, in.PSCConfigs, PscConfigSpec_ToProto)
 	out.NodeType = direct.Enum_ToProto[pb.NodeType](mapCtx, in.NodeType)
 	out.PersistenceConfig = ClusterPersistenceConfig_ToProto(mapCtx, in.PersistenceConfig)
+	out.CrossClusterReplicationConfig = CrossClusterReplicationConfig_ToProto(mapCtx, in.CrossClusterReplicationConfig)
 	out.RedisConfigs = in.RedisConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled

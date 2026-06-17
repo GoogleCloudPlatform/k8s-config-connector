@@ -142,6 +142,9 @@ iamalloydbuser|\
 memcacheinstance|\
 postgresinstance|\
 readalloydbinstance|\
+basicrediscluster|\
+fullrediscluster|\
+replicationrediscluster|\
 redisinstance|\
 removedefaultnodepool|\
 restorebackupalloydbcluster|\

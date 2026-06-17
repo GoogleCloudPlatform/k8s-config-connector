@@ -85,6 +85,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
 	visitor.replacePaths[".status.uid"] = "12345678"
+	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"
 	visitor.replacePaths[".status.managedZoneId"] = "1234567890"
 	visitor.replacePaths[".status.creationTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.createTime"] = mockgcpregistry.PlaceholderTime
@@ -160,12 +161,6 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.serverCaCert.expirationTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.serverCaCert.sha1Fingerprint"] = "12345678"
 	visitor.replacePaths[".status.serviceAccountEmailAddress"] = "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com"
-
-	// Specific to Redis
-	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"
-	visitor.replacePaths[".status.observedState.pscConnections[].pscConnectionID"] = "${pscConnectionID}"
-	visitor.replacePaths[".status.observedState.pscConnections[].address"] = "10.11.12.13"
-	visitor.replacePaths[".status.observedState.discoveryEndpoints[].address"] = "10.11.12.13"
 
 	// Specific to VertexAI
 	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
