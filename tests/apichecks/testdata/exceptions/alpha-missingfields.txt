@@ -1358,6 +1358,29 @@
 [missing_field] crd=datalabelinginstructions.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=datalabelinginstructions.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.pdfInstruction.gcsFileURI" is not set in unstructured objects
 [missing_field] crd=datalabelinginstructions.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.authorization.alternateUsePermission" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.annotations.deprecated" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.annotations.description" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.annotations.displayName" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.annotations.displayOrder" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.annotations.stringType" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.annotations.stringValues[]" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.arrayItems" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.constraints.required" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.enumValues[].deprecated" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.enumValues[].index" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.enumValues[].name" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.index" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.mapItems" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.name" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.recordFields[]" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.type" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.typeID" is not set in unstructured objects
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataTemplate.typeRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexdatataxonomies.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=dataplexdatataxonomies.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dataplexdatataxonomies.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects

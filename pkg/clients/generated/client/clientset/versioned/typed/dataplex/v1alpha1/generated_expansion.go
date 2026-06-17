@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type DataplexAspectTypeExpansion interface{}
+
 type DataplexDataTaxonomyExpansion interface{}
 
 type DataplexEntryGroupExpansion interface{}

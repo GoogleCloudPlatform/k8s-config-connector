@@ -16,31 +16,32 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &AspectTypeRef{}
-var DataplexAspectTypeGVK = GroupVersion.WithKind("DataplexAspectType")
+var _ refs.Ref = &AspectTypeRef{}
 
-// AspectTypeRef is a reference to a DataplexAspectTypeRef.
+// AspectTypeRef is a reference to a DataplexAspectType.
 type AspectTypeRef struct {
 	// A reference to an externally managed DataplexAspectType resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}".
 	External string `json:"external,omitempty"`
 
-	/* NOTYET
 	// The name of a DataplexAspectType resource.
 	Name string `json:"name,omitempty"`
 
 	// The namespace of a DataplexAspectType resource.
 	Namespace string `json:"namespace,omitempty"`
-	*/
+}
+
+func init() {
+	refs.Register(&AspectTypeRef{})
 }
 
 func (r *AspectTypeRef) GetGVK() schema.GroupVersionKind {
@@ -48,7 +49,10 @@ func (r *AspectTypeRef) GetGVK() schema.GroupVersionKind {
 }
 
 func (r *AspectTypeRef) GetNamespacedName() types.NamespacedName {
-	return types.NamespacedName{}
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
 }
 
 func (r *AspectTypeRef) GetExternal() string {
@@ -60,20 +64,28 @@ func (r *AspectTypeRef) SetExternal(ref string) {
 }
 
 func (r *AspectTypeRef) ValidateExternal(ref string) error {
-	if ref == "" {
-		return fmt.Errorf("external reference is empty")
-	}
-	// Format: projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}
-	tokens := strings.Split(ref, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "aspectTypes" {
-		return fmt.Errorf("format of DataplexAspectType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}})", ref)
+	id := &AspectTypeIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (r *AspectTypeRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.External == "" {
-		return fmt.Errorf("external reference must be specified for %s", DataplexAspectTypeGVK.Kind)
+func (r *AspectTypeRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &AspectTypeIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
 	}
-	return r.ValidateExternal(r.External)
+	return id, nil
+}
+
+func (r *AspectTypeRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromAspectTypeSpec(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

@@ -126,10 +126,30 @@ spec:
                     typeRef:
                       description: A reference to an externally managed DataplexAspectType
                         resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}".
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
                       properties:
                         external:
                           description: A reference to an externally managed DataplexAspectType
                             resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}".
+                          type: string
+                        name:
+                          description: The name of a DataplexAspectType resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a DataplexAspectType resource.
                           type: string
                       type: object
                   required:
