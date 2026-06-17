@@ -35,6 +35,7 @@ if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
   export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
 fi
 
+# Run for google.cloud.networksecurity.v1 resources
 go run . generate-types \
   --service google.cloud.networksecurity.v1 \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
@@ -44,6 +45,13 @@ go run . generate-types \
   --resource NetworkSecurityMirroringDeployment:MirroringDeployment \
   --resource NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup \
   --resource NetworkSecuritySACRealm:SACRealm \
+  --proto-source-path ${PROTO_OUT}
+
+# Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)
+go run . generate-types \
+  --service google.cloud.networksecurity.v1alpha1 \
+  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetworkSecurityPartnerSSERealm:PartnerSSERealm \
   --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}

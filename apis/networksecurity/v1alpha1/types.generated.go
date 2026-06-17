@@ -16,12 +16,22 @@
 // +generated:types
 // krm.group: networksecurity.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.networksecurity.v1
-// resource: NetworkSecurityBackendAuthenticationConfig:BackendAuthenticationConfig
-// resource: NetworkSecurityInterceptDeployment:InterceptDeployment
-// resource: NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup
-// resource: NetworkSecurityMirroringDeployment:MirroringDeployment
-// resource: NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup
-// resource: NetworkSecuritySACRealm:SACRealm
+// proto.service: google.cloud.networksecurity.v1alpha1
+// resource: NetworkSecurityPartnerSSERealm:PartnerSSERealm
 
 package v1alpha1
+
+/* unreachable type PartnerSseRealm_PartnerSseRealmPanOptions
+// +kcc:proto=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions
+type PartnerSseRealm_PartnerSseRealmPanOptions struct {
+	// Optional. serial_number is provided by PAN to identify GCP customer on
+	//  PAN side.
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions.serial_number
+	SerialNumber *string `json:"serialNumber,omitempty"`
+
+	// Optional. tenant_id is provided by PAN to identify GCP customer on PAN
+	//  side.
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions.tenant_id
+	TenantID *string `json:"tenantID,omitempty"`
+}
+*/
