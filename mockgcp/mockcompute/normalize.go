@@ -68,6 +68,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// FutureReservation
 	replacements.ReplacePath(".status.existingMatchingUsageInfo.timestamp", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".status.observedState.status.existingMatchingUsageInfo.timestamp", mockgcpregistry.PlaceholderTimestamp)
+
+	if strings.Contains(url, "/urlMaps/") {
+		replacements.RemovePath(".status")
+	}
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

@@ -54,15 +54,3 @@ spec:
         name: ${backendBucketID}
     name: allpaths
   resourceID: ${urlMapID}
-status:
-  conditions:
-  - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
-    type: Ready
-  creationTimestamp: "1970-01-01T00:00:00Z"
-  fingerprint: abcdef0123A=
-  mapId: 1111111111111111
-  observedGeneration: 3
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
