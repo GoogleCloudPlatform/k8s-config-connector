@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -18,32 +18,36 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}' was not found",
+        "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}' was not found"
+    "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "checkIntervalSec": 10,
+  "checkIntervalSec": 30,
   "healthyThreshold": 2,
   "name": "${healthCheckID}",
-  "region": "projects/${projectId}/global/regions/us-central1",
+  "sourceRegions": [
+    "us-east1",
+    "us-west1",
+    "us-central1"
+  ],
   "tcpHealthCheck": {
     "port": 80,
     "proxyHeader": "NONE"
   },
-  "timeoutSec": 5,
+  "timeoutSec": 10,
   "type": "TCP",
-  "unhealthyThreshold": 2
+  "unhealthyThreshold": 3
 }
 
 200 OK
@@ -63,18 +67,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -95,18 +98,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -121,43 +123,51 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "checkIntervalSec": 10,
+  "checkIntervalSec": 30,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "healthyThreshold": 2,
   "id": "000000000000000000000",
   "kind": "compute#healthCheck",
   "name": "${healthCheckID}",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "sourceRegions": [
+    "us-east1",
+    "us-west1",
+    "us-central1"
+  ],
   "tcpHealthCheck": {
     "port": 80,
     "proxyHeader": "NONE"
   },
-  "timeoutSec": 5,
+  "timeoutSec": 10,
   "type": "TCP",
-  "unhealthyThreshold": 2
+  "unhealthyThreshold": 3
 }
 
 ---
 
-PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
+PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "checkIntervalSec": 15,
+  "checkIntervalSec": 40,
   "description": "",
   "healthyThreshold": 2,
   "logConfig": {},
   "name": "${healthCheckID}",
-  "region": "projects/${projectId}/global/regions/us-central1",
+  "sourceRegions": [
+    "us-east1",
+    "us-west1",
+    "us-west4"
+  ],
   "tcpHealthCheck": {
-    "port": 88,
+    "port": 80,
     "proxyHeader": "NONE"
   },
-  "timeoutSec": 5,
+  "timeoutSec": 10,
   "type": "TCP",
-  "unhealthyThreshold": 2
+  "unhealthyThreshold": 3
 }
 
 200 OK
@@ -177,18 +187,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "update",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -209,18 +218,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "update",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -235,7 +243,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "checkIntervalSec": 15,
+  "checkIntervalSec": 40,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "",
   "healthyThreshold": 2,
@@ -243,20 +251,24 @@ X-Xss-Protection: 0
   "kind": "compute#healthCheck",
   "logConfig": {},
   "name": "${healthCheckID}",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "sourceRegions": [
+    "us-east1",
+    "us-west1",
+    "us-west4"
+  ],
   "tcpHealthCheck": {
-    "port": 88,
+    "port": 80,
     "proxyHeader": "NONE"
   },
-  "timeoutSec": 5,
+  "timeoutSec": 10,
   "type": "TCP",
-  "unhealthyThreshold": 2
+  "unhealthyThreshold": 3
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -277,18 +289,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -309,11 +320,10 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
   "user": "user@example.com"
 }

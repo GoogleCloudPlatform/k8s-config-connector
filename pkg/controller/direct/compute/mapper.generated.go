@@ -1143,7 +1143,7 @@ func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Name
 	// MISSING: Region
 	// MISSING: SelfLink
-	// MISSING: SourceRegions
+	out.SourceRegions = in.SourceRegions
 	out.SSLHealthCheck = HealthCheckSSLHealthCheck_v1beta1_FromProto(mapCtx, in.GetSslHealthCheck())
 	out.TCPHealthCheck = HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx, in.GetTcpHealthCheck())
 	out.TimeoutSec = in.TimeoutSec
@@ -1175,7 +1175,7 @@ func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	// MISSING: Name
 	// MISSING: Region
 	// MISSING: SelfLink
-	// MISSING: SourceRegions
+	out.SourceRegions = in.SourceRegions
 	out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
 	out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
 	out.TimeoutSec = in.TimeoutSec
