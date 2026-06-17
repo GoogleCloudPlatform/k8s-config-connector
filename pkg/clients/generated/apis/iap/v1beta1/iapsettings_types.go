@@ -53,43 +53,43 @@ type SettingsAccessDeniedPageSettings struct {
 }
 
 type SettingsAccessSettings struct {
-	/* Settings to configure and enable allowed domains. */
+	/* Optional. Settings to configure and enable allowed domains. */
 	// +optional
 	AllowedDomainsSettings *SettingsAllowedDomainsSettings `json:"allowedDomainsSettings,omitempty"`
 
-	/* Configuration to allow cross-origin requests via IAP. */
+	/* Optional. Configuration to allow cross-origin requests via IAP. */
 	// +optional
 	CorsSettings *SettingsCorsSettings `json:"corsSettings,omitempty"`
 
-	/* GCIP claims and endpoint configurations for 3p identity providers. */
+	/* Optional. GCIP claims and endpoint configurations for 3p identity providers. */
 	// +optional
 	GcipSettings *SettingsGcipSettings `json:"gcipSettings,omitempty"`
 
-	/* Settings to configure IAP's OAuth behavior. */
+	/* Optional. Settings to configure IAP's OAuth behavior. */
 	// +optional
 	OauthSettings *SettingsOauthSettings `json:"oauthSettings,omitempty"`
 
-	/* Settings to configure reauthentication policies in IAP. */
+	/* Optional. Settings to configure reauthentication policies in IAP. */
 	// +optional
 	ReauthSettings *SettingsReauthSettings `json:"reauthSettings,omitempty"`
 }
 
 type SettingsAllowedDomainsSettings struct {
-	/* List of trusted domains. */
+	/* Optional. List of trusted domains. */
 	// +optional
 	Domains []string `json:"domains,omitempty"`
 
-	/* Configuration for customers to opt in for the feature. */
+	/* Optional. Configuration for customers to opt in for the feature. */
 	// +optional
 	Enable *bool `json:"enable,omitempty"`
 }
 
 type SettingsApplicationSettings struct {
-	/* Customization for Access Denied page. */
+	/* Optional. Customization for Access Denied page. */
 	// +optional
 	AccessDeniedPageSettings *SettingsAccessDeniedPageSettings `json:"accessDeniedPageSettings,omitempty"`
 
-	/* Settings to configure attribute propagation. */
+	/* Optional. Settings to configure attribute propagation. */
 	// +optional
 	AttributePropagationSettings *SettingsAttributePropagationSettings `json:"attributePropagationSettings,omitempty"`
 
@@ -97,19 +97,19 @@ type SettingsApplicationSettings struct {
 	// +optional
 	CookieDomain *string `json:"cookieDomain,omitempty"`
 
-	/* Settings to configure IAP's behavior for a service mesh. */
+	/* Optional. Settings to configure IAP's behavior for a service mesh. */
 	// +optional
 	CsmSettings *SettingsCsmSettings `json:"csmSettings,omitempty"`
 }
 
 type SettingsAttributePropagationSettings struct {
-	/* Whether the provided attribute propagation settings should be evaluated on user requests. If set to true, attributes returned from the expression will be propagated in the set output credentials. */
+	/* Optional. Whether the provided attribute propagation settings should be evaluated on user requests. If set to true, attributes returned from the expression will be propagated in the set output credentials. */
 	// +optional
 	Enable *bool `json:"enable,omitempty"`
 
-	/* Raw string CEL expression. Must return a list of attributes. A maximum of
-	45 attributes can be selected. Expressions can select different attribute
-	types from `attributes`: `attributes.saml_attributes`,
+	/* Optional. Raw string CEL expression. Must return a list of attributes. A
+	maximum of 45 attributes can be selected. Expressions can select different
+	attribute types from `attributes`: `attributes.saml_attributes`,
 	`attributes.iap_attributes`. The following functions are supported:
 
 	- filter `<list>.filter(<iter_var>, <predicate>)`: Returns a subset of
@@ -138,13 +138,13 @@ type SettingsAttributePropagationSettings struct {
 	// +optional
 	Expression *string `json:"expression,omitempty"`
 
-	/* Which output credentials attributes selected by the CEL expression should be propagated in. All attributes will be fully duplicated in each selected output credential. */
+	/* Optional. Which output credentials attributes selected by the CEL expression should be propagated in. All attributes will be fully duplicated in each selected output credential. */
 	// +optional
 	OutputCredentials []string `json:"outputCredentials,omitempty"`
 }
 
 type SettingsCorsSettings struct {
-	/* Configuration to allow HTTP OPTIONS calls to skip authorization. If undefined, IAP will not apply any special logic to OPTIONS requests. */
+	/* Configuration to allow HTTP `OPTIONS` calls to skip authentication and authorization. If undefined, IAP will not apply any special logic to `OPTIONS` requests. */
 	// +optional
 	AllowHTTPOptions *bool `json:"allowHTTPOptions,omitempty"`
 }
@@ -170,21 +170,21 @@ type SettingsOauthSettings struct {
 	// +optional
 	LoginHint *string `json:"loginHint,omitempty"`
 
-	/* List of OAuth client IDs allowed to programmatically authenticate with IAP. */
+	/* Optional. List of client ids allowed to use IAP programmatically. */
 	// +optional
 	ProgrammaticClients []string `json:"programmaticClients,omitempty"`
 }
 
 type SettingsReauthSettings struct {
-	/* Reauth session lifetime, how long before a user has to reauthenticate again. */
+	/* Optional. Reauth session lifetime, how long before a user has to reauthenticate again. */
 	// +optional
 	MaxAge *string `json:"maxAge,omitempty"`
 
-	/* Reauth method requested. */
+	/* Optional. Reauth method requested. */
 	// +optional
 	Method *string `json:"method,omitempty"`
 
-	/* How IAP determines the effective policy in cases of hierarchial policies. Policies are merged from higher in the hierarchy to lower in the hierarchy. */
+	/* Optional. How IAP determines the effective policy in cases of hierarchical policies. Policies are merged from higher in the hierarchy to lower in the hierarchy. */
 	// +optional
 	PolicyType *string `json:"policyType,omitempty"`
 }
