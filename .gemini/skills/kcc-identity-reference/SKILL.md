@@ -83,3 +83,4 @@ Create or update the file to match the canonical example. Key requirements:
 
 2. **Run Compilations and Linters**:
    - Ensure the code compiles and there are no lint errors. You MUST always run `go vet ./...` and `go build ./...` before sending the PR to verify that your changes have not introduced any compilation errors across the entire project.
+   - If any CRDs, schemas, or reference definitions changed, always run `make resource-docs` to regenerate the resource documentation and prevent doc validation pipeline breakages.
