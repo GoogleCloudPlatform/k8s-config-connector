@@ -30,6 +30,27 @@ func fuzzServiceDirectoryEndpoint() fuzztesting.KRMFuzzer {
 		ServiceDirectoryEndpointObservedState_FromProto, ServiceDirectoryEndpointObservedState_ToProto,
 	)
 
+	// Field Comparison Table (KRM Spec/Status vs GCP Proto Fields):
+	//
+	// KRM Spec Field       | GCP Proto Field | Fuzzer/Proto Field Mapping Status
+	// ---------------------|-----------------|-----------------------------------
+	// serviceRef           | -               | Ignored (maps to parent service path/identity)
+	// addressRef           | .address        | f.SpecField(".address")
+	// networkRef           | .network        | f.SpecField(".network")
+	// port                 | .port           | f.SpecField(".port")
+	// resourceID           | -               | Ignored (KCC resource ID identity)
+	//
+	// KRM Status Field     | GCP Proto Field | Fuzzer/Proto Field Mapping Status
+	// ---------------------|-----------------|-----------------------------------
+	// name                 | .name           | f.Unimplemented_Identity(".name")
+	//
+	// Unimplemented Proto  | GCP Proto Field | Fuzzer/Proto Field Mapping Status
+	// ---------------------|-----------------|-----------------------------------
+	// metadata             | .metadata       | f.Unimplemented_NotYetTriaged(".metadata")
+	// createTime           | .create_time    | f.Unimplemented_NotYetTriaged(".create_time")
+	// updateTime           | .update_time    | f.Unimplemented_NotYetTriaged(".update_time")
+	// uid                  | .uid            | f.Unimplemented_NotYetTriaged(".uid")
+
 	// Spec fields
 	f.SpecField(".address")
 	f.SpecField(".port")
