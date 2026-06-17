@@ -89,7 +89,6 @@ components:
           x-dcl-go-type: ClusterConfig
           description: The cluster config. Note that Dataproc may set default values,
             and values may change when clusters are updated.
-          x-kubernetes-immutable: true
           properties:
             autoscalingConfig:
               type: object
@@ -989,7 +988,6 @@ components:
               x-dcl-go-name: SecurityConfig
               x-dcl-go-type: ClusterConfigSecurityConfig
               description: Optional. Security settings for the cluster.
-              x-kubernetes-immutable: true
               properties:
                 identityConfig:
                   type: object
@@ -997,7 +995,6 @@ components:
                   x-dcl-go-type: ClusterConfigSecurityConfigIdentityConfig
                   description: Optional. Identity related configuration, including
                     service account based secure multi-tenancy user mappings.
-                  x-kubernetes-immutable: true
                   required:
                   - userServiceAccountMapping
                   properties:
@@ -1007,7 +1004,6 @@ components:
                         type: string
                       x-dcl-go-name: UserServiceAccountMapping
                       description: Required. Map of user to service account.
-                      x-kubernetes-immutable: true
                 kerberosConfig:
                   type: object
                   x-dcl-go-name: KerberosConfig

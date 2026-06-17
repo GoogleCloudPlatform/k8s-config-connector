@@ -310,7 +310,7 @@ virtualClusterConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated.</p>
+            <p>The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated.</p>
         </td>
     </tr>
     <tr>
@@ -1377,7 +1377,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. Security settings for the cluster.</p>
+            <p>Optional. Security settings for the cluster.</p>
         </td>
     </tr>
     <tr>
@@ -1387,7 +1387,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. Identity related configuration, including service account based secure multi-tenancy user mappings.</p>
+            <p>Optional. Identity related configuration, including service account based secure multi-tenancy user mappings.</p>
         </td>
     </tr>
     <tr>
@@ -1397,7 +1397,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>Immutable. Required. Map of user to service account.</p>
+            <p>Required. Map of user to service account.</p>
         </td>
     </tr>
     <tr>
