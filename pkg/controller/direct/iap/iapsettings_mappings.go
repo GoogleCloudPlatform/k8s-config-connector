@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AccessDeniedPageSettings_ToProto(mapCtx *direct.MapContext, in *krm.AccessDeniedPageSettings) *pb.AccessDeniedPageSettings {
+func AccessDeniedPageSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AccessDeniedPageSettings) *pb.AccessDeniedPageSettings {
 	if in == nil {
 		return nil
 	}
@@ -30,7 +30,7 @@ func AccessDeniedPageSettings_ToProto(mapCtx *direct.MapContext, in *krm.AccessD
 	out.RemediationTokenGenerationEnabled = direct.BoolValue_ToProto(mapCtx, in.RemediationTokenGenerationEnabled) // this line is manually edited because proto field is incorrectly marked as oneof
 	return out
 }
-func GcipSettings_FromProto(mapCtx *direct.MapContext, in *pb.GcipSettings) *krm.GcipSettings {
+func GcipSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcipSettings) *krm.GcipSettings {
 	if in == nil {
 		return nil
 	}
@@ -39,7 +39,7 @@ func GcipSettings_FromProto(mapCtx *direct.MapContext, in *pb.GcipSettings) *krm
 	out.LoginPageURI = direct.StringValue_FromProto(mapCtx, in.GetLoginPageUri())
 	return out
 }
-func GcipSettings_ToProto(mapCtx *direct.MapContext, in *krm.GcipSettings) *pb.GcipSettings {
+func GcipSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.GcipSettings) *pb.GcipSettings {
 	if in == nil {
 		return nil
 	}
