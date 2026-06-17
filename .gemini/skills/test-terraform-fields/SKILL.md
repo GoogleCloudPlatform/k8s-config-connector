@@ -16,7 +16,7 @@ KCC uses a golden file testing strategy for end-to-end (E2E) validation. The tes
 A complete test fixture directory contains:
 - **`create.yaml`**: The primary KRM resource definition (what gets created first). Ensure the resource has unique labels/names.
 - **`dependencies.yaml` (optional)**: Supporting resources (e.g. IAM policies, networks, service accounts) that the primary resource depends on.
-- **`update.yaml` (optional)**: The KRM resource definition with updates applied after initial creation.
+- **`update.yaml` (strongly recommended)**: The KRM resource definition with updates applied after initial creation. While structurally optional, it is **highly recommended** (and mandatory for new mutable fields) to include an `update.yaml` to ensure the controller can successfully reconcile in-place updates.
 - **`_http.log`**: Golden HTTP/gRPC request/response traffic log generated during E2E reconciliation.
 - **`_generated_object_[testname].golden.yaml`**: Golden file representing the final KRM object status/spec in the Kube API server.
 - **`_exported.yaml` (optional)**: Golden exported KRM representation.
@@ -26,7 +26,8 @@ A complete test fixture directory contains:
 ## 2. Setting Up Test Cases
 
 1. **Create Directory**: Create the directory `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
-2. **Define KRM files**: Add `create.yaml`, and optionally `dependencies.yaml` and `update.yaml`.
+2. **Define KRM files**: Add `create.yaml`, and `update.yaml` (highly recommended to verify update reconciliation), and optionally `dependencies.yaml`.
+
 3. **Verify Yaml Validation**: Ensure YAML files are valid Kubernetes manifests. Avoid any hardcoded project IDs or dynamic IDs (use placeholders if necessary, but KCC test runner resolves them).
 
 ---

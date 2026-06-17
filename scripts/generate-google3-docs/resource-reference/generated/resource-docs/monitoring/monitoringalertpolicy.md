@@ -111,6 +111,25 @@ conditions:
       string: string
     query: string
     ruleGroup: string
+  conditionSql:
+    booleanTest:
+      column: string
+    daily:
+      executionTime:
+        hours: integer
+        minutes: integer
+        nanos: integer
+        seconds: integer
+      periodicity: integer
+    hourly:
+      minuteOffset: integer
+      periodicity: integer
+    minutes:
+      periodicity: integer
+    query: string
+    rowCountTest:
+      comparison: string
+      threshold: integer
   conditionThreshold:
     aggregations:
     - alignmentPeriod: string
@@ -761,6 +780,230 @@ in the future.
 
 This field is optional. If this field is not empty, then it must be a
 valid Prometheus label name.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>A condition that allows alerting policies to be defined using GoogleSQL.
+SQL conditions examine a sliding window of logs using GoogleSQL.
+Alert policies with SQL conditions may incur additional billing.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.booleanTest</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>A test that uses an alerting result in a boolean column produced by the SQL query.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.booleanTest.column</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of the column containing the boolean value. If the value in a row is
+NULL, that row is ignored.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Used to schedule the query to run every so many days.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily.executionTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The time of day (in UTC) at which the query should run. If left
+unspecified, the server picks an arbitrary time of day and runs
+the query at the same time each day.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily.executionTime.hours</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Hours of a day in 24 hour format. Must be greater than or equal
+to 0 and typically must be less than or equal to 23. An API may
+choose to allow the value "24:00:00" for scenarios like business
+closing time.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily.executionTime.minutes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Minutes of an hour. Must be greater than or equal to 0 and
+less than or equal to 59.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily.executionTime.nanos</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Fractions of seconds, in nanoseconds. Must be greater than or
+equal to 0 and less than or equal to 999,999,999.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily.executionTime.seconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Seconds of a minute. Must be greater than or equal to 0 and
+typically must be less than or equal to 59. An API may allow the
+value 60 if it allows leap-seconds.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily.periodicity</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>The number of days between runs. Must be greater than or equal
+to 1 day and less than or equal to 30 days.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.hourly</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Used to schedule the query to run every so many hours.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.hourly.minuteOffset</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>The number of minutes after the hour (in UTC) to run the query.
+Must be greater than or equal to 0 minutes and less than or equal to
+59 minutes.  If left unspecified, then an arbitrary offset is used.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.hourly.periodicity</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Number of hours between runs. The interval must be greater than or
+equal to 1 hour and less than or equal to 48 hours.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.minutes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Used to schedule the query to run every so many minutes.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.minutes.periodicity</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Number of minutes between runs. The interval must be greater than or
+equal to 5 minutes and less than or equal to 1440 minutes.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.query</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The Log Analytics SQL query to run, as a string.  The query must
+conform to the required shape. Specifically, the query must not try to
+filter the input by time.  A filter will automatically be applied
+to filter the input so that the query receives all rows received
+since the last time the query was run.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.rowCountTest</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>A test that checks if the number of rows in the result set violates some threshold.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.rowCountTest.comparison</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The comparison to apply between the time series
+(indicated by filter and aggregation) and the
+threshold (indicated by threshold_value). The
+comparison is applied on each time series, with
+the time series on the left-hand side and the
+threshold on the right-hand side.
+
+The Cloud Monitoring API only supports
+'COMPARISON_LT' and 'COMPARISON_GT' for SQL
+row-count thresholds; the other values are kept
+in the schema for backward compatibility with
+imported state but will be rejected by the API.
+See
+https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#MetricThreshold. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"].</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.rowCountTest.threshold</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>The value against which to compare the row count.</p>
         </td>
     </tr>
     <tr>

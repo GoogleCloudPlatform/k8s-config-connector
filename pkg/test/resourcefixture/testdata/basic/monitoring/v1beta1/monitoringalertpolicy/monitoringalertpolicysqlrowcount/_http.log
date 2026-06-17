@@ -28,10 +28,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "analyticsEnabled": true,
-  "description": "A sample log bucket",
-  "locked": false,
-  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
-  "retentionDays": 30
+  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}"
 }
 
 200 OK
@@ -47,7 +44,6 @@ X-Xss-Protection: 0
 {
   "analyticsEnabled": true,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample log bucket",
   "lifecycleState": "ACTIVE",
   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
   "retentionDays": 30,
@@ -73,7 +69,6 @@ X-Xss-Protection: 0
 {
   "analyticsEnabled": true,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample log bucket",
   "lifecycleState": "ACTIVE",
   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
   "retentionDays": 30,
@@ -112,9 +107,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Flogginglogbucket-${uniqueId}
 
-{
-  "description": "A sample log link"
-}
+{}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -175,11 +168,283 @@ X-Xss-Protection: 0
       "datasetId": "bigquery.googleapis.com/projects/${projectId}/datasets/logginglink${uniqueId}"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "A sample log link",
     "lifecycleState": "ACTIVE",
     "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}"
   }
 }
+
+---
+
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "minutes": {
+          "periodicity": 5
+        },
+        "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+        "rowCountTest": {
+          "comparison": "COMPARISON_GT",
+          "threshold": 10
+        }
+      },
+      "displayName": "SQL Log Alert Condition"
+    }
+  ],
+  "displayName": "Test SQL Alert Policy",
+  "enabled": true,
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "minutes": {
+          "periodicity": 5
+        },
+        "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+        "rowCountTest": {
+          "comparison": "COMPARISON_GT",
+          "threshold": "10"
+        }
+      },
+      "displayName": "SQL Log Alert Condition",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "minutes": {
+          "periodicity": 5
+        },
+        "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+        "rowCountTest": {
+          "comparison": "COMPARISON_GT",
+          "threshold": "10"
+        }
+      },
+      "displayName": "SQL Log Alert Condition",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json&updateMask=conditions
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "minutes": {
+          "periodicity": 10
+        },
+        "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+        "rowCountTest": {
+          "comparison": "COMPARISON_GT",
+          "threshold": 20
+        }
+      },
+      "displayName": "SQL Log Alert Condition",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "displayName": "Test SQL Alert Policy",
+  "enabled": true,
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "minutes": {
+          "periodicity": 10
+        },
+        "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+        "rowCountTest": {
+          "comparison": "COMPARISON_GT",
+          "threshold": "20"
+        }
+      },
+      "displayName": "SQL Log Alert Condition",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "minutes": {
+          "periodicity": 10
+        },
+        "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+        "rowCountTest": {
+          "comparison": "COMPARISON_GT",
+          "threshold": "20"
+        }
+      },
+      "displayName": "SQL Log Alert Condition",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
 
 ---
 
@@ -203,7 +468,6 @@ X-Xss-Protection: 0
     "datasetId": "bigquery.googleapis.com/projects/${projectId}/datasets/logginglink${uniqueId}"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample log link",
   "lifecycleState": 1,
   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}"
 }
@@ -290,7 +554,6 @@ X-Xss-Protection: 0
 {
   "analyticsEnabled": true,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample log bucket",
   "lifecycleState": "ACTIVE",
   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
   "retentionDays": 30,
