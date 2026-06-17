@@ -27,6 +27,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendservice/gl
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendservice/globalcomputebackendservicesecuritysettings
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendservice/regionalcomputebackendservice
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendservice/regionalcomputebackendserviceiap
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendservice/regionalcomputebackendservicetd
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computedisk/computediskfromsourcedisk
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computedisk/regionalcomputedisk
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computedisk/zonalcomputedisk
