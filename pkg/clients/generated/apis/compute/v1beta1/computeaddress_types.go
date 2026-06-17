@@ -51,9 +51,9 @@ type ComputeAddressSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Reference to the source of external IPv4 addresses, like a PublicDelegatedPrefix(PDP) for BYOIP. */
+	/* Immutable. The PublicDelegatedPrefix IP collection from which to reserve the address. Only external IPv4 addresses can use this. */
 	// +optional
-	IpCollection *string `json:"ipCollection,omitempty"`
+	IpCollectionRef *v1alpha1.ResourceRef `json:"ipCollectionRef,omitempty"`
 
 	/* Immutable. The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"]. */
 	// +optional

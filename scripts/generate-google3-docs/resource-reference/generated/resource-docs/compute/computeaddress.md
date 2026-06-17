@@ -82,7 +82,10 @@ the `spec.location` field. To manage a regional ComputeAddress, use a region nam
 address: string
 addressType: string
 description: string
-ipCollection: string
+ipCollectionRef:
+  external: string
+  name: string
+  namespace: string
 ipVersion: string
 ipv6EndpointType: string
 location: string
@@ -139,12 +142,42 @@ subnetworkRef:
     </tr>
     <tr>
         <td>
-            <p><code>ipCollection</code></p>
+            <p><code>ipCollectionRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Immutable. The PublicDelegatedPrefix IP collection from which to reserve the address. Only external IPv4 addresses can use this.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipCollectionRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Reference to the source of external IPv4 addresses, like a PublicDelegatedPrefix(PDP) for BYOIP.</p>
+            <p>A reference to an externally managed ComputePublicDelegatedPrefix resource. Should be in the format "projects/{{projectID}}/global/publicDelegatedPrefixes/{{publicDelegatedPrefixID}}" or "projects/{{projectID}}/regions/{{region}}/publicDelegatedPrefixes/{{publicDelegatedPrefixID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipCollectionRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputePublicDelegatedPrefix resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipCollectionRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputePublicDelegatedPrefix resource.</p>
         </td>
     </tr>
     <tr>

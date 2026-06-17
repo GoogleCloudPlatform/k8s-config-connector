@@ -16,7 +16,8 @@ metadata:
 spec:
   addressType: EXTERNAL
   description: A test address with ipCollection
-  ipCollection: regions/us-central1/publicDelegatedPrefixes/pdp-${uniqueId}
+  ipCollectionRef:
+    external: regions/us-central1/publicDelegatedPrefixes/pdp-${uniqueId}
   location: us-central1
   resourceID: ${addressID}
 status:

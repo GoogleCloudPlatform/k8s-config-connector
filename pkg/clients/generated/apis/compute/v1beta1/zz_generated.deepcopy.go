@@ -1102,9 +1102,9 @@ func (in *ComputeAddressSpec) DeepCopyInto(out *ComputeAddressSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.IpCollection != nil {
-		in, out := &in.IpCollection, &out.IpCollection
-		*out = new(string)
+	if in.IpCollectionRef != nil {
+		in, out := &in.IpCollectionRef, &out.IpCollectionRef
+		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.IpVersion != nil {

@@ -20,4 +20,5 @@ spec:
   addressType: EXTERNAL
   description: A test address with ipCollection
   location: us-central1
-  ipCollection: regions/us-central1/publicDelegatedPrefixes/pdp-${uniqueId}
+  ipCollectionRef:
+    external: regions/us-central1/publicDelegatedPrefixes/pdp-${uniqueId}
