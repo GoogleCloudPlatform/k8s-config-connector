@@ -193,7 +193,7 @@ type CapoolIdentityConstraints struct {
 	// +optional
 	AllowSubjectAltNamesPassthrough *bool `json:"allowSubjectAltNamesPassthrough,omitempty"`
 
-	/* Required. If this is true, the [Subject][google.cloud.security.privateca.v1.Subject] field may be copied from a certificate request into the signed certificate. Otherwise, the requested [Subject][google.cloud.security.privateca.v1.Subject] will be discarded. */
+	/* Required. If this is true, the [Subject][google.cloud.security.privateca.v1.Subject] field may be copied from a certificate request into the signed certificate. Otherwise, the requested Subject will be discarded. */
 	// +optional
 	AllowSubjectPassthrough *bool `json:"allowSubjectPassthrough,omitempty"`
 
