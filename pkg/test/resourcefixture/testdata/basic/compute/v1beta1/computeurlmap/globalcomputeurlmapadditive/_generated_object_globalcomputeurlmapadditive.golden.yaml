@@ -11,9 +11,8 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-  name: ${urlMapID}
+  name: computeurlmap-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeurlmaps/${urlMapID}
 spec:
   defaultCustomErrorResponsePolicy:
     errorResponseRule:
@@ -53,4 +52,15 @@ spec:
       backendBucketRef:
         name: ${backendBucketID}
     name: allpaths
-  resourceID: ${urlMapID}
+  resourceID: computeurlmap-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTimestamp: "1970-01-01T00:00:00Z"
+  mapId: 1111111111111111
+  observedGeneration: 3
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
