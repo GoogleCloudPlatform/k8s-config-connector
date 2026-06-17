@@ -70,6 +70,16 @@ title: "ComputeURLMap"
 ### Spec
 #### Schema
 ```yaml
+defaultCustomErrorResponsePolicy:
+  errorResponseRule:
+  - matchResponseCodes:
+    - string
+    overrideResponseCode: integer
+    path: string
+  errorServiceRef:
+    external: string
+    name: string
+    namespace: string
 defaultRouteAction:
   corsPolicy:
     allowCredentials: boolean
@@ -168,7 +178,17 @@ hostRule:
   pathMatcher: string
 location: string
 pathMatcher:
-- defaultRouteAction:
+- defaultCustomErrorResponsePolicy:
+    errorResponseRule:
+    - matchResponseCodes:
+      - string
+      overrideResponseCode: integer
+      path: string
+    errorServiceRef:
+      external: string
+      name: string
+      namespace: string
+  defaultRouteAction:
     corsPolicy:
       allowCredentials: boolean
       allowHeaders:
@@ -475,6 +495,116 @@ test:
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>defaultCustomErrorResponsePolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>defaultCustomErrorResponsePolicy.errorResponseRule</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>defaultCustomErrorResponsePolicy.errorResponseRule[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>defaultCustomErrorResponsePolicy.errorResponseRule[].matchResponseCodes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>defaultCustomErrorResponsePolicy.errorResponseRule[].matchResponseCodes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>defaultCustomErrorResponsePolicy.errorResponseRule[].overrideResponseCode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>defaultCustomErrorResponsePolicy.errorResponseRule[].path</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>defaultCustomErrorResponsePolicy.errorServiceRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The full or partial URL to the BackendBucket resource that contains the custom error content.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>defaultCustomErrorResponsePolicy.errorServiceRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Allowed value: The `selfLink` field of a `ComputeBackendBucket` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>defaultCustomErrorResponsePolicy.errorServiceRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>defaultCustomErrorResponsePolicy.errorServiceRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>defaultRouteAction</code></p>
@@ -1638,6 +1768,116 @@ the URL if the hostRule matches the URL's host portion.</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pathMatcher[].defaultCustomErrorResponsePolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pathMatcher[].defaultCustomErrorResponsePolicy.errorResponseRule</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pathMatcher[].defaultCustomErrorResponsePolicy.errorResponseRule[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pathMatcher[].defaultCustomErrorResponsePolicy.errorResponseRule[].matchResponseCodes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pathMatcher[].defaultCustomErrorResponsePolicy.errorResponseRule[].matchResponseCodes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pathMatcher[].defaultCustomErrorResponsePolicy.errorResponseRule[].overrideResponseCode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pathMatcher[].defaultCustomErrorResponsePolicy.errorResponseRule[].path</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pathMatcher[].defaultCustomErrorResponsePolicy.errorServiceRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The full or partial URL to the BackendBucket resource that contains the custom error content.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pathMatcher[].defaultCustomErrorResponsePolicy.errorServiceRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Allowed value: The `selfLink` field of a `ComputeBackendBucket` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pathMatcher[].defaultCustomErrorResponsePolicy.errorServiceRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pathMatcher[].defaultCustomErrorResponsePolicy.errorServiceRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
         </td>
     </tr>
     <tr>

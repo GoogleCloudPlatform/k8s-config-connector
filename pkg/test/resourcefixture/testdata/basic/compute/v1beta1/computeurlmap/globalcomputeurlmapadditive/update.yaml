@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,8 +27,12 @@ spec:
     errorResponseRule:
       - matchResponseCodes:
           - "5xx"
-        path: "/5xx-updated.html"
-        overrideResponseCode: 503
+        path: "/5xx.html"
+        overrideResponseCode: 502
+      - matchResponseCodes:
+          - "4xx"
+        path: "/4xx-global.html"
+        overrideResponseCode: 404
     errorServiceRef:
       name: computebackendbucket-${uniqueId}
   hostRule:
@@ -44,8 +48,12 @@ spec:
         errorResponseRule:
           - matchResponseCodes:
               - "4xx"
-            path: "/4xx-updated.html"
-            overrideResponseCode: 403
+            path: "/4xx.html"
+            overrideResponseCode: 404
+          - matchResponseCodes:
+              - "5xx"
+            path: "/5xx-pathmatcher.html"
+            overrideResponseCode: 502
         errorServiceRef:
           name: computebackendbucket-${uniqueId}
   location: global

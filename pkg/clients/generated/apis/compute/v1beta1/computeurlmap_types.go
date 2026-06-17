@@ -92,6 +92,15 @@ type UrlmapCorsPolicy struct {
 	MaxAge *int64 `json:"maxAge,omitempty"`
 }
 
+type UrlmapDefaultCustomErrorResponsePolicy struct {
+	// +optional
+	ErrorResponseRule []UrlmapErrorResponseRule `json:"errorResponseRule,omitempty"`
+
+	/* The full or partial URL to the BackendBucket resource that contains the custom error content. */
+	// +optional
+	ErrorServiceRef *v1alpha1.ResourceRef `json:"errorServiceRef,omitempty"`
+}
+
 type UrlmapDefaultRouteAction struct {
 	/* The specification for allowing client side cross-origin requests. Please see
 	[W3C Recommendation for Cross Origin Resource Sharing](https://www.w3.org/TR/cors/). */
@@ -210,6 +219,17 @@ type UrlmapDelay struct {
 	100.0 inclusive. */
 	// +optional
 	Percentage *float64 `json:"percentage,omitempty"`
+}
+
+type UrlmapErrorResponseRule struct {
+	// +optional
+	MatchResponseCodes []string `json:"matchResponseCodes,omitempty"`
+
+	// +optional
+	OverrideResponseCode *int64 `json:"overrideResponseCode,omitempty"`
+
+	// +optional
+	Path *string `json:"path,omitempty"`
 }
 
 type UrlmapFaultInjectionPolicy struct {
@@ -427,6 +447,9 @@ type UrlmapMetadataFilters struct {
 }
 
 type UrlmapPathMatcher struct {
+	// +optional
+	DefaultCustomErrorResponsePolicy *UrlmapDefaultCustomErrorResponsePolicy `json:"defaultCustomErrorResponsePolicy,omitempty"`
+
 	/* defaultRouteAction takes effect when none of the pathRules or routeRules match. The load balancer performs
 	advanced routing actions like URL rewrites, header transformations, etc. prior to forwarding the request
 	to the selected backend. If defaultRouteAction specifies any weightedBackendServices, defaultService must not be set.
@@ -885,6 +908,9 @@ type UrlmapWeightedBackendServices struct {
 }
 
 type ComputeURLMapSpec struct {
+	// +optional
+	DefaultCustomErrorResponsePolicy *UrlmapDefaultCustomErrorResponsePolicy `json:"defaultCustomErrorResponsePolicy,omitempty"`
+
 	/* defaultRouteAction takes effect when none of the hostRules match. The load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend. If defaultRouteAction specifies any weightedBackendServices, defaultService must not be set. Conversely if defaultService is set, defaultRouteAction cannot contain any weightedBackendServices.
 	Only one of defaultRouteAction or defaultUrlRedirect must be set.
 	URL maps for Classic external HTTP(S) load balancers only support the urlRewrite action within defaultRouteAction.

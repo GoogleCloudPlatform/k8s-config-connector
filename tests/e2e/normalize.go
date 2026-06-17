@@ -744,6 +744,14 @@ func (o *objectWalker) TransformLRO(transform func(map[string]any)) {
 	})
 }
 
+func (o *objectWalker) TransformObject(targetPath string, transform func(map[string]any)) {
+	o.objectTransforms = append(o.objectTransforms, func(path string, m map[string]any) {
+		if path == targetPath {
+			transform(m)
+		}
+	})
+}
+
 func (o *objectWalker) RemovePath(path string) {
 	o.removePaths.Insert(path)
 }
