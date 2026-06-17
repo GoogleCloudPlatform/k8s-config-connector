@@ -88,6 +88,7 @@ type QueuedResource_QueueingPolicy struct {
 }
 
 // +kcc:proto=google.cloud.tpu.v2.QueuedResource.Spot
+// +kubebuilder:validation:XPreserveUnknownFields
 type QueuedResource_Spot struct {
 }
 
@@ -144,18 +145,22 @@ type QueuedResourceState struct {
 */
 
 // +kcc:proto=google.cloud.tpu.v2.QueuedResourceState.AcceptedData
+// +kubebuilder:validation:XPreserveUnknownFields
 type QueuedResourceState_AcceptedData struct {
 }
 
 // +kcc:proto=google.cloud.tpu.v2.QueuedResourceState.ActiveData
+// +kubebuilder:validation:XPreserveUnknownFields
 type QueuedResourceState_ActiveData struct {
 }
 
 // +kcc:proto=google.cloud.tpu.v2.QueuedResourceState.CreatingData
+// +kubebuilder:validation:XPreserveUnknownFields
 type QueuedResourceState_CreatingData struct {
 }
 
 // +kcc:proto=google.cloud.tpu.v2.QueuedResourceState.DeletingData
+// +kubebuilder:validation:XPreserveUnknownFields
 type QueuedResourceState_DeletingData struct {
 }
 
@@ -166,14 +171,17 @@ type QueuedResourceState_FailedData struct {
 */
 
 // +kcc:proto=google.cloud.tpu.v2.QueuedResourceState.ProvisioningData
+// +kubebuilder:validation:XPreserveUnknownFields
 type QueuedResourceState_ProvisioningData struct {
 }
 
 // +kcc:proto=google.cloud.tpu.v2.QueuedResourceState.SuspendedData
+// +kubebuilder:validation:XPreserveUnknownFields
 type QueuedResourceState_SuspendedData struct {
 }
 
 // +kcc:proto=google.cloud.tpu.v2.QueuedResourceState.SuspendingData
+// +kubebuilder:validation:XPreserveUnknownFields
 type QueuedResourceState_SuspendingData struct {
 }
 

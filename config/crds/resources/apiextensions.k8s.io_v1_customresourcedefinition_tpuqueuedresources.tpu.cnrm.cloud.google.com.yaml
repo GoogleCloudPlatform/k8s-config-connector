@@ -158,6 +158,7 @@ spec:
               spot:
                 description: Optional. The Spot tier.
                 type: object
+                x-kubernetes-preserve-unknown-fields: true
               tpu:
                 description: Optional. Defines a TPU resource.
                 properties:
@@ -576,15 +577,19 @@ spec:
                       acceptedData:
                         description: Output only. Further data for the accepted state.
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                       activeData:
                         description: Output only. Further data for the active state.
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                       creatingData:
                         description: Output only. Further data for the creating state.
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                       deletingData:
                         description: Output only. Further data for the deleting state.
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                       failedData:
                         description: Output only. Further data for the failed state.
                         properties:
@@ -609,6 +614,7 @@ spec:
                         description: Output only. Further data for the provisioning
                           state.
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                       state:
                         description: Output only. State of the QueuedResource request.
                         type: string
@@ -620,10 +626,12 @@ spec:
                       suspendedData:
                         description: Output only. Further data for the suspended state.
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                       suspendingData:
                         description: Output only. Further data for the suspending
                           state.
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                     type: object
                 type: object
             type: object
