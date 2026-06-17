@@ -88,6 +88,9 @@ func (r *Replacements) ApplyReplacements(s string) string {
 	if testgcp.IsolatedTestOrgName.Get() != "" {
 		normalizers = append(normalizers, ReplaceString(testgcp.IsolatedTestOrgName.Get(), "${ISOLATED_TEST_ORG_NAME}"))
 	}
+	if testgcp.TestDependentFolderProjectID.Get() != "" {
+		normalizers = append(normalizers, ReplaceString(testgcp.TestDependentFolderProjectID.Get(), "project-2-${uniqueId}"))
+	}
 
 	for _, normalizer := range normalizers {
 		s = normalizer(s)

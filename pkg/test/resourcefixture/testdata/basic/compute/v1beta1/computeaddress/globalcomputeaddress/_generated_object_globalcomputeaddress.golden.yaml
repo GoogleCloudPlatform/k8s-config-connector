@@ -13,6 +13,7 @@ metadata:
     cnrm-test: "true"
   name: ${addressID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeaddresses/${addressID}
 spec:
   addressType: INTERNAL
   description: a test global address
@@ -34,5 +35,5 @@ status:
   labelFingerprint: abcdef0123A=
   observedGeneration: 2
   observedState:
-    address: 8.8.8.8
+    address: 10.100.0.0
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}

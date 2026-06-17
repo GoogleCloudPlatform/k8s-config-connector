@@ -69,10 +69,14 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 	obj.SelfLinkWithId = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%d", name.Project.ID, id)))
 	obj.Kind = PtrTo("compute#network")
 	obj.NetworkFirewallPolicyEnforcementOrder = PtrTo("AFTER_CLASSIC_FIREWALL")
-	if obj.RoutingConfig != nil {
-		if obj.RoutingConfig.BgpBestPathSelectionMode == nil {
-			obj.RoutingConfig.BgpBestPathSelectionMode = PtrTo("LEGACY")
-		}
+	if obj.RoutingConfig == nil {
+		obj.RoutingConfig = &pb.NetworkRoutingConfig{}
+	}
+	if obj.RoutingConfig.BgpBestPathSelectionMode == nil {
+		obj.RoutingConfig.BgpBestPathSelectionMode = PtrTo("LEGACY")
+	}
+	if obj.RoutingConfig.RoutingMode == nil {
+		obj.RoutingConfig.RoutingMode = PtrTo("REGIONAL")
 	}
 
 	if obj.AutoCreateSubnetworks == nil {

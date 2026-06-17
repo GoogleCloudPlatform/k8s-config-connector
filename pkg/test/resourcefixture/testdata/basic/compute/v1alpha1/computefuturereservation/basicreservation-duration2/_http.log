@@ -144,10 +144,6 @@ X-Xss-Protection: 0
     "totalCount": "1"
   },
   "status": {
-    "existingMatchingUsageInfo": {
-      "count": "0",
-      "timestamp": "2024-04-01T12:34:56.123456Z"
-    },
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
@@ -279,10 +275,6 @@ X-Xss-Protection: 0
     "totalCount": "2"
   },
   "status": {
-    "existingMatchingUsageInfo": {
-      "count": "0",
-      "timestamp": "2024-04-01T12:34:56.123456Z"
-    },
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {

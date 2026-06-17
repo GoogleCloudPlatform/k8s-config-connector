@@ -66,6 +66,7 @@ func (s *networkAttachmentsV1) Insert(ctx context.Context, req *pb.InsertNetwork
 	fqn := name.String()
 
 	obj := proto.CloneOf(req.GetNetworkAttachmentResource())
+	s.canonicalize(ctx, obj)
 	obj.Id = proto.Uint64(s.generateID())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.Kind = PtrTo("compute#networkAttachment")
@@ -110,6 +111,7 @@ func (s *networkAttachmentsV1) Patch(ctx context.Context, req *pb.PatchNetworkAt
 	if err := mergeProtos(obj.ProtoReflect(), req.GetNetworkAttachmentResource().ProtoReflect()); err != nil {
 		return nil, err
 	}
+	s.canonicalize(ctx, obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -178,4 +180,12 @@ func (s *MockService) parseNetworkAttachmentName(name string) (*networkAttachmen
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+func (s *networkAttachmentsV1) canonicalize(ctx context.Context, obj *pb.NetworkAttachment) {
+	for i, subnetwork := range obj.Subnetworks {
+		if !strings.HasPrefix(subnetwork, "http://") && !strings.HasPrefix(subnetwork, "https://") {
+			obj.Subnetworks[i] = BuildComputeSelfLink(ctx, subnetwork)
+		}
+	}
 }

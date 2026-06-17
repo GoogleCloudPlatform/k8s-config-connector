@@ -1,0 +1,452 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/zones/us-central1-a/disks/${diskID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/zones/us-central1-a/disks/${diskID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${diskID}",
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "zone": "projects/${projectId}/global/zones/us-central1-a"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableConfidentialCompute": false,
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "locked": false,
+  "multiWriter": false,
+  "name": "${diskID}",
+  "physicalBlockSizeBytes": "4096",
+  "satisfiesPzi": false,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "sizeGb": "500",
+  "status": "READY",
+  "type": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/snapshots/${snapshotID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/snapshots/${snapshotID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/snapshots/${snapshotID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}/createSnapshot?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "test description",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${snapshotID}",
+  "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "zone": "projects/${projectId}/global/zones/us-central1-a"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "createSnapshot",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "createSnapshot",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/snapshots/${snapshotID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationSizeBytes": "0",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "test description",
+  "diskSizeGb": "500",
+  "downloadBytes": "32876",
+  "enableConfidentialCompute": false,
+  "id": "000000000000000000000",
+  "kind": "compute#snapshot",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${snapshotID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/snapshots/${snapshotID}",
+  "sourceDisk": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "sourceDiskId": "${diskID}",
+  "status": "READY",
+  "storageBytes": "0",
+  "storageBytesStatus": "UP_TO_DATE",
+  "storageLocations": [
+    "us"
+  ]
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/snapshots/${snapshotID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${snapshotID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/snapshots/${snapshotID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${snapshotID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/snapshots/${snapshotID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableConfidentialCompute": false,
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "locked": false,
+  "multiWriter": false,
+  "name": "${diskID}",
+  "physicalBlockSizeBytes": "4096",
+  "satisfiesPzi": false,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "sizeGb": "500",
+  "status": "READY",
+  "type": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}

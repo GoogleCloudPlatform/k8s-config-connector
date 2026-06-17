@@ -233,6 +233,34 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 	t.Run("fixtures", func(t *testing.T) {
 		// Skip newly added iam/iampartialpolicy for now as they run under TestIAM_AllInSeries
 		lightFilter := func(name string, testType resourcefixture.TestType) bool {
+			if os.Getenv("E2E_GCP_TARGET") == "real" {
+				realGCPSkips := map[string]bool{
+					"basicreservation-durationtoendtime":                        true,
+					"basicreservation-endtimetoduration":                        true,
+					"computenetworkedgesecurityservice-minimal":                 true,
+					"organizationsecuritypolicyautogen":                         true,
+					"computefirewallpolicy":                                     true,
+					"foldercomputefirewallpolicyassociation":                    true,
+					"organizationcomputefirewallpolicyassociation":              true,
+					"computefirewallpolicyrule-egress-full-direct":              true,
+					"computefirewallpolicyrule-ingress-full-direct":             true,
+					"computefirewallpolicyrule-minimal-direct":                  true,
+					"computeprojectmetadata":                                    true,
+					"computeserviceattachment":                                  true,
+					"privateserviceconnectioncomputeregionnetworkendpointgroup": true,
+					"globalcomputebackendserviceiap":                            true,
+					"regionalcomputebackendserviceiap":                          true,
+					"sharereservation-add-project":                              true,
+					"sharereservation-change-project":                           true,
+					"sharereservation-remove-project":                           true,
+					"computeinstancetemplate":                                   true,
+					"computeinterconnectattachment":                             true,
+					"computevpntunnel":                                          true,
+				}
+				if realGCPSkips[name] || strings.HasPrefix(name, "sharefuturereservation-") {
+					return false
+				}
+			}
 			return !strings.Contains(name, "iam-bigqueryconnectionconnectionref") &&
 				!strings.Contains(name, "iam-logsinkref") &&
 				!strings.Contains(name, "iam-serviceaccountref") &&

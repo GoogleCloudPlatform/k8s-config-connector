@@ -20,3 +20,5 @@ metadata:
   labels:
     label-one: "value-one"
   name: storagebucket-sample-${uniqueId}
+spec:
+  uniformBucketLevelAccess: true

@@ -9,16 +9,15 @@ metadata:
     cnrm-test: "true"
   name: ${networkAttachmentID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/computenetworkattachments/${networkAttachmentID}
 spec:
   connectionPreference: ACCEPT_MANUAL
   description: Updated description
   location: us-central1
   producerAcceptLists:
-  - kind: Project
-    name: project-1-${uniqueId}
+  - external: ${projectId}
   producerRejectLists:
-  - kind: Project
-    name: project-2-${uniqueId}
+  - external: project-2-${uniqueId}
   projectRef:
     external: ${projectId}
   subnetworkRefs:

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: ${futureReservationID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/computefuturereservations/${futureReservationID}
 spec:
   autoCreatedReservationsDeleteTime: "2026-11-11T00:00:02Z"
   autoDeleteAutoCreatedReservations: true

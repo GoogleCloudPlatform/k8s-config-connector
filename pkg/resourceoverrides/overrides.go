@@ -235,6 +235,7 @@ func init() {
 	Handler.Register(GetRunServiceResourceOverrides())
 	Handler.Register(GetAlloyDBInstanceResourceOverrides())
 	Handler.Register(GetComputeMangedSSLCertificateResourceOverrides())
+	Handler.Register(GetComputeNetworkResourceOverrides())
 
 	// IAM
 	Handler.Register(GetIAMCustomRoleResourceOverrides())

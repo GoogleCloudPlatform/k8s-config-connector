@@ -1,0 +1,2009 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "checkIntervalSec": 5,
+  "healthyThreshold": 2,
+  "httpHealthCheck": {
+    "port": 80,
+    "proxyHeader": "NONE",
+    "requestPath": "/"
+  },
+  "name": "${healthCheckID}",
+  "timeoutSec": 5,
+  "type": "HTTP",
+  "unhealthyThreshold": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "checkIntervalSec": 5,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "healthyThreshold": 2,
+  "httpHealthCheck": {
+    "port": 80,
+    "proxyHeader": "NONE",
+    "requestPath": "/"
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#healthCheck",
+  "name": "${healthCheckID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "timeoutSec": 5,
+  "type": "HTTP",
+  "unhealthyThreshold": 2
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": true,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "mtu": 1460,
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/us-central1-subnet",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east7/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west8/subnetworks/${networkID}"
+  ]
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "archiveSizeBytes": "2063659776",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Debian, Debian GNU/Linux, 11 (bullseye), amd64 built on 20260609",
+  "diskSizeGb": "10",
+  "enableConfidentialCompute": false,
+  "family": "debian-11",
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#image",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "public-image": "true"
+  },
+  "licenseCodes": [
+    "3853522013536123851"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"
+  ],
+  "name": "debian-11-bullseye-v20260609",
+  "rawDisk": {
+    "containerType": "TAR",
+    "source": ""
+  },
+  "rolloutOverride": {
+    "${networkID}RolloutTime": "2026-06-16T20:13:36Z",
+    "locationRolloutPolicies": {
+      "zones/africa-south1-a": "2026-06-12T13:13:36Z",
+      "zones/africa-south1-b": "2026-06-13T07:13:36Z",
+      "zones/africa-south1-c": "2026-06-16T12:13:36Z",
+      "zones/asia-east1-a": "2026-06-12T03:13:36Z",
+      "zones/asia-east1-b": "2026-06-12T21:13:36Z",
+      "zones/asia-east1-c": "2026-06-16T02:13:36Z",
+      "zones/asia-east2-a": "2026-06-11T23:13:36Z",
+      "zones/asia-east2-b": "2026-06-14T16:13:36Z",
+      "zones/asia-east2-c": "2026-06-15T22:13:36Z",
+      "zones/asia-northeast1-a": "2026-06-11T02:13:36Z",
+      "zones/asia-northeast1-b": "2026-06-13T19:13:36Z",
+      "zones/asia-northeast1-c": "2026-06-15T01:13:36Z",
+      "zones/asia-northeast2-a": "2026-06-11T03:13:36Z",
+      "zones/asia-northeast2-b": "2026-06-13T20:13:36Z",
+      "zones/asia-northeast2-c": "2026-06-15T02:13:36Z",
+      "zones/asia-northeast3-a": "2026-06-12T04:13:36Z",
+      "zones/asia-northeast3-b": "2026-06-12T22:13:36Z",
+      "zones/asia-northeast3-c": "2026-06-16T03:13:36Z",
+      "zones/asia-south1-a": "2026-06-11T11:13:36Z",
+      "zones/asia-south1-b": "2026-06-14T04:13:36Z",
+      "zones/asia-south1-c": "2026-06-15T10:13:36Z",
+      "zones/asia-south2-a": "2026-06-12T05:13:36Z",
+      "zones/asia-south2-b": "2026-06-12T23:13:36Z",
+      "zones/asia-south2-c": "2026-06-16T04:13:36Z",
+      "zones/asia-southeast1-a": "2026-06-11T00:13:36Z",
+      "zones/asia-southeast1-b": "2026-06-13T17:13:36Z",
+      "zones/asia-southeast1-c": "2026-06-14T23:13:36Z",
+      "zones/asia-southeast2-a": "2026-06-12T14:13:36Z",
+      "zones/asia-southeast2-b": "2026-06-13T08:13:36Z",
+      "zones/asia-southeast2-c": "2026-06-16T13:13:36Z",
+      "zones/asia-southeast3-a": "2026-06-11T04:13:36Z",
+      "zones/asia-southeast3-b": "2026-06-13T21:13:36Z",
+      "zones/asia-southeast3-c": "2026-06-15T03:13:36Z",
+      "zones/australia-southeast1-a": "2026-06-12T20:13:36Z",
+      "zones/australia-southeast1-b": "2026-06-13T14:13:36Z",
+      "zones/australia-southeast1-c": "2026-06-14T20:13:36Z",
+      "zones/australia-southeast2-a": "2026-06-11T12:13:36Z",
+      "zones/australia-southeast2-b": "2026-06-14T05:13:36Z",
+      "zones/australia-southeast2-c": "2026-06-15T11:13:36Z",
+      "zones/europe-central2-a": "2026-06-11T18:13:36Z",
+      "zones/europe-central2-b": "2026-06-14T11:13:36Z",
+      "zones/europe-central2-c": "2026-06-15T17:13:36Z",
+      "zones/europe-north1-a": "2026-06-11T13:13:36Z",
+      "zones/europe-north1-b": "2026-06-14T06:13:36Z",
+      "zones/europe-north1-c": "2026-06-15T12:13:36Z",
+      "zones/europe-north2-a": "2026-06-12T06:13:36Z",
+      "zones/europe-north2-b": "2026-06-13T00:13:36Z",
+      "zones/europe-north2-c": "2026-06-16T05:13:36Z",
+      "zones/europe-southwest1-a": "2026-06-12T00:13:36Z",
+      "zones/europe-southwest1-b": "2026-06-14T17:13:36Z",
+      "zones/europe-southwest1-c": "2026-06-15T23:13:36Z",
+      "zones/europe-west1-b": "2026-06-12T19:13:36Z",
+      "zones/europe-west1-c": "2026-06-13T13:13:36Z",
+      "zones/europe-west1-d": "2026-06-16T18:13:36Z",
+      "zones/europe-west10-a": "2026-06-11T19:13:36Z",
+      "zones/europe-west10-b": "2026-06-14T12:13:36Z",
+      "zones/europe-west10-c": "2026-06-15T18:13:36Z",
+      "zones/europe-west12-a": "2026-06-11T05:13:36Z",
+      "zones/europe-west12-b": "2026-06-13T22:13:36Z",
+      "zones/europe-west12-c": "2026-06-15T04:13:36Z",
+      "zones/europe-west15-a": "2026-06-12T01:13:36Z",
+      "zones/europe-west15-b": "2026-06-14T18:13:36Z",
+      "zones/europe-west15-c": "2026-06-16T00:13:36Z",
+      "zones/europe-west2-a": "2026-06-11T10:13:36Z",
+      "zones/europe-west2-b": "2026-06-14T03:13:36Z",
+      "zones/europe-west2-c": "2026-06-15T09:13:36Z",
+      "zones/europe-west3-a": "2026-06-11T17:13:36Z",
+      "zones/europe-west3-b": "2026-06-14T10:13:36Z",
+      "zones/europe-west3-c": "2026-06-15T16:13:36Z",
+      "zones/europe-west4-a": "2026-06-11T09:13:36Z",
+      "zones/europe-west4-b": "2026-06-14T02:13:36Z",
+      "zones/europe-west4-c": "2026-06-15T08:13:36Z",
+      "zones/europe-west6-a": "2026-06-11T14:13:36Z",
+      "zones/europe-west6-b": "2026-06-14T07:13:36Z",
+      "zones/europe-west6-c": "2026-06-15T13:13:36Z",
+      "zones/europe-west8-a": "2026-06-11T15:13:36Z",
+      "zones/europe-west8-b": "2026-06-14T08:13:36Z",
+      "zones/europe-west8-c": "2026-06-15T14:13:36Z",
+      "zones/europe-west9-a": "2026-06-12T15:13:36Z",
+      "zones/europe-west9-b": "2026-06-13T09:13:36Z",
+      "zones/europe-west9-c": "2026-06-16T14:13:36Z",
+      "zones/me-central1-a": "2026-06-12T07:13:36Z",
+      "zones/me-central1-b": "2026-06-13T01:13:36Z",
+      "zones/me-central1-c": "2026-06-16T06:13:36Z",
+      "zones/me-central2-a": "2026-06-12T08:13:36Z",
+      "zones/me-central2-b": "2026-06-13T02:13:36Z",
+      "zones/me-central2-c": "2026-06-16T07:13:36Z",
+      "zones/me-west1-a": "2026-06-12T09:13:36Z",
+      "zones/me-west1-b": "2026-06-13T03:13:36Z",
+      "zones/me-west1-c": "2026-06-16T08:13:36Z",
+      "zones/northamerica-northeast1-a": "2026-06-12T10:13:36Z",
+      "zones/northamerica-northeast1-b": "2026-06-13T04:13:36Z",
+      "zones/northamerica-northeast1-c": "2026-06-16T09:13:36Z",
+      "zones/northamerica-northeast2-a": "2026-06-11T06:13:36Z",
+      "zones/northamerica-northeast2-b": "2026-06-13T23:13:36Z",
+      "zones/northamerica-northeast2-c": "2026-06-15T05:13:36Z",
+      "zones/northamerica-south1-a": "2026-06-12T02:13:36Z",
+      "zones/northamerica-south1-b": "2026-06-14T19:13:36Z",
+      "zones/northamerica-south1-c": "2026-06-16T01:13:36Z",
+      "zones/southamerica-east1-a": "2026-06-12T12:13:36Z",
+      "zones/southamerica-east1-b": "2026-06-13T06:13:36Z",
+      "zones/southamerica-east1-c": "2026-06-16T11:13:36Z",
+      "zones/southamerica-west1-a": "2026-06-11T16:13:36Z",
+      "zones/southamerica-west1-b": "2026-06-14T09:13:36Z",
+      "zones/southamerica-west1-c": "2026-06-15T15:13:36Z",
+      "zones/us-central1-a": "2026-06-11T22:13:36Z",
+      "zones/us-central1-b": "2026-06-14T15:13:36Z",
+      "zones/us-central1-c": "2026-06-15T21:13:36Z",
+      "zones/us-central1-f": "2026-06-16T19:13:36Z",
+      "zones/us-central2-a": "2026-06-12T11:13:36Z",
+      "zones/us-central2-b": "2026-06-13T05:13:36Z",
+      "zones/us-central2-c": "2026-06-16T10:13:36Z",
+      "zones/us-central2-d": "2026-06-16T20:13:36Z",
+      "zones/us-east1-b": "2026-06-12T18:13:36Z",
+      "zones/us-east1-c": "2026-06-13T12:13:36Z",
+      "zones/us-east1-d": "2026-06-16T17:13:36Z",
+      "zones/us-east4-a": "2026-06-10T22:13:36Z",
+      "zones/us-east4-b": "2026-06-13T15:13:36Z",
+      "zones/us-east4-c": "2026-06-14T21:13:36Z",
+      "zones/us-east5-a": "2026-06-11T07:13:36Z",
+      "zones/us-east5-b": "2026-06-14T00:13:36Z",
+      "zones/us-east5-c": "2026-06-15T06:13:36Z",
+      "zones/us-east7-a": "2026-06-11T08:13:36Z",
+      "zones/us-east7-b": "2026-06-14T01:13:36Z",
+      "zones/us-east7-c": "2026-06-15T07:13:36Z",
+      "zones/us-south1-a": "2026-06-11T20:13:36Z",
+      "zones/us-south1-b": "2026-06-14T13:13:36Z",
+      "zones/us-south1-c": "2026-06-15T19:13:36Z",
+      "zones/us-west1-a": "2026-06-10T23:13:36Z",
+      "zones/us-west1-b": "2026-06-13T16:13:36Z",
+      "zones/us-west1-c": "2026-06-14T22:13:36Z",
+      "zones/us-west2-a": "2026-06-11T01:13:36Z",
+      "zones/us-west2-b": "2026-06-13T18:13:36Z",
+      "zones/us-west2-c": "2026-06-15T00:13:36Z",
+      "zones/us-west3-a": "2026-06-11T21:13:36Z",
+      "zones/us-west3-b": "2026-06-14T14:13:36Z",
+      "zones/us-west3-c": "2026-06-15T20:13:36Z",
+      "zones/us-west4-a": "2026-06-12T16:13:36Z",
+      "zones/us-west4-b": "2026-06-13T10:13:36Z",
+      "zones/us-west4-c": "2026-06-16T15:13:36Z",
+      "zones/us-west8-a": "2026-06-12T17:13:36Z",
+      "zones/us-west8-b": "2026-06-13T11:13:36Z",
+      "zones/us-west8-c": "2026-06-16T16:13:36Z"
+    }
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20260609",
+  "sourceType": "RAW",
+  "status": "READY",
+  "storageLocations": [
+    "asia",
+    "us",
+    "eu"
+  ]
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "name": "${instanceTemplateID}",
+  "properties": {
+    "disks": [
+      {
+        "autoDelete": true,
+        "boot": true,
+        "initializeParams": {
+          "diskType": "pd-standard",
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        },
+        "interface": "SCSI",
+        "mode": "READ_WRITE",
+        "type": "PERSISTENT"
+      }
+    ],
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "machineType": "n1-standard-1",
+    "metadata": {},
+    "networkInterfaces": [
+      {
+        "network": "projects/${projectId}/global/networks/${networkID}"
+      }
+    ],
+    "scheduling": {
+      "onHostMaintenance": "MIGRATE"
+    },
+    "tags": {}
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.instanceTemplates.insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${instanceTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.instanceTemplates.insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#instanceTemplate",
+  "name": "${instanceTemplateID}",
+  "properties": {
+    "disks": [
+      {
+        "autoDelete": true,
+        "boot": true,
+        "deviceName": "persistent-disk-0",
+        "index": 0,
+        "initializeParams": {
+          "diskType": "pd-standard",
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        },
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "type": "PERSISTENT"
+      }
+    ],
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "machineType": "n1-standard-1",
+    "metadata": {
+      "fingerprint": "hgYhdR_O9zg=",
+      "kind": "compute#metadata"
+    },
+    "networkInterfaces": [
+      {
+        "kind": "compute#networkInterface",
+        "name": "nic0",
+        "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+      }
+    ],
+    "scheduling": {
+      "automaticRestart": true,
+      "onHostMaintenance": "MIGRATE",
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
+    },
+    "tags": {}
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "archiveSizeBytes": "2063659776",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Debian, Debian GNU/Linux, 11 (bullseye), amd64 built on 20260609",
+  "diskSizeGb": "10",
+  "enableConfidentialCompute": false,
+  "family": "debian-11",
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#image",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "public-image": "true"
+  },
+  "licenseCodes": [
+    "3853522013536123851"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"
+  ],
+  "name": "debian-11-bullseye-v20260609",
+  "rawDisk": {
+    "containerType": "TAR",
+    "source": ""
+  },
+  "rolloutOverride": {
+    "${networkID}RolloutTime": "2026-06-16T20:13:36Z",
+    "locationRolloutPolicies": {
+      "zones/africa-south1-a": "2026-06-12T13:13:36Z",
+      "zones/africa-south1-b": "2026-06-13T07:13:36Z",
+      "zones/africa-south1-c": "2026-06-16T12:13:36Z",
+      "zones/asia-east1-a": "2026-06-12T03:13:36Z",
+      "zones/asia-east1-b": "2026-06-12T21:13:36Z",
+      "zones/asia-east1-c": "2026-06-16T02:13:36Z",
+      "zones/asia-east2-a": "2026-06-11T23:13:36Z",
+      "zones/asia-east2-b": "2026-06-14T16:13:36Z",
+      "zones/asia-east2-c": "2026-06-15T22:13:36Z",
+      "zones/asia-northeast1-a": "2026-06-11T02:13:36Z",
+      "zones/asia-northeast1-b": "2026-06-13T19:13:36Z",
+      "zones/asia-northeast1-c": "2026-06-15T01:13:36Z",
+      "zones/asia-northeast2-a": "2026-06-11T03:13:36Z",
+      "zones/asia-northeast2-b": "2026-06-13T20:13:36Z",
+      "zones/asia-northeast2-c": "2026-06-15T02:13:36Z",
+      "zones/asia-northeast3-a": "2026-06-12T04:13:36Z",
+      "zones/asia-northeast3-b": "2026-06-12T22:13:36Z",
+      "zones/asia-northeast3-c": "2026-06-16T03:13:36Z",
+      "zones/asia-south1-a": "2026-06-11T11:13:36Z",
+      "zones/asia-south1-b": "2026-06-14T04:13:36Z",
+      "zones/asia-south1-c": "2026-06-15T10:13:36Z",
+      "zones/asia-south2-a": "2026-06-12T05:13:36Z",
+      "zones/asia-south2-b": "2026-06-12T23:13:36Z",
+      "zones/asia-south2-c": "2026-06-16T04:13:36Z",
+      "zones/asia-southeast1-a": "2026-06-11T00:13:36Z",
+      "zones/asia-southeast1-b": "2026-06-13T17:13:36Z",
+      "zones/asia-southeast1-c": "2026-06-14T23:13:36Z",
+      "zones/asia-southeast2-a": "2026-06-12T14:13:36Z",
+      "zones/asia-southeast2-b": "2026-06-13T08:13:36Z",
+      "zones/asia-southeast2-c": "2026-06-16T13:13:36Z",
+      "zones/asia-southeast3-a": "2026-06-11T04:13:36Z",
+      "zones/asia-southeast3-b": "2026-06-13T21:13:36Z",
+      "zones/asia-southeast3-c": "2026-06-15T03:13:36Z",
+      "zones/australia-southeast1-a": "2026-06-12T20:13:36Z",
+      "zones/australia-southeast1-b": "2026-06-13T14:13:36Z",
+      "zones/australia-southeast1-c": "2026-06-14T20:13:36Z",
+      "zones/australia-southeast2-a": "2026-06-11T12:13:36Z",
+      "zones/australia-southeast2-b": "2026-06-14T05:13:36Z",
+      "zones/australia-southeast2-c": "2026-06-15T11:13:36Z",
+      "zones/europe-central2-a": "2026-06-11T18:13:36Z",
+      "zones/europe-central2-b": "2026-06-14T11:13:36Z",
+      "zones/europe-central2-c": "2026-06-15T17:13:36Z",
+      "zones/europe-north1-a": "2026-06-11T13:13:36Z",
+      "zones/europe-north1-b": "2026-06-14T06:13:36Z",
+      "zones/europe-north1-c": "2026-06-15T12:13:36Z",
+      "zones/europe-north2-a": "2026-06-12T06:13:36Z",
+      "zones/europe-north2-b": "2026-06-13T00:13:36Z",
+      "zones/europe-north2-c": "2026-06-16T05:13:36Z",
+      "zones/europe-southwest1-a": "2026-06-12T00:13:36Z",
+      "zones/europe-southwest1-b": "2026-06-14T17:13:36Z",
+      "zones/europe-southwest1-c": "2026-06-15T23:13:36Z",
+      "zones/europe-west1-b": "2026-06-12T19:13:36Z",
+      "zones/europe-west1-c": "2026-06-13T13:13:36Z",
+      "zones/europe-west1-d": "2026-06-16T18:13:36Z",
+      "zones/europe-west10-a": "2026-06-11T19:13:36Z",
+      "zones/europe-west10-b": "2026-06-14T12:13:36Z",
+      "zones/europe-west10-c": "2026-06-15T18:13:36Z",
+      "zones/europe-west12-a": "2026-06-11T05:13:36Z",
+      "zones/europe-west12-b": "2026-06-13T22:13:36Z",
+      "zones/europe-west12-c": "2026-06-15T04:13:36Z",
+      "zones/europe-west15-a": "2026-06-12T01:13:36Z",
+      "zones/europe-west15-b": "2026-06-14T18:13:36Z",
+      "zones/europe-west15-c": "2026-06-16T00:13:36Z",
+      "zones/europe-west2-a": "2026-06-11T10:13:36Z",
+      "zones/europe-west2-b": "2026-06-14T03:13:36Z",
+      "zones/europe-west2-c": "2026-06-15T09:13:36Z",
+      "zones/europe-west3-a": "2026-06-11T17:13:36Z",
+      "zones/europe-west3-b": "2026-06-14T10:13:36Z",
+      "zones/europe-west3-c": "2026-06-15T16:13:36Z",
+      "zones/europe-west4-a": "2026-06-11T09:13:36Z",
+      "zones/europe-west4-b": "2026-06-14T02:13:36Z",
+      "zones/europe-west4-c": "2026-06-15T08:13:36Z",
+      "zones/europe-west6-a": "2026-06-11T14:13:36Z",
+      "zones/europe-west6-b": "2026-06-14T07:13:36Z",
+      "zones/europe-west6-c": "2026-06-15T13:13:36Z",
+      "zones/europe-west8-a": "2026-06-11T15:13:36Z",
+      "zones/europe-west8-b": "2026-06-14T08:13:36Z",
+      "zones/europe-west8-c": "2026-06-15T14:13:36Z",
+      "zones/europe-west9-a": "2026-06-12T15:13:36Z",
+      "zones/europe-west9-b": "2026-06-13T09:13:36Z",
+      "zones/europe-west9-c": "2026-06-16T14:13:36Z",
+      "zones/me-central1-a": "2026-06-12T07:13:36Z",
+      "zones/me-central1-b": "2026-06-13T01:13:36Z",
+      "zones/me-central1-c": "2026-06-16T06:13:36Z",
+      "zones/me-central2-a": "2026-06-12T08:13:36Z",
+      "zones/me-central2-b": "2026-06-13T02:13:36Z",
+      "zones/me-central2-c": "2026-06-16T07:13:36Z",
+      "zones/me-west1-a": "2026-06-12T09:13:36Z",
+      "zones/me-west1-b": "2026-06-13T03:13:36Z",
+      "zones/me-west1-c": "2026-06-16T08:13:36Z",
+      "zones/northamerica-northeast1-a": "2026-06-12T10:13:36Z",
+      "zones/northamerica-northeast1-b": "2026-06-13T04:13:36Z",
+      "zones/northamerica-northeast1-c": "2026-06-16T09:13:36Z",
+      "zones/northamerica-northeast2-a": "2026-06-11T06:13:36Z",
+      "zones/northamerica-northeast2-b": "2026-06-13T23:13:36Z",
+      "zones/northamerica-northeast2-c": "2026-06-15T05:13:36Z",
+      "zones/northamerica-south1-a": "2026-06-12T02:13:36Z",
+      "zones/northamerica-south1-b": "2026-06-14T19:13:36Z",
+      "zones/northamerica-south1-c": "2026-06-16T01:13:36Z",
+      "zones/southamerica-east1-a": "2026-06-12T12:13:36Z",
+      "zones/southamerica-east1-b": "2026-06-13T06:13:36Z",
+      "zones/southamerica-east1-c": "2026-06-16T11:13:36Z",
+      "zones/southamerica-west1-a": "2026-06-11T16:13:36Z",
+      "zones/southamerica-west1-b": "2026-06-14T09:13:36Z",
+      "zones/southamerica-west1-c": "2026-06-15T15:13:36Z",
+      "zones/us-central1-a": "2026-06-11T22:13:36Z",
+      "zones/us-central1-b": "2026-06-14T15:13:36Z",
+      "zones/us-central1-c": "2026-06-15T21:13:36Z",
+      "zones/us-central1-f": "2026-06-16T19:13:36Z",
+      "zones/us-central2-a": "2026-06-12T11:13:36Z",
+      "zones/us-central2-b": "2026-06-13T05:13:36Z",
+      "zones/us-central2-c": "2026-06-16T10:13:36Z",
+      "zones/us-central2-d": "2026-06-16T20:13:36Z",
+      "zones/us-east1-b": "2026-06-12T18:13:36Z",
+      "zones/us-east1-c": "2026-06-13T12:13:36Z",
+      "zones/us-east1-d": "2026-06-16T17:13:36Z",
+      "zones/us-east4-a": "2026-06-10T22:13:36Z",
+      "zones/us-east4-b": "2026-06-13T15:13:36Z",
+      "zones/us-east4-c": "2026-06-14T21:13:36Z",
+      "zones/us-east5-a": "2026-06-11T07:13:36Z",
+      "zones/us-east5-b": "2026-06-14T00:13:36Z",
+      "zones/us-east5-c": "2026-06-15T06:13:36Z",
+      "zones/us-east7-a": "2026-06-11T08:13:36Z",
+      "zones/us-east7-b": "2026-06-14T01:13:36Z",
+      "zones/us-east7-c": "2026-06-15T07:13:36Z",
+      "zones/us-south1-a": "2026-06-11T20:13:36Z",
+      "zones/us-south1-b": "2026-06-14T13:13:36Z",
+      "zones/us-south1-c": "2026-06-15T19:13:36Z",
+      "zones/us-west1-a": "2026-06-10T23:13:36Z",
+      "zones/us-west1-b": "2026-06-13T16:13:36Z",
+      "zones/us-west1-c": "2026-06-14T22:13:36Z",
+      "zones/us-west2-a": "2026-06-11T01:13:36Z",
+      "zones/us-west2-b": "2026-06-13T18:13:36Z",
+      "zones/us-west2-c": "2026-06-15T00:13:36Z",
+      "zones/us-west3-a": "2026-06-11T21:13:36Z",
+      "zones/us-west3-b": "2026-06-14T14:13:36Z",
+      "zones/us-west3-c": "2026-06-15T20:13:36Z",
+      "zones/us-west4-a": "2026-06-12T16:13:36Z",
+      "zones/us-west4-b": "2026-06-13T10:13:36Z",
+      "zones/us-west4-c": "2026-06-16T15:13:36Z",
+      "zones/us-west8-a": "2026-06-12T17:13:36Z",
+      "zones/us-west8-b": "2026-06-13T11:13:36Z",
+      "zones/us-west8-c": "2026-06-16T16:13:36Z"
+    }
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20260609",
+  "sourceType": "RAW",
+  "status": "READY",
+  "storageLocations": [
+    "asia",
+    "us",
+    "eu"
+  ]
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}' was not found"
+  }
+}
+
+---
+
+POST https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "autoHealingPolicies": [
+    {
+      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+      "initialDelaySec": 300
+    }
+  ],
+  "baseInstanceName": "app",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "name": "${instanceGroupManagerID}",
+  "targetSize": 3,
+  "updatePolicy": {
+    "instanceRedistributionType": "PROACTIVE",
+    "maxSurge": {
+      "fixed": 3
+    },
+    "maxUnavailable": {
+      "fixed": 3
+    },
+    "minimalAction": "RESTART"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.instanceGroupManagers.insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${instanceGroupManagerID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.instanceGroupManagers.insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceGroupManagerID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoHealingPolicies": [
+    {
+      "healthCheck": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/${healthCheckID}",
+      "initialDelaySec": 300
+    }
+  ],
+  "baseInstanceName": "app",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 0,
+    "creating": 3,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 0,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 0
+  },
+  "distributionPolicy": {
+    "targetShape": "EVEN",
+    "zones": [
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-b"
+      },
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-c"
+      },
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-f"
+      }
+    ]
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}",
+  "instanceLifecyclePolicy": {
+    "${networkID}ActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "NO",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGELESS",
+  "name": "${instanceGroupManagerID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "satisfiesPzi": false,
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "serviceAccount": "${projectNumber}@cloudservices.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": false,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 3,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "instanceRedistributionType": "PROACTIVE",
+    "maxSurge": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "maxUnavailable": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "minReadySec": 0,
+    "minimalAction": "RESTART",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+      "targetSize": {
+        "calculated": 3
+      }
+    }
+  ]
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoHealingPolicies": [
+    {
+      "healthCheck": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/${healthCheckID}",
+      "initialDelaySec": 300
+    }
+  ],
+  "baseInstanceName": "app",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 0,
+    "creating": 2,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 0,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 1
+  },
+  "distributionPolicy": {
+    "targetShape": "EVEN",
+    "zones": [
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-b"
+      },
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-c"
+      },
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-f"
+      }
+    ]
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}",
+  "instanceLifecyclePolicy": {
+    "${networkID}ActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "NO",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGELESS",
+  "name": "${instanceGroupManagerID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "satisfiesPzi": false,
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "serviceAccount": "${projectNumber}@cloudservices.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": false,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 3,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "instanceRedistributionType": "PROACTIVE",
+    "maxSurge": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "maxUnavailable": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "minReadySec": 0,
+    "minimalAction": "RESTART",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+      "targetSize": {
+        "calculated": 3
+      }
+    }
+  ]
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoHealingPolicies": [
+    {
+      "healthCheck": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/${healthCheckID}",
+      "initialDelaySec": 300
+    }
+  ],
+  "baseInstanceName": "app",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 0,
+    "creating": 1,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 0,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 2
+  },
+  "distributionPolicy": {
+    "targetShape": "EVEN",
+    "zones": [
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-b"
+      },
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-c"
+      },
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-f"
+      }
+    ]
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}",
+  "instanceLifecyclePolicy": {
+    "${networkID}ActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "NO",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGELESS",
+  "name": "${instanceGroupManagerID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "satisfiesPzi": false,
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "serviceAccount": "${projectNumber}@cloudservices.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": false,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 3,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "instanceRedistributionType": "PROACTIVE",
+    "maxSurge": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "maxUnavailable": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "minReadySec": 0,
+    "minimalAction": "RESTART",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+      "targetSize": {
+        "calculated": 3
+      }
+    }
+  ]
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoHealingPolicies": [
+    {
+      "healthCheck": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/${healthCheckID}",
+      "initialDelaySec": 300
+    }
+  ],
+  "baseInstanceName": "app",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 0,
+    "creating": 0,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 0,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 3
+  },
+  "distributionPolicy": {
+    "targetShape": "EVEN",
+    "zones": [
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-b"
+      },
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-c"
+      },
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-f"
+      }
+    ]
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}",
+  "instanceLifecyclePolicy": {
+    "${networkID}ActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "NO",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGELESS",
+  "name": "${instanceGroupManagerID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "satisfiesPzi": false,
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "serviceAccount": "${projectNumber}@cloudservices.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": false,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 3,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "instanceRedistributionType": "PROACTIVE",
+    "maxSurge": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "maxUnavailable": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "minReadySec": 0,
+    "minimalAction": "RESTART",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+      "targetSize": {
+        "calculated": 3
+      }
+    }
+  ]
+}
+
+---
+
+PATCH https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "autoHealingPolicies": [
+    {
+      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+      "initialDelaySec": 300
+    }
+  ],
+  "baseInstanceName": "app",
+  "distributionPolicy": {
+    "targetShape": "EVEN",
+    "zones": [
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-b"
+      },
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-c"
+      },
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-f"
+      }
+    ]
+  },
+  "fingerprint": "abcdef0123A=",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "serviceAccount": "${projectNumber}@cloudservices.gserviceaccount.com",
+  "targetSize": 4,
+  "updatePolicy": {
+    "instanceRedistributionType": "PROACTIVE",
+    "maxSurge": {
+      "fixed": 3
+    },
+    "maxUnavailable": {
+      "fixed": 3
+    },
+    "minimalAction": "RESTART",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${instanceGroupManagerID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceGroupManagerID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoHealingPolicies": [
+    {
+      "healthCheck": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/${healthCheckID}",
+      "initialDelaySec": 300
+    }
+  ],
+  "baseInstanceName": "app",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 0,
+    "creating": 1,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 0,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 3
+  },
+  "distributionPolicy": {
+    "targetShape": "EVEN",
+    "zones": [
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-b"
+      },
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-c"
+      },
+      {
+        "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-f"
+      }
+    ]
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}",
+  "instanceLifecyclePolicy": {
+    "${networkID}ActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "NO",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGELESS",
+  "name": "${instanceGroupManagerID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "satisfiesPzi": false,
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "serviceAccount": "${projectNumber}@cloudservices.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": false,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 4,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "instanceRedistributionType": "PROACTIVE",
+    "maxSurge": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "maxUnavailable": {
+      "calculated": 3,
+      "fixed": 3
+    },
+    "minReadySec": 0,
+    "minimalAction": "RESTART",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+      "targetSize": {
+        "calculated": 4
+      }
+    }
+  ]
+}
+
+---
+
+DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.instanceGroupManagers.delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${instanceGroupManagerID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.instanceGroupManagers.delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceGroupManagerID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}' was not found"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#instanceTemplate",
+  "name": "${instanceTemplateID}",
+  "properties": {
+    "disks": [
+      {
+        "autoDelete": true,
+        "boot": true,
+        "deviceName": "persistent-disk-0",
+        "index": 0,
+        "initializeParams": {
+          "diskType": "pd-standard",
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        },
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "type": "PERSISTENT"
+      }
+    ],
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "machineType": "n1-standard-1",
+    "metadata": {
+      "fingerprint": "hgYhdR_O9zg=",
+      "kind": "compute#metadata"
+    },
+    "networkInterfaces": [
+      {
+        "kind": "compute#networkInterface",
+        "name": "nic0",
+        "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+      }
+    ],
+    "scheduling": {
+      "automaticRestart": true,
+      "onHostMaintenance": "MIGRATE",
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
+    },
+    "tags": {}
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${instanceTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "checkIntervalSec": 5,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "healthyThreshold": 2,
+  "httpHealthCheck": {
+    "port": 80,
+    "proxyHeader": "NONE",
+    "requestPath": "/"
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#healthCheck",
+  "name": "${healthCheckID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "timeoutSec": 5,
+  "type": "HTTP",
+  "unhealthyThreshold": 2
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "user": "user@example.com"
+}
