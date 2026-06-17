@@ -224,7 +224,7 @@ type ClusterGkeClusterConfig struct {
 }
 
 type ClusterIdentityConfig struct {
-	/* Immutable. Required. Map of user to service account. */
+	/* Required. Map of user to service account. */
 	UserServiceAccountMapping map[string]string `json:"userServiceAccountMapping"`
 }
 
@@ -456,7 +456,7 @@ type ClusterSecondaryWorkerConfig struct {
 }
 
 type ClusterSecurityConfig struct {
-	/* Immutable. Optional. Identity related configuration, including service account based secure multi-tenancy user mappings. */
+	/* Optional. Identity related configuration, including service account based secure multi-tenancy user mappings. */
 	// +optional
 	IdentityConfig *ClusterIdentityConfig `json:"identityConfig,omitempty"`
 
@@ -543,7 +543,7 @@ type ClusterWorkerConfig struct {
 }
 
 type DataprocClusterSpec struct {
-	/* Immutable. The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated. */
+	/* The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated. */
 	// +optional
 	Config *ClusterConfig `json:"config,omitempty"`
 
