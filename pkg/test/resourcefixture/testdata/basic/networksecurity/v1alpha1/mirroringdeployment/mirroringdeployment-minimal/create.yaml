@@ -1,0 +1,12 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityMirroringDeployment
+metadata:
+  name: mirroringdeployment-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  forwardingRuleRef:
+    external: projects/${projectId}/regions/us-central1/forwardingRules/forwarding-rule-${uniqueId}
+  mirroringDeploymentGroupRef:
+    external: projects/${projectId}/locations/global/mirroringDeploymentGroups/deployment-group-${uniqueId}

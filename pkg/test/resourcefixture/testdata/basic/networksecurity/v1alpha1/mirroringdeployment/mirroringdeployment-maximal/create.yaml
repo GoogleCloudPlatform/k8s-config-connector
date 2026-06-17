@@ -1,0 +1,16 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityMirroringDeployment
+metadata:
+  name: mirroringdeployment-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "An example mirroring deployment created by KCC E2E tests"
+  labels:
+    env: test
+    managed-by: cnrm
+  forwardingRuleRef:
+    external: projects/${projectId}/regions/us-central1/forwardingRules/forwarding-rule-${uniqueId}
+  mirroringDeploymentGroupRef:
+    external: projects/${projectId}/locations/global/mirroringDeploymentGroups/deployment-group-${uniqueId}
