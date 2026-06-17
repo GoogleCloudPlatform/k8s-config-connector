@@ -44,7 +44,7 @@ type SecurityCenterMuteConfigRef struct {
 var _ refs.Ref = &SecurityCenterMuteConfigRef{}
 
 func init() {
-	refs.Register(&SecurityCenterMuteConfigRef{})
+	refs.Register(&SecurityCenterMuteConfigRef{}, &SecurityCenterMuteConfig{})
 }
 
 func (r *SecurityCenterMuteConfigRef) GetGVK() schema.GroupVersionKind {
@@ -64,6 +64,8 @@ func (r *SecurityCenterMuteConfigRef) GetExternal() string {
 
 func (r *SecurityCenterMuteConfigRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *SecurityCenterMuteConfigRef) ValidateExternal(external string) error {

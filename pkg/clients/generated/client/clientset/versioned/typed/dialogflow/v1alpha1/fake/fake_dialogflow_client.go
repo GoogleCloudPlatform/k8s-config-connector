@@ -35,6 +35,10 @@ func (c *FakeDialogflowV1alpha1) DialogflowAgents(namespace string) v1alpha1.Dia
 	return newFakeDialogflowAgents(c, namespace)
 }
 
+func (c *FakeDialogflowV1alpha1) DialogflowConversationDatasets(namespace string) v1alpha1.DialogflowConversationDatasetInterface {
+	return newFakeDialogflowConversationDatasets(c, namespace)
+}
+
 func (c *FakeDialogflowV1alpha1) DialogflowEntityTypes(namespace string) v1alpha1.DialogflowEntityTypeInterface {
 	return newFakeDialogflowEntityTypes(c, namespace)
 }
@@ -43,8 +47,16 @@ func (c *FakeDialogflowV1alpha1) DialogflowFulfillments(namespace string) v1alph
 	return newFakeDialogflowFulfillments(c, namespace)
 }
 
+func (c *FakeDialogflowV1alpha1) DialogflowGenerators(namespace string) v1alpha1.DialogflowGeneratorInterface {
+	return newFakeDialogflowGenerators(c, namespace)
+}
+
 func (c *FakeDialogflowV1alpha1) DialogflowIntents(namespace string) v1alpha1.DialogflowIntentInterface {
 	return newFakeDialogflowIntents(c, namespace)
+}
+
+func (c *FakeDialogflowV1alpha1) DialogflowKnowledgeBases(namespace string) v1alpha1.DialogflowKnowledgeBaseInterface {
+	return newFakeDialogflowKnowledgeBases(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -19,20 +19,28 @@ import (
 	"reflect"
 	"sync"
 
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 var (
-	registryMu sync.Mutex
-	registry   = make(map[schema.GroupKind]reflect.Type)
+	registryMu     sync.Mutex
+	registry       = make(map[schema.GroupKind]reflect.Type)
+	objectRegistry = make(map[schema.GroupKind]reflect.Type)
+	gvkRegistry    = make(map[schema.GroupKind]schema.GroupVersionKind)
 )
 
-// Register registers a Ref implementation.
+// Register registers a Ref implementation and optionally its corresponding runtime.Object.
 // It is thread-safe.
-func Register(ref Ref) {
+func Register(ref Ref, objs ...runtime.Object) {
 	registryMu.Lock()
 	defer registryMu.Unlock()
 	registry[ref.GetGVK().GroupKind()] = reflect.TypeOf(ref).Elem()
+	if len(objs) > 0 && objs[0] != nil {
+		obj := objs[0]
+		objectRegistry[ref.GetGVK().GroupKind()] = reflect.TypeOf(obj).Elem()
+		gvkRegistry[ref.GetGVK().GroupKind()] = ref.GetGVK()
+	}
 }
 
 // NewRef returns a new instance of Ref for the given GroupKind.
@@ -67,4 +75,25 @@ func NewRefByKind(kind string) (Ref, error) {
 		return reflect.New(found).Interface().(Ref), nil
 	}
 	return nil, fmt.Errorf("no Ref registered for Kind %q", kind)
+}
+
+// NewObject returns a new instance of runtime.Object for the given GroupKind.
+// It is thread-safe.
+func NewObject(gk schema.GroupKind) (runtime.Object, error) {
+	registryMu.Lock()
+	defer registryMu.Unlock()
+	typ, ok := objectRegistry[gk]
+	if !ok {
+		return nil, fmt.Errorf("no Object registered for GroupKind %v", gk)
+	}
+	return reflect.New(typ).Interface().(runtime.Object), nil
+}
+
+// PreferredGVK returns the preferred GroupVersionKind for the given GroupKind.
+// It is thread-safe.
+func PreferredGVK(gk schema.GroupKind) (schema.GroupVersionKind, bool) {
+	registryMu.Lock()
+	defer registryMu.Unlock()
+	gvk, ok := gvkRegistry[gk]
+	return gvk, ok
 }

@@ -141,6 +141,12 @@ type AlertpolicyAlertStrategy struct {
 	NotificationRateLimit *AlertpolicyNotificationRateLimit `json:"notificationRateLimit,omitempty"`
 }
 
+type AlertpolicyBooleanTest struct {
+	/* The name of the column containing the boolean value. If the value in a row is
+	NULL, that row is ignored. */
+	Column string `json:"column"`
+}
+
 type AlertpolicyConditionAbsent struct {
 	/* Specifies the alignment of data points in
 	individual time series as well as how to
@@ -300,6 +306,35 @@ type AlertpolicyConditionPrometheusQueryLanguage struct {
 	RuleGroup *string `json:"ruleGroup,omitempty"`
 }
 
+type AlertpolicyConditionSql struct {
+	/* A test that uses an alerting result in a boolean column produced by the SQL query. */
+	// +optional
+	BooleanTest *AlertpolicyBooleanTest `json:"booleanTest,omitempty"`
+
+	/* Used to schedule the query to run every so many days. */
+	// +optional
+	Daily *AlertpolicyDaily `json:"daily,omitempty"`
+
+	/* Used to schedule the query to run every so many hours. */
+	// +optional
+	Hourly *AlertpolicyHourly `json:"hourly,omitempty"`
+
+	/* Used to schedule the query to run every so many minutes. */
+	// +optional
+	Minutes *AlertpolicyMinutes `json:"minutes,omitempty"`
+
+	/* The Log Analytics SQL query to run, as a string.  The query must
+	conform to the required shape. Specifically, the query must not try to
+	filter the input by time.  A filter will automatically be applied
+	to filter the input so that the query receives all rows received
+	since the last time the query was run. */
+	Query string `json:"query"`
+
+	/* A test that checks if the number of rows in the result set violates some threshold. */
+	// +optional
+	RowCountTest *AlertpolicyRowCountTest `json:"rowCountTest,omitempty"`
+}
+
 type AlertpolicyConditionThreshold struct {
 	/* Specifies the alignment of data points in
 	individual time series as well as how to
@@ -453,6 +488,12 @@ type AlertpolicyConditions struct {
 	// +optional
 	ConditionPrometheusQueryLanguage *AlertpolicyConditionPrometheusQueryLanguage `json:"conditionPrometheusQueryLanguage,omitempty"`
 
+	/* A condition that allows alerting policies to be defined using GoogleSQL.
+	SQL conditions examine a sliding window of logs using GoogleSQL.
+	Alert policies with SQL conditions may incur additional billing. */
+	// +optional
+	ConditionSql *AlertpolicyConditionSql `json:"conditionSql,omitempty"`
+
 	/* A condition that compares a time series against a
 	threshold. */
 	// +optional
@@ -473,6 +514,18 @@ type AlertpolicyConditions struct {
 	policy. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
+
+type AlertpolicyDaily struct {
+	/* The time of day (in UTC) at which the query should run. If left
+	unspecified, the server picks an arbitrary time of day and runs
+	the query at the same time each day. */
+	// +optional
+	ExecutionTime *AlertpolicyExecutionTime `json:"executionTime,omitempty"`
+
+	/* The number of days between runs. Must be greater than or equal
+	to 1 day and less than or equal to 30 days. */
+	Periodicity int64 `json:"periodicity"`
 }
 
 type AlertpolicyDenominatorAggregations struct {
@@ -576,6 +629,31 @@ type AlertpolicyDocumentation struct {
 	MimeType *string `json:"mimeType,omitempty"`
 }
 
+type AlertpolicyExecutionTime struct {
+	/* Hours of a day in 24 hour format. Must be greater than or equal
+	to 0 and typically must be less than or equal to 23. An API may
+	choose to allow the value "24:00:00" for scenarios like business
+	closing time. */
+	// +optional
+	Hours *int64 `json:"hours,omitempty"`
+
+	/* Minutes of an hour. Must be greater than or equal to 0 and
+	less than or equal to 59. */
+	// +optional
+	Minutes *AlertpolicyMinutes `json:"minutes,omitempty"`
+
+	/* Fractions of seconds, in nanoseconds. Must be greater than or
+	equal to 0 and less than or equal to 999,999,999. */
+	// +optional
+	Nanos *int64 `json:"nanos,omitempty"`
+
+	/* Seconds of a minute. Must be greater than or equal to 0 and
+	typically must be less than or equal to 59. An API may allow the
+	value 60 if it allows leap-seconds. */
+	// +optional
+	Seconds *int64 `json:"seconds,omitempty"`
+}
+
 type AlertpolicyForecastOptions struct {
 	/* The length of time into the future to forecast
 	whether a timeseries will violate the threshold.
@@ -584,6 +662,24 @@ type AlertpolicyForecastOptions struct {
 	forecasts made for the Configured 'duration',
 	then the timeseries is considered to be failing. */
 	ForecastHorizon string `json:"forecastHorizon"`
+}
+
+type AlertpolicyHourly struct {
+	/* The number of minutes after the hour (in UTC) to run the query.
+	Must be greater than or equal to 0 minutes and less than or equal to
+	59 minutes.  If left unspecified, then an arbitrary offset is used. */
+	// +optional
+	MinuteOffset *int64 `json:"minuteOffset,omitempty"`
+
+	/* Number of hours between runs. The interval must be greater than or
+	equal to 1 hour and less than or equal to 48 hours. */
+	Periodicity int64 `json:"periodicity"`
+}
+
+type AlertpolicyMinutes struct {
+	/* Number of minutes between runs. The interval must be greater than or
+	equal to 5 minutes and less than or equal to 1440 minutes. */
+	Periodicity int64 `json:"periodicity"`
 }
 
 type AlertpolicyNotificationChannelStrategy struct {
@@ -603,6 +699,27 @@ type AlertpolicyNotificationRateLimit struct {
 	/* Not more than one notification per period. */
 	// +optional
 	Period *string `json:"period,omitempty"`
+}
+
+type AlertpolicyRowCountTest struct {
+	/* The comparison to apply between the time series
+	(indicated by filter and aggregation) and the
+	threshold (indicated by threshold_value). The
+	comparison is applied on each time series, with
+	the time series on the left-hand side and the
+	threshold on the right-hand side.
+
+	The Cloud Monitoring API only supports
+	'COMPARISON_LT' and 'COMPARISON_GT' for SQL
+	row-count thresholds; the other values are kept
+	in the schema for backward compatibility with
+	imported state but will be rejected by the API.
+	See
+	https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#MetricThreshold. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"]. */
+	Comparison string `json:"comparison"`
+
+	/* The value against which to compare the row count. */
+	Threshold int64 `json:"threshold"`
 }
 
 type AlertpolicyTrigger struct {

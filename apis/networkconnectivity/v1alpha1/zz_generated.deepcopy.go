@@ -457,7 +457,7 @@ func (in *NetworkConnectivityRegionalEndpointSpec) DeepCopyInto(out *NetworkConn
 	}
 	if in.AddressRef != nil {
 		in, out := &in.AddressRef, &out.AddressRef
-		*out = new(v1beta1.ComputeAddressRef)
+		*out = new(computev1beta1.ComputeAddressRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -472,7 +472,7 @@ func (in *NetworkConnectivityRegionalEndpointSpec) DeepCopyInto(out *NetworkConn
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.TargetGoogleAPI != nil {
@@ -724,7 +724,7 @@ func (in *PSCConfig) DeepCopyInto(out *PSCConfig) {
 	}
 	if in.Subnetworks != nil {
 		in, out := &in.Subnetworks, &out.Subnetworks
-		*out = make([]v1beta1.ComputeSubnetworkRef, len(*in))
+		*out = make([]computev1beta1.ComputeSubnetworkRef, len(*in))
 		copy(*out, *in)
 	}
 }

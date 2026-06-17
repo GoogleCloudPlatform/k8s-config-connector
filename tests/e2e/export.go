@@ -22,6 +22,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -55,6 +56,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	// This list should match https://cloud.google.com/asset-inventory/docs/resource-name-format
 	gvk := obj.GroupVersionKind()
 	switch gvk.GroupKind() {
+	case schema.GroupKind{Group: "artifactregistry.cnrm.cloud.google.com", Kind: "ArtifactRegistryRepository"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
 		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
 
@@ -89,7 +93,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 
 	case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDnsDomain"}:
 		network := resolveNetwork(h, obj)
-		exportURI = fmt.Sprintf("//servicenetworking.googleapis.com/services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/{resourceID}", network.Parent().ProjectID, network.ID())
+		exportURI = fmt.Sprintf("//servicenetworking.googleapis.com/services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/{resourceID}", network.Project, network.Network)
 
 	case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
 		exportURI = "//run.googleapis.com/v2/projects/{projectID}/locations/{.spec.location}/jobs/{resourceID}"
@@ -279,4 +283,18 @@ func resolveReference(h *create.Harness, obj *unstructured.Unstructured, refFiel
 		h.Fatalf("referenced %v object %v does not have status.externalRef set", gvk.Kind, key)
 	}
 	return external
+}
+
+func resolveCAISURI(h *create.Harness, obj *unstructured.Unstructured) string {
+	caisScheme := cais.NewScheme()
+	caisResults, err := cais.GetCAISIdentities(h.Ctx, caisScheme, h.GetClient(), []*unstructured.Unstructured{obj})
+	if err != nil {
+		h.T.Errorf("failed to get CAIS identity: %v", err)
+		return ""
+	}
+	if len(caisResults) == 0 || caisResults[0].CAISURL == "unknown" {
+		h.T.Errorf("failed to get CAIS identity: %v", err)
+		return ""
+	}
+	return caisResults[0].CAISURL
 }

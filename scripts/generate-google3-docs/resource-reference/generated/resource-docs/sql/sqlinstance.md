@@ -4,7 +4,7 @@ title: "SQLInstance"
 ---
 Warning: Some fields, when updated, might cause the instance to restart. To see
 the fields that can cause the instance to restart, see the <a
-href="/sql/docs/postgres/admin-api/v1beta4/instances">REST Resource: instances
+href="https://docs.cloud.google.com/sql/docs/postgres/admin-api/v1beta4/instances">REST Resource: instances
 documentation</a>.
 
 <table>
@@ -21,7 +21,7 @@ documentation</a>.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/sql/docs/">/sql/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/sql/docs/">https://docs.cloud.google.com/sql/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -29,7 +29,7 @@ documentation</a>.
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/sql/docs/postgres/admin-api/v1beta4/instances">/sql/docs/postgres/admin-api/v1beta4/instances</a></td>
+<td><a href="https://docs.cloud.google.com/sql/docs/postgres/admin-api/v1beta4/instances">https://docs.cloud.google.com/sql/docs/postgres/admin-api/v1beta4/instances</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -1280,7 +1280,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -1290,7 +1290,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1580,7 +1580,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally-managed StorageBucket resource.</p>
+            <p>A reference to an externally managed StorageBucket resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>
@@ -2096,4 +2096,4 @@ metadata:
   name: ${PROJECT_ID?}-sqlinstance-dep-sqlserver
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

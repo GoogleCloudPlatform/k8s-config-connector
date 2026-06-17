@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &GKEHubMembershipBindingRef{}
 
-// GKEHubMembershipBindingRef defines the resource reference to GKEHubMembershipBinding, which "External" field
-// holds the GCP identifier for the KRM object.
+// GKEHubMembershipBindingRef is a reference to a GKEHubMembershipBinding.
 type GKEHubMembershipBindingRef struct {
 	// A reference to an externally managed GKEHubMembershipBinding resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/memberships/{{membershipID}}/bindings/{{membershipBindingID}}".
@@ -42,7 +41,7 @@ type GKEHubMembershipBindingRef struct {
 }
 
 func init() {
-	refs.Register(&GKEHubMembershipBindingRef{})
+	refs.Register(&GKEHubMembershipBindingRef{}, &GKEHubMembershipBinding{})
 }
 
 func (r *GKEHubMembershipBindingRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *GKEHubMembershipBindingRef) GetExternal() string {
 
 func (r *GKEHubMembershipBindingRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *GKEHubMembershipBindingRef) ValidateExternal(ref string) error {

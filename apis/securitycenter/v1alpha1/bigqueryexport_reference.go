@@ -43,7 +43,7 @@ type SecurityCenterBigQueryExportRef struct {
 var _ refs.Ref = &SecurityCenterBigQueryExportRef{}
 
 func init() {
-	refs.Register(&SecurityCenterBigQueryExportRef{})
+	refs.Register(&SecurityCenterBigQueryExportRef{}, &SecurityCenterBigQueryExport{})
 }
 
 func (r *SecurityCenterBigQueryExportRef) GetGVK() schema.GroupVersionKind {
@@ -63,6 +63,8 @@ func (r *SecurityCenterBigQueryExportRef) GetExternal() string {
 
 func (r *SecurityCenterBigQueryExportRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *SecurityCenterBigQueryExportRef) ValidateExternal(external string) error {

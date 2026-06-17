@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &NetworkSecurityBackendAuthenticationConfigRef{}
 
-// NetworkSecurityBackendAuthenticationConfigRef defines the resource reference to NetworkSecurityBackendAuthenticationConfig, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkSecurityBackendAuthenticationConfigRef is a reference to a NetworkSecurityBackendAuthenticationConfig.
 type NetworkSecurityBackendAuthenticationConfigRef struct {
 	// A reference to an externally managed NetworkSecurityBackendAuthenticationConfig resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backendAuthenticationConfigs/{{backend_authentication_config}}".
@@ -42,7 +41,7 @@ type NetworkSecurityBackendAuthenticationConfigRef struct {
 }
 
 func init() {
-	refs.Register(&NetworkSecurityBackendAuthenticationConfigRef{})
+	refs.Register(&NetworkSecurityBackendAuthenticationConfigRef{}, &NetworkSecurityBackendAuthenticationConfig{})
 }
 
 func (r *NetworkSecurityBackendAuthenticationConfigRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *NetworkSecurityBackendAuthenticationConfigRef) GetExternal() string {
 
 func (r *NetworkSecurityBackendAuthenticationConfigRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *NetworkSecurityBackendAuthenticationConfigRef) ValidateExternal(ref string) error {

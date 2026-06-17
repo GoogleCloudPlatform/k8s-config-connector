@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &EntryGroupRef{}
 
-// EntryGroupRef defines the resource reference to DataplexEntryGroup, which "External" field
-// holds the GCP identifier for the KRM object.
+// EntryGroupRef is a reference to a DataplexEntryGroup.
 type EntryGroupRef struct {
 	// A reference to an externally managed DataplexEntryGroup resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/entryGroups/{{entrygroupID}}".
@@ -42,7 +41,7 @@ type EntryGroupRef struct {
 }
 
 func init() {
-	refs.Register(&EntryGroupRef{})
+	refs.Register(&EntryGroupRef{}, &DataplexEntryGroup{})
 }
 
 func (r *EntryGroupRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *EntryGroupRef) GetExternal() string {
 
 func (r *EntryGroupRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *EntryGroupRef) ValidateExternal(ref string) error {

@@ -125,8 +125,7 @@ We use a lot of golden testing.  We have a set of test fixtures rooted in `pkg/t
 `<service_name>/<version>/<kind>/<testname>` (for example `pkg/test/resourcefixture/testdata/basic/storage/v1beta1/storagebucket/storagebucketsoftdelete`),
 but we have not been 100% consistent on this.
 
-Within a test directory, we typically have `create.yaml` which describes the primary resource that we are testing.  We have `update.yaml`, which describes an
-update to make to that primary resource. If the primary resource's configuration contains reference fields, we need a `dependencies.yaml`, which contains
+Within a test directory, we typically have `create.yaml` which describes the primary resource that we are testing. We have `update.yaml`, which describes an update to make to that primary resource. Including `update.yaml` is **strongly recommended** to ensure updates reconcile in-place correctly, and is required if the resource contains mutable spec fields. If the primary resource's configuration contains reference fields, we need a `dependencies.yaml`, which contains
 all dependency resources that are referenced by the primary resource. We create the resources in `dependencies.yaml`, then the resource in `create.yaml`,
 then we run `update.yaml`. We expect the resources to become "ready" at each step of the test.
 

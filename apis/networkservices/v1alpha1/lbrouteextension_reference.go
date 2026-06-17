@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &NetworkServicesLBRouteExtensionRef{}
 
-// NetworkServicesLBRouteExtensionRef defines the resource reference to NetworkServicesLBRouteExtension, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkServicesLBRouteExtensionRef is a reference to a NetworkServicesLBRouteExtension.
 type NetworkServicesLBRouteExtensionRef struct {
 	// A reference to an externally managed NetworkServicesLBRouteExtension resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/lbRouteExtensions/{{lbRouteExtensionID}}".
@@ -42,7 +41,7 @@ type NetworkServicesLBRouteExtensionRef struct {
 }
 
 func init() {
-	refs.Register(&NetworkServicesLBRouteExtensionRef{})
+	refs.Register(&NetworkServicesLBRouteExtensionRef{}, &NetworkServicesLBRouteExtension{})
 }
 
 func (r *NetworkServicesLBRouteExtensionRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *NetworkServicesLBRouteExtensionRef) GetExternal() string {
 
 func (r *NetworkServicesLBRouteExtensionRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *NetworkServicesLBRouteExtensionRef) ValidateExternal(ref string) error {

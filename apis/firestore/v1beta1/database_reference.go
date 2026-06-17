@@ -55,6 +55,8 @@ func (r *FirestoreDatabaseRef) GetExternal() string {
 
 func (r *FirestoreDatabaseRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *FirestoreDatabaseRef) ValidateExternal(ref string) error {

@@ -18,13 +18,12 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
-	derprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var LoggingLogMetricGVK = GroupVersion.WithKind("LoggingLogMetric")
 
+// +kcc:proto=google.api.Distribution.BucketOptions
 type LogmetricBucketOptions struct {
 	/* The explicit buckets. */
 	// +optional
@@ -39,6 +38,7 @@ type LogmetricBucketOptions struct {
 	LinearBuckets *LogmetricLinearBuckets `json:"linearBuckets,omitempty"`
 }
 
+// +kcc:proto=google.api.Distribution.BucketOptions.Explicit
 type LogmetricExplicitBuckets struct {
 	/* The values must be monotonically increasing. */
 	// +optional
@@ -46,6 +46,7 @@ type LogmetricExplicitBuckets struct {
 	Bounds []float64 `json:"bounds,omitempty"`
 }
 
+// +kcc:proto=google.api.Distribution.BucketOptions.Exponential
 type LogmetricExponentialBuckets struct {
 	/* Must be greater than 1. */
 	// +optional
@@ -62,6 +63,7 @@ type LogmetricExponentialBuckets struct {
 	Scale *float64 `json:"scale,omitempty"`
 }
 
+// +kcc:proto=google.api.LabelDescriptor
 type LogmetricLabels struct {
 	/* Immutable. A human-readable description for the label. */
 	// +optional
@@ -76,6 +78,7 @@ type LogmetricLabels struct {
 	ValueType *string `json:"valueType,omitempty"`
 }
 
+// +kcc:proto=google.api.Distribution.BucketOptions.Linear
 type LogmetricLinearBuckets struct {
 	/* Must be greater than 0. */
 	// +optional
@@ -92,6 +95,7 @@ type LogmetricLinearBuckets struct {
 	Width *float64 `json:"width,omitempty"`
 }
 
+// +kcc:proto=google.api.MetricDescriptor.MetricDescriptorMetadata
 type LogmetricMetadata struct {
 	/* The delay of data points caused by ingestion. Data points older than this age are guaranteed to be ingested and available to be read, excluding data loss due to errors. */
 	// +optional
@@ -102,6 +106,7 @@ type LogmetricMetadata struct {
 	SamplePeriod *string `json:"samplePeriod,omitempty"`
 }
 
+// +kcc:proto=google.api.MetricDescriptor
 type LogmetricMetricDescriptor struct {
 	/* A concise name for the metric, which can be displayed in user interfaces. Use sentence case without an ending period, for example "Request count". This field is optional but it is recommended to be set for any metrics associated with user-visible concepts, such as Quota. */
 	// +optional
@@ -132,6 +137,7 @@ type LogmetricMetricDescriptor struct {
 	ValueType *string `json:"valueType,omitempty"`
 }
 
+// +kcc:spec:proto=google.logging.v2.LogMetric
 type LoggingLogMetricSpec struct {
 	// The reference to the Log Bucket that owns
 	// the Log Metric. Only Log Buckets in projects are supported. The
@@ -140,7 +146,7 @@ type LoggingLogMetricSpec struct {
 	// If empty, then the Log Metric is considered a non-Bucket Log Metric.
 	/* Only `external` field is supported to configure the reference for now. */
 	// +optional
-	LoggingLogBucketRef *derprecatedrefs.ResourceRef `json:"loggingLogBucketRef,omitempty"`
+	LoggingLogBucketRef *LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
 
 	/* Optional. The `bucket_options` are required when the logs-based metric is using a DISTRIBUTION value type and it describes the bucket boundaries used to create a histogram of the extracted values. */
 	// +optional
@@ -177,6 +183,7 @@ type LoggingLogMetricSpec struct {
 	ValueExtractor *string `json:"valueExtractor,omitempty"`
 }
 
+// +kcc:proto=google.api.MetricDescriptor
 type LogmetricMetricDescriptorStatus struct {
 	/* A detailed description of the metric, which can be used in documentation. */
 	// +optional
@@ -195,6 +202,7 @@ type LogmetricMetricDescriptorStatus struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.logging.v2.LogMetric
 type LoggingLogMetricStatus struct {
 	/* Conditions represent the latest available observations of the
 	   LoggingLogMetric's current state. */
@@ -234,6 +242,7 @@ type LoggingLogMetricStatus struct {
 
 // LoggingLogMetric is the Schema for the logging API
 // +k8s:openapi-gen=true
+// +kcc:proto=google.logging.v2.LogMetric
 type LoggingLogMetric struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

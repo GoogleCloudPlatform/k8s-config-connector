@@ -85,11 +85,14 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
 	visitor.replacePaths[".status.uid"] = "12345678"
+	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"
+	visitor.replacePaths[".status.managedZoneId"] = "1234567890"
 	visitor.replacePaths[".status.creationTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.createTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.createTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.endTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.updateTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.pairingKey.expireTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.updateTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.lastModifiedTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.etag"] = "abcdef123456"
@@ -113,6 +116,8 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to CloudKMS
 	visitor.replacePaths[".primary.createTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".primary.generateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".nextRotationTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.nextRotationTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.expireTime"] = mockgcpregistry.PlaceholderTimestamp
 
 	// Specific to BigQuery
@@ -156,12 +161,6 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.serverCaCert.expirationTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.serverCaCert.sha1Fingerprint"] = "12345678"
 	visitor.replacePaths[".status.serviceAccountEmailAddress"] = "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com"
-
-	// Specific to Redis
-	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"
-	visitor.replacePaths[".status.observedState.pscConnections[].pscConnectionID"] = "${pscConnectionID}"
-	visitor.replacePaths[".status.observedState.pscConnections[].address"] = "10.11.12.13"
-	visitor.replacePaths[".status.observedState.discoveryEndpoints[].address"] = "10.11.12.13"
 
 	// Specific to VertexAI
 	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
@@ -292,6 +291,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to AssetSavedQuery
 	visitor.replacePaths[".status.observedState.lastUpdateTime"] = "2025-04-14T20:19:35.325343Z"
 	visitor.replacePaths[".lastUpdateTime"] = "2025-04-14T20:19:35.325343Z"
+
+	// Specific to RedisCluster
+	visitor.replacePaths[".status.observedState.encryptionInfo.lastUpdateTime"] = mockgcpregistry.PlaceholderTimestamp
 
 	// Specific to BigQueryDataTransferConfig
 	if u.GetKind() == "BigQueryDataTransferConfig" {
@@ -737,6 +739,14 @@ func (o *objectWalker) TransformLRO(transform func(map[string]any)) {
 	o.objectTransforms = append(o.objectTransforms, func(path string, m map[string]any) {
 		selfLink, _ := m["selfLink"].(string)
 		if strings.Contains(selfLink, "/operations/") {
+			transform(m)
+		}
+	})
+}
+
+func (o *objectWalker) TransformObject(targetPath string, transform func(map[string]any)) {
+	o.objectTransforms = append(o.objectTransforms, func(path string, m map[string]any) {
+		if path == targetPath {
 			transform(m)
 		}
 	})

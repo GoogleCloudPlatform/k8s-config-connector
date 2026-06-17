@@ -20,12 +20,12 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"google.golang.org/grpc"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/http_recorder/httpmux"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/dns/v1"
+	pb "google.golang.org/genproto/googleapis/cloud/dns/v1"
+	"google.golang.org/grpc"
 )
 
 func init() {
@@ -42,6 +42,7 @@ type MockService struct {
 	managedZonesService       *managedZonesService
 	resourceRecordSetsService *resourceRecordSetsService
 	changesServer             *changesServer
+	policiesService           *policiesService
 }
 
 // New creates a dnsService.
@@ -54,6 +55,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 	s.resourceRecordSetsService = &resourceRecordSetsService{MockService: s}
 	s.managedZonesService = &managedZonesService{MockService: s}
 	s.changesServer = &changesServer{MockService: s}
+	s.policiesService = &policiesService{MockService: s}
 	return s
 }
 
@@ -66,6 +68,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterManagedZoneOperationsServerServer(grpcServer, s.operations)
 	pb.RegisterResourceRecordSetsServerServer(grpcServer, s.resourceRecordSetsService)
 	pb.RegisterChangesServerServer(grpcServer, s.changesServer)
+	pb.RegisterPoliciesServerServer(grpcServer, s.policiesService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -74,6 +77,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterResourceRecordSetsServerHandler,
 		pb.RegisterManagedZoneOperationsServerHandler,
 		pb.RegisterChangesServerHandler,
+		pb.RegisterPoliciesServerHandler,
 	)
 
 	if err != nil {

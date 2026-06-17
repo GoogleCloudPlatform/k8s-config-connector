@@ -21,4 +21,6 @@
 
 package v1alpha1
 
+type ConfigDeliveryFleetPackageExpansion interface{}
+
 type ConfigDeliveryResourceBundleExpansion interface{}

@@ -26,8 +26,7 @@ import (
 
 var _ refs.Ref = &NetworkSecurityMirroringDeploymentRef{}
 
-// NetworkSecurityMirroringDeploymentRef defines the resource reference to NetworkSecurityMirroringDeployment, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkSecurityMirroringDeploymentRef is a reference to a NetworkSecurityMirroringDeployment.
 type NetworkSecurityMirroringDeploymentRef struct {
 	// A reference to an externally managed NetworkSecurityMirroringDeployment resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringDeployments/{{mirroring_deployment}}".
@@ -41,7 +40,7 @@ type NetworkSecurityMirroringDeploymentRef struct {
 }
 
 func init() {
-	refs.Register(&NetworkSecurityMirroringDeploymentRef{})
+	refs.Register(&NetworkSecurityMirroringDeploymentRef{}, &NetworkSecurityMirroringDeployment{})
 }
 
 func (r *NetworkSecurityMirroringDeploymentRef) GetGVK() schema.GroupVersionKind {
@@ -61,6 +60,8 @@ func (r *NetworkSecurityMirroringDeploymentRef) GetExternal() string {
 
 func (r *NetworkSecurityMirroringDeploymentRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *NetworkSecurityMirroringDeploymentRef) ValidateExternal(external string) error {

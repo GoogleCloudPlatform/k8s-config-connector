@@ -28,17 +28,16 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &QuotaAdjusterSettingsRef{}
 
-// QuotaAdjusterSettingsRef defines the resource reference to APIQuotaAdjusterSettings, which "External" field
-// holds the GCP identifier for the KRM object.
+// QuotaAdjusterSettingsRef is a reference to an APIQuotaAdjusterSettings.
 type QuotaAdjusterSettingsRef struct {
 	// A reference to an externally managed APIQuotaAdjusterSettings resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/quotaadjustersettingss/{{quotaadjustersettingsID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a APIQuotaAdjusterSettings resource.
+	// The name of an APIQuotaAdjusterSettings resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a APIQuotaAdjusterSettings resource.
+	// The namespace of an APIQuotaAdjusterSettings resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

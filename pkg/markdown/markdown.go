@@ -41,6 +41,11 @@ func ConvertToGithubMarkdown(content string) string {
 	// Replace placeholders
 	s = strings.ReplaceAll(s, "{{gcp_name_short}}", "Google Cloud")
 	s = strings.ReplaceAll(s, "{{product_name_short}}", "Config Connector")
+	s = strings.ReplaceAll(s, "{{product_name}}", "Config Connector")
+	s = strings.ReplaceAll(s, "{{iam_name_short}}", "IAM")
+	s = strings.ReplaceAll(s, "{{crmapi_name}}", "Cloud Resource Manager API")
+	s = strings.ReplaceAll(s, "{{billing_name}}", "Cloud Billing")
+	s = strings.ReplaceAll(s, "{{billing_api}}", "Cloud Billing API")
 
 	// Remove verbatim tags
 	s = strings.ReplaceAll(s, "{% verbatim %}", "")
@@ -48,6 +53,11 @@ func ConvertToGithubMarkdown(content string) string {
 
 	// Remove excessive newlines
 	s = regexp.MustCompile(`\n{3,}`).ReplaceAllString(s, "\n\n")
+
+	// Convert links starting with / to use the https://docs.cloud.google.com/ prefix
+	s = regexp.MustCompile(`href="/([^/][^"]*)"`).ReplaceAllString(s, `href="https://docs.cloud.google.com/$1"`)
+	s = regexp.MustCompile(`\]\(/([^/][^)]*)\)`).ReplaceAllString(s, `](https://docs.cloud.google.com/$1)`)
+	s = regexp.MustCompile(`(<a\s+[^>]*href="https://docs\.cloud\.google\.com/[^"]*"[^>]*>)/([^<]*)(</a>)`).ReplaceAllString(s, `${1}https://docs.cloud.google.com/${2}${3}`)
 
 	s = strings.TrimSpace(s) + "\n"
 

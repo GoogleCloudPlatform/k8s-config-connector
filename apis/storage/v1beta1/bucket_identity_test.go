@@ -15,28 +15,45 @@
 package v1beta1
 
 import (
+	"context"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestStorageBucketIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
-		name        string
-		ref         string
-		wantProject string
-		wantBucket  string
-		wantErr     bool
+		name    string
+		ref     string
+		want    *StorageBucketIdentity
+		wantErr bool
 	}{
 		{
-			name:        "valid full URL",
-			ref:         "//storage.googleapis.com/projects/my-project/buckets/my-bucket",
-			wantProject: "my-project",
-			wantBucket:  "my-bucket",
+			name: "valid full URL",
+			ref:  "//storage.googleapis.com/projects/my-project/buckets/my-bucket",
+			want: &StorageBucketIdentity{
+				Project: "my-project",
+				Bucket:  "my-bucket",
+			},
 		},
 		{
-			name:        "valid relative path",
-			ref:         "projects/my-project/buckets/my-bucket",
-			wantProject: "my-project",
-			wantBucket:  "my-bucket",
+			name: "valid relative path",
+			ref:  "projects/my-project/buckets/my-bucket",
+			want: &StorageBucketIdentity{
+				Project: "my-project",
+				Bucket:  "my-bucket",
+			},
+		},
+		{
+			name: "gs scheme - valid",
+			ref:  "gs://my-bucket",
+			want: &StorageBucketIdentity{
+				Project: "",
+				Bucket:  "my-bucket",
+			},
 		},
 		{
 			name:    "invalid format - missing project",
@@ -69,11 +86,8 @@ func TestStorageBucketIdentity_FromExternal(t *testing.T) {
 				return
 			}
 			if !tt.wantErr {
-				if i.Project != tt.wantProject {
-					t.Errorf("FromExternal() Project got = %v, want %v", i.Project, tt.wantProject)
-				}
-				if i.Bucket != tt.wantBucket {
-					t.Errorf("FromExternal() Bucket got = %v, want %v", i.Bucket, tt.wantBucket)
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
 				}
 			}
 		})
@@ -92,5 +106,37 @@ func TestStorageBucketIdentity_Methods(t *testing.T) {
 
 	if got := i.BucketName(); got != "my-bucket" {
 		t.Errorf("BucketName() = %v, want %v", got, "my-bucket")
+	}
+}
+
+func TestStorageBucketGetIdentity(t *testing.T) {
+	ctx := context.Background()
+	scheme := runtime.NewScheme()
+	_ = AddToScheme(scheme)
+
+	obj := &StorageBucket{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "test-bucket",
+			Namespace: "test-namespace",
+			Annotations: map[string]string{
+				"cnrm.cloud.google.com/project-id": "test-project",
+			},
+		},
+	}
+
+	fakeClient := fake.NewClientBuilder().WithScheme(scheme).Build()
+
+	gotIdentity, err := obj.GetIdentity(ctx, fakeClient)
+	if err != nil {
+		t.Fatalf("GetIdentity() returned unexpected error: %v", err)
+	}
+
+	wantIdentity := &StorageBucketIdentity{
+		Project: "test-project",
+		Bucket:  "test-bucket",
+	}
+
+	if diff := cmp.Diff(wantIdentity, gotIdentity); diff != "" {
+		t.Errorf("GetIdentity() mismatch (-want +got):\n%s", diff)
 	}
 }

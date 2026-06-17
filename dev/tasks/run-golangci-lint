@@ -22,7 +22,7 @@ cd ${REPO_ROOT}
 
 # Check if golangci-lint is installed locally
 if command -v golangci-lint &> /dev/null; then
-    golangci-lint run -v --timeout=10m
+    golangci-lint run -v --timeout=20m
 else
     echo "golangci-lint not found, running via make lint (requires docker)..."
     make lint

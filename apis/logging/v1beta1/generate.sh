@@ -30,7 +30,10 @@ go run . generate-types \
     --include-skipped-output \
     --resource LoggingLink:Link \
     --resource LoggingLogView:LogView \
-    --resource LoggingLogBucket:LogBucket
+    --resource LoggingLogBucket:LogBucket \
+    --resource LoggingLogExclusion:LogExclusion \
+    --resource LoggingLogSink:LogSink \
+    --resource LoggingLogMetric:LogMetric
 
 go run . generate-mapper \
     --service google.logging.v2 \

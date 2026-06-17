@@ -25,16 +25,79 @@ package dataform
 
 import (
 	pb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
+	krmdataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func DataformFolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krmdataformv1alpha1.DataformFolderObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataformFolderObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: InternalMetadata
+	// MISSING: CreatorIAMPrincipal
+	return out
+}
+func DataformFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformFolderObservedState) *pb.Folder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Folder{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: InternalMetadata
+	// MISSING: CreatorIAMPrincipal
+	return out
+}
+func DataformFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krmdataformv1alpha1.DataformFolderSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataformFolderSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: InternalMetadata
+	// MISSING: CreatorIAMPrincipal
+	return out
+}
+func DataformFolderSpec_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformFolderSpec) *pb.Folder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Folder{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: InternalMetadata
+	// MISSING: CreatorIAMPrincipal
+	return out
+}
 func DataformRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.DataformRepositoryObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DataformRepositoryObservedState{}
 	// MISSING: Name
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
 	// MISSING: CreateTime
 	// MISSING: Labels
 	// MISSING: KMSKeyName
@@ -48,6 +111,8 @@ func DataformRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.Repository{}
 	// MISSING: Name
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
 	// MISSING: CreateTime
 	// MISSING: Labels
 	// MISSING: KMSKeyName

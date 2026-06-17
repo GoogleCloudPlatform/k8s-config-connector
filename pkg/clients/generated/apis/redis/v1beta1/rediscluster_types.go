@@ -44,6 +44,51 @@ type ClusterAofConfig struct {
 	AppendFsync *string `json:"appendFsync,omitempty"`
 }
 
+type ClusterAutomatedBackupConfig struct {
+	/* Optional. The automated backup mode. If the mode is disabled, the other fields will be ignored. */
+	// +optional
+	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
+
+	/* Optional. Trigger automated backups at a fixed frequency. */
+	// +optional
+	FixedFrequencySchedule *ClusterFixedFrequencySchedule `json:"fixedFrequencySchedule,omitempty"`
+
+	/* Optional. How long to keep automated backups before the backups are deleted. The value should be between 1 day and 365 days. If not specified, the default value is 35 days. */
+	// +optional
+	Retention *string `json:"retention,omitempty"`
+}
+
+type ClusterCrossClusterReplicationConfig struct {
+	/* The role of the cluster in cross cluster replication. */
+	// +optional
+	ClusterRole *string `json:"clusterRole,omitempty"`
+
+	/* Details of the primary cluster that is used as the replication source for
+	this secondary cluster.
+
+	This field is only set for a secondary cluster. */
+	// +optional
+	PrimaryCluster *ClusterPrimaryCluster `json:"primaryCluster,omitempty"`
+
+	/* List of secondary clusters that are replicating from this primary cluster.
+
+	This field is only set for a primary cluster. */
+	// +optional
+	SecondaryClusters []ClusterSecondaryClusters `json:"secondaryClusters,omitempty"`
+}
+
+type ClusterFixedFrequencySchedule struct {
+	/* Required. The start time of every automated backup in UTC. It must be set to the start of an hour. This field is required. */
+	// +optional
+	StartTime *ClusterStartTime `json:"startTime,omitempty"`
+}
+
+type ClusterMaintenancePolicy struct {
+	/* Optional. Maintenance window that is applied to resources covered by this policy. Minimum 1. For the current version, the maximum number of weekly_maintenance_window is expected to be one. */
+	// +optional
+	WeeklyMaintenanceWindow []ClusterWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
+}
+
 type ClusterPersistenceConfig struct {
 	/* Optional. AOF configuration. This field will be ignored if mode is not AOF. */
 	// +optional
@@ -56,6 +101,12 @@ type ClusterPersistenceConfig struct {
 	/* Optional. RDB configuration. This field will be ignored if mode is not RDB. */
 	// +optional
 	RdbConfig *ClusterRdbConfig `json:"rdbConfig,omitempty"`
+}
+
+type ClusterPrimaryCluster struct {
+	/* The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id> */
+	// +optional
+	ClusterRef *v1alpha1.ResourceRef `json:"clusterRef,omitempty"`
 }
 
 type ClusterPscConfigs struct {
@@ -73,6 +124,40 @@ type ClusterRdbConfig struct {
 	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
 }
 
+type ClusterSecondaryClusters struct {
+	/* The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id> */
+	// +optional
+	ClusterRef *v1alpha1.ResourceRef `json:"clusterRef,omitempty"`
+}
+
+type ClusterStartTime struct {
+	/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
+	// +optional
+	Hours *int32 `json:"hours,omitempty"`
+
+	/* Minutes of hour of day. Must be from 0 to 59. */
+	// +optional
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
+	// +optional
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	/* Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds. */
+	// +optional
+	Seconds *int32 `json:"seconds,omitempty"`
+}
+
+type ClusterWeeklyMaintenanceWindow struct {
+	/* Allows to define schedule that runs specified day of the week. */
+	// +optional
+	Day *string `json:"day,omitempty"`
+
+	/* Start time of the window in UTC. */
+	// +optional
+	StartTime *ClusterStartTime `json:"startTime,omitempty"`
+}
+
 type ClusterZoneDistributionConfig struct {
 	/* Optional. The mode of zone distribution. Defaults to MULTI_ZONE, when not specified. */
 	// +optional
@@ -88,12 +173,28 @@ type RedisClusterSpec struct {
 	// +optional
 	AuthorizationMode *string `json:"authorizationMode,omitempty"`
 
+	/* Optional. The automated backup config for the cluster. */
+	// +optional
+	AutomatedBackupConfig *ClusterAutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
+	/* Optional. Cross cluster replication config. */
+	// +optional
+	CrossClusterReplicationConfig *ClusterCrossClusterReplicationConfig `json:"crossClusterReplicationConfig,omitempty"`
+
 	/* Optional. The delete operation will fail when the value is set to true. */
 	// +optional
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
 
+	/* Optional. The KMS key name to encrypt data at rest. */
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* Immutable. Location of the resource. */
 	Location string `json:"location"`
+
+	/* Optional. ClusterMaintenancePolicy determines when to allow or deny updates. */
+	// +optional
+	MaintenancePolicy *ClusterMaintenancePolicy `json:"maintenancePolicy,omitempty"`
 
 	/* Optional. The type of a redis node in the cluster. NodeType determines the underlying machine-type of a redis node. */
 	// +optional
@@ -135,6 +236,38 @@ type RedisClusterSpec struct {
 	ZoneDistributionConfig *ClusterZoneDistributionConfig `json:"zoneDistributionConfig,omitempty"`
 }
 
+type ClusterCrossClusterReplicationConfigStatus struct {
+	/* Output only. An output only view of all the member clusters participating
+	in the cross cluster replication. This view will be provided by every
+	member cluster irrespective of its cluster role(primary or secondary).
+
+	A primary cluster can provide information about all the secondary clusters
+	replicating from it. However, a secondary cluster only knows about the
+	primary cluster from which it is replicating. However, for scenarios, where
+	the primary cluster is unavailable(e.g. regional outage), a GetCluster
+	request can be sent to any other member cluster and this field will list
+	all the member clusters participating in cross cluster replication. */
+	// +optional
+	Membership *ClusterMembershipStatus `json:"membership,omitempty"`
+
+	/* Details of the primary cluster that is used as the replication source for
+	this secondary cluster.
+
+	This field is only set for a secondary cluster. */
+	// +optional
+	PrimaryCluster *ClusterPrimaryClusterStatus `json:"primaryCluster,omitempty"`
+
+	/* List of secondary clusters that are replicating from this primary cluster.
+
+	This field is only set for a primary cluster. */
+	// +optional
+	SecondaryClusters []ClusterSecondaryClustersStatus `json:"secondaryClusters,omitempty"`
+
+	/* Output only. The last time cross cluster replication config was updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
 type ClusterDiscoveryEndpointsStatus struct {
 	/* Output only. Address of the exposed Redis endpoint used by clients to connect to the service. The address could be either IP or hostname. */
 	// +optional
@@ -149,14 +282,78 @@ type ClusterDiscoveryEndpointsStatus struct {
 	PscConfig *ClusterPscConfigStatus `json:"pscConfig,omitempty"`
 }
 
+type ClusterEncryptionInfoStatus struct {
+	/* Output only. Type of encryption. */
+	// +optional
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	/* Output only. The state of the primary version of the KMS key perceived by the system. This field is not populated in backups. */
+	// +optional
+	KmsKeyPrimaryState *string `json:"kmsKeyPrimaryState,omitempty"`
+
+	/* Output only. KMS key versions that are being used to protect the data at-rest. */
+	// +optional
+	KmsKeyVersions []string `json:"kmsKeyVersions,omitempty"`
+
+	/* Output only. The most recent time when the encryption info was updated. */
+	// +optional
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+}
+
+type ClusterMaintenancePolicyStatus struct {
+	/* Output only. The time when the policy was created i.e. Maintenance Window or Deny Period was assigned. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. The time when the policy was updated i.e. Maintenance Window or Deny Period was updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type ClusterMaintenanceScheduleStatus struct {
+	/* Output only. The end time of any upcoming scheduled maintenance for this instance. */
+	// +optional
+	EndTime *string `json:"endTime,omitempty"`
+
+	/* Output only. The start time of any upcoming scheduled maintenance for this instance. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
+}
+
+type ClusterMembershipStatus struct {
+	/* Output only. The primary cluster that acts as the source of replication for the secondary clusters. */
+	// +optional
+	PrimaryCluster *ClusterPrimaryClusterStatus `json:"primaryCluster,omitempty"`
+
+	/* Output only. The list of secondary clusters replicating from the primary cluster. */
+	// +optional
+	SecondaryClusters []ClusterSecondaryClustersStatus `json:"secondaryClusters,omitempty"`
+}
+
 type ClusterObservedStateStatus struct {
 	/* Output only. The timestamp associated with the cluster creation request. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
+	/* Output only. Cross cluster replication config. */
+	// +optional
+	CrossClusterReplicationConfig *ClusterCrossClusterReplicationConfigStatus `json:"crossClusterReplicationConfig,omitempty"`
+
 	/* Output only. Endpoints created on each given network, for Redis clients to connect to the cluster. Currently only one discovery endpoint is supported. */
 	// +optional
 	DiscoveryEndpoints []ClusterDiscoveryEndpointsStatus `json:"discoveryEndpoints,omitempty"`
+
+	/* Output only. Encryption information for the client to retrieve. */
+	// +optional
+	EncryptionInfo *ClusterEncryptionInfoStatus `json:"encryptionInfo,omitempty"`
+
+	/* Optional. ClusterMaintenancePolicy determines when to allow or deny updates. */
+	// +optional
+	MaintenancePolicy *ClusterMaintenancePolicyStatus `json:"maintenancePolicy,omitempty"`
+
+	/* Output only. ClusterMaintenanceSchedule Output only Published maintenance schedule. */
+	// +optional
+	MaintenanceSchedule *ClusterMaintenanceScheduleStatus `json:"maintenanceSchedule,omitempty"`
 
 	/* Output only. Precise value of redis memory size in GB for the entire cluster. */
 	// +optional
@@ -165,6 +362,10 @@ type ClusterObservedStateStatus struct {
 	/* Output only. PSC connections for discovery of the cluster topology and accessing the cluster. */
 	// +optional
 	PscConnections []ClusterPscConnectionsStatus `json:"pscConnections,omitempty"`
+
+	/* Output only. Service attachment details to configure Psc connections. */
+	// +optional
+	PscServiceAttachments []ClusterPscServiceAttachmentsStatus `json:"pscServiceAttachments,omitempty"`
 
 	/* Output only. Redis memory size in GB for the entire cluster rounded up to the next integer. */
 	// +optional
@@ -179,6 +380,16 @@ type ClusterObservedStateStatus struct {
 	StateInfo *ClusterStateInfoStatus `json:"stateInfo,omitempty"`
 
 	/* Output only. System assigned, unique identifier for the cluster. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
+}
+
+type ClusterPrimaryClusterStatus struct {
+	/* The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id> */
+	// +optional
+	Cluster *string `json:"cluster,omitempty"`
+
+	/* Output only. The unique identifier of the remote cluster. */
 	// +optional
 	Uid *string `json:"uid,omitempty"`
 }
@@ -213,6 +424,26 @@ type ClusterPscConnectionsStatus struct {
 	/* Required. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}. */
 	// +optional
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+}
+
+type ClusterPscServiceAttachmentsStatus struct {
+	/* Output only. Type of a PSC connection targeting this service attachment. */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	/* Output only. Service attachment URI which your self-created PscConnection should use as target */
+	// +optional
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+}
+
+type ClusterSecondaryClustersStatus struct {
+	/* The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id> */
+	// +optional
+	Cluster *string `json:"cluster,omitempty"`
+
+	/* Output only. The unique identifier of the remote cluster. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 }
 
 type ClusterStateInfoStatus struct {

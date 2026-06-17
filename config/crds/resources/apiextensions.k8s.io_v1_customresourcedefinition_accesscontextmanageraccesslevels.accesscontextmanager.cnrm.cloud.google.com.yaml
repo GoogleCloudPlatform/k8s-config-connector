@@ -88,10 +88,10 @@ spec:
                       Should be in the format "accessPolicies/{{accesspolicyID}}".
                     type: string
                   name:
-                    description: The name of a AccessContextManagerAccessPolicy resource.
+                    description: The name of an AccessContextManagerAccessPolicy resource.
                     type: string
                   namespace:
-                    description: The namespace of a AccessContextManagerAccessPolicy
+                    description: The namespace of an AccessContextManagerAccessPolicy
                       resource.
                     type: string
                 type: object
@@ -243,7 +243,7 @@ spec:
                             access levels listed must be granted for the Condition
                             to be true. Example: "`accessPolicies/MY_POLICY/accessLevels/LEVEL_NAME"`'
                           items:
-                            description: AccessLevelRef is a reference to a AccessLevel
+                            description: AccessLevelRef is a reference to an AccessLevel
                               resource.
                             oneOf:
                             - not:
@@ -265,10 +265,10 @@ spec:
                                   AccessLevel resource. Should be in the format "accessPolicies/{{accessPolicyID}}/accessLevels/{{accessLevel}}".
                                 type: string
                               name:
-                                description: The name of a AccessLevel resource.
+                                description: The name of an AccessLevel resource.
                                 type: string
                               namespace:
-                                description: The namespace of a AccessLevel resource.
+                                description: The namespace of an AccessLevel resource.
                                 type: string
                             type: object
                           type: array

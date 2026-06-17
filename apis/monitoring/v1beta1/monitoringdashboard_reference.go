@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &MonitoringDashboardRef{}
 
-// MonitoringDashboardRef defines the resource reference to MonitoringDashboard, which "External" field
-// holds the GCP identifier for the KRM object.
+// MonitoringDashboardRef is a reference to a MonitoringDashboard.
 type MonitoringDashboardRef struct {
 	// A reference to an externally managed MonitoringDashboard resource.
 	// Should be in the format "projects/{{projectID}}/dashboards/{{dashboardID}}".
@@ -42,7 +41,7 @@ type MonitoringDashboardRef struct {
 }
 
 func init() {
-	refs.Register(&MonitoringDashboardRef{})
+	refs.Register(&MonitoringDashboardRef{}, &MonitoringDashboard{})
 }
 
 func (r *MonitoringDashboardRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *MonitoringDashboardRef) GetExternal() string {
 
 func (r *MonitoringDashboardRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *MonitoringDashboardRef) ValidateExternal(ref string) error {

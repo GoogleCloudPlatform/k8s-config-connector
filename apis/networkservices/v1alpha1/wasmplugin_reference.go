@@ -53,6 +53,8 @@ func (r *NetworkServicesWasmPluginRef) GetExternal() string {
 
 func (r *NetworkServicesWasmPluginRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *NetworkServicesWasmPluginRef) ValidateExternal(ref string) error {

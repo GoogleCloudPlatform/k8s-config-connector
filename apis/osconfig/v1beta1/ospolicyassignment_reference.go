@@ -27,22 +27,21 @@ import (
 
 var _ refs.Ref = &OSConfigOSPolicyAssignmentRef{}
 
-// OSConfigOSPolicyAssignmentRef defines the resource reference to OSConfigOSPolicyAssignment, which "External" field
-// holds the GCP identifier for the KRM object.
+// OSConfigOSPolicyAssignmentRef is a reference to an OSConfigOSPolicyAssignment.
 type OSConfigOSPolicyAssignmentRef struct {
 	// A reference to an externally managed OSConfigOSPolicyAssignment resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/osPolicyAssignments/{{osConfigOSPolicyAssignmentID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a OSConfigOSPolicyAssignment resource.
+	// The name of an OSConfigOSPolicyAssignment resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a OSConfigOSPolicyAssignment resource.
+	// The namespace of an OSConfigOSPolicyAssignment resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&OSConfigOSPolicyAssignmentRef{})
+	refs.Register(&OSConfigOSPolicyAssignmentRef{}, &OSConfigOSPolicyAssignment{})
 }
 
 func (r *OSConfigOSPolicyAssignmentRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *OSConfigOSPolicyAssignmentRef) GetExternal() string {
 
 func (r *OSConfigOSPolicyAssignmentRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *OSConfigOSPolicyAssignmentRef) ValidateExternal(ref string) error {

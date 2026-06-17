@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// CustomTargetTypeIdentity defines the resource reference to CloudDeployCustomTargetType, which "External" field
-// holds the GCP identifier for the KRM object.
+// CustomTargetTypeIdentity is the identity of a CloudDeployCustomTargetType.
 type CustomTargetTypeIdentity struct {
 	parent *CustomTargetTypeParent
 	id     string

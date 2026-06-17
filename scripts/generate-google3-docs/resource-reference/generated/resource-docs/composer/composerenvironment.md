@@ -16,7 +16,7 @@ title: "ComposerEnvironment"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/composer/docs/">/composer/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/composer/docs/">https://docs.cloud.google.com/composer/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ComposerEnvironment"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/composer/docs/reference/rest/v1/projects.locations.environments">/composer/docs/reference/rest/v1/projects.locations.environments</a></td>
+<td><a href="https://docs.cloud.google.com/composer/docs/reference/rest/v1/projects.locations.environments">https://docs.cloud.google.com/composer/docs/reference/rest/v1/projects.locations.environments</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -535,7 +535,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetworkAttachment resource in the form "projects/{{project}}/regions/{{region}}/networkAttachments/{{name}}".</p>
+            <p>A reference to an externally managed ComputeNetworkAttachment resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/networkAttachments/{{networkattachmentID}}".</p>
         </td>
     </tr>
     <tr>
@@ -697,10 +697,10 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. The Compute Engine [zone](/compute/docs/regions-zones) in which
+            <p>Optional. The Compute Engine [zone](https://docs.cloud.google.com/compute/docs/regions-zones) in which
  to deploy the VMs used to run the Apache Airflow software, specified as a
  [relative resource
- name](/apis/design/resource_names#relative_resource_name). For example:
+ name](https://docs.cloud.google.com/apis/design/resource_names#relative_resource_name). For example:
  "projects/{projectId}/zones/{zoneId}".
 
  This `location` must belong to the enclosing environment's project and
@@ -724,10 +724,10 @@ storageConfig:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Optional. The Compute Engine
- [machine type](/compute/docs/machine-types) used for cluster instances,
+ [machine type](https://docs.cloud.google.com/compute/docs/machine-types) used for cluster instances,
  specified as a
  [relative resource
- name](/apis/design/resource_names#relative_resource_name). For example:
+ name](https://docs.cloud.google.com/apis/design/resource_names#relative_resource_name). For example:
  "projects/{projectId}/zones/{zoneId}/machineTypes/{machineTypeId}".
 
  The `machineType` must belong to the enclosing environment's project and
@@ -740,7 +740,7 @@ storageConfig:
  propagated to the unspecified field.
 
  The `machineTypeId` must not be a [shared-core machine
- type](/compute/docs/machine-types#sharedcore).
+ type](https://docs.cloud.google.com/compute/docs/machine-types#sharedcore).
 
  If this field is unspecified, the `machineTypeId` defaults
  to "n1-standard-1".
@@ -759,13 +759,13 @@ storageConfig:
             <p>Optional. The Compute Engine network to be used for machine
  communications, specified as a
  [relative resource
- name](/apis/design/resource_names#relative_resource_name). For example:
+ name](https://docs.cloud.google.com/apis/design/resource_names#relative_resource_name). For example:
  "projects/{projectId}/global/networks/{networkId}".
 
  If unspecified, the "default" network ID in the environment's project is
- used. If a [Custom Subnet Network](/vpc/docs/vpc#vpc_networks_and_subnets)
+ used. If a [Custom Subnet Network](https://docs.cloud.google.com/vpc/docs/vpc#vpc_networks_and_subnets)
  is provided, `nodeConfig.subnetwork` must also be provided. For
- [Shared VPC](/vpc/docs/shared-vpc) subnetwork requirements, see
+ [Shared VPC](https://docs.cloud.google.com/vpc/docs/shared-vpc) subnetwork requirements, see
  `nodeConfig.subnetwork`.</p>
         </td>
     </tr>
@@ -776,7 +776,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -874,7 +874,7 @@ storageConfig:
             <p>Optional. The Compute Engine subnetwork to be used for machine
  communications, specified as a
  [relative resource
- name](/apis/design/resource_names#relative_resource_name). For example:
+ name](https://docs.cloud.google.com/apis/design/resource_names#relative_resource_name). For example:
  "projects/{projectId}/regions/{regionId}/subnetworks/{subnetworkId}"
 
  If a subnetwork is provided, `nodeConfig.network` must also be provided,
@@ -889,7 +889,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -899,7 +899,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -909,7 +909,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -973,7 +973,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -983,7 +983,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -993,7 +993,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -1232,7 +1232,7 @@ storageConfig:
  contain any character, and can be written in any lower/upper case format.
 
  Certain Apache Airflow configuration property values are
- [blocked](/composer/docs/concepts/airflow-configurations),
+ [blocked](https://docs.cloud.google.com/composer/docs/concepts/airflow-configurations),
  and cannot be overridden.</p>
         </td>
     </tr>
@@ -1316,8 +1316,8 @@ storageConfig:
  In all cases, the resolved image version is stored in the same field.
 
  See also [version
- list](/composer/docs/concepts/versioning/composer-versions) and [versioning
- overview](/composer/docs/concepts/versioning/composer-versioning-overview).</p>
+ list](https://docs.cloud.google.com/composer/docs/concepts/versioning/composer-versions) and [versioning
+ overview](https://docs.cloud.google.com/composer/docs/concepts/versioning/composer-versioning-overview).</p>
         </td>
     </tr>
     <tr>
@@ -1831,7 +1831,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally-managed StorageBucket resource.</p>
+            <p>A reference to an externally managed StorageBucket resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1973,14 +1973,14 @@ observedState:
         <td><code>observedState.config.airflowBYOIDURI</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The 'bring your own identity' variant of the URI of the Apache Airflow Web UI hosted within this environment, to be accessed with external identities using workforce identity federation (see [Access environments with workforce identity federation](/composer/docs/composer-2/access-environments-with-workforce-identity-federation)).</p>
+            <p>Output only. The 'bring your own identity' variant of the URI of the Apache Airflow Web UI hosted within this environment, to be accessed with external identities using workforce identity federation (see [Access environments with workforce identity federation](https://docs.cloud.google.com/composer/docs/composer-2/access-environments-with-workforce-identity-federation)).</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.config.airflowURI</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The URI of the Apache Airflow Web UI hosted within this environment (see [Airflow web interface](/composer/docs/how-to/accessing/airflow-web-interface)).</p>
+            <p>Output only. The URI of the Apache Airflow Web UI hosted within this environment (see [Airflow web interface](https://docs.cloud.google.com/composer/docs/how-to/accessing/airflow-web-interface)).</p>
         </td>
     </tr>
     <tr>
@@ -2072,4 +2072,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

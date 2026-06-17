@@ -36,6 +36,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -86,6 +87,7 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, op *directbase.
 	}
 	return &EnvironmentAdapter{
 		id:        id,
+		k8sClient: reader,
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
@@ -98,6 +100,7 @@ func (m *modelEnvironment) AdapterForURL(ctx context.Context, url string) (direc
 
 type EnvironmentAdapter struct {
 	id        *krm.EnvironmentIdentity
+	k8sClient client.Reader
 	gcpClient *gcp.EnvironmentsClient
 	desired   *krm.ComposerEnvironment
 	actual    *composerpb.Environment
@@ -133,6 +136,9 @@ func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	if err := ResolveEnvironmentRefs(ctx, a.k8sClient, desired); err != nil {
+		return err
+	}
 	resource := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -168,7 +174,11 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("updating Environment", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desired := a.desired.DeepCopy()
+	if err := ResolveEnvironmentRefs(ctx, a.k8sClient, desired); err != nil {
+		return err
+	}
+	desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -391,19 +401,33 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 	if actual.PrivateEnvironmentConfig != nil {
 		if desired.PrivateEnvironmentConfig == nil {
 			desired.PrivateEnvironmentConfig = actual.PrivateEnvironmentConfig
-		}
-		if desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange == "" {
-			desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange = actual.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange
-		}
-		if desired.PrivateEnvironmentConfig.WebServerIpv4ReservedRange == "" {
-			desired.PrivateEnvironmentConfig.WebServerIpv4ReservedRange = actual.PrivateEnvironmentConfig.WebServerIpv4ReservedRange
+		} else {
+			if desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4CidrBlock == "" {
+				desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4CidrBlock = actual.PrivateEnvironmentConfig.CloudComposerNetworkIpv4CidrBlock
+			}
+			if desired.PrivateEnvironmentConfig.WebServerIpv4CidrBlock == "" {
+				desired.PrivateEnvironmentConfig.WebServerIpv4CidrBlock = actual.PrivateEnvironmentConfig.WebServerIpv4CidrBlock
+			}
+			if desired.PrivateEnvironmentConfig.CloudSqlIpv4CidrBlock == "" {
+				desired.PrivateEnvironmentConfig.CloudSqlIpv4CidrBlock = actual.PrivateEnvironmentConfig.CloudSqlIpv4CidrBlock
+			}
+			if desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange == "" {
+				desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange = actual.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange
+			}
+			if desired.PrivateEnvironmentConfig.WebServerIpv4ReservedRange == "" {
+				desired.PrivateEnvironmentConfig.WebServerIpv4ReservedRange = actual.PrivateEnvironmentConfig.WebServerIpv4ReservedRange
+			}
 		}
 		if actual.PrivateEnvironmentConfig.PrivateClusterConfig != nil {
 			if desired.PrivateEnvironmentConfig.PrivateClusterConfig == nil {
 				desired.PrivateEnvironmentConfig.PrivateClusterConfig = actual.PrivateEnvironmentConfig.PrivateClusterConfig
-			}
-			if desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange == "" {
-				desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange = actual.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange
+			} else {
+				if desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4CidrBlock == "" {
+					desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4CidrBlock = actual.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4CidrBlock
+				}
+				if desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange == "" {
+					desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange = actual.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange
+				}
 			}
 		}
 	}

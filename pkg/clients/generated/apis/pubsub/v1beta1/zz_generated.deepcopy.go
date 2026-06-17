@@ -346,7 +346,7 @@ func (in *PubSubSubscriptionSpec) DeepCopyInto(out *PubSubSubscriptionSpec) {
 	*out = *in
 	if in.AckDeadlineSeconds != nil {
 		in, out := &in.AckDeadlineSeconds, &out.AckDeadlineSeconds
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.BigqueryConfig != nil {
@@ -708,7 +708,7 @@ func (in *SubscriptionDeadLetterPolicy) DeepCopyInto(out *SubscriptionDeadLetter
 	}
 	if in.MaxDeliveryAttempts != nil {
 		in, out := &in.MaxDeliveryAttempts, &out.MaxDeliveryAttempts
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -843,6 +843,11 @@ func (in *TopicMessageStoragePolicy) DeepCopyInto(out *TopicMessageStoragePolicy
 		in, out := &in.AllowedPersistenceRegions, &out.AllowedPersistenceRegions
 		*out = make([]string, len(*in))
 		copy(*out, *in)
+	}
+	if in.EnforceInTransit != nil {
+		in, out := &in.EnforceInTransit, &out.EnforceInTransit
+		*out = new(bool)
+		**out = **in
 	}
 	return
 }

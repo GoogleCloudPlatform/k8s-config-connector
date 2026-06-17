@@ -1,0 +1,152 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var KMSCryptoKeyVersionGVK = GroupVersion.WithKind("KMSCryptoKeyVersion")
+
+// KMSCryptoKeyVersionSpec defines the desired state of KMSCryptoKeyVersion
+// +kcc:spec:proto=google.cloud.kms.v1.CryptoKeyVersion
+type KMSCryptoKeyVersionSpec struct {
+	/* Immutable. The name of the cryptoKey associated with the CryptoKeyVersions.
+	Format: ''projects/{{project}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptoKey}}''. */
+	CryptoKey string `json:"cryptoKey"`
+
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* The current state of the CryptoKeyVersion. Possible values: ["PENDING_GENERATION", "ENABLED", "DISABLED", "DESTROYED", "DESTROY_SCHEDULED", "PENDING_IMPORT", "IMPORT_FAILED"]. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.KeyOperationAttestation
+type CryptokeyversionAttestationStatus struct {
+	/* The certificate chains needed to validate the attestation. */
+	// +optional
+	CertChains *CryptokeyversionCertChainsStatus `json:"certChains,omitempty"`
+
+	/* The attestation data provided by the HSM when the key operation was performed. */
+	// +optional
+	Content *string `json:"content,omitempty"`
+
+	/* ExternalProtectionLevelOptions stores a group of additional fields for configuring a CryptoKeyVersion that are specific to the EXTERNAL protection level and EXTERNAL_VPC protection levels. */
+	// +optional
+	ExternalProtectionLevelOptions *CryptokeyversionExternalProtectionLevelOptionsStatus `json:"externalProtectionLevelOptions,omitempty"`
+
+	/* The format of the attestation data. */
+	// +optional
+	Format *string `json:"format,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.KeyOperationAttestation.CertificateChains
+type CryptokeyversionCertChainsStatus struct {
+	/* Cavium certificate chain corresponding to the attestation. */
+	// +optional
+	CaviumCerts *string `json:"caviumCerts,omitempty"`
+
+	/* Google card certificate chain corresponding to the attestation. */
+	// +optional
+	GoogleCardCerts *string `json:"googleCardCerts,omitempty"`
+
+	/* Google partition certificate chain corresponding to the attestation. */
+	// +optional
+	GooglePartitionCerts *string `json:"googlePartitionCerts,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.ExternalProtectionLevelOptions
+type CryptokeyversionExternalProtectionLevelOptionsStatus struct {
+	/* The path to the external key material on the EKM when using EkmConnection e.g., "v0/my/key". Set this field instead of externalKeyUri when using an EkmConnection. */
+	// +optional
+	EkmConnectionKeyPath *string `json:"ekmConnectionKeyPath,omitempty"`
+
+	/* The URI for an external resource that this CryptoKeyVersion represents. */
+	// +optional
+	ExternalKeyURI *string `json:"externalKeyUri,omitempty"`
+}
+
+// +kcc:status:proto=google.cloud.kms.v1.CryptoKeyVersion
+type KMSCryptoKeyVersionStatus struct {
+	/* Conditions represent the latest available observations of the
+	   KMSCryptoKeyVersion's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	/* The CryptoKeyVersionAlgorithm that this CryptoKeyVersion supports. */
+	// +optional
+	Algorithm *string `json:"algorithm,omitempty"`
+
+	/* Statement that was generated and signed by the HSM at key creation time. Use this statement to verify attributes of the key as stored on the HSM, independently of Google.
+	Only provided for key versions with protectionLevel HSM. */
+	// +optional
+	Attestation []CryptokeyversionAttestationStatus `json:"attestation,omitempty"`
+
+	/* The time this CryptoKeyVersion key material was generated. */
+	// +optional
+	GenerateTime *string `json:"generateTime,omitempty"`
+
+	/* The resource name for this CryptoKeyVersion. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* The ProtectionLevel describing how crypto operations are performed with this CryptoKeyVersion. */
+	// +optional
+	ProtectionLevel *string `json:"protectionLevel,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpkmscryptokeyversion;gcpkmscryptokeyversions
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// KMSCryptoKeyVersion is the Schema for the kms API
+// +k8s:openapi-gen=true
+type KMSCryptoKeyVersion struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   KMSCryptoKeyVersionSpec   `json:"spec"`
+	Status KMSCryptoKeyVersionStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// KMSCryptoKeyVersionList contains a list of KMSCryptoKeyVersion
+type KMSCryptoKeyVersionList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []KMSCryptoKeyVersion `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&KMSCryptoKeyVersion{}, &KMSCryptoKeyVersionList{})
+}

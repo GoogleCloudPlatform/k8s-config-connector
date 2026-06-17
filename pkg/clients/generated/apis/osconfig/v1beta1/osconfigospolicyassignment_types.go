@@ -519,7 +519,7 @@ type OSConfigOSPolicyAssignmentStatus struct {
 	// +optional
 	RevisionCreateTime *string `json:"revisionCreateTime,omitempty"`
 
-	/* Output only. The assignment revision ID A new revision is committed whenever a rollout is triggered for a OS policy assignment */
+	/* Output only. The assignment revision ID A new revision is committed whenever a rollout is triggered for an OS policy assignment */
 	// +optional
 	RevisionId *string `json:"revisionId,omitempty"`
 

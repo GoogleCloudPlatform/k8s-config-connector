@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &WorkstationConfigRef{}
 
-// WorkstationConfigRef defines the resource reference to WorkstationConfig, which "External" field
-// holds the GCP identifier for the KRM object.
+// WorkstationConfigRef is a reference to a WorkstationConfig.
 type WorkstationConfigRef struct {
 	// A reference to an externally managed WorkstationConfig resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/workstationClusters/{{workstationclusterID}}/workstationConfigs/{{workstationconfigID}}".
@@ -42,7 +41,7 @@ type WorkstationConfigRef struct {
 }
 
 func init() {
-	refs.Register(&WorkstationConfigRef{})
+	refs.Register(&WorkstationConfigRef{}, &WorkstationConfig{})
 }
 
 func (r *WorkstationConfigRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *WorkstationConfigRef) GetExternal() string {
 
 func (r *WorkstationConfigRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *WorkstationConfigRef) ValidateExternal(ref string) error {

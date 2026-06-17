@@ -49,7 +49,7 @@ func DataflowFlexTemplateJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Fle
 		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	// MISSING: AdditionalUserLabels
 	if in.GetKmsKeyName() != "" {
@@ -111,3 +111,155 @@ func DataflowFlexTemplateJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Data
 	// MISSING: StreamingMode
 	return out
 }
+
+/* found existing non-generated mapping function "DataflowJobSpec_FromProto", skipping
+func DataflowJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.DataflowJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataflowJobSpec{}
+	// MISSING: ID
+	// MISSING: ProjectID
+	// MISSING: Name
+	// MISSING: Type
+	// MISSING: Environment
+	// MISSING: Steps
+	// MISSING: StepsLocation
+	// MISSING: CurrentState
+	// MISSING: CurrentStateTime
+	// MISSING: RequestedState
+	// MISSING: ExecutionInfo
+	// MISSING: CreateTime
+	// MISSING: ReplaceJobID
+	out.TransformNameMapping = in.TransformNameMapping
+	// MISSING: ClientRequestID
+	// MISSING: ReplacedByJobID
+	// MISSING: TempFiles
+	// MISSING: Labels
+	// MISSING: Location
+	// MISSING: PipelineDescription
+	// MISSING: StageStates
+	// MISSING: JobMetadata
+	// MISSING: StartTime
+	// MISSING: CreatedFromSnapshotID
+	// MISSING: SatisfiesPzs
+	// MISSING: RuntimeUpdatableParams
+	// MISSING: SatisfiesPzi
+	// MISSING: ServiceResources
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "DataflowJobSpec_ToProto", skipping
+func DataflowJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataflowJobSpec) *pb.Job {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Job{}
+	// MISSING: ID
+	// MISSING: ProjectID
+	// MISSING: Name
+	// MISSING: Type
+	// MISSING: Environment
+	// MISSING: Steps
+	// MISSING: StepsLocation
+	// MISSING: CurrentState
+	// MISSING: CurrentStateTime
+	// MISSING: RequestedState
+	// MISSING: ExecutionInfo
+	// MISSING: CreateTime
+	// MISSING: ReplaceJobID
+	out.TransformNameMapping = in.TransformNameMapping
+	// MISSING: ClientRequestID
+	// MISSING: ReplacedByJobID
+	// MISSING: TempFiles
+	// MISSING: Labels
+	// MISSING: Location
+	// MISSING: PipelineDescription
+	// MISSING: StageStates
+	// MISSING: JobMetadata
+	// MISSING: StartTime
+	// MISSING: CreatedFromSnapshotID
+	// MISSING: SatisfiesPzs
+	// MISSING: RuntimeUpdatableParams
+	// MISSING: SatisfiesPzi
+	// MISSING: ServiceResources
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "DataflowJobStatus_FromProto", skipping
+func DataflowJobStatus_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.DataflowJobStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataflowJobStatus{}
+	// MISSING: ID
+	// MISSING: ProjectID
+	// MISSING: Name
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	// MISSING: Environment
+	// MISSING: Steps
+	// MISSING: StepsLocation
+	// MISSING: CurrentState
+	// MISSING: CurrentStateTime
+	// MISSING: RequestedState
+	// MISSING: ExecutionInfo
+	// MISSING: CreateTime
+	// MISSING: ReplaceJobID
+	// MISSING: TransformNameMapping
+	// MISSING: ClientRequestID
+	// MISSING: ReplacedByJobID
+	// MISSING: TempFiles
+	// MISSING: Labels
+	// MISSING: Location
+	// MISSING: PipelineDescription
+	// MISSING: StageStates
+	// MISSING: JobMetadata
+	// MISSING: StartTime
+	// MISSING: CreatedFromSnapshotID
+	// MISSING: SatisfiesPzs
+	// MISSING: RuntimeUpdatableParams
+	// MISSING: SatisfiesPzi
+	// MISSING: ServiceResources
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "DataflowJobStatus_ToProto", skipping
+func DataflowJobStatus_ToProto(mapCtx *direct.MapContext, in *krm.DataflowJobStatus) *pb.Job {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Job{}
+	// MISSING: ID
+	// MISSING: ProjectID
+	// MISSING: Name
+	out.Type = direct.Enum_ToProto[pb.JobType](mapCtx, in.Type)
+	// MISSING: Environment
+	// MISSING: Steps
+	// MISSING: StepsLocation
+	// MISSING: CurrentState
+	// MISSING: CurrentStateTime
+	// MISSING: RequestedState
+	// MISSING: ExecutionInfo
+	// MISSING: CreateTime
+	// MISSING: ReplaceJobID
+	// MISSING: TransformNameMapping
+	// MISSING: ClientRequestID
+	// MISSING: ReplacedByJobID
+	// MISSING: TempFiles
+	// MISSING: Labels
+	// MISSING: Location
+	// MISSING: PipelineDescription
+	// MISSING: StageStates
+	// MISSING: JobMetadata
+	// MISSING: StartTime
+	// MISSING: CreatedFromSnapshotID
+	// MISSING: SatisfiesPzs
+	// MISSING: RuntimeUpdatableParams
+	// MISSING: SatisfiesPzi
+	// MISSING: ServiceResources
+	return out
+}
+*/

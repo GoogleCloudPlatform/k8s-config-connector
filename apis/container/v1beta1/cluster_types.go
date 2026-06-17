@@ -261,6 +261,10 @@ type ConfidentialNodes struct {
 	// +required
 	// +kcc:proto:field=google.container.v1.ConfidentialNodes.enabled
 	Enabled *bool `json:"enabled,omitempty"`
+
+	/* Immutable. Defines the type of technology used by the confidential node. */
+	// +kcc:proto:field=google.container.v1.ConfidentialNodes.confidentialInstanceType
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.ConfigConnectorConfig
@@ -544,7 +548,7 @@ type AdditionalIPRangesConfig struct {
 	/* The subnetwork path for the additional IP range. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}. */
 	// +required
 	// +kcc:proto:field=google.container.v1.AdditionalIPRangesConfig.subnetwork
-	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	/* List of secondary ranges names within this subnetwork that can be used for pod IPs. */
 	// +kcc:proto:field=google.container.v1.AdditionalIPRangesConfig.pod_ipv4_range_names
@@ -1051,7 +1055,7 @@ type PrivateClusterConfig struct {
 	/* Immutable. Subnetwork in cluster's network where master's endpoint
 	will be provisioned. */
 	// +kcc:proto:field=google.container.v1.PrivateClusterConfig.private_endpoint_subnetwork
-	PrivateEndpointSubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"privateEndpointSubnetworkRef,omitempty"`
+	PrivateEndpointSubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"privateEndpointSubnetworkRef,omitempty"`
 
 	/* The external IP address of this cluster's master endpoint. */
 	// +kcc:proto:field=google.container.v1.PrivateClusterConfig.public_endpoint
@@ -1544,7 +1548,7 @@ type ContainerClusterSpec struct {
 	ServiceExternalIPsConfig *ServiceExternalIPsConfig `json:"serviceExternalIpsConfig,omitempty"`
 
 	// +kcc:proto:field=google.container.v1.Cluster.subnetwork
-	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	/* Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it. */
 	// +kcc:proto:field=google.container.v1.Cluster.vertical_pod_autoscaling

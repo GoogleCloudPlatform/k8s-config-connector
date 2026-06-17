@@ -30,7 +30,7 @@ var _ refsv1beta1.Ref = &ContainerClusterRef{}
 var ContainerClusterGVK = GroupVersion.WithKind("ContainerCluster")
 
 func init() {
-	refsv1beta1.Register(&ContainerClusterRef{})
+	refsv1beta1.Register(&ContainerClusterRef{}, &ContainerCluster{})
 }
 
 type ContainerClusterRef struct {
@@ -63,6 +63,8 @@ func (r *ContainerClusterRef) GetExternal() string {
 
 func (r *ContainerClusterRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ContainerClusterRef) ValidateExternal(ref string) error {

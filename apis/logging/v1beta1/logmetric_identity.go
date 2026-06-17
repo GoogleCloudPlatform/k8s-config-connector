@@ -58,7 +58,7 @@ func (i *LoggingLogMetricIdentity) Host() string {
 	return LoggingLogMetricIdentityFormat.Host()
 }
 
-func getIdentityFromLoggingLogMetricSpec(ctx context.Context, reader client.Reader, obj client.Object) (*LoggingLogMetricIdentity, error) {
+func getIdentityFromLoggingLogMetricSpec(ctx context.Context, reader client.Reader, obj *LoggingLogMetric) (*LoggingLogMetricIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)

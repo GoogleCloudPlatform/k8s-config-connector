@@ -16,7 +16,7 @@ title: "BigQueryReservationAssignment"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/bigquery/docs/reservations-intro">/bigquery/docs/reservations-intro</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/reservations-intro">https://docs.cloud.google.com/bigquery/docs/reservations-intro</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BigQueryReservationAssignment"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/bigquery/docs/reference/reservations/rest/v1/projects.locations.reservations.assignments">/bigquery/docs/reference/reservations/rest/v1/projects.locations.reservations.assignments</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/reference/reservations/rest/v1/projects.locations.reservations.assignments">https://docs.cloud.google.com/bigquery/docs/reference/reservations/rest/v1/projects.locations.reservations.assignments</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -372,4 +372,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

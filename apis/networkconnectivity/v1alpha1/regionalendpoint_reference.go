@@ -59,6 +59,8 @@ func (r *NetworkConnectivityRegionalEndpointRef) GetExternal() string {
 // SetExternal sets the External string for NetworkConnectivityRegionalEndpoint
 func (r *NetworkConnectivityRegionalEndpointRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 // ValidateExternal checks if the External string is valid
@@ -86,5 +88,5 @@ func (r *NetworkConnectivityRegionalEndpointRef) Normalize(ctx context.Context, 
 }
 
 func init() {
-	refs.Register(&NetworkConnectivityRegionalEndpointRef{})
+	refs.Register(&NetworkConnectivityRegionalEndpointRef{}, &NetworkConnectivityRegionalEndpoint{})
 }

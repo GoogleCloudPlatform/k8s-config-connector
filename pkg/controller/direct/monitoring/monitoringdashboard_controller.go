@@ -25,6 +25,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
+	monitoringprojects "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -56,6 +57,7 @@ type dashboardAdapter struct {
 	actual  *pb.Dashboard
 
 	dashboardsClient *api.DashboardsClient
+	projectMapper    *monitoringprojects.ProjectMapper
 }
 
 // adapter implements the Adapter interface.
@@ -100,10 +102,16 @@ func (m *dashboardModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, mapCtx.Err()
 	}
 
+	dashboardProject := projectRef.ProjectID
+	if err := normalizeDashboardProto(ctx, m.config.ProjectMapper, desiredProto, dashboardProject); err != nil {
+		return nil, err
+	}
+
 	return &dashboardAdapter{
 		id:               id.(*krm.MonitoringDashboardIdentity),
 		desired:          desiredProto,
 		dashboardsClient: dashboardsClient,
+		projectMapper:    m.config.ProjectMapper,
 	}, nil
 }
 
@@ -131,6 +139,7 @@ func (m *dashboardModel) AdapterForURL(ctx context.Context, url string) (directb
 	return &dashboardAdapter{
 		id:               id,
 		dashboardsClient: dashboardsClient,
+		projectMapper:    m.config.ProjectMapper,
 	}, nil
 }
 
@@ -148,6 +157,10 @@ func (a *dashboardAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
+		return false, err
+	}
+
+	if err := normalizeDashboardProto(ctx, a.projectMapper, dashboard, a.id.Project); err != nil {
 		return false, err
 	}
 

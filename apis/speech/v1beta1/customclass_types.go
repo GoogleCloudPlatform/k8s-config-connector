@@ -135,6 +135,7 @@ type SpeechCustomClassObservedState struct {
 // SpeechCustomClass is the Schema for the SpeechCustomClass API
 // +k8s:openapi-gen=true
 // +kubebuilder:storageversion
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 type SpeechCustomClass struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

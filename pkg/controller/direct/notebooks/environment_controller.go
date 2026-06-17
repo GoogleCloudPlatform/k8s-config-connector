@@ -18,17 +18,22 @@ import (
 	"context"
 	"fmt"
 
+	gcp "cloud.google.com/go/notebooks/apiv1beta1"
+	pb "cloud.google.com/go/notebooks/apiv1beta1/notebookspb"
+	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-
-	gcp "cloud.google.com/go/notebooks/apiv1beta1"
-
-	pb "cloud.google.com/go/notebooks/apiv1beta1/notebookspb"
-	"google.golang.org/api/option"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -70,6 +75,11 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	id, err := krm.NewEnvironmentIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
@@ -80,10 +90,17 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, op *directbase.
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	desired := NotebooksEnvironmentSpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	return &EnvironmentAdapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desired,
 	}, nil
 }
 
@@ -93,9 +110,9 @@ func (m *modelEnvironment) AdapterForURL(ctx context.Context, url string) (direc
 }
 
 type EnvironmentAdapter struct {
-	id        *krm.EnvironmentIdentity
+	id        *krm.NotebooksEnvironmentIdentity
 	gcpClient *gcp.NotebookClient
-	desired   *krm.NotebooksEnvironment
+	desired   *pb.Environment
 	actual    *pb.Environment
 }
 
@@ -126,18 +143,11 @@ func (a *EnvironmentAdapter) Find(ctx context.Context) (bool, error) {
 func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Environment", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := NotebooksEnvironmentSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 
 	req := &pb.CreateEnvironmentRequest{
-		Parent:        a.id.Parent().String(),
+		Parent:        a.id.ParentString(),
 		EnvironmentId: a.id.ID(),
-		Environment:   resource,
+		Environment:   a.desired,
 	}
 	op, err := a.gcpClient.CreateEnvironment(ctx, req)
 	if err != nil {
@@ -149,18 +159,27 @@ func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 	log.V(2).Info("successfully created Environment", "name", a.id)
 
-	status := &krm.NotebooksEnvironmentStatus{}
-	status.ObservedState = NotebooksEnvironmentObservedState_v1alpha1_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return createOp.UpdateStatus(ctx, status, nil)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return fmt.Errorf("notebooks Environment resource cannot be updated")
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating Environment", "name", a.id)
+
+	diffs, _, err := compareEnvironment(ctx, a.actual, a.desired)
+	if err != nil {
+		return err
+	}
+
+	if !diffs.HasDiff() {
+		log.V(2).Info("no diff detected for Environment", "name", a.id)
+		return a.updateStatus(ctx, updateOp, a.actual)
+	}
+
+	structuredreporting.ReportDiff(ctx, diffs)
+
+	return fmt.Errorf("NotebooksEnvironment resource is immutable and cannot be updated")
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
@@ -176,8 +195,8 @@ func (a *EnvironmentAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -212,4 +231,37 @@ func (a *EnvironmentAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 		return false, fmt.Errorf("waiting delete Environment %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func compareEnvironment(ctx context.Context, actual, desired *pb.Environment) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, NotebooksEnvironmentSpec_v1alpha1_FromProto, NotebooksEnvironmentSpec_v1alpha1_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+	maskedActual.Name = desired.Name // Restore any non-spec identifier fields if needed
+
+	clonedDesired := proto.Clone(desired).(*pb.Environment)
+
+	populateDefaults := func(obj *pb.Environment) {
+		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
+	}
+	populateDefaults(maskedActual)
+	populateDefaults(clonedDesired)
+
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
+}
+
+func (a *EnvironmentAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Environment) error {
+	mapCtx := &direct.MapContext{}
+	status := &krm.NotebooksEnvironmentStatus{}
+	status.ObservedState = NotebooksEnvironmentObservedState_v1alpha1_FromProto(mapCtx, latest)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return op.UpdateStatus(ctx, status, nil)
 }

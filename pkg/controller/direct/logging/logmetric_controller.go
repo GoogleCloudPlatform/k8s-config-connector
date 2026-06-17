@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -86,11 +87,8 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, err
 	}
 
-	// resolve LoggingLogBucketRef
-	// todo: LoggingLogBucketRef is *v1alpha1.ResourceRef, ideally should use *loggingv1beta1.LoggingLogBucketRef instead
-	// *v1alpha1.ResourceRef has required `kind` field, this migration could introduce breaking changes to Beta CRD
-	if err := LogBucketRef_ConvertToExternal(ctx, reader, obj, &obj.Spec.LoggingLogBucketRef); err != nil {
-		return nil, err
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	return &logMetricAdapter{

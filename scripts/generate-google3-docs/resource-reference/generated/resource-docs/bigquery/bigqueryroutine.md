@@ -16,7 +16,7 @@ title: "BigQueryRoutine"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/bigquery/docs/">/bigquery/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/">https://docs.cloud.google.com/bigquery/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BigQueryRoutine"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/bigquery/docs/reference/rest/v2/routines">/bigquery/docs/reference/rest/v2/routines</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/reference/rest/v2/routines">https://docs.cloud.google.com/bigquery/docs/reference/rest/v2/routines</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -496,4 +496,4 @@ metadata:
   name: bigquerydataset-dep
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

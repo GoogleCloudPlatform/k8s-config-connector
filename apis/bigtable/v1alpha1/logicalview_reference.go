@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &LogicalViewRef{}
 
-// LogicalViewRef defines the resource reference to BigtableLogicalView, which "External" field
-// holds the GCP identifier for the KRM object.
+// LogicalViewRef is a reference to a BigtableLogicalView.
 type LogicalViewRef struct {
 	// A reference to an externally managed BigtableLogicalView resource.
 	// Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/logicalViews/{{logicalViewID}}".

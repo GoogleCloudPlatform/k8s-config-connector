@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// TagTemplateIdentity defines the resource reference to DataCatalogTagTemplate, which "External" field
-// holds the GCP identifier for the KRM object.
+// TagTemplateIdentity is the identity of a DataCatalogTagTemplate.
 type TagTemplateIdentity struct {
 	parent *TagTemplateParent
 	id     string

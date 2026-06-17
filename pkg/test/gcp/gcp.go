@@ -167,6 +167,9 @@ func FindDefaultServiceAccount() (string, error) {
 		return "", nil
 	}
 
+	if len(creds.JSON) == 0 {
+		return "", nil
+	}
 	var rawCreds map[string]string
 	if err := json.Unmarshal(creds.JSON, &rawCreds); err != nil {
 		return "", fmt.Errorf("creds file malformed: %w", err)

@@ -168,6 +168,398 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
+func ComputeAddressObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeAddressObservedState{}
+	out.Address = in.Address
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: Users
+	return out
+}
+func ComputeAddressObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressObservedState) *pb.Address {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Address{}
+	out.Address = in.Address
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: Users
+	return out
+}
+func ComputeAddressSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeAddressSpec{}
+	out.Address = in.Address
+	out.AddressType = in.AddressType
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	out.IPVersion = in.IpVersion
+	out.IPV6EndpointType = in.Ipv6EndpointType
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.NetworkTier = in.NetworkTier
+	out.PrefixLength = in.PrefixLength
+	out.Purpose = in.Purpose
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krm.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	// MISSING: Users
+	return out
+}
+func ComputeAddressSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressSpec) *pb.Address {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Address{}
+	out.Address = in.Address
+	out.AddressType = in.AddressType
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	out.IpVersion = in.IPVersion
+	out.Ipv6EndpointType = in.IPV6EndpointType
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.NetworkTier = in.NetworkTier
+	out.PrefixLength = in.PrefixLength
+	out.Purpose = in.Purpose
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = &in.SubnetworkRef.External
+	}
+	// MISSING: Users
+	return out
+}
+func ComputeAddressStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeAddressStatus{}
+	// MISSING: Address
+	// MISSING: AddressType
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: IPVersion
+	// MISSING: IPV6EndpointType
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: NetworkTier
+	// MISSING: PrefixLength
+	// MISSING: Purpose
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Status
+	// MISSING: Subnetwork
+	out.Users = in.Users
+	return out
+}
+func ComputeAddressStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressStatus) *pb.Address {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Address{}
+	// MISSING: Address
+	// MISSING: AddressType
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: IPVersion
+	// MISSING: IPV6EndpointType
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: NetworkTier
+	// MISSING: PrefixLength
+	// MISSING: Purpose
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Status
+	// MISSING: Subnetwork
+	out.Users = in.Users
+	return out
+}
+func ComputeDiskSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Disk) *krm.ComputeDiskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeDiskSpec{}
+	// MISSING: AccessMode
+	// MISSING: Architecture
+	out.AsyncPrimaryDisk = DiskAsyncPrimaryDisk_v1beta1_FromProto(mapCtx, in.GetAsyncPrimaryDisk())
+	// MISSING: AsyncSecondaryDisks
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DiskEncryptionKey = DiskDiskEncryptionKey_v1beta1_FromProto(mapCtx, in.GetDiskEncryptionKey())
+	out.EnableConfidentialCompute = in.EnableConfidentialCompute
+	out.GuestOSFeatures = direct.Slice_FromProto(mapCtx, in.GuestOsFeatures, DiskGuestOsFeatures_v1beta1_FromProto)
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastAttachTimestamp
+	// MISSING: LastDetachTimestamp
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: Options
+	// MISSING: Params
+	out.PhysicalBlockSizeBytes = in.PhysicalBlockSizeBytes
+	out.ProvisionedIops = in.ProvisionedIops
+	out.ProvisionedThroughput = in.ProvisionedThroughput
+	// MISSING: Region
+	out.ReplicaZones = in.ReplicaZones
+	out.ResourcePolicies = ComputeDiskSpec_ResourcePolicies_FromProto(mapCtx, in.ResourcePolicies)
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	out.SizeGB = in.SizeGb
+	// MISSING: SourceConsistencyGroupPolicy
+	// MISSING: SourceConsistencyGroupPolicyID
+	if in.GetSourceDisk() != "" {
+		out.SourceDiskRef = &krm.ComputeDiskRef{External: in.GetSourceDisk()}
+	}
+	// MISSING: SourceDiskID
+	if in.GetSourceImage() != "" {
+		out.SourceImageRef = &krm.ComputeImageRef{External: in.GetSourceImage()}
+	}
+	out.SourceImageEncryptionKey = DiskSourceImageEncryptionKey_v1beta1_FromProto(mapCtx, in.GetSourceImageEncryptionKey())
+	// MISSING: SourceImageID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotID
+	if in.GetSourceSnapshot() != "" {
+		out.SourceSnapshotRef = &krm.ComputeSnapshotRef{External: in.GetSourceSnapshot()}
+	}
+	out.SourceSnapshotEncryptionKey = DiskSourceSnapshotEncryptionKey_v1beta1_FromProto(mapCtx, in.GetSourceSnapshotEncryptionKey())
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceStorageObject
+	// MISSING: Status
+	// MISSING: StoragePool
+	out.Type = in.Type
+	// MISSING: Users
+	// MISSING: Zone
+	return out
+}
+func ComputeDiskSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeDiskSpec) *pb.Disk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Disk{}
+	// MISSING: AccessMode
+	// MISSING: Architecture
+	out.AsyncPrimaryDisk = DiskAsyncPrimaryDisk_v1beta1_ToProto(mapCtx, in.AsyncPrimaryDisk)
+	// MISSING: AsyncSecondaryDisks
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DiskEncryptionKey = DiskDiskEncryptionKey_v1beta1_ToProto(mapCtx, in.DiskEncryptionKey)
+	out.EnableConfidentialCompute = in.EnableConfidentialCompute
+	out.GuestOsFeatures = direct.Slice_ToProto(mapCtx, in.GuestOSFeatures, DiskGuestOsFeatures_v1beta1_ToProto)
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastAttachTimestamp
+	// MISSING: LastDetachTimestamp
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: Options
+	// MISSING: Params
+	out.PhysicalBlockSizeBytes = in.PhysicalBlockSizeBytes
+	out.ProvisionedIops = in.ProvisionedIops
+	out.ProvisionedThroughput = in.ProvisionedThroughput
+	// MISSING: Region
+	out.ReplicaZones = in.ReplicaZones
+	out.ResourcePolicies = ComputeDiskSpec_ResourcePolicies_ToProto(mapCtx, in.ResourcePolicies)
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	out.SizeGb = in.SizeGB
+	// MISSING: SourceConsistencyGroupPolicy
+	// MISSING: SourceConsistencyGroupPolicyID
+	if in.SourceDiskRef != nil {
+		out.SourceDisk = &in.SourceDiskRef.External
+	}
+	// MISSING: SourceDiskID
+	if in.SourceImageRef != nil {
+		out.SourceImage = &in.SourceImageRef.External
+	}
+	out.SourceImageEncryptionKey = DiskSourceImageEncryptionKey_v1beta1_ToProto(mapCtx, in.SourceImageEncryptionKey)
+	// MISSING: SourceImageID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotID
+	if in.SourceSnapshotRef != nil {
+		out.SourceSnapshot = &in.SourceSnapshotRef.External
+	}
+	out.SourceSnapshotEncryptionKey = DiskSourceSnapshotEncryptionKey_v1beta1_ToProto(mapCtx, in.SourceSnapshotEncryptionKey)
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceStorageObject
+	// MISSING: Status
+	// MISSING: StoragePool
+	out.Type = in.Type
+	// MISSING: Users
+	// MISSING: Zone
+	return out
+}
+func ComputeDiskStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Disk) *krm.ComputeDiskStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeDiskStatus{}
+	// MISSING: AccessMode
+	// MISSING: Architecture
+	// MISSING: AsyncPrimaryDisk
+	// MISSING: AsyncSecondaryDisks
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: DiskEncryptionKey
+	// MISSING: EnableConfidentialCompute
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	out.LastAttachTimestamp = in.LastAttachTimestamp
+	out.LastDetachTimestamp = in.LastDetachTimestamp
+	// MISSING: LicenseCodes
+	// MISSING: Licenses
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: Options
+	// MISSING: Params
+	// MISSING: PhysicalBlockSizeBytes
+	// MISSING: ProvisionedIops
+	// MISSING: ProvisionedThroughput
+	// MISSING: Region
+	// MISSING: ReplicaZones
+	// MISSING: ResourcePolicies
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	// MISSING: SizeGB
+	// MISSING: SourceConsistencyGroupPolicy
+	// MISSING: SourceConsistencyGroupPolicyID
+	// MISSING: SourceDisk
+	out.SourceDiskID = in.SourceDiskId
+	// MISSING: SourceImage
+	// MISSING: SourceImageEncryptionKey
+	out.SourceImageID = in.SourceImageId
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshot
+	// MISSING: SourceSnapshotEncryptionKey
+	out.SourceSnapshotID = in.SourceSnapshotId
+	// MISSING: SourceStorageObject
+	// MISSING: Status
+	// MISSING: StoragePool
+	// MISSING: Type
+	out.Users = in.Users
+	// MISSING: Zone
+	return out
+}
+func ComputeDiskStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeDiskStatus) *pb.Disk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Disk{}
+	// MISSING: AccessMode
+	// MISSING: Architecture
+	// MISSING: AsyncPrimaryDisk
+	// MISSING: AsyncSecondaryDisks
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: DiskEncryptionKey
+	// MISSING: EnableConfidentialCompute
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	out.LastAttachTimestamp = in.LastAttachTimestamp
+	out.LastDetachTimestamp = in.LastDetachTimestamp
+	// MISSING: LicenseCodes
+	// MISSING: Licenses
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: Options
+	// MISSING: Params
+	// MISSING: PhysicalBlockSizeBytes
+	// MISSING: ProvisionedIops
+	// MISSING: ProvisionedThroughput
+	// MISSING: Region
+	// MISSING: ReplicaZones
+	// MISSING: ResourcePolicies
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	// MISSING: SizeGB
+	// MISSING: SourceConsistencyGroupPolicy
+	// MISSING: SourceConsistencyGroupPolicyID
+	// MISSING: SourceDisk
+	out.SourceDiskId = in.SourceDiskID
+	// MISSING: SourceImage
+	// MISSING: SourceImageEncryptionKey
+	out.SourceImageId = in.SourceImageID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshot
+	// MISSING: SourceSnapshotEncryptionKey
+	out.SourceSnapshotId = in.SourceSnapshotID
+	// MISSING: SourceStorageObject
+	// MISSING: Status
+	// MISSING: StoragePool
+	// MISSING: Type
+	out.Users = in.Users
+	// MISSING: Zone
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
@@ -269,6 +661,126 @@ func ComputeFirewallPolicyRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, 
 }
 */
 
+/* found existing non-generated mapping function "ComputeFirewallSpec_v1beta1_FromProto", skipping
+func ComputeFirewallSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Firewall) *krm.ComputeFirewallSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallSpec{}
+	// MISSING: Allowed
+	// MISSING: CreationTimestamp
+	// MISSING: Denied
+	out.Description = in.Description
+	out.DestinationRanges = in.DestinationRanges
+	out.Direction = in.Direction
+	out.Disabled = in.Disabled
+	// MISSING: ID
+	// MISSING: Kind
+	out.LogConfig = FirewallLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: Params
+	out.Priority = in.Priority
+	// MISSING: SelfLink
+	out.SourceRanges = in.SourceRanges
+	out.SourceServiceAccounts = ComputeFirewallSpec_SourceServiceAccounts_FromProto(mapCtx, in.SourceServiceAccounts)
+	out.SourceTags = in.SourceTags
+	out.TargetServiceAccounts = ComputeFirewallSpec_TargetServiceAccounts_FromProto(mapCtx, in.TargetServiceAccounts)
+	out.TargetTags = in.TargetTags
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeFirewallSpec_v1beta1_ToProto", skipping
+
+	func ComputeFirewallSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallSpec) *pb.Firewall {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Firewall{}
+		// MISSING: Allowed
+		// MISSING: CreationTimestamp
+		// MISSING: Denied
+		out.Description = in.Description
+		out.DestinationRanges = in.DestinationRanges
+		out.Direction = in.Direction
+		out.Disabled = in.Disabled
+		// MISSING: ID
+		// MISSING: Kind
+		out.LogConfig = FirewallLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+		// MISSING: Name
+		if in.NetworkRef != nil {
+			out.Network = &in.NetworkRef.External
+		}
+		// MISSING: Params
+		out.Priority = in.Priority
+		// MISSING: SelfLink
+		out.SourceRanges = in.SourceRanges
+		out.SourceServiceAccounts = ComputeFirewallSpec_SourceServiceAccounts_ToProto(mapCtx, in.SourceServiceAccounts)
+		out.SourceTags = in.SourceTags
+		out.TargetServiceAccounts = ComputeFirewallSpec_TargetServiceAccounts_ToProto(mapCtx, in.TargetServiceAccounts)
+		out.TargetTags = in.TargetTags
+		return out
+	}
+*/
+func ComputeFirewallStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Firewall) *krm.ComputeFirewallStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallStatus{}
+	// MISSING: Allowed
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Denied
+	// MISSING: Description
+	// MISSING: DestinationRanges
+	// MISSING: Direction
+	// MISSING: Disabled
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: Params
+	// MISSING: Priority
+	out.SelfLink = in.SelfLink
+	// MISSING: SourceRanges
+	// MISSING: SourceServiceAccounts
+	// MISSING: SourceTags
+	// MISSING: TargetServiceAccounts
+	// MISSING: TargetTags
+	return out
+}
+func ComputeFirewallStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallStatus) *pb.Firewall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Firewall{}
+	// MISSING: Allowed
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Denied
+	// MISSING: Description
+	// MISSING: DestinationRanges
+	// MISSING: Direction
+	// MISSING: Disabled
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: Params
+	// MISSING: Priority
+	out.SelfLink = in.SelfLink
+	// MISSING: SourceRanges
+	// MISSING: SourceServiceAccounts
+	// MISSING: SourceTags
+	// MISSING: TargetServiceAccounts
+	// MISSING: TargetTags
+	return out
+}
+
 /* found existing non-generated mapping function "ComputeForwardingRuleSpec_v1beta1_FromProto", skipping
 func ComputeForwardingRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRule) *krm.ComputeForwardingRuleSpec {
 	if in == nil {
@@ -322,7 +834,7 @@ func ComputeForwardingRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: SourceIPRanges
 	// (near miss): "SourceIPRanges" vs "SourceIpRanges"
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &krm.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.Target = in.Target
 	return out
@@ -489,6 +1001,126 @@ func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 }
 */
 
+/* found existing non-generated mapping function "ComputeHTTPHealthCheckSpec_v1beta1_FromProto", skipping
+func ComputeHTTPHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHTTPHealthCheckSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeHTTPHealthCheckSpec{}
+	out.CheckIntervalSec = in.CheckIntervalSec
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: GrpcHealthCheck
+	out.HealthyThreshold = in.HealthyThreshold
+	// MISSING: Http2HealthCheck
+	// MISSING: HTTPHealthCheck
+	// MISSING: HTTPSHealthCheck
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: SourceRegions
+	// MISSING: SSLHealthCheck
+	// MISSING: TCPHealthCheck
+	out.TimeoutSec = in.TimeoutSec
+	// MISSING: Type
+	out.UnhealthyThreshold = in.UnhealthyThreshold
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeHTTPHealthCheckSpec_v1beta1_ToProto", skipping
+func ComputeHTTPHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHTTPHealthCheckSpec) *pb.HealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthCheck{}
+	out.CheckIntervalSec = in.CheckIntervalSec
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: GrpcHealthCheck
+	out.HealthyThreshold = in.HealthyThreshold
+	// MISSING: Http2HealthCheck
+	// MISSING: HTTPHealthCheck
+	// MISSING: HTTPSHealthCheck
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: SourceRegions
+	// MISSING: SSLHealthCheck
+	// MISSING: TCPHealthCheck
+	out.TimeoutSec = in.TimeoutSec
+	// MISSING: Type
+	out.UnhealthyThreshold = in.UnhealthyThreshold
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeHTTPHealthCheckStatus_v1beta1_FromProto", skipping
+func ComputeHTTPHealthCheckStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHTTPHealthCheckStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeHTTPHealthCheckStatus{}
+	// MISSING: CheckIntervalSec
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: GrpcHealthCheck
+	// MISSING: HealthyThreshold
+	// MISSING: Http2HealthCheck
+	// MISSING: HTTPHealthCheck
+	// MISSING: HTTPSHealthCheck
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SourceRegions
+	// MISSING: SSLHealthCheck
+	// MISSING: TCPHealthCheck
+	// MISSING: TimeoutSec
+	// MISSING: Type
+	// MISSING: UnhealthyThreshold
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeHTTPHealthCheckStatus_v1beta1_ToProto", skipping
+func ComputeHTTPHealthCheckStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHTTPHealthCheckStatus) *pb.HealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthCheck{}
+	// MISSING: CheckIntervalSec
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: GrpcHealthCheck
+	// MISSING: HealthyThreshold
+	// MISSING: Http2HealthCheck
+	// MISSING: HTTPHealthCheck
+	// MISSING: HTTPSHealthCheck
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SourceRegions
+	// MISSING: SSLHealthCheck
+	// MISSING: TCPHealthCheck
+	// MISSING: TimeoutSec
+	// MISSING: Type
+	// MISSING: UnhealthyThreshold
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_FromProto", skipping
 func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHealthCheckSpec {
 	if in == nil {
@@ -549,6 +1181,294 @@ func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out.TimeoutSec = in.TimeoutSec
 	// MISSING: Type
 	out.UnhealthyThreshold = in.UnhealthyThreshold
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupSpec_v1beta1_FromProto", skipping
+func ComputeInstanceGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroup) *krm.ComputeInstanceGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInstanceGroupSpec{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	out.NamedPorts = direct.Slice_FromProto(mapCtx, in.NamedPorts, InstanceGroupNamedPort_v1beta1_FromProto)
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Size
+	// MISSING: Subnetwork
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupSpec_v1beta1_ToProto", skipping
+func ComputeInstanceGroupSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupSpec) *pb.InstanceGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroup{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	out.NamedPorts = direct.Slice_ToProto(mapCtx, in.NamedPorts, InstanceGroupNamedPort_v1beta1_ToProto)
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Size
+	// MISSING: Subnetwork
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceSpec_v1beta1_FromProto", skipping
+func ComputeInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.ComputeInstanceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInstanceSpec{}
+	out.AdvancedMachineFeatures = InstanceAdvancedMachineFeatures_v1beta1_FromProto(mapCtx, in.GetAdvancedMachineFeatures())
+	// MISSING: CanIPForward
+	// (near miss): "CanIPForward" vs "CanIpForward"
+	out.ConfidentialInstanceConfig = InstanceConfidentialInstanceConfig_v1beta1_FromProto(mapCtx, in.GetConfidentialInstanceConfig())
+	// MISSING: CPUPlatform
+	// MISSING: CreationTimestamp
+	out.DeletionProtection = in.DeletionProtection
+	out.Description = in.Description
+	// MISSING: Disks
+	// MISSING: DisplayDevice
+	// MISSING: Fingerprint
+	// MISSING: GuestAccelerators
+	out.Hostname = in.Hostname
+	// MISSING: ID
+	// MISSING: InstanceEncryptionKey
+	// MISSING: KeyRevocationActionType
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastStartTimestamp
+	// MISSING: LastStopTimestamp
+	// MISSING: LastSuspendedTimestamp
+	out.MachineType = in.MachineType
+	if v := in.GetMetadata(); v != nil {
+		out.Metadata = []krm.InstanceMetadata{InstanceMetadata_v1beta1_FromProto(mapCtx, v)}
+	}
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	// MISSING: Name
+	// MISSING: NetworkInterfaces
+	out.NetworkPerformanceConfig = InstanceNetworkPerformanceConfig_v1beta1_FromProto(mapCtx, in.GetNetworkPerformanceConfig())
+	out.Params = InstanceParams_v1beta1_FromProto(mapCtx, in.GetParams())
+	// MISSING: PrivateIPV6GoogleAccess
+	out.ReservationAffinity = InstanceReservationAffinity_v1beta1_FromProto(mapCtx, in.GetReservationAffinity())
+	out.ResourcePolicies = ComputeInstanceSpec_ResourcePolicies_FromProto(mapCtx, in.ResourcePolicies)
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.Scheduling = InstanceScheduling_v1beta1_FromProto(mapCtx, in.GetScheduling())
+	// MISSING: SelfLink
+	// MISSING: ServiceAccounts
+	out.ShieldedInstanceConfig = InstanceShieldedInstanceConfig_v1beta1_FromProto(mapCtx, in.GetShieldedInstanceConfig())
+	// MISSING: ShieldedInstanceIntegrityPolicy
+	// MISSING: SourceMachineImage
+	// MISSING: SourceMachineImageEncryptionKey
+	// MISSING: StartRestricted
+	// MISSING: Status
+	// MISSING: StatusMessage
+	if v := in.GetTags(); v != nil {
+		out.Tags = []krm.string{string_v1beta1_FromProto(mapCtx, v)}
+	}
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceSpec_v1beta1_ToProto", skipping
+func ComputeInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceSpec) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	out.AdvancedMachineFeatures = InstanceAdvancedMachineFeatures_v1beta1_ToProto(mapCtx, in.AdvancedMachineFeatures)
+	// MISSING: CanIPForward
+	// (near miss): "CanIPForward" vs "CanIpForward"
+	out.ConfidentialInstanceConfig = InstanceConfidentialInstanceConfig_v1beta1_ToProto(mapCtx, in.ConfidentialInstanceConfig)
+	// MISSING: CPUPlatform
+	// MISSING: CreationTimestamp
+	out.DeletionProtection = in.DeletionProtection
+	out.Description = in.Description
+	// MISSING: Disks
+	// MISSING: DisplayDevice
+	// MISSING: Fingerprint
+	// MISSING: GuestAccelerators
+	out.Hostname = in.Hostname
+	// MISSING: ID
+	// MISSING: InstanceEncryptionKey
+	// MISSING: KeyRevocationActionType
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastStartTimestamp
+	// MISSING: LastStopTimestamp
+	// MISSING: LastSuspendedTimestamp
+	out.MachineType = in.MachineType
+	if len(in.Metadata) > 0 && in.Metadata[0] != nil {
+		out.Metadata = InstanceMetadata_v1beta1_ToProto(mapCtx, in.Metadata[0])
+	}
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	// MISSING: Name
+	// MISSING: NetworkInterfaces
+	out.NetworkPerformanceConfig = InstanceNetworkPerformanceConfig_v1beta1_ToProto(mapCtx, in.NetworkPerformanceConfig)
+	out.Params = InstanceParams_v1beta1_ToProto(mapCtx, in.Params)
+	// MISSING: PrivateIPV6GoogleAccess
+	out.ReservationAffinity = InstanceReservationAffinity_v1beta1_ToProto(mapCtx, in.ReservationAffinity)
+	out.ResourcePolicies = ComputeInstanceSpec_ResourcePolicies_ToProto(mapCtx, in.ResourcePolicies)
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.Scheduling = InstanceScheduling_v1beta1_ToProto(mapCtx, in.Scheduling)
+	// MISSING: SelfLink
+	// MISSING: ServiceAccounts
+	out.ShieldedInstanceConfig = InstanceShieldedInstanceConfig_v1beta1_ToProto(mapCtx, in.ShieldedInstanceConfig)
+	// MISSING: ShieldedInstanceIntegrityPolicy
+	// MISSING: SourceMachineImage
+	// MISSING: SourceMachineImageEncryptionKey
+	// MISSING: StartRestricted
+	// MISSING: Status
+	// MISSING: StatusMessage
+	if len(in.Tags) > 0 && in.Tags[0] != nil {
+		out.Tags = string_v1beta1_ToProto(mapCtx, in.Tags[0])
+	}
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceStatus_v1beta1_FromProto", skipping
+func ComputeInstanceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.ComputeInstanceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInstanceStatus{}
+	// MISSING: AdvancedMachineFeatures
+	// MISSING: CanIPForward
+	// MISSING: ConfidentialInstanceConfig
+	// MISSING: CPUPlatform
+	// (near miss): "CPUPlatform" vs "CpuPlatform"
+	// MISSING: CreationTimestamp
+	// MISSING: DeletionProtection
+	// MISSING: Description
+	// MISSING: Disks
+	// MISSING: DisplayDevice
+	// MISSING: Fingerprint
+	// MISSING: GuestAccelerators
+	// MISSING: Hostname
+	// MISSING: ID
+	// MISSING: InstanceEncryptionKey
+	// MISSING: KeyRevocationActionType
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastStartTimestamp
+	// MISSING: LastStopTimestamp
+	// MISSING: LastSuspendedTimestamp
+	// MISSING: MachineType
+	// MISSING: Metadata
+	// MISSING: MinCPUPlatform
+	// MISSING: Name
+	// MISSING: NetworkInterfaces
+	// MISSING: NetworkPerformanceConfig
+	// MISSING: Params
+	// MISSING: PrivateIPV6GoogleAccess
+	// MISSING: ReservationAffinity
+	// MISSING: ResourcePolicies
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: Scheduling
+	out.SelfLink = in.SelfLink
+	// MISSING: ServiceAccounts
+	// MISSING: ShieldedInstanceConfig
+	// MISSING: ShieldedInstanceIntegrityPolicy
+	// MISSING: SourceMachineImage
+	// MISSING: SourceMachineImageEncryptionKey
+	// MISSING: StartRestricted
+	// MISSING: Status
+	// MISSING: StatusMessage
+	// MISSING: Tags
+	// MISSING: Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceStatus_v1beta1_ToProto", skipping
+func ComputeInstanceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceStatus) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	// MISSING: AdvancedMachineFeatures
+	// MISSING: CanIPForward
+	// MISSING: ConfidentialInstanceConfig
+	// MISSING: CPUPlatform
+	// (near miss): "CPUPlatform" vs "CpuPlatform"
+	// MISSING: CreationTimestamp
+	// MISSING: DeletionProtection
+	// MISSING: Description
+	// MISSING: Disks
+	// MISSING: DisplayDevice
+	// MISSING: Fingerprint
+	// MISSING: GuestAccelerators
+	// MISSING: Hostname
+	// MISSING: ID
+	// MISSING: InstanceEncryptionKey
+	// MISSING: KeyRevocationActionType
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LastStartTimestamp
+	// MISSING: LastStopTimestamp
+	// MISSING: LastSuspendedTimestamp
+	// MISSING: MachineType
+	// MISSING: Metadata
+	// MISSING: MinCPUPlatform
+	// MISSING: Name
+	// MISSING: NetworkInterfaces
+	// MISSING: NetworkPerformanceConfig
+	// MISSING: Params
+	// MISSING: PrivateIPV6GoogleAccess
+	// MISSING: ReservationAffinity
+	// MISSING: ResourcePolicies
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: Scheduling
+	out.SelfLink = in.SelfLink
+	// MISSING: ServiceAccounts
+	// MISSING: ShieldedInstanceConfig
+	// MISSING: ShieldedInstanceIntegrityPolicy
+	// MISSING: SourceMachineImage
+	// MISSING: SourceMachineImageEncryptionKey
+	// MISSING: StartRestricted
+	// MISSING: Status
+	// MISSING: StatusMessage
+	// MISSING: Tags
+	// MISSING: Zone
 	return out
 }
 */
@@ -722,7 +1642,7 @@ func ComputeNetworkAttachmentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 
 						if v := in.GetSubnetworks(); len(v) != 0 {
 							for i := range v {
-								out.SubnetworkRefs = append(out.SubnetworkRefs, &refsv1beta1.ComputeSubnetworkRef{External: v[i]})
+								out.SubnetworkRefs = append(out.SubnetworkRefs, &krm.ComputeSubnetworkRef{External: v[i]})
 							}
 						}
 
@@ -815,6 +1735,58 @@ func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapCo
 	if in.SecurityPolicyRef != nil {
 		out.SecurityPolicy = &in.SecurityPolicyRef.External
 	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeNetworkPeeringSpec_v1beta1_FromProto", skipping
+func ComputeNetworkPeeringSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeering) *krm.ComputeNetworkPeeringSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNetworkPeeringSpec{}
+	// MISSING: AutoCreateRoutes
+	// MISSING: ConnectionStatus
+	// MISSING: ExchangeSubnetRoutes
+	out.ExportCustomRoutes = in.ExportCustomRoutes
+	out.ExportSubnetRoutesWithPublicIP = in.ExportSubnetRoutesWithPublicIp
+	out.ImportCustomRoutes = in.ImportCustomRoutes
+	out.ImportSubnetRoutesWithPublicIP = in.ImportSubnetRoutesWithPublicIp
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: PeerMtu
+	out.StackType = in.StackType
+	// MISSING: State
+	// MISSING: StateDetails
+	// MISSING: UpdateStrategy
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeNetworkPeeringSpec_v1beta1_ToProto", skipping
+func ComputeNetworkPeeringSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkPeeringSpec) *pb.NetworkPeering {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPeering{}
+	// MISSING: AutoCreateRoutes
+	// MISSING: ConnectionStatus
+	// MISSING: ExchangeSubnetRoutes
+	out.ExportCustomRoutes = in.ExportCustomRoutes
+	out.ExportSubnetRoutesWithPublicIp = in.ExportSubnetRoutesWithPublicIP
+	out.ImportCustomRoutes = in.ImportCustomRoutes
+	out.ImportSubnetRoutesWithPublicIp = in.ImportSubnetRoutesWithPublicIP
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	// MISSING: PeerMtu
+	out.StackType = in.StackType
+	// MISSING: State
+	// MISSING: StateDetails
+	// MISSING: UpdateStrategy
 	return out
 }
 */
@@ -1028,6 +2000,28 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: ServerBinding
 	// MISSING: Status
 	// MISSING: StatusMessage
+	return out
+}
+func ComputeRegionPerInstanceConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PerInstanceConfig) *krmcomputev1alpha1.ComputeRegionPerInstanceConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeRegionPerInstanceConfigSpec{}
+	// MISSING: Fingerprint
+	// MISSING: Name
+	out.PreservedState = RegionperinstanceconfigPreservedState_v1alpha1_FromProto(mapCtx, in.GetPreservedState())
+	// MISSING: Status
+	return out
+}
+func ComputeRegionPerInstanceConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeRegionPerInstanceConfigSpec) *pb.PerInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PerInstanceConfig{}
+	// MISSING: Fingerprint
+	// MISSING: Name
+	out.PreservedState = RegionperinstanceconfigPreservedState_v1alpha1_ToProto(mapCtx, in.PreservedState)
+	// MISSING: Status
 	return out
 }
 func ComputeReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ComputeReservationSpec {
@@ -1256,6 +2250,188 @@ func ComputeSecurityPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: UserDefinedFields
 	return out
 }
+func ComputeSnapshotSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.ComputeSnapshotSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSnapshotSpec{}
+	// MISSING: Architecture
+	// MISSING: AutoCreated
+	out.ChainName = in.ChainName
+	// MISSING: CreationSizeBytes
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: DiskSizeGB
+	// MISSING: DownloadBytes
+	// MISSING: EnableConfidentialCompute
+	// MISSING: GuestFlush
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	// MISSING: Licenses
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	out.SnapshotEncryptionKey = SnapshotSnapshotEncryptionKey_v1beta1_FromProto(mapCtx, in.GetSnapshotEncryptionKey())
+	// MISSING: SnapshotType
+	if in.GetSourceDisk() != "" {
+		out.SourceDiskRef = &krm.ComputeDiskRef{External: in.GetSourceDisk()}
+	}
+	out.SourceDiskEncryptionKey = SnapshotSourceDiskEncryptionKey_v1beta1_FromProto(mapCtx, in.GetSourceDiskEncryptionKey())
+	// MISSING: SourceDiskForRecoveryCheckpoint
+	// MISSING: SourceDiskID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotEncryptionKey
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshotSchedulePolicy
+	// MISSING: SourceSnapshotSchedulePolicyID
+	// MISSING: Status
+	// MISSING: StorageBytes
+	// MISSING: StorageBytesStatus
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+func ComputeSnapshotSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSnapshotSpec) *pb.Snapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Snapshot{}
+	// MISSING: Architecture
+	// MISSING: AutoCreated
+	out.ChainName = in.ChainName
+	// MISSING: CreationSizeBytes
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: DiskSizeGB
+	// MISSING: DownloadBytes
+	// MISSING: EnableConfidentialCompute
+	// MISSING: GuestFlush
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	// MISSING: Licenses
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	out.SnapshotEncryptionKey = SnapshotSnapshotEncryptionKey_v1beta1_ToProto(mapCtx, in.SnapshotEncryptionKey)
+	// MISSING: SnapshotType
+	if in.SourceDiskRef != nil {
+		out.SourceDisk = &in.SourceDiskRef.External
+	}
+	out.SourceDiskEncryptionKey = SnapshotSourceDiskEncryptionKey_v1beta1_ToProto(mapCtx, in.SourceDiskEncryptionKey)
+	// MISSING: SourceDiskForRecoveryCheckpoint
+	// MISSING: SourceDiskID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotEncryptionKey
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshotSchedulePolicy
+	// MISSING: SourceSnapshotSchedulePolicyID
+	// MISSING: Status
+	// MISSING: StorageBytes
+	// MISSING: StorageBytesStatus
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+func ComputeSnapshotStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.ComputeSnapshotStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSnapshotStatus{}
+	// MISSING: Architecture
+	// MISSING: AutoCreated
+	// MISSING: ChainName
+	// MISSING: CreationSizeBytes
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: DiskSizeGB
+	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+	// MISSING: DownloadBytes
+	// MISSING: EnableConfidentialCompute
+	// MISSING: GuestFlush
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	// MISSING: SnapshotEncryptionKey
+	// MISSING: SnapshotType
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskForRecoveryCheckpoint
+	// MISSING: SourceDiskID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotEncryptionKey
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshotSchedulePolicy
+	// MISSING: SourceSnapshotSchedulePolicyID
+	// MISSING: Status
+	out.StorageBytes = in.StorageBytes
+	// MISSING: StorageBytesStatus
+	// MISSING: StorageLocations
+	return out
+}
+func ComputeSnapshotStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSnapshotStatus) *pb.Snapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Snapshot{}
+	// MISSING: Architecture
+	// MISSING: AutoCreated
+	// MISSING: ChainName
+	// MISSING: CreationSizeBytes
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: DiskSizeGB
+	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+	// MISSING: DownloadBytes
+	// MISSING: EnableConfidentialCompute
+	// MISSING: GuestFlush
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: LocationHint
+	// MISSING: Name
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	// MISSING: SnapshotEncryptionKey
+	// MISSING: SnapshotType
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskForRecoveryCheckpoint
+	// MISSING: SourceDiskID
+	// MISSING: SourceInstantSnapshot
+	// MISSING: SourceInstantSnapshotEncryptionKey
+	// MISSING: SourceInstantSnapshotID
+	// MISSING: SourceSnapshotSchedulePolicy
+	// MISSING: SourceSnapshotSchedulePolicyID
+	// MISSING: Status
+	out.StorageBytes = in.StorageBytes
+	// MISSING: StorageBytesStatus
+	// MISSING: StorageLocations
+	return out
+}
 func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krm.ComputeSubnetworkSpec {
 	if in == nil {
 		return nil
@@ -1465,7 +2641,7 @@ func ComputeTargetHTTPSProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out := &krm.ComputeTargetHTTPSProxySpec{}
 	// MISSING: AuthorizationPolicy
 	if in.GetCertificateMap() != "" {
-		out.CertificateMapRef = &krm.CertificateManagerCertificateMapRef{External: in.GetCertificateMap()}
+		out.CertificateMapRef = &krmcertificatemanagerv1beta1.CertificateManagerCertificateMapRef{External: in.GetCertificateMap()}
 	}
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
@@ -1618,6 +2794,80 @@ func Duration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1
 	out.Seconds = in.Seconds
 	return out
 }
+
+/* found existing non-generated mapping function "FirewallAllow_v1beta1_FromProto", skipping
+func FirewallAllow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Allowed) *krm.FirewallAllow {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallAllow{}
+	out.IPProtocol = in.IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FirewallAllow_v1beta1_ToProto", skipping
+func FirewallAllow_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAllow) *pb.Allowed {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Allowed{}
+	out.IPProtocol = in.IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FirewallDeny_v1beta1_FromProto", skipping
+func FirewallDeny_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Denied) *krm.FirewallDeny {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallDeny{}
+	out.IPProtocol = in.IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FirewallDeny_v1beta1_ToProto", skipping
+func FirewallDeny_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallDeny) *pb.Denied {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Denied{}
+	out.IPProtocol = in.IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FirewallLogConfig_v1beta1_FromProto", skipping
+func FirewallLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallLogConfig) *krm.FirewallLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallLogConfig{}
+	// MISSING: Enable
+	out.Metadata = in.Metadata
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "FirewallLogConfig_v1beta1_ToProto", skipping
+
+	func FirewallLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallLogConfig) *pb.FirewallLogConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.FirewallLogConfig{}
+		// MISSING: Enable
+		out.Metadata = in.Metadata
+		return out
+	}
+*/
 func FirewallPolicyRuleMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
 	if in == nil {
 		return nil
@@ -1907,20 +3157,44 @@ func HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/*
-found existing non-generated mapping function "HealthCheckTCPHealthCheck_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "HealthCheckTCPHealthCheck_v1beta1_ToProto", skipping
+func HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HealthCheckTCPHealthCheck) *pb.TCPHealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TCPHealthCheck{}
+	out.Port = in.Port
+	out.PortName = in.PortName
+	out.PortSpecification = in.PortSpecification
+	out.ProxyHeader = in.ProxyHeader
+	out.Request = in.Request
+	out.Response = in.Response
+	return out
+}
+*/
 
-	func HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HealthCheckTCPHealthCheck) *pb.TCPHealthCheck {
+/* found existing non-generated mapping function "InstanceGroupNamedPort_v1beta1_FromProto", skipping
+func InstanceGroupNamedPort_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NamedPort) *krm.InstanceGroupNamedPort {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceGroupNamedPort{}
+	out.Name = in.Name
+	out.Port = in.Port
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "InstanceGroupNamedPort_v1beta1_ToProto", skipping
+
+	func InstanceGroupNamedPort_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupNamedPort) *pb.NamedPort {
 		if in == nil {
 			return nil
 		}
-		out := &pb.TCPHealthCheck{}
+		out := &pb.NamedPort{}
+		out.Name = in.Name
 		out.Port = in.Port
-		out.PortName = in.PortName
-		out.PortSpecification = in.PortSpecification
-		out.ProxyHeader = in.ProxyHeader
-		out.Request = in.Request
-		out.Response = in.Response
 		return out
 	}
 */
@@ -2131,7 +3405,7 @@ func NodeGroupShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.NodeGroupShareSettings{}
-	// TODO: map type string message for field ProjectMap
+	out.ProjectMap = ProjectMap_FromProto(mapCtx, in.ProjectMap)
 	out.ShareType = in.ShareType
 	return out
 }
@@ -2145,7 +3419,7 @@ found existing non-generated mapping function "NodeGroupShareSettings_v1beta1_To
 			return nil
 		}
 		out := &pb.ShareSettings{}
-		// TODO: map type string message for field ProjectMap
+		out.ProjectMap = ProjectMap_ToProto(mapCtx, in.ProjectMap)
 		out.ShareType = in.ShareType
 		return out
 	}
@@ -2839,7 +4113,7 @@ func ShareSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSet
 		return nil
 	}
 	out := &krmcomputev1alpha1.ShareSettings{}
-	// TODO: map type string message for field ProjectMap
+	out.ProjectMap = ProjectMap_FromProto(mapCtx, in.ProjectMap)
 	out.ShareType = in.ShareType
 	return out
 }
@@ -2851,7 +4125,7 @@ func ShareSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1a
 		return nil
 	}
 	out := &pb.ShareSettings{}
-	// TODO: map type string message for field ProjectMap
+	out.ProjectMap = ProjectMap_ToProto(mapCtx, in.ProjectMap)
 	out.ShareType = in.ShareType
 	return out
 }
@@ -2863,7 +4137,7 @@ func ShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSett
 		return nil
 	}
 	out := &krm.ShareSettings{}
-	// TODO: map type string message for field ProjectMap
+	out.ProjectMap = ProjectMap_FromProto(mapCtx, in.ProjectMap)
 	out.ShareType = in.ShareType
 	return out
 }
@@ -2875,7 +4149,7 @@ func ShareSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ShareSetti
 		return nil
 	}
 	out := &pb.ShareSettings{}
-	// TODO: map type string message for field ProjectMap
+	out.ProjectMap = ProjectMap_ToProto(mapCtx, in.ProjectMap)
 	out.ShareType = in.ShareType
 	return out
 }
@@ -2887,7 +4161,7 @@ func ShareSettingsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &krmcomputev1alpha1.ShareSettingsObservedState{}
-	// TODO: map type string message for field ProjectMap
+	out.ProjectMap = ProjectMap_FromProto(mapCtx, in.ProjectMap)
 	out.ShareType = in.ShareType
 	return out
 }
@@ -2899,7 +4173,7 @@ func ShareSettingsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &pb.ShareSettings{}
-	// TODO: map type string message for field ProjectMap
+	out.ProjectMap = ProjectMap_ToProto(mapCtx, in.ProjectMap)
 	out.ShareType = in.ShareType
 	return out
 }
@@ -2974,6 +4248,68 @@ func ShareSettingsProjectConfigObservedState_v1alpha1_ToProto(mapCtx *direct.Map
 	out.ProjectId = in.ProjectID
 	return out
 }
+
+/* found existing non-generated mapping function "SnapshotSnapshotEncryptionKey_v1beta1_FromProto", skipping
+func SnapshotSnapshotEncryptionKey_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomerEncryptionKey) *krm.SnapshotSnapshotEncryptionKey {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SnapshotSnapshotEncryptionKey{}
+	// MISSING: KMSKeyName
+	// MISSING: KMSKeyServiceAccount
+	out.RawKey = in.RawKey
+	// MISSING: RsaEncryptedKey
+	out.Sha256 = in.Sha256
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SnapshotSnapshotEncryptionKey_v1beta1_ToProto", skipping
+func SnapshotSnapshotEncryptionKey_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SnapshotSnapshotEncryptionKey) *pb.CustomerEncryptionKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomerEncryptionKey{}
+	// MISSING: KMSKeyName
+	// MISSING: KMSKeyServiceAccount
+	out.RawKey = in.RawKey
+	// MISSING: RsaEncryptedKey
+	out.Sha256 = in.Sha256
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SnapshotSourceDiskEncryptionKey_v1beta1_FromProto", skipping
+func SnapshotSourceDiskEncryptionKey_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomerEncryptionKey) *krm.SnapshotSourceDiskEncryptionKey {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SnapshotSourceDiskEncryptionKey{}
+	// MISSING: KMSKeyName
+	// MISSING: KMSKeyServiceAccount
+	out.RawKey = in.RawKey
+	// MISSING: RsaEncryptedKey
+	// MISSING: Sha256
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "SnapshotSourceDiskEncryptionKey_v1beta1_ToProto", skipping
+
+	func SnapshotSourceDiskEncryptionKey_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SnapshotSourceDiskEncryptionKey) *pb.CustomerEncryptionKey {
+		if in == nil {
+			return nil
+		}
+		out := &pb.CustomerEncryptionKey{}
+		// MISSING: KMSKeyName
+		// MISSING: KMSKeyServiceAccount
+		out.RawKey = in.RawKey
+		// MISSING: RsaEncryptedKey
+		// MISSING: Sha256
+		return out
+	}
+*/
 func SubnetworkLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkLogConfig) *krm.SubnetworkLogConfig {
 	if in == nil {
 		return nil

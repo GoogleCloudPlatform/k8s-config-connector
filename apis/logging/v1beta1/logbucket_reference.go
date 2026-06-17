@@ -29,12 +29,15 @@ import (
 var _ refs.Ref = &LoggingLogBucketRef{}
 var LoggingLogBucketGVK = GroupVersion.WithKind("LoggingLogBucket")
 
-// LoggingLogBucketRef defines the resource reference to LoggingLogBucket, which "External" field
-// holds the GCP identifier for the KRM object.
+// LoggingLogBucketRef is a reference to a LoggingLogBucket.
 type LoggingLogBucketRef struct {
 	// A reference to an externally managed LoggingLogBucket resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".
 	External string `json:"external,omitempty"`
+
+	// The kind of the LoggingLogBucket resource.
+	// +optional
+	Kind string `json:"kind,omitempty"`
 
 	// The name of a LoggingLogBucket resource.
 	Name string `json:"name,omitempty"`
@@ -44,7 +47,7 @@ type LoggingLogBucketRef struct {
 }
 
 func init() {
-	refs.Register(&LoggingLogBucketRef{})
+	refs.Register(&LoggingLogBucketRef{}, &LoggingLogBucket{})
 }
 
 func (r *LoggingLogBucketRef) GetGVK() schema.GroupVersionKind {
@@ -64,6 +67,8 @@ func (r *LoggingLogBucketRef) GetExternal() string {
 
 func (r *LoggingLogBucketRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *LoggingLogBucketRef) ValidateExternal(ref string) error {

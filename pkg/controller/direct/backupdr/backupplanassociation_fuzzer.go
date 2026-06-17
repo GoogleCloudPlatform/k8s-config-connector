@@ -33,23 +33,27 @@ func backupDRBackupPlanAssociationFuzzer() fuzztesting.KRMFuzzer {
 		BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto, BackupDRBackupPlanAssociationObservedState_v1beta1_ToProto,
 	)
 
-	f.SpecFields.Insert(".resource_type")
-	f.SpecFields.Insert(".backup_plan")
+	f.SpecField(".resource_type")
+	f.SpecField(".backup_plan")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".rules_config_info")
-	f.StatusFields.Insert(".data_source")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
+	f.StatusField(".state")
+	f.StatusField(".rules_config_info")
+	f.StatusField(".data_source")
 
-	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".resource") // special field, the value has to be a URL represending ComputeInstance.
+	f.Unimplemented_Identity(".name")
+	f.Unimplemented_Identity(".resource") // special field, the value has to be a URL representing ComputeInstance.
 
 	f.Unimplemented_NotYetTriaged(".backup_plan_revision_name")
 	f.Unimplemented_NotYetTriaged(".backup_plan_revision_id")
 	f.Unimplemented_NotYetTriaged(".backup_plan_revision_name")
 	f.Unimplemented_NotYetTriaged(".cloud_sql_instance_backup_plan_association_properties")
 	f.Unimplemented_NotYetTriaged(".resource_properties")
+
+	f.Unimplemented_NotYetTriaged(".rules_config_info[].last_backup_error.details")
+	f.Unimplemented_NotYetTriaged(".rules_config_info[].last_backup_error.details[].value")
+	f.Unimplemented_NotYetTriaged(".rules_config_info[].last_backup_error.details[].type_url")
 
 	return f
 }

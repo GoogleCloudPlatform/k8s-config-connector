@@ -163,10 +163,10 @@ spec:
                       resource. Should be in the format "organizations/{{organizationID}}".
                     type: string
                   name:
-                    description: The name of a ApigeeOrganization resource.
+                    description: The name of an ApigeeOrganization resource.
                     type: string
                   namespace:
-                    description: The namespace of a ApigeeOrganization resource.
+                    description: The namespace of an ApigeeOrganization resource.
                     type: string
                 type: object
               peeringCIDRRange:
@@ -408,10 +408,10 @@ spec:
                       resource. Should be in the format "organizations/{{organizationID}}".
                     type: string
                   name:
-                    description: The name of a ApigeeOrganization resource.
+                    description: The name of an ApigeeOrganization resource.
                     type: string
                   namespace:
-                    description: The namespace of a ApigeeOrganization resource.
+                    description: The namespace of an ApigeeOrganization resource.
                     type: string
                 type: object
               peeringCIDRRange:

@@ -435,9 +435,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The value of an externally managed ComputeNetwork
-                          resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                          or "projects/{{projectId}}/global/networks/{{networkId}}"
+                        description: A reference to an externally managed ComputeNetwork
+                          resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
                         type: string
                       name:
                         description: The name of a ComputeNetwork resource.
@@ -470,9 +469,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The value of an externally managed ComputeNetwork
-                      resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                      or "projects/{{projectId}}/global/networks/{{networkId}}"
+                    description: A reference to an externally managed ComputeNetwork
+                      resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
                     type: string
                   name:
                     description: The name of a ComputeNetwork resource.
@@ -544,10 +542,10 @@ spec:
                           resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".
                         type: string
                       name:
-                        description: The name of a AlloyDBBackup resource.
+                        description: The name of an AlloyDBBackup resource.
                         type: string
                       namespace:
-                        description: The namespace of a AlloyDBBackup resource.
+                        description: The namespace of an AlloyDBBackup resource.
                         type: string
                     type: object
                 required:
@@ -581,10 +579,10 @@ spec:
                           resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The name of a AlloyDBCluster resource.
+                        description: The name of an AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The namespace of a AlloyDBCluster resource.
+                        description: The namespace of an AlloyDBCluster resource.
                         type: string
                     type: object
                   pointInTime:
@@ -622,10 +620,10 @@ spec:
                           resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The name of a AlloyDBCluster resource.
+                        description: The name of an AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The namespace of a AlloyDBCluster resource.
+                        description: The namespace of an AlloyDBCluster resource.
                         type: string
                     type: object
                 required:
@@ -1206,9 +1204,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The value of an externally managed ComputeNetwork
-                          resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                          or "projects/{{projectId}}/global/networks/{{networkId}}"
+                        description: A reference to an externally managed ComputeNetwork
+                          resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
                         type: string
                       name:
                         description: The name of a ComputeNetwork resource.
@@ -1241,9 +1238,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The value of an externally managed ComputeNetwork
-                      resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                      or "projects/{{projectId}}/global/networks/{{networkId}}"
+                    description: A reference to an externally managed ComputeNetwork
+                      resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
                     type: string
                   name:
                     description: The name of a ComputeNetwork resource.
@@ -1315,10 +1311,10 @@ spec:
                           resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".
                         type: string
                       name:
-                        description: The name of a AlloyDBBackup resource.
+                        description: The name of an AlloyDBBackup resource.
                         type: string
                       namespace:
-                        description: The namespace of a AlloyDBBackup resource.
+                        description: The namespace of an AlloyDBBackup resource.
                         type: string
                     type: object
                 required:
@@ -1352,10 +1348,10 @@ spec:
                           resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The name of a AlloyDBCluster resource.
+                        description: The name of an AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The namespace of a AlloyDBCluster resource.
+                        description: The namespace of an AlloyDBCluster resource.
                         type: string
                     type: object
                   pointInTime:
@@ -1393,10 +1389,10 @@ spec:
                           resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The name of a AlloyDBCluster resource.
+                        description: The name of an AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The namespace of a AlloyDBCluster resource.
+                        description: The namespace of an AlloyDBCluster resource.
                         type: string
                     type: object
                 required:

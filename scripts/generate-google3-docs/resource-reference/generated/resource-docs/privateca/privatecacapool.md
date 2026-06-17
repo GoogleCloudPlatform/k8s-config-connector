@@ -16,7 +16,7 @@ title: "PrivateCACAPool"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/certificate-authority-service/docs/">/certificate-authority-service/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/certificate-authority-service/docs/">https://docs.cloud.google.com/certificate-authority-service/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -27,7 +27,7 @@ title: "PrivateCACAPool"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools">/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools</a></pre>
+<pre><a href="https://docs.cloud.google.com/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools">https://docs.cloud.google.com/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools</a></pre>
 </td>
 </tr>
 <tr>
@@ -679,7 +679,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Required. If this is true, the [Subject][google.cloud.security.privateca.v1.Subject] field may be copied from a certificate request into the signed certificate. Otherwise, the requested [Subject][google.cloud.security.privateca.v1.Subject] will be discarded.</p>
+            <p>Required. If this is true, the [Subject][google.cloud.security.privateca.v1.Subject] field may be copied from a certificate request into the signed certificate. Otherwise, the requested Subject will be discarded.</p>
         </td>
     </tr>
     <tr>
@@ -1085,4 +1085,4 @@ spec:
         - 7
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

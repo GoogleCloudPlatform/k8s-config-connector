@@ -58,6 +58,51 @@ spec:
             type: object
           spec:
             properties:
+              defaultCustomErrorResponsePolicy:
+                properties:
+                  errorResponseRule:
+                    items:
+                      properties:
+                        matchResponseCodes:
+                          items:
+                            type: string
+                          type: array
+                        overrideResponseCode:
+                          type: integer
+                        path:
+                          type: string
+                      type: object
+                    type: array
+                  errorServiceRef:
+                    description: The full or partial URL to the BackendBucket resource
+                      that contains the custom error content.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `selfLink` field of a `ComputeBackendBucket`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                type: object
               defaultRouteAction:
                 description: |-
                   defaultRouteAction takes effect when none of the hostRules match. The load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend. If defaultRouteAction specifies any weightedBackendServices, defaultService must not be set. Conversely if defaultService is set, defaultRouteAction cannot contain any weightedBackendServices.
@@ -641,6 +686,52 @@ spec:
                 description: The list of named PathMatchers to use against the URL.
                 items:
                   properties:
+                    defaultCustomErrorResponsePolicy:
+                      properties:
+                        errorResponseRule:
+                          items:
+                            properties:
+                              matchResponseCodes:
+                                items:
+                                  type: string
+                                type: array
+                              overrideResponseCode:
+                                type: integer
+                              path:
+                                type: string
+                            type: object
+                          type: array
+                        errorServiceRef:
+                          description: The full or partial URL to the BackendBucket
+                            resource that contains the custom error content.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeBackendBucket` resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
+                      type: object
                     defaultRouteAction:
                       description: |-
                         defaultRouteAction takes effect when none of the pathRules or routeRules match. The load balancer performs

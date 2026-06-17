@@ -166,6 +166,15 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	}
 
 	if len(opt.Updates) != 0 {
+		// Record the generation of all resources before patching to detect metadata-only updates
+		for _, updateUnstruct := range opt.Updates {
+			name := k8s.GetNamespacedName(updateUnstruct)
+			currentObj := updateUnstruct.DeepCopy()
+			if err := t.Manager.GetAPIReader().Get(t.Ctx, name, currentObj); err == nil {
+				t.preGenerations[name.String()] = currentObj.GetGeneration()
+			}
+		}
+
 		// treat as a patch
 		for _, updateUnstruct := range opt.Updates {
 			t.Logf("using server-side apply to update object")
@@ -221,7 +230,7 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 	err := wait.PollImmediate(1*time.Second, timeout, func() (done bool, err error) {
 		done = true
 		logger.V(2).Info("Testing to see if resource is ready", "kind", u.GetKind(), "name", u.GetName())
-		err = t.GetClient().Get(t.Ctx, name, u)
+		err = t.Manager.GetAPIReader().Get(t.Ctx, name, u)
 		if err != nil {
 			logger.Info("Error getting resource", "kind", u.GetKind(), "name", u.GetName(), "error", err)
 			if t.Ctx.Err() != nil {
@@ -245,6 +254,12 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 		if objectStatus.ObservedGeneration == nil {
 			logger.Info("resource does not yet have status.observedGeneration", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
+		}
+		if preGen, exists := t.preGenerations[name.String()]; exists && objectStatus.Generation == preGen {
+			logger.Info("metadata-only update detected (generation did not change after patch); sleeping 5s to allow controller reconciliation", "kind", u.GetKind(), "name", u.GetName(), "generation", objectStatus.Generation)
+			delete(t.preGenerations, name.String())
+			time.Sleep(5 * time.Second)
+			return true, nil
 		}
 		if *objectStatus.ObservedGeneration < objectStatus.Generation {
 			logger.Info("resource status.observedGeneration is behind current generation",

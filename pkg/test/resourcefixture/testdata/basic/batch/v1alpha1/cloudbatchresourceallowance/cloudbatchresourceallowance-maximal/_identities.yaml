@@ -1,0 +1,12 @@
+- caisURL: //pubsub.googleapis.com/projects/${projectId}/topics/topic-${uniqueId}
+  group: pubsub.cnrm.cloud.google.com
+  kind: PubSubTopic
+  name: topic-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //batch.googleapis.com/projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}
+  group: batch.cnrm.cloud.google.com
+  kind: CloudBatchResourceAllowance
+  name: batchallow-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

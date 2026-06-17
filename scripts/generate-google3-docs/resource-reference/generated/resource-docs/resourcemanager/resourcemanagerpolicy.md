@@ -20,7 +20,7 @@ one of `projectRef`, `folderRef`, or `organizationRef`.
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/resource-manager/docs/">/resource-manager/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/resource-manager/docs/">https://docs.cloud.google.com/resource-manager/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -28,7 +28,7 @@ one of `projectRef`, `folderRef`, or `organizationRef`.
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/resource-manager/reference/rest/v1/Policy">/resource-manager/reference/rest/v1/Policy</a></td>
+<td><a href="https://docs.cloud.google.com/resource-manager/reference/rest/v1/Policy">https://docs.cloud.google.com/resource-manager/reference/rest/v1/Policy</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -555,4 +555,4 @@ spec:
   name: Org Policy Sample
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

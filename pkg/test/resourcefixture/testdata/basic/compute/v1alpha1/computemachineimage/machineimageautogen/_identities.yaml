@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeInstance
+  name: computeinstance-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeMachineImage
+  name: computemachineimage-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

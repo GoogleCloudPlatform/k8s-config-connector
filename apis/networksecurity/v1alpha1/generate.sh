@@ -42,6 +42,8 @@ go run . generate-types \
   --resource NetworkSecurityInterceptDeployment:InterceptDeployment \
   --resource NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup \
   --resource NetworkSecurityMirroringDeployment:MirroringDeployment \
+  --resource NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup \
+  --resource NetworkSecuritySACRealm:SACRealm \
   --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}

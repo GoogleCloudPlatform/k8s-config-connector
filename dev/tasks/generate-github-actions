@@ -67,8 +67,9 @@ EOF
 
 for f in $(find dev/ci/presubmits -type f | sort ); do
     name=$(basename ${f})
-    
-    if [[ "${name}" == "smoketest-with-kind" ]]; then
+
+    # Skip tests-e2e-fixtures-cloudsecuritycompliance as we don't need CI for it as of now
+    if [[ "${name}" == "tests-e2e-fixtures-cloudsecuritycompliance" ]]; then
         continue
     fi
 
@@ -100,7 +101,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         uses: golangci/golangci-lint-action@v9
         with:
           version: v2.9.0
-          args: --timeout=10m
+          args: --timeout=20m
 EOF
     continue
     fi

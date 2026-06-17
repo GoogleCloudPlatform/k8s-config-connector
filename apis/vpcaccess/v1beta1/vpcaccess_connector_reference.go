@@ -29,8 +29,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &VPCAccessConnectorRef{}
 
-// VPCAccessConnectorRef defines the resource reference to VPCAccessConnector, which "External" field
-// holds the GCP identifier for the KRM object.
+// VPCAccessConnectorRef is a reference to a VPCAccessConnector.
 type VPCAccessConnectorRef struct {
 	// A reference to an externally managed VPCAccessConnector resource.
 	// Should be in the format `projects/{project_id}/locations/{location}/connectors/{connector_id}`

@@ -1,0 +1,46 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    department_name: marketing
+  name: bigquerytablesample${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  clustering:
+  - user_id
+  datasetRef:
+    name: bigquerydatasetsample${uniqueId}
+  friendlyName: mv_test3
+  materializedView:
+    enableRefresh: true
+    query: |-
+      SELECT
+      distinct dt, user_id
+      FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`
+  resourceID: bigquerytablesample${uniqueId}
+  timePartitioning:
+    field: dt
+    type: DAY
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTime: "1970-01-01T00:00:00Z"
+  etag: abcdef123456
+  lastModifiedTime: "1970-01-01T00:00:00Z"
+  location: us-central1
+  observedGeneration: 2
+  selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}
+  type: MATERIALIZED_VIEW

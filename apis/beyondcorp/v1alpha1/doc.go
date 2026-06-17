@@ -13,4 +13,5 @@
 // limitations under the License.
 
 // +kcc:proto=google.cloud.beyondcorp.clientconnectorservices.v1
+// +kcc:proto=google.cloud.beyondcorp.clientgateways.v1
 package v1alpha1

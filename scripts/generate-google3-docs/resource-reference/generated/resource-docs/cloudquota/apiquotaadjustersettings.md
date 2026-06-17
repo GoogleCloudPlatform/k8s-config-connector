@@ -16,11 +16,11 @@ title: "APIQuotaAdjusterSettings"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/docs/quotas/">/docs/quotas/</a></td>
+<td><a href="https://docs.cloud.google.com/docs/quotas/">https://docs.cloud.google.com/docs/quotas/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/docs/quotas/reference/rest/v1beta/projects.locations.quotaAdjusterSettings">/docs/quotas/reference/rest/v1beta/projects.locations.quotaAdjusterSettings</a></td>
+<td><a href="https://docs.cloud.google.com/docs/quotas/reference/rest/v1beta/projects.locations.quotaAdjusterSettings">https://docs.cloud.google.com/docs/quotas/reference/rest/v1beta/projects.locations.quotaAdjusterSettings</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -266,4 +266,4 @@ spec:
   enablement: ENABLED
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

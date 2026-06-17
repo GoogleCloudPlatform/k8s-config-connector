@@ -17,8 +17,8 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
+	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
@@ -64,6 +64,25 @@ func (i *LogBucketIdentity) String() string {
 	}
 	if i.AccessPolicy != "" {
 		return AccessPolicyLogBucketIdentityFormat.ToString(*i)
+	}
+	return ""
+}
+
+func (i *LogBucketIdentity) ParentString() string {
+	if i.Project != "" {
+		return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+	}
+	if i.Folder != "" {
+		return fmt.Sprintf("folders/%s/locations/%s", i.Folder, i.Location)
+	}
+	if i.Organization != "" {
+		return fmt.Sprintf("organizations/%s/locations/%s", i.Organization, i.Location)
+	}
+	if i.BillingAccount != "" {
+		return fmt.Sprintf("billingAccounts/%s/locations/%s", i.BillingAccount, i.Location)
+	}
+	if i.AccessPolicy != "" {
+		return fmt.Sprintf("accessPolicies/%s/locations/%s", i.AccessPolicy, i.Location)
 	}
 	return ""
 }
@@ -140,16 +159,19 @@ func getIdentityFromLoggingLogBucketSpec(ctx context.Context, reader client.Read
 		}
 		identity.Organization = org.OrganizationID
 	} else if obj.Spec.BillingAccountRef != nil {
-		billingRef := obj.Spec.BillingAccountRef
-		if billingRef.External == "" {
-			return nil, fmt.Errorf("billingAccountRef only supports external reference")
+		billingRef := &billingv1alpha1.BillingAccountRef{
+			External:  obj.Spec.BillingAccountRef.External,
+			Name:      obj.Spec.BillingAccountRef.Name,
+			Namespace: obj.Spec.BillingAccountRef.Namespace,
 		}
-		billingIdentity := billingRef.External
-		if billingTokens := strings.Split(billingIdentity, "/"); len(billingTokens) == 2 && billingTokens[0] == "billingAccounts" {
-			identity.BillingAccount = billingTokens[1]
-		} else {
-			identity.BillingAccount = billingIdentity
+		if err := billingRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, fmt.Errorf("resolving spec.billingAccountRef: %w", err)
 		}
+		billingIdentity := &billingv1alpha1.BillingAccountIdentity{}
+		if err := billingIdentity.FromExternal(billingRef.External); err != nil {
+			return nil, fmt.Errorf("parsing billingAccountRef.external=%q: %w", billingRef.External, err)
+		}
+		identity.BillingAccount = billingIdentity.BillingAccount
 	} else {
 		// Fallback to project ID from namespace
 		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)

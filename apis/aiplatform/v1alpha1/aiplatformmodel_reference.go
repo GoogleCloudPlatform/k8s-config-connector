@@ -27,22 +27,21 @@ import (
 
 var _ refs.Ref = &AIPlatformModelRef{}
 
-// AIPlatformModelRef defines the resource reference to AIPlatformModel, which "External" field
-// holds the GCP identifier for the KRM object.
+// AIPlatformModelRef is a reference to an AIPlatformModel.
 type AIPlatformModelRef struct {
 	// A reference to an externally managed AIPlatformModel resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/models/{{modelID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AIPlatformModel resource.
+	// The name of an AIPlatformModel resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AIPlatformModel resource.
+	// The namespace of an AIPlatformModel resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&AIPlatformModelRef{})
+	refs.Register(&AIPlatformModelRef{}, &AIPlatformModel{})
 }
 
 func (r *AIPlatformModelRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *AIPlatformModelRef) GetExternal() string {
 
 func (r *AIPlatformModelRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *AIPlatformModelRef) ValidateExternal(ref string) error {

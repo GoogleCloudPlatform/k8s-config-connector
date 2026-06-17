@@ -28,8 +28,7 @@ import (
 var _ refsv1beta1.Ref = &AspectTypeRef{}
 var DataplexAspectTypeGVK = GroupVersion.WithKind("DataplexAspectType")
 
-// AspectTypeRef defines the resource reference to DataplexAspectTypeRef, which "External" field
-// holds the GCP identifier for the KRM object.
+// AspectTypeRef is a reference to a DataplexAspectTypeRef.
 type AspectTypeRef struct {
 	// A reference to an externally managed DataplexAspectType resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}".

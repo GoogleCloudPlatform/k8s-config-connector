@@ -16,7 +16,6 @@ package kmsautokeyconfig
 
 import (
 	pb "cloud.google.com/go/kms/apiv1/kmspb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -24,8 +23,9 @@ import (
 // legacyAutokeyConfig mimics the generated krm.AutokeyConfig that was skipped
 // by the generator because KMSAutokeyConfig was introduced.
 type legacyAutokeyConfig struct {
-	Name       *string
-	KeyProject *refs.ProjectRef
+	Name                     *string
+	KeyProject               *refs.ProjectRef
+	KeyProjectResolutionMode *string
 }
 
 func AutokeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *legacyAutokeyConfig {
@@ -39,6 +39,9 @@ func AutokeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *l
 			External: in.KeyProject,
 		}
 	}
+	if in.GetKeyProjectResolutionMode() != pb.AutokeyConfig_KEY_PROJECT_RESOLUTION_MODE_UNSPECIFIED {
+		out.KeyProjectResolutionMode = direct.Enum_FromProto(mapCtx, in.GetKeyProjectResolutionMode())
+	}
 	return out
 }
 
@@ -51,14 +54,8 @@ func AutokeyConfig_ToProto(mapCtx *direct.MapContext, in *legacyAutokeyConfig) *
 	if in.KeyProject != nil {
 		out.KeyProject = in.KeyProject.External
 	}
-	return out
-}
-
-func KMSAutokeyConfig_FromFields(mapCtx *direct.MapContext, id *krm.KMSAutokeyConfigIdentity, keyProject *refs.ProjectIdentity) *pb.AutokeyConfig {
-	out := &pb.AutokeyConfig{}
-	out.Name = id.String()
-	if keyProject != nil {
-		out.KeyProject = "projects/" + keyProject.ProjectID
+	if in.KeyProjectResolutionMode != nil {
+		out.KeyProjectResolutionMode = direct.Enum_ToProto[pb.AutokeyConfig_KeyProjectResolutionMode](mapCtx, in.KeyProjectResolutionMode)
 	}
 	return out
 }

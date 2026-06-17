@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &NetworkSecurityClientTLSPolicyRef{}
 
-// NetworkSecurityClientTLSPolicyRef defines the resource reference to NetworkSecurityClientTLSPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkSecurityClientTLSPolicyRef is a reference to a NetworkSecurityClientTLSPolicy.
 type NetworkSecurityClientTLSPolicyRef struct {
 	// A reference to an externally managed NetworkSecurityClientTLSPolicy resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clientTlsPolicies/{{clientTlsPolicyID}}".
@@ -42,7 +41,7 @@ type NetworkSecurityClientTLSPolicyRef struct {
 }
 
 func init() {
-	refs.Register(&NetworkSecurityClientTLSPolicyRef{})
+	refs.Register(&NetworkSecurityClientTLSPolicyRef{}, &NetworkSecurityClientTLSPolicy{})
 }
 
 func (r *NetworkSecurityClientTLSPolicyRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *NetworkSecurityClientTLSPolicyRef) GetExternal() string {
 
 func (r *NetworkSecurityClientTLSPolicyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *NetworkSecurityClientTLSPolicyRef) ValidateExternal(ref string) error {

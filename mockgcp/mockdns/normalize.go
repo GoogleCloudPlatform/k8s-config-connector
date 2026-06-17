@@ -55,6 +55,10 @@ func isDNSAPI(url string) bool {
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !isDNSAPI(event.URL()) {
+		return
+	}
+
 	u := event.URL()
 	// Extract changeId from URL path (e.g., .../changes/<changeId>)
 	var changeId string
@@ -89,56 +93,37 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		})
 	}
 
-	kind := ""
+	parentToKind := make(map[string]string)
 
 	event.VisitResponseStringValues(func(path string, value string) {
-		switch path {
-		case ".kind":
-			kind = value
+		if strings.HasSuffix(path, ".kind") {
+			parent := strings.TrimSuffix(path, ".kind")
+			parentToKind[parent] = value
 		}
 	})
 
-	if kind == "dns#managedZone" {
-		event.VisitResponseStringValues(func(path string, value string) {
-			switch path {
-			case ".id":
-				if value != "000000000000000000000" {
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.HasSuffix(path, ".id") {
+			parent := strings.TrimSuffix(path, ".id")
+			if kind, ok := parentToKind[parent]; ok {
+				if kind == "dns#policy" {
+					replacements.ReplaceStringValue(value, "${dnsPolicyId}")
+				}
+				if kind == "dns#managedZone" {
 					replacements.ReplaceStringValue(value, "${managedZoneId}")
 				}
-			}
-		})
-	}
-
-	if kind == "dns#change" {
-		event.VisitResponseStringValues(func(path string, value string) {
-			switch path {
-			case ".id":
-				if value != "000000000000000000000" {
-					changeId = value
-					replacements.TransformString(".id", func(s string) string {
-						if s == changeId {
-							return "${changeId}"
-						}
-						return s
-					})
+				if kind == "dns#change" {
+					if value != "000000000000000000000" {
+						val := value
+						replacements.TransformString(path, func(s string) string {
+							if s == val {
+								return "${changeId}"
+							}
+							return s
+						})
+					}
 				}
 			}
-		})
-	}
-
-	if kind == "dns#changesListResponse" {
-		event.VisitResponseStringValues(func(path string, value string) {
-			if strings.HasSuffix(path, ".id") {
-				if value != "000000000000000000000" {
-					changeId = value
-					replacements.TransformString(".changes[].id", func(s string) string {
-						if s == changeId {
-							return "${changeId}"
-						}
-						return s
-					})
-				}
-			}
-		})
-	}
+		}
+	})
 }

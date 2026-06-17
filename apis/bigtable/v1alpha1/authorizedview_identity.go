@@ -17,33 +17,69 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AuthorizedViewIdentity defines the resource reference to BigtableAuthorizedView, which "External" field
-// holds the GCP identifier for the KRM object.
+var (
+	_ identity.IdentityV2 = &AuthorizedViewIdentity{}
+	_ identity.Resource   = &BigtableAuthorizedView{}
+)
+
+var AuthorizedViewIdentityFormat = gcpurls.Template[AuthorizedViewIdentity]("bigtable.googleapis.com", "projects/{project}/instances/{instance}/tables/{table}/authorizedViews/{authorizedview}")
+
+// AuthorizedViewIdentity is the identity of a BigtableAuthorizedView.
+// +k8s:deepcopy-gen=false
 type AuthorizedViewIdentity struct {
-	parent *bigtablev1beta1.TableIdentity
-	id     string
+	Project        string
+	Instance       string
+	Table          string
+	AuthorizedView string
 }
 
 func (i *AuthorizedViewIdentity) String() string {
-	return i.parent.String() + "/authorizedViews/" + i.id
+	return AuthorizedViewIdentityFormat.ToString(*i)
+}
+
+func (i *AuthorizedViewIdentity) FromExternal(ref string) error {
+	parsed, match, err := AuthorizedViewIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of BigtableAuthorizedView external=%q was not known (use %s): %w", ref, AuthorizedViewIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of BigtableAuthorizedView external=%q was not known (use %s)", ref, AuthorizedViewIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *AuthorizedViewIdentity) Host() string {
+	return AuthorizedViewIdentityFormat.Host()
 }
 
 func (i *AuthorizedViewIdentity) ID() string {
-	return i.id
+	return i.AuthorizedView
 }
 
-// New builds a AuthorizedViewIdentity from the Config Connector AuthorizedView object.
-func NewAuthorizedViewIdentity(ctx context.Context, reader client.Reader, obj *BigtableAuthorizedView) (*AuthorizedViewIdentity, error) {
+func (i *AuthorizedViewIdentity) TableID() string {
+	return i.Table
+}
 
+func (i *AuthorizedViewIdentity) InstanceID() string {
+	return i.Instance
+}
+
+func (i *AuthorizedViewIdentity) ProjectID() string {
+	return i.Project
+}
+
+func getIdentityFromAuthorizedViewSpec(ctx context.Context, reader client.Reader, obj *BigtableAuthorizedView) (*AuthorizedViewIdentity, error) {
 	// Get Parent
 	tableExternal, err := obj.Spec.TableRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
@@ -63,51 +99,69 @@ func NewAuthorizedViewIdentity(ctx context.Context, reader client.Reader, obj *B
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseAuthorizedViewExternal(externalRef)
-		if err != nil {
-			return nil, err
-		}
-		if actualParent.Parent.Parent.ProjectID != tableParent.Parent.ProjectID {
-			return nil, fmt.Errorf("spec.tableRef ProjectID changed, expect %s, got %s", actualParent.Parent.Parent.ProjectID, tableParent.Parent.ProjectID)
-		}
-		if actualParent.Parent.Id != tableParent.Id {
-			return nil, fmt.Errorf("spec.tableRef InstanceID changed, expect %s, got %s", actualParent.Parent.Id, tableParent.Id)
-		}
-		if actualParent.Id != tableID {
-			return nil, fmt.Errorf("spec.tableRef tableID changed, expect %s, got %s", actualParent.Id, tableID)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
 	return &AuthorizedViewIdentity{
-		parent: &bigtablev1beta1.TableIdentity{
-			Parent: tableParent,
-			Id:     tableID,
-		},
-		id: resourceID,
+		Project:        tableParent.Parent.ProjectID,
+		Instance:       tableParent.Id,
+		Table:          tableID,
+		AuthorizedView: resourceID,
 	}, nil
 }
 
+// GetIdentity extracts the identity of the BigtableAuthorizedView resource.
+func (obj *BigtableAuthorizedView) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromAuthorizedViewSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		statusIdentity := &AuthorizedViewIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.Project != specIdentity.Project {
+			return nil, fmt.Errorf("spec.tableRef ProjectID changed, expect %s, got %s", statusIdentity.Project, specIdentity.Project)
+		}
+		if statusIdentity.Instance != specIdentity.Instance {
+			return nil, fmt.Errorf("spec.tableRef InstanceID changed, expect %s, got %s", statusIdentity.Instance, specIdentity.Instance)
+		}
+		if statusIdentity.Table != specIdentity.Table {
+			return nil, fmt.Errorf("spec.tableRef tableID changed, expect %s, got %s", statusIdentity.Table, specIdentity.Table)
+		}
+		if statusIdentity.AuthorizedView != specIdentity.AuthorizedView {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				specIdentity.AuthorizedView, statusIdentity.AuthorizedView)
+		}
+	}
+
+	return specIdentity, nil
+}
+
+// NewAuthorizedViewIdentity builds an AuthorizedViewIdentity from the Config Connector AuthorizedView object.
+func NewAuthorizedViewIdentity(ctx context.Context, reader client.Reader, obj *BigtableAuthorizedView) (*AuthorizedViewIdentity, error) {
+	id, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+	return id.(*AuthorizedViewIdentity), nil
+}
+
 func ParseAuthorizedViewExternal(external string) (*bigtablev1beta1.TableIdentity, string, error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "tables" || tokens[6] != "authorizedViews" {
-		return nil, "", fmt.Errorf("format of BigtableAuthorizedView external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/tables/{{tableID}}/authorizedViews/{{authorizedViewID}})", external)
+	id := &AuthorizedViewIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		return nil, "", err
 	}
 	p := &bigtablev1beta1.TableIdentity{
 		Parent: &bigtablev1beta1.InstanceIdentity{
 			Parent: &parent.ProjectParent{
-				ProjectID: tokens[1],
+				ProjectID: id.Project,
 			},
-			Id: tokens[3],
+			Id: id.Instance,
 		},
-		Id: tokens[5],
+		Id: id.Table,
 	}
-	resourceID := tokens[7]
-	return p, resourceID, nil
+	return p, id.AuthorizedView, nil
 }

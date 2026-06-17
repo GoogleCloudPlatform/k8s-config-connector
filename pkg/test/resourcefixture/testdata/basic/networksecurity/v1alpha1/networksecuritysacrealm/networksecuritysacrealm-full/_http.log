@@ -1,0 +1,197 @@
+GRPC /google.cloud.networksecurity.v1.SSERealmService/GetSACRealm
+
+{
+  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SSERealmService/CreateSACRealm
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "sacRealm": {
+    "labels": {
+      "my-key": "my-val"
+    },
+    "securityService": "PALO_ALTO_PRISMA_ACCESS"
+  },
+  "sacRealmId": "sacrealm-full-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SACRealm",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "my-key": "my-val"
+    },
+    "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}",
+    "pairingKey": {
+      "expireTime": "2024-04-01T12:34:56.123456Z",
+      "key": "dummy-pairing-key"
+    },
+    "securityService": "PALO_ALTO_PRISMA_ACCESS",
+    "state": "PENDING_PARTNER_ATTACHMENT",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SSERealmService/GetSACRealm
+
+{
+  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "my-key": "my-val"
+  },
+  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}",
+  "pairingKey": {
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "key": "dummy-pairing-key"
+  },
+  "securityService": "PALO_ALTO_PRISMA_ACCESS",
+  "state": "PENDING_PARTNER_ATTACHMENT",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SSERealmService/GetSACRealm
+
+{
+  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "my-key": "my-val"
+  },
+  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}",
+  "pairingKey": {
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "key": "dummy-pairing-key"
+  },
+  "securityService": "PALO_ALTO_PRISMA_ACCESS",
+  "state": "PENDING_PARTNER_ATTACHMENT",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SSERealmService/GetSACRealm
+
+{
+  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "my-key": "my-val"
+  },
+  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}",
+  "pairingKey": {
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "key": "dummy-pairing-key"
+  },
+  "securityService": "PALO_ALTO_PRISMA_ACCESS",
+  "state": "PENDING_PARTNER_ATTACHMENT",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SSERealmService/DeleteSACRealm
+
+{
+  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

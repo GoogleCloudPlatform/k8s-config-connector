@@ -85,17 +85,29 @@ func Init(ctx context.Context, config *config.ControllerConfig) error {
 	return nil
 }
 
-func RegisterModel(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc) {
+type ModelOption func(*registration)
+
+func CannotBeDeleted() ModelOption {
+	return func(r *registration) {
+		// we won't use this information yet, but it helps us be more self-documenting and may be useful in future
+	}
+}
+
+func RegisterModel(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc, options ...ModelOption) {
 	if singleton.registrations == nil {
 		singleton.registrations = make(map[schema.GroupKind]*registration)
 	}
 	if singleton.registrations[gvk.GroupKind()] != nil {
 		klog.Fatalf("Model for %s already registered", gvk.GroupKind())
 	}
-	singleton.registrations[gvk.GroupKind()] = &registration{
+	reg := &registration{
 		gvk:     gvk,
 		factory: modelFn,
 	}
+	for _, opt := range options {
+		opt(reg)
+	}
+	singleton.registrations[gvk.GroupKind()] = reg
 }
 
 func IsDirectByGK(gk schema.GroupKind) bool {
@@ -126,6 +138,8 @@ func IsIAMDirect(groupKind schema.GroupKind) bool {
 	// TODO: Move to registration somehow?
 	switch groupKind {
 	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
+		return true
+	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubScope"}:
 		return true
 	}
 	return false

@@ -16,7 +16,7 @@ title: "DLPStoredInfoType"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/dlp/docs/">/dlp/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/dlp/docs/">https://docs.cloud.google.com/dlp/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "DLPStoredInfoType"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/dlp/docs/reference/rest/v2/projects.storedInfoTypes">/dlp/docs/reference/rest/v2/projects.storedInfoTypes</a></td>
+<td><a href="https://docs.cloud.google.com/dlp/docs/reference/rest/v2/projects.storedInfoTypes">https://docs.cloud.google.com/dlp/docs/reference/rest/v2/projects.storedInfoTypes</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -781,4 +781,4 @@ spec:
       - "nay"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

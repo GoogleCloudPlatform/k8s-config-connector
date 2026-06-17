@@ -16,7 +16,7 @@ title: "ComputeSnapshot"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ComputeSnapshot"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/v1/snapshots">/compute/docs/reference/rest/v1/snapshots</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/snapshots">https://docs.cloud.google.com/compute/docs/reference/rest/v1/snapshots</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -141,12 +141,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Creates the new snapshot in the snapshot chain labeled with the
-specified name. The chain name must be 1-63 characters long and
-comply with RFC1035. This is an uncommon option only for advanced
-service owners who needs to create separate snapshot chains, for
-example, for chargeback tracking.  When you describe your snapshot
-resource, this field is visible only if it has a non-empty value.</p>
+            <p>Immutable. Creates the new snapshot in the snapshot chain labeled with the specified name. The chain name must be 1-63 characters long and comply with RFC1035. This is an uncommon option only for advanced service owners who needs to create separate snapshot chains, for example, for chargeback tracking.  When you describe your snapshot resource, this field is visible only if it has a non-empty value.</p>
         </td>
     </tr>
     <tr>
@@ -208,7 +203,7 @@ key and you do not need to provide a key to use the snapshot later.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".</p>
         </td>
     </tr>
     <tr>
@@ -218,7 +213,7 @@ key and you do not need to provide a key to use the snapshot later.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -228,7 +223,7 @@ key and you do not need to provide a key to use the snapshot later.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -238,8 +233,7 @@ key and you do not need to provide a key to use the snapshot later.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The service account used for the encryption request for the given KMS key.
-If absent, the Compute Engine Service Agent service account is used.</p>
+            <p>The service account used for the encryption request for the given KMS key. If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
     </tr>
     <tr>
@@ -249,7 +243,7 @@ If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -279,8 +273,7 @@ If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-RFC 4648 base64 to either encrypt or decrypt this resource.</p>
+            <p>Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
     </tr>
     <tr>
@@ -340,8 +333,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
-encryption key that protects this resource.</p>
+            <p>The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource.</p>
         </td>
     </tr>
     <tr>
@@ -351,9 +343,7 @@ encryption key that protects this resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The customer-supplied encryption key of the source snapshot. Required
-if the source snapshot is protected by a customer-supplied encryption
-key.</p>
+            <p>Immutable. The customer-supplied encryption key of the source snapshot. Required if the source snapshot is protected by a customer-supplied encryption key.</p>
         </td>
     </tr>
     <tr>
@@ -363,8 +353,7 @@ key.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The service account used for the encryption request for the given KMS key.
-If absent, the Compute Engine Service Agent service account is used.</p>
+            <p>The service account used for the encryption request for the given KMS key. If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
     </tr>
     <tr>
@@ -374,7 +363,7 @@ If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -404,8 +393,7 @@ If absent, the Compute Engine Service Agent service account is used.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-RFC 4648 base64 to either encrypt or decrypt this resource.</p>
+            <p>Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
     </tr>
     <tr>
@@ -475,7 +463,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `ComputeDisk` resource.</p>
+            <p>A reference to an externally managed ComputeDisk resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/disks/{{diskID}}" or "projects/{{projectID}}/regions/{{region}}/disks/{{diskID}}".</p>
         </td>
     </tr>
     <tr>
@@ -485,7 +473,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeDisk resource.</p>
         </td>
     </tr>
     <tr>
@@ -495,7 +483,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeDisk resource.</p>
         </td>
     </tr>
     <tr>
@@ -564,7 +552,7 @@ storageBytes: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeSnapshot's current state.</p>
         </td>
     </tr>
     <tr>
@@ -627,18 +615,14 @@ storageBytes: integer
         <td><code>labelFingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The fingerprint used for optimistic locking of this resource. Used
-internally during updates.</p>
+            <p>The fingerprint used for optimistic locking of this resource. Used internally during updates.</p>
         </td>
     </tr>
     <tr>
         <td><code>licenses</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of public visible licenses that apply to this snapshot. This
-can be because the original image had licenses attached (such as a
-Windows image).  snapshotEncryptionKey nested object Encrypts the
-snapshot using a customer-supplied encryption key.</p>
+            <p>A list of public visible licenses that apply to this snapshot. This can be because the original image had licenses attached (such as a Windows image).  snapshotEncryptionKey nested object Encrypts the snapshot using a customer-supplied encryption key.</p>
         </td>
     </tr>
     <tr>
@@ -673,9 +657,7 @@ snapshot using a customer-supplied encryption key.</p>
         <td><code>storageBytes</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>A size of the storage used by the snapshot. As snapshots share
-storage, this number is expected to change with snapshot
-creation/deletion.</p>
+            <p>A size of the storage used by the snapshot. As snapshots share storage, this number is expected to change with snapshot creation/deletion.</p>
         </td>
     </tr>
 </tbody>
@@ -731,4 +713,4 @@ stringData:
   sourceDiskEncryptionKey: SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

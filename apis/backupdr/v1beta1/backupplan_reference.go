@@ -16,23 +16,22 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &BackupPlanRef{}
+var _ refs.Ref = &BackupPlanRef{}
 
-// BackupPlanRef defines the resource reference to BackupDRBackupPlan, which "External" field
-// holds the GCP identifier for the KRM object.
+// BackupPlanRef is a reference to a BackupDRBackupPlan.
 type BackupPlanRef struct {
 	// A reference to an externally managed BackupDRBackupPlan resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backupplans/{{backupplanID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backupPlans/{{backupplanID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BackupDRBackupPlan resource.
@@ -42,42 +41,67 @@ type BackupPlanRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on BackupDRBackupPlan.
-// If the "External" is given in the other resource's spec.BackupDRBackupPlanRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual BackupDRBackupPlan object from the cluster.
-func (r *BackupPlanRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", BackupDRBackupPlanGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseBackupPlanExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func init() {
+	refs.Register(&BackupPlanRef{}, &BackupDRBackupPlan{})
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *BackupPlanRef) GetGVK() schema.GroupVersionKind {
+	return BackupDRBackupPlanGVK
+}
+
+func (r *BackupPlanRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(BackupDRBackupPlanGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+}
+
+func (r *BackupPlanRef) GetExternal() string {
+	return r.External
+}
+
+func (r *BackupPlanRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *BackupPlanRef) ValidateExternal(ref string) error {
+	id := &BackupPlanIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *BackupPlanRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &BackupPlanIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *BackupPlanRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*BackupDRBackupPlan](u)
+		if err != nil {
+			return ""
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", BackupDRBackupPlanGVK, key, err)
+		identity, err := getIdentityFromBackupPlanSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
+// NormalizedExternal provision the "External" value.
+// Kept for backward compatibility with older callers.
+func (r *BackupPlanRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
 	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
 	return r.External, nil
 }

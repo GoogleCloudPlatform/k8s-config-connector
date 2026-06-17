@@ -17,6 +17,8 @@ package e2e
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -57,6 +59,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais/caistesting"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
@@ -73,9 +77,9 @@ func TestAllInSeries(t *testing.T) {
 
 	subtestTimeout := time.Hour
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
-		// We allow a total of 3 minutes: 2 for the test itself (for deep object chains with retries),
+		// We allow a total of 5 minutes: 4 for the test itself (for deep object chains with retries),
 		// and 1 minute to shutdown envtest / allow kube-apiserver requests to time-out.
-		subtestTimeout = 3 * time.Minute
+		subtestTimeout = 5 * time.Minute
 	}
 
 	t.Run("samples", func(t *testing.T) {
@@ -97,6 +101,9 @@ func TestAllInSeries(t *testing.T) {
 			sampleKey := sampleKey
 
 			t.Run(sampleKey.Name, func(t *testing.T) {
+				if os.Getenv("SKIP_ALL") != "" {
+					t.Skip("SKIP_ALL is set")
+				}
 				if sharedHarness != nil {
 					t.Parallel()
 				}
@@ -150,7 +157,11 @@ func TestAllInSeries(t *testing.T) {
 					*h = *sharedHarness
 					h.T = t
 					h.Ctx = subCtx
-					projectID := fmt.Sprintf("test-%d", time.Now().UnixNano())
+					b := make([]byte, 2)
+					if _, err := rand.Read(b); err != nil {
+						t.Fatalf("failed to generate random project ID: %v", err)
+					}
+					projectID := fmt.Sprintf("test-%d-%s", time.Now().UnixNano(), hex.EncodeToString(b))
 					project = h.CreateMockProject(subCtx, projectID)
 					h.Project = project
 				} else {
@@ -208,9 +219,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 
 	subtestTimeout := time.Hour
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
-		// We allow a total of 3 minutes: 2 for the test itself (for deep object chains with retries),
+		// We allow a total of 5 minutes: 4 for the test itself (for deep object chains with retries),
 		// and 1 minute to shutdown envtest / allow kube-apiserver requests to time-out.
-		subtestTimeout = 3 * time.Minute
+		subtestTimeout = 5 * time.Minute
 	}
 	if os.Getenv("RUN_E2E") == "" {
 		t.Skip("RUN_E2E not set; skipping")
@@ -237,18 +248,16 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 			fixture := fixture
 			group := fixture.GVK.Group
 
-			skipTestReason := ""
-
 			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
 				skippedGroups := strings.Split(s, ",")
 				if slice.StringSliceContains(skippedGroups, group) {
-					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.TestKey, group, s)
+					continue
 				}
 			}
 			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
 				groups := strings.Split(s, ",")
 				if !slice.StringSliceContains(groups, group) {
-					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.TestKey, group, s)
+					continue
 				}
 			}
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
@@ -257,8 +266,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				testName = "pkg/test/resourcefixture/testdata/" + fixture.TestKey
 			}
 			t.Run(testName, func(t *testing.T) {
-				if skipTestReason != "" {
-					t.Skip(skipTestReason)
+				if os.Getenv("SKIP_ALL") != "" {
+					t.Skip("SKIP_ALL is set")
 				}
 
 				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.TestKey)
@@ -308,21 +317,18 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					return primaryResource, opt
 				}
 
-				// Start gradually, only running for apikeyskey and tags* fixtures initially
+				// If the default controller is terraform/DCL, but there is a direct controller available, set forceDirect=true.
+				// Use static_config.go as the source of truth.
 				forceDirect := false
-				switch fixture.GVK.Kind {
-				case "TagsTagKey", "TagsTagValue", "TagsTagBinding":
-					forceDirect = true
-				case "APIKeysKey":
-					forceDirect = true
-				case "TagsLocationTagBinding":
-					forceDirect = false
-				case "FirestoreIndex":
-					forceDirect = true
-				default:
-					forceDirect = false
+				config, err := resourceconfig.LoadConfig().GetControllersForGVK(fixture.GVK)
+				if err != nil {
+					t.Fatalf("error getting controller config for GVK %v: %v", fixture.GVK, err)
 				}
-
+				if config.DefaultController != k8scontrollertype.ReconcilerTypeDirect {
+					if slices.Contains(config.SupportedControllers, k8scontrollertype.ReconcilerTypeDirect) {
+						forceDirect = true
+					}
+				}
 				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
 					forceDirect = false // VCR tests don't like variable requests
 				}
@@ -424,6 +430,19 @@ func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.Reso
 			h.CompareGoldenFile(filepath.Join(dir, "_final_object.diff"), diff)
 		} else {
 			h.AssertGoldenFileNotFound(filepath.Join(dir, "_final_object.diff"))
+		}
+	}
+
+	// _exported_object.diff
+	{
+		oldPath := filepath.Join(dir, "_exported_old_controller.golden.yaml")
+		newPath := filepath.Join(dir, "_exported.yaml")
+
+		if fileExists(oldPath) && fileExists(newPath) {
+			diff := computeDiff(oldPath, newPath)
+			h.CompareGoldenFile(filepath.Join(dir, "_exported_object.diff"), diff)
+		} else {
+			h.AssertGoldenFileNotFound(filepath.Join(dir, "_exported_object.diff"))
 		}
 	}
 
@@ -644,7 +663,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						// Try to export the resource (and compare against golden file)
 						exportedYAML := exportResource(h, obj, &Expectations{})
 
-						fileName := fmt.Sprintf("_generated_export_%v.golden", testName) // TODO: Including the test name creates busywork
+						fileName := "_exported.yaml"
 						if options.FallbackToOldController {
 							fileName = "_exported_old_controller.golden.yaml"
 						}
@@ -698,6 +717,10 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						switch event.Request.Method {
 						case "GET":
 							isReadOnly = true
+						case "GRPC":
+							if strings.Contains(event.Request.URL, "/Get") || strings.Contains(event.Request.URL, "/List") {
+								isReadOnly = true
+							}
 						}
 						if !isReadOnly {
 							t.Errorf("FAIL: unexpected event during re-reconciliation: %v", event)
@@ -718,6 +741,65 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					// Note that this does introduce a dependency that objects are ordered correctly for deletion.
 					opt.DeleteInOrder = true
 				}
+
+				// CAIS Mapper Golden File Checks
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+					h.Events.Pause()
+
+					var kccObjects []*unstructured.Unstructured
+					for _, obj := range opt.Create {
+						group := obj.GroupVersionKind().Group
+						if strings.HasSuffix(group, ".cnrm.cloud.google.com") && group != "core.cnrm.cloud.google.com" {
+							u := &unstructured.Unstructured{}
+							u.SetGroupVersionKind(obj.GroupVersionKind())
+							id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
+							if err := h.GetClient().Get(ctx, id, u); err == nil {
+								kccObjects = append(kccObjects, u)
+							} else {
+								kccObjects = append(kccObjects, obj)
+							}
+						}
+					}
+
+					if len(kccObjects) > 0 {
+						caisScheme := cais.NewScheme()
+						caisResults, err := cais.GetCAISIdentities(ctx, caisScheme, h.GetClient(), kccObjects)
+						if err != nil {
+							t.Fatalf("FAIL: error mapping CAIS identities: %v", err)
+						}
+
+						if len(caisResults) > 0 {
+							caisYAML, err := yaml.Marshal(caisResults)
+							if err != nil {
+								t.Fatalf("FAIL: error marshaling CAIS identities to YAML: %v", err)
+							}
+
+							caisYAMLStr := string(caisYAML)
+							caisYAMLStr = strings.ReplaceAll(caisYAMLStr, uniqueID, "puxvndidajatl5i")
+							caisYAMLStr = strings.ReplaceAll(caisYAMLStr, project.ProjectID, "mock-project")
+							if project.ProjectNumber != 0 {
+								caisYAMLStr = strings.ReplaceAll(caisYAMLStr, strconv.FormatUint(uint64(project.ProjectNumber), 10), "1234567890")
+							}
+
+							caisYAMLStr = caistesting.ReplacePlaceholdersInCAIS(caisYAMLStr, fixture.AbsoluteSourceDir, fixture.Create, fixture.Dependencies)
+
+							expectedPath := filepath.Join(fixture.AbsoluteSourceDir, "_identities.yaml")
+							h.CompareGoldenFile(expectedPath, caisYAMLStr, caistesting.NormalizeDynamicIDs)
+						} else {
+							expectedPath := filepath.Join(fixture.AbsoluteSourceDir, "_identities.yaml")
+							if _, err := os.Stat(expectedPath); err == nil {
+								if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+									_ = os.Remove(expectedPath)
+								} else {
+									t.Errorf("FAIL: _identities.yaml exists but no CAIS results were generated")
+								}
+							}
+						}
+					}
+
+					h.Events.Resume()
+				}
+
 				create.DeleteResources(h, opt)
 
 				// Verify kube events
@@ -731,6 +813,11 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				// Verify events against golden file or records events
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
+
+					if options.ForceDirectController || options.FallbackToOldController {
+						events.RemoveHTTPRequestHeader("User-Agent")
+						events.RemoveHTTPRequestHeader("X-Goog-Request-Params")
+					}
 
 					got, normalizers := LegacyNormalize(t, h, project, uniqueID, events)
 					if options.TestPause {

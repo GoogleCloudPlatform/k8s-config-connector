@@ -303,6 +303,8 @@ toc:
   section:
   - title: "OrgPolicyCustomConstraint"
     path: /config-connector/docs/reference/resource-docs/orgpolicy/orgpolicycustomconstraint.md
+  - title: "OrgPolicyPolicy"
+    path: /config-connector/docs/reference/resource-docs/orgpolicy/orgpolicypolicy.md
 - title: "Cloud Source Repositories"
   section:
   - title: "SourceRepoRepository"

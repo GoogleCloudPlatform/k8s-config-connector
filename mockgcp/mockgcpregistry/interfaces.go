@@ -64,6 +64,9 @@ type NormalizingVisitor interface {
 
 	// SortSliceBy will sort the slice at the given path, ordering by the given field
 	SortSliceBy(path string, sortBy string)
+
+	// TransformObject modifies the object at the given path using the provided function
+	TransformObject(path string, transform func(map[string]any))
 }
 
 type Normalizer interface {

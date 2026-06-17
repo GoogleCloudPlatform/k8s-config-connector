@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &BackupVaultRef{}
 
-// BackupVaultRef defines the resource reference to NetAppBackupVault, which "External" field
-// holds the GCP identifier for the KRM object.
+// BackupVaultRef is a reference to a NetAppBackupVault.
 type BackupVaultRef struct {
 	// A reference to an externally managed NetAppBackupVault resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backupvaults/{{backupvaultID}}".

@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &TasksQueueRef{}
 
-// TasksQueueRef defines the resource reference to TasksQueue, which "External" field
-// holds the GCP identifier for the KRM object.
+// TasksQueueRef is a reference to a TasksQueue.
 type TasksQueueRef struct {
 	// A reference to an externally managed TasksQueue resource.
 	// Should be in the format "projects/{{project}}/locations/{{location}}/queues/{{queue}}".
@@ -42,7 +41,7 @@ type TasksQueueRef struct {
 }
 
 func init() {
-	refs.Register(&TasksQueueRef{})
+	refs.Register(&TasksQueueRef{}, &TasksQueue{})
 }
 
 func (r *TasksQueueRef) GetGVK() schema.GroupVersionKind {
@@ -59,6 +58,8 @@ func (r *TasksQueueRef) GetExternal() string {
 
 func (r *TasksQueueRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *TasksQueueRef) ValidateExternal(ref string) error {

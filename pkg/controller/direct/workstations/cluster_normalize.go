@@ -30,11 +30,9 @@ func NormalizeWorkstationCluster(ctx context.Context, kube client.Reader, obj *k
 	}
 
 	// Resolve subnetwork.
-	subnet, err := refs.ResolveComputeSubnetwork(ctx, kube, obj, &obj.Spec.SubnetworkRef)
-	if err != nil {
+	if err := obj.Spec.SubnetworkRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
 		return err
 	}
-	obj.Spec.SubnetworkRef.External = subnet.External
 
 	// Resolve projects (in private cluster config).
 	if obj.Spec.PrivateClusterConfig != nil && obj.Spec.PrivateClusterConfig.AllowedProjects != nil {

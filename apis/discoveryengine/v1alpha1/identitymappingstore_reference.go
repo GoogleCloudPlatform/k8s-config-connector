@@ -40,7 +40,7 @@ type DiscoveryEngineIdentityMappingStoreRef struct {
 }
 
 func init() {
-	refs.Register(&DiscoveryEngineIdentityMappingStoreRef{})
+	refs.Register(&DiscoveryEngineIdentityMappingStoreRef{}, &DiscoveryEngineIdentityMappingStore{})
 }
 
 func (r *DiscoveryEngineIdentityMappingStoreRef) GetGVK() schema.GroupVersionKind {
@@ -60,6 +60,8 @@ func (r *DiscoveryEngineIdentityMappingStoreRef) GetExternal() string {
 
 func (r *DiscoveryEngineIdentityMappingStoreRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *DiscoveryEngineIdentityMappingStoreRef) ValidateExternal(ref string) error {

@@ -20,6 +20,7 @@ package keyhandle
 
 import (
 	pb "cloud.google.com/go/kms/apiv1/kmspb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -29,14 +30,21 @@ func init() {
 
 func KMSKeyHandleFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.KeyHandle{},
-		KMSKeyHandleSpec_FromProto, KMSKeyHandleSpec_ToProto,
-		KMSKeyHandleStatusObservedState_FromProto, KMSKeyHandleStatusObservedState_ToProto,
+		kms.KMSKeyHandleSpec_FromProto, kms.KMSKeyHandleSpec_ToProto,
+		kms.KMSKeyHandleObservedState_FromProto, kms.KMSKeyHandleObservedState_ToProto,
 	)
 
+	// Field comparison details:
+	// - KMSKeyHandleSpec.ResourceTypeSelector maps to pb.KeyHandle.ResourceTypeSelector.
+	// - KMSKeyHandleSpec.ResourceID, KMSKeyHandleSpec.ProjectRef, and KMSKeyHandleSpec.Location
+	//   are part of the resource's KCC identity (URL/URI) used to construct the pb.KeyHandle.Name,
+	//   so they do not map to separate fields in the body.
 	f.SpecField(".resource_type_selector")
 
+	// - KMSKeyHandleObservedState.KMSKey maps to pb.KeyHandle.KmsKey.
 	f.StatusField(".kms_key")
 
+	// - pb.KeyHandle.Name is the resource's GCP identity, so it is registered as an unimplemented identity.
 	f.Unimplemented_Identity(".name")
 
 	return f

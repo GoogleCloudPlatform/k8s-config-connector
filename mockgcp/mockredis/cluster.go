@@ -21,6 +21,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
+
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -77,7 +79,7 @@ func (r *clusterServer) CreateCluster(ctx context.Context, req *pb.CreateCluster
 
 	obj.State = pb.Cluster_CREATING
 
-	if err := r.populateDefaultsForCluster(name, obj); err != nil {
+	if err := r.populateDefaultsForCluster(ctx, name, obj); err != nil {
 		return nil, err
 	}
 
@@ -108,7 +110,102 @@ func (r *clusterServer) CreateCluster(ctx context.Context, req *pb.CreateCluster
 	})
 }
 
-func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cluster) error {
+func (r *clusterServer) syncReplication(ctx context.Context, obj *pb.Cluster) error {
+	config := obj.GetCrossClusterReplicationConfig()
+	if config == nil {
+		return nil
+	}
+
+	if config.ClusterRole == pb.CrossClusterReplicationConfig_PRIMARY {
+		membership := &pb.CrossClusterReplicationConfig_Membership{
+			PrimaryCluster: &pb.CrossClusterReplicationConfig_RemoteCluster{
+				Cluster: obj.Name,
+				Uid:     obj.Uid,
+			},
+		}
+		var secondaryClusters []*pb.CrossClusterReplicationConfig_RemoteCluster
+		for _, sc := range config.SecondaryClusters {
+			secondary := &pb.Cluster{}
+			if err := r.storage.Get(ctx, sc.GetCluster(), secondary); err == nil {
+				secondaryClusters = append(secondaryClusters, &pb.CrossClusterReplicationConfig_RemoteCluster{
+					Cluster: secondary.Name,
+					Uid:     secondary.Uid,
+				})
+			} else {
+				secondaryClusters = append(secondaryClusters, sc)
+			}
+		}
+		membership.SecondaryClusters = secondaryClusters
+		config.Membership = membership
+		config.SecondaryClusters = secondaryClusters
+		config.PrimaryCluster = nil
+
+		// Update secondaries
+		for _, sc := range membership.SecondaryClusters {
+			secondary := &pb.Cluster{}
+			if err := r.storage.Get(ctx, sc.GetCluster(), secondary); err == nil {
+				if secondary.CrossClusterReplicationConfig == nil {
+					secondary.CrossClusterReplicationConfig = &pb.CrossClusterReplicationConfig{}
+				}
+				secondary.CrossClusterReplicationConfig.ClusterRole = pb.CrossClusterReplicationConfig_SECONDARY
+				secondary.CrossClusterReplicationConfig.PrimaryCluster = membership.PrimaryCluster
+				secondary.CrossClusterReplicationConfig.SecondaryClusters = nil
+				secondary.CrossClusterReplicationConfig.Membership = membership
+				secondary.CrossClusterReplicationConfig.UpdateTime = timestamppb.Now()
+				if err := r.storage.Update(ctx, secondary.Name, secondary); err != nil {
+					return err
+				}
+			}
+		}
+		// Save obj with updated membership
+		if err := r.storage.Update(ctx, obj.Name, obj); err != nil {
+			return err
+		}
+	} else if config.ClusterRole == pb.CrossClusterReplicationConfig_SECONDARY {
+		pc := config.GetPrimaryCluster()
+		if pc.GetCluster() == "" {
+			return nil
+		}
+		primaryName := pc.GetCluster()
+		primary := &pb.Cluster{}
+		if err := r.storage.Get(ctx, primaryName, primary); err == nil {
+			// Ensure primary knows about this secondary
+			found := false
+			if primary.CrossClusterReplicationConfig == nil {
+				primary.CrossClusterReplicationConfig = &pb.CrossClusterReplicationConfig{
+					ClusterRole: pb.CrossClusterReplicationConfig_PRIMARY,
+				}
+			}
+			for _, sc := range primary.CrossClusterReplicationConfig.SecondaryClusters {
+				if sc.GetCluster() == obj.Name {
+					found = true
+					sc.Uid = obj.Uid
+					break
+				}
+			}
+			if !found {
+				primary.CrossClusterReplicationConfig.SecondaryClusters = append(primary.CrossClusterReplicationConfig.SecondaryClusters, &pb.CrossClusterReplicationConfig_RemoteCluster{
+					Cluster: obj.Name,
+					Uid:     obj.Uid,
+				})
+			}
+			// Sync from primary's perspective
+			return r.syncReplication(ctx, primary)
+		}
+	}
+
+	// Reload obj to ensure it has the latest state (including membership)
+	latest := &pb.Cluster{}
+	if err := r.storage.Get(ctx, obj.Name, latest); err != nil {
+		return err
+	}
+	proto.Reset(obj)
+	proto.Merge(obj, latest)
+
+	return nil
+}
+
+func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *clusterName, obj *pb.Cluster) error {
 	if obj.AuthorizationMode == pb.AuthorizationMode_AUTH_MODE_UNSPECIFIED {
 		obj.AuthorizationMode = pb.AuthorizationMode_AUTH_MODE_DISABLED
 	}
@@ -159,6 +256,19 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 		}
 	}
 
+	if obj.PscServiceAttachments == nil {
+		suffix := "abcdef0123456789"
+		obj.PscServiceAttachments = []*pb.PscServiceAttachment{
+			{
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-%s-psc-sa", name.Project.Number, name.Location, suffix),
+				ConnectionType:    pb.ConnectionType_CONNECTION_TYPE_DISCOVERY,
+			},
+			{
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-%s-psc-sa-2", name.Project.Number, name.Location, suffix),
+			},
+		}
+	}
+
 	if obj.PersistenceConfig == nil {
 		obj.PersistenceConfig = &pb.ClusterPersistenceConfig{}
 	}
@@ -198,6 +308,75 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 	if obj.ZoneDistributionConfig.Mode == pb.ZoneDistributionConfig_ZONE_DISTRIBUTION_MODE_UNSPECIFIED {
 		obj.ZoneDistributionConfig.Mode = pb.ZoneDistributionConfig_MULTI_ZONE
 	}
+
+	if obj.CrossClusterReplicationConfig != nil {
+		config := obj.CrossClusterReplicationConfig
+		if config.UpdateTime == nil {
+			config.UpdateTime = timestamppb.Now()
+		}
+		membership := &pb.CrossClusterReplicationConfig_Membership{}
+		switch config.ClusterRole {
+		case pb.CrossClusterReplicationConfig_PRIMARY:
+			membership.PrimaryCluster = &pb.CrossClusterReplicationConfig_RemoteCluster{
+				Cluster: obj.Name,
+				Uid:     obj.Uid,
+			}
+			for _, secondary := range config.SecondaryClusters {
+				secondaryCluster := &pb.CrossClusterReplicationConfig_RemoteCluster{
+					Cluster: secondary.Cluster,
+					Uid:     uuid.NewString(),
+				}
+				membership.SecondaryClusters = append(membership.SecondaryClusters, secondaryCluster)
+			}
+			config.PrimaryCluster = nil
+			config.SecondaryClusters = membership.SecondaryClusters
+		case pb.CrossClusterReplicationConfig_SECONDARY:
+			if config.PrimaryCluster != nil {
+				primaryCluster := &pb.CrossClusterReplicationConfig_RemoteCluster{
+					Cluster: config.PrimaryCluster.GetCluster(),
+					Uid:     uuid.NewString(),
+				}
+				membership.PrimaryCluster = primaryCluster
+			}
+			membership.SecondaryClusters = append(membership.SecondaryClusters, &pb.CrossClusterReplicationConfig_RemoteCluster{
+				Cluster: obj.Name,
+				Uid:     obj.Uid,
+			})
+			// This field is only set for a primary cluster.
+			config.PrimaryCluster = membership.PrimaryCluster
+			config.SecondaryClusters = nil
+		}
+		config.Membership = membership
+	}
+	if obj.AutomatedBackupConfig != nil {
+		if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
+			obj.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
+		}
+		if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_DISABLED {
+			obj.AutomatedBackupConfig.Schedule = nil
+			obj.AutomatedBackupConfig.Retention = nil
+		}
+	} else {
+		obj.AutomatedBackupConfig = &pb.AutomatedBackupConfig{AutomatedBackupMode: pb.AutomatedBackupConfig_DISABLED}
+	}
+
+	if obj.GetKmsKey() != "" {
+		if obj.EncryptionInfo == nil {
+			obj.EncryptionInfo = &pb.EncryptionInfo{
+				EncryptionType:     pb.EncryptionInfo_CUSTOMER_MANAGED_ENCRYPTION,
+				KmsKeyVersions:     []string{obj.GetKmsKey() + "/cryptoKeyVersions/1"},
+				KmsKeyPrimaryState: pb.EncryptionInfo_ENABLED,
+				LastUpdateTime:     timestamppb.Now(),
+			}
+		}
+	} else {
+		if obj.EncryptionInfo == nil {
+			obj.EncryptionInfo = &pb.EncryptionInfo{
+				EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+			}
+		}
+	}
+
 	return nil
 }
 
@@ -251,13 +430,19 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.PersistenceConfig = req.Cluster.PersistenceConfig
 		case "redisConfigs":
 			obj.RedisConfigs = req.Cluster.RedisConfigs
+		case "automatedBackupConfig":
+			obj.AutomatedBackupConfig = req.Cluster.AutomatedBackupConfig
+		case "maintenancePolicy":
+			obj.MaintenancePolicy = req.Cluster.MaintenancePolicy
+		case "crossClusterReplicationConfig":
+			obj.CrossClusterReplicationConfig = req.Cluster.CrossClusterReplicationConfig
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
 	}
 
-	if err := r.populateDefaultsForCluster(name, obj); err != nil {
+	if err := r.populateDefaultsForCluster(ctx, name, obj); err != nil {
 		return nil, err
 	}
 
@@ -274,6 +459,10 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
+
+		if err := r.syncReplication(ctx, obj); err != nil {
+			return nil, err
+		}
 
 		retObj := proto.CloneOf(obj)
 		// pscConfigs is not included in the response
@@ -302,6 +491,13 @@ func (r *clusterServer) DeleteCluster(ctx context.Context, req *pb.DeleteCluster
 
 	if obj.GetDeletionProtectionEnabled() {
 		return nil, status.Errorf(codes.FailedPrecondition, "The cluster is deletion protected. Please disable deletion protection to delete the cluster. To disable, update DeleteProtectionEnabled to false via the Update API")
+	}
+
+	if obj.GetCrossClusterReplicationConfig().GetClusterRole() == pb.CrossClusterReplicationConfig_PRIMARY {
+		secondaryClusters := obj.CrossClusterReplicationConfig.SecondaryClusters
+		if len(secondaryClusters) > 0 {
+			return nil, status.Errorf(codes.FailedPrecondition, "Primary cluster %q cannot be deleted because it still has secondary clusters: %v", obj.GetName(), secondaryClusters)
+		}
 	}
 
 	deletedObj := &pb.Cluster{}

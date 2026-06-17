@@ -16,7 +16,7 @@ title: "ComputeNetworkFirewallPolicyAssociation"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ComputeNetworkFirewallPolicyAssociation"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/beta/networkFirewallPolicies/addAssociation">/compute/docs/reference/rest/beta/networkFirewallPolicies/addAssociation</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/reference/rest/beta/networkFirewallPolicies/addAssociation">https://docs.cloud.google.com/compute/docs/reference/rest/beta/networkFirewallPolicies/addAssociation</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -326,4 +326,4 @@ spec:
   description: "A sample network firewall policy"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

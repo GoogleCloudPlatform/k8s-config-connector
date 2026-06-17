@@ -15,11 +15,19 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var (
+	_ identity.IdentityV2 = &StorageBucketIdentity{}
+	_ identity.Resource   = &StorageBucket{}
 )
 
 var (
@@ -29,8 +37,7 @@ var (
 // StorageBucketURLFormat is the format for the externalRef of a StorageBucket.
 const StorageBucketURLFormat = "projects/{{project}}/buckets/{{bucket}}"
 
-var _ identity.Identity = &StorageBucketIdentity{}
-
+// StorageBucketIdentity is the identity of a GCP StorageBucket resource.
 // +k8s:deepcopy-gen=false
 type StorageBucketIdentity struct {
 	Project string
@@ -80,4 +87,26 @@ func (i *StorageBucketIdentity) FromExternal(ref string) error {
 
 	*i = *parsed
 	return nil
+}
+
+func getIdentityFromStorageBucketSpec(ctx context.Context, reader client.Reader, obj *StorageBucket) (*StorageBucketIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &StorageBucketIdentity{
+		Project: projectID,
+		Bucket:  resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *StorageBucket) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	return getIdentityFromStorageBucketSpec(ctx, reader, obj)
 }

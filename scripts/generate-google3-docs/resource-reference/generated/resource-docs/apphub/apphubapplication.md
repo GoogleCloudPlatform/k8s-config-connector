@@ -18,7 +18,7 @@ title: "AppHubApplication"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/app-hub/docs/">/app-hub/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/app-hub/docs/">https://docs.cloud.google.com/app-hub/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -26,7 +26,7 @@ title: "AppHubApplication"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/app-hub/docs/reference/rest/v1/projects.locations.applications">/app-hub/docs/reference/rest/v1/projects.locations.applications</a></td>
+<td><a href="https://docs.cloud.google.com/app-hub/docs/reference/rest/v1/projects.locations.applications">https://docs.cloud.google.com/app-hub/docs/reference/rest/v1/projects.locations.applications</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -518,4 +518,4 @@ spec:
     type: REGIONAL
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

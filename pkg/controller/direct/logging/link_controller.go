@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,25 +18,19 @@ import (
 	"context"
 	"fmt"
 
-	//"reflect"
-
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
-
-	//"net/http"
 
 	gcp "cloud.google.com/go/logging/apiv2"
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"google.golang.org/api/option"
-
-	//"google.golang.org/api/option"
-	//"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -58,13 +52,12 @@ type modelLoggingLink struct {
 }
 
 func (m *modelLoggingLink) client(ctx context.Context) (*gcp.ConfigClient, error) {
-	// Use the VCR-aware HTTP client
-	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
 	if err != nil {
-		return nil, fmt.Errorf("building authenticated HTTP client: %w", err)
+		return nil, err
 	}
-
-	gcpClient, err := gcp.NewConfigRESTClient(ctx, option.WithHTTPClient(httpClient))
+	gcpClient, err := gcp.NewConfigRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building Logging Config client: %w", err)
 	}
@@ -79,6 +72,10 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -88,10 +85,23 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, op *directbase.
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	desiredPb := LoggingLinkSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.Name
+	}
+
 	return &LoggingLinkAdapter{
-		id:        id.(*krm.LinkIdentity),
+		id:        id.(*krm.LoggingLinkIdentity),
 		gcpClient: gcpClient,
-		desired:   obj,
+		desiredID: resourceID,
+		desired:   desiredPb,
 	}, nil
 }
 
@@ -101,9 +111,10 @@ func (m *modelLoggingLink) AdapterForURL(ctx context.Context, url string) (direc
 }
 
 type LoggingLinkAdapter struct {
-	id        *krm.LinkIdentity
+	id        *krm.LoggingLinkIdentity
 	gcpClient *gcp.ConfigClient
-	desired   *krm.LoggingLink
+	desiredID string
+	desired   *loggingpb.Link
 	actual    *loggingpb.Link
 }
 
@@ -127,88 +138,56 @@ func (a *LoggingLinkAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	u := createOp.GetUnstructured()
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating LoggingLink", "u", u)
-
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := LoggingLinkSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	log.V(2).Info("creating LoggingLink", "id", a.id.String())
 
 	parent := a.id.Parent()
 
-	resourceID := direct.ValueOf(desired.Spec.ResourceID)
-	if resourceID == "" {
-		log.V(2).Info("ResourceID is not set, will use metadata.name")
-		resourceID = desired.Name
-	} else {
-		log.V(2).Info("ResourceID is set, will use")
-		resourceID = *desired.Spec.ResourceID
-	}
-
 	req := &loggingpb.CreateLinkRequest{
 		Parent: parent.String(),
-		Link:   resource,
-		LinkId: resourceID,
+		Link:   a.desired,
+		LinkId: a.desiredID,
 	}
 	op, err := a.gcpClient.CreateLink(ctx, req)
-
 	if err != nil {
-		return fmt.Errorf("creating Link %s: %w\n", a.id, err)
+		return fmt.Errorf("creating Link %s: %w", a.id, err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		// there is an implicit dependency on the bucket being active, this wait captures that
-		return fmt.Errorf("Link %s waiting creation: %w", a.id, err)
+		return fmt.Errorf("waiting Link %s creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created Link", "name", a.id)
 
+	return a.updateStatus(ctx, createOp, created)
+}
+
+func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating LoggingLink", "name", a.id.String())
+
+	diffs, _, err := compareLink(ctx, a.actual, a.desired)
+	if err != nil {
+		return err
+	}
+
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
+		return fmt.Errorf("LoggingLink is immutable and cannot be updated")
+	}
+
+	return a.updateStatus(ctx, updateOp, a.actual)
+}
+
+func (a *LoggingLinkAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *loggingpb.Link) error {
+	mapCtx := &direct.MapContext{}
 	status := &krm.LoggingLinkStatus{}
-	status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, created)
+	status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return createOp.UpdateStatus(ctx, status, nil)
-}
-
-func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-
-	log := klog.FromContext(ctx)
-	log.V(2).Info("updating Logging Link", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desiredPb := LoggingLinkSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	desiredPb.Name = a.id.String()
-
-	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
-	if err != nil {
-		return err
-	}
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-	} else {
-		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-		for path := range paths {
-			report.AddField(path, nil, nil)
-		}
-		structuredreporting.ReportDiff(ctx, report)
-
-		log.V(2).Info("update operation not supported for resource", "groupVersionKind", a.desired.GroupVersionKind(), "namespacedName", k8s.GetNamespacedName(a.desired))
-	}
-	status := &krm.LoggingLinkStatus{}
-	status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, a.actual)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	return updateOp.UpdateStatus(ctx, status, nil)
+	return op.UpdateStatus(ctx, status, nil)
 }
 
 func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -224,25 +203,14 @@ func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 		return nil, mapCtx.Err()
 	}
 
-	// TODO(user): Update other resource references
-	/* TODO Bucket Ref?
-	parent, err := a.id.Parent()
-	if err != nil {
-		return nil, err
-	}
-	 obj.Spec.ProjectRef = &refs.ProjectRef{External: parent.String()}
-	 obj.Spec.Location = parent.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
-	*/
 
+	u.Object = uObj
 	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.LoggingLinkGVK)
-
-	// TODO uObj is set in the commented out code
-	//u.Object = uObj
 	return u, nil
 }
 
@@ -255,7 +223,6 @@ func (a *LoggingLinkAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	op, err := a.gcpClient.DeleteLink(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
 			log.V(2).Info("skipping delete for non-existent LoggingLink, assuming it was already deleted", "name", a.id.String())
 			return true, nil
 		}
@@ -270,4 +237,26 @@ func (a *LoggingLinkAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	log.V(2).Info("successfully waited for link deletion LRO", "name", a.id)
 
 	return true, nil
+}
+
+func compareLink(ctx context.Context, actual, desired *loggingpb.Link) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	var maskedActual *loggingpb.Link
+	{
+		// A "trick" to only compare spec fields - round trip via the spec
+		mapCtx := &direct.MapContext{}
+		spec := LoggingLinkSpec_FromProto(mapCtx, actual)
+		if mapCtx.Err() != nil {
+			return nil, nil, mapCtx.Err()
+		}
+		maskedActual = LoggingLinkSpec_ToProto(mapCtx, spec)
+		if mapCtx.Err() != nil {
+			return nil, nil, mapCtx.Err()
+		}
+	}
+	maskedActual.Name = desired.Name
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
 }

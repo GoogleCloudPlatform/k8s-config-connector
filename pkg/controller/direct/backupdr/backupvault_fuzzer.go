@@ -33,23 +33,23 @@ func backupDRBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 		BackupDRBackupVaultObservedState_v1beta1_FromProto, BackupDRBackupVaultObservedState_v1beta1_ToProto,
 	)
 
-	f.IdentityField(".name")
+	f.Unimplemented_Identity(".name")
 
-	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".backup_minimum_enforced_retention_duration")
-	f.SpecFields.Insert(".effective_time")
-	f.SpecFields.Insert(".annotations")
-	f.SpecFields.Insert(".access_restriction")
+	f.SpecField(".description")
+	f.SpecField(".backup_minimum_enforced_retention_duration")
+	f.SpecField(".effective_time")
+	f.SpecField(".annotations")
+	f.SpecField(".access_restriction")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".deletable")
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".backup_count")
-	f.StatusFields.Insert(".service_account")
-	f.StatusFields.Insert(".total_stored_bytes")
-	f.StatusFields.Insert(".uid")
-	f.StatusFields.Insert(".etag")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
+	f.StatusField(".deletable")
+	f.StatusField(".state")
+	f.StatusField(".backup_count")
+	f.StatusField(".service_account")
+	f.StatusField(".total_stored_bytes")
+	f.StatusField(".uid")
+	f.StatusField(".etag")
 
 	f.Unimplemented_LabelsAnnotations(".labels")
 

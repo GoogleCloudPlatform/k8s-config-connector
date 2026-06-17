@@ -16,7 +16,7 @@ title: "ServiceDirectoryEndpoint"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/service-directory/docs/">/service-directory/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/service-directory/docs/">https://docs.cloud.google.com/service-directory/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ServiceDirectoryEndpoint"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces.services.endpoints">/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces.services.endpoints</a></td>
+<td><a href="https://docs.cloud.google.com/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces.services.endpoints">https://docs.cloud.google.com/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces.services.endpoints</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -86,7 +86,7 @@ serviceRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>Optional. The ComputeAddress resource whose IP address this endpoint uses.</p>
         </td>
     </tr>
     <tr>
@@ -96,7 +96,7 @@ serviceRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `address` field of a `ComputeAddress` resource.</p>
+            <p>A reference to an externally managed ComputeAddress resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}" or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".</p>
         </td>
     </tr>
     <tr>
@@ -106,7 +106,7 @@ serviceRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -116,7 +116,7 @@ serviceRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -126,14 +126,7 @@ serviceRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Only the `external` field is supported to configure the reference.
-
-Immutable. The Google Compute Engine network (VPC) of the endpoint in the format
-projects/<project number>/locations/global/networks/*.
-
-The project must be specified by project number (project id is rejected). Incorrectly formatted networks are
-rejected, but no other validation is performed on this field (ex. network or project existence,
-reachability, or permissions).</p>
+            <p>Optional. The ComputeNetwork resource representing the GCE network of this endpoint.</p>
         </td>
     </tr>
     <tr>
@@ -143,7 +136,7 @@ reachability, or permissions).</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -153,7 +146,7 @@ reachability, or permissions).</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -163,7 +156,7 @@ reachability, or permissions).</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -173,8 +166,7 @@ reachability, or permissions).</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Port that the endpoint is running on, must be in the
-range of [0, 65535]. If unspecified, the default is 0.</p>
+            <p>Optional. Port that the endpoint is running on, must be in the range of [0, 65535]. If unspecified, the default is 0.</p>
         </td>
     </tr>
     <tr>
@@ -194,7 +186,7 @@ range of [0, 65535]. If unspecified, the default is 0.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The ServiceDirectoryService that this endpoint belongs to.</p>
+            <p>Required. The ServiceDirectoryService that this endpoint belongs to.</p>
         </td>
     </tr>
     <tr>
@@ -204,7 +196,7 @@ range of [0, 65535]. If unspecified, the default is 0.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `ServiceDirectoryService` resource.</p>
+            <p>A reference to an externally managed ServiceDirectoryService resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/namespaces/{{namespaceID}}/services/{{serviceID}}".</p>
         </td>
     </tr>
     <tr>
@@ -214,7 +206,7 @@ range of [0, 65535]. If unspecified, the default is 0.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ServiceDirectoryService resource.</p>
         </td>
     </tr>
     <tr>
@@ -224,7 +216,7 @@ range of [0, 65535]. If unspecified, the default is 0.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ServiceDirectoryService resource.</p>
         </td>
     </tr>
 </tbody>
@@ -254,7 +246,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -303,8 +295,7 @@ observedGeneration: integer
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The resource name for the endpoint in the format
-'projects/*/locations/*/namespaces/*/services/*/endpoints/*'.</p>
+            <p>The resource name for the endpoint in the format 'projects/*/locations/*/namespaces/*/services/*/endpoints/*'.</p>
         </td>
     </tr>
     <tr>
@@ -373,4 +364,4 @@ spec:
     name: servicedirectoryendpoint-dep
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

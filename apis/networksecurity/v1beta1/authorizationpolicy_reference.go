@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &AuthorizationPolicyRef{}
 
-// AuthorizationPolicyRef defines the resource reference to NetworkSecurityAuthorizationPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// AuthorizationPolicyRef is a reference to a NetworkSecurityAuthorizationPolicy.
 type AuthorizationPolicyRef struct {
 	// A reference to an externally managed NetworkSecurityAuthorizationPolicy resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/authorizationPolicies/{{authorizationpolicyID}}".

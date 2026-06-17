@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -27,8 +28,7 @@ import (
 
 var _ refs.Ref = &LoggingLogMetricRef{}
 
-// LoggingLogMetricRef defines the resource reference to LoggingLogMetric, which "External" field
-// holds the GCP identifier for the KRM object.
+// LoggingLogMetricRef is a reference to a LoggingLogMetric.
 type LoggingLogMetricRef struct {
 	// A reference to an externally managed LoggingLogMetric resource.
 	// Should be in the format "projects/{{projectID}}/metrics/{{metricID}}".
@@ -42,7 +42,7 @@ type LoggingLogMetricRef struct {
 }
 
 func init() {
-	refs.Register(&LoggingLogMetricRef{})
+	refs.Register(&LoggingLogMetricRef{}, &LoggingLogMetric{})
 }
 
 func (r *LoggingLogMetricRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +62,8 @@ func (r *LoggingLogMetricRef) GetExternal() string {
 
 func (r *LoggingLogMetricRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *LoggingLogMetricRef) ValidateExternal(ref string) error {
@@ -82,7 +84,11 @@ func (r *LoggingLogMetricRef) ParseExternalToIdentity() (identity.Identity, erro
 
 func (r *LoggingLogMetricRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromLoggingLogMetricSpec(ctx, reader, u)
+		obj, err := common.ToStructuredType[*LoggingLogMetric](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromLoggingLogMetricSpec(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}

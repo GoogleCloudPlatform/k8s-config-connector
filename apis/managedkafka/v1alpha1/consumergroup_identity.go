@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ConsumerGroupIdentity defines the resource reference to ManagedKafkaConsumerGroup, which "External" field
-// holds the GCP identifier for the KRM object.
+// ConsumerGroupIdentity is the identity of a ManagedKafkaConsumerGroup.
 type ConsumerGroupIdentity struct {
 	parent *ConsumerGroupParent
 	id     string

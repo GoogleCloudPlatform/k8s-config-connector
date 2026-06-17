@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &BeyondCorpClientConnectorServiceRef{}
 
-// BeyondCorpClientConnectorServiceRef defines the resource reference to BeyondCorpClientConnectorService, which "External" field
-// holds the GCP identifier for the KRM object.
+// BeyondCorpClientConnectorServiceRef is a reference to a BeyondCorpClientConnectorService.
 type BeyondCorpClientConnectorServiceRef struct {
 	// A reference to an externally managed BeyondCorpClientConnectorService resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clientConnectorServices/{{clientConnectorServiceID}}".
@@ -42,7 +41,7 @@ type BeyondCorpClientConnectorServiceRef struct {
 }
 
 func init() {
-	refs.Register(&BeyondCorpClientConnectorServiceRef{})
+	refs.Register(&BeyondCorpClientConnectorServiceRef{}, &BeyondCorpClientConnectorService{})
 }
 
 func (r *BeyondCorpClientConnectorServiceRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *BeyondCorpClientConnectorServiceRef) GetExternal() string {
 
 func (r *BeyondCorpClientConnectorServiceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *BeyondCorpClientConnectorServiceRef) ValidateExternal(ref string) error {

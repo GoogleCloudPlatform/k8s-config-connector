@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: identityplatform.cnrm.cloud.google.com
+  kind: IdentityPlatformTenant
+  name: identityplatformtenant-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: identityplatform.cnrm.cloud.google.com
+  kind: IdentityPlatformTenantOAuthIDPConfig
+  name: identityplatformtenantoauthidpconfig-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

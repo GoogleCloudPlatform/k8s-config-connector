@@ -16,7 +16,7 @@ title: "LoggingLogView"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/logging/docs/">/logging/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/logging/docs/">https://docs.cloud.google.com/logging/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -30,10 +30,10 @@ title: "LoggingLogView"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/logging/docs/reference/v2/rest/v2/billingAccounts.locations.buckets.views">/logging/docs/reference/v2/rest/v2/billingAccounts.locations.buckets.views</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/folders.locations.buckets.views">/logging/docs/reference/v2/rest/v2/folders.locations.buckets.views</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/organizations.locations.buckets.views">/logging/docs/reference/v2/rest/v2/organizations.locations.buckets.views</a></pre>
-<pre><a href="/logging/docs/reference/v2/rest/v2/projects.locations.buckets.views">/logging/docs/reference/v2/rest/v2/projects.locations.buckets.views</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/billingAccounts.locations.buckets.views">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/billingAccounts.locations.buckets.views</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/folders.locations.buckets.views">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/folders.locations.buckets.views</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/organizations.locations.buckets.views">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/organizations.locations.buckets.views</a></pre>
+<pre><a href="https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.locations.buckets.views">https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/projects.locations.buckets.views</a></pre>
 </td>
 </tr>
 <tr>
@@ -72,6 +72,7 @@ billingAccountRef:
   namespace: string
 bucketRef:
   external: string
+  kind: string
   name: string
   namespace: string
 description: string
@@ -116,7 +117,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The Google Cloud resource name of a Google Cloud Billing Account (format: `billingAccounts/{{name}}`).</p>
+            <p>The 'name' field of a billing account, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -126,8 +127,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[WARNING] BillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
-Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The 'name' field of a 'BillingAccount' resource.</p>
         </td>
     </tr>
     <tr>
@@ -137,7 +137,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The 'namespace' field of a 'BillingAccount' resource.</p>
         </td>
     </tr>
     <tr>
@@ -157,9 +157,17 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The bucket of the resource
-
-Allowed value: The Google Cloud resource name of a `LoggingLogBucket` resource (format: `{{parent}}/locations/{{location}}/buckets/{{name}}`).</p>
+            <p>A reference to an externally managed LoggingLogBucket resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bucketRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -169,7 +177,7 @@ Allowed value: The Google Cloud resource name of a `LoggingLogBucket` resource (
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -179,7 +187,7 @@ Allowed value: The Google Cloud resource name of a `LoggingLogBucket` resource (
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a LoggingLogBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -219,7 +227,7 @@ Allowed value: The Google Cloud resource name of a `LoggingLogBucket` resource (
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The Google Cloud resource name of a `Folder` resource (format: `folders/{{name}}`).</p>
+            <p>The 'name' field of a folder, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -229,7 +237,7 @@ Allowed value: The Google Cloud resource name of a `LoggingLogBucket` resource (
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The 'name' field of a 'Folder' resource.</p>
         </td>
     </tr>
     <tr>
@@ -239,7 +247,7 @@ Allowed value: The Google Cloud resource name of a `LoggingLogBucket` resource (
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The 'namespace' field of a 'Folder' resource.</p>
         </td>
     </tr>
     <tr>
@@ -269,7 +277,7 @@ Allowed value: The Google Cloud resource name of a `LoggingLogBucket` resource (
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The Google Cloud resource name of a Google Cloud Organization (format: `organizations/{{name}}`).</p>
+            <p>The 'name' field of an organization, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -279,8 +287,7 @@ Allowed value: The Google Cloud resource name of a `LoggingLogBucket` resource (
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
-Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The 'name' field of an 'Organization' resource.</p>
         </td>
     </tr>
     <tr>
@@ -290,7 +297,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The 'namespace' field of an 'Organization' resource.</p>
         </td>
     </tr>
     <tr>
@@ -310,7 +317,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -320,7 +327,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -330,7 +337,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -371,7 +378,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the LoggingLogView's current state.</p>
         </td>
     </tr>
     <tr>
@@ -484,4 +491,4 @@ spec:
   retentionDays: 30
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

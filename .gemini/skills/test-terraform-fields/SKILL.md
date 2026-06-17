@@ -16,17 +16,18 @@ KCC uses a golden file testing strategy for end-to-end (E2E) validation. The tes
 A complete test fixture directory contains:
 - **`create.yaml`**: The primary KRM resource definition (what gets created first). Ensure the resource has unique labels/names.
 - **`dependencies.yaml` (optional)**: Supporting resources (e.g. IAM policies, networks, service accounts) that the primary resource depends on.
-- **`update.yaml` (optional)**: The KRM resource definition with updates applied after initial creation.
+- **`update.yaml` (strongly recommended)**: The KRM resource definition with updates applied after initial creation. While structurally optional, it is **highly recommended** (and mandatory for new mutable fields) to include an `update.yaml` to ensure the controller can successfully reconcile in-place updates.
 - **`_http.log`**: Golden HTTP/gRPC request/response traffic log generated during E2E reconciliation.
 - **`_generated_object_[testname].golden.yaml`**: Golden file representing the final KRM object status/spec in the Kube API server.
-- **`_generated_export_[testname].golden` (optional)**: Golden exported KRM representation.
+- **`_exported.yaml` (optional)**: Golden exported KRM representation.
 
 ---
 
 ## 2. Setting Up Test Cases
 
 1. **Create Directory**: Create the directory `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
-2. **Define KRM files**: Add `create.yaml`, and optionally `dependencies.yaml` and `update.yaml`.
+2. **Define KRM files**: Add `create.yaml`, and `update.yaml` (highly recommended to verify update reconciliation), and optionally `dependencies.yaml`.
+
 3. **Verify Yaml Validation**: Ensure YAML files are valid Kubernetes manifests. Avoid any hardcoded project IDs or dynamic IDs (use placeholders if necessary, but KCC test runner resolves them).
 
 ---
@@ -64,13 +65,25 @@ For standard E2E fixture tests under `pkg/test/resourcefixture/testdata/basic/`,
 1. Run the script passing either the test name suffix or the package path:
    - **Using test name suffix**:
      ```bash
-     hack/record-gcp dnsrecordsetbasic
+     hack/record-gcp <test_name>
      ```
    - **Using full test package path**:
+     ```bash
+     hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/<test_name>
+     ```
+     - **Example: Using test name suffix**:
+     ```bash
+     hack/record-gcp fixtures/dnsrecordsetbasic
+     ```
+   - **Example: Using full test package path**:
      ```bash
      hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/dnsrecordset
      ```
 2. The script executes the tests with `E2E_GCP_TARGET=real`, `WRITE_GOLDEN_OUTPUT=1`, and records the traffic to `_http.log`.
+3. **If the script fails** (e.g. due to permissions or an invalid default project ID like `foobar`), DO NOT skip this step. Ask the user for a valid GCP project ID to test against, and then run:
+   ```bash
+   GCP_PROJECT_ID=<project-id> hack/record-gcp <test_name>
+   ```
 
 ### D. Running MockGCP Script Test Recordings
 For MockGCP-specific script tests (located under `mockgcp/mockgcptests/`), use the python recording task:
@@ -80,18 +93,23 @@ For MockGCP-specific script tests (located under `mockgcp/mockgcptests/`), use t
    ```
 2. This runs the mock tests targeting real GCP to refresh golden script logs.
 
-### E. Committing E2E Baseline
-Once the recording successfully completes, stage and commit the generated `_http.log` and `_generated_object_*.golden.yaml` files:
-```bash
-git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
-git commit -m "Establish clean GCP golden logs for <testname>"
-```
+### E. Committing E2E Baseline (MANDATORY BEFORE MOCK RUN)
+To prevent `_http.log` and golden files from introducing undue/mixed changes between real GCP and MockGCP runs, you **MUST** commit the real GCP baseline **after the real GCP run and before running against MockGCP**:
+
+1. Stage and commit the generated `_http.log` and `_generated_object_*.golden.yaml` files:
+   ```bash
+   git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
+   git commit -m "Establish clean GCP golden logs for <testname>"
+   ```
 
 ---
 
 ## 4. Running against MockGCP and Checking Diffs
 
 To verify the mock implementation matches real GCP behavior:
+
+> [!IMPORTANT]
+> **Prerequisite**: You must have committed the real GCP baseline (from Section 3.E) before starting this section. Running against MockGCP without committing the real GCP baseline first can mix up different modifications in the `_http.log` files and make diff analysis impossible.
 
 1. **Run Mock Test**:
    - Run `hack/compare-mock <testname>`. 
@@ -165,17 +183,19 @@ If the mock test fails or produces a diff against the baseline golden logs, appl
 Before finishing the task or proposing a PR, the agent must run formatting, generation, static analysis, and full CI validation checks locally to ensure zero CI/CD failures:
 
 1. **Prepare PR and Regenerate Code**:
-   - Run `make ready-pr` to ensure all manifests, Go client types, and code formatting are up to date:
+   - Run `make ready-pr` and `make resource-docs` to ensure all manifests, Go client types, documentation, and code formatting are up to date:
      ```bash
      make ready-pr
+     make resource-docs
      ```
 2. **Mandatory CI/CD Presubmit Verification (CRITICAL)**:
-   - To guarantee generated PRs pass GitHub Actions CI/CD checks cleanly, execute the primary validation scripts locally:
+   - To guarantee generated PRs pass GitHub Actions CI/CD checks cleanly, execute the resource docs generation and the primary validation scripts locally:
      ```bash
+     make resource-docs
      dev/ci/presubmits/validate-generated-files
      scripts/validate-prereqs.sh
      ```
-   - *(Note: `validate-generated-files` runs GitHub Actions workflow codegen, static config generation, CRDs, and mappers. `validate-prereqs.sh` validates formatting and generation).*
+   - *(Note: `validate-generated-files` runs GitHub Actions workflow codegen, static config generation, CRDs, mappers, and resource docs. `validate-prereqs.sh` validates formatting and generation).*
 3. **Go Vet**:
    ```bash
    go vet ./...
@@ -183,7 +203,7 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
 4. **Verify Local Control Plane Webhooks**:
    - If envtest webhook startup fails with validation errors under new Kubernetes control plane versions, ensure `admissionReviewVersions` in `pkg/webhook/manifests.go` includes both `"v1"` and `"v1beta1"`.
 5. **Verify CRD Field Coverage Checks**:
-   - Run the API checks tests to ensure all new fields are either tested in the fixture tests or explicitly added to the exceptions list:
+   - Run the API checks tests to ensure all new fields are either tested in the fixture tests. WARNING: New fields, in the vast majority of cases, should not be added to the  the exceptions list; this is verified by KCC testing as well. If a field needs to be added to the exceptions list you **must** provide a clear explanation as to why this is the case:
      - For **Beta** resources:
        ```bash
        WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests
@@ -192,12 +212,20 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
        ```bash
        WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha
        ```
-6. **Run CI/CD Group Presubmit Tests Locally**:
+6. **Verify Acronym Casing Compliance**:
+   - KCC enforces strict naming rules for acronyms in field names (e.g. using `IP` instead of `Ip`, `VPC` instead of `Vpc`). If the generated fields use non-standard casing (e.g. they were generated directly from Terraform's snake_case schema which maps `allow_cross_org_vpcs` -> `allowCrossOrgVpcs`), the API checks test `TestCRDsAcronyms` will fail.
+   - Run this test locally before submitting:
+     ```bash
+     go test ./tests/apichecks/... -run TestCRDsAcronyms
+     ```
+   - If the test fails, you **MUST** add the reported non-standard casing exceptions in alphabetical order to the exceptions file:
+     `tests/apichecks/testdata/exceptions/acronyms.txt`
+7. **Run CI/CD Group Presubmit Tests Locally**:
    - Locate and run the presubmit script under `dev/ci/presubmits/tests-e2e-fixtures-<service_name>` matching the resource's service name (e.g., `dev/ci/presubmits/tests-e2e-fixtures-container`) to ensure everything reconciles cleanly:
      ```bash
      dev/ci/presubmits/tests-e2e-fixtures-<service_name>
      ```
-7. **Commit All Updated Artifacts and Generated Changes**:
+8. **Commit All Updated Artifacts and Generated Changes**:
    - Verify if any generated files (such as `mapper.generated.go`, GitHub Actions YAMLs, CRDs, Go clients, or exceptions) are modified using `git status` or `git diff`. Stage and commit them:
      ```bash
      git add -A
@@ -205,7 +233,9 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
      ```
 8. **CI/CD & Golden File Traps (Gotchas)**:
    - **Accidental Binary Profile Artifacts (`heap.prof`)**: When running recorder or memory profile footprint tests (e.g., `TestProfileRecorderFootprint`), binary profile outputs like `heap.prof` may be written to the test directory (`cmd/recorder/pprof/.../heap.prof`). Always ensure these binary files are deleted and never committed to git.
-   - **Selective Presubmit Harness & `WRITE_GOLDEN_OUTPUT=1` Trap**: Running specialized presubmit subsets (e.g., `test-pause`) with `WRITE_GOLDEN_OUTPUT=1` can inadvertently delete golden files belonging to skipped phases (e.g., `_generated_export_*.golden`). Ensure you only regenerate golden files using the appropriate comprehensive test scope, or inspect git diffs to revert unintended deletions.
+   - **Selective Presubmit Harness & `WRITE_GOLDEN_OUTPUT=1` Trap**: Running specialized presubmit subsets (e.g., `test-pause`) with `WRITE_GOLDEN_OUTPUT=1` can inadvertently delete golden files belonging to skipped phases (e.g., `_exported.yaml`). Ensure you only regenerate golden files using the appropriate comprehensive test scope, or inspect git diffs to revert unintended deletions.
+   - **Accidental Staging of Unrelated Logs**: When E2E fixture tests run locally (via `hack/record-gcp`, `hack/compare-mock`, or direct `go test`), other fixtures in the same compute/service package may produce local differences in their `_http_old_controller.log` or `_http.diff` logs. **Never commit changes or `.diff` files for unrelated fixtures.** Inspect `git diff` before staging and revert them.
+   - **Missing `_identities.yaml`**: Newly created E2E fixtures dynamically generate a `_identities.yaml` identity registry file when run. Ensure this file is staged and committed along with your E2E fixture, or the CI presubmits will fail.
 
 
 

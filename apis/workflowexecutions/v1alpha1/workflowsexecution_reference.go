@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &WorkflowsExecutionRef{}
 
-// WorkflowsExecutionRef defines the resource reference to WorkflowsExecution, which "External" field
-// holds the GCP identifier for the KRM object.
+// WorkflowsExecutionRef is a reference to a WorkflowsExecution.
 type WorkflowsExecutionRef struct {
 	// The name of a WorkflowsExecution resource. Should be in the format "projects/{{project}}/locations/{{location}}/workflows/{{workflow}}/executions/{{executionID}}".
 	External string `json:"external,omitempty"`
@@ -41,7 +40,7 @@ type WorkflowsExecutionRef struct {
 }
 
 func init() {
-	refs.Register(&WorkflowsExecutionRef{})
+	refs.Register(&WorkflowsExecutionRef{}, &WorkflowsExecution{})
 }
 
 func (r *WorkflowsExecutionRef) GetGVK() schema.GroupVersionKind {
@@ -61,6 +60,8 @@ func (r *WorkflowsExecutionRef) GetExternal() string {
 
 func (r *WorkflowsExecutionRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *WorkflowsExecutionRef) ValidateExternal(ref string) error {

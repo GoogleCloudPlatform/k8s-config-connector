@@ -27,22 +27,21 @@ import (
 
 var _ refs.Ref = &AccessContextManagerServicePerimeterRef{}
 
-// AccessContextManagerServicePerimeterRef defines the resource reference to AccessContextManagerServicePerimeter, which "External" field
-// holds the GCP identifier for the KRM object.
+// AccessContextManagerServicePerimeterRef is a reference to an AccessContextManagerServicePerimeter.
 type AccessContextManagerServicePerimeterRef struct {
 	// A reference to an externally managed AccessContextManagerServicePerimeter resource.
 	// Should be in the format "accessPolicies/{{accessPolicyID}}/servicePerimeters/{{servicePerimeterID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AccessContextManagerServicePerimeter resource.
+	// The name of an AccessContextManagerServicePerimeter resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AccessContextManagerServicePerimeter resource.
+	// The namespace of an AccessContextManagerServicePerimeter resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&AccessContextManagerServicePerimeterRef{})
+	refs.Register(&AccessContextManagerServicePerimeterRef{}, &AccessContextManagerServicePerimeter{})
 }
 
 func (r *AccessContextManagerServicePerimeterRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *AccessContextManagerServicePerimeterRef) GetExternal() string {
 
 func (r *AccessContextManagerServicePerimeterRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *AccessContextManagerServicePerimeterRef) ValidateExternal(ref string) error {

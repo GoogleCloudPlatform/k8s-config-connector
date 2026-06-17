@@ -17,101 +17,97 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ManagementServerIdentity defines the resource reference to BackupDRManagementServer, which "External" field
-// holds the GCP identifier for the KRM object.
+var (
+	_ identity.IdentityV2 = &ManagementServerIdentity{}
+	_ identity.Resource   = &BackupDRManagementServer{}
+)
+
+var ManagementServerIdentityFormat = gcpurls.Template[ManagementServerIdentity]("backupdr.googleapis.com", "projects/{project}/locations/{location}/managementServers/{managementserver}")
+
+// ManagementServerIdentity is the identity of a GCP BackupDRManagementServer resource.
+// +k8s:deepcopy-gen=false
 type ManagementServerIdentity struct {
-	parent *ManagementServerParent
-	id     string
+	Project          string
+	Location         string
+	ManagementServer string
 }
 
 func (i *ManagementServerIdentity) String() string {
-	return i.parent.String() + "/managementServers/" + i.id
+	return ManagementServerIdentityFormat.ToString(*i)
 }
 
-func (i *ManagementServerIdentity) ID() string {
-	return i.id
-}
-
-func (i *ManagementServerIdentity) Parent() *ManagementServerParent {
-	return i.parent
-}
-
-type ManagementServerParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *ManagementServerParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds a ManagementServerIdentity from the Config Connector ManagementServer object.
-func NewManagementServerIdentity(ctx context.Context, reader client.Reader, obj *BackupDRManagementServer) (*ManagementServerIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (i *ManagementServerIdentity) FromExternal(ref string) error {
+	parsed, match, err := ManagementServerIdentityFormat.Parse(ref)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("format of BackupDRManagementServer external=%q was not known (use %s): %w", ref, ManagementServerIdentityFormat.CanonicalForm(), err)
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	if !match {
+		return fmt.Errorf("format of BackupDRManagementServer external=%q was not known (use %s)", ref, ManagementServerIdentityFormat.CanonicalForm())
 	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+	*i = *parsed
+	return nil
+}
+
+func (i *ManagementServerIdentity) Host() string {
+	return ManagementServerIdentityFormat.Host()
+}
+
+func (i *ManagementServerIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
+func getIdentityFromManagementServerSpec(ctx context.Context, reader client.Reader, obj *BackupDRManagementServer) (*ManagementServerIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	location := obj.Spec.Location
+	if location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &ManagementServerIdentity{
+		Project:          projectID,
+		Location:         location,
+		ManagementServer: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *BackupDRManagementServer) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromManagementServerSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseManagementServerExternal(externalRef)
-		if err != nil {
+		statusIdentity := &ManagementServerIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
-	return &ManagementServerIdentity{
-		parent: &ManagementServerParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
-}
 
-func ParseManagementServerExternal(external string) (parent *ManagementServerParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "managementServers" {
-		return nil, "", fmt.Errorf("format of BackupDRManagementServer external=%q was not known (use projects/{{projectID}}/locations/{{location}}/managementServers/{{managementserverID}})", external)
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change BackupDRManagementServer identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
-	parent = &ManagementServerParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+
+	return specIdentity, nil
 }

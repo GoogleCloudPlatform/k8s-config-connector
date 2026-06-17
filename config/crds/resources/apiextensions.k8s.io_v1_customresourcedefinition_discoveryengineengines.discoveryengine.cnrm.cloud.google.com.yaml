@@ -155,9 +155,7 @@ spec:
                   Note that when used in CreateEngineRequest, one DataStore must be
                   provided as the system will use it for necessary initializations.
                 items:
-                  description: DiscoveryEngineDataStoreRef defines the resource reference
-                    to DiscoveryEngineDataStore, which "External" field holds the
-                    GCP identifier for the KRM object.
+                  description: DiscoveryEngineDataStoreRef is a reference to a DiscoveryEngineDataStore.
                   oneOf:
                   - not:
                       required:

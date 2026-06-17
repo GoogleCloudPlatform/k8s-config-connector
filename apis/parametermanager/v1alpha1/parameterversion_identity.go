@@ -26,8 +26,7 @@ import (
 
 var _ identity.Identity = &ParameterVersionIdentity{}
 
-// ParameterVersionIdentity defines the resource reference to ParameterVersion, which "External" field
-// holds the GCP identifier for the KRM object.
+// ParameterVersionIdentity is the identity of a ParameterVersion.
 type ParameterVersionIdentity struct {
 	parent *ParameterIdentity
 	id     string

@@ -243,6 +243,10 @@ type ClusterClusterTelemetry struct {
 }
 
 type ClusterConfidentialNodes struct {
+	/* Immutable. Defines the type of technology used by the confidential node. */
+	// +optional
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
+
 	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool. */
 	Enabled bool `json:"enabled"`
 }
@@ -1253,6 +1257,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	NetworkPolicy *ClusterNetworkPolicy `json:"networkPolicy,omitempty"`
 
+	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
@@ -1319,6 +1324,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	ServiceExternalIpsConfig *ClusterServiceExternalIpsConfig `json:"serviceExternalIpsConfig,omitempty"`
 
+	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 

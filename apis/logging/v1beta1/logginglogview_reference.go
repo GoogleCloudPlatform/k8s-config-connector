@@ -28,8 +28,7 @@ import (
 
 var _ refs.Ref = &LoggingLogViewRef{}
 
-// LoggingLogViewRef defines the resource reference to LoggingLogView, which "External" field
-// holds the GCP identifier for the KRM object.
+// LoggingLogViewRef is a reference to a LoggingLogView.
 type LoggingLogViewRef struct {
 	// A reference to an externally managed LoggingLogView resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}/views/{{viewID}}".
@@ -43,7 +42,7 @@ type LoggingLogViewRef struct {
 }
 
 func init() {
-	refs.Register(&LoggingLogViewRef{})
+	refs.Register(&LoggingLogViewRef{}, &LoggingLogView{})
 }
 
 func (r *LoggingLogViewRef) GetGVK() schema.GroupVersionKind {
@@ -63,6 +62,8 @@ func (r *LoggingLogViewRef) GetExternal() string {
 
 func (r *LoggingLogViewRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *LoggingLogViewRef) ValidateExternal(ref string) error {

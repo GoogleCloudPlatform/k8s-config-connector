@@ -1,0 +1,13 @@
+- caisURL: unknown
+  group: firestore.cnrm.cloud.google.com
+  kind: FirestoreDatabase
+  name: firestoredatabase-dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  error: not yet supported
+  group: firestore.cnrm.cloud.google.com
+  kind: FirestoreBackupSchedule
+  name: firestorebackupschedule-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

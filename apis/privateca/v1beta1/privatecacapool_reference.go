@@ -46,7 +46,7 @@ type PrivateCACAPoolRef struct {
 }
 
 func init() {
-	refs.Register(&PrivateCACAPoolRef{})
+	refs.Register(&PrivateCACAPoolRef{}, &PrivateCACAPool{})
 }
 
 func (r *PrivateCACAPoolRef) GetGVK() schema.GroupVersionKind {
@@ -66,6 +66,8 @@ func (r *PrivateCACAPoolRef) GetExternal() string {
 
 func (r *PrivateCACAPoolRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *PrivateCACAPoolRef) ValidateExternal(ref string) error {

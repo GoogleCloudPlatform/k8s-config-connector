@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -27,8 +28,7 @@ import (
 
 var _ refs.Ref = &CertificateManagerCertificateIssuanceConfigRef{}
 
-// CertificateManagerCertificateIssuanceConfigRef defines the resource reference to CertificateManagerCertificateIssuanceConfig, which "External" field
-// holds the GCP identifier for the KRM object.
+// CertificateManagerCertificateIssuanceConfigRef is a reference to a CertificateManagerCertificateIssuanceConfig.
 type CertificateManagerCertificateIssuanceConfigRef struct {
 	// A reference to an externally managed CertificateManagerCertificateIssuanceConfig resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/certificateIssuanceConfigs/{{certificateIssuanceConfigID}}".
@@ -42,7 +42,7 @@ type CertificateManagerCertificateIssuanceConfigRef struct {
 }
 
 func init() {
-	refs.Register(&CertificateManagerCertificateIssuanceConfigRef{})
+	refs.Register(&CertificateManagerCertificateIssuanceConfigRef{}, &CertificateManagerCertificateIssuanceConfig{})
 }
 
 func (r *CertificateManagerCertificateIssuanceConfigRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +62,8 @@ func (r *CertificateManagerCertificateIssuanceConfigRef) GetExternal() string {
 
 func (r *CertificateManagerCertificateIssuanceConfigRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CertificateManagerCertificateIssuanceConfigRef) ValidateExternal(ref string) error {
@@ -82,7 +84,11 @@ func (r *CertificateManagerCertificateIssuanceConfigRef) ParseExternalToIdentity
 
 func (r *CertificateManagerCertificateIssuanceConfigRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx, reader, u)
+		obj, err := common.ToStructuredType[*CertificateManagerCertificateIssuanceConfig](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}

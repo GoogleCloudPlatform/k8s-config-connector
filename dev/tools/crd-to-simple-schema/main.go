@@ -384,6 +384,19 @@ func walk(s *apiextensionsv1.JSONSchemaProps) any {
 			val := v
 			m[k] = walk(&val)
 		}
+		for _, req := range s.Required {
+			m["_required."+req] = "true"
+		}
+		for _, oneOf := range s.OneOf {
+			req := strings.Join(oneOf.Required, ",")
+			notReq := ""
+			if oneOf.Not != nil {
+				notReq = strings.Join(oneOf.Not.Required, ",")
+			}
+			if (req == "value" && notReq == "valueFrom") || (req == "valueFrom" && notReq == "value") {
+				m[fmt.Sprintf("_validation.oneOf.required[%s].not.required[%s]", req, notReq)] = "true"
+			}
+		}
 		return m
 	}
 

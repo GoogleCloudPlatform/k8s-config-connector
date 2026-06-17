@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &CloudBatchResourceAllowanceRef{}
 
-// CloudBatchResourceAllowanceRef defines the resource reference to CloudBatchResourceAllowance, which "External" field
-// holds the GCP identifier for the KRM object.
+// CloudBatchResourceAllowanceRef is a reference to a CloudBatchResourceAllowance.
 type CloudBatchResourceAllowanceRef struct {
 	// A reference to an externally managed CloudBatchResourceAllowance resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/resourceAllowances/{{resourceAllowanceID}}".
@@ -42,7 +41,7 @@ type CloudBatchResourceAllowanceRef struct {
 }
 
 func init() {
-	refs.Register(&CloudBatchResourceAllowanceRef{})
+	refs.Register(&CloudBatchResourceAllowanceRef{}, &CloudBatchResourceAllowance{})
 }
 
 func (r *CloudBatchResourceAllowanceRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *CloudBatchResourceAllowanceRef) GetExternal() string {
 
 func (r *CloudBatchResourceAllowanceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CloudBatchResourceAllowanceRef) ValidateExternal(ref string) error {

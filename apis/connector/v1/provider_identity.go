@@ -25,8 +25,7 @@ import (
 
 var ProviderIdentityFormat = gcpurls.Template[ProviderIdentity]("connectors.googleapis.com", "projects/{project}/locations/{location}/providers/{provider}")
 
-// ProviderIdentity defines the resource reference to Provider, which "External" field
-// holds the GCP identifier for the KRM object.
+// ProviderIdentity is the identity of a Provider.
 type ProviderIdentity struct {
 	Project  string
 	Location string

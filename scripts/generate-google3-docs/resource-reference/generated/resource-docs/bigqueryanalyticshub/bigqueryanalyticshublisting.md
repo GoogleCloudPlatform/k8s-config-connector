@@ -16,7 +16,7 @@ title: "BigQueryAnalyticsHubListing"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/bigquery/docs/query-overview">/bigquery/docs/query-overview</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/query-overview">https://docs.cloud.google.com/bigquery/docs/query-overview</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BigQueryAnalyticsHubListing"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/bigquery/docs/reference/analytics-hub/rest/v1/projects.locations.dataExchanges.listings">/bigquery/docs/reference/analytics-hub/rest/v1/projects.locations.dataExchanges.listings</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/reference/analytics-hub/rest/v1/projects.locations.dataExchanges.listings">https://docs.cloud.google.com/bigquery/docs/reference/analytics-hub/rest/v1/projects.locations.dataExchanges.listings</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -132,7 +132,7 @@ source:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>BigQueryAnalyticsHubDataExchangeRef defines the resource reference to BigQueryAnalyticsHubDataExchange, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>BigQueryAnalyticsHubDataExchangeRef is a reference to a BigQueryAnalyticsHubDataExchange.</p>
         </td>
     </tr>
     <tr>
@@ -660,4 +660,4 @@ spec:
     external: ${PROJECT_ID?}
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

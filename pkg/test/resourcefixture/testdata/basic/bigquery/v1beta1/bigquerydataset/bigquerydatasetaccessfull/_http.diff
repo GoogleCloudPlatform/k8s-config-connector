@@ -1,0 +1,117 @@
+1,2c1
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+31c30
+< POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+---
+> POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
+94,95c93
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+670,671c668
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+700c697
+< POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+---
+> POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
+746c743
+<   "defaultTableExpirationMs": 3600000,
+---
+>   "defaultTableExpirationMs": "3600000",
+829,830c826
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+906c902
+< PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+909,958d904
+< {
+<   "access": [
+<     {
+<       "dataset": {
+<         "dataset": {
+<           "datasetId": "bigquerydatasetsample${uniqueId}",
+<           "projectId": "${projectId}"
+<         },
+<         "targetTypes": [
+<           "VIEWS"
+<         ]
+<       }
+<     },
+<     {
+<       "domain": "google.com",
+<       "role": "READER"
+<     },
+<     {
+<       "role": "OWNER",
+<       "specialGroup": "projectOwners"
+<     },
+<     {
+<       "routine": {
+<         "datasetId": "bigquerydatasetsample${uniqueId}",
+<         "projectId": "${projectId}",
+<         "routineId": "bigqueryroutine${uniqueId}"
+<       }
+<     },
+<     {
+<       "view": {
+<         "datasetId": "bigquerydatasetsample${uniqueId}",
+<         "projectId": "${projectId}",
+<         "tableId": "bigquerytablesample${uniqueId}"
+<       }
+<     }
+<   ],
+<   "datasetReference": {
+<     "datasetId": "bigquerydatasetaccessfull${uniqueId}"
+<   },
+<   "defaultTableExpirationMs": 3600000,
+<   "description": "BigQuery Dataset With Full Access Block",
+<   "friendlyName": "bigquerydataset-fullaccessblock",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "location": "us-central1",
+<   "maxTimeTravelHours": "168"
+< }
+< 
+986a933,936
+>       "groupByEmail": "kcc-eng@google.com",
+>       "role": "READER"
+>     },
+>     {
+1029,1030c979
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+1059a1009,1012
+>       "groupByEmail": "kcc-eng@google.com",
+>       "role": "READER"
+>     },
+>     {
+1102,1103c1055
+< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+< Content-Type: application/json
+---
+> DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false
+1329,1330c1281
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+1382,1383c1333
+< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+< Content-Type: application/json
+---
+> DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false

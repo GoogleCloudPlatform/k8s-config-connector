@@ -35,8 +35,7 @@ var LBRouteExtensionIdentityFormat = gcpurls.Template[LBRouteExtensionIdentity](
 	"projects/{project}/locations/{location}/lbRouteExtensions/{lbRouteExtension}",
 )
 
-// LBRouteExtensionIdentity defines the resource reference to NetworkServicesLBRouteExtension, which "External" field
-// holds the GCP identifier for the KRM object.
+// LBRouteExtensionIdentity is the identity of a NetworkServicesLBRouteExtension.
 // +k8s:deepcopy-gen=false
 type LBRouteExtensionIdentity struct {
 	Project          string

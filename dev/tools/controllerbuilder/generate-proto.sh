@@ -114,6 +114,7 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/iam/admin/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/logging/v2/*.proto \
     ${THIRD_PARTY}/googleapis/google/monitoring/v3/*.proto \
+    ${THIRD_PARTY}/googleapis/google/monitoring/metricsscope/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/monitoring/dashboard/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/devtools/cloudbuild/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/devtools/artifactregistry/*/*.proto \
@@ -124,6 +125,7 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/pubsub/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/container/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/privacy/dlp/v2/*.proto \
     -o ${VERSIONED_OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
 
 cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"

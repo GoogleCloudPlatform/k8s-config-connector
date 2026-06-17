@@ -27,8 +27,7 @@ import (
 
 var _ identity.Identity = &WasmPluginIdentity{}
 
-// WasmPluginIdentity defines the resource reference to NetworkServicesWasmPlugin, which "External" field
-// holds the GCP identifier for the KRM object.
+// WasmPluginIdentity is the identity of a NetworkServicesWasmPlugin.
 type WasmPluginIdentity struct {
 	parent *parent.ProjectAndLocationParent
 	id     string

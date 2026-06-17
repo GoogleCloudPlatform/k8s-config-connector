@@ -16,7 +16,7 @@ title: "KMSAutokeyConfig"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/kms/docs/">/kms/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/kms/docs/">https://docs.cloud.google.com/kms/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "KMSAutokeyConfig"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/kms/docs/reference/rest/v1/folders">/kms/docs/reference/rest/v1/folders</a></td>
+<td><a href="https://docs.cloud.google.com/kms/docs/reference/rest/v1/folders">https://docs.cloud.google.com/kms/docs/reference/rest/v1/folders</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -65,6 +65,12 @@ keyProject:
   kind: string
   name: string
   namespace: string
+keyProjectResolutionMode: string
+projectRef:
+  external: string
+  kind: string
+  name: string
+  namespace: string
 ```
 
 <table class="properties responsive">
@@ -77,7 +83,7 @@ keyProject:
     <tr>
         <td>
             <p><code>folderRef</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -164,10 +170,68 @@ keyProject:
             <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
+    <tr>
+        <td>
+            <p><code>keyProjectResolutionMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Immutable. The project that this resource belongs to.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` field of a `Project` resource.</p>
+        </td>
+    </tr>
 </tbody>
 </table>
-
-<p>* Field is required when parent field is specified</p>
 
 ### Status
 #### Schema
@@ -292,4 +356,4 @@ spec:
     external: projects/${PROJECT_ID?}
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

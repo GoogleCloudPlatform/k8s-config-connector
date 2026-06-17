@@ -20,8 +20,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-	refcommon "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -34,18 +33,11 @@ var (
 
 var ComputeNetworkIdentityFormat = gcpurls.Template[NetworkIdentity]("compute.googleapis.com", "projects/{project}/global/networks/{network}")
 
+// NetworkIdentity is the identity of a GCP ComputeNetwork resource.
 // +k8s:deepcopy-gen=false
 type NetworkIdentity struct {
 	Project string
 	Network string
-}
-
-func (i *NetworkIdentity) Parent() parent.ProjectParent {
-	return parent.ProjectParent{ProjectID: i.Project}
-}
-
-func (i *NetworkIdentity) ID() string {
-	return i.Network
 }
 
 func (i *NetworkIdentity) String() string {
@@ -53,7 +45,8 @@ func (i *NetworkIdentity) String() string {
 }
 
 func (i *NetworkIdentity) FromExternal(ref string) error {
-	parsed, match, err := ComputeNetworkIdentityFormat.Parse(ref)
+	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
+	parsed, match, err := ComputeNetworkIdentityFormat.Parse(trimmedRef)
 	if err != nil {
 		return fmt.Errorf("format of ComputeNetwork external=%q was not known (use %s): %w", ref, ComputeNetworkIdentityFormat.CanonicalForm(), err)
 	}
@@ -73,15 +66,14 @@ func ParseComputeNetworkExternal(external string) (*NetworkIdentity, error) {
 	if external == "" {
 		return nil, fmt.Errorf("empty ComputeNetwork external value")
 	}
-	trimmedExternal := refcommon.FixStaleComputeExternalFormat(external)
 	id := &NetworkIdentity{}
-	if err := id.FromExternal(trimmedExternal); err != nil {
+	if err := id.FromExternal(external); err != nil {
 		return nil, err
 	}
 	return id, nil
 }
 
-func getIdentityFromComputeNetworkSpec(ctx context.Context, reader client.Reader, obj client.Object) (*NetworkIdentity, error) {
+func getIdentityFromComputeNetworkSpec(ctx context.Context, reader client.Reader, obj *ComputeNetwork) (*NetworkIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")

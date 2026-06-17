@@ -72,6 +72,19 @@ type RedisClusterSpec struct {
 
 	// Optional. The delete operation will fail when the value is set to true.
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
+
+	// Optional. The automated backup config for the cluster.
+	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
+	// Optional. ClusterMaintenancePolicy determines when to allow or deny updates.
+	MaintenancePolicy *ClusterMaintenancePolicy `json:"maintenancePolicy,omitempty"`
+
+	// Optional. The KMS key name to encrypt data at rest.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.kms_key
+	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+
+	// Optional. Cross cluster replication config.
+	CrossClusterReplicationConfig *CrossClusterReplicationConfig `json:"crossClusterReplicationConfig,omitempty"`
 }
 
 type PscConfigSpec struct {
@@ -80,6 +93,14 @@ type PscConfigSpec struct {
 	//  projects/{network_project}/global/networks/{network_id}.
 	// +required
 	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster
+type CrossClusterReplicationConfig_RemoteCluster struct {
+	// The full resource path of the remote cluster in
+	//  the format: projects/<project>/locations/<region>/clusters/<cluster-id>
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster.cluster
+	ClusterRef *RedisClusterRef `json:"clusterRef,omitempty"`
 }
 
 // RedisClusterStatus defines the config connector machine state of RedisCluster
@@ -132,6 +153,34 @@ type RedisClusterObservedState struct {
 	// Output only. Precise value of redis memory size in GB for the entire
 	//  cluster.
 	PreciseSizeGB *float64 `json:"preciseSizeGb,omitempty"`
+
+	// Optional. ClusterMaintenancePolicy determines when to allow or deny updates.
+	MaintenancePolicy *ClusterMaintenancePolicyObservedState `json:"maintenancePolicy,omitempty"`
+
+	// Output only. ClusterMaintenanceSchedule Output only Published maintenance schedule.
+	MaintenanceSchedule *ClusterMaintenanceScheduleObservedState `json:"maintenanceSchedule,omitempty"`
+
+	// Output only. Service attachment details to configure Psc connections.
+	// +optional
+	PSCServiceAttachments []PSCServiceAttachmentObservedState `json:"pscServiceAttachments,omitempty"`
+
+	// Output only. Encryption information for the client to retrieve.
+	EncryptionInfo *EncryptionInfoObservedState `json:"encryptionInfo,omitempty"`
+
+	// Output only. Cross cluster replication config.
+	CrossClusterReplicationConfig *CrossClusterReplicationConfigObservedState `json:"crossClusterReplicationConfig,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster
+type CrossClusterReplicationConfig_RemoteClusterObservedState struct {
+	// The full resource path of the remote cluster in
+	//  the format: projects/<project>/locations/<region>/clusters/<cluster-id>
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster.cluster
+	Cluster *string `json:"cluster,omitempty"`
+
+	// Output only. The unique identifier of the remote cluster.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster.uid
+	Uid *string `json:"uid,omitempty"`
 }
 
 // +genclient

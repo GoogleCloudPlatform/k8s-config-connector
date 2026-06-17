@@ -23,8 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// GroupIdentity defines the resource reference to CloudIdentityGroup, which "External" field
-// holds the GCP identifier for the KRM object.
+// GroupIdentity is the identity of a CloudIdentityGroup.
 type GroupIdentity struct {
 	id string
 }

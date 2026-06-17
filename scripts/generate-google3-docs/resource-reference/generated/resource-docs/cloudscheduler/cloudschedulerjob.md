@@ -16,7 +16,7 @@ title: "CloudSchedulerJob"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/scheduler/docs/">/scheduler/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/scheduler/docs/">https://docs.cloud.google.com/scheduler/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "CloudSchedulerJob"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/scheduler/docs/reference/rest/v1/projects.locations.jobs">/scheduler/docs/reference/rest/v1/projects.locations.jobs</a></td>
+<td><a href="https://docs.cloud.google.com/scheduler/docs/reference/rest/v1/projects.locations.jobs">https://docs.cloud.google.com/scheduler/docs/reference/rest/v1/projects.locations.jobs</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -858,4 +858,4 @@ metadata:
   name: cloudscheduler-sample-pubsub-dep
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

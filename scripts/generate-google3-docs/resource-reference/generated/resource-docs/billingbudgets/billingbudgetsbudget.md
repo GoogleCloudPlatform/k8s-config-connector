@@ -16,7 +16,7 @@ title: "BillingBudgetsBudget"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/billing/docs/">/billing/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/billing/docs/">https://docs.cloud.google.com/billing/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "BillingBudgetsBudget"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/billing/docs/reference/budget/rest/v1beta1/billingAccounts.budgets">/billing/docs/reference/budget/rest/v1beta1/billingAccounts.budgets</a></td>
+<td><a href="https://docs.cloud.google.com/billing/docs/reference/budget/rest/v1beta1/billingAccounts.budgets">https://docs.cloud.google.com/billing/docs/reference/budget/rest/v1beta1/billingAccounts.budgets</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -154,7 +154,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>MonitoringNotificationChannelRef is a reference to a MonitoringNotificationChannel.</p>
         </td>
     </tr>
     <tr>
@@ -164,7 +164,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The Google Cloud resource name of a `MonitoringNotificationChannel` resource (format: `projects/{{project}}/notificationChannels/{{name}}`).</p>
+            <p>A reference to an externally managed MonitoringNotificationChannel resource. Should be in the format "projects/{{projectID}}/notificationChannels/{{channelID}}".</p>
         </td>
     </tr>
     <tr>
@@ -174,7 +174,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a MonitoringNotificationChannel resource.</p>
         </td>
     </tr>
     <tr>
@@ -184,7 +184,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a MonitoringNotificationChannel resource.</p>
         </td>
     </tr>
     <tr>
@@ -194,7 +194,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>PubSubTopicRef is a reference to a PubSubTopic.</p>
         </td>
     </tr>
     <tr>
@@ -204,9 +204,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. The name of the Pub/Sub topic where budget related messages will be published, in the form `projects/{project_id}/topics/{topic_id}`. Updates are sent at regular intervals to the topic. The topic needs to be created before the budget is created; see https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications for more details. Caller is expected to have `pubsub.topics.setIamPolicy` permission on the topic when it's set for a budget, otherwise, the API call will fail with PERMISSION_DENIED. See https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task for more details on Pub/Sub roles and permissions.
-
-Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (format: `projects/{{project}}/topics/{{name}}`).</p>
+            <p>A reference to an externally managed PubSubTopic resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".</p>
         </td>
     </tr>
     <tr>
@@ -216,7 +214,7 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a PubSubTopic resource.</p>
         </td>
     </tr>
     <tr>
@@ -226,7 +224,7 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a PubSubTopic resource.</p>
         </td>
     </tr>
     <tr>
@@ -316,9 +314,7 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The billing account of the resource
-
-Allowed value: The Google Cloud resource name of a Google Cloud Billing Account (format: `billingAccounts/{{name}}`).</p>
+            <p>The 'name' field of a billing account, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -328,8 +324,7 @@ Allowed value: The Google Cloud resource name of a Google Cloud Billing Account 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[WARNING] BillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
-Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The 'name' field of a 'BillingAccount' resource.</p>
         </td>
     </tr>
     <tr>
@@ -339,7 +334,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The 'namespace' field of a 'BillingAccount' resource.</p>
         </td>
     </tr>
     <tr>
@@ -509,7 +504,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ProjectRef is a reference to a GCP Project.</p>
         </td>
     </tr>
     <tr>
@@ -519,7 +514,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -529,7 +524,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -539,7 +534,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -579,7 +574,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>BillingAccountRef is a reference to a GCP BillingAccount.</p>
         </td>
     </tr>
     <tr>
@@ -589,7 +584,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>The 'name' field of a billing account, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -599,8 +594,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[WARNING] CloudBillingBillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
-Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The 'name' field of a 'BillingAccount' resource.</p>
         </td>
     </tr>
     <tr>
@@ -610,7 +604,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The 'namespace' field of a 'BillingAccount' resource.</p>
         </td>
     </tr>
     <tr>
@@ -630,7 +624,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.</p>
+            <p>The BillingBudgetsBudget name. If not given, the metadata.name will be used.</p>
         </td>
     </tr>
     <tr>
@@ -702,7 +696,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -865,4 +859,4 @@ spec:
       nanos: 0
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

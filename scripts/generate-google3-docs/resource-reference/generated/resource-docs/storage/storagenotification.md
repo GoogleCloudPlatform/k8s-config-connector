@@ -16,7 +16,7 @@ title: "StorageNotification"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/storage/docs/">/storage/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/storage/docs/">https://docs.cloud.google.com/storage/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "StorageNotification"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/storage/docs/json_api/v1/notifications">/storage/docs/json_api/v1/notifications</a></td>
+<td><a href="https://docs.cloud.google.com/storage/docs/json_api/v1/notifications">https://docs.cloud.google.com/storage/docs/json_api/v1/notifications</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -360,4 +360,4 @@ metadata:
   name: ${PROJECT_ID?}-storagenotification-dep
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

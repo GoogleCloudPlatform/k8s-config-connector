@@ -45,6 +45,8 @@ func (r *autokeyAdminServer) GetAutokeyConfig(ctx context.Context, req *pb.GetAu
 	obj := &pb.AutokeyConfig{}
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
+			obj.Name = fqn
+			obj.Etag = "mock-etag"
 			obj.State = pb.AutokeyConfig_UNINITIALIZED
 			r.storage.Create(ctx, fqn, obj)
 			return obj, nil
@@ -63,16 +65,58 @@ func (r *autokeyAdminServer) UpdateAutokeyConfig(ctx context.Context, req *pb.Up
 	}
 
 	fqn := name.String()
+	isFolder := name.folder != ""
 
 	obj := proto.CloneOf(req.GetAutokeyConfig())
 	if obj == nil {
 		obj = &pb.AutokeyConfig{}
 	}
 	obj.Name = fqn
-	if len(req.GetAutokeyConfig().GetKeyProject()) > 0 {
-		obj.State = pb.AutokeyConfig_ACTIVE
+	obj.Etag = "mock-etag"
+
+	// Validation and clearing logic based on resolution mode and type (Folder vs Project)
+	if isFolder {
+		if obj.GetKeyProjectResolutionMode() == pb.AutokeyConfig_DEDICATED_KEY_PROJECT && obj.GetKeyProject() == "" {
+			return nil, status.Errorf(codes.InvalidArgument, "'key_project' must be specified when 'key_project_resolution_mode' is 'DEDICATED_KEY_PROJECT'.")
+		}
+		if obj.GetKeyProjectResolutionMode() == pb.AutokeyConfig_RESOURCE_PROJECT && obj.GetKeyProject() != "" {
+			return nil, status.Errorf(codes.InvalidArgument, "'key_project' cannot be specified for a resource when 'key_project_resolution_mode' is 'RESOURCE_PROJECT'.")
+		}
+		if obj.GetKeyProjectResolutionMode() == pb.AutokeyConfig_DISABLED && obj.GetKeyProject() != "" {
+			return nil, status.Errorf(codes.InvalidArgument, "'key_project' cannot be specified for a resource when 'key_project_resolution_mode' is 'DISABLED'.")
+		}
 	} else {
+		if obj.GetKeyProjectResolutionMode() == pb.AutokeyConfig_DEDICATED_KEY_PROJECT {
+			return nil, status.Errorf(codes.InvalidArgument, "The 'key_project_resolution_mode' cannot be 'DEDICATED_KEY_PROJECT' for a project resource.")
+		}
+		if obj.GetKeyProject() != "" {
+			return nil, status.Errorf(codes.Unimplemented, "Updating key-project in autokey config for a project is not supported.")
+		}
+	}
+
+	// Clearing keyProject for RESOURCE_PROJECT or DISABLED modes
+	if obj.GetKeyProjectResolutionMode() == pb.AutokeyConfig_RESOURCE_PROJECT ||
+		obj.GetKeyProjectResolutionMode() == pb.AutokeyConfig_DISABLED {
+		obj.KeyProject = ""
+	}
+
+	switch obj.GetKeyProjectResolutionMode() {
+	case pb.AutokeyConfig_RESOURCE_PROJECT:
+		obj.State = pb.AutokeyConfig_ACTIVE
+	case pb.AutokeyConfig_DEDICATED_KEY_PROJECT:
+		if len(obj.GetKeyProject()) > 0 {
+			obj.State = pb.AutokeyConfig_ACTIVE
+		} else {
+			obj.State = pb.AutokeyConfig_UNINITIALIZED
+		}
+	case pb.AutokeyConfig_DISABLED:
 		obj.State = pb.AutokeyConfig_UNINITIALIZED
+	default:
+		if len(obj.GetKeyProject()) > 0 {
+			obj.State = pb.AutokeyConfig_ACTIVE
+		} else {
+			obj.State = pb.AutokeyConfig_UNINITIALIZED
+		}
 	}
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -90,24 +134,28 @@ func (r *autokeyAdminServer) ShowEffectiveAutokeyConfig(ctx context.Context, req
 }
 
 type autokeyConfigName struct {
-	folder string
+	folder  string
+	project string
 }
 
 func (a *autokeyConfigName) String() string {
-	return "folders/" + a.folder + "/autokeyConfig"
+	if a.folder != "" {
+		return "folders/" + a.folder + "/autokeyConfig"
+	}
+	return "projects/" + a.project + "/autokeyConfig"
 }
 
 // parseAutokeyConfigName parses a string into an AutoKeyConfig name.
-// The expected form is `folders/{FOLDER_NUMBER}/autokeyConfig`.
+// The expected form is `folders/{FOLDER_NUMBER}/autokeyConfig` or `projects/{PROJECT_NUMBER}/autokeyConfig`.
 func (r *autokeyAdminServer) parseAutokeyConfigName(name string) (*autokeyConfigName, error) {
 	tokens := strings.Split(name, "/")
-	if len(tokens) == 3 && tokens[0] == "folders" && tokens[2] == "autokeyConfig" {
-		//fmt.Printf("Inside mock gcp controller %s\n\n", tokens[1])
-		name := &autokeyConfigName{
-			folder: tokens[1],
+	if len(tokens) == 3 && tokens[2] == "autokeyConfig" {
+		if tokens[0] == "folders" {
+			return &autokeyConfigName{folder: tokens[1]}, nil
 		}
-
-		return name, nil
+		if tokens[0] == "projects" {
+			return &autokeyConfigName{project: tokens[1]}, nil
+		}
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)

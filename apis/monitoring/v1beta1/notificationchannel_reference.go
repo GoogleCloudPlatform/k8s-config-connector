@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -27,8 +28,7 @@ import (
 
 var _ refs.Ref = &MonitoringNotificationChannelRef{}
 
-// MonitoringNotificationChannelRef defines the resource reference to MonitoringNotificationChannel, which "External" field
-// holds the GCP identifier for the KRM object.
+// MonitoringNotificationChannelRef is a reference to a MonitoringNotificationChannel.
 type MonitoringNotificationChannelRef struct {
 	// A reference to an externally managed MonitoringNotificationChannel resource.
 	// Should be in the format "projects/{{projectID}}/notificationChannels/{{channelID}}".
@@ -42,7 +42,7 @@ type MonitoringNotificationChannelRef struct {
 }
 
 func init() {
-	refs.Register(&MonitoringNotificationChannelRef{})
+	refs.Register(&MonitoringNotificationChannelRef{}, &MonitoringNotificationChannel{})
 }
 
 func (r *MonitoringNotificationChannelRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +62,8 @@ func (r *MonitoringNotificationChannelRef) GetExternal() string {
 
 func (r *MonitoringNotificationChannelRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *MonitoringNotificationChannelRef) ValidateExternal(ref string) error {
@@ -82,7 +84,11 @@ func (r *MonitoringNotificationChannelRef) ParseExternalToIdentity() (identity.I
 
 func (r *MonitoringNotificationChannelRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromMonitoringNotificationChannelSpec(ctx, reader, u)
+		obj, err := common.ToStructuredType[*MonitoringNotificationChannel](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromMonitoringNotificationChannelSpec(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}

@@ -16,7 +16,7 @@ title: "EssentialContactsContact"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/resource-manager/docs/managing-notification-contacts">/resource-manager/docs/managing-notification-contacts</a></td>
+<td><a href="https://docs.cloud.google.com/resource-manager/docs/managing-notification-contacts">https://docs.cloud.google.com/resource-manager/docs/managing-notification-contacts</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "EssentialContactsContact"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/resource-manager/docs/reference/essentialcontacts/rest/v1/projects.contacts">/resource-manager/docs/reference/essentialcontacts/rest/v1/projects.contacts</a></td>
+<td><a href="https://docs.cloud.google.com/resource-manager/docs/reference/essentialcontacts/rest/v1/projects.contacts">https://docs.cloud.google.com/resource-manager/docs/reference/essentialcontacts/rest/v1/projects.contacts</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -138,7 +138,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The preferred language for notifications, as a ISO 639-1 language code. See [Supported languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages) for a list of supported languages.</p>
+            <p>Required. The preferred language for notifications, as an ISO 639-1 language code. See [Supported languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages) for a list of supported languages.</p>
         </td>
     </tr>
     <tr>
@@ -358,4 +358,4 @@ observedState:
 
 ## Sample YAML(s)
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

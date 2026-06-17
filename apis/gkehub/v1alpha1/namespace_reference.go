@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.Ref = &GKEHubNamespaceRef{}
 
-// GKEHubNamespaceRef defines the resource reference to GKEHubNamespace, which "External" field
-// holds the GCP identifier for the KRM object.
+// GKEHubNamespaceRef is a reference to a GKEHubNamespace.
 type GKEHubNamespaceRef struct {
 	// A reference to an externally managed GKEHubNamespace resource.
 	// Should be in the format "projects/{{project}}/locations/{{location}}/scopes/{{scope}}/namespaces/{{namespace}}".
@@ -43,7 +42,7 @@ type GKEHubNamespaceRef struct {
 }
 
 func init() {
-	refsv1beta1.Register(&GKEHubNamespaceRef{})
+	refsv1beta1.Register(&GKEHubNamespaceRef{}, &GKEHubNamespace{})
 }
 
 func (r *GKEHubNamespaceRef) GetGVK() schema.GroupVersionKind {
@@ -63,6 +62,8 @@ func (r *GKEHubNamespaceRef) GetExternal() string {
 
 func (r *GKEHubNamespaceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *GKEHubNamespaceRef) ValidateExternal(ref string) error {

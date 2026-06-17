@@ -16,7 +16,7 @@ title: "MonitoringGroup"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/monitoring/docs/">/monitoring/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/monitoring/docs/">https://docs.cloud.google.com/monitoring/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "MonitoringGroup"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/monitoring/api/ref_v3/rest/v3/projects.groups">/monitoring/api/ref_v3/rest/v3/projects.groups</a></td>
+<td><a href="https://docs.cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.groups">https://docs.cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.groups</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -114,7 +114,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>MonitoringGroupRef is a reference to a GCP MonitoringGroup.</p>
         </td>
     </tr>
     <tr>
@@ -124,9 +124,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of the group's parent, if it has one. The format is: projects/ For groups with no parent, `parent_name` is the empty string, ``.
-
-Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (format: `projects/{{project}}/groups/{{name}}`).</p>
+            <p>A reference to an externally managed MonitoringGroup resource. Should be in the format "projects/{{projectID}}/groups/{{groupID}}".</p>
         </td>
     </tr>
     <tr>
@@ -136,7 +134,7 @@ Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a MonitoringGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -146,7 +144,7 @@ Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a MonitoringGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -166,9 +164,7 @@ Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project of the group
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -178,7 +174,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -188,7 +184,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -227,7 +223,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -305,4 +301,4 @@ spec:
   displayName: "MonitoringGroup"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

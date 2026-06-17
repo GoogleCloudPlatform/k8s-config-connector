@@ -29,8 +29,7 @@ import (
 var _ refsv1beta1.ExternalNormalizer = &ComputeBackendServiceRef{}
 var ComputeBackendServiceGVK = GroupVersion.WithKind("ComputeBackendService")
 
-// ComputeBackendServiceRef defines the resource reference to ComputeBackendService, which "External" field
-// holds the GCP identifier for the KRM object.
+// ComputeBackendServiceRef is a reference to a ComputeBackendService.
 type ComputeBackendServiceRef struct {
 	// For backward compatibility, we are not enforcing the external format.
 

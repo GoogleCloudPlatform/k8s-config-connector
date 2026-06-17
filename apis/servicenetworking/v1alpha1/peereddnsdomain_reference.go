@@ -29,8 +29,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &PeeredDnsDomainRef{}
 
-// PeeredDnsDomainRef defines the resource reference to ServiceNetworkingPeeredDNSDomain, which "External" field
-// holds the GCP identifier for the KRM object.
+// PeeredDnsDomainRef is a reference to a ServiceNetworkingPeeredDNSDomain.
 type PeeredDnsDomainRef struct {
 	// A reference to an externally managed ServiceNetworkingPeeredDNSDomain resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/peereddnsdomains/{{peereddnsdomainID}}".

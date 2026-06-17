@@ -21,6 +21,7 @@
 // resource: DataprocJob:Job
 // resource: DataprocNodeGroup:NodeGroup
 // resource: DataprocSession:Session
+// resource: DataprocSessionTemplate:SessionTemplate
 
 package v1alpha1
 
@@ -433,9 +434,11 @@ type InstanceFlexibilityPolicy_InstanceSelection struct {
 	Rank *int32 `json:"rank,omitempty"`
 }
 
+/* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResult
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
 type InstanceFlexibilityPolicy_InstanceSelectionResult struct {
 }
+*/
 
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix
 type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
@@ -756,9 +759,11 @@ type LoggingConfig struct {
 }
 */
 
+/* unreachable type ManagedGroupConfig
 // +kcc:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfig struct {
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.NodeGroup", skipping
 
@@ -1117,6 +1122,46 @@ type Session_SessionStateHistory struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.SessionTemplate", skipping
+
+// +kcc:proto=google.cloud.dataproc.v1.SessionTemplate
+type SessionTemplate struct {
+	// Required. The resource name of the session template.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Brief description of the template.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Jupyter session config.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.jupyter_session
+	JupyterSession *JupyterConfig `json:"jupyterSession,omitempty"`
+
+	// Optional. Spark Connect session config.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.spark_connect_session
+	SparkConnectSession *SparkConnectConfig `json:"sparkConnectSession,omitempty"`
+
+	// Optional. Labels to associate with sessions created using this template.
+	//  Label **keys** must contain 1 to 63 characters, and must conform to
+	//  [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
+	//  Label **values** can be empty, but, if present, must contain 1 to 63
+	//  characters and conform to [RFC
+	//  1035](https://www.ietf.org/rfc/rfc1035.txt). No more than 32 labels can be
+	//  associated with a session.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Runtime configuration for session execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.runtime_config
+	RuntimeConfig *RuntimeConfig `json:"runtimeConfig,omitempty"`
+
+	// Optional. Environment configuration for session execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.environment_config
+	EnvironmentConfig *EnvironmentConfig `json:"environmentConfig,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "SparkBatch", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.SparkBatch
@@ -1154,7 +1199,7 @@ type SparkBatch struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.SparkConnectConfig", skipping
+/* found existing non-generated go type "SparkConnectConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.SparkConnectConfig
 type SparkConnectConfig struct {
@@ -1510,7 +1555,7 @@ type BatchObservedState struct {
 
 	// Output only. Runtime information about batch execution.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.runtime_info
-	RuntimeInfo *RuntimeInfo `json:"runtimeInfo,omitempty"`
+	RuntimeInfo *RuntimeInfoObservedState `json:"runtimeInfo,omitempty"`
 
 	// Output only. The state of the batch.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state
@@ -1535,7 +1580,7 @@ type BatchObservedState struct {
 
 	// Output only. Historical state information for the batch.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state_history
-	StateHistory []Batch_StateHistory `json:"stateHistory,omitempty"`
+	StateHistory []Batch_StateHistoryObservedState `json:"stateHistory,omitempty"`
 }
 */
 
@@ -1561,10 +1606,9 @@ type Batch_StateHistoryObservedState struct {
 type InstanceFlexibilityPolicyObservedState struct {
 	// Output only. A list of instance selection results in the group.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_results
-	InstanceSelectionResults []InstanceFlexibilityPolicy_InstanceSelectionResult `json:"instanceSelectionResults,omitempty"`
+	InstanceSelectionResults []InstanceFlexibilityPolicy_InstanceSelectionResultObservedState `json:"instanceSelectionResults,omitempty"`
 }
 
-/* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
 type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 	// Output only. Full machine-type names, e.g. "n1-standard-16".
@@ -1575,7 +1619,6 @@ type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult.vm_count
 	VMCount *int32 `json:"vmCount,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfigObservedState struct {
@@ -1597,7 +1640,7 @@ type InstanceGroupConfigObservedState struct {
 	//  Manager that manages this group.
 	//  This is only used for preemptible instance groups.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.managed_group_config
-	ManagedGroupConfig *ManagedGroupConfig `json:"managedGroupConfig,omitempty"`
+	ManagedGroupConfig *ManagedGroupConfigObservedState `json:"managedGroupConfig,omitempty"`
 
 	// Optional. Instance flexibility Policy allowing a mixture of VM shapes and
 	//  provisioning models.
@@ -1618,11 +1661,11 @@ type JobObservedState struct {
 	//  status information might be contained in the <code>type_job</code>
 	//  and <code>yarn_applications</code> fields.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Job.status
-	Status *JobStatus `json:"status,omitempty"`
+	Status *JobStatusObservedState `json:"status,omitempty"`
 
 	// Output only. The previous job status.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Job.status_history
-	StatusHistory []JobStatus `json:"statusHistory,omitempty"`
+	StatusHistory []JobStatusObservedState `json:"statusHistory,omitempty"`
 
 	// Output only. The collection of YARN applications spun up by this job.
 	//
@@ -1692,7 +1735,6 @@ type JobStatusObservedState struct {
 }
 */
 
-/* unreachable type ManagedGroupConfigObservedState
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfigObservedState struct {
 	// Output only. The name of the Instance Template used for the Managed
@@ -1709,7 +1751,6 @@ type ManagedGroupConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.ManagedGroupConfig.instance_group_manager_uri
 	InstanceGroupManagerURI *string `json:"instanceGroupManagerURI,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.NodeGroup", skipping
 
@@ -1774,7 +1815,7 @@ type SessionObservedState struct {
 
 	// Output only. Runtime information about session execution.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.runtime_info
-	RuntimeInfo *RuntimeInfo `json:"runtimeInfo,omitempty"`
+	RuntimeInfo *RuntimeInfoObservedState `json:"runtimeInfo,omitempty"`
 
 	// Output only. A state of the session.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.state
@@ -1795,7 +1836,7 @@ type SessionObservedState struct {
 
 	// Output only. Historical state information for the session.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.state_history
-	StateHistory []Session_SessionStateHistory `json:"stateHistory,omitempty"`
+	StateHistory []Session_SessionStateHistoryObservedState `json:"stateHistory,omitempty"`
 }
 */
 
@@ -1816,5 +1857,28 @@ type Session_SessionStateHistoryObservedState struct {
 	// Output only. The time when the session entered the historical state.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.SessionStateHistory.state_start_time
 	StateStartTime *string `json:"stateStartTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.SessionTemplate", skipping
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.SessionTemplate
+type SessionTemplateObservedState struct {
+	// Output only. The time when the template was created.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The email address of the user who created the template.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.creator
+	Creator *string `json:"creator,omitempty"`
+
+	// Output only. The time the template was last updated.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. A session template UUID (Unique Universal Identifier). The
+	//  service generates this value when it creates the session template.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.uuid
+	Uuid *string `json:"uuid,omitempty"`
 }
 */

@@ -25,7 +25,9 @@ package artifactregistry
 
 import (
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
+	krmartifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -190,9 +192,11 @@ func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Labels
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: KMSKeyName
+	if in.GetKmsKeyName() != "" {
+		out.KMSKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+	}
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
-	// TODO: map type string message for field CleanupPolicies
+	out.CleanupPolicies = CleanupPolicies_FromProto(mapCtx, in.CleanupPolicies)
 	// MISSING: SizeBytes
 	// MISSING: SatisfiesPzs
 	out.CleanupPolicyDryRun = direct.LazyPtr(in.GetCleanupPolicyDryRun())
@@ -225,12 +229,68 @@ func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.A
 	// MISSING: Labels
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: KMSKeyName
+	if in.KMSKeyNameRef != nil {
+		out.KmsKeyName = in.KMSKeyNameRef.External
+	}
 	out.Mode = direct.Enum_ToProto[pb.Repository_Mode](mapCtx, in.Mode)
-	// TODO: map type string message for field CleanupPolicies
+	out.CleanupPolicies = CleanupPolicies_ToProto(mapCtx, in.CleanupPolicies)
 	// MISSING: SizeBytes
 	// MISSING: SatisfiesPzs
 	out.CleanupPolicyDryRun = direct.ValueOf(in.CleanupPolicyDryRun)
+	// MISSING: VulnerabilityScanningConfig
+	// MISSING: DisallowUnspecifiedMode
+	// MISSING: SatisfiesPzi
+	// MISSING: RegistryURI
+	return out
+}
+func ArtifactRegistryRepositoryStatus_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositoryStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArtifactRegistryRepositoryStatus{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	// MISSING: SizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: CleanupPolicyDryRun
+	// MISSING: VulnerabilityScanningConfig
+	// MISSING: DisallowUnspecifiedMode
+	// MISSING: SatisfiesPzi
+	// MISSING: RegistryURI
+	return out
+}
+func ArtifactRegistryRepositoryStatus_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryStatus) *pb.Repository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	// MISSING: SizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: CleanupPolicyDryRun
 	// MISSING: VulnerabilityScanningConfig
 	// MISSING: DisallowUnspecifiedMode
 	// MISSING: SatisfiesPzi
@@ -275,6 +335,40 @@ func ArtifactRegistryRepositoryVirtualRepositoryConfig_ToProto(mapCtx *direct.Ma
 	}
 	out := &pb.VirtualRepositoryConfig{}
 	out.UpstreamPolicies = direct.Slice_ToProto(mapCtx, in.UpstreamPolicies, ArtifactRegistryRepositoryUpstreamPolicy_ToProto)
+	return out
+}
+func ArtifactRegistryVPCSCConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VPCSCConfig) *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState{}
+	// MISSING: Name
+	return out
+}
+func ArtifactRegistryVPCSCConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState) *pb.VPCSCConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VPCSCConfig{}
+	// MISSING: Name
+	return out
+}
+func ArtifactRegistryVPCSCConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.VPCSCConfig) *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigSpec{}
+	// MISSING: Name
+	out.VpcscPolicy = direct.Enum_FromProto(mapCtx, in.GetVpcscPolicy())
+	return out
+}
+func ArtifactRegistryVPCSCConfigSpec_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigSpec) *pb.VPCSCConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VPCSCConfig{}
+	// MISSING: Name
+	out.VpcscPolicy = direct.Enum_ToProto[pb.VPCSCConfig_VPCSCPolicy](mapCtx, in.VpcscPolicy)
 	return out
 }
 func CleanupPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CleanupPolicy) *krm.CleanupPolicy {

@@ -25,3 +25,7 @@ spec:
     schemaRef:
       name: pubsubschema-${uniqueId}
     encoding: JSON
+  messageStoragePolicy:
+    allowedPersistenceRegions:
+      - us-central1
+    enforceInTransit: true

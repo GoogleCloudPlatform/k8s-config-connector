@@ -16,7 +16,7 @@ title: "BigQueryConnectionConnection"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/bigquery/docs/">/bigquery/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/bigquery/docs/">https://docs.cloud.google.com/bigquery/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -1093,6 +1093,6 @@ spec:
   spark: {}
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 Footer

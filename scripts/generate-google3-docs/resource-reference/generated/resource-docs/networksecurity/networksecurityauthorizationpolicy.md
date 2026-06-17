@@ -16,7 +16,7 @@ title: "NetworkSecurityAuthorizationPolicy"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/traffic-director/docs/">/traffic-director/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/traffic-director/docs/">https://docs.cloud.google.com/traffic-director/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "NetworkSecurityAuthorizationPolicy"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/traffic-director/docs/reference/network-security/rest/v1beta1/projects.locations.authorizationPolicies">/traffic-director/docs/reference/network-security/rest/v1beta1/projects.locations.authorizationPolicies</a></td>
+<td><a href="https://docs.cloud.google.com/traffic-director/docs/reference/network-security/rest/v1beta1/projects.locations.authorizationPolicies">https://docs.cloud.google.com/traffic-director/docs/reference/network-security/rest/v1beta1/projects.locations.authorizationPolicies</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -543,4 +543,4 @@ spec:
       - "GET"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

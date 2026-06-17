@@ -29,8 +29,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ServiceIdentityRef{}
 
-// ServiceIdentityRef defines the resource reference to ServiceIdentity, which "External" field
-// holds the GCP identifier for the KRM object.
+// ServiceIdentityRef is a reference to a ServiceIdentity.
 type ServiceIdentityRef struct {
 	// A reference to an externally managed ServiceIdentity resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/serviceidentitys/{{serviceidentityID}}".

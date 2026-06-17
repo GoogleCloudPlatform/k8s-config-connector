@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
+	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
 )
 
@@ -56,6 +57,8 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworkSecurityServer(grpcServer, &NetworkSecurityServer{MockService: s})
+	pbv1.RegisterMirroringServer(grpcServer, &MirroringServer{MockService: s})
+	pbv1.RegisterSSERealmServiceServer(grpcServer, &SSERealmServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -65,7 +68,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	mux.AddService(pb.NewNetworkSecurityClient(conn))
+	mux.AddService(pbv1.NewMirroringClient(conn))
+	mux.AddService(pbv1.NewSSERealmServiceClient(conn))
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
 }

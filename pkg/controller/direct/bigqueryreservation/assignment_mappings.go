@@ -72,7 +72,7 @@ func BigQueryReservationAssignmentSpec_Assignee_ToProto(mapCtx *direct.MapContex
 	return ""
 }
 
-func BigQueryReservationAssignmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentSpec) *pb.Assignment {
+func BigQueryReservationAssignmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentSpec) *pb.Assignment {
 	if in == nil {
 		return nil
 	}
@@ -82,7 +82,7 @@ func BigQueryReservationAssignmentSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	return out
 }
 
-func BigQueryReservationAssignmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigQueryReservationAssignmentSpec {
+func BigQueryReservationAssignmentSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigQueryReservationAssignmentSpec {
 	if in == nil {
 		return nil
 	}
@@ -90,4 +90,20 @@ func BigQueryReservationAssignmentSpec_FromProto(mapCtx *direct.MapContext, in *
 	out.Assignee = BigqueryReservationAssignmentSpec_Assignee_FromProto(mapCtx, in)
 	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
 	return out
+}
+
+func BigQueryReservationAssignmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentSpec) *pb.Assignment {
+	return BigQueryReservationAssignmentSpec_v1beta1_ToProto(mapCtx, in)
+}
+
+func BigQueryReservationAssignmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigQueryReservationAssignmentSpec {
+	return BigQueryReservationAssignmentSpec_v1beta1_FromProto(mapCtx, in)
+}
+
+func BigQueryReservationAssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentObservedState) *pb.Assignment {
+	return BigQueryReservationAssignmentObservedState_v1beta1_ToProto(mapCtx, in)
+}
+
+func BigQueryReservationAssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigQueryReservationAssignmentObservedState {
+	return BigQueryReservationAssignmentObservedState_v1beta1_FromProto(mapCtx, in)
 }

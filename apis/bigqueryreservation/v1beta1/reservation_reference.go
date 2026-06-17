@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ReservationRef{}
 
-// ReservationRef defines the resource reference to BigqueryReservation, which "External" field
-// holds the GCP identifier for the KRM object.
+// ReservationRef is a reference to a BigqueryReservation.
 type ReservationRef struct {
 	// A reference to an externally managed BigqueryReservation resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/reservations/{{reservationID}}".

@@ -28,22 +28,21 @@ import (
 
 var _ refs.Ref = &AlloyDBUserRef{}
 
-// AlloyDBUserRef defines the resource reference to AlloyDBUser, which "External" field
-// holds the GCP identifier for the KRM object.
+// AlloyDBUserRef is a reference to an AlloyDBUser.
 type AlloyDBUserRef struct {
 	// A reference to an externally managed AlloyDBUser resource.
 	// Should be in the format "projects/{{project}}/locations/{{location}}/clusters/{{cluster}}/users/{{user}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AlloyDBUser resource.
+	// The name of an AlloyDBUser resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AlloyDBUser resource.
+	// The namespace of an AlloyDBUser resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&AlloyDBUserRef{})
+	refs.Register(&AlloyDBUserRef{}, &AlloyDBUser{})
 }
 
 func (r *AlloyDBUserRef) GetGVK() schema.GroupVersionKind {
@@ -63,6 +62,8 @@ func (r *AlloyDBUserRef) GetExternal() string {
 
 func (r *AlloyDBUserRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *AlloyDBUserRef) ValidateExternal(ref string) error {

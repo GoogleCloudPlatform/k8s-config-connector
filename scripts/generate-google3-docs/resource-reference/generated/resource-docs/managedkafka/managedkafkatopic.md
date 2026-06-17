@@ -16,7 +16,7 @@ title: "ManagedKafkaTopic"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/managed-service-for-apache-kafka/docs/">/managed-service-for-apache-kafka/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/managed-service-for-apache-kafka/docs/">https://docs.cloud.google.com/managed-service-for-apache-kafka/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "ManagedKafkaTopic"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/managed-service-for-apache-kafka/docs/reference/rest/v1/projects.locations.clusters.topics">/managed-service-for-apache-kafka/docs/reference/rest/v1/projects.locations.clusters.topics</a></td>
+<td><a href="https://docs.cloud.google.com/managed-service-for-apache-kafka/docs/reference/rest/v1/projects.locations.clusters.topics">https://docs.cloud.google.com/managed-service-for-apache-kafka/docs/reference/rest/v1/projects.locations.clusters.topics</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -367,4 +367,4 @@ spec:
     mode: NO_REBALANCE 
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

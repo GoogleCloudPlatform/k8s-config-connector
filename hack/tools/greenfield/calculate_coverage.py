@@ -119,6 +119,12 @@ def match_resources(gcp_resources, kcc_resources):
         "container": ["container", "gke"],
         "sqladmin": ["sql"],
         "cloudquota": ["cloudquotas"],
+        "cloudids": ["ids"],
+        "file": ["filestore"],
+        "bigtableadmin": ["bigtable"],
+        "cloudbilling": ["billing"],
+        "cloudkms": ["kms"],
+        "aiplatform": ["aiplatform", "vertexai"],
     }
 
     for gcp_type, info in gcp_resources.items():
@@ -296,6 +302,12 @@ def main():
         "container": ["container", "gke"],
         "sqladmin": ["sql"],
         "cloudquota": ["cloudquotas"],
+        "cloudids": ["ids"],
+        "file": ["filestore"],
+        "bigtableadmin": ["bigtable"],
+        "cloudbilling": ["billing"],
+        "cloudkms": ["kms"],
+        "aiplatform": ["aiplatform", "vertexai"],
     }
 
     for key, info in gcp_resources.items():
@@ -416,6 +428,18 @@ def main():
     print(f"\n--- Next {k} Easiest Resources to Implement ---")
     print("(Criteria: Easy Targets)")
     for m in sorted(list(missing_easy))[:k]:
+        patterns = ", ".join(gcp_resources[m]['patterns'])
+        print(f"  - {m}")
+        print(f"    Patterns: {patterns}")
+
+    print(f"\n--- Next Layer Targets (1 Parent) ---")
+    for m in sorted(list(missing_next_layer)):
+        patterns = ", ".join(gcp_resources[m]['patterns'])
+        print(f"  - {m}")
+        print(f"    Patterns: {patterns}")
+
+    print(f"\n--- Next Next Layer Targets (2 Parents) ---")
+    for m in sorted(list(missing_next_next_layer)):
         patterns = ", ".join(gcp_resources[m]['patterns'])
         print(f"  - {m}")
         print(f"    Patterns: {patterns}")

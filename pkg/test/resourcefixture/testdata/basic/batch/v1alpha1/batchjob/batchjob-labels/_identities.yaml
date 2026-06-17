@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: batch.cnrm.cloud.google.com
+  kind: BatchJob
+  name: batchjob-labels
+  namespace: ${uniqueId}
+  version: v1alpha1

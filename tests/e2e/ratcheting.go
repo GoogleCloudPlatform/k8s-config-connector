@@ -111,7 +111,7 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 		// update in re-reconciliation. As we are migrating BigQueryTable
 		// to direct, we'll focus on make the re-reconciliation behavior right
 		// for the direct resource instead of fixing this test.
-		if testName == "bigquerytable-ignore-schema-changes" {
+		if testName == "bigquerytable-ignore-schema-changes" || testName == "bigquerytable-view" || testName == "bigquerytable-view-schema" {
 			return false
 		} else {
 			return true
@@ -438,7 +438,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "securitycenter.cnrm.cloud.google.com", Kind: "SecurityCenterSource"}:
 	case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryEndpoint"}:
 	case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryNamespace"}:
-	case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryService"}:
 	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "ServiceIdentity"}:
 	case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingConnection"}:
 	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:

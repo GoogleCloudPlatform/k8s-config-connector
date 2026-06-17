@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &BigtableAppProfileRef{}
 
-// BigtableAppProfileRef defines the resource reference to BigtableAppProfile, which "External" field
-// holds the GCP identifier for the KRM object.
+// BigtableAppProfileRef is a reference to a BigtableAppProfile.
 type BigtableAppProfileRef struct {
 	// A reference to an externally managed BigtableAppProfile resource.
 	// Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/appProfiles/{{appProfileID}}".
@@ -42,7 +41,7 @@ type BigtableAppProfileRef struct {
 }
 
 func init() {
-	refs.Register(&BigtableAppProfileRef{})
+	refs.Register(&BigtableAppProfileRef{}, &BigtableAppProfile{})
 }
 
 func (r *BigtableAppProfileRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +61,8 @@ func (r *BigtableAppProfileRef) GetExternal() string {
 
 func (r *BigtableAppProfileRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *BigtableAppProfileRef) ValidateExternal(ref string) error {

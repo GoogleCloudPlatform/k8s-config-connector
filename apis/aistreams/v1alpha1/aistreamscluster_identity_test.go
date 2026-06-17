@@ -36,6 +36,14 @@ func TestAIStreamsClusterIdentity_FromExternal(t *testing.T) {
 			wantErr:      false,
 		},
 		{
+			name:         "full url",
+			ref:          "https://aistreams.googleapis.com/projects/my-project/locations/us-central1/clusters/my-cluster",
+			wantProject:  "my-project",
+			wantLocation: "us-central1",
+			wantID:       "my-cluster",
+			wantErr:      false,
+		},
+		{
 			name:    "invalid external ref",
 			ref:     "projects/my-project/clusters/my-cluster",
 			wantErr: true,
@@ -57,8 +65,8 @@ func TestAIStreamsClusterIdentity_FromExternal(t *testing.T) {
 				if i.Cluster != tt.wantID {
 					t.Errorf("AIStreamsClusterIdentity.FromExternal() Cluster = %v, want %v", i.Cluster, tt.wantID)
 				}
-				if got := i.String(); got != tt.ref {
-					t.Errorf("AIStreamsClusterIdentity.String() = %v, want %v", got, tt.ref)
+				if got := i.String(); got != "projects/"+tt.wantProject+"/locations/"+tt.wantLocation+"/clusters/"+tt.wantID {
+					t.Errorf("AIStreamsClusterIdentity.String() = %v", got)
 				}
 			}
 		})

@@ -28,6 +28,7 @@ import (
 	krmmemorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
 func DiscoveryEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryEndpoint) *krm.DiscoveryEndpointObservedState {
@@ -281,19 +282,79 @@ func Instance_StateInfo_UpdateInfoObservedState_FromProto(mapCtx *direct.MapCont
 }
 */
 
-/* found existing non-generated mapping function "Instance_StateInfo_UpdateInfoObservedState_ToProto", skipping
-func Instance_StateInfo_UpdateInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_StateInfo_UpdateInfoObservedState) *pb.Instance_StateInfo_UpdateInfo {
+/*
+found existing non-generated mapping function "Instance_StateInfo_UpdateInfoObservedState_ToProto", skipping
+
+	func Instance_StateInfo_UpdateInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_StateInfo_UpdateInfoObservedState) *pb.Instance_StateInfo_UpdateInfo {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Instance_StateInfo_UpdateInfo{}
+		out.TargetShardCount = in.TargetShardCount
+		out.TargetReplicaCount = in.TargetReplicaCount
+		// MISSING: TargetEngineVersion
+		// MISSING: TargetNodeType
+		return out
+	}
+*/
+func MaintenancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.MaintenancePolicy) *krm.MaintenancePolicy {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Instance_StateInfo_UpdateInfo{}
-	out.TargetShardCount = in.TargetShardCount
-	out.TargetReplicaCount = in.TargetReplicaCount
-	// MISSING: TargetEngineVersion
-	// MISSING: TargetNodeType
+	out := &krm.MaintenancePolicy{}
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.WeeklyMaintenanceWindow = direct.Slice_FromProto(mapCtx, in.WeeklyMaintenanceWindow, WeeklyMaintenanceWindow_FromProto)
 	return out
 }
-*/
+func MaintenancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.MaintenancePolicy) *pb.MaintenancePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MaintenancePolicy{}
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.WeeklyMaintenanceWindow = direct.Slice_ToProto(mapCtx, in.WeeklyMaintenanceWindow, WeeklyMaintenanceWindow_ToProto)
+	return out
+}
+func MaintenancePolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MaintenancePolicy) *krm.MaintenancePolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MaintenancePolicyObservedState{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: WeeklyMaintenanceWindow
+	return out
+}
+func MaintenancePolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MaintenancePolicyObservedState) *pb.MaintenancePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MaintenancePolicy{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: WeeklyMaintenanceWindow
+	return out
+}
+func MaintenanceScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceSchedule) *krm.MaintenanceScheduleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MaintenanceScheduleObservedState{}
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func MaintenanceScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceScheduleObservedState) *pb.MaintenanceSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MaintenanceSchedule{}
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
 
 /* found existing non-generated mapping function "MemorystoreInstanceEndpointObservedState_FromProto", skipping
 func MemorystoreInstanceEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmmemorystorev1alpha1.MemorystoreInstanceEndpointObservedState {
@@ -484,8 +545,8 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	// (near miss): "PSCAttachmentDetails" vs "PscAttachmentDetails"
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
 	// MISSING: OndemandMaintenance
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
+	out.MaintenancePolicy = MaintenancePolicyObservedState_FromProto(mapCtx, in.GetMaintenancePolicy())
+	out.MaintenanceSchedule = MaintenanceScheduleObservedState_FromProto(mapCtx, in.GetMaintenanceSchedule())
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
@@ -514,8 +575,8 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// (near miss): "PSCAttachmentDetails" vs "PscAttachmentDetails"
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
 	// MISSING: OndemandMaintenance
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
+	out.MaintenancePolicy = MaintenancePolicyObservedState_ToProto(mapCtx, in.MaintenancePolicy)
+	out.MaintenanceSchedule = MaintenanceScheduleObservedState_ToProto(mapCtx, in.MaintenanceSchedule)
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
@@ -549,8 +610,7 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_FromProto)
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	// MISSING: OndemandMaintenance
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
+	out.MaintenancePolicy = MaintenancePolicy_FromProto(mapCtx, in.GetMaintenancePolicy())
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
@@ -585,8 +645,7 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Memoryst
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_ToProto)
 	out.Mode = direct.Enum_ToProto[pb.Instance_Mode](mapCtx, in.Mode)
 	// MISSING: OndemandMaintenance
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
+	out.MaintenancePolicy = MaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
@@ -889,6 +948,24 @@ func PscConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmmemory
 	// MISSING: PSCConnectionStatus
 	// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
 	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
+	return out
+}
+func WeeklyMaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyMaintenanceWindow) *krm.WeeklyMaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WeeklyMaintenanceWindow{}
+	out.Day = direct.Enum_FromProto(mapCtx, in.GetDay())
+	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
+	return out
+}
+func WeeklyMaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.WeeklyMaintenanceWindow) *pb.WeeklyMaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WeeklyMaintenanceWindow{}
+	out.Day = direct.Enum_ToProto[dayofweekpb.DayOfWeek](mapCtx, in.Day)
+	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
 	return out
 }
 

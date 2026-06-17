@@ -26,6 +26,7 @@ package apihub
 import (
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apihub/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -51,6 +52,110 @@ func APIHubDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AP
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Attributes
+	return out
+}
+func APIHubExternalAPIObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExternalApi) *krm.APIHubExternalAPIObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubExternalAPIObservedState{}
+	// MISSING: Name
+	// MISSING: Attributes
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func APIHubExternalAPIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubExternalAPIObservedState) *pb.ExternalApi {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExternalApi{}
+	// MISSING: Name
+	// MISSING: Attributes
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func APIHubPluginObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.APIHubPluginObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubPluginObservedState{}
+	// MISSING: Name
+	out.Type = AttributeValuesObservedState_FromProto(mapCtx, in.GetType())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func APIHubPluginObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubPluginObservedState) *pb.Plugin {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Plugin{}
+	// MISSING: Name
+	out.Type = AttributeValuesObservedState_ToProto(mapCtx, in.Type)
+	out.State = direct.Enum_ToProto[pb.Plugin_State](mapCtx, in.State)
+	return out
+}
+func APIHubPluginSpec_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.APIHubPluginSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubPluginSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Type = AttributeValues_FromProto(mapCtx, in.GetType())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func APIHubPluginSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubPluginSpec) *pb.Plugin {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Plugin{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Type = AttributeValues_ToProto(mapCtx, in.Type)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func APIHubRuntimeProjectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.APIHubRuntimeProjectAttachmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubRuntimeProjectAttachmentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func APIHubRuntimeProjectAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubRuntimeProjectAttachmentObservedState) *pb.RuntimeProjectAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RuntimeProjectAttachment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func APIHubRuntimeProjectAttachmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.APIHubRuntimeProjectAttachmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubRuntimeProjectAttachmentSpec{}
+	// MISSING: Name
+	if in.GetRuntimeProject() != "" {
+		out.RuntimeProjectRef = &refsv1beta1.ProjectRef{External: in.GetRuntimeProject()}
+	}
+	return out
+}
+func APIHubRuntimeProjectAttachmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubRuntimeProjectAttachmentSpec) *pb.RuntimeProjectAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RuntimeProjectAttachment{}
+	// MISSING: Name
+	if in.RuntimeProjectRef != nil {
+		out.RuntimeProject = in.RuntimeProjectRef.External
+	}
 	return out
 }
 func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValues {
@@ -149,5 +254,23 @@ func Documentation_ToProto(mapCtx *direct.MapContext, in *krm.Documentation) *pb
 	}
 	out := &pb.Documentation{}
 	out.ExternalUri = direct.ValueOf(in.ExternalURI)
+	return out
+}
+func Owner_FromProto(mapCtx *direct.MapContext, in *pb.Owner) *krm.Owner {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Owner{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Email = direct.LazyPtr(in.GetEmail())
+	return out
+}
+func Owner_ToProto(mapCtx *direct.MapContext, in *krm.Owner) *pb.Owner {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Owner{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Email = direct.ValueOf(in.Email)
 	return out
 }

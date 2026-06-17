@@ -35,14 +35,17 @@ import (
 	apigatewayv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1beta1"
 	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
+	apigeeregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigeeregistry/v1alpha1"
 	apihubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apihub/v1alpha1"
 	apikeysv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apikeys/v1alpha1"
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1"
 	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1alpha1"
 	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1beta1"
+	artifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1alpha1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
 	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/asset/v1beta1"
 	assuredworkloadsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/assuredworkloads/v1alpha1"
+	automlv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/automl/v1alpha1"
 	backupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1alpha1"
 	backupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1beta1"
 	batchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/batch/v1alpha1"
@@ -55,6 +58,7 @@ import (
 	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1beta1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1"
+	bigquerymigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerymigration/v1alpha1"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1alpha1"
 	bigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1beta1"
 	bigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1alpha1"
@@ -66,6 +70,7 @@ import (
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1alpha1"
 	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1beta1"
 	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudasset/v1alpha1"
+	cloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1alpha1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1beta1"
 	clouddeployv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddeploy/v1alpha1"
 	clouddeployv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddeploy/v1beta1"
@@ -77,6 +82,7 @@ import (
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1"
 	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1"
+	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
 	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/colab/v1alpha1"
 	composerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/composer/v1beta1"
@@ -84,25 +90,32 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1"
+	contactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contactcenterinsights/v1alpha1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1"
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1alpha1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1beta1"
 	containerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containerattached/v1beta1"
+	contentwarehousev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contentwarehouse/v1alpha1"
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
+	dataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1alpha1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
+	datalabelingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalabeling/v1alpha1"
+	datamigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datamigration/v1alpha1"
 	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataplex/v1alpha1"
 	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1alpha1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1"
 	datastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastore/v1alpha1"
 	datastreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastream/v1alpha1"
 	deploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/deploymentmanager/v1alpha1"
+	developerconnectv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/developerconnect/v1alpha1"
 	devicestreamingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/devicestreaming/v1alpha1"
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
 	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1"
+	dlpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1alpha1"
 	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1"
 	dnsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1alpha1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1"
@@ -143,6 +156,7 @@ import (
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1"
+	modelarmorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/modelarmor/v1alpha1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1"
 	netappv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/netapp/v1alpha1"
 	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1alpha1"
@@ -154,7 +168,6 @@ import (
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1beta1"
 	notebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha1"
 	notebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1"
-	orgpolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1alpha1"
 	orgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1beta1"
 	osconfigv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1alpha1"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1beta1"
@@ -214,14 +227,17 @@ type Interface interface {
 	ApigatewayV1beta1() apigatewayv1beta1.ApigatewayV1beta1Interface
 	ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface
 	ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface
+	ApigeeregistryV1alpha1() apigeeregistryv1alpha1.ApigeeregistryV1alpha1Interface
 	ApihubV1alpha1() apihubv1alpha1.ApihubV1alpha1Interface
 	ApikeysV1alpha1() apikeysv1alpha1.ApikeysV1alpha1Interface
 	AppengineV1alpha1() appenginev1alpha1.AppengineV1alpha1Interface
 	ApphubV1alpha1() apphubv1alpha1.ApphubV1alpha1Interface
 	ApphubV1beta1() apphubv1beta1.ApphubV1beta1Interface
+	ArtifactregistryV1alpha1() artifactregistryv1alpha1.ArtifactregistryV1alpha1Interface
 	ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface
 	AssetV1beta1() assetv1beta1.AssetV1beta1Interface
 	AssuredworkloadsV1alpha1() assuredworkloadsv1alpha1.AssuredworkloadsV1alpha1Interface
+	AutomlV1alpha1() automlv1alpha1.AutomlV1alpha1Interface
 	BackupdrV1alpha1() backupdrv1alpha1.BackupdrV1alpha1Interface
 	BackupdrV1beta1() backupdrv1beta1.BackupdrV1beta1Interface
 	BatchV1alpha1() batchv1alpha1.BatchV1alpha1Interface
@@ -234,6 +250,7 @@ type Interface interface {
 	BigqueryconnectionV1beta1() bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Interface
 	BigquerydatapolicyV1alpha1() bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Interface
 	BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Interface
+	BigquerymigrationV1alpha1() bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Interface
 	BigqueryreservationV1alpha1() bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Interface
 	BigqueryreservationV1beta1() bigqueryreservationv1beta1.BigqueryreservationV1beta1Interface
 	BigtableV1alpha1() bigtablev1alpha1.BigtableV1alpha1Interface
@@ -245,6 +262,7 @@ type Interface interface {
 	CertificatemanagerV1alpha1() certificatemanagerv1alpha1.CertificatemanagerV1alpha1Interface
 	CertificatemanagerV1beta1() certificatemanagerv1beta1.CertificatemanagerV1beta1Interface
 	CloudassetV1alpha1() cloudassetv1alpha1.CloudassetV1alpha1Interface
+	CloudbuildV1alpha1() cloudbuildv1alpha1.CloudbuildV1alpha1Interface
 	CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Interface
 	ClouddeployV1alpha1() clouddeployv1alpha1.ClouddeployV1alpha1Interface
 	ClouddeployV1beta1() clouddeployv1beta1.ClouddeployV1beta1Interface
@@ -256,6 +274,7 @@ type Interface interface {
 	CloudiotV1alpha1() cloudiotv1alpha1.CloudiotV1alpha1Interface
 	CloudquotaV1beta1() cloudquotav1beta1.CloudquotaV1beta1Interface
 	CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface
+	CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface
 	CloudtasksV1alpha1() cloudtasksv1alpha1.CloudtasksV1alpha1Interface
 	ColabV1alpha1() colabv1alpha1.ColabV1alpha1Interface
 	ComposerV1beta1() composerv1beta1.ComposerV1beta1Interface
@@ -263,25 +282,32 @@ type Interface interface {
 	ComputeV1beta1() computev1beta1.ComputeV1beta1Interface
 	ConfigcontrollerV1beta1() configcontrollerv1beta1.ConfigcontrollerV1beta1Interface
 	ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface
+	ContactcenterinsightsV1alpha1() contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Interface
 	ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface
 	ContaineranalysisV1alpha1() containeranalysisv1alpha1.ContaineranalysisV1alpha1Interface
 	ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface
 	ContainerattachedV1beta1() containerattachedv1beta1.ContainerattachedV1beta1Interface
+	ContentwarehouseV1alpha1() contentwarehousev1alpha1.ContentwarehouseV1alpha1Interface
 	DatacatalogV1alpha1() datacatalogv1alpha1.DatacatalogV1alpha1Interface
 	DatacatalogV1beta1() datacatalogv1beta1.DatacatalogV1beta1Interface
 	DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface
+	DataformV1alpha1() dataformv1alpha1.DataformV1alpha1Interface
 	DataformV1beta1() dataformv1beta1.DataformV1beta1Interface
 	DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface
+	DatalabelingV1alpha1() datalabelingv1alpha1.DatalabelingV1alpha1Interface
+	DatamigrationV1alpha1() datamigrationv1alpha1.DatamigrationV1alpha1Interface
 	DataplexV1alpha1() dataplexv1alpha1.DataplexV1alpha1Interface
 	DataprocV1alpha1() dataprocv1alpha1.DataprocV1alpha1Interface
 	DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface
 	DatastoreV1alpha1() datastorev1alpha1.DatastoreV1alpha1Interface
 	DatastreamV1alpha1() datastreamv1alpha1.DatastreamV1alpha1Interface
 	DeploymentmanagerV1alpha1() deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Interface
+	DeveloperconnectV1alpha1() developerconnectv1alpha1.DeveloperconnectV1alpha1Interface
 	DevicestreamingV1alpha1() devicestreamingv1alpha1.DevicestreamingV1alpha1Interface
 	DialogflowV1alpha1() dialogflowv1alpha1.DialogflowV1alpha1Interface
 	DialogflowcxV1alpha1() dialogflowcxv1alpha1.DialogflowcxV1alpha1Interface
 	DiscoveryengineV1alpha1() discoveryenginev1alpha1.DiscoveryengineV1alpha1Interface
+	DlpV1alpha1() dlpv1alpha1.DlpV1alpha1Interface
 	DlpV1beta1() dlpv1beta1.DlpV1beta1Interface
 	DnsV1alpha1() dnsv1alpha1.DnsV1alpha1Interface
 	DnsV1beta1() dnsv1beta1.DnsV1beta1Interface
@@ -322,6 +348,7 @@ type Interface interface {
 	MetastoreV1alpha1() metastorev1alpha1.MetastoreV1alpha1Interface
 	MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interface
 	MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interface
+	ModelarmorV1alpha1() modelarmorv1alpha1.ModelarmorV1alpha1Interface
 	MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface
 	NetappV1alpha1() netappv1alpha1.NetappV1alpha1Interface
 	NetworkconnectivityV1alpha1() networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Interface
@@ -333,7 +360,6 @@ type Interface interface {
 	NetworkservicesV1beta1() networkservicesv1beta1.NetworkservicesV1beta1Interface
 	NotebooksV1alpha1() notebooksv1alpha1.NotebooksV1alpha1Interface
 	NotebooksV1beta1() notebooksv1beta1.NotebooksV1beta1Interface
-	OrgpolicyV1alpha1() orgpolicyv1alpha1.OrgpolicyV1alpha1Interface
 	OrgpolicyV1beta1() orgpolicyv1beta1.OrgpolicyV1beta1Interface
 	OsconfigV1alpha1() osconfigv1alpha1.OsconfigV1alpha1Interface
 	OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface
@@ -381,178 +407,191 @@ type Interface interface {
 // Clientset contains the clients for groups.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	accesscontextmanagerV1beta1    *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
-	accesscontextmanagerV1alpha1   *accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Client
-	aiplatformV1alpha1             *aiplatformv1alpha1.AiplatformV1alpha1Client
-	aistreamsV1alpha1              *aistreamsv1alpha1.AistreamsV1alpha1Client
-	alloydbV1beta1                 *alloydbv1beta1.AlloydbV1beta1Client
-	analyticsV1alpha1              *analyticsv1alpha1.AnalyticsV1alpha1Client
-	apigatewayV1alpha1             *apigatewayv1alpha1.ApigatewayV1alpha1Client
-	apigatewayV1beta1              *apigatewayv1beta1.ApigatewayV1beta1Client
-	apigeeV1alpha1                 *apigeev1alpha1.ApigeeV1alpha1Client
-	apigeeV1beta1                  *apigeev1beta1.ApigeeV1beta1Client
-	apihubV1alpha1                 *apihubv1alpha1.ApihubV1alpha1Client
-	apikeysV1alpha1                *apikeysv1alpha1.ApikeysV1alpha1Client
-	appengineV1alpha1              *appenginev1alpha1.AppengineV1alpha1Client
-	apphubV1alpha1                 *apphubv1alpha1.ApphubV1alpha1Client
-	apphubV1beta1                  *apphubv1beta1.ApphubV1beta1Client
-	artifactregistryV1beta1        *artifactregistryv1beta1.ArtifactregistryV1beta1Client
-	assetV1beta1                   *assetv1beta1.AssetV1beta1Client
-	assuredworkloadsV1alpha1       *assuredworkloadsv1alpha1.AssuredworkloadsV1alpha1Client
-	backupdrV1alpha1               *backupdrv1alpha1.BackupdrV1alpha1Client
-	backupdrV1beta1                *backupdrv1beta1.BackupdrV1beta1Client
-	batchV1alpha1                  *batchv1alpha1.BatchV1alpha1Client
-	beyondcorpV1alpha1             *beyondcorpv1alpha1.BeyondcorpV1alpha1Client
-	bigqueryV1alpha1               *bigqueryv1alpha1.BigqueryV1alpha1Client
-	bigqueryV1beta1                *bigqueryv1beta1.BigqueryV1beta1Client
-	bigqueryanalyticshubV1beta1    *bigqueryanalyticshubv1beta1.BigqueryanalyticshubV1beta1Client
-	bigquerybiglakeV1alpha1        *bigquerybiglakev1alpha1.BigquerybiglakeV1alpha1Client
-	bigquerybiglakeV1beta1         *bigquerybiglakev1beta1.BigquerybiglakeV1beta1Client
-	bigqueryconnectionV1beta1      *bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Client
-	bigquerydatapolicyV1alpha1     *bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Client
-	bigquerydatatransferV1beta1    *bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Client
-	bigqueryreservationV1alpha1    *bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Client
-	bigqueryreservationV1beta1     *bigqueryreservationv1beta1.BigqueryreservationV1beta1Client
-	bigtableV1alpha1               *bigtablev1alpha1.BigtableV1alpha1Client
-	bigtableV1beta1                *bigtablev1beta1.BigtableV1beta1Client
-	billingV1alpha1                *billingv1alpha1.BillingV1alpha1Client
-	billingbudgetsV1beta1          *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
-	binaryauthorizationV1alpha1    *binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Client
-	binaryauthorizationV1beta1     *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
-	certificatemanagerV1alpha1     *certificatemanagerv1alpha1.CertificatemanagerV1alpha1Client
-	certificatemanagerV1beta1      *certificatemanagerv1beta1.CertificatemanagerV1beta1Client
-	cloudassetV1alpha1             *cloudassetv1alpha1.CloudassetV1alpha1Client
-	cloudbuildV1beta1              *cloudbuildv1beta1.CloudbuildV1beta1Client
-	clouddeployV1alpha1            *clouddeployv1alpha1.ClouddeployV1alpha1Client
-	clouddeployV1beta1             *clouddeployv1beta1.ClouddeployV1beta1Client
-	clouddmsV1alpha1               *clouddmsv1alpha1.ClouddmsV1alpha1Client
-	cloudfunctionsV1beta1          *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
-	cloudfunctions2V1alpha1        *cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Client
-	cloudidentityV1beta1           *cloudidentityv1beta1.CloudidentityV1beta1Client
-	cloudidsV1beta1                *cloudidsv1beta1.CloudidsV1beta1Client
-	cloudiotV1alpha1               *cloudiotv1alpha1.CloudiotV1alpha1Client
-	cloudquotaV1beta1              *cloudquotav1beta1.CloudquotaV1beta1Client
-	cloudschedulerV1beta1          *cloudschedulerv1beta1.CloudschedulerV1beta1Client
-	cloudtasksV1alpha1             *cloudtasksv1alpha1.CloudtasksV1alpha1Client
-	colabV1alpha1                  *colabv1alpha1.ColabV1alpha1Client
-	composerV1beta1                *composerv1beta1.ComposerV1beta1Client
-	computeV1alpha1                *computev1alpha1.ComputeV1alpha1Client
-	computeV1beta1                 *computev1beta1.ComputeV1beta1Client
-	configcontrollerV1beta1        *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
-	configdeliveryV1alpha1         *configdeliveryv1alpha1.ConfigdeliveryV1alpha1Client
-	containerV1beta1               *containerv1beta1.ContainerV1beta1Client
-	containeranalysisV1alpha1      *containeranalysisv1alpha1.ContaineranalysisV1alpha1Client
-	containeranalysisV1beta1       *containeranalysisv1beta1.ContaineranalysisV1beta1Client
-	containerattachedV1beta1       *containerattachedv1beta1.ContainerattachedV1beta1Client
-	datacatalogV1alpha1            *datacatalogv1alpha1.DatacatalogV1alpha1Client
-	datacatalogV1beta1             *datacatalogv1beta1.DatacatalogV1beta1Client
-	dataflowV1beta1                *dataflowv1beta1.DataflowV1beta1Client
-	dataformV1beta1                *dataformv1beta1.DataformV1beta1Client
-	datafusionV1beta1              *datafusionv1beta1.DatafusionV1beta1Client
-	dataplexV1alpha1               *dataplexv1alpha1.DataplexV1alpha1Client
-	dataprocV1alpha1               *dataprocv1alpha1.DataprocV1alpha1Client
-	dataprocV1beta1                *dataprocv1beta1.DataprocV1beta1Client
-	datastoreV1alpha1              *datastorev1alpha1.DatastoreV1alpha1Client
-	datastreamV1alpha1             *datastreamv1alpha1.DatastreamV1alpha1Client
-	deploymentmanagerV1alpha1      *deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Client
-	devicestreamingV1alpha1        *devicestreamingv1alpha1.DevicestreamingV1alpha1Client
-	dialogflowV1alpha1             *dialogflowv1alpha1.DialogflowV1alpha1Client
-	dialogflowcxV1alpha1           *dialogflowcxv1alpha1.DialogflowcxV1alpha1Client
-	discoveryengineV1alpha1        *discoveryenginev1alpha1.DiscoveryengineV1alpha1Client
-	dlpV1beta1                     *dlpv1beta1.DlpV1beta1Client
-	dnsV1alpha1                    *dnsv1alpha1.DnsV1alpha1Client
-	dnsV1beta1                     *dnsv1beta1.DnsV1beta1Client
-	documentaiV1alpha1             *documentaiv1alpha1.DocumentaiV1alpha1Client
-	documentaiV1beta1              *documentaiv1beta1.DocumentaiV1beta1Client
-	edgecontainerV1alpha1          *edgecontainerv1alpha1.EdgecontainerV1alpha1Client
-	edgecontainerV1beta1           *edgecontainerv1beta1.EdgecontainerV1beta1Client
-	edgenetworkV1beta1             *edgenetworkv1beta1.EdgenetworkV1beta1Client
-	essentialcontactsV1beta1       *essentialcontactsv1beta1.EssentialcontactsV1beta1Client
-	eventarcV1alpha1               *eventarcv1alpha1.EventarcV1alpha1Client
-	eventarcV1beta1                *eventarcv1beta1.EventarcV1beta1Client
-	filestoreV1alpha1              *filestorev1alpha1.FilestoreV1alpha1Client
-	filestoreV1beta1               *filestorev1beta1.FilestoreV1beta1Client
-	firebaseV1alpha1               *firebasev1alpha1.FirebaseV1alpha1Client
-	firebasedatabaseV1alpha1       *firebasedatabasev1alpha1.FirebasedatabaseV1alpha1Client
-	firebasehostingV1alpha1        *firebasehostingv1alpha1.FirebasehostingV1alpha1Client
-	firebasestorageV1alpha1        *firebasestoragev1alpha1.FirebasestorageV1alpha1Client
-	firestoreV1alpha1              *firestorev1alpha1.FirestoreV1alpha1Client
-	firestoreV1beta1               *firestorev1beta1.FirestoreV1beta1Client
-	gkebackupV1alpha1              *gkebackupv1alpha1.GkebackupV1alpha1Client
-	gkehubV1alpha1                 *gkehubv1alpha1.GkehubV1alpha1Client
-	gkehubV1beta1                  *gkehubv1beta1.GkehubV1beta1Client
-	healthcareV1alpha1             *healthcarev1alpha1.HealthcareV1alpha1Client
-	iamV1alpha1                    *iamv1alpha1.IamV1alpha1Client
-	iamV1beta1                     *iamv1beta1.IamV1beta1Client
-	iapV1beta1                     *iapv1beta1.IapV1beta1Client
-	identityplatformV1alpha1       *identityplatformv1alpha1.IdentityplatformV1alpha1Client
-	identityplatformV1beta1        *identityplatformv1beta1.IdentityplatformV1beta1Client
-	k8sV1alpha1                    *k8sv1alpha1.K8sV1alpha1Client
-	kmsV1alpha1                    *kmsv1alpha1.KmsV1alpha1Client
-	kmsV1beta1                     *kmsv1beta1.KmsV1beta1Client
-	loggingV1beta1                 *loggingv1beta1.LoggingV1beta1Client
-	managedkafkaV1alpha1           *managedkafkav1alpha1.ManagedkafkaV1alpha1Client
-	managedkafkaV1beta1            *managedkafkav1beta1.ManagedkafkaV1beta1Client
-	memcacheV1beta1                *memcachev1beta1.MemcacheV1beta1Client
-	memorystoreV1alpha1            *memorystorev1alpha1.MemorystoreV1alpha1Client
-	memorystoreV1beta1             *memorystorev1beta1.MemorystoreV1beta1Client
-	metastoreV1alpha1              *metastorev1alpha1.MetastoreV1alpha1Client
-	metastoreV1beta1               *metastorev1beta1.MetastoreV1beta1Client
-	mlengineV1alpha1               *mlenginev1alpha1.MlengineV1alpha1Client
-	monitoringV1beta1              *monitoringv1beta1.MonitoringV1beta1Client
-	netappV1alpha1                 *netappv1alpha1.NetappV1alpha1Client
-	networkconnectivityV1alpha1    *networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Client
-	networkconnectivityV1beta1     *networkconnectivityv1beta1.NetworkconnectivityV1beta1Client
-	networkmanagementV1alpha1      *networkmanagementv1alpha1.NetworkmanagementV1alpha1Client
-	networksecurityV1alpha1        *networksecurityv1alpha1.NetworksecurityV1alpha1Client
-	networksecurityV1beta1         *networksecurityv1beta1.NetworksecurityV1beta1Client
-	networkservicesV1alpha1        *networkservicesv1alpha1.NetworkservicesV1alpha1Client
-	networkservicesV1beta1         *networkservicesv1beta1.NetworkservicesV1beta1Client
-	notebooksV1alpha1              *notebooksv1alpha1.NotebooksV1alpha1Client
-	notebooksV1beta1               *notebooksv1beta1.NotebooksV1beta1Client
-	orgpolicyV1alpha1              *orgpolicyv1alpha1.OrgpolicyV1alpha1Client
-	orgpolicyV1beta1               *orgpolicyv1beta1.OrgpolicyV1beta1Client
-	osconfigV1alpha1               *osconfigv1alpha1.OsconfigV1alpha1Client
-	osconfigV1beta1                *osconfigv1beta1.OsconfigV1beta1Client
-	osloginV1alpha1                *osloginv1alpha1.OsloginV1alpha1Client
-	parametermanagerV1alpha1       *parametermanagerv1alpha1.ParametermanagerV1alpha1Client
-	privatecaV1beta1               *privatecav1beta1.PrivatecaV1beta1Client
-	privilegedaccessmanagerV1beta1 *privilegedaccessmanagerv1beta1.PrivilegedaccessmanagerV1beta1Client
-	pubsubV1beta1                  *pubsubv1beta1.PubsubV1beta1Client
-	pubsubliteV1alpha1             *pubsublitev1alpha1.PubsubliteV1alpha1Client
-	pubsubliteV1beta1              *pubsublitev1beta1.PubsubliteV1beta1Client
-	recaptchaenterpriseV1alpha1    *recaptchaenterprisev1alpha1.RecaptchaenterpriseV1alpha1Client
-	recaptchaenterpriseV1beta1     *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
-	redisV1beta1                   *redisv1beta1.RedisV1beta1Client
-	resourcemanagerV1beta1         *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
-	runV1beta1                     *runv1beta1.RunV1beta1Client
-	secretmanagerV1beta1           *secretmanagerv1beta1.SecretmanagerV1beta1Client
-	securesourcemanagerV1beta1     *securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Client
-	securitycenterV1alpha1         *securitycenterv1alpha1.SecuritycenterV1alpha1Client
-	servicedirectoryV1beta1        *servicedirectoryv1beta1.ServicedirectoryV1beta1Client
-	servicenetworkingV1alpha1      *servicenetworkingv1alpha1.ServicenetworkingV1alpha1Client
-	servicenetworkingV1beta1       *servicenetworkingv1beta1.ServicenetworkingV1beta1Client
-	serviceusageV1alpha1           *serviceusagev1alpha1.ServiceusageV1alpha1Client
-	serviceusageV1beta1            *serviceusagev1beta1.ServiceusageV1beta1Client
-	sourcerepoV1beta1              *sourcerepov1beta1.SourcerepoV1beta1Client
-	spannerV1alpha1                *spannerv1alpha1.SpannerV1alpha1Client
-	spannerV1beta1                 *spannerv1beta1.SpannerV1beta1Client
-	speechV1beta1                  *speechv1beta1.SpeechV1beta1Client
-	sqlV1beta1                     *sqlv1beta1.SqlV1beta1Client
-	storageV1alpha1                *storagev1alpha1.StorageV1alpha1Client
-	storageV1beta1                 *storagev1beta1.StorageV1beta1Client
-	storagetransferV1alpha1        *storagetransferv1alpha1.StoragetransferV1alpha1Client
-	storagetransferV1beta1         *storagetransferv1beta1.StoragetransferV1beta1Client
-	tagsV1beta1                    *tagsv1beta1.TagsV1beta1Client
-	tpuV1alpha1                    *tpuv1alpha1.TpuV1alpha1Client
-	vertexaiV1alpha1               *vertexaiv1alpha1.VertexaiV1alpha1Client
-	vertexaiV1beta1                *vertexaiv1beta1.VertexaiV1beta1Client
-	vmwareengineV1alpha1           *vmwareenginev1alpha1.VmwareengineV1alpha1Client
-	vmwareengineV1beta1            *vmwareenginev1beta1.VmwareengineV1beta1Client
-	vpcaccessV1beta1               *vpcaccessv1beta1.VpcaccessV1beta1Client
-	workflowexecutionsV1alpha1     *workflowexecutionsv1alpha1.WorkflowexecutionsV1alpha1Client
-	workflowsV1alpha1              *workflowsv1alpha1.WorkflowsV1alpha1Client
-	workstationsV1beta1            *workstationsv1beta1.WorkstationsV1beta1Client
+	accesscontextmanagerV1beta1     *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
+	accesscontextmanagerV1alpha1    *accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Client
+	aiplatformV1alpha1              *aiplatformv1alpha1.AiplatformV1alpha1Client
+	aistreamsV1alpha1               *aistreamsv1alpha1.AistreamsV1alpha1Client
+	alloydbV1beta1                  *alloydbv1beta1.AlloydbV1beta1Client
+	analyticsV1alpha1               *analyticsv1alpha1.AnalyticsV1alpha1Client
+	apigatewayV1alpha1              *apigatewayv1alpha1.ApigatewayV1alpha1Client
+	apigatewayV1beta1               *apigatewayv1beta1.ApigatewayV1beta1Client
+	apigeeV1alpha1                  *apigeev1alpha1.ApigeeV1alpha1Client
+	apigeeV1beta1                   *apigeev1beta1.ApigeeV1beta1Client
+	apigeeregistryV1alpha1          *apigeeregistryv1alpha1.ApigeeregistryV1alpha1Client
+	apihubV1alpha1                  *apihubv1alpha1.ApihubV1alpha1Client
+	apikeysV1alpha1                 *apikeysv1alpha1.ApikeysV1alpha1Client
+	appengineV1alpha1               *appenginev1alpha1.AppengineV1alpha1Client
+	apphubV1alpha1                  *apphubv1alpha1.ApphubV1alpha1Client
+	apphubV1beta1                   *apphubv1beta1.ApphubV1beta1Client
+	artifactregistryV1alpha1        *artifactregistryv1alpha1.ArtifactregistryV1alpha1Client
+	artifactregistryV1beta1         *artifactregistryv1beta1.ArtifactregistryV1beta1Client
+	assetV1beta1                    *assetv1beta1.AssetV1beta1Client
+	assuredworkloadsV1alpha1        *assuredworkloadsv1alpha1.AssuredworkloadsV1alpha1Client
+	automlV1alpha1                  *automlv1alpha1.AutomlV1alpha1Client
+	backupdrV1alpha1                *backupdrv1alpha1.BackupdrV1alpha1Client
+	backupdrV1beta1                 *backupdrv1beta1.BackupdrV1beta1Client
+	batchV1alpha1                   *batchv1alpha1.BatchV1alpha1Client
+	beyondcorpV1alpha1              *beyondcorpv1alpha1.BeyondcorpV1alpha1Client
+	bigqueryV1alpha1                *bigqueryv1alpha1.BigqueryV1alpha1Client
+	bigqueryV1beta1                 *bigqueryv1beta1.BigqueryV1beta1Client
+	bigqueryanalyticshubV1beta1     *bigqueryanalyticshubv1beta1.BigqueryanalyticshubV1beta1Client
+	bigquerybiglakeV1alpha1         *bigquerybiglakev1alpha1.BigquerybiglakeV1alpha1Client
+	bigquerybiglakeV1beta1          *bigquerybiglakev1beta1.BigquerybiglakeV1beta1Client
+	bigqueryconnectionV1beta1       *bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Client
+	bigquerydatapolicyV1alpha1      *bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Client
+	bigquerydatatransferV1beta1     *bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Client
+	bigquerymigrationV1alpha1       *bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Client
+	bigqueryreservationV1alpha1     *bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Client
+	bigqueryreservationV1beta1      *bigqueryreservationv1beta1.BigqueryreservationV1beta1Client
+	bigtableV1alpha1                *bigtablev1alpha1.BigtableV1alpha1Client
+	bigtableV1beta1                 *bigtablev1beta1.BigtableV1beta1Client
+	billingV1alpha1                 *billingv1alpha1.BillingV1alpha1Client
+	billingbudgetsV1beta1           *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
+	binaryauthorizationV1alpha1     *binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Client
+	binaryauthorizationV1beta1      *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
+	certificatemanagerV1alpha1      *certificatemanagerv1alpha1.CertificatemanagerV1alpha1Client
+	certificatemanagerV1beta1       *certificatemanagerv1beta1.CertificatemanagerV1beta1Client
+	cloudassetV1alpha1              *cloudassetv1alpha1.CloudassetV1alpha1Client
+	cloudbuildV1alpha1              *cloudbuildv1alpha1.CloudbuildV1alpha1Client
+	cloudbuildV1beta1               *cloudbuildv1beta1.CloudbuildV1beta1Client
+	clouddeployV1alpha1             *clouddeployv1alpha1.ClouddeployV1alpha1Client
+	clouddeployV1beta1              *clouddeployv1beta1.ClouddeployV1beta1Client
+	clouddmsV1alpha1                *clouddmsv1alpha1.ClouddmsV1alpha1Client
+	cloudfunctionsV1beta1           *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
+	cloudfunctions2V1alpha1         *cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Client
+	cloudidentityV1beta1            *cloudidentityv1beta1.CloudidentityV1beta1Client
+	cloudidsV1beta1                 *cloudidsv1beta1.CloudidsV1beta1Client
+	cloudiotV1alpha1                *cloudiotv1alpha1.CloudiotV1alpha1Client
+	cloudquotaV1beta1               *cloudquotav1beta1.CloudquotaV1beta1Client
+	cloudschedulerV1beta1           *cloudschedulerv1beta1.CloudschedulerV1beta1Client
+	cloudsecuritycomplianceV1alpha1 *cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Client
+	cloudtasksV1alpha1              *cloudtasksv1alpha1.CloudtasksV1alpha1Client
+	colabV1alpha1                   *colabv1alpha1.ColabV1alpha1Client
+	composerV1beta1                 *composerv1beta1.ComposerV1beta1Client
+	computeV1alpha1                 *computev1alpha1.ComputeV1alpha1Client
+	computeV1beta1                  *computev1beta1.ComputeV1beta1Client
+	configcontrollerV1beta1         *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
+	configdeliveryV1alpha1          *configdeliveryv1alpha1.ConfigdeliveryV1alpha1Client
+	contactcenterinsightsV1alpha1   *contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Client
+	containerV1beta1                *containerv1beta1.ContainerV1beta1Client
+	containeranalysisV1alpha1       *containeranalysisv1alpha1.ContaineranalysisV1alpha1Client
+	containeranalysisV1beta1        *containeranalysisv1beta1.ContaineranalysisV1beta1Client
+	containerattachedV1beta1        *containerattachedv1beta1.ContainerattachedV1beta1Client
+	contentwarehouseV1alpha1        *contentwarehousev1alpha1.ContentwarehouseV1alpha1Client
+	datacatalogV1alpha1             *datacatalogv1alpha1.DatacatalogV1alpha1Client
+	datacatalogV1beta1              *datacatalogv1beta1.DatacatalogV1beta1Client
+	dataflowV1beta1                 *dataflowv1beta1.DataflowV1beta1Client
+	dataformV1alpha1                *dataformv1alpha1.DataformV1alpha1Client
+	dataformV1beta1                 *dataformv1beta1.DataformV1beta1Client
+	datafusionV1beta1               *datafusionv1beta1.DatafusionV1beta1Client
+	datalabelingV1alpha1            *datalabelingv1alpha1.DatalabelingV1alpha1Client
+	datamigrationV1alpha1           *datamigrationv1alpha1.DatamigrationV1alpha1Client
+	dataplexV1alpha1                *dataplexv1alpha1.DataplexV1alpha1Client
+	dataprocV1alpha1                *dataprocv1alpha1.DataprocV1alpha1Client
+	dataprocV1beta1                 *dataprocv1beta1.DataprocV1beta1Client
+	datastoreV1alpha1               *datastorev1alpha1.DatastoreV1alpha1Client
+	datastreamV1alpha1              *datastreamv1alpha1.DatastreamV1alpha1Client
+	deploymentmanagerV1alpha1       *deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Client
+	developerconnectV1alpha1        *developerconnectv1alpha1.DeveloperconnectV1alpha1Client
+	devicestreamingV1alpha1         *devicestreamingv1alpha1.DevicestreamingV1alpha1Client
+	dialogflowV1alpha1              *dialogflowv1alpha1.DialogflowV1alpha1Client
+	dialogflowcxV1alpha1            *dialogflowcxv1alpha1.DialogflowcxV1alpha1Client
+	discoveryengineV1alpha1         *discoveryenginev1alpha1.DiscoveryengineV1alpha1Client
+	dlpV1alpha1                     *dlpv1alpha1.DlpV1alpha1Client
+	dlpV1beta1                      *dlpv1beta1.DlpV1beta1Client
+	dnsV1alpha1                     *dnsv1alpha1.DnsV1alpha1Client
+	dnsV1beta1                      *dnsv1beta1.DnsV1beta1Client
+	documentaiV1alpha1              *documentaiv1alpha1.DocumentaiV1alpha1Client
+	documentaiV1beta1               *documentaiv1beta1.DocumentaiV1beta1Client
+	edgecontainerV1alpha1           *edgecontainerv1alpha1.EdgecontainerV1alpha1Client
+	edgecontainerV1beta1            *edgecontainerv1beta1.EdgecontainerV1beta1Client
+	edgenetworkV1beta1              *edgenetworkv1beta1.EdgenetworkV1beta1Client
+	essentialcontactsV1beta1        *essentialcontactsv1beta1.EssentialcontactsV1beta1Client
+	eventarcV1alpha1                *eventarcv1alpha1.EventarcV1alpha1Client
+	eventarcV1beta1                 *eventarcv1beta1.EventarcV1beta1Client
+	filestoreV1alpha1               *filestorev1alpha1.FilestoreV1alpha1Client
+	filestoreV1beta1                *filestorev1beta1.FilestoreV1beta1Client
+	firebaseV1alpha1                *firebasev1alpha1.FirebaseV1alpha1Client
+	firebasedatabaseV1alpha1        *firebasedatabasev1alpha1.FirebasedatabaseV1alpha1Client
+	firebasehostingV1alpha1         *firebasehostingv1alpha1.FirebasehostingV1alpha1Client
+	firebasestorageV1alpha1         *firebasestoragev1alpha1.FirebasestorageV1alpha1Client
+	firestoreV1alpha1               *firestorev1alpha1.FirestoreV1alpha1Client
+	firestoreV1beta1                *firestorev1beta1.FirestoreV1beta1Client
+	gkebackupV1alpha1               *gkebackupv1alpha1.GkebackupV1alpha1Client
+	gkehubV1alpha1                  *gkehubv1alpha1.GkehubV1alpha1Client
+	gkehubV1beta1                   *gkehubv1beta1.GkehubV1beta1Client
+	healthcareV1alpha1              *healthcarev1alpha1.HealthcareV1alpha1Client
+	iamV1alpha1                     *iamv1alpha1.IamV1alpha1Client
+	iamV1beta1                      *iamv1beta1.IamV1beta1Client
+	iapV1beta1                      *iapv1beta1.IapV1beta1Client
+	identityplatformV1alpha1        *identityplatformv1alpha1.IdentityplatformV1alpha1Client
+	identityplatformV1beta1         *identityplatformv1beta1.IdentityplatformV1beta1Client
+	k8sV1alpha1                     *k8sv1alpha1.K8sV1alpha1Client
+	kmsV1alpha1                     *kmsv1alpha1.KmsV1alpha1Client
+	kmsV1beta1                      *kmsv1beta1.KmsV1beta1Client
+	loggingV1beta1                  *loggingv1beta1.LoggingV1beta1Client
+	managedkafkaV1alpha1            *managedkafkav1alpha1.ManagedkafkaV1alpha1Client
+	managedkafkaV1beta1             *managedkafkav1beta1.ManagedkafkaV1beta1Client
+	memcacheV1beta1                 *memcachev1beta1.MemcacheV1beta1Client
+	memorystoreV1alpha1             *memorystorev1alpha1.MemorystoreV1alpha1Client
+	memorystoreV1beta1              *memorystorev1beta1.MemorystoreV1beta1Client
+	metastoreV1alpha1               *metastorev1alpha1.MetastoreV1alpha1Client
+	metastoreV1beta1                *metastorev1beta1.MetastoreV1beta1Client
+	mlengineV1alpha1                *mlenginev1alpha1.MlengineV1alpha1Client
+	modelarmorV1alpha1              *modelarmorv1alpha1.ModelarmorV1alpha1Client
+	monitoringV1beta1               *monitoringv1beta1.MonitoringV1beta1Client
+	netappV1alpha1                  *netappv1alpha1.NetappV1alpha1Client
+	networkconnectivityV1alpha1     *networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Client
+	networkconnectivityV1beta1      *networkconnectivityv1beta1.NetworkconnectivityV1beta1Client
+	networkmanagementV1alpha1       *networkmanagementv1alpha1.NetworkmanagementV1alpha1Client
+	networksecurityV1alpha1         *networksecurityv1alpha1.NetworksecurityV1alpha1Client
+	networksecurityV1beta1          *networksecurityv1beta1.NetworksecurityV1beta1Client
+	networkservicesV1alpha1         *networkservicesv1alpha1.NetworkservicesV1alpha1Client
+	networkservicesV1beta1          *networkservicesv1beta1.NetworkservicesV1beta1Client
+	notebooksV1alpha1               *notebooksv1alpha1.NotebooksV1alpha1Client
+	notebooksV1beta1                *notebooksv1beta1.NotebooksV1beta1Client
+	orgpolicyV1beta1                *orgpolicyv1beta1.OrgpolicyV1beta1Client
+	osconfigV1alpha1                *osconfigv1alpha1.OsconfigV1alpha1Client
+	osconfigV1beta1                 *osconfigv1beta1.OsconfigV1beta1Client
+	osloginV1alpha1                 *osloginv1alpha1.OsloginV1alpha1Client
+	parametermanagerV1alpha1        *parametermanagerv1alpha1.ParametermanagerV1alpha1Client
+	privatecaV1beta1                *privatecav1beta1.PrivatecaV1beta1Client
+	privilegedaccessmanagerV1beta1  *privilegedaccessmanagerv1beta1.PrivilegedaccessmanagerV1beta1Client
+	pubsubV1beta1                   *pubsubv1beta1.PubsubV1beta1Client
+	pubsubliteV1alpha1              *pubsublitev1alpha1.PubsubliteV1alpha1Client
+	pubsubliteV1beta1               *pubsublitev1beta1.PubsubliteV1beta1Client
+	recaptchaenterpriseV1alpha1     *recaptchaenterprisev1alpha1.RecaptchaenterpriseV1alpha1Client
+	recaptchaenterpriseV1beta1      *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
+	redisV1beta1                    *redisv1beta1.RedisV1beta1Client
+	resourcemanagerV1beta1          *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
+	runV1beta1                      *runv1beta1.RunV1beta1Client
+	secretmanagerV1beta1            *secretmanagerv1beta1.SecretmanagerV1beta1Client
+	securesourcemanagerV1beta1      *securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Client
+	securitycenterV1alpha1          *securitycenterv1alpha1.SecuritycenterV1alpha1Client
+	servicedirectoryV1beta1         *servicedirectoryv1beta1.ServicedirectoryV1beta1Client
+	servicenetworkingV1alpha1       *servicenetworkingv1alpha1.ServicenetworkingV1alpha1Client
+	servicenetworkingV1beta1        *servicenetworkingv1beta1.ServicenetworkingV1beta1Client
+	serviceusageV1alpha1            *serviceusagev1alpha1.ServiceusageV1alpha1Client
+	serviceusageV1beta1             *serviceusagev1beta1.ServiceusageV1beta1Client
+	sourcerepoV1beta1               *sourcerepov1beta1.SourcerepoV1beta1Client
+	spannerV1alpha1                 *spannerv1alpha1.SpannerV1alpha1Client
+	spannerV1beta1                  *spannerv1beta1.SpannerV1beta1Client
+	speechV1beta1                   *speechv1beta1.SpeechV1beta1Client
+	sqlV1beta1                      *sqlv1beta1.SqlV1beta1Client
+	storageV1alpha1                 *storagev1alpha1.StorageV1alpha1Client
+	storageV1beta1                  *storagev1beta1.StorageV1beta1Client
+	storagetransferV1alpha1         *storagetransferv1alpha1.StoragetransferV1alpha1Client
+	storagetransferV1beta1          *storagetransferv1beta1.StoragetransferV1beta1Client
+	tagsV1beta1                     *tagsv1beta1.TagsV1beta1Client
+	tpuV1alpha1                     *tpuv1alpha1.TpuV1alpha1Client
+	vertexaiV1alpha1                *vertexaiv1alpha1.VertexaiV1alpha1Client
+	vertexaiV1beta1                 *vertexaiv1beta1.VertexaiV1beta1Client
+	vmwareengineV1alpha1            *vmwareenginev1alpha1.VmwareengineV1alpha1Client
+	vmwareengineV1beta1             *vmwareenginev1beta1.VmwareengineV1beta1Client
+	vpcaccessV1beta1                *vpcaccessv1beta1.VpcaccessV1beta1Client
+	workflowexecutionsV1alpha1      *workflowexecutionsv1alpha1.WorkflowexecutionsV1alpha1Client
+	workflowsV1alpha1               *workflowsv1alpha1.WorkflowsV1alpha1Client
+	workstationsV1beta1             *workstationsv1beta1.WorkstationsV1beta1Client
 }
 
 // AccesscontextmanagerV1beta1 retrieves the AccesscontextmanagerV1beta1Client
@@ -605,6 +644,11 @@ func (c *Clientset) ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface {
 	return c.apigeeV1beta1
 }
 
+// ApigeeregistryV1alpha1 retrieves the ApigeeregistryV1alpha1Client
+func (c *Clientset) ApigeeregistryV1alpha1() apigeeregistryv1alpha1.ApigeeregistryV1alpha1Interface {
+	return c.apigeeregistryV1alpha1
+}
+
 // ApihubV1alpha1 retrieves the ApihubV1alpha1Client
 func (c *Clientset) ApihubV1alpha1() apihubv1alpha1.ApihubV1alpha1Interface {
 	return c.apihubV1alpha1
@@ -630,6 +674,11 @@ func (c *Clientset) ApphubV1beta1() apphubv1beta1.ApphubV1beta1Interface {
 	return c.apphubV1beta1
 }
 
+// ArtifactregistryV1alpha1 retrieves the ArtifactregistryV1alpha1Client
+func (c *Clientset) ArtifactregistryV1alpha1() artifactregistryv1alpha1.ArtifactregistryV1alpha1Interface {
+	return c.artifactregistryV1alpha1
+}
+
 // ArtifactregistryV1beta1 retrieves the ArtifactregistryV1beta1Client
 func (c *Clientset) ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface {
 	return c.artifactregistryV1beta1
@@ -643,6 +692,11 @@ func (c *Clientset) AssetV1beta1() assetv1beta1.AssetV1beta1Interface {
 // AssuredworkloadsV1alpha1 retrieves the AssuredworkloadsV1alpha1Client
 func (c *Clientset) AssuredworkloadsV1alpha1() assuredworkloadsv1alpha1.AssuredworkloadsV1alpha1Interface {
 	return c.assuredworkloadsV1alpha1
+}
+
+// AutomlV1alpha1 retrieves the AutomlV1alpha1Client
+func (c *Clientset) AutomlV1alpha1() automlv1alpha1.AutomlV1alpha1Interface {
+	return c.automlV1alpha1
 }
 
 // BackupdrV1alpha1 retrieves the BackupdrV1alpha1Client
@@ -705,6 +759,11 @@ func (c *Clientset) BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.Bi
 	return c.bigquerydatatransferV1beta1
 }
 
+// BigquerymigrationV1alpha1 retrieves the BigquerymigrationV1alpha1Client
+func (c *Clientset) BigquerymigrationV1alpha1() bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Interface {
+	return c.bigquerymigrationV1alpha1
+}
+
 // BigqueryreservationV1alpha1 retrieves the BigqueryreservationV1alpha1Client
 func (c *Clientset) BigqueryreservationV1alpha1() bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Interface {
 	return c.bigqueryreservationV1alpha1
@@ -758,6 +817,11 @@ func (c *Clientset) CertificatemanagerV1beta1() certificatemanagerv1beta1.Certif
 // CloudassetV1alpha1 retrieves the CloudassetV1alpha1Client
 func (c *Clientset) CloudassetV1alpha1() cloudassetv1alpha1.CloudassetV1alpha1Interface {
 	return c.cloudassetV1alpha1
+}
+
+// CloudbuildV1alpha1 retrieves the CloudbuildV1alpha1Client
+func (c *Clientset) CloudbuildV1alpha1() cloudbuildv1alpha1.CloudbuildV1alpha1Interface {
+	return c.cloudbuildV1alpha1
 }
 
 // CloudbuildV1beta1 retrieves the CloudbuildV1beta1Client
@@ -815,6 +879,11 @@ func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.Cloudscheduler
 	return c.cloudschedulerV1beta1
 }
 
+// CloudsecuritycomplianceV1alpha1 retrieves the CloudsecuritycomplianceV1alpha1Client
+func (c *Clientset) CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface {
+	return c.cloudsecuritycomplianceV1alpha1
+}
+
 // CloudtasksV1alpha1 retrieves the CloudtasksV1alpha1Client
 func (c *Clientset) CloudtasksV1alpha1() cloudtasksv1alpha1.CloudtasksV1alpha1Interface {
 	return c.cloudtasksV1alpha1
@@ -850,6 +919,11 @@ func (c *Clientset) ConfigdeliveryV1alpha1() configdeliveryv1alpha1.Configdelive
 	return c.configdeliveryV1alpha1
 }
 
+// ContactcenterinsightsV1alpha1 retrieves the ContactcenterinsightsV1alpha1Client
+func (c *Clientset) ContactcenterinsightsV1alpha1() contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Interface {
+	return c.contactcenterinsightsV1alpha1
+}
+
 // ContainerV1beta1 retrieves the ContainerV1beta1Client
 func (c *Clientset) ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface {
 	return c.containerV1beta1
@@ -870,6 +944,11 @@ func (c *Clientset) ContainerattachedV1beta1() containerattachedv1beta1.Containe
 	return c.containerattachedV1beta1
 }
 
+// ContentwarehouseV1alpha1 retrieves the ContentwarehouseV1alpha1Client
+func (c *Clientset) ContentwarehouseV1alpha1() contentwarehousev1alpha1.ContentwarehouseV1alpha1Interface {
+	return c.contentwarehouseV1alpha1
+}
+
 // DatacatalogV1alpha1 retrieves the DatacatalogV1alpha1Client
 func (c *Clientset) DatacatalogV1alpha1() datacatalogv1alpha1.DatacatalogV1alpha1Interface {
 	return c.datacatalogV1alpha1
@@ -885,6 +964,11 @@ func (c *Clientset) DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface {
 	return c.dataflowV1beta1
 }
 
+// DataformV1alpha1 retrieves the DataformV1alpha1Client
+func (c *Clientset) DataformV1alpha1() dataformv1alpha1.DataformV1alpha1Interface {
+	return c.dataformV1alpha1
+}
+
 // DataformV1beta1 retrieves the DataformV1beta1Client
 func (c *Clientset) DataformV1beta1() dataformv1beta1.DataformV1beta1Interface {
 	return c.dataformV1beta1
@@ -893,6 +977,16 @@ func (c *Clientset) DataformV1beta1() dataformv1beta1.DataformV1beta1Interface {
 // DatafusionV1beta1 retrieves the DatafusionV1beta1Client
 func (c *Clientset) DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface {
 	return c.datafusionV1beta1
+}
+
+// DatalabelingV1alpha1 retrieves the DatalabelingV1alpha1Client
+func (c *Clientset) DatalabelingV1alpha1() datalabelingv1alpha1.DatalabelingV1alpha1Interface {
+	return c.datalabelingV1alpha1
+}
+
+// DatamigrationV1alpha1 retrieves the DatamigrationV1alpha1Client
+func (c *Clientset) DatamigrationV1alpha1() datamigrationv1alpha1.DatamigrationV1alpha1Interface {
+	return c.datamigrationV1alpha1
 }
 
 // DataplexV1alpha1 retrieves the DataplexV1alpha1Client
@@ -925,6 +1019,11 @@ func (c *Clientset) DeploymentmanagerV1alpha1() deploymentmanagerv1alpha1.Deploy
 	return c.deploymentmanagerV1alpha1
 }
 
+// DeveloperconnectV1alpha1 retrieves the DeveloperconnectV1alpha1Client
+func (c *Clientset) DeveloperconnectV1alpha1() developerconnectv1alpha1.DeveloperconnectV1alpha1Interface {
+	return c.developerconnectV1alpha1
+}
+
 // DevicestreamingV1alpha1 retrieves the DevicestreamingV1alpha1Client
 func (c *Clientset) DevicestreamingV1alpha1() devicestreamingv1alpha1.DevicestreamingV1alpha1Interface {
 	return c.devicestreamingV1alpha1
@@ -943,6 +1042,11 @@ func (c *Clientset) DialogflowcxV1alpha1() dialogflowcxv1alpha1.DialogflowcxV1al
 // DiscoveryengineV1alpha1 retrieves the DiscoveryengineV1alpha1Client
 func (c *Clientset) DiscoveryengineV1alpha1() discoveryenginev1alpha1.DiscoveryengineV1alpha1Interface {
 	return c.discoveryengineV1alpha1
+}
+
+// DlpV1alpha1 retrieves the DlpV1alpha1Client
+func (c *Clientset) DlpV1alpha1() dlpv1alpha1.DlpV1alpha1Interface {
+	return c.dlpV1alpha1
 }
 
 // DlpV1beta1 retrieves the DlpV1beta1Client
@@ -1145,6 +1249,11 @@ func (c *Clientset) MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interfac
 	return c.mlengineV1alpha1
 }
 
+// ModelarmorV1alpha1 retrieves the ModelarmorV1alpha1Client
+func (c *Clientset) ModelarmorV1alpha1() modelarmorv1alpha1.ModelarmorV1alpha1Interface {
+	return c.modelarmorV1alpha1
+}
+
 // MonitoringV1beta1 retrieves the MonitoringV1beta1Client
 func (c *Clientset) MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface {
 	return c.monitoringV1beta1
@@ -1198,11 +1307,6 @@ func (c *Clientset) NotebooksV1alpha1() notebooksv1alpha1.NotebooksV1alpha1Inter
 // NotebooksV1beta1 retrieves the NotebooksV1beta1Client
 func (c *Clientset) NotebooksV1beta1() notebooksv1beta1.NotebooksV1beta1Interface {
 	return c.notebooksV1beta1
-}
-
-// OrgpolicyV1alpha1 retrieves the OrgpolicyV1alpha1Client
-func (c *Clientset) OrgpolicyV1alpha1() orgpolicyv1alpha1.OrgpolicyV1alpha1Interface {
-	return c.orgpolicyV1alpha1
 }
 
 // OrgpolicyV1beta1 retrieves the OrgpolicyV1beta1Client
@@ -1499,6 +1603,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.apigeeregistryV1alpha1, err = apigeeregistryv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.apihubV1alpha1, err = apihubv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1519,6 +1627,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.artifactregistryV1alpha1, err = artifactregistryv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.artifactregistryV1beta1, err = artifactregistryv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1528,6 +1640,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.assuredworkloadsV1alpha1, err = assuredworkloadsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.automlV1alpha1, err = automlv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1579,6 +1695,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.bigquerymigrationV1alpha1, err = bigquerymigrationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.bigqueryreservationV1alpha1, err = bigqueryreservationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1620,6 +1740,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.cloudassetV1alpha1, err = cloudassetv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.cloudbuildV1alpha1, err = cloudbuildv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1667,6 +1791,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.cloudsecuritycomplianceV1alpha1, err = cloudsecuritycompliancev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.cloudtasksV1alpha1, err = cloudtasksv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1695,6 +1823,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.contactcenterinsightsV1alpha1, err = contactcenterinsightsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.containerV1beta1, err = containerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1711,6 +1843,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.contentwarehouseV1alpha1, err = contentwarehousev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.datacatalogV1alpha1, err = datacatalogv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1723,11 +1859,23 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.dataformV1alpha1, err = dataformv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.dataformV1beta1, err = dataformv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
 	cs.datafusionV1beta1, err = datafusionv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.datalabelingV1alpha1, err = datalabelingv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.datamigrationV1alpha1, err = datamigrationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1755,6 +1903,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.developerconnectV1alpha1, err = developerconnectv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.devicestreamingV1alpha1, err = devicestreamingv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1768,6 +1920,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.discoveryengineV1alpha1, err = discoveryenginev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.dlpV1alpha1, err = dlpv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1931,6 +2087,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.modelarmorV1alpha1, err = modelarmorv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.monitoringV1beta1, err = monitoringv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1972,10 +2132,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.notebooksV1beta1, err = notebooksv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
-	cs.orgpolicyV1alpha1, err = orgpolicyv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2178,14 +2334,17 @@ func New(c rest.Interface) *Clientset {
 	cs.apigatewayV1beta1 = apigatewayv1beta1.New(c)
 	cs.apigeeV1alpha1 = apigeev1alpha1.New(c)
 	cs.apigeeV1beta1 = apigeev1beta1.New(c)
+	cs.apigeeregistryV1alpha1 = apigeeregistryv1alpha1.New(c)
 	cs.apihubV1alpha1 = apihubv1alpha1.New(c)
 	cs.apikeysV1alpha1 = apikeysv1alpha1.New(c)
 	cs.appengineV1alpha1 = appenginev1alpha1.New(c)
 	cs.apphubV1alpha1 = apphubv1alpha1.New(c)
 	cs.apphubV1beta1 = apphubv1beta1.New(c)
+	cs.artifactregistryV1alpha1 = artifactregistryv1alpha1.New(c)
 	cs.artifactregistryV1beta1 = artifactregistryv1beta1.New(c)
 	cs.assetV1beta1 = assetv1beta1.New(c)
 	cs.assuredworkloadsV1alpha1 = assuredworkloadsv1alpha1.New(c)
+	cs.automlV1alpha1 = automlv1alpha1.New(c)
 	cs.backupdrV1alpha1 = backupdrv1alpha1.New(c)
 	cs.backupdrV1beta1 = backupdrv1beta1.New(c)
 	cs.batchV1alpha1 = batchv1alpha1.New(c)
@@ -2198,6 +2357,7 @@ func New(c rest.Interface) *Clientset {
 	cs.bigqueryconnectionV1beta1 = bigqueryconnectionv1beta1.New(c)
 	cs.bigquerydatapolicyV1alpha1 = bigquerydatapolicyv1alpha1.New(c)
 	cs.bigquerydatatransferV1beta1 = bigquerydatatransferv1beta1.New(c)
+	cs.bigquerymigrationV1alpha1 = bigquerymigrationv1alpha1.New(c)
 	cs.bigqueryreservationV1alpha1 = bigqueryreservationv1alpha1.New(c)
 	cs.bigqueryreservationV1beta1 = bigqueryreservationv1beta1.New(c)
 	cs.bigtableV1alpha1 = bigtablev1alpha1.New(c)
@@ -2209,6 +2369,7 @@ func New(c rest.Interface) *Clientset {
 	cs.certificatemanagerV1alpha1 = certificatemanagerv1alpha1.New(c)
 	cs.certificatemanagerV1beta1 = certificatemanagerv1beta1.New(c)
 	cs.cloudassetV1alpha1 = cloudassetv1alpha1.New(c)
+	cs.cloudbuildV1alpha1 = cloudbuildv1alpha1.New(c)
 	cs.cloudbuildV1beta1 = cloudbuildv1beta1.New(c)
 	cs.clouddeployV1alpha1 = clouddeployv1alpha1.New(c)
 	cs.clouddeployV1beta1 = clouddeployv1beta1.New(c)
@@ -2220,6 +2381,7 @@ func New(c rest.Interface) *Clientset {
 	cs.cloudiotV1alpha1 = cloudiotv1alpha1.New(c)
 	cs.cloudquotaV1beta1 = cloudquotav1beta1.New(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.New(c)
+	cs.cloudsecuritycomplianceV1alpha1 = cloudsecuritycompliancev1alpha1.New(c)
 	cs.cloudtasksV1alpha1 = cloudtasksv1alpha1.New(c)
 	cs.colabV1alpha1 = colabv1alpha1.New(c)
 	cs.composerV1beta1 = composerv1beta1.New(c)
@@ -2227,25 +2389,32 @@ func New(c rest.Interface) *Clientset {
 	cs.computeV1beta1 = computev1beta1.New(c)
 	cs.configcontrollerV1beta1 = configcontrollerv1beta1.New(c)
 	cs.configdeliveryV1alpha1 = configdeliveryv1alpha1.New(c)
+	cs.contactcenterinsightsV1alpha1 = contactcenterinsightsv1alpha1.New(c)
 	cs.containerV1beta1 = containerv1beta1.New(c)
 	cs.containeranalysisV1alpha1 = containeranalysisv1alpha1.New(c)
 	cs.containeranalysisV1beta1 = containeranalysisv1beta1.New(c)
 	cs.containerattachedV1beta1 = containerattachedv1beta1.New(c)
+	cs.contentwarehouseV1alpha1 = contentwarehousev1alpha1.New(c)
 	cs.datacatalogV1alpha1 = datacatalogv1alpha1.New(c)
 	cs.datacatalogV1beta1 = datacatalogv1beta1.New(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.New(c)
+	cs.dataformV1alpha1 = dataformv1alpha1.New(c)
 	cs.dataformV1beta1 = dataformv1beta1.New(c)
 	cs.datafusionV1beta1 = datafusionv1beta1.New(c)
+	cs.datalabelingV1alpha1 = datalabelingv1alpha1.New(c)
+	cs.datamigrationV1alpha1 = datamigrationv1alpha1.New(c)
 	cs.dataplexV1alpha1 = dataplexv1alpha1.New(c)
 	cs.dataprocV1alpha1 = dataprocv1alpha1.New(c)
 	cs.dataprocV1beta1 = dataprocv1beta1.New(c)
 	cs.datastoreV1alpha1 = datastorev1alpha1.New(c)
 	cs.datastreamV1alpha1 = datastreamv1alpha1.New(c)
 	cs.deploymentmanagerV1alpha1 = deploymentmanagerv1alpha1.New(c)
+	cs.developerconnectV1alpha1 = developerconnectv1alpha1.New(c)
 	cs.devicestreamingV1alpha1 = devicestreamingv1alpha1.New(c)
 	cs.dialogflowV1alpha1 = dialogflowv1alpha1.New(c)
 	cs.dialogflowcxV1alpha1 = dialogflowcxv1alpha1.New(c)
 	cs.discoveryengineV1alpha1 = discoveryenginev1alpha1.New(c)
+	cs.dlpV1alpha1 = dlpv1alpha1.New(c)
 	cs.dlpV1beta1 = dlpv1beta1.New(c)
 	cs.dnsV1alpha1 = dnsv1alpha1.New(c)
 	cs.dnsV1beta1 = dnsv1beta1.New(c)
@@ -2286,6 +2455,7 @@ func New(c rest.Interface) *Clientset {
 	cs.metastoreV1alpha1 = metastorev1alpha1.New(c)
 	cs.metastoreV1beta1 = metastorev1beta1.New(c)
 	cs.mlengineV1alpha1 = mlenginev1alpha1.New(c)
+	cs.modelarmorV1alpha1 = modelarmorv1alpha1.New(c)
 	cs.monitoringV1beta1 = monitoringv1beta1.New(c)
 	cs.netappV1alpha1 = netappv1alpha1.New(c)
 	cs.networkconnectivityV1alpha1 = networkconnectivityv1alpha1.New(c)
@@ -2297,7 +2467,6 @@ func New(c rest.Interface) *Clientset {
 	cs.networkservicesV1beta1 = networkservicesv1beta1.New(c)
 	cs.notebooksV1alpha1 = notebooksv1alpha1.New(c)
 	cs.notebooksV1beta1 = notebooksv1beta1.New(c)
-	cs.orgpolicyV1alpha1 = orgpolicyv1alpha1.New(c)
 	cs.orgpolicyV1beta1 = orgpolicyv1beta1.New(c)
 	cs.osconfigV1alpha1 = osconfigv1alpha1.New(c)
 	cs.osconfigV1beta1 = osconfigv1beta1.New(c)

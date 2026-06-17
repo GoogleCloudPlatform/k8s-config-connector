@@ -42,7 +42,7 @@ type CloudBuildTriggerRef struct {
 }
 
 func init() {
-	refs.Register(&CloudBuildTriggerRef{})
+	refs.Register(&CloudBuildTriggerRef{}, &CloudBuildTrigger{})
 }
 
 func (r *CloudBuildTriggerRef) GetGVK() schema.GroupVersionKind {
@@ -62,6 +62,8 @@ func (r *CloudBuildTriggerRef) GetExternal() string {
 
 func (r *CloudBuildTriggerRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CloudBuildTriggerRef) ValidateExternal(ref string) error {

@@ -16,7 +16,7 @@ title: "ComputeHealthCheck"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/compute/docs/">/compute/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/compute/docs/">https://docs.cloud.google.com/compute/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -28,8 +28,8 @@ title: "ComputeHealthCheck"
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
 <td>
-<pre><a href="/compute/docs/reference/rest/v1/healthChecks">/compute/docs/reference/rest/v1/healthChecks</a></pre>
-<pre><a href="/compute/docs/reference/rest/v1/regionHealthChecks">/compute/docs/reference/rest/v1/regionHealthChecks</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/healthChecks">https://docs.cloud.google.com/compute/docs/reference/rest/v1/healthChecks</a></pre>
+<pre><a href="https://docs.cloud.google.com/compute/docs/reference/rest/v1/regionHealthChecks">https://docs.cloud.google.com/compute/docs/reference/rest/v1/regionHealthChecks</a></pre>
 </td>
 </tr>
 <tr>
@@ -115,6 +115,8 @@ location: string
 logConfig:
   enable: boolean
 resourceID: string
+sourceRegions:
+- string
 sslHealthCheck:
   port: integer
   portName: string
@@ -147,8 +149,7 @@ unhealthyThreshold: integer
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>How often (in seconds) to send a health check. The default value is 5
-seconds.</p>
+            <p>How often (in seconds) to send a health check. The default value is 5 seconds.</p>
         </td>
     </tr>
     <tr>
@@ -158,8 +159,7 @@ seconds.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>An optional description of this resource. Provide this property when
-you create the resource.</p>
+            <p>An optional description of this resource. Provide this property when you create the resource.</p>
         </td>
     </tr>
     <tr>
@@ -169,7 +169,7 @@ you create the resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A nested object resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -179,11 +179,7 @@ you create the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The gRPC service name for the health check.
-The value of grpcServiceName has the following meanings by convention:
-  - Empty serviceName means the overall status of all services at the backend.
-  - Non-empty serviceName means the health of that gRPC service, as defined by the owner of the service.
-The grpcServiceName can only be ASCII.</p>
+            <p>The gRPC service name for the health check. The value of grpcServiceName has the following meanings by convention: - Empty serviceName means the overall status of all services at the backend. - Non-empty serviceName means the health of that gRPC service, as defined by the owner of the service. The grpcServiceName can only be ASCII.</p>
         </td>
     </tr>
     <tr>
@@ -193,9 +189,7 @@ The grpcServiceName can only be ASCII.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The port number for the health check request.
-Must be specified if portName and portSpecification are not set
-or if port_specification is USE_FIXED_PORT. Valid values are 1 through 65535.</p>
+            <p>The port number for the health check request. Must be specified if portName and portSpecification are not set or if port_specification is USE_FIXED_PORT. Valid values are 1 through 65535.</p>
         </td>
     </tr>
     <tr>
@@ -205,8 +199,7 @@ or if port_specification is USE_FIXED_PORT. Valid values are 1 through 65535.</p
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Port name as defined in InstanceGroup#NamedPort#name. If both port and
-port_name are defined, port takes precedence.</p>
+            <p>Port name as defined in InstanceGroup#NamedPort#name. If both port and port_name are defined, port takes precedence.</p>
         </td>
     </tr>
     <tr>
@@ -216,20 +209,7 @@ port_name are defined, port takes precedence.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies how port is selected for health checking, can be one of the
-following values:
-
-  * 'USE_FIXED_PORT': The port number in 'port' is used for health checking.
-
-  * 'USE_NAMED_PORT': The 'portName' is used for health checking.
-
-  * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each
-  network endpoint is used for health checking. For other backends, the
-  port or named port specified in the Backend Service is used for health
-  checking.
-
-If not specified, gRPC health check follows behavior specified in 'port' and
-'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].</p>
+            <p>Specifies how port is selected for health checking, can be one of the following values: * 'USE_FIXED_PORT': The port number in 'port' is used for health checking. * 'USE_NAMED_PORT': The 'portName' is used for health checking. * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, gRPC health check follows behavior specified in 'port' and 'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].</p>
         </td>
     </tr>
     <tr>
@@ -239,8 +219,7 @@ If not specified, gRPC health check follows behavior specified in 'port' and
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>A so-far unhealthy instance will be marked healthy after this many
-consecutive successes. The default value is 2.</p>
+            <p>A so-far unhealthy instance will be marked healthy after this many consecutive successes. The default value is 2.</p>
         </td>
     </tr>
     <tr>
@@ -250,7 +229,7 @@ consecutive successes. The default value is 2.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A nested object resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -260,9 +239,7 @@ consecutive successes. The default value is 2.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of the host header in the HTTP2 health check request.
-If left empty (default value), the public IP on behalf of which this health
-check is performed will be used.</p>
+            <p>The value of the host header in the HTTP2 health check request. If left empty (default value), the public IP on behalf of which this health check is performed will be used.</p>
         </td>
     </tr>
     <tr>
@@ -272,8 +249,7 @@ check is performed will be used.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The TCP port number for the HTTP2 health check request.
-The default value is 443.</p>
+            <p>The TCP port number for the HTTP2 health check request. The default value is 443.</p>
         </td>
     </tr>
     <tr>
@@ -283,8 +259,7 @@ The default value is 443.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Port name as defined in InstanceGroup#NamedPort#name. If both port and
-port_name are defined, port takes precedence.</p>
+            <p>Port name as defined in InstanceGroup#NamedPort#name. If both port and port_name are defined, port takes precedence.</p>
         </td>
     </tr>
     <tr>
@@ -294,20 +269,7 @@ port_name are defined, port takes precedence.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies how port is selected for health checking, can be one of the
-following values:
-
-  * 'USE_FIXED_PORT': The port number in 'port' is used for health checking.
-
-  * 'USE_NAMED_PORT': The 'portName' is used for health checking.
-
-  * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each
-  network endpoint is used for health checking. For other backends, the
-  port or named port specified in the Backend Service is used for health
-  checking.
-
-If not specified, HTTP2 health check follows behavior specified in 'port' and
-'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].</p>
+            <p>Specifies how port is selected for health checking, can be one of the following values: * 'USE_FIXED_PORT': The port number in 'port' is used for health checking. * 'USE_NAMED_PORT': The 'portName' is used for health checking. * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, HTTP2 health check follows behavior specified in 'port' and 'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].</p>
         </td>
     </tr>
     <tr>
@@ -317,8 +279,7 @@ If not specified, HTTP2 health check follows behavior specified in 'port' and
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies the type of proxy header to append before sending data to the
-backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
+            <p>Specifies the type of proxy header to append before sending data to the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
         </td>
     </tr>
     <tr>
@@ -328,8 +289,7 @@ backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The request path of the HTTP2 health check request.
-The default value is /.</p>
+            <p>The request path of the HTTP2 health check request. The default value is /.</p>
         </td>
     </tr>
     <tr>
@@ -339,9 +299,7 @@ The default value is /.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The bytes to match against the beginning of the response data. If left empty
-(the default value), any response will indicate health. The response data
-can only be ASCII.</p>
+            <p>The bytes to match against the beginning of the response data. If left empty (the default value), any response will indicate health. The response data can only be ASCII.</p>
         </td>
     </tr>
     <tr>
@@ -351,7 +309,7 @@ can only be ASCII.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A nested object resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -361,9 +319,7 @@ can only be ASCII.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of the host header in the HTTP health check request.
-If left empty (default value), the public IP on behalf of which this health
-check is performed will be used.</p>
+            <p>The value of the host header in the HTTP health check request. If left empty (default value), the public IP on behalf of which this health check is performed will be used.</p>
         </td>
     </tr>
     <tr>
@@ -373,8 +329,7 @@ check is performed will be used.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The TCP port number for the HTTP health check request.
-The default value is 80.</p>
+            <p>The TCP port number for the HTTP health check request. The default value is 80.</p>
         </td>
     </tr>
     <tr>
@@ -384,8 +339,7 @@ The default value is 80.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Port name as defined in InstanceGroup#NamedPort#name. If both port and
-port_name are defined, port takes precedence.</p>
+            <p>Port name as defined in InstanceGroup#NamedPort#name. If both port and port_name are defined, port takes precedence.</p>
         </td>
     </tr>
     <tr>
@@ -395,20 +349,7 @@ port_name are defined, port takes precedence.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies how port is selected for health checking, can be one of the
-following values:
-
-  * 'USE_FIXED_PORT': The port number in 'port' is used for health checking.
-
-  * 'USE_NAMED_PORT': The 'portName' is used for health checking.
-
-  * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each
-  network endpoint is used for health checking. For other backends, the
-  port or named port specified in the Backend Service is used for health
-  checking.
-
-If not specified, HTTP health check follows behavior specified in 'port' and
-'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].</p>
+            <p>Specifies how port is selected for health checking, can be one of the following values: * 'USE_FIXED_PORT': The port number in 'port' is used for health checking. * 'USE_NAMED_PORT': The 'portName' is used for health checking. * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, HTTP health check follows behavior specified in 'port' and 'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].</p>
         </td>
     </tr>
     <tr>
@@ -418,8 +359,7 @@ If not specified, HTTP health check follows behavior specified in 'port' and
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies the type of proxy header to append before sending data to the
-backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
+            <p>Specifies the type of proxy header to append before sending data to the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
         </td>
     </tr>
     <tr>
@@ -429,8 +369,7 @@ backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The request path of the HTTP health check request.
-The default value is /.</p>
+            <p>The request path of the HTTP health check request. The default value is /.</p>
         </td>
     </tr>
     <tr>
@@ -440,9 +379,7 @@ The default value is /.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The bytes to match against the beginning of the response data. If left empty
-(the default value), any response will indicate health. The response data
-can only be ASCII.</p>
+            <p>The bytes to match against the beginning of the response data. If left empty (the default value), any response will indicate health. The response data can only be ASCII.</p>
         </td>
     </tr>
     <tr>
@@ -452,7 +389,7 @@ can only be ASCII.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A nested object resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -462,9 +399,7 @@ can only be ASCII.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of the host header in the HTTPS health check request.
-If left empty (default value), the public IP on behalf of which this health
-check is performed will be used.</p>
+            <p>The value of the host header in the HTTPS health check request. If left empty (default value), the public IP on behalf of which this health check is performed will be used.</p>
         </td>
     </tr>
     <tr>
@@ -474,8 +409,7 @@ check is performed will be used.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The TCP port number for the HTTPS health check request.
-The default value is 443.</p>
+            <p>The TCP port number for the HTTPS health check request. The default value is 443.</p>
         </td>
     </tr>
     <tr>
@@ -485,8 +419,7 @@ The default value is 443.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Port name as defined in InstanceGroup#NamedPort#name. If both port and
-port_name are defined, port takes precedence.</p>
+            <p>Port name as defined in InstanceGroup#NamedPort#name. If both port and port_name are defined, port takes precedence.</p>
         </td>
     </tr>
     <tr>
@@ -496,20 +429,7 @@ port_name are defined, port takes precedence.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies how port is selected for health checking, can be one of the
-following values:
-
-  * 'USE_FIXED_PORT': The port number in 'port' is used for health checking.
-
-  * 'USE_NAMED_PORT': The 'portName' is used for health checking.
-
-  * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each
-  network endpoint is used for health checking. For other backends, the
-  port or named port specified in the Backend Service is used for health
-  checking.
-
-If not specified, HTTPS health check follows behavior specified in 'port' and
-'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].</p>
+            <p>Specifies how port is selected for health checking, can be one of the following values: * 'USE_FIXED_PORT': The port number in 'port' is used for health checking. * 'USE_NAMED_PORT': The 'portName' is used for health checking. * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, HTTPS health check follows behavior specified in 'port' and 'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].</p>
         </td>
     </tr>
     <tr>
@@ -519,8 +439,7 @@ If not specified, HTTPS health check follows behavior specified in 'port' and
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies the type of proxy header to append before sending data to the
-backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
+            <p>Specifies the type of proxy header to append before sending data to the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
         </td>
     </tr>
     <tr>
@@ -530,8 +449,7 @@ backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The request path of the HTTPS health check request.
-The default value is /.</p>
+            <p>The request path of the HTTPS health check request. The default value is /.</p>
         </td>
     </tr>
     <tr>
@@ -541,9 +459,7 @@ The default value is /.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The bytes to match against the beginning of the response data. If left empty
-(the default value), any response will indicate health. The response data
-can only be ASCII.</p>
+            <p>The bytes to match against the beginning of the response data. If left empty (the default value), any response will indicate health. The response data can only be ASCII.</p>
         </td>
     </tr>
     <tr>
@@ -573,8 +489,7 @@ can only be ASCII.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Indicates whether or not to export logs. This is false by default,
-which means no health check logging will be done.</p>
+            <p>Indicates whether or not to export logs. This is false by default, which means no health check logging will be done.</p>
         </td>
     </tr>
     <tr>
@@ -589,12 +504,48 @@ which means no health check logging will be done.</p>
     </tr>
     <tr>
         <td>
+            <p><code>sourceRegions</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>The list of cloud regions from which health checks are performed. If
+any regions are specified, then exactly 3 regions should be specified.
+The region names must be valid names of Google Cloud regions. This can
+only be set for global health check. If this list is non-empty, then
+there are restrictions on what other health check fields are supported
+and what other resources can use this health check:
+
+* SSL, HTTP2, and GRPC protocols are not supported.
+
+* The TCP request field is not supported.
+
+* The proxyHeader field for HTTP, HTTPS, and TCP is not supported.
+
+* The checkIntervalSec field must be at least 30.
+
+* The health check cannot be used with BackendService nor with managed
+instance group auto-healing.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceRegions[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>sslHealthCheck</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A nested object resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -604,8 +555,7 @@ which means no health check logging will be done.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The TCP port number for the SSL health check request.
-The default value is 443.</p>
+            <p>The TCP port number for the SSL health check request. The default value is 443.</p>
         </td>
     </tr>
     <tr>
@@ -615,8 +565,7 @@ The default value is 443.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Port name as defined in InstanceGroup#NamedPort#name. If both port and
-port_name are defined, port takes precedence.</p>
+            <p>Port name as defined in InstanceGroup#NamedPort#name. If both port and port_name are defined, port takes precedence.</p>
         </td>
     </tr>
     <tr>
@@ -626,20 +575,7 @@ port_name are defined, port takes precedence.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies how port is selected for health checking, can be one of the
-following values:
-
-  * 'USE_FIXED_PORT': The port number in 'port' is used for health checking.
-
-  * 'USE_NAMED_PORT': The 'portName' is used for health checking.
-
-  * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each
-  network endpoint is used for health checking. For other backends, the
-  port or named port specified in the Backend Service is used for health
-  checking.
-
-If not specified, SSL health check follows behavior specified in 'port' and
-'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].</p>
+            <p>Specifies how port is selected for health checking, can be one of the following values: * 'USE_FIXED_PORT': The port number in 'port' is used for health checking. * 'USE_NAMED_PORT': The 'portName' is used for health checking. * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, SSL health check follows behavior specified in 'port' and 'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].</p>
         </td>
     </tr>
     <tr>
@@ -649,8 +585,7 @@ If not specified, SSL health check follows behavior specified in 'port' and
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies the type of proxy header to append before sending data to the
-backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
+            <p>Specifies the type of proxy header to append before sending data to the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
         </td>
     </tr>
     <tr>
@@ -660,10 +595,7 @@ backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The application data to send once the SSL connection has been
-established (default value is empty). If both request and response are
-empty, the connection establishment alone will indicate health. The request
-data can only be ASCII.</p>
+            <p>The application data to send once the SSL connection has been established (default value is empty). If both request and response are empty, the connection establishment alone will indicate health. The request data can only be ASCII.</p>
         </td>
     </tr>
     <tr>
@@ -673,9 +605,7 @@ data can only be ASCII.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The bytes to match against the beginning of the response data. If left empty
-(the default value), any response will indicate health. The response data
-can only be ASCII.</p>
+            <p>The bytes to match against the beginning of the response data. If left empty (the default value), any response will indicate health. The response data can only be ASCII.</p>
         </td>
     </tr>
     <tr>
@@ -685,7 +615,7 @@ can only be ASCII.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A nested object resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -695,8 +625,7 @@ can only be ASCII.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The TCP port number for the TCP health check request.
-The default value is 443.</p>
+            <p>The TCP port number for the TCP health check request. The default value is 443.</p>
         </td>
     </tr>
     <tr>
@@ -706,8 +635,7 @@ The default value is 443.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Port name as defined in InstanceGroup#NamedPort#name. If both port and
-port_name are defined, port takes precedence.</p>
+            <p>Port name as defined in InstanceGroup#NamedPort#name. If both port and port_name are defined, port takes precedence.</p>
         </td>
     </tr>
     <tr>
@@ -717,20 +645,7 @@ port_name are defined, port takes precedence.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies how port is selected for health checking, can be one of the
-following values:
-
-  * 'USE_FIXED_PORT': The port number in 'port' is used for health checking.
-
-  * 'USE_NAMED_PORT': The 'portName' is used for health checking.
-
-  * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each
-  network endpoint is used for health checking. For other backends, the
-  port or named port specified in the Backend Service is used for health
-  checking.
-
-If not specified, TCP health check follows behavior specified in 'port' and
-'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].</p>
+            <p>Specifies how port is selected for health checking, can be one of the following values: * 'USE_FIXED_PORT': The port number in 'port' is used for health checking. * 'USE_NAMED_PORT': The 'portName' is used for health checking. * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, TCP health check follows behavior specified in 'port' and 'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].</p>
         </td>
     </tr>
     <tr>
@@ -740,8 +655,7 @@ If not specified, TCP health check follows behavior specified in 'port' and
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies the type of proxy header to append before sending data to the
-backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
+            <p>Specifies the type of proxy header to append before sending data to the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
         </td>
     </tr>
     <tr>
@@ -751,10 +665,7 @@ backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The application data to send once the TCP connection has been
-established (default value is empty). If both request and response are
-empty, the connection establishment alone will indicate health. The request
-data can only be ASCII.</p>
+            <p>The application data to send once the TCP connection has been established (default value is empty). If both request and response are empty, the connection establishment alone will indicate health. The request data can only be ASCII.</p>
         </td>
     </tr>
     <tr>
@@ -764,9 +675,7 @@ data can only be ASCII.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The bytes to match against the beginning of the response data. If left empty
-(the default value), any response will indicate health. The response data
-can only be ASCII.</p>
+            <p>The bytes to match against the beginning of the response data. If left empty (the default value), any response will indicate health. The response data can only be ASCII.</p>
         </td>
     </tr>
     <tr>
@@ -776,9 +685,7 @@ can only be ASCII.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>How long (in seconds) to wait before claiming failure.
-The default value is 5 seconds.  It is invalid for timeoutSec to have
-greater value than checkIntervalSec.</p>
+            <p>How long (in seconds) to wait before claiming failure. The default value is 5 seconds. It is invalid for timeoutSec to have greater value than checkIntervalSec.</p>
         </td>
     </tr>
     <tr>
@@ -788,8 +695,7 @@ greater value than checkIntervalSec.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>A so-far healthy instance will be marked unhealthy after this many
-consecutive failures. The default value is 2.</p>
+            <p>A so-far healthy instance will be marked unhealthy after this many consecutive failures. The default value is 2.</p>
         </td>
     </tr>
 </tbody>
@@ -821,7 +727,7 @@ type: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeHealthCheck's current state.</p>
         </td>
     </tr>
     <tr>
@@ -884,7 +790,7 @@ type: string
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>Server-defined URL for the resource.</p>
         </td>
     </tr>
     <tr>
@@ -925,4 +831,4 @@ spec:
   location: us-central1
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

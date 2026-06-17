@@ -16,7 +16,7 @@ title: "MonitoringUptimeCheckConfig"
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
-<td><a href="/monitoring/docs/">/monitoring/docs/</a></td>
+<td><a href="https://docs.cloud.google.com/monitoring/docs/">https://docs.cloud.google.com/monitoring/docs/</a></td>
 </tr>
 <tr>
 <td>Google Cloud REST Resource Name</td>
@@ -24,7 +24,7 @@ title: "MonitoringUptimeCheckConfig"
 </tr>
 <tr>
 <td>Google Cloud REST Resource Documentation</td>
-<td><a href="/monitoring/api/ref_v3/rest/v3/projects.uptimeCheckConfigs">/monitoring/api/ref_v3/rest/v3/projects.uptimeCheckConfigs</a></td>
+<td><a href="https://docs.cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.uptimeCheckConfigs">https://docs.cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.uptimeCheckConfigs</a></td>
 </tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
@@ -136,7 +136,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>String, regex or JSON content to match. Maximum 1024 bytes. An empty `content` string indicates no content matching is to be performed.</p>
         </td>
     </tr>
     <tr>
@@ -146,7 +146,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p> Possible values: CONTENT_MATCHER_OPTION_UNSPECIFIED, CONTAINS_STRING, NOT_CONTAINS_STRING, MATCHES_REGEX, NOT_MATCHES_REGEX</p>
+            <p>The type of content matcher that will be applied to the server output, compared to the `content` string when the check is run.</p>
         </td>
     </tr>
     <tr>
@@ -176,7 +176,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The authentication information. Optional when creating an HTTP check; defaults to empty.</p>
+            <p>The authentication information. Optional when creating an HTTP check; defaults to empty. Do not set both `auth_method` and `auth_info`.</p>
         </td>
     </tr>
     <tr>
@@ -186,7 +186,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The password to use when authenticating with the HTTP server.</p>
         </td>
     </tr>
     <tr>
@@ -246,7 +246,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>The username to use when authenticating with the HTTP server.</p>
         </td>
     </tr>
     <tr>
@@ -266,7 +266,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The content type to use for the check.  Possible values: TYPE_UNSPECIFIED, URL_ENCODED</p>
+            <p>Immutable. The content type to use for the check. Possible values: TYPE_UNSPECIFIED, URL_ENCODED</p>
         </td>
     </tr>
     <tr>
@@ -396,9 +396,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project for this uptime check config.
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -408,7 +406,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -418,7 +416,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -438,7 +436,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable.</p>
+            <p>Immutable. The group resource associated with the configuration.</p>
         </td>
     </tr>
     <tr>
@@ -448,9 +446,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The group of resources being monitored. Should be only the `[GROUP_ID]`, and not the full-path `projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]`.
-
-Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (format: `projects/{{project}}/groups/{{name}}`).</p>
+            <p>A reference to an externally managed MonitoringGroup resource. Should be in the format "projects/{{projectID}}/groups/{{groupID}}".</p>
         </td>
     </tr>
     <tr>
@@ -460,7 +456,7 @@ Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a MonitoringGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -470,7 +466,7 @@ Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a MonitoringGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -571,7 +567,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -710,4 +706,4 @@ spec:
   displayName: "A sample monitoring group"
 ```
 
-Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

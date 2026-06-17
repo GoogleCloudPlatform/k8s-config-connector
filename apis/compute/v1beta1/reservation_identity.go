@@ -21,7 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	reference "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -46,7 +46,7 @@ func (i *ComputeReservationIdentity) String() string {
 }
 
 func (i *ComputeReservationIdentity) FromExternal(ref string) error {
-	focused := reference.FixStaleComputeExternalFormat(ref)
+	focused := apirefs.TrimComputeURIPrefix(ref)
 
 	parsed, match, err := ComputeReservationIdentityFormat.Parse(focused)
 	if err != nil {

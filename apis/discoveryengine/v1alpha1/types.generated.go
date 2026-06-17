@@ -17,10 +17,12 @@
 // krm.group: discoveryengine.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.discoveryengine.v1
+// resource: DiscoveryEngineControl:Control
 // resource: DiscoveryEngineDataStore:DataStore
 // resource: DiscoveryEngineEngine:Engine
 // resource: DiscoveryEngineIdentityMappingStore:IdentityMappingStore
 // resource: DiscoveryEngineTargetSite:TargetSite
+// resource: DiscoveryEngineConversation:Conversation
 
 package v1alpha1
 
@@ -58,6 +60,153 @@ type CmekConfig struct {
 	// Optional. Single-regional CMEKs that are required for some VAIS features.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
 	SingleRegionKeys []SingleRegionKey `json:"singleRegionKeys,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Condition
+type Condition struct {
+	// Search only
+	//  A list of terms to match the query on.
+	//  Cannot be set when
+	//  [Condition.query_regex][google.cloud.discoveryengine.v1.Condition.query_regex]
+	//  is set.
+	//
+	//  Maximum of 10 query terms.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.query_terms
+	QueryTerms []Condition_QueryTerm `json:"queryTerms,omitempty"`
+
+	// Range of time(s) specifying when condition is active.
+	//
+	//  Maximum of 10 time ranges.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.active_time_range
+	ActiveTimeRange []Condition_TimeRange `json:"activeTimeRange,omitempty"`
+
+	// Optional. Query regex to match the whole search query.
+	//  Cannot be set when
+	//  [Condition.query_terms][google.cloud.discoveryengine.v1.Condition.query_terms]
+	//  is set. Only supported for Basic Site Search promotion serving controls.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.query_regex
+	QueryRegex *string `json:"queryRegex,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Condition.QueryTerm
+type Condition_QueryTerm struct {
+	// The specific query value to match against
+	//
+	//  Must be lowercase, must be UTF-8.
+	//  Can have at most 3 space separated terms if full_match is true.
+	//  Cannot be an empty string.
+	//  Maximum length of 5000 characters.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.QueryTerm.value
+	Value *string `json:"value,omitempty"`
+
+	// Whether the search query needs to exactly match the query term.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.QueryTerm.full_match
+	FullMatch *bool `json:"fullMatch,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Condition.TimeRange
+type Condition_TimeRange struct {
+	// Start of time range.
+	//
+	//  Range is inclusive.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.TimeRange.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// End of time range.
+	//
+	//  Range is inclusive.
+	//  Must be in the future.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Condition.TimeRange.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec
+type Control_BoostAction_InterpolationBoostSpec struct {
+	// Optional. The name of the field whose value will be used to determine
+	//  the boost amount.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.field_name
+	FieldName *string `json:"fieldName,omitempty"`
+
+	// Optional. The attribute type to be used to determine the boost amount.
+	//  The attribute value can be derived from the field value of the
+	//  specified field_name. In the case of numerical it is straightforward
+	//  i.e. attribute_value = numerical_field_value. In the case of freshness
+	//  however, attribute_value = (time.now() - datetime_field_value).
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.attribute_type
+	AttributeType *string `json:"attributeType,omitempty"`
+
+	// Optional. The interpolation type to be applied to connect the control
+	//  points listed below.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.interpolation_type
+	InterpolationType *string `json:"interpolationType,omitempty"`
+
+	// Optional. The control points used to define the curve. The monotonic
+	//  function (defined through the interpolation_type above) passes through
+	//  the control points listed here.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.control_points
+	ControlPoints []Control_BoostAction_InterpolationBoostSpec_ControlPoint `json:"controlPoints,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.ControlPoint
+type Control_BoostAction_InterpolationBoostSpec_ControlPoint struct {
+	// Optional. Can be one of:
+	//  1. The numerical field value.
+	//  2. The duration spec for freshness:
+	//  The value must be formatted as an XSD `dayTimeDuration` value (a
+	//  restricted subset of an ISO 8601 duration value). The pattern for
+	//  this is: `[nD][T[nH][nM][nS]]`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.ControlPoint.attribute_value
+	AttributeValue *string `json:"attributeValue,omitempty"`
+
+	// Optional. The value between -1 to 1 by which to boost the score if
+	//  the attribute_value evaluates to the value specified above.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.BoostAction.InterpolationBoostSpec.ControlPoint.boost_amount
+	BoostAmount *float32 `json:"boostAmount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Control.RedirectAction
+type Control_RedirectAction struct {
+	// Required. The URI to which the shopper will be redirected.
+	//
+	//  Required.
+	//  URI must have length equal or less than 2000 characters.
+	//  Otherwise an INVALID ARGUMENT error is thrown.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.RedirectAction.redirect_uri
+	RedirectURI *string `json:"redirectURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Control.SynonymsAction
+type Control_SynonymsAction struct {
+	// Defines a set of synonyms.
+	//  Can specify up to 100 synonyms.
+	//  Must specify at least 2 synonyms. Otherwise an INVALID ARGUMENT error is
+	//  thrown.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Control.SynonymsAction.synonyms
+	Synonyms []string `json:"synonyms,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.ConversationContext
+type ConversationContext struct {
+	// The current list of documents the user is seeing.
+	//  It contains the document resource references.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.ConversationContext.context_documents
+	ContextDocuments []string `json:"contextDocuments,omitempty"`
+
+	// The current active document the user opened.
+	//  It contains the document resource reference.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.ConversationContext.active_document
+	ActiveDocument *string `json:"activeDocument,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.ConversationMessage
+type ConversationMessage struct {
+	// User text input.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.ConversationMessage.user_input
+	UserInput *TextInput `json:"userInput,omitempty"`
+
+	// Search reply.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.ConversationMessage.reply
+	Reply *Reply `json:"reply,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1.DataStore.BillingEstimation
@@ -462,6 +611,13 @@ type HealthcareFhirConfig struct {
 }
 */
 
+// +kcc:proto=google.cloud.discoveryengine.v1.Reply
+type Reply struct {
+	// Summary based on search results.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Reply.summary
+	Summary *SearchResponse_Summary `json:"summary,omitempty"`
+}
+
 /* unreachable type Schema
 // +kcc:proto=google.cloud.discoveryengine.v1.Schema
 type Schema struct {
@@ -482,6 +638,154 @@ type Schema struct {
 	Name *string `json:"name,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchLinkPromotion
+type SearchLinkPromotion struct {
+	// Required. The title of the promotion.
+	//  Maximum length: 160 characters.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchLinkPromotion.title
+	Title *string `json:"title,omitempty"`
+
+	// Optional. The URL for the page the user wants to promote. Must be set for
+	//  site search. For other verticals, this is optional.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchLinkPromotion.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. The [Document][google.cloud.discoveryengine.v1.Document] the user
+	//  wants to promote. For site search, leave unset and only populate uri. Can
+	//  be set along with uri.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchLinkPromotion.document
+	Document *string `json:"document,omitempty"`
+
+	// Optional. The promotion thumbnail image url.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchLinkPromotion.image_uri
+	ImageURI *string `json:"imageURI,omitempty"`
+
+	// Optional. The Promotion description.
+	//  Maximum length: 200 characters.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchLinkPromotion.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The enabled promotion will be returned for any serving configs
+	//  associated with the parent of the control this promotion is attached to.
+	//
+	//  This flag is used for basic site search only.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchLinkPromotion.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary
+type SearchResponse_Summary struct {
+	// The summary content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.summary_text
+	SummaryText *string `json:"summaryText,omitempty"`
+
+	// Additional summary-skipped reasons. This provides the reason for ignored
+	//  cases. If nothing is skipped, this field is not set.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.summary_skipped_reasons
+	SummarySkippedReasons []string `json:"summarySkippedReasons,omitempty"`
+
+	// A collection of Safety Attribute categories and their associated
+	//  confidence scores.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.safety_attributes
+	SafetyAttributes *SearchResponse_Summary_SafetyAttributes `json:"safetyAttributes,omitempty"`
+
+	// Summary with metadata information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.summary_with_metadata
+	SummaryWithMetadata *SearchResponse_Summary_SummaryWithMetadata `json:"summaryWithMetadata,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.Citation
+type SearchResponse_Summary_Citation struct {
+	// Index indicates the start of the segment, measured in bytes/unicode.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Citation.start_index
+	StartIndex *int64 `json:"startIndex,omitempty"`
+
+	// End of the attributed segment, exclusive.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Citation.end_index
+	EndIndex *int64 `json:"endIndex,omitempty"`
+
+	// Citation sources for the attributed segment.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Citation.sources
+	Sources []SearchResponse_Summary_CitationSource `json:"sources,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.CitationMetadata
+type SearchResponse_Summary_CitationMetadata struct {
+	// Citations for segments.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.CitationMetadata.citations
+	Citations []SearchResponse_Summary_Citation `json:"citations,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.CitationSource
+type SearchResponse_Summary_CitationSource struct {
+	// Document reference index from SummaryWithMetadata.references.
+	//  It is 0-indexed and the value will be zero if the reference_index is
+	//  not set explicitly.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.CitationSource.reference_index
+	ReferenceIndex *int64 `json:"referenceIndex,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference
+type SearchResponse_Summary_Reference struct {
+	// Title of the document.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.title
+	Title *string `json:"title,omitempty"`
+
+	// Required.
+	//  [Document.name][google.cloud.discoveryengine.v1.Document.name] of the
+	//  document. Full resource name of the referenced document, in the format
+	//  `projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.document
+	Document *string `json:"document,omitempty"`
+
+	// Cloud Storage or HTTP uri for the document.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.uri
+	URI *string `json:"uri,omitempty"`
+
+	// List of cited chunk contents derived from document content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.chunk_contents
+	ChunkContents []SearchResponse_Summary_Reference_ChunkContent `json:"chunkContents,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.ChunkContent
+type SearchResponse_Summary_Reference_ChunkContent struct {
+	// Chunk textual content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.ChunkContent.content
+	Content *string `json:"content,omitempty"`
+
+	// Page identifier.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.Reference.ChunkContent.page_identifier
+	PageIdentifier *string `json:"pageIdentifier,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.SafetyAttributes
+type SearchResponse_Summary_SafetyAttributes struct {
+	// The display names of Safety Attribute categories associated with the
+	//  generated content. Order matches the Scores.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.SafetyAttributes.categories
+	Categories []string `json:"categories,omitempty"`
+
+	// The confidence scores of the each category, higher
+	//  value means higher confidence. Order matches the Categories.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.SafetyAttributes.scores
+	Scores []float32 `json:"scores,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.SearchResponse.Summary.SummaryWithMetadata
+type SearchResponse_Summary_SummaryWithMetadata struct {
+	// Summary text with no citation information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.SummaryWithMetadata.summary
+	Summary *string `json:"summary,omitempty"`
+
+	// Citation metadata for given summary.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.SummaryWithMetadata.citation_metadata
+	CitationMetadata *SearchResponse_Summary_CitationMetadata `json:"citationMetadata,omitempty"`
+
+	// Document References.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SearchResponse.Summary.SummaryWithMetadata.references
+	References []SearchResponse_Summary_Reference `json:"references,omitempty"`
+}
 
 // +kcc:proto=google.cloud.discoveryengine.v1.SingleRegionKey
 type SingleRegionKey struct {
@@ -518,6 +822,17 @@ type TargetSite_FailureReason_QuotaFailure struct {
 	TotalRequiredQuota *int64 `json:"totalRequiredQuota,omitempty"`
 }
 
+// +kcc:proto=google.cloud.discoveryengine.v1.TextInput
+type TextInput struct {
+	// Text input.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.TextInput.input
+	Input *string `json:"input,omitempty"`
+
+	// Conversation context of the input.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.TextInput.context
+	Context *ConversationContext `json:"context,omitempty"`
+}
+
 // +kcc:proto=google.cloud.discoveryengine.v1.WorkspaceConfig
 type WorkspaceConfig struct {
 	// The Google Workspace data source.
@@ -544,6 +859,22 @@ type WorkspaceConfig struct {
 /* unreachable type CmekConfigObservedState
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.CmekConfig
 type CmekConfigObservedState struct {
+	// Required. The name of the CmekConfig of the form
+	//  `projects/{project}/locations/{location}/cmekConfig` or
+	//  `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// KMS key resource name which will be used to encrypt resources
+	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+
+	// KMS key version resource name which will be used to encrypt resources
+	//  `<kms_key>/cryptoKeyVersions/{keyVersion}`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key_version
+	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
+
 	// Output only. The states of the CmekConfig.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.state
 	State *string `json:"state,omitempty"`
@@ -556,8 +887,21 @@ type CmekConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.last_rotation_timestamp_micros
 	LastRotationTimestampMicros *int64 `json:"lastRotationTimestampMicros,omitempty"`
 
+	// Optional. Single-regional CMEKs that are required for some VAIS features.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
+	SingleRegionKeys []SingleRegionKey `json:"singleRegionKeys,omitempty"`
+
 	// Output only. Whether the NotebookLM Corpus is ready to be used.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.notebooklm_state
 	NotebooklmState *string `json:"notebooklmState,omitempty"`
+}
+*/
+
+/* unreachable type ConversationMessageObservedState
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.ConversationMessage
+type ConversationMessageObservedState struct {
+	// Output only. Message creation timestamp.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.ConversationMessage.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
 */
