@@ -89,7 +89,12 @@ type: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>One or more addresses with ports in format of ":" that the Gateway must receive traffic on. The proxy binds to the ports specified. IP address can be anything that is allowed by the underlying infrastructure (auto-allocation, static IP, BYOIP).</p>
+            <p>Optional. Zero or one IPv4 or IPv6 address on which the Gateway will
+ receive the traffic. When no address is provided, an IP from the subnetwork
+ is allocated
+
+ This field only applies to gateways of type 'SECURE_WEB_GATEWAY'.
+ Gateways of type 'OPEN_MESH' listen on 0.0.0.0 for IPv4 and :: for IPv6.</p>
         </td>
     </tr>
     <tr>
@@ -119,7 +124,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The location for the resource</p>
+            <p>Immutable. The location for the resource.</p>
         </td>
     </tr>
     <tr>
@@ -159,9 +164,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -171,7 +174,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -181,7 +184,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -211,7 +214,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>Optional. A fully-qualified ServerTLSPolicy URL reference. Specifies how TLS traffic is terminated. If empty, TLS termination is disabled.</p>
         </td>
     </tr>
     <tr>
@@ -221,9 +224,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. A fully-qualified ServerTLSPolicy URL reference. Specifies how TLS traffic is terminated. If empty, TLS termination is disabled.
-
-Allowed value: The Google Cloud resource name of a `NetworkSecurityServerTLSPolicy` resource (format: `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{name}}`).</p>
+            <p>Allowed value: string of the format `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}`, where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy` resource.</p>
         </td>
     </tr>
     <tr>
@@ -233,7 +234,7 @@ Allowed value: The Google Cloud resource name of a `NetworkSecurityServerTLSPoli
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a NetworkSecurityServerTLSPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -243,7 +244,7 @@ Allowed value: The Google Cloud resource name of a `NetworkSecurityServerTLSPoli
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a NetworkSecurityServerTLSPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -285,7 +286,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
