@@ -21,6 +21,9 @@ spec:
         seconds: 0
     retention: 1209600s
   deletionProtectionEnabled: false
+  gcsSource:
+    uris:
+    - gs://my-bucket/backup-updated
   kmsKeyRef:
     name: kmscryptokey-${uniqueId}
   location: us-central1

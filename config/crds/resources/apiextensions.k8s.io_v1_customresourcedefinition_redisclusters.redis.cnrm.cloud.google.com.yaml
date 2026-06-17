@@ -115,6 +115,19 @@ spec:
                 description: Optional. The delete operation will fail when the value
                   is set to true.
                 type: boolean
+              gcsSource:
+                description: Optional. Backups stored in Cloud Storage buckets. The
+                  Cloud Storage buckets need to be the same region as the clusters.
+                  Read permission is required to import from the provided Cloud Storage
+                  objects.
+                properties:
+                  uris:
+                    description: 'Optional. URIs of the GCS objects to import. Example:
+                      gs://bucket1/object1, gs://bucket2/folder2/object2'
+                    items:
+                      type: string
+                    type: array
+                type: object
               kmsKeyRef:
                 description: Optional. The KMS key name to encrypt data at rest.
                 oneOf:
@@ -638,6 +651,19 @@ spec:
                 description: Optional. The delete operation will fail when the value
                   is set to true.
                 type: boolean
+              gcsSource:
+                description: Optional. Backups stored in Cloud Storage buckets. The
+                  Cloud Storage buckets need to be the same region as the clusters.
+                  Read permission is required to import from the provided Cloud Storage
+                  objects.
+                properties:
+                  uris:
+                    description: 'Optional. URIs of the GCS objects to import. Example:
+                      gs://bucket1/object1, gs://bucket2/folder2/object2'
+                    items:
+                      type: string
+                    type: array
+                type: object
               kmsKeyRef:
                 description: Optional. The KMS key name to encrypt data at rest.
                 oneOf:

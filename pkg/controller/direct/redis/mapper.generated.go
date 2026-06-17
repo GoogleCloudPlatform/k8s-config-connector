@@ -198,6 +198,22 @@ func ClusterWeeklyMaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
 	return out
 }
+func Cluster_GCSBackupSource_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_GcsBackupSource) *krm.Cluster_GCSBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Cluster_GCSBackupSource{}
+	out.Uris = in.Uris
+	return out
+}
+func Cluster_GCSBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_GCSBackupSource) *pb.Cluster_GcsBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster_GcsBackupSource{}
+	out.Uris = in.Uris
+	return out
+}
 func Cluster_StateInfo_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_StateInfo) *krm.Cluster_StateInfo {
 	if in == nil {
 		return nil
@@ -345,7 +361,6 @@ func RedisClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clust
 		return nil
 	}
 	out := &krm.RedisClusterObservedState{}
-	// MISSING: GCSSource
 	// MISSING: ManagedBackupSource
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -370,7 +385,6 @@ func RedisClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RedisC
 		return nil
 	}
 	out := &pb.Cluster{}
-	// MISSING: GCSSource
 	// MISSING: ManagedBackupSource
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -397,7 +411,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 		return nil
 	}
 	out := &krm.RedisClusterSpec{}
-	// MISSING: GCSSource
+	out.GCSSource = Cluster_GCSBackupSource_FromProto(mapCtx, in.GetGcsSource())
 	// MISSING: ManagedBackupSource
 	// MISSING: Name
 	out.ReplicaCount = in.ReplicaCount
@@ -430,7 +444,9 @@ found existing non-generated mapping function "RedisClusterSpec_ToProto", skippi
 			return nil
 		}
 		out := &pb.Cluster{}
-		// MISSING: GCSSource
+		if oneof := Cluster_GCSBackupSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
+			out.ImportSources = &pb.Cluster_GcsSource{GcsSource: oneof}
+		}
 		// MISSING: ManagedBackupSource
 		// MISSING: Name
 		out.ReplicaCount = in.ReplicaCount

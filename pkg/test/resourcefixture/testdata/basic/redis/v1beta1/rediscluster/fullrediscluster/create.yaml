@@ -49,6 +49,9 @@ spec:
         minutes: 0
         seconds: 0
         nanos: 0
+  gcsSource:
+    uris:
+    - gs://my-bucket/backup
   maintenancePolicy:
     weeklyMaintenanceWindow:
     - day: SUNDAY

@@ -82,6 +82,13 @@ type RedisClusterSpec struct {
 	// Optional. The KMS key name to encrypt data at rest.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.kms_key
 	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+
+	// Optional. Backups stored in Cloud Storage buckets.
+	//  The Cloud Storage buckets need to be the same region as the clusters.
+	//  Read permission is required to import from the provided Cloud Storage
+	//  objects.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.gcs_source
+	GCSSource *Cluster_GCSBackupSource `json:"gcsSource,omitempty"`
 }
 
 type PscConfigSpec struct {
