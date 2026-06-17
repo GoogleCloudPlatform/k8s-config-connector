@@ -8,7 +8,4 @@ spec:
   projectRef:
     external: ${projectId}
   crossInstanceReplicationConfig:
-    instanceRole: SECONDARY
-    primaryInstance:
-      instanceRef:
-        name: dependency-instance-${uniqueId}
+    instanceRole: PRIMARY

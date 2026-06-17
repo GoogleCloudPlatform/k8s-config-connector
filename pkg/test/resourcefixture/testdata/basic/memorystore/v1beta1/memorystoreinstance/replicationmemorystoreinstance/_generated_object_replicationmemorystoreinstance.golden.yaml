@@ -6,17 +6,14 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
-  name: memorystoreinstance-${uniqueId}-secondary
+  name: memorystoreinstance-${uniqueId}
   namespace: ${uniqueId}
 spec:
   crossInstanceReplicationConfig:
-    instanceRole: SECONDARY
-    primaryInstance:
-      instanceRef:
-        name: memorystoreinstance-${uniqueId}-primary
+    instanceRole: PRIMARY
   location: us-east1
   projectRef:
     external: ${projectId}
@@ -28,8 +25,8 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-east1/instances/memorystoreinstance-${uniqueId}-secondary
-  observedGeneration: 1
+  externalRef: projects/${projectId}/locations/us-east1/instances/memorystoreinstance-${uniqueId}
+  observedGeneration: 2
   observedState:
     availableMaintenanceVersions:
     - MEMORYSTORE_20260313_01_02

@@ -1,12 +1,12 @@
 - caisURL: unknown
   group: memorystore.cnrm.cloud.google.com
   kind: MemorystoreInstance
-  name: memorystoreinstance-${uniqueId}-primary
+  name: dependency-instance-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
 - caisURL: unknown
   group: memorystore.cnrm.cloud.google.com
   kind: MemorystoreInstance
-  name: memorystoreinstance-${uniqueId}-secondary
+  name: memorystoreinstance-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
