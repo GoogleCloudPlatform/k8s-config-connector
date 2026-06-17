@@ -67,10 +67,6 @@ EOF
 
 for f in $(find dev/ci/presubmits -type f | sort ); do
     name=$(basename ${f})
-    
-    if [[ "${name}" == "smoketest-with-kind" ]]; then
-        continue
-    fi
 
     # Skip tests-e2e-fixtures-cloudsecuritycompliance as we don't need CI for it as of now
     if [[ "${name}" == "tests-e2e-fixtures-cloudsecuritycompliance" ]]; then

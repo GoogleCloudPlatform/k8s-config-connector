@@ -22,6 +22,7 @@ import (
 	"log"
 	"net/http"
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
+	"os"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/contexts"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
@@ -52,19 +53,23 @@ func main() {
 	ctx := contexts.SetupSignalHandler()
 
 	var (
-		prometheusScrapeEndpoint string
-		scopedNamespace          string
-		userProjectOverride      bool
-		billingProject           string
-		enablePprof              bool
-		pprofPort                int
-		rateLimitQps             float32
-		rateLimitBurst           int
-		leaderElectionMode       string
-		skipNameValidation       bool
-		syncingMode              string
+		scopedNamespace     string
+		userProjectOverride bool
+		billingProject      string
+		enablePprof         bool
+		pprofPort           int
+		rateLimitQps        float32
+		rateLimitBurst      int
+		leaderElectionMode  string
+		skipNameValidation  bool
+		syncingMode         string
 	)
-	flag.StringVar(&prometheusScrapeEndpoint, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
+	// metricsOptions controls standard controller-runtime metrics versus OpenCensus/Default metrics.
+	// This is configured via the METRICS_VERSION=v2 environment variable.
+	var metricsOptions metrics.MetricsOptions
+	metricsOptions.ServeControllerRuntimeMetrics = (os.Getenv("METRICS_VERSION") == "v2")
+
+	flag.StringVar(&metricsOptions.Addr, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
 	flag.BoolVar(&controllermetrics.ResourceNameLabel, "resource-name-label", false, "option to enable the resource name label on some Prometheus metrics; false by default")
 	flag.BoolVar(&userProjectOverride, "user-project-override", false, "option to use the resource project for preconditions, quota, and billing, instead of the project the credentials belong to; false by default")
 	flag.StringVar(&billingProject, "billing-project", "", "project to use for preconditions, quota, and billing if --user-project-override is enabled; empty by default; if this is left empty but --user-project-override is enabled, the resource's project will be used")
@@ -153,7 +158,7 @@ func main() {
 
 	// Register the Prometheus exporter
 	logger.Info("Registering the Prometheus exporter")
-	if err = metrics.RegisterPrometheusExporter(prometheusScrapeEndpoint); err != nil {
+	if err = metrics.RegisterPrometheusExporter(metricsOptions); err != nil {
 		logging.Fatal(err, "error registering the Prometheus exporter.")
 	}
 
