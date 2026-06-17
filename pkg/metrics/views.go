@@ -68,32 +68,7 @@ var (
 			Aggregation: view.Distribution(0, 5, 10, 25, 60, 5*60, 10*60, 15*60, 30*60, 45*60, 60*60),
 		},
 	}
-	controllerViews = []*view.View{
-		{
-			Name:        "reconcile_requests_total",
-			Measure:     MReconcileRequests,
-			Description: MReconcileRequests.Description(),
-			TagKeys:     []tag.Key{KindTag, NamespaceTag, StatusTag},
-			Aggregation: view.Count(),
-		},
-		{
-			Name:        "reconcile_request_duration_seconds",
-			Measure:     MReconcileDuration,
-			Description: MReconcileDuration.Description(),
-			TagKeys:     []tag.Key{KindTag, NamespaceTag, StatusTag},
-			// Latency in buckets:
-			// [>=0s, >=5s, >=10s, >=25s, >=1min, >=5min, >=10min, >=15min, >=30min, >=45min, >1h]
-			Aggregation: view.Distribution(0, 5, 10, 25, 60, 5*60, 10*60, 15*60, 30*60, 45*60, 60*60),
-		},
-	}
 )
-
-func GetControllerViews() []*view.View {
-	views := make([]*view.View, 0)
-	views = append(views, sharedControllerViews...)
-	views = append(views, controllerViews...)
-	return views
-}
 
 func GetControllerViewsWithResourceNameLabel() []*view.View {
 	views := make([]*view.View, 0)
