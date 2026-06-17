@@ -147,7 +147,11 @@ subnetworkRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The PublicDelegatedPrefix IP collection from which to reserve the address. Only external IPv4 addresses can use this.</p>
+            <p>Immutable. The PublicDelegatedPrefix IP collection from which to
+reserve the address. Only external IPv4 addresses can use this.
+
+Warning: Since ComputePublicDelegatedPrefix is not yet supported as a Config Connector resource,
+only the 'external' field of this reference can be used.</p>
         </td>
     </tr>
     <tr>

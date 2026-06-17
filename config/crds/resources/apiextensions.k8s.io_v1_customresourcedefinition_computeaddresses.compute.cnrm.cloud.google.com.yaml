@@ -78,9 +78,12 @@ spec:
                 description: Immutable. An optional description of this resource.
                 type: string
               ipCollectionRef:
-                description: Immutable. The PublicDelegatedPrefix IP collection from
-                  which to reserve the address. Only external IPv4 addresses can use
-                  this.
+                description: |-
+                  Immutable. The PublicDelegatedPrefix IP collection from which to
+                  reserve the address. Only external IPv4 addresses can use this.
+
+                  Warning: Since ComputePublicDelegatedPrefix is not yet supported as a Config Connector resource,
+                  only the 'external' field of this reference can be used.
                 oneOf:
                 - not:
                     required:
