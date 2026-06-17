@@ -18,30 +18,187 @@
 
 // +generated:mapper
 // krm.group: networkservices.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.cloud.networkservices.v1
 
 package networkservices
 
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
+	krmnetworkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1beta1"
 	krmservicedirectoryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingObservedState {
+func GrpcRoute_FaultInjectionPolicy_FromProto(mapCtx *direct.MapContext, in *pb.GrpcRoute_FaultInjectionPolicy) *krm.GrpcRoute_FaultInjectionPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkServicesServiceBindingObservedState{}
+	out := &krm.GrpcRoute_FaultInjectionPolicy{}
+	out.Delay = GrpcRoute_FaultInjectionPolicy_Delay_FromProto(mapCtx, in.GetDelay())
+	out.Abort = GrpcRoute_FaultInjectionPolicy_Abort_FromProto(mapCtx, in.GetAbort())
+	return out
+}
+func GrpcRoute_FaultInjectionPolicy_ToProto(mapCtx *direct.MapContext, in *krm.GrpcRoute_FaultInjectionPolicy) *pb.GrpcRoute_FaultInjectionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GrpcRoute_FaultInjectionPolicy{}
+	out.Delay = GrpcRoute_FaultInjectionPolicy_Delay_ToProto(mapCtx, in.Delay)
+	out.Abort = GrpcRoute_FaultInjectionPolicy_Abort_ToProto(mapCtx, in.Abort)
+	return out
+}
+func GrpcRoute_HeaderMatch_FromProto(mapCtx *direct.MapContext, in *pb.GrpcRoute_HeaderMatch) *krm.GrpcRoute_HeaderMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GrpcRoute_HeaderMatch{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func GrpcRoute_HeaderMatch_ToProto(mapCtx *direct.MapContext, in *krm.GrpcRoute_HeaderMatch) *pb.GrpcRoute_HeaderMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GrpcRoute_HeaderMatch{}
+	out.Type = direct.Enum_ToProto[pb.GrpcRoute_HeaderMatch_Type](mapCtx, in.Type)
+	out.Key = direct.ValueOf(in.Key)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func GrpcRoute_MethodMatch_FromProto(mapCtx *direct.MapContext, in *pb.GrpcRoute_MethodMatch) *krm.GrpcRoute_MethodMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GrpcRoute_MethodMatch{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.GrpcService = direct.LazyPtr(in.GetGrpcService())
+	out.GrpcMethod = direct.LazyPtr(in.GetGrpcMethod())
+	out.CaseSensitive = in.CaseSensitive
+	return out
+}
+func GrpcRoute_MethodMatch_ToProto(mapCtx *direct.MapContext, in *krm.GrpcRoute_MethodMatch) *pb.GrpcRoute_MethodMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GrpcRoute_MethodMatch{}
+	out.Type = direct.Enum_ToProto[pb.GrpcRoute_MethodMatch_Type](mapCtx, in.Type)
+	out.GrpcService = direct.ValueOf(in.GrpcService)
+	out.GrpcMethod = direct.ValueOf(in.GrpcMethod)
+	out.CaseSensitive = in.CaseSensitive
+	return out
+}
+func GrpcRoute_RouteAction_FromProto(mapCtx *direct.MapContext, in *pb.GrpcRoute_RouteAction) *krm.GrpcRoute_RouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GrpcRoute_RouteAction{}
+	out.Destinations = direct.Slice_FromProto(mapCtx, in.Destinations, GrpcRoute_Destination_FromProto)
+	out.FaultInjectionPolicy = GrpcRoute_FaultInjectionPolicy_FromProto(mapCtx, in.GetFaultInjectionPolicy())
+	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
+	out.RetryPolicy = GrpcRoute_RetryPolicy_FromProto(mapCtx, in.GetRetryPolicy())
+	// MISSING: StatefulSessionAffinity
+	// MISSING: IdleTimeout
+	return out
+}
+func GrpcRoute_RouteAction_ToProto(mapCtx *direct.MapContext, in *krm.GrpcRoute_RouteAction) *pb.GrpcRoute_RouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GrpcRoute_RouteAction{}
+	out.Destinations = direct.Slice_ToProto(mapCtx, in.Destinations, GrpcRoute_Destination_ToProto)
+	out.FaultInjectionPolicy = GrpcRoute_FaultInjectionPolicy_ToProto(mapCtx, in.FaultInjectionPolicy)
+	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
+	out.RetryPolicy = GrpcRoute_RetryPolicy_ToProto(mapCtx, in.RetryPolicy)
+	// MISSING: StatefulSessionAffinity
+	// MISSING: IdleTimeout
+	return out
+}
+func GrpcRoute_RouteMatch_FromProto(mapCtx *direct.MapContext, in *pb.GrpcRoute_RouteMatch) *krm.GrpcRoute_RouteMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GrpcRoute_RouteMatch{}
+	out.Method = GrpcRoute_MethodMatch_FromProto(mapCtx, in.GetMethod())
+	out.Headers = direct.Slice_FromProto(mapCtx, in.Headers, GrpcRoute_HeaderMatch_FromProto)
+	return out
+}
+func GrpcRoute_RouteMatch_ToProto(mapCtx *direct.MapContext, in *krm.GrpcRoute_RouteMatch) *pb.GrpcRoute_RouteMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GrpcRoute_RouteMatch{}
+	out.Method = GrpcRoute_MethodMatch_ToProto(mapCtx, in.Method)
+	out.Headers = direct.Slice_ToProto(mapCtx, in.Headers, GrpcRoute_HeaderMatch_ToProto)
+	return out
+}
+func GrpcRoute_RouteRule_FromProto(mapCtx *direct.MapContext, in *pb.GrpcRoute_RouteRule) *krm.GrpcRoute_RouteRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GrpcRoute_RouteRule{}
+	out.Matches = direct.Slice_FromProto(mapCtx, in.Matches, GrpcRoute_RouteMatch_FromProto)
+	out.Action = GrpcRoute_RouteAction_FromProto(mapCtx, in.GetAction())
+	return out
+}
+func GrpcRoute_RouteRule_ToProto(mapCtx *direct.MapContext, in *krm.GrpcRoute_RouteRule) *pb.GrpcRoute_RouteRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GrpcRoute_RouteRule{}
+	out.Matches = direct.Slice_ToProto(mapCtx, in.Matches, GrpcRoute_RouteMatch_ToProto)
+	out.Action = GrpcRoute_RouteAction_ToProto(mapCtx, in.Action)
+	return out
+}
+func NetworkServicesGRPCRouteSpec_FromProto(mapCtx *direct.MapContext, in *pb.GrpcRoute) *krm.NetworkServicesGRPCRouteSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkServicesGRPCRouteSpec{}
+	// MISSING: Name
+	// MISSING: SelfLink
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Hostnames = in.Hostnames
+	out.Meshes = NetworkServicesGRPCRouteSpec_Meshes_FromProto(mapCtx, in.Meshes)
+	out.Gateways = NetworkServicesGRPCRouteSpec_Gateways_FromProto(mapCtx, in.Gateways)
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, GrpcRoute_RouteRule_FromProto)
+	return out
+}
+func NetworkServicesGRPCRouteSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesGRPCRouteSpec) *pb.GrpcRoute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GrpcRoute{}
+	// MISSING: Name
+	// MISSING: SelfLink
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	out.Description = direct.ValueOf(in.Description)
+	out.Hostnames = in.Hostnames
+	out.Meshes = NetworkServicesGRPCRouteSpec_Meshes_ToProto(mapCtx, in.Meshes)
+	out.Gateways = NetworkServicesGRPCRouteSpec_Gateways_ToProto(mapCtx, in.Gateways)
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, GrpcRoute_RouteRule_ToProto)
+	return out
+}
+func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.NetworkServicesServiceBindingObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: ServiceID
 	return out
 }
-func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingObservedState) *pb.ServiceBinding {
+func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingObservedState) *pb.ServiceBinding {
 	if in == nil {
 		return nil
 	}
@@ -52,11 +209,11 @@ func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: ServiceID
 	return out
 }
-func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingSpec {
+func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkServicesServiceBindingSpec{}
+	out := &krmnetworkservicesv1alpha1.NetworkServicesServiceBindingSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	if in.GetService() != "" {
@@ -66,7 +223,7 @@ func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *
 	out.Labels = in.Labels
 	return out
 }
-func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingSpec) *pb.ServiceBinding {
+func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingSpec) *pb.ServiceBinding {
 	if in == nil {
 		return nil
 	}
@@ -80,17 +237,17 @@ func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Labels = in.Labels
 	return out
 }
-func WasmPlugin_LogConfig_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_LogConfig) *krm.WasmPlugin_LogConfig {
+func WasmPlugin_LogConfig_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_LogConfig) *krmnetworkservicesv1alpha1.WasmPlugin_LogConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WasmPlugin_LogConfig{}
+	out := &krmnetworkservicesv1alpha1.WasmPlugin_LogConfig{}
 	out.Enable = direct.LazyPtr(in.GetEnable())
 	out.SampleRate = direct.LazyPtr(in.GetSampleRate())
 	out.MinLogLevel = direct.Enum_FromProto(mapCtx, in.GetMinLogLevel())
 	return out
 }
-func WasmPlugin_LogConfig_ToProto(mapCtx *direct.MapContext, in *krm.WasmPlugin_LogConfig) *pb.WasmPlugin_LogConfig {
+func WasmPlugin_LogConfig_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.WasmPlugin_LogConfig) *pb.WasmPlugin_LogConfig {
 	if in == nil {
 		return nil
 	}
@@ -100,15 +257,15 @@ func WasmPlugin_LogConfig_ToProto(mapCtx *direct.MapContext, in *krm.WasmPlugin_
 	out.MinLogLevel = direct.Enum_ToProto[pb.WasmPlugin_LogConfig_LogLevel](mapCtx, in.MinLogLevel)
 	return out
 }
-func WasmPlugin_UsedByObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_UsedBy) *krm.WasmPlugin_UsedByObservedState {
+func WasmPlugin_UsedByObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_UsedBy) *krmnetworkservicesv1alpha1.WasmPlugin_UsedByObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WasmPlugin_UsedByObservedState{}
+	out := &krmnetworkservicesv1alpha1.WasmPlugin_UsedByObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	return out
 }
-func WasmPlugin_UsedByObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WasmPlugin_UsedByObservedState) *pb.WasmPlugin_UsedBy {
+func WasmPlugin_UsedByObservedState_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.WasmPlugin_UsedByObservedState) *pb.WasmPlugin_UsedBy {
 	if in == nil {
 		return nil
 	}
