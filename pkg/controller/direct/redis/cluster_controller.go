@@ -153,9 +153,11 @@ func (a *redisClusterAdapter) normalizeReplicationConfig(config *pb.CrossCluster
 		config.PrimaryCluster = nil
 	case pb.CrossClusterReplicationConfig_SECONDARY:
 		config.SecondaryClusters = nil
-	default:
+	case pb.CrossClusterReplicationConfig_NONE, pb.CrossClusterReplicationConfig_CLUSTER_ROLE_UNSPECIFIED:
 		config.PrimaryCluster = nil
 		config.SecondaryClusters = nil
+	default:
+		// do nothing, keep existing configs
 	}
 }
 
