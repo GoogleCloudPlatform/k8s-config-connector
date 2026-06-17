@@ -1,0 +1,9 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesWasmPlugin
+metadata:
+  name: wasmplugin-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  description: "Minimal WasmPlugin"
