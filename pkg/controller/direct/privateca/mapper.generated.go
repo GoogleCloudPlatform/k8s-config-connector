@@ -325,6 +325,46 @@ func PrivateCACAPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivateCACAP
 	// MISSING: Labels
 	return out
 }
+
+/* found existing non-generated mapping function "PrivateCACertificateTemplateSpec_FromProto", skipping
+func PrivateCACertificateTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.CertificateTemplate) *krm.PrivateCACertificateTemplateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateCACertificateTemplateSpec{}
+	// MISSING: Name
+	// MISSING: MaximumLifetime
+	out.PredefinedValues = CertificateTemplate_X509Parameters_FromProto(mapCtx, in.GetPredefinedValues())
+	out.IdentityConstraints = CertificateTemplate_IdentityConstraints_FromProto(mapCtx, in.GetIdentityConstraints())
+	out.PassthroughExtensions = CertificateTemplate_PassthroughExtensions_FromProto(mapCtx, in.GetPassthroughExtensions())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "PrivateCACertificateTemplateSpec_ToProto", skipping
+
+	func PrivateCACertificateTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivateCACertificateTemplateSpec) *pb.CertificateTemplate {
+		if in == nil {
+			return nil
+		}
+		out := &pb.CertificateTemplate{}
+		// MISSING: Name
+		// MISSING: MaximumLifetime
+		out.PredefinedValues = CertificateTemplate_X509Parameters_ToProto(mapCtx, in.PredefinedValues)
+		out.IdentityConstraints = CertificateTemplate_IdentityConstraints_ToProto(mapCtx, in.IdentityConstraints)
+		out.PassthroughExtensions = CertificateTemplate_PassthroughExtensions_ToProto(mapCtx, in.PassthroughExtensions)
+		out.Description = direct.ValueOf(in.Description)
+		// MISSING: CreateTime
+		// MISSING: UpdateTime
+		// MISSING: Labels
+		return out
+	}
+*/
 func X509Parameters_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters) *krm.X509Parameters {
 	if in == nil {
 		return nil
