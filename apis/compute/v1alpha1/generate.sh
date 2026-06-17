@@ -31,6 +31,7 @@ go run . generate-types \
   --resource ComputeInterconnect:Interconnect \
   --resource ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation \
   --resource ComputeRegionPerInstanceConfig:PerInstanceConfig \
+  --resource ComputeGlobalNetworkEndpoint:NetworkEndpoint \
   --include-skipped-output
 
 cd ${REPO_ROOT}
