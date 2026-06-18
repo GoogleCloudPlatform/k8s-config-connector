@@ -87,6 +87,11 @@ if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     exit 0
 fi
 
+PROTO_FILES=()
+if [ -d "${THIRD_PARTY}/googleapis/google/maps/mapmanagement" ]; then
+    PROTO_FILES+=("${THIRD_PARTY}/googleapis/google/maps/mapmanagement"/*/*.proto)
+fi
+
 protoc --include_imports --include_source_info \
     --experimental_allow_proto3_optional \
     -I ${THIRD_PARTY}/googleapis/ \
@@ -126,7 +131,7 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/container/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/privacy/dlp/v2/*.proto \
-    ${THIRD_PARTY}/googleapis/google/maps/mapmanagement/*/*.proto \
+    "${PROTO_FILES[@]}" \
     -o ${VERSIONED_OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
 
 cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
