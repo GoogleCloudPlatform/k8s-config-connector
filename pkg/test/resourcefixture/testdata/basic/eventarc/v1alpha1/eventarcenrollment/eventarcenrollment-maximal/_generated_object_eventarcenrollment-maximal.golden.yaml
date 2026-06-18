@@ -1,0 +1,39 @@
+apiVersion: eventarc.cnrm.cloud.google.com/v1alpha1
+kind: EventarcEnrollment
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: eventarcenrollment-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  annotations:
+    my-annotation-key: my-updated-annotation-value
+  celMatch: message.type == 'google.cloud.pubsub.topic.v1.messagePublishedUpdated'
+  destinationRef:
+    external: projects/${projectId}/locations/us-central1/pipelines/my-pipeline-${uniqueId}
+  displayName: My Updated Maximal Enrollment
+  labels:
+    my-key: my-updated-value
+  location: us-central1
+  messageBusRef:
+    external: projects/${projectId}/locations/us-central1/messageBuses/my-message-bus-${uniqueId}
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
