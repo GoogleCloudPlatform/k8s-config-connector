@@ -96,8 +96,8 @@ func CertificateTemplate_IdentityConstraints_FromProto(mapCtx *direct.MapContext
 		return nil
 	}
 	out := &krm.CertificateTemplate_IdentityConstraints{}
-	out.AllowSubjectAltNamesPassthrough = direct.LazyPtr(in.GetAllowSubjectAltNamesPassthrough())
-	out.AllowSubjectPassthrough = direct.LazyPtr(in.GetAllowSubjectPassthrough())
+	out.AllowSubjectAltNamesPassthrough = in.AllowSubjectAltNamesPassthrough
+	out.AllowSubjectPassthrough = in.AllowSubjectPassthrough
 	out.CelExpression = CertificateTemplate_Expr_FromProto(mapCtx, in.GetCelExpression())
 	return out
 }
@@ -342,5 +342,25 @@ func CertificateTemplate_KeyUsage_ExtendedKeyUsageOptions_ToProto(mapCtx *direct
 	out.OcspSigning = direct.ValueOf(in.OcspSigning)
 	out.ServerAuth = direct.ValueOf(in.ServerAuth)
 	out.TimeStamping = direct.ValueOf(in.TimeStamping)
+	return out
+}
+
+func PrivateCACertificateTemplateStatus_FromProto(mapCtx *direct.MapContext, in *pb.CertificateTemplate) *krm.PrivateCACertificateTemplateStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateCACertificateTemplateStatus{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func PrivateCACertificateTemplateStatus_ToProto(mapCtx *direct.MapContext, in *krm.PrivateCACertificateTemplateStatus) *pb.CertificateTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateTemplate{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
