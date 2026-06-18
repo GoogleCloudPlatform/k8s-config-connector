@@ -593,6 +593,8 @@ cloud.google.com/go/deploy v1.17.0/go.mod h1:XBr42U5jIr64t92gcpOXxNrqL2PStQCXHuK
 cloud.google.com/go/deploy v1.17.1/go.mod h1:SXQyfsXrk0fBmgBHRzBjQbZhMfKZ3hMQBw5ym7MN/50=
 cloud.google.com/go/deploy v1.27.3 h1:QU8gLXsXDRqLyEWNrI6zJiVzuuOBX/WpMi4p0oexV+c=
 cloud.google.com/go/deploy v1.27.3/go.mod h1:7LFIYYTSSdljYRqY3n+JSmIFdD4lv6aMD5xg0crB5iw=
+cloud.google.com/go/devicestreaming v0.1.0 h1:FvGAVdAdY5QW24gFPwgjRogGLAqWSYSXWjpimQ8ULEE=
+cloud.google.com/go/devicestreaming v0.1.0/go.mod h1:a6neVv2ZLlaBlMWYtkKn0qyeJiDsWnDD5jrYs4NAk5g=
 cloud.google.com/go/dialogflow v1.15.0/go.mod h1:HbHDWs33WOGJgn6rfzBW1Kv807BE3O1+xGbn59zZWI4=
 cloud.google.com/go/dialogflow v1.16.1/go.mod h1:po6LlzGfK+smoSmTBnbkIZY2w8ffjz/RcGSS+sh1el0=
 cloud.google.com/go/dialogflow v1.17.0/go.mod h1:YNP09C/kXA1aZdBgC/VtXX74G/TKn7XVCcVumTflA+8=

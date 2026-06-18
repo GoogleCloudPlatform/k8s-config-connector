@@ -40,6 +40,7 @@ require (
 	cloud.google.com/go/dataproc/v2 v2.19.0
 	cloud.google.com/go/datastream v1.15.1
 	cloud.google.com/go/deploy v1.27.3
+	cloud.google.com/go/devicestreaming v0.1.0
 	cloud.google.com/go/discoveryengine v1.22.0
 	cloud.google.com/go/documentai v1.42.0
 	cloud.google.com/go/edgecontainer v1.4.4
