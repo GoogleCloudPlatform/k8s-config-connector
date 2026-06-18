@@ -30,3 +30,14 @@ func ServiceDirectoryServiceStatus_FromProto(mapCtx *direct.MapContext, in *pb.S
 	}
 	return out
 }
+
+func ServiceDirectoryEndpointStatus_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.ServiceDirectoryEndpointStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceDirectoryEndpointStatus{}
+	if in.Name != "" {
+		out.Name = &in.Name
+	}
+	return out
+}

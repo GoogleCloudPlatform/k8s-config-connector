@@ -25,4 +25,4 @@ spec:
     name: computeaddress-${uniqueId}
   port: 443
   networkRef:
-    external: "projects/${projectNumber}/locations/global/networks/default"
+    external: "projects/${projectNumber}/global/networks/default"
