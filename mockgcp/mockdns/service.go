@@ -22,9 +22,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/http_recorder/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 
-	pb "google.golang.org/genproto/googleapis/cloud/dns/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/dns/v1"
 	"google.golang.org/grpc"
 )
 
