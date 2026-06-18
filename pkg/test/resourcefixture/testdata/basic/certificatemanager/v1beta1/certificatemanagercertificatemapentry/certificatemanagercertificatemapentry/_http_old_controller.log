@@ -244,7 +244,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -267,7 +267,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries?%24alt=json%3Benum-encoding%3Dint&certificateMapEntryId=certificatemanagercertificatemapentry${uniqueId}
+POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries?alt=json&certificateMapEntryId=certificatemanagercertificatemapentry${uniqueId}
 Content-Type: application/json
 
 {
@@ -279,7 +279,8 @@ Content-Type: application/json
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "matcher": 1
+  "matcher": "PRIMARY",
+  "name": "certificatemanagercertificatemapentry${uniqueId}"
 }
 
 200 OK
@@ -305,7 +306,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -342,7 +343,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -365,13 +366,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "matcher": 1,
+  "matcher": "PRIMARY",
   "name": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}"
 }
 
 ---
 
-PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json&updateMask=description
 Content-Type: application/json
 
 {
@@ -382,9 +383,7 @@ Content-Type: application/json
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
-  },
-  "matcher": 1,
-  "name": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}"
+  }
 }
 
 200 OK
@@ -410,7 +409,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -447,7 +446,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -470,13 +469,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "matcher": 1,
+  "matcher": "PRIMARY",
   "name": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}"
 }
 
 ---
 
-DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -502,7 +501,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
