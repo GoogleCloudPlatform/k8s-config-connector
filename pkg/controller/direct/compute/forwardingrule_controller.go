@@ -28,6 +28,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
@@ -83,8 +84,12 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, op *directba
 		obj.Spec.LoadBalancingScheme = direct.LazyPtr("EXTERNAL")
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	if err := resolveForwardingRuleRefs(ctx, reader, obj); err != nil {
-		return nil, fmt.Errorf("resolving references: %w", err)
+		return nil, fmt.Errorf("resolving remaining references: %w", err)
 	}
 
 	mapCtx := &direct.MapContext{}
@@ -183,11 +188,8 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	if err != nil {
 		return fmt.Errorf("creating ComputeForwardingRule %s: %w", a.id, err)
 	}
-	if !op.Done() {
-		err = op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("waiting ComputeForwardingRule %s create failed: %w", a.id, err)
-		}
+	if err = op.Wait(ctx); err != nil {
+		return fmt.Errorf("waiting ComputeForwardingRule %s create failed: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created ComputeForwardingRule", "name", a.id)
 
@@ -208,11 +210,8 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 		if err != nil {
 			return fmt.Errorf("adding ComputeForwardingRule labels %s: %w", a.id, err)
 		}
-		if !op.Done() {
-			err = op.Wait(ctx)
-			if err != nil {
-				return fmt.Errorf("waiting ComputeForwardingRule %s add labels failed: %w", a.id, err)
-			}
+		if err = op.Wait(ctx); err != nil {
+			return fmt.Errorf("waiting ComputeForwardingRule %s add labels failed: %w", a.id, err)
 		}
 		log.V(2).Info("successfully added ComputeForwardingRule labels", "name", a.id)
 
@@ -244,27 +243,13 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 
 	structuredreporting.ReportDiff(ctx, diffs)
 
-	forwardingRule := a.desired
-	op := &gcp.Operation{}
-	updated := &computepb.ForwardingRule{}
-
-	desiredAllowGlobalAccess := false
-	if forwardingRule.AllowGlobalAccess != nil {
-		desiredAllowGlobalAccess = *forwardingRule.AllowGlobalAccess
-	}
-	actualAllowGlobalAccess := false
-	if a.actual.AllowGlobalAccess != nil {
-		actualAllowGlobalAccess = *a.actual.AllowGlobalAccess
-	}
+	desiredAllowGlobalAccess := direct.ValueOf(a.desired.AllowGlobalAccess)
+	actualAllowGlobalAccess := direct.ValueOf(a.actual.AllowGlobalAccess)
 
 	if desiredAllowGlobalAccess != actualAllowGlobalAccess {
 		if a.id.Region != "global" {
 			// To match the request body in TF-controller log
 			// https://github.com/hashicorp/terraform-provider-google/blob/main/google/services/compute/resource_compute_forwarding_rule.go#L1151
-			desiredAllowGlobalAccess := false
-			if forwardingRule.AllowGlobalAccess != nil {
-				desiredAllowGlobalAccess = *forwardingRule.AllowGlobalAccess
-			}
 			reqBody := &computepb.ForwardingRule{AllowGlobalAccess: &desiredAllowGlobalAccess}
 			patchReq := &computepb.PatchForwardingRuleRequest{
 				ForwardingRule:         a.id.ForwardingRule,
@@ -272,12 +257,11 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 				Project:                a.id.Project,
 				Region:                 a.id.Region,
 			}
-			op, err = a.forwardingRulesClient.Patch(ctx, patchReq)
+			op, err := a.forwardingRulesClient.Patch(ctx, patchReq)
 			if err != nil {
 				return fmt.Errorf("updating ComputeForwardingRule %s: %w", a.id, err)
 			}
-			err = op.Wait(ctx)
-			if err != nil {
+			if err = op.Wait(ctx); err != nil {
 				return fmt.Errorf("waiting ComputeForwardingRule %s update failed: %w", a.id, err)
 			}
 			log.V(2).Info("successfully updated ComputeForwardingRule", "name", a.id)
@@ -287,7 +271,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	// Use setTarget and setLabels to update target and labels fields.
 	labelsDiff := !mapsEqual(a.desired.Labels, a.actual.Labels)
 	if labelsDiff {
-		labelsToSend := forwardingRule.Labels
+		labelsToSend := a.desired.Labels
 		if labelsToSend == nil {
 			labelsToSend = make(map[string]string)
 		}
@@ -295,11 +279,8 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 		if err != nil {
 			return fmt.Errorf("updating ComputeForwardingRule labels %s: %w", a.id, err)
 		}
-		if !op.Done() {
-			err = op.Wait(ctx)
-			if err != nil {
-				return fmt.Errorf("waiting ComputeForwardingRule %s update labels failed: %w", a.id, err)
-			}
+		if err = op.Wait(ctx); err != nil {
+			return fmt.Errorf("waiting ComputeForwardingRule %s update labels failed: %w", a.id, err)
 		}
 		log.V(2).Info("successfully updated ComputeForwardingRule labels", "name", a.id)
 	}
@@ -308,21 +289,22 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	// IsSelfLinkEqual is a special handling to avoid reconciliation discrepancies caused by resources and
 	// their dependencies being managed by different controllers.
 	// This can be removed once all Compute resources are migrated to direct controller.
-	targetMatchSpec := IsSelfLinkEqual(forwardingRule.Target, a.actual.Target)
-	targetMatchStatus := IsSelfLinkEqual(forwardingRule.Target, a.desiredStatusTarget)
+	targetMatchSpec := IsSelfLinkEqual(a.desired.Target, a.actual.Target)
+	targetMatchStatus := IsSelfLinkEqual(a.desired.Target, a.desiredStatusTarget)
 	targetDiff := !targetMatchSpec || (a.desiredStatusTarget != nil && !targetMatchStatus)
 	if targetDiff {
+		var op *gcp.Operation
 		if a.id.IsGlobal() {
 			setTargetReq := &computepb.SetTargetGlobalForwardingRuleRequest{
 				ForwardingRule:          a.id.ForwardingRule,
-				TargetReferenceResource: &computepb.TargetReference{Target: forwardingRule.Target},
+				TargetReferenceResource: &computepb.TargetReference{Target: a.desired.Target},
 				Project:                 a.id.Project,
 			}
 			op, err = a.globalForwardingRulesClient.SetTarget(ctx, setTargetReq)
 		} else {
 			setTargetReq := &computepb.SetTargetForwardingRuleRequest{
 				ForwardingRule:          a.id.ForwardingRule,
-				TargetReferenceResource: &computepb.TargetReference{Target: forwardingRule.Target},
+				TargetReferenceResource: &computepb.TargetReference{Target: a.desired.Target},
 				Project:                 a.id.Project,
 				Region:                  a.id.Region,
 			}
@@ -331,17 +313,14 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 		if err != nil {
 			return fmt.Errorf("updating ComputeForwardingRule target %s: %w", a.id, err)
 		}
-		if !op.Done() {
-			err = op.Wait(ctx)
-			if err != nil {
-				return fmt.Errorf("waiting ComputeForwardingRule %s update target failed: %w", a.id, err)
-			}
+		if err = op.Wait(ctx); err != nil {
+			return fmt.Errorf("waiting ComputeForwardingRule %s update target failed: %w", a.id, err)
 		}
 		log.V(2).Info("successfully updated ComputeForwardingRule target", "name", a.id)
 	}
 
 	// Get the updated resource
-	updated, err = a.get(ctx)
+	updated, err := a.get(ctx)
 	if err != nil {
 		return fmt.Errorf("getting ComputeForwardingRule %q: %w", a.id.ForwardingRule, err)
 	}
@@ -441,11 +420,8 @@ func (a *forwardingRuleAdapter) Delete(ctx context.Context, deleteOp *directbase
 	if err != nil {
 		return false, fmt.Errorf("deleting ComputeForwardingRule %s: %w", a.id.ForwardingRule, err)
 	}
-	if !op.Done() {
-		err = op.Wait(ctx)
-		if err != nil {
-			return false, fmt.Errorf("waiting ComputeForwardingRule %s delete failed: %w", a.id.ForwardingRule, err)
-		}
+	if err := op.Wait(ctx); err != nil {
+		return false, fmt.Errorf("waiting ComputeForwardingRule %s delete failed: %w", a.id.ForwardingRule, err)
 	}
 	log.V(2).Info("successfully deleted ComputeForwardingRule", "name", a.id.ForwardingRule)
 	return true, nil
