@@ -944,9 +944,10 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 
 			if diff := cmp.Diff(string(expectedDiff), allDiffs.String()); diff != "" {
 				// To address inconsistencies between local and CI environments,
-				// we normalize the diff output by replacing non-breaking spaces with regular spaces.
-				normalizedActual := strings.ReplaceAll(allDiffs.String(), " ", " ")
-				normalizedExpected := strings.ReplaceAll(string(expectedDiff), " ", " ")
+				// we normalize the diff output by replacing non-breaking spaces with regular spaces
+				// and folding multiline strings.Join blocks into a single line.
+				normalizedActual := normalizeStringsJoin(strings.ReplaceAll(allDiffs.String(), " ", " "))
+				normalizedExpected := normalizeStringsJoin(strings.ReplaceAll(string(expectedDiff), " ", " "))
 				if diff := cmp.Diff(normalizedExpected, normalizedActual); diff != "" {
 					t.Errorf("crd %s schema diff does not match golden file %s:\n%s", crd.Name, diffFilePath, diff)
 				}
@@ -1250,4 +1251,77 @@ func isIAMSupportedInKCC(gvk schema.GroupVersionKind, _ *servicemappingloader.Se
 	// }
 
 	return false
+}
+
+// normalizeStringsJoin processes strings.Join blocks in the diff and folds them
+// into a single line format to avoid environmental discrepancies in go-cmp's diff alignments.
+func normalizeStringsJoin(input string) string {
+	lines := strings.Split(input, "\n")
+	var result []string
+	inJoin := false
+	var joinLines []string
+	var joinIndent string
+
+	for i := 0; i < len(lines); i++ {
+		line := lines[i]
+		if !inJoin {
+			if strings.Contains(line, "strings.Join({") {
+				inJoin = true
+				joinLines = []string{}
+				idx := strings.Index(line, "strings.Join({")
+				joinIndent = line[:idx]
+				continue
+			}
+			result = append(result, line)
+		} else {
+			if strings.Contains(line, `}, "")`) {
+				inJoin = false
+				var beforeParts []string
+				var afterParts []string
+				for _, jl := range joinLines {
+					var sign byte = ' '
+					if len(jl) > 0 {
+						if jl[0] == '+' {
+							sign = '+'
+						} else if jl[0] == '-' {
+							sign = '-'
+						}
+					}
+
+					startIdx := strings.Index(jl, `"`)
+					endIdx := strings.LastIndex(jl, `"`)
+					if startIdx != -1 && endIdx > startIdx {
+						strVal := jl[startIdx+1 : endIdx]
+						strVal = strings.ReplaceAll(strVal, `\"`, `"`)
+						strVal = strings.ReplaceAll(strVal, `\\`, `\`)
+
+						if sign == '+' {
+							afterParts = append(afterParts, strVal)
+						} else if sign == '-' {
+							beforeParts = append(beforeParts, strVal)
+						} else {
+							beforeParts = append(beforeParts, strVal)
+							afterParts = append(afterParts, strVal)
+						}
+					}
+				}
+
+				beforeStr := strings.Join(beforeParts, "")
+				afterStr := strings.Join(afterParts, "")
+
+				if beforeStr == afterStr {
+					escaped := strings.ReplaceAll(beforeStr, `"`, `\"`)
+					result = append(result, fmt.Sprintf(`%s"%s",`, joinIndent, escaped))
+				} else {
+					escapedBefore := strings.ReplaceAll(beforeStr, `"`, `\"`)
+					escapedAfter := strings.ReplaceAll(afterStr, `"`, `\"`)
+					result = append(result, fmt.Sprintf(`-%s"%s",`, joinIndent, escapedBefore))
+					result = append(result, fmt.Sprintf(`+%s"%s",`, joinIndent, escapedAfter))
+				}
+				continue
+			}
+			joinLines = append(joinLines, line)
+		}
+	}
+	return strings.Join(result, "\n")
 }
