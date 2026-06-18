@@ -77,6 +77,40 @@ spec:
               description:
                 description: Immutable. An optional description of this resource.
                 type: string
+              ipCollectionRef:
+                description: |-
+                  Immutable. The PublicDelegatedPrefix IP collection from which to
+                  reserve the address. Only external IPv4 addresses can use this.
+
+                  Warning: Since ComputePublicDelegatedPrefix is not yet supported as a Config Connector resource,
+                  only the 'external' field of this reference can be used.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ComputePublicDelegatedPrefix
+                      resource. Should be in the format "projects/{{projectID}}/global/publicDelegatedPrefixes/{{publicDelegatedPrefixID}}"
+                      or "projects/{{projectID}}/regions/{{region}}/publicDelegatedPrefixes/{{publicDelegatedPrefixID}}".
+                    type: string
+                  name:
+                    description: The name of a ComputePublicDelegatedPrefix resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputePublicDelegatedPrefix resource.
+                    type: string
+                type: object
               ipVersion:
                 description: 'Immutable. The IP Version that will be used by this
                   address. The default value is ''IPV4''. Possible values: ["IPV4",

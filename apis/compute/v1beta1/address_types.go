@@ -51,6 +51,14 @@ type ComputeAddressSpec struct {
 	// +optional
 	IPV6EndpointType *string `json:"ipv6EndpointType,omitempty"`
 
+	/* Immutable. The PublicDelegatedPrefix IP collection from which to
+	   reserve the address. Only external IPv4 addresses can use this.
+
+	   Warning: Since ComputePublicDelegatedPrefix is not yet supported as a Config Connector resource,
+	   only the 'external' field of this reference can be used. */
+	// +optional
+	IpCollectionRef *ComputePublicDelegatedPrefixRef `json:"ipCollectionRef,omitempty"`
+
 	/* Location represents the geographical location of the
 	   ComputeAddress. Specify a region name or "global" for global resources.
 	   Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */

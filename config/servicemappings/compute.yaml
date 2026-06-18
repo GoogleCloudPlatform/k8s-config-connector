@@ -61,6 +61,19 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - key: ipCollectionRef
+          tfField: ip_collection
+          description: |-
+            The PublicDelegatedPrefix IP collection from which to
+            reserve the address. Only external IPv4 addresses can use this.
+
+            Warning: Since ComputePublicDelegatedPrefix is not yet supported as a Config Connector resource,
+            only the 'external' field of this reference can be used.
+          gvk:
+            kind: ComputePublicDelegatedPrefix
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project
