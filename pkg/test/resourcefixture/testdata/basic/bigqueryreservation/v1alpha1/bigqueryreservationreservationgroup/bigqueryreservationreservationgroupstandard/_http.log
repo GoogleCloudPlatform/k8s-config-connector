@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "No reservation found.",
+    "message": "Not found: ReservationGroup projects/${projectId}/locations/us-west2/reservationGroups/bqresgroup-${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
