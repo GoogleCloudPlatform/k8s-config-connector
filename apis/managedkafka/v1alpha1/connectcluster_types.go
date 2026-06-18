@@ -102,7 +102,7 @@ type ConnectNetworkConfig struct {
 	//  communicate with network endpoints in either the primary or additional
 	//  subnets.
 	// +optional
-	AdditionalSubnetRefs []computev1beta1.ComputeSubnetworkRef `json:"additionalSubnetRefs,omitempty"`
+	AdditionalSubnetRefs []*computev1beta1.ComputeSubnetworkRef `json:"additionalSubnetRefs,omitempty"`
 
 	// Optional. Additional DNS domain names from the subnet's network to be made
 	//  visible to the Connect Cluster. When using MirrorMaker2, it's necessary to

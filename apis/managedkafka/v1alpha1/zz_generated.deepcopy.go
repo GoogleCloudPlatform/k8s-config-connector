@@ -179,8 +179,14 @@ func (in *ConnectNetworkConfig) DeepCopyInto(out *ConnectNetworkConfig) {
 	}
 	if in.AdditionalSubnetRefs != nil {
 		in, out := &in.AdditionalSubnetRefs, &out.AdditionalSubnetRefs
-		*out = make([]v1beta1.ComputeSubnetworkRef, len(*in))
-		copy(*out, *in)
+		*out = make([]*v1beta1.ComputeSubnetworkRef, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(v1beta1.ComputeSubnetworkRef)
+				**out = **in
+			}
+		}
 	}
 	if in.DNSDomainNames != nil {
 		in, out := &in.DNSDomainNames, &out.DNSDomainNames
