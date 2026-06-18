@@ -327,14 +327,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `selfLink` field of a `ComputeHealthCheck`
-                          resource.'
+                        description: The compute health check name, when not managed
+                          by Config Connector.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: Name of a ComputeHealthCheck object.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: Namespace of a ComputeHealthCheck object
                         type: string
                     type: object
                   primaryBackup:

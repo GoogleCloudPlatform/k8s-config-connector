@@ -634,12 +634,12 @@ func FavorReferenceArrayFieldOverNonReferenceArrayField(r *k8s.Resource, nonRefe
 	if err != nil {
 		return fmt.Errorf("error getting the non-reference field '%v': %w", strings.Join(nonReferenceFieldPath, "."), err)
 	}
-	_, foundRef, err := unstructured.NestedSlice(r.Spec, referenceFieldPath...)
+	refArray, foundRef, err := unstructured.NestedSlice(r.Spec, referenceFieldPath...)
 	if err != nil {
 		return fmt.Errorf("error getting the reference field '%v': %w", strings.Join(referenceFieldPath, "."), err)
 	}
 
-	if foundNonRef && foundRef {
+	if foundNonRef && len(nonRefArray) > 0 && foundRef && len(refArray) > 0 {
 		return fmt.Errorf("mutually-exclusive fields '%v' and '%v' are both set", strings.Join(nonReferenceFieldPath, "."), strings.Join(referenceFieldPath, "."))
 	}
 
@@ -650,7 +650,7 @@ func FavorReferenceArrayFieldOverNonReferenceArrayField(r *k8s.Resource, nonRefe
 	// If only the non-reference array is set, populate its values to the
 	// 'external' subfields of items under the reference array, and remove the
 	// non-reference array field.
-	refArray := make([]interface{}, len(nonRefArray))
+	refArray = make([]interface{}, len(nonRefArray))
 	for i, val := range nonRefArray {
 		refItem := make(map[string]interface{})
 		if err := unstructured.SetNestedField(refItem, val, "external"); err != nil {

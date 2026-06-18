@@ -402,6 +402,9 @@ func RecordsetRoutingPolicy_FromAPI(mapCtx *direct.MapContext, in *api.RRSetRout
 	}
 	out := &krm.RecordsetRoutingPolicy{}
 	out.Geo = RecordsetGeo_FromAPI(mapCtx, in.Geo)
+	if in.HealthCheck != "" {
+		out.HealthCheckRef = &krm.ComputeHealthCheckRef{External: in.HealthCheck}
+	}
 	out.PrimaryBackup = RecordsetPrimaryBackup_FromAPI(mapCtx, in.PrimaryBackup)
 	out.Wrr = RecordsetWrr_FromAPI(mapCtx, in.Wrr)
 	// MISSING: EnableGeoFencing
@@ -416,9 +419,11 @@ func RecordsetRoutingPolicy_ToAPI(mapCtx *direct.MapContext, in *krm.RecordsetRo
 	}
 	out := &api.RRSetRoutingPolicy{}
 	out.Geo = RecordsetGeo_ToAPI(mapCtx, in.Geo)
+	if in.HealthCheckRef != nil {
+		out.HealthCheck = in.HealthCheckRef.External
+	}
 	out.PrimaryBackup = RecordsetPrimaryBackup_ToAPI(mapCtx, in.PrimaryBackup)
 	out.Wrr = RecordsetWrr_ToAPI(mapCtx, in.Wrr)
-	// MISSING: HealthCheck
 	return out
 }
 */
