@@ -31,8 +31,17 @@ go run . generate-types --service google.cloud.discoveryengine.v1 --api-version 
   --resource DiscoveryEngineIdentityMappingStore:IdentityMappingStore \
   --resource DiscoveryEngineTargetSite:TargetSite \
   --resource DiscoveryEngineConversation:Conversation
+mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1_types.generated.go
+
+go run . generate-types --service google.cloud.discoveryengine.v1beta --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineSampleQuerySet:SampleQuerySet
+mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
 
 go run . generate-mapper --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
+mv ../../../pkg/controller/direct/discoveryengine/mapper.generated.go ../../../pkg/controller/direct/discoveryengine/v1_mapper.generated.go
+
+go run . generate-mapper --service google.cloud.discoveryengine.v1beta --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
+mv ../../../pkg/controller/direct/discoveryengine/mapper.generated.go ../../../pkg/controller/direct/discoveryengine/v1beta_mapper.generated.go
 
 
 cd ${REPO_ROOT}
