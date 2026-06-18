@@ -3082,6 +3082,13 @@
 [missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.specialistWorkerEmails[]" is not set in unstructured objects
 [missing_field] crd=vertexaitensorboards.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" is not set in unstructured objects
 [missing_field] crd=vertexaitensorboards.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=visionproducts.vision.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=visionproducts.vision.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=visionproducts.vision.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=visionproducts.vision.cnrm.cloud.google.com version=v1alpha1: field ".spec.productCategory" is not set in unstructured objects
+[missing_field] crd=visionproducts.vision.cnrm.cloud.google.com version=v1alpha1: field ".spec.productLabels[].key" is not set in unstructured objects
+[missing_field] crd=visionproducts.vision.cnrm.cloud.google.com version=v1alpha1: field ".spec.productLabels[].value" is not set in unstructured objects
+[missing_field] crd=visionproducts.vision.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vmwareengineexternalaccessrules.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationIPRanges[].ipAddress" is not set in unstructured objects
 [missing_field] crd=vmwareengineexternalaccessrules.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationIPRanges[].ipAddressRange" is not set in unstructured objects
 [missing_field] crd=vmwareengineexternalaccessrules.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceIPRanges[].externalAddressRef" is not set; neither 'external' nor 'name' are set
