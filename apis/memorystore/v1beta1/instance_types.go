@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
@@ -447,6 +446,7 @@ func init() {
 	SchemeBuilder.Register(&MemorystoreInstance{}, &MemorystoreInstanceList{})
 }
 
+// +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
 type CrossInstanceReplicationConfig struct {
 	// Required. The role of the instance in cross instance replication.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.instance_role
@@ -458,6 +458,13 @@ type CrossInstanceReplicationConfig struct {
 	//  This field is only set for a secondary instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.primary_instance
 	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstance `json:"primaryInstance,omitempty"`
+
+	// Optional. List of secondary instances that are replicating from this
+	//  primary instance.
+	//
+	//  This field is only set for a primary instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.secondary_instances
+	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstance `json:"secondaryInstances,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance
@@ -467,6 +474,7 @@ type CrossInstanceReplicationConfig_RemoteInstance struct {
 	InstanceRef *refs.MemorystoreInstanceRef `json:"instanceRef,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
 type CrossInstanceReplicationConfigObservedState struct {
 	// Optional. Details of the primary instance that is used as the replication
 	//  source for this secondary instance.
@@ -482,9 +490,14 @@ type CrossInstanceReplicationConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.secondary_instances
 	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"secondaryInstances,omitempty"`
 
+	// Output only. The last time cross instance replication config was updated.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
 	// Output only. An output only view of all the member instances participating
 	//  in the cross instance replication. This view will be provided by every
 	//  member instance irrespective of its instance role(primary or secondary).
+	//
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.membership
 	Membership *CrossInstanceReplicationConfig_MembershipObservedState `json:"membership,omitempty"`
 }
@@ -498,19 +511,6 @@ type CrossInstanceReplicationConfig_RemoteInstanceObservedState struct {
 	// Output only. The unique identifier of the remote instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.uid
 	Uid *string `json:"uid,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership
-type CrossInstanceReplicationConfig_MembershipObservedState struct {
-	// Output only. The primary instance that acts as the source of replication
-	//  for the secondary instances.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership.primary_instance
-	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"primaryInstance,omitempty"`
-
-	// Output only. The list of secondary instances replicating from the primary
-	//  instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership.secondary_instances
-	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"secondaryInstances,omitempty"`
 }
 
 type AutomatedBackupConfig struct {
