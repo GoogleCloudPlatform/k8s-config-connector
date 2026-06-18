@@ -679,7 +679,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Required. If this is true, the [Subject][google.cloud.security.privateca.v1.Subject] field may be copied from a certificate request into the signed certificate. Otherwise, the requested [Subject][google.cloud.security.privateca.v1.Subject] will be discarded.</p>
+            <p>Required. If this is true, the [Subject][google.cloud.security.privateca.v1.Subject] field may be copied from a certificate request into the signed certificate. Otherwise, the requested Subject will be discarded.</p>
         </td>
     </tr>
     <tr>

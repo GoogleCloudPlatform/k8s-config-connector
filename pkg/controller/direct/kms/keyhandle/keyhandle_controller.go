@@ -19,7 +19,6 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -28,12 +27,16 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/kms/apiv1"
 
 	kmspb "cloud.google.com/go/kms/apiv1/kmspb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -45,7 +48,7 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(krm.KMSKeyHandleGVK, NewModel)
+	registry.RegisterModel(krm.KMSKeyHandleGVK, NewModel, registry.CannotBeDeleted())
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -79,31 +82,42 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewKMSKeyHandleIdentity(ctx, reader, obj)
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := identity.(*krm.KMSKeyHandleIdentity)
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	desired := kms.KMSKeyHandleSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	return &Adapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desired,
 	}, nil
 }
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
 	return nil, nil
 }
 
 type Adapter struct {
 	id        *krm.KMSKeyHandleIdentity
 	gcpClient *gcp.AutokeyClient
-	desired   *krm.KMSKeyHandle
+	desired   *kmspb.KeyHandle
 	actual    *kmspb.KeyHandle
 }
 
@@ -116,7 +130,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	// Check whether Config Connector knows the resource identity.
 	// If not, Config Connector saves one GCP GET call, and starts the CREATE call directly.
 	// This is mostly for GCP services that do not allow user to specify ID, but assign an ID when creating the object.
-	if a.id.ID() == "" {
+	if a.id.KeyHandle == "" {
 		return false, nil
 	}
 
@@ -136,26 +150,17 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating KeyHandle")
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := kms.KMSKeyHandleSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	parent := a.id.Parent()
 
 	req := &kmspb.CreateKeyHandleRequest{}
-	if a.id.ID() != "" {
+	if a.id.KeyHandle != "" {
 		// Optional. Id of the [KeyHandle][google.cloud.kms.v1.KeyHandle]. Must be
 		// unique to the resource project and location. If not provided by the caller,
 		// a new UUID is used.
-		resource.Name = a.id.String()
-		req.KeyHandleId = a.id.ID()
+		a.desired.Name = a.id.String()
+		req.KeyHandleId = a.id.KeyHandle
 	}
-	req.Parent = parent.String()
-	req.KeyHandle = resource
+	req.Parent = a.id.ParentString()
+	req.KeyHandle = a.desired
 
 	op, err := a.gcpClient.CreateKeyHandle(ctx, req)
 	if err != nil {
@@ -167,52 +172,28 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	log.V(2).Info("successfully created KeyHandle", "name", a.id.String())
 
-	status := &krm.KMSKeyHandleStatus{}
-	status.ObservedState = kms.KMSKeyHandleObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	externalRef := created.Name
-	status.ExternalRef = &externalRef
-	return createOp.UpdateStatus(ctx, status, nil)
+	return a.updateStatus(ctx, createOp, created)
 }
 
-// Update operation not supported for KeyHandle.
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating KeyHandle", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	resource := kms.KMSKeyHandleSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = a.id.String()
+	a.desired.Name = a.id.String()
 
-	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	diffs, _, err := compareKeyHandle(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-		status := &krm.KMSKeyHandleStatus{}
-		status.ObservedState = kms.KMSKeyHandleObservedState_FromProto(mapCtx, a.actual)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-		externalRef := a.actual.Name
-		status.ExternalRef = &externalRef
-		return updateOp.UpdateStatus(ctx, status, nil)
-	} else {
-		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-		for path := range paths {
-			report.AddField(path, nil, nil)
-		}
-		structuredreporting.ReportDiff(ctx, report)
 
-		return fmt.Errorf("update operation not supported for resource %v %v, field(s) changed: %v",
-			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired), paths)
+	if !diffs.HasDiff() {
+		log.V(2).Info("no field needs update", "name", a.id)
+		return a.updateStatus(ctx, updateOp, a.actual)
 	}
+
+	structuredreporting.ReportDiff(ctx, diffs)
+
+	return fmt.Errorf("KMSKeyHandle is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -227,9 +208,8 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	parent := a.id.Parent()
-	obj.Spec.ProjectRef = &refs.ProjectRef{Name: parent.ProjectID}
-	obj.Spec.Location = direct.LazyPtr(parent.Location)
+	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
+	obj.Spec.Location = direct.LazyPtr(a.id.Location)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -244,4 +224,38 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx)
 	log.Info("No-op Delete for KeyHandle", "name", a.id.String())
 	return true, nil
+}
+
+func compareKeyHandle(ctx context.Context, actual, desired *kmspb.KeyHandle) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, kms.KMSKeyHandleSpec_FromProto, kms.KMSKeyHandleSpec_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+	maskedActual.Name = desired.Name // Restore any non-spec identifier fields if needed
+
+	clonedDesired := proto.CloneOf(desired)
+
+	populateDefaults := func(obj *kmspb.KeyHandle) {
+		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
+	}
+	populateDefaults(maskedActual)
+	populateDefaults(clonedDesired)
+
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
+}
+
+func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *kmspb.KeyHandle) error {
+	mapCtx := &direct.MapContext{}
+	status := &krm.KMSKeyHandleStatus{}
+	status.ObservedState = kms.KMSKeyHandleObservedState_FromProto(mapCtx, latest)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	externalRef := latest.Name
+	status.ExternalRef = &externalRef
+	return op.UpdateStatus(ctx, status, nil)
 }

@@ -49,10 +49,7 @@ type FirewallAllow struct {
 	// +optional
 	Ports []string `json:"ports,omitempty"`
 
-	/* The IP protocol to which this rule applies. The protocol type is
-	required when creating a firewall rule. This value can either be
-	one of the following well known protocol strings (tcp, udp,
-	icmp, esp, ah, sctp, ipip, all), or the IP protocol number. */
+	/* The IP protocol to which this rule applies. The protocol type is required when creating a firewall rule. This value can either be one of the following well known protocol strings (tcp, udp, icmp, esp, ah, sctp, ipip, all), or the IP protocol number. */
 	Protocol string `json:"protocol"`
 }
 
@@ -67,10 +64,7 @@ type FirewallDeny struct {
 	// +optional
 	Ports []string `json:"ports,omitempty"`
 
-	/* The IP protocol to which this rule applies. The protocol type is
-	required when creating a firewall rule. This value can either be
-	one of the following well known protocol strings (tcp, udp,
-	icmp, esp, ah, sctp, ipip, all), or the IP protocol number. */
+	/* The IP protocol to which this rule applies. The protocol type is required when creating a firewall rule. This value can either be one of the following well known protocol strings (tcp, udp, icmp, esp, ah, sctp, ipip, all), or the IP protocol number. */
 	Protocol string `json:"protocol"`
 }
 
@@ -80,38 +74,27 @@ type FirewallLogConfig struct {
 }
 
 type ComputeFirewallSpec struct {
-	/* The list of ALLOW rules specified by this firewall. Each rule
-	specifies a protocol and port-range tuple that describes a permitted
-	connection. */
+	/* The list of ALLOW rules specified by this firewall. Each rule specifies a protocol and port-range tuple that describes a permitted connection. */
 	// +optional
 	Allow []FirewallAllow `json:"allow,omitempty"`
 
-	/* The list of DENY rules specified by this firewall. Each rule specifies
-	a protocol and port-range tuple that describes a denied connection. */
+	/* The list of DENY rules specified by this firewall. Each rule specifies a protocol and port-range tuple that describes a denied connection. */
 	// +optional
 	Deny []FirewallDeny `json:"deny,omitempty"`
 
-	/* An optional description of this resource. Provide this property when
-	you create the resource. */
+	/* An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* If destination ranges are specified, the firewall will apply only to
-	traffic that has destination IP address in these ranges. These ranges
-	must be expressed in CIDR format. IPv4 or IPv6 ranges are supported. */
+	/* If destination ranges are specified, the firewall will apply only to traffic that has destination IP address in these ranges. These ranges must be expressed in CIDR format. IPv4 or IPv6 ranges are supported. */
 	// +optional
 	DestinationRanges []string `json:"destinationRanges,omitempty"`
 
-	/* Immutable. Direction of traffic to which this firewall applies; default is
-	INGRESS. Note: For INGRESS traffic, one of 'source_ranges',
-	'source_tags' or 'source_service_accounts' is required. Possible values: ["INGRESS", "EGRESS"]. */
+	/* Immutable. Direction of traffic to which this firewall applies; default is INGRESS. Note: For INGRESS traffic, one of 'source_ranges', 'source_tags' or 'source_service_accounts' is required. Possible values: ["INGRESS", "EGRESS"]. */
 	// +optional
 	Direction *string `json:"direction,omitempty"`
 
-	/* Denotes whether the firewall rule is disabled, i.e not applied to the
-	network it is associated with. When set to true, the firewall rule is
-	not enforced and the network behaves as if it did not exist. If this
-	is unspecified, the firewall rule will be enabled. */
+	/* Denotes whether the firewall rule is disabled, i.e not applied to the network it is associated with. When set to true, the firewall rule is not enforced and the network behaves as if it did not exist. If this is unspecified, the firewall rule will be enabled. */
 	// +optional
 	Disabled *bool `json:"disabled,omitempty"`
 
@@ -119,20 +102,14 @@ type ComputeFirewallSpec struct {
 	// +optional
 	EnableLogging *bool `json:"enableLogging,omitempty"`
 
-	/* This field denotes the logging options for a particular firewall rule.
-	If defined, logging is enabled, and logs will be exported to Cloud Logging. */
+	/* This field denotes the logging options for a particular firewall rule. If defined, logging is enabled, and logs will be exported to Cloud Logging. */
 	// +optional
 	LogConfig *FirewallLogConfig `json:"logConfig,omitempty"`
 
 	/* The network to attach this firewall to. */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-	/* Priority for this rule. This is an integer between 0 and 65535, both
-	inclusive. When not specified, the value assumed is 1000. Relative
-	priorities determine precedence of conflicting rules. Lower value of
-	priority implies higher precedence (eg, a rule with priority 0 has
-	higher precedence than a rule with priority 1). DENY rules take
-	precedence over ALLOW rules having equal priority. */
+	/* Priority for this rule. This is an integer between 0 and 65535, both inclusive. When not specified, the value assumed is 1000. Relative priorities determine precedence of conflicting rules. Lower value of priority implies higher precedence (eg, a rule with priority 0 has higher precedence than a rule with priority 1). DENY rules take precedence over ALLOW rules having equal priority. */
 	// +optional
 	Priority *int64 `json:"priority,omitempty"`
 
@@ -140,41 +117,21 @@ type ComputeFirewallSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* If source ranges are specified, the firewall will apply only to
-	traffic that has source IP address in these ranges. These ranges must
-	be expressed in CIDR format. One or both of sourceRanges and
-	sourceTags may be set. If both properties are set, the firewall will
-	apply to traffic that has source IP address within sourceRanges OR the
-	source IP that belongs to a tag listed in the sourceTags property. The
-	connection does not need to match both properties for the firewall to
-	apply. IPv4 or IPv6 ranges are supported. For INGRESS traffic, one of
-	'source_ranges', 'source_tags' or 'source_service_accounts' is required. */
+	/* If source ranges are specified, the firewall will apply only to traffic that has source IP address in these ranges. These ranges must be expressed in CIDR format. One or both of sourceRanges and sourceTags may be set. If both properties are set, the firewall will apply to traffic that has source IP address within sourceRanges OR the source IP that belongs to a tag listed in the sourceTags property. The connection does not need to match both properties for the firewall to apply. IPv4 or IPv6 ranges are supported. For INGRESS traffic, one of 'source_ranges', 'source_tags' or 'source_service_accounts' is required. */
 	// +optional
 	SourceRanges []string `json:"sourceRanges,omitempty"`
 
 	// +optional
 	SourceServiceAccounts []v1alpha1.ResourceRef `json:"sourceServiceAccounts,omitempty"`
 
-	/* If source tags are specified, the firewall will apply only to traffic
-	with source IP that belongs to a tag listed in source tags. Source
-	tags cannot be used to control traffic to an instance's external IP
-	address. Because tags are associated with an instance, not an IP
-	address. One or both of sourceRanges and sourceTags may be set. If
-	both properties are set, the firewall will apply to traffic that has
-	source IP address within sourceRanges OR the source IP that belongs to
-	a tag listed in the sourceTags property. The connection does not need
-	to match both properties for the firewall to apply. For INGRESS traffic,
-	one of 'source_ranges', 'source_tags' or 'source_service_accounts' is required. */
+	/* If source tags are specified, the firewall will apply only to traffic with source IP that belongs to a tag listed in source tags. Source tags cannot be used to control traffic to an instance's external IP address. Because tags are associated with an instance, not an IP address. One or both of sourceRanges and sourceTags may be set. If both properties are set, the firewall will apply to traffic that has source IP address within sourceRanges OR the source IP that belongs to a tag listed in the sourceTags property. The connection does not need to match both properties for the firewall to apply. For INGRESS traffic, one of 'source_ranges', 'source_tags' or 'source_service_accounts' is required. */
 	// +optional
 	SourceTags []string `json:"sourceTags,omitempty"`
 
 	// +optional
 	TargetServiceAccounts []v1alpha1.ResourceRef `json:"targetServiceAccounts,omitempty"`
 
-	/* A list of instance tags indicating sets of instances located in the
-	network that may make network connections as specified in allowed[].
-	If no targetTags are specified, the firewall rule applies to all
-	instances on the specified network. */
+	/* A list of instance tags indicating sets of instances located in the network that may make network connections as specified in allowed[]. If no targetTags are specified, the firewall rule applies to all instances on the specified network. */
 	// +optional
 	TargetTags []string `json:"targetTags,omitempty"`
 }

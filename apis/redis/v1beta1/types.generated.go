@@ -266,7 +266,6 @@ type ConnectionDetail struct {
 }
 */
 
-/* unreachable type CrossClusterReplicationConfig
 // +kcc:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig
 type CrossClusterReplicationConfig struct {
 	// The role of the cluster in cross cluster replication.
@@ -286,7 +285,6 @@ type CrossClusterReplicationConfig struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.secondary_clusters
 	SecondaryClusters []CrossClusterReplicationConfig_RemoteCluster `json:"secondaryClusters,omitempty"`
 }
-*/
 
 /* unreachable type CrossClusterReplicationConfig_Membership
 // +kcc:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.Membership
@@ -294,7 +292,8 @@ type CrossClusterReplicationConfig_Membership struct {
 }
 */
 
-/* unreachable type CrossClusterReplicationConfig_RemoteCluster
+/* found existing non-generated go type "CrossClusterReplicationConfig_RemoteCluster", skipping
+
 // +kcc:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster
 type CrossClusterReplicationConfig_RemoteCluster struct {
 	// The full resource path of the remote cluster in
@@ -542,7 +541,6 @@ type ConnectionDetailObservedState struct {
 }
 */
 
-/* unreachable type CrossClusterReplicationConfigObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig
 type CrossClusterReplicationConfigObservedState struct {
 	// Details of the primary cluster that is used as the replication source for
@@ -575,9 +573,7 @@ type CrossClusterReplicationConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.membership
 	Membership *CrossClusterReplicationConfig_MembershipObservedState `json:"membership,omitempty"`
 }
-*/
 
-/* unreachable type CrossClusterReplicationConfig_MembershipObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.Membership
 type CrossClusterReplicationConfig_MembershipObservedState struct {
 	// Output only. The primary cluster that acts as the source of replication
@@ -590,9 +586,9 @@ type CrossClusterReplicationConfig_MembershipObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.Membership.secondary_clusters
 	SecondaryClusters []CrossClusterReplicationConfig_RemoteClusterObservedState `json:"secondaryClusters,omitempty"`
 }
-*/
 
-/* unreachable type CrossClusterReplicationConfig_RemoteClusterObservedState
+/* found existing non-generated go type "CrossClusterReplicationConfig_RemoteClusterObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster
 type CrossClusterReplicationConfig_RemoteClusterObservedState struct {
 	// The full resource path of the remote cluster in

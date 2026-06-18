@@ -107,7 +107,14 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 		return nil, err
 	}
 
-	zone := zoneForCluster(name)
+	zone := ""
+	if obj.Config != nil && obj.Config.GceClusterConfig != nil && obj.Config.GceClusterConfig.ZoneUri != "" {
+		tokens := strings.Split(obj.Config.GceClusterConfig.ZoneUri, "/")
+		zone = tokens[len(tokens)-1]
+	}
+	if zone == "" {
+		zone = zoneForCluster(name)
+	}
 
 	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)
 	lroMetadata := &pb.ClusterOperationMetadata{
@@ -162,7 +169,11 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 			obj.Config.GceClusterConfig.ShieldedInstanceConfig.EnableSecureBoot = PtrTo(true)
 			obj.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm = PtrTo(true)
 
-			obj.Config.GceClusterConfig.ZoneUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone
+			if obj.Config.GceClusterConfig.ZoneUri == "" {
+				obj.Config.GceClusterConfig.ZoneUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone
+			} else if !strings.HasPrefix(obj.Config.GceClusterConfig.ZoneUri, "https://") {
+				obj.Config.GceClusterConfig.ZoneUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + obj.Config.GceClusterConfig.ZoneUri
+			}
 
 			s.populateLabels(obj, name)
 			return nil
@@ -181,13 +192,15 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 	})
 }
 
-func populateMachineType(name *clusterName, machineType string, defaultMachineType string) string {
+func populateMachineType(name *clusterName, zone string, machineType string, defaultMachineType string) string {
 	if machineType == "" {
-		machineType = "n2-standard-4"
+		machineType = defaultMachineType
 	}
 
 	// Ensure fully qualified
-	zone := zoneForCluster(name)
+	if zone == "" {
+		zone = zoneForCluster(name)
+	}
 	tokens := strings.Split(machineType, "/")
 	if len(tokens) == 1 {
 		machineType = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone + "/machineTypes/" + machineType
@@ -206,7 +219,7 @@ func (s *clusterControllerServer) populateLabels(obj *pb.Cluster, name *clusterN
 	obj.Labels["goog-dataproc-drz-resource-uuid"] = "cluster-" + obj.ClusterUuid
 }
 
-func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.InstanceGroupConfig, name *clusterName, isMaster bool) *pb.InstanceGroupConfig {
+func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.InstanceGroupConfig, name *clusterName, zone string, isMaster bool) *pb.InstanceGroupConfig {
 	if config == nil {
 		config = &pb.InstanceGroupConfig{}
 	}
@@ -235,7 +248,7 @@ func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.Instanc
 		config.ImageUri = DefaultImageURI
 	}
 
-	config.MachineTypeUri = populateMachineType(name, config.MachineTypeUri, "n2-standard-4")
+	config.MachineTypeUri = populateMachineType(name, zone, config.MachineTypeUri, "n2-standard-4")
 
 	if config.MinCpuPlatform == "" {
 		config.MinCpuPlatform = "AUTOMATIC"
@@ -262,7 +275,14 @@ func zoneForCluster(name *clusterName) string {
 }
 
 func (s *clusterControllerServer) populateDefaultsForCluster(obj *pb.Cluster, name *clusterName) {
-	zone := zoneForCluster(name)
+	zone := ""
+	if obj.Config != nil && obj.Config.GceClusterConfig != nil && obj.Config.GceClusterConfig.ZoneUri != "" {
+		tokens := strings.Split(obj.Config.GceClusterConfig.ZoneUri, "/")
+		zone = tokens[len(tokens)-1]
+	}
+	if zone == "" {
+		zone = zoneForCluster(name)
+	}
 
 	if obj.ClusterUuid == "" {
 		obj.ClusterUuid = fmt.Sprintf("%x", time.Now().UnixNano())
@@ -285,7 +305,11 @@ func (s *clusterControllerServer) populateDefaultsForCluster(obj *pb.Cluster, na
 	}
 	obj.Config.WorkerConfig.DiskConfig.BootDiskSizeGb = 1000
 	obj.Config.WorkerConfig.DiskConfig.BootDiskType = "pd-standard"
-	obj.Config.WorkerConfig.MachineTypeUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone + "/machineTypes/n2-standard-4"
+	if obj.Config.WorkerConfig.MachineTypeUri == "" {
+		obj.Config.WorkerConfig.MachineTypeUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone + "/machineTypes/n2-standard-4"
+	} else if !strings.HasPrefix(obj.Config.WorkerConfig.MachineTypeUri, "https://") {
+		obj.Config.WorkerConfig.MachineTypeUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone + "/machineTypes/" + obj.Config.WorkerConfig.MachineTypeUri
+	}
 	if obj.Config.WorkerConfig.NumInstances == 0 {
 		obj.Config.WorkerConfig.NumInstances = 2
 	}
@@ -293,9 +317,9 @@ func (s *clusterControllerServer) populateDefaultsForCluster(obj *pb.Cluster, na
 	obj.Config.WorkerConfig.MinCpuPlatform = "AUTOMATIC"
 	obj.Config.WorkerConfig.ImageUri = DefaultImageURI
 
-	obj.Config.MasterConfig = s.populateInstanceGroupConfig(obj.Config.MasterConfig, name, true)
+	obj.Config.MasterConfig = s.populateInstanceGroupConfig(obj.Config.MasterConfig, name, zone, true)
 
-	obj.Config.WorkerConfig = s.populateInstanceGroupConfig(obj.Config.WorkerConfig, name, false)
+	obj.Config.WorkerConfig = s.populateInstanceGroupConfig(obj.Config.WorkerConfig, name, zone, false)
 
 	s.populateSoftwareConfig(obj)
 }
@@ -323,6 +347,14 @@ func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.Upd
 		case "config.worker_config.num_instances":
 			description = "Add 1 workers."
 			updated.Config.WorkerConfig.NumInstances = req.GetCluster().GetConfig().GetWorkerConfig().GetNumInstances()
+		case "config.security_config.identity_config.user_service_account_mapping", "config.securityConfig.identityConfig.userServiceAccountMapping":
+			if updated.Config.SecurityConfig == nil {
+				updated.Config.SecurityConfig = &pb.SecurityConfig{}
+			}
+			if updated.Config.SecurityConfig.IdentityConfig == nil {
+				updated.Config.SecurityConfig.IdentityConfig = &pb.IdentityConfig{}
+			}
+			updated.Config.SecurityConfig.IdentityConfig.UserServiceAccountMapping = req.GetCluster().GetConfig().GetSecurityConfig().GetIdentityConfig().GetUserServiceAccountMapping()
 		case "labels":
 			updated.Labels = req.GetCluster().GetLabels()
 			s.populateLabels(updated, name)

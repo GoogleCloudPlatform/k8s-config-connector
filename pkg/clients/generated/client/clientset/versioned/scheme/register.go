@@ -38,6 +38,7 @@ import (
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/appengine/v1alpha1"
 	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1alpha1"
 	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1beta1"
+	artifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1alpha1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1beta1"
 	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/asset/v1beta1"
 	assuredworkloadsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/assuredworkloads/v1alpha1"
@@ -54,6 +55,7 @@ import (
 	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryconnection/v1beta1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatapolicy/v1alpha1"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1beta1"
+	bigquerymigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerymigration/v1alpha1"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1alpha1"
 	bigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1beta1"
 	bigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1alpha1"
@@ -65,6 +67,7 @@ import (
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1alpha1"
 	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1beta1"
 	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudasset/v1alpha1"
+	cloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudbuild/v1alpha1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudbuild/v1beta1"
 	clouddeployv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddeploy/v1alpha1"
 	clouddeployv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddeploy/v1beta1"
@@ -93,6 +96,7 @@ import (
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataflow/v1beta1"
+	dataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1alpha1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datafusion/v1beta1"
 	datalabelingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datalabeling/v1alpha1"
@@ -230,6 +234,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	appenginev1alpha1.AddToScheme,
 	apphubv1alpha1.AddToScheme,
 	apphubv1beta1.AddToScheme,
+	artifactregistryv1alpha1.AddToScheme,
 	artifactregistryv1beta1.AddToScheme,
 	assetv1beta1.AddToScheme,
 	assuredworkloadsv1alpha1.AddToScheme,
@@ -246,6 +251,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	bigqueryconnectionv1beta1.AddToScheme,
 	bigquerydatapolicyv1alpha1.AddToScheme,
 	bigquerydatatransferv1beta1.AddToScheme,
+	bigquerymigrationv1alpha1.AddToScheme,
 	bigqueryreservationv1alpha1.AddToScheme,
 	bigqueryreservationv1beta1.AddToScheme,
 	bigtablev1alpha1.AddToScheme,
@@ -257,6 +263,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	certificatemanagerv1alpha1.AddToScheme,
 	certificatemanagerv1beta1.AddToScheme,
 	cloudassetv1alpha1.AddToScheme,
+	cloudbuildv1alpha1.AddToScheme,
 	cloudbuildv1beta1.AddToScheme,
 	clouddeployv1alpha1.AddToScheme,
 	clouddeployv1beta1.AddToScheme,
@@ -285,6 +292,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	datacatalogv1alpha1.AddToScheme,
 	datacatalogv1beta1.AddToScheme,
 	dataflowv1beta1.AddToScheme,
+	dataformv1alpha1.AddToScheme,
 	dataformv1beta1.AddToScheme,
 	datafusionv1beta1.AddToScheme,
 	datalabelingv1alpha1.AddToScheme,

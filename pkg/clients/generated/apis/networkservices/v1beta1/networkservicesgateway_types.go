@@ -39,7 +39,12 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type NetworkServicesGatewaySpec struct {
-	/* One or more addresses with ports in format of ":" that the Gateway must receive traffic on. The proxy binds to the ports specified. IP address can be anything that is allowed by the underlying infrastructure (auto-allocation, static IP, BYOIP). */
+	/* Optional. Zero or one IPv4 or IPv6 address on which the Gateway will
+	receive the traffic. When no address is provided, an IP from the subnetwork
+	is allocated
+
+	This field only applies to gateways of type 'SECURE_WEB_GATEWAY'.
+	Gateways of type 'OPEN_MESH' listen on 0.0.0.0 for IPv4 and :: for IPv6. */
 	// +optional
 	Addresses []string `json:"addresses,omitempty"`
 
@@ -47,7 +52,7 @@ type NetworkServicesGatewaySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. The location for the resource */
+	/* Immutable. The location for the resource. */
 	Location string `json:"location"`
 
 	/* Required. One or more ports that the Gateway must receive traffic on. The proxy binds to the ports specified. Gateway listen on 0.0.0.0 on the ports specified below. */
@@ -63,6 +68,7 @@ type NetworkServicesGatewaySpec struct {
 	/* Immutable. Required. Immutable. Scope determines how configuration across multiple Gateway instances are merged. The configuration for multiple Gateway instances with the same scope will be merged as presented as a single coniguration to the proxy/load balancer. Max length 64 characters. Scope should start with a letter and can only have letters, numbers, hyphens. */
 	Scope string `json:"scope"`
 
+	/* Optional. A fully-qualified ServerTLSPolicy URL reference. Specifies how TLS traffic is terminated. If empty, TLS termination is disabled. */
 	// +optional
 	ServerTlsPolicyRef *v1alpha1.ResourceRef `json:"serverTlsPolicyRef,omitempty"`
 

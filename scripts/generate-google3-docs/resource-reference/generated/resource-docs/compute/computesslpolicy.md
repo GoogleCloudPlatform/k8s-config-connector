@@ -131,8 +131,7 @@ for which ciphers are available to use. **Note**: this argument
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The minimum version of SSL protocol that can be used by the clients
-to establish a connection with the load balancer. Default value: "TLS_1_0" Possible values: ["TLS_1_0", "TLS_1_1", "TLS_1_2"].</p>
+            <p>The minimum version of SSL protocol that can be used by the clients to establish a connection with the load balancer. Default value: "TLS_1_0" Possible values: ["TLS_1_0", "TLS_1_1", "TLS_1_2"].</p>
         </td>
     </tr>
     <tr>
@@ -193,7 +192,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -263,8 +262,7 @@ selfLink: string
         <td><code>fingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Fingerprint of this resource. A hash of the contents stored in this
-object. This field is used in optimistic locking.</p>
+            <p>Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking.</p>
         </td>
     </tr>
     <tr>

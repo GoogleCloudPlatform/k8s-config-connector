@@ -661,6 +661,126 @@ func ComputeFirewallPolicyRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, 
 }
 */
 
+/* found existing non-generated mapping function "ComputeFirewallSpec_v1beta1_FromProto", skipping
+func ComputeFirewallSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Firewall) *krm.ComputeFirewallSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallSpec{}
+	// MISSING: Allowed
+	// MISSING: CreationTimestamp
+	// MISSING: Denied
+	out.Description = in.Description
+	out.DestinationRanges = in.DestinationRanges
+	out.Direction = in.Direction
+	out.Disabled = in.Disabled
+	// MISSING: ID
+	// MISSING: Kind
+	out.LogConfig = FirewallLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: Params
+	out.Priority = in.Priority
+	// MISSING: SelfLink
+	out.SourceRanges = in.SourceRanges
+	out.SourceServiceAccounts = ComputeFirewallSpec_SourceServiceAccounts_FromProto(mapCtx, in.SourceServiceAccounts)
+	out.SourceTags = in.SourceTags
+	out.TargetServiceAccounts = ComputeFirewallSpec_TargetServiceAccounts_FromProto(mapCtx, in.TargetServiceAccounts)
+	out.TargetTags = in.TargetTags
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeFirewallSpec_v1beta1_ToProto", skipping
+
+	func ComputeFirewallSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallSpec) *pb.Firewall {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Firewall{}
+		// MISSING: Allowed
+		// MISSING: CreationTimestamp
+		// MISSING: Denied
+		out.Description = in.Description
+		out.DestinationRanges = in.DestinationRanges
+		out.Direction = in.Direction
+		out.Disabled = in.Disabled
+		// MISSING: ID
+		// MISSING: Kind
+		out.LogConfig = FirewallLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+		// MISSING: Name
+		if in.NetworkRef != nil {
+			out.Network = &in.NetworkRef.External
+		}
+		// MISSING: Params
+		out.Priority = in.Priority
+		// MISSING: SelfLink
+		out.SourceRanges = in.SourceRanges
+		out.SourceServiceAccounts = ComputeFirewallSpec_SourceServiceAccounts_ToProto(mapCtx, in.SourceServiceAccounts)
+		out.SourceTags = in.SourceTags
+		out.TargetServiceAccounts = ComputeFirewallSpec_TargetServiceAccounts_ToProto(mapCtx, in.TargetServiceAccounts)
+		out.TargetTags = in.TargetTags
+		return out
+	}
+*/
+func ComputeFirewallStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Firewall) *krm.ComputeFirewallStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallStatus{}
+	// MISSING: Allowed
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Denied
+	// MISSING: Description
+	// MISSING: DestinationRanges
+	// MISSING: Direction
+	// MISSING: Disabled
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: Params
+	// MISSING: Priority
+	out.SelfLink = in.SelfLink
+	// MISSING: SourceRanges
+	// MISSING: SourceServiceAccounts
+	// MISSING: SourceTags
+	// MISSING: TargetServiceAccounts
+	// MISSING: TargetTags
+	return out
+}
+func ComputeFirewallStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallStatus) *pb.Firewall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Firewall{}
+	// MISSING: Allowed
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Denied
+	// MISSING: Description
+	// MISSING: DestinationRanges
+	// MISSING: Direction
+	// MISSING: Disabled
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: Params
+	// MISSING: Priority
+	out.SelfLink = in.SelfLink
+	// MISSING: SourceRanges
+	// MISSING: SourceServiceAccounts
+	// MISSING: SourceTags
+	// MISSING: TargetServiceAccounts
+	// MISSING: TargetTags
+	return out
+}
+
 /* found existing non-generated mapping function "ComputeForwardingRuleSpec_v1beta1_FromProto", skipping
 func ComputeForwardingRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRule) *krm.ComputeForwardingRuleSpec {
 	if in == nil {
@@ -831,57 +951,57 @@ func ComputeForwardingRuleStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeForwardingRuleStatus_v1beta1_ToProto", skipping
-
-	func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
-		if in == nil {
-			return nil
-		}
-		out := &pb.ForwardingRule{}
-		// MISSING: IPAddress
-		// MISSING: IPProtocol
-		// MISSING: AllPorts
-		// MISSING: AllowGlobalAccess
-		// MISSING: AllowPSCGlobalAccess
-		// MISSING: BackendService
-		out.BaseForwardingRule = in.BaseForwardingRule
-		out.CreationTimestamp = in.CreationTimestamp
-		// MISSING: Description
-		// MISSING: ExternalManagedBackendBucketMigrationState
-		// MISSING: ExternalManagedBackendBucketMigrationTestingPercentage
-		// MISSING: Fingerprint
-		// MISSING: ID
-		// MISSING: IPCollection
-		// MISSING: IPVersion
-		// MISSING: IsMirroringCollector
-		// MISSING: Kind
-		out.LabelFingerprint = in.LabelFingerprint
-		// MISSING: Labels
-		// MISSING: LoadBalancingScheme
-		// MISSING: MetadataFilters
-		// MISSING: Name
-		// MISSING: Network
-		// MISSING: NetworkTier
-		// MISSING: NoAutomateDNSZone
-		// MISSING: PortRange
-		// MISSING: Ports
-		// MISSING: PSCConnectionID
-		// (near miss): "PSCConnectionID" vs "PscConnectionId"
-		// MISSING: PSCConnectionStatus
-		// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
-		// MISSING: Region
-		out.SelfLink = in.SelfLink
-		// MISSING: SelfLinkWithID
-		// MISSING: ServiceDirectoryRegistrations
-		// MISSING: ServiceLabel
-		out.ServiceName = in.ServiceName
-		// MISSING: SourceIPRanges
-		// MISSING: Subnetwork
-		out.Target = in.Target
-		return out
+/* found existing non-generated mapping function "ComputeForwardingRuleStatus_v1beta1_ToProto", skipping
+func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
+	if in == nil {
+		return nil
 	}
+	out := &pb.ForwardingRule{}
+	// MISSING: IPAddress
+	// MISSING: IPProtocol
+	// MISSING: AllPorts
+	// MISSING: AllowGlobalAccess
+	// MISSING: AllowPSCGlobalAccess
+	// MISSING: BackendService
+	out.BaseForwardingRule = in.BaseForwardingRule
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ExternalManagedBackendBucketMigrationState
+	// MISSING: ExternalManagedBackendBucketMigrationTestingPercentage
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: IPCollection
+	// MISSING: IPVersion
+	// MISSING: IsMirroringCollector
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LoadBalancingScheme
+	// MISSING: MetadataFilters
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: NetworkTier
+	// MISSING: NoAutomateDNSZone
+	// MISSING: PortRange
+	// MISSING: Ports
+	// MISSING: PSCConnectionID
+	// (near miss): "PSCConnectionID" vs "PscConnectionId"
+	// MISSING: PSCConnectionStatus
+	// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: ServiceDirectoryRegistrations
+	// MISSING: ServiceLabel
+	out.ServiceName = in.ServiceName
+	// MISSING: SourceIPRanges
+	// MISSING: Subnetwork
+	out.Target = in.Target
+	return out
+}
 */
+
+/* found existing non-generated mapping function "ComputeHTTPHealthCheckSpec_v1beta1_FromProto", skipping
 func ComputeHTTPHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHTTPHealthCheckSpec {
 	if in == nil {
 		return nil
@@ -909,6 +1029,9 @@ func ComputeHTTPHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	out.UnhealthyThreshold = in.UnhealthyThreshold
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeHTTPHealthCheckSpec_v1beta1_ToProto", skipping
 func ComputeHTTPHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHTTPHealthCheckSpec) *pb.HealthCheck {
 	if in == nil {
 		return nil
@@ -936,6 +1059,9 @@ func ComputeHTTPHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out.UnhealthyThreshold = in.UnhealthyThreshold
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeHTTPHealthCheckStatus_v1beta1_FromProto", skipping
 func ComputeHTTPHealthCheckStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHTTPHealthCheckStatus {
 	if in == nil {
 		return nil
@@ -963,6 +1089,9 @@ func ComputeHTTPHealthCheckStatus_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: UnhealthyThreshold
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeHTTPHealthCheckStatus_v1beta1_ToProto", skipping
 func ComputeHTTPHealthCheckStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHTTPHealthCheckStatus) *pb.HealthCheck {
 	if in == nil {
 		return nil
@@ -990,6 +1119,7 @@ func ComputeHTTPHealthCheckStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: UnhealthyThreshold
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_FromProto", skipping
 func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHealthCheckSpec {
@@ -1013,7 +1143,7 @@ func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Name
 	// MISSING: Region
 	// MISSING: SelfLink
-	// MISSING: SourceRegions
+	out.SourceRegions = in.SourceRegions
 	out.SSLHealthCheck = HealthCheckSSLHealthCheck_v1beta1_FromProto(mapCtx, in.GetSslHealthCheck())
 	out.TCPHealthCheck = HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx, in.GetTcpHealthCheck())
 	out.TimeoutSec = in.TimeoutSec
@@ -1045,7 +1175,7 @@ func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	// MISSING: Name
 	// MISSING: Region
 	// MISSING: SelfLink
-	// MISSING: SourceRegions
+	out.SourceRegions = in.SourceRegions
 	out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
 	out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
 	out.TimeoutSec = in.TimeoutSec
@@ -2014,25 +2144,119 @@ func ComputeResourcePolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
+func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicy{}
+	out.Description = in.Description
+	out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
+	out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
+	out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+	// MISSING: Kind
+	// MISSING: Name
+	out.Region = in.Region
+	// MISSING: ResourceStatus
+	// MISSING: SelfLink
+	out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
+	// MISSING: WorkloadPolicy
+	return out
+}
+*/
 
-	func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+/* found existing non-generated mapping function "ComputeSSLPolicySpec_v1beta1_FromProto", skipping
+func ComputeSSLPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslPolicy) *krm.ComputeSSLPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSSLPolicySpec{}
+	// MISSING: CreationTimestamp
+	out.CustomFeatures = in.CustomFeatures
+	out.Description = in.Description
+	// MISSING: EnabledFeatures
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: MinTLSVersion
+	// (near miss): "MinTLSVersion" vs "MinTlsVersion"
+	// MISSING: Name
+	out.Profile = in.Profile
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeSSLPolicySpec_v1beta1_ToProto", skipping
+func ComputeSSLPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSSLPolicySpec) *pb.SslPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslPolicy{}
+	// MISSING: CreationTimestamp
+	out.CustomFeatures = in.CustomFeatures
+	out.Description = in.Description
+	// MISSING: EnabledFeatures
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: MinTLSVersion
+	// (near miss): "MinTLSVersion" vs "MinTlsVersion"
+	// MISSING: Name
+	out.Profile = in.Profile
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeSSLPolicyStatus_v1beta1_FromProto", skipping
+func ComputeSSLPolicyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslPolicy) *krm.ComputeSSLPolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSSLPolicyStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: CustomFeatures
+	// MISSING: Description
+	out.EnabledFeatures = in.EnabledFeatures
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: MinTLSVersion
+	// MISSING: Name
+	// MISSING: Profile
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeSSLPolicyStatus_v1beta1_ToProto", skipping
+
+	func ComputeSSLPolicyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSSLPolicyStatus) *pb.SslPolicy {
 		if in == nil {
 			return nil
 		}
-		out := &pb.ResourcePolicy{}
-		out.Description = in.Description
-		out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
-		out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
-		out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+		out := &pb.SslPolicy{}
+		out.CreationTimestamp = in.CreationTimestamp
+		// MISSING: CustomFeatures
+		// MISSING: Description
+		out.EnabledFeatures = in.EnabledFeatures
+		out.Fingerprint = in.Fingerprint
+		// MISSING: ID
 		// MISSING: Kind
+		// MISSING: MinTLSVersion
 		// MISSING: Name
-		out.Region = in.Region
-		// MISSING: ResourceStatus
-		// MISSING: SelfLink
-		out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
-		// MISSING: WorkloadPolicy
+		// MISSING: Profile
+		// MISSING: Region
+		out.SelfLink = in.SelfLink
+		// MISSING: Warnings
 		return out
 	}
 */
@@ -2664,6 +2888,80 @@ func Duration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1
 	out.Seconds = in.Seconds
 	return out
 }
+
+/* found existing non-generated mapping function "FirewallAllow_v1beta1_FromProto", skipping
+func FirewallAllow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Allowed) *krm.FirewallAllow {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallAllow{}
+	out.IPProtocol = in.IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FirewallAllow_v1beta1_ToProto", skipping
+func FirewallAllow_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAllow) *pb.Allowed {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Allowed{}
+	out.IPProtocol = in.IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FirewallDeny_v1beta1_FromProto", skipping
+func FirewallDeny_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Denied) *krm.FirewallDeny {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallDeny{}
+	out.IPProtocol = in.IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FirewallDeny_v1beta1_ToProto", skipping
+func FirewallDeny_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallDeny) *pb.Denied {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Denied{}
+	out.IPProtocol = in.IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FirewallLogConfig_v1beta1_FromProto", skipping
+func FirewallLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallLogConfig) *krm.FirewallLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallLogConfig{}
+	// MISSING: Enable
+	out.Metadata = in.Metadata
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "FirewallLogConfig_v1beta1_ToProto", skipping
+
+	func FirewallLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallLogConfig) *pb.FirewallLogConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.FirewallLogConfig{}
+		// MISSING: Enable
+		out.Metadata = in.Metadata
+		return out
+	}
+*/
 func FirewallPolicyRuleMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
 	if in == nil {
 		return nil

@@ -25,10 +25,73 @@ package servicedirectory
 
 import (
 	pb "cloud.google.com/go/servicedirectory/apiv1beta1/servicedirectorypb"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ServiceDirectoryEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.ServiceDirectoryEndpointObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceDirectoryEndpointObservedState{}
+	// MISSING: Name
+	// MISSING: Metadata
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	return out
+}
+func ServiceDirectoryEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceDirectoryEndpointObservedState) *pb.Endpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Endpoint{}
+	// MISSING: Name
+	// MISSING: Metadata
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	return out
+}
+func ServiceDirectoryEndpointSpec_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.ServiceDirectoryEndpointSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceDirectoryEndpointSpec{}
+	// MISSING: Name
+	if in.GetAddress() != "" {
+		out.AddressRef = &krmcomputev1beta1.ComputeAddressRef{External: in.GetAddress()}
+	}
+	out.Port = direct.LazyPtr(in.GetPort())
+	// MISSING: Metadata
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	return out
+}
+func ServiceDirectoryEndpointSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceDirectoryEndpointSpec) *pb.Endpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Endpoint{}
+	// MISSING: Name
+	if in.AddressRef != nil {
+		out.Address = in.AddressRef.External
+	}
+	out.Port = direct.ValueOf(in.Port)
+	// MISSING: Metadata
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	return out
+}
 func ServiceDirectoryNamespaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Namespace) *krm.ServiceDirectoryNamespaceObservedState {
 	if in == nil {
 		return nil

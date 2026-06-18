@@ -22,12 +22,10 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
-
 go run . generate-types \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
-  --resource ComputeAddress:Address \
-  --resource ComputeDisk:Disk \
+  --resource ComputeFirewall:Firewall \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeHTTPHealthCheck:HTTPHealthCheck \
@@ -42,6 +40,7 @@ go run . generate-types \
   --resource ComputeResourcePolicy:ResourcePolicy \
   --resource ComputeSecurityPolicy:SecurityPolicy \
   --resource ComputeSnapshot:Snapshot \
+  --resource ComputeSSLPolicy:SslPolicy \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \

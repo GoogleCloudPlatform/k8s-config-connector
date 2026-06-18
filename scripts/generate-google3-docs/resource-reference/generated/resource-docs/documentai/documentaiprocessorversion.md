@@ -66,6 +66,8 @@ kmsKeyNameRef:
   namespace: string
 kmsKeyVersionNameRef:
   external: string
+  name: string
+  namespace: string
 processorRef:
   external: string
   name: string
@@ -177,7 +179,27 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed cryptoKeyVersion. Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}/cryptoKeyVersions/{{version}}`.</p>
+            <p>A reference to an externally managed KMSCryptoKeyVersion resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}/cryptoKeyVersions/{{cryptokeyversion}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsKeyVersionNameRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a KMSCryptoKeyVersion resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsKeyVersionNameRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a KMSCryptoKeyVersion resource.</p>
         </td>
     </tr>
     <tr>

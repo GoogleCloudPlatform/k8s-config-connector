@@ -22,7 +22,7 @@
   name: servicedirectoryservice-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //servicedirectory.googleapis.com/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}
   group: servicedirectory.cnrm.cloud.google.com
   kind: ServiceDirectoryEndpoint
   name: servicedirectoryendpoint-${uniqueId}

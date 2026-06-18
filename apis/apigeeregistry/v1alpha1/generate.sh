@@ -25,4 +25,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.apigeeregistry.v1 \
   --api-version apigeeregistry.cnrm.cloud.google.com/v1alpha1 \
-  --resource ApigeeRegistryInstance:Instance
+  --resource ApigeeRegistryInstance:Instance \
+  --resource ApigeeRegistryAPI:Api
+
+go run . generate-mapper --service google.cloud.apigeeregistry.v1 --api-version apigeeregistry.cnrm.cloud.google.com/v1alpha1

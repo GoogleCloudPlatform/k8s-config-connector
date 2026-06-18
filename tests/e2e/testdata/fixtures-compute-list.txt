@@ -27,6 +27,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendservice/gl
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendservice/globalcomputebackendservicesecuritysettings
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendservice/regionalcomputebackendservice
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendservice/regionalcomputebackendserviceiap
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendservice/regionalcomputebackendservicetd
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computedisk/computediskfromsourcedisk
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computedisk/regionalcomputedisk
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computedisk/zonalcomputedisk
@@ -52,6 +53,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeforwardingrule/re
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeforwardingrule/regionalcomputeforwardingruletcp
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeforwardingrule/regionalcomputeforwardingruletcp-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehealthcheck/globalcomputehealthcheck
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehealthcheck/globalcomputehealthchecksourceregions
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehealthcheck/regionalcomputehealthcheck
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttphealthcheck
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttpshealthcheck
@@ -117,6 +119,8 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargettcpproxy/gl
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargettcpproxy/regionalcomputetargettcpproxy-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetvpngateway
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmap
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapadditive
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapreducer
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/regionalcomputeurlmap
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computevpngateway
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computevpntunnel

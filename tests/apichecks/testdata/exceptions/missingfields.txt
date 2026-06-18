@@ -569,7 +569,6 @@
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.grpcHealthCheck.port" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.grpcHealthCheck.portName" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.grpcHealthCheck.portSpecification" is not set in unstructured objects
-[missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.healthyThreshold" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.http2HealthCheck.host" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.http2HealthCheck.port" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.http2HealthCheck.portName" is not set in unstructured objects
@@ -603,8 +602,6 @@
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.tcpHealthCheck.proxyHeader" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.tcpHealthCheck.request" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.tcpHealthCheck.response" is not set in unstructured objects
-[missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.timeoutSec" is not set in unstructured objects
-[missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.unhealthyThreshold" is not set in unstructured objects
 [missing_field] crd=computehttphealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.host" is not set in unstructured objects
 [missing_field] crd=computehttpshealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.host" is not set in unstructured objects
 [missing_field] crd=computeimages.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
@@ -1488,7 +1485,6 @@
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.gceClusterConfig.shieldedInstanceConfig.enableVtpm" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.gceClusterConfig.subnetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.gceClusterConfig.tags[]" is not set in unstructured objects
-[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.gceClusterConfig.zone" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.initializationActions[].executableFile" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.initializationActions[].executionTimeout" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.lifecycleConfig.autoDeleteTime" is not set in unstructured objects
@@ -1514,7 +1510,6 @@
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.minCpuPlatform" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.numInstances" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.preemptibility" is not set in unstructured objects
-[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.identityConfig.userServiceAccountMapping" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.crossRealmTrustAdminServer" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.crossRealmTrustKdc" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.crossRealmTrustRealm" is not set in unstructured objects
@@ -1530,9 +1525,7 @@
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.tgtLifetimeHours" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.truststore" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.truststorePassword" is not set in unstructured objects
-[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.imageVersion" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.optionalComponents[]" is not set in unstructured objects
-[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.properties" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.stagingBucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.tempBucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.accelerators[].acceleratorCount" is not set in unstructured objects

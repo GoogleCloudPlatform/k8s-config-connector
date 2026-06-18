@@ -641,7 +641,7 @@ X-Xss-Protection: 0
     "sizeGb": 39,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_DISABLED",
-    "uid": "111111111111111111111",
+    "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
       "mode": "MULTI_ZONE"
     }
@@ -848,7 +848,7 @@ X-Xss-Protection: 0
     "sizeGb": 130,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_DISABLED",
-    "uid": "111111111111111111111",
+    "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
       "mode": "MULTI_ZONE"
     }

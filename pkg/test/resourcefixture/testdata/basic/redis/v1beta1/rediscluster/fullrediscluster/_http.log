@@ -973,7 +973,7 @@ X-Xss-Protection: 0
     "sizeGb": 39,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
-    "uid": "111111111111111111111",
+    "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -1278,7 +1278,7 @@ X-Xss-Protection: 0
     "sizeGb": 39,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
-    "uid": "111111111111111111111",
+    "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -1476,7 +1476,7 @@ X-Xss-Protection: 0
     "sizeGb": 39,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
-    "uid": "111111111111111111111",
+    "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -1674,7 +1674,7 @@ X-Xss-Protection: 0
     "sizeGb": 39,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
-    "uid": "111111111111111111111",
+    "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -1873,7 +1873,7 @@ X-Xss-Protection: 0
     "sizeGb": 39,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
-    "uid": "111111111111111111111",
+    "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -2073,7 +2073,7 @@ X-Xss-Protection: 0
     "sizeGb": 39,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
-    "uid": "111111111111111111111",
+    "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -2273,7 +2273,7 @@ X-Xss-Protection: 0
     "sizeGb": 39,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
-    "uid": "111111111111111111111",
+    "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"

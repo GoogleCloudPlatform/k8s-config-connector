@@ -56,8 +56,7 @@ type ComputeSSLPolicySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The minimum version of SSL protocol that can be used by the clients
-	to establish a connection with the load balancer. Default value: "TLS_1_0" Possible values: ["TLS_1_0", "TLS_1_1", "TLS_1_2"]. */
+	/* The minimum version of SSL protocol that can be used by the clients to establish a connection with the load balancer. Default value: "TLS_1_0" Possible values: ["TLS_1_0", "TLS_1_1", "TLS_1_2"]. */
 	// +optional
 	MinTlsVersion *string `json:"minTlsVersion,omitempty"`
 
@@ -89,8 +88,7 @@ type ComputeSSLPolicyStatus struct {
 	// +optional
 	EnabledFeatures []string `json:"enabledFeatures,omitempty"`
 
-	/* Fingerprint of this resource. A hash of the contents stored in this
-	object. This field is used in optimistic locking. */
+	/* Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. */
 	// +optional
 	Fingerprint *string `json:"fingerprint,omitempty"`
 

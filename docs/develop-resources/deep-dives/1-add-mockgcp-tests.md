@@ -90,7 +90,7 @@ For Config Connector **Beta** resources, your MockGCP should meet the following 
 
 
 * `_generated_object_<resource>.golden.yaml `that contains `.status` that reflects the updated fields
-* `_generated_export_<resource>.golden.yaml` (export is optional for now)
+* `_exported.yaml` (export is optional for now)
 
 ### A "full" test suite
 
@@ -98,7 +98,7 @@ For Config Connector **Beta** resources, your MockGCP should meet the following 
 * `update.yaml` that changes all the mutable fields
 * `_http.log `
 * `_generated_object_<resource>.golden.yaml `that contains `.status` that reflects the updated fields
-* `_generated_export_<resource>.golden.yaml` (export is optional for now)
+* `_exported.yaml` (export is optional for now)
 
 ### More dependencies test suite
 
@@ -108,7 +108,7 @@ For Config Connector **Beta** resources, your MockGCP should meet the following 
     * No separate test suite if the resource ref is a required field. You shall put this in the “basic” test suite.
 * `_http.log `contains not only the CRUD for your resource, but the CRUD for the dependent resources.
 * `_generated_object_<resource>.golden.yaml `that contains `.status` that reflects the updated fields
-* `_generated_export_<resource>.golden.yaml` (export is optional for now)
+* `_exported.yaml` (export is optional for now)
 
 ### MockGCP Server
 

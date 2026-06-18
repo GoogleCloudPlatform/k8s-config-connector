@@ -105,8 +105,21 @@ func (m *modelArtifactRegistryRepository) AdapterForObject(ctx context.Context, 
 }
 
 func (m *modelArtifactRegistryRepository) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.ArtifactRegistryRepositoryIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ArtifactRegistryRepositoryAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type ArtifactRegistryRepositoryAdapter struct {

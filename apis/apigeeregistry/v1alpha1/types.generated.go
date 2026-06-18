@@ -18,5 +18,6 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.apigeeregistry.v1
 // resource: ApigeeRegistryInstance:Instance
+// resource: ApigeeRegistryAPI:Api
 
 package v1alpha1

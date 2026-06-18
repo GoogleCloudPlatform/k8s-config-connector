@@ -422,6 +422,136 @@ spec:
                       required:
                       - query
                       type: object
+                    conditionSql:
+                      description: |-
+                        A condition that allows alerting policies to be defined using GoogleSQL.
+                        SQL conditions examine a sliding window of logs using GoogleSQL.
+                        Alert policies with SQL conditions may incur additional billing.
+                      properties:
+                        booleanTest:
+                          description: A test that uses an alerting result in a boolean
+                            column produced by the SQL query.
+                          properties:
+                            column:
+                              description: |-
+                                The name of the column containing the boolean value. If the value in a row is
+                                NULL, that row is ignored.
+                              type: string
+                          required:
+                          - column
+                          type: object
+                        daily:
+                          description: Used to schedule the query to run every so
+                            many days.
+                          properties:
+                            executionTime:
+                              description: |-
+                                The time of day (in UTC) at which the query should run. If left
+                                unspecified, the server picks an arbitrary time of day and runs
+                                the query at the same time each day.
+                              properties:
+                                hours:
+                                  description: |-
+                                    Hours of a day in 24 hour format. Must be greater than or equal
+                                    to 0 and typically must be less than or equal to 23. An API may
+                                    choose to allow the value "24:00:00" for scenarios like business
+                                    closing time.
+                                  type: integer
+                                minutes:
+                                  description: |-
+                                    Minutes of an hour. Must be greater than or equal to 0 and
+                                    less than or equal to 59.
+                                  type: integer
+                                nanos:
+                                  description: |-
+                                    Fractions of seconds, in nanoseconds. Must be greater than or
+                                    equal to 0 and less than or equal to 999,999,999.
+                                  type: integer
+                                seconds:
+                                  description: |-
+                                    Seconds of a minute. Must be greater than or equal to 0 and
+                                    typically must be less than or equal to 59. An API may allow the
+                                    value 60 if it allows leap-seconds.
+                                  type: integer
+                              type: object
+                            periodicity:
+                              description: |-
+                                The number of days between runs. Must be greater than or equal
+                                to 1 day and less than or equal to 30 days.
+                              type: integer
+                          required:
+                          - periodicity
+                          type: object
+                        hourly:
+                          description: Used to schedule the query to run every so
+                            many hours.
+                          properties:
+                            minuteOffset:
+                              description: |-
+                                The number of minutes after the hour (in UTC) to run the query.
+                                Must be greater than or equal to 0 minutes and less than or equal to
+                                59 minutes.  If left unspecified, then an arbitrary offset is used.
+                              type: integer
+                            periodicity:
+                              description: |-
+                                Number of hours between runs. The interval must be greater than or
+                                equal to 1 hour and less than or equal to 48 hours.
+                              type: integer
+                          required:
+                          - periodicity
+                          type: object
+                        minutes:
+                          description: Used to schedule the query to run every so
+                            many minutes.
+                          properties:
+                            periodicity:
+                              description: |-
+                                Number of minutes between runs. The interval must be greater than or
+                                equal to 5 minutes and less than or equal to 1440 minutes.
+                              type: integer
+                          required:
+                          - periodicity
+                          type: object
+                        query:
+                          description: |-
+                            The Log Analytics SQL query to run, as a string.  The query must
+                            conform to the required shape. Specifically, the query must not try to
+                            filter the input by time.  A filter will automatically be applied
+                            to filter the input so that the query receives all rows received
+                            since the last time the query was run.
+                          type: string
+                        rowCountTest:
+                          description: A test that checks if the number of rows in
+                            the result set violates some threshold.
+                          properties:
+                            comparison:
+                              description: |-
+                                The comparison to apply between the time series
+                                (indicated by filter and aggregation) and the
+                                threshold (indicated by threshold_value). The
+                                comparison is applied on each time series, with
+                                the time series on the left-hand side and the
+                                threshold on the right-hand side.
+
+                                The Cloud Monitoring API only supports
+                                'COMPARISON_LT' and 'COMPARISON_GT' for SQL
+                                row-count thresholds; the other values are kept
+                                in the schema for backward compatibility with
+                                imported state but will be rejected by the API.
+                                See
+                                https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#MetricThreshold. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"].
+                              type: string
+                            threshold:
+                              description: The value against which to compare the
+                                row count.
+                              type: integer
+                          required:
+                          - comparison
+                          - threshold
+                          type: object
+                      required:
+                      - query
+                      type: object
                     conditionThreshold:
                       description: |-
                         A condition that compares a time series against a

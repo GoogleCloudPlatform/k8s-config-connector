@@ -125,6 +125,10 @@ type Harness struct {
 
 	// installedGVKs is the list of GVKs of the CRDs installed by this harness
 	installedGVKs []schema.GroupVersionKind
+
+	// preGenerations maps a resource key to its generation before an update.
+	// This is used to detect metadata-only updates that do not increment generation.
+	preGenerations map[string]int64
 }
 
 type httpRoundTripperKeyType int
@@ -136,10 +140,11 @@ var httpRoundTripperKey httpRoundTripperKeyType
 // deprecated: Prefer NewHarness, which can construct a manager and mock gcp etc.
 func NewHarnessWithManager(ctx context.Context, t *testing.T, mgr manager.Manager) *Harness {
 	h := &Harness{
-		T:       t,
-		Ctx:     ctx,
-		client:  mgr.GetClient(),
-		Manager: mgr,
+		T:              t,
+		Ctx:            ctx,
+		client:         mgr.GetClient(),
+		Manager:        mgr,
+		preGenerations: make(map[string]int64),
 	}
 	return h
 }
@@ -190,8 +195,9 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	log := log.FromContext(ctx)
 
 	h := &Harness{
-		T:   t,
-		Ctx: ctx,
+		T:              t,
+		Ctx:            ctx,
+		preGenerations: make(map[string]int64),
 	}
 
 	for _, opt := range opts {
@@ -405,7 +411,9 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 
 	// Log structuredreporting messages
 	{
-		ctx = structuredreporting.ContextWithListener(ctx, &structuredreporting.DebugLogListener{})
+		if _, ok := structuredreporting.GetListenerFromContext(ctx); !ok {
+			ctx = structuredreporting.ContextWithListener(ctx, &structuredreporting.DebugLogListener{})
+		}
 		h.Ctx = ctx
 	}
 
@@ -1027,6 +1035,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeAddress"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeBackendService"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeBackendBucket"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeDisk"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeFirewallPolicy"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeFirewallPolicyRule"}:

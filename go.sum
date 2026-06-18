@@ -138,6 +138,8 @@ cloud.google.com/go/apigeeregistry v0.7.2/go.mod h1:9CA2B2+TGsPKtfi3F7/1ncCCsL62
 cloud.google.com/go/apigeeregistry v0.8.1/go.mod h1:MW4ig1N4JZQsXmBSwH4rwpgDonocz7FPBSw6XPGHmYw=
 cloud.google.com/go/apigeeregistry v0.8.2/go.mod h1:h4v11TDGdeXJDJvImtgK2AFVvMIgGWjSb0HRnBSjcX8=
 cloud.google.com/go/apigeeregistry v0.8.3/go.mod h1:aInOWnqF4yMQx8kTjDqHNXjZGh/mxeNlAf52YqtASUs=
+cloud.google.com/go/apigeeregistry v0.10.0 h1:QziFVsuPU2lhy40Ht9uWEyciV23SH9GETWiwcu3qzdg=
+cloud.google.com/go/apigeeregistry v0.10.0/go.mod h1:SAlF5OhKvyLDuwWAaFAIVJjrEqKRrGTPkJs+TWNnSqg=
 cloud.google.com/go/apihub v1.0.0 h1:h1OKaMeHyrosjfRBCKJqNUSQzPRFYwBbstRGCGcWNyA=
 cloud.google.com/go/apihub v1.0.0/go.mod h1:N/TqF2Hzd5prWOdS2W/3/6u3RfQZudfwFgJbao+viws=
 cloud.google.com/go/apikeys v0.4.0/go.mod h1:XATS/yqZbaBK0HOssf+ALHp8jAlNHUgyfprvNcBIszU=

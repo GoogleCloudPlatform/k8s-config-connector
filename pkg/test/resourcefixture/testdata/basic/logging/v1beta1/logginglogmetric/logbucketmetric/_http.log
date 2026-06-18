@@ -15,7 +15,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Bucket `my-bucket-${uniqueId}` does not exist",
+    "message": "Bucket `my-bucket-${uniqueId}` in location `global` does not exist",
     "status": "NOT_FOUND"
   }
 }

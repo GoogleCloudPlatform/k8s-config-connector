@@ -39,30 +39,23 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ServiceDirectoryEndpointSpec struct {
+	/* Optional. The ComputeAddress resource whose IP address this endpoint uses. */
 	// +optional
 	AddressRef *v1alpha1.ResourceRef `json:"addressRef,omitempty"`
 
-	/* Only the `external` field is supported to configure the reference.
-
-	Immutable. The Google Compute Engine network (VPC) of the endpoint in the format
-	projects/<project number>/locations/global/networks/*.
-
-	The project must be specified by project number (project id is rejected). Incorrectly formatted networks are
-	rejected, but no other validation is performed on this field (ex. network or project existence,
-	reachability, or permissions). */
+	/* Optional. The ComputeNetwork resource representing the GCE network of this endpoint. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Port that the endpoint is running on, must be in the
-	range of [0, 65535]. If unspecified, the default is 0. */
+	/* Optional. Port that the endpoint is running on, must be in the range of [0, 65535]. If unspecified, the default is 0. */
 	// +optional
-	Port *int64 `json:"port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 
 	/* Immutable. Optional. The endpointId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The ServiceDirectoryService that this endpoint belongs to. */
+	/* Required. The ServiceDirectoryService that this endpoint belongs to. */
 	ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
 }
 
@@ -70,8 +63,7 @@ type ServiceDirectoryEndpointStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ServiceDirectoryEndpoint's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The resource name for the endpoint in the format
-	'projects/* /locations/* /namespaces/* /services/* /endpoints/*'. */
+	/* The resource name for the endpoint in the format 'projects/* /locations/* /namespaces/* /services/* /endpoints/*'. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 

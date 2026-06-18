@@ -151,7 +151,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Settings to configure and enable allowed domains.</p>
+            <p>Optional. Settings to configure and enable allowed domains.</p>
         </td>
     </tr>
     <tr>
@@ -161,7 +161,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>List of trusted domains.</p>
+            <p>Optional. List of trusted domains.</p>
         </td>
     </tr>
     <tr>
@@ -181,7 +181,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Configuration for customers to opt in for the feature.</p>
+            <p>Optional. Configuration for customers to opt in for the feature.</p>
         </td>
     </tr>
     <tr>
@@ -191,7 +191,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Configuration to allow cross-origin requests via IAP.</p>
+            <p>Optional. Configuration to allow cross-origin requests via IAP.</p>
         </td>
     </tr>
     <tr>
@@ -201,7 +201,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Configuration to allow HTTP OPTIONS calls to skip authorization. If undefined, IAP will not apply any special logic to OPTIONS requests.</p>
+            <p>Configuration to allow HTTP `OPTIONS` calls to skip authentication and authorization. If undefined, IAP will not apply any special logic to `OPTIONS` requests.</p>
         </td>
     </tr>
     <tr>
@@ -211,7 +211,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>GCIP claims and endpoint configurations for 3p identity providers.</p>
+            <p>Optional. GCIP claims and endpoint configurations for 3p identity providers.</p>
         </td>
     </tr>
     <tr>
@@ -251,7 +251,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Settings to configure IAP's OAuth behavior.</p>
+            <p>Optional. Settings to configure IAP's OAuth behavior.</p>
         </td>
     </tr>
     <tr>
@@ -271,7 +271,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>List of OAuth client IDs allowed to programmatically authenticate with IAP.</p>
+            <p>Optional. List of client ids allowed to use IAP programmatically.</p>
         </td>
     </tr>
     <tr>
@@ -291,7 +291,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Settings to configure reauthentication policies in IAP.</p>
+            <p>Optional. Settings to configure reauthentication policies in IAP.</p>
         </td>
     </tr>
     <tr>
@@ -301,7 +301,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Reauth session lifetime, how long before a user has to reauthenticate again.</p>
+            <p>Optional. Reauth session lifetime, how long before a user has to reauthenticate again.</p>
         </td>
     </tr>
     <tr>
@@ -311,7 +311,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Reauth method requested.</p>
+            <p>Optional. Reauth method requested.</p>
         </td>
     </tr>
     <tr>
@@ -321,7 +321,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>How IAP determines the effective policy in cases of hierarchial policies. Policies are merged from higher in the hierarchy to lower in the hierarchy.</p>
+            <p>Optional. How IAP determines the effective policy in cases of hierarchical policies. Policies are merged from higher in the hierarchy to lower in the hierarchy.</p>
         </td>
     </tr>
     <tr>
@@ -461,7 +461,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Customization for Access Denied page.</p>
+            <p>Optional. Customization for Access Denied page.</p>
         </td>
     </tr>
     <tr>
@@ -501,7 +501,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Settings to configure attribute propagation.</p>
+            <p>Optional. Settings to configure attribute propagation.</p>
         </td>
     </tr>
     <tr>
@@ -511,7 +511,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Whether the provided attribute propagation settings should be evaluated on user requests. If set to true, attributes returned from the expression will be propagated in the set output credentials.</p>
+            <p>Optional. Whether the provided attribute propagation settings should be evaluated on user requests. If set to true, attributes returned from the expression will be propagated in the set output credentials.</p>
         </td>
     </tr>
     <tr>
@@ -521,9 +521,9 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Raw string CEL expression. Must return a list of attributes. A maximum of
- 45 attributes can be selected. Expressions can select different attribute
- types from `attributes`: `attributes.saml_attributes`,
+            <p>Optional. Raw string CEL expression. Must return a list of attributes. A
+ maximum of 45 attributes can be selected. Expressions can select different
+ attribute types from `attributes`: `attributes.saml_attributes`,
  `attributes.iap_attributes`. The following functions are supported:
 
   - filter `<list>.filter(<iter_var>, <predicate>)`: Returns a subset of
@@ -558,7 +558,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Which output credentials attributes selected by the CEL expression should be propagated in. All attributes will be fully duplicated in each selected output credential.</p>
+            <p>Optional. Which output credentials attributes selected by the CEL expression should be propagated in. All attributes will be fully duplicated in each selected output credential.</p>
         </td>
     </tr>
     <tr>
@@ -588,7 +588,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Settings to configure IAP's behavior for a service mesh.</p>
+            <p>Optional. Settings to configure IAP's behavior for a service mesh.</p>
         </td>
     </tr>
     <tr>

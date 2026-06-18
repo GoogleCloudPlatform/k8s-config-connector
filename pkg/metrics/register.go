@@ -23,6 +23,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	crmetrics "sigs.k8s.io/controller-runtime/pkg/metrics"
 )
 
 func RegisterControllerOpenCensusViews() error {
@@ -35,7 +36,12 @@ func RegisterControllerOpenCensusViewsWithResourceNameLabel() error {
 	return view.Register(GetControllerViewsWithResourceNameLabel()...)
 }
 
-func RegisterPrometheusExporter(addr string) error {
+type MetricsOptions struct {
+	Addr                          string
+	ServeControllerRuntimeMetrics bool
+}
+
+func RegisterPrometheusExporter(opts MetricsOptions) error {
 	pe, err := prometheus.NewExporter(prometheus.Options{
 		Namespace: "configconnector",
 	})
@@ -47,8 +53,11 @@ func RegisterPrometheusExporter(addr string) error {
 	go func() {
 		mux := http.NewServeMux()
 		mux.Handle("/metrics", pe)                      // OpenCensus
-		mux.Handle("/prom-metrics", promhttp.Handler()) // Prometheus Go client
-		if err := http.ListenAndServe(addr, mux); err != nil {
+		mux.Handle("/prom-metrics", promhttp.Handler()) // Prometheus Go client (default registry)
+		if opts.ServeControllerRuntimeMetrics {
+			mux.Handle("/metrics.v2", promhttp.HandlerFor(crmetrics.Registry, promhttp.HandlerOpts{})) // Controller-runtime metrics
+		}
+		if err := http.ListenAndServe(opts.Addr, mux); err != nil {
 			logging.Fatal(err, "failed to run Prometheus scrape endpoint")
 		}
 	}()

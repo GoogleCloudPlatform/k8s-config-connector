@@ -59,8 +59,8 @@ spec:
           spec:
             properties:
               config:
-                description: Immutable. The cluster config. Note that Dataproc may
-                  set default values, and values may change when clusters are updated.
+                description: The cluster config. Note that Dataproc may set default
+                  values, and values may change when clusters are updated.
                 properties:
                   autoscalingConfig:
                     description: Immutable. Optional. Autoscaling config for the policy
@@ -742,18 +742,16 @@ spec:
                         type: string
                     type: object
                   securityConfig:
-                    description: Immutable. Optional. Security settings for the cluster.
+                    description: Optional. Security settings for the cluster.
                     properties:
                       identityConfig:
-                        description: Immutable. Optional. Identity related configuration,
-                          including service account based secure multi-tenancy user
-                          mappings.
+                        description: Optional. Identity related configuration, including
+                          service account based secure multi-tenancy user mappings.
                         properties:
                           userServiceAccountMapping:
                             additionalProperties:
                               type: string
-                            description: Immutable. Required. Map of user to service
-                              account.
+                            description: Required. Map of user to service account.
                             type: object
                         required:
                         - userServiceAccountMapping

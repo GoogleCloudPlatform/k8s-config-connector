@@ -69,6 +69,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	// NOTE ON "WRONG" PATTERNS / MISMATCHES:
 	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
 	ignoredTemplates := map[string]bool{
+		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,
 		// Add known exceptions here.
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
 		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":                         true,
@@ -82,6 +83,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dataplex.googleapis.com/projects/{}/locations/{}/dataTaxonomies/{}":                      true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                         true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                          true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/aspectTypes/{}":                         true,
 		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}":                    true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":        true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                   true,
@@ -94,6 +96,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":       true,
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}":                    true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
+		"//datalabeling.googleapis.com/projects/{}/evaluationJobs/{}":                               true,
 		"//iam.googleapis.com/policies/{}/denypolicies/{}":                                          true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/sacRealms/{}":                    true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":                    true,
@@ -110,7 +113,11 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":                        true,
 		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}":                                true,
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}":                                      true,
+		"//monitoring.googleapis.com/projects/{}/groups/{}":                                         true,
 		"//monitoring.googleapis.com/projects/{}/metricDescriptors/{}":                              true,
+		"//monitoring.googleapis.com/projects/{}/services/{}":                                       true,
+		"//monitoring.googleapis.com/locations/global/metricsScopes/{}/projects/{}":                 true,
+		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig":                    true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()

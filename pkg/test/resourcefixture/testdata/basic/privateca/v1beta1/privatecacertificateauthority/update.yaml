@@ -19,6 +19,7 @@ metadata:
     label-one: "value-one"
   name: privatecacertificateauthority-${uniqueId}
 spec:
+  resourceID: privatecacertificateauthority-${uniqueId}
   projectRef:
     external: projects/${projectId}
   location: "us-central1"

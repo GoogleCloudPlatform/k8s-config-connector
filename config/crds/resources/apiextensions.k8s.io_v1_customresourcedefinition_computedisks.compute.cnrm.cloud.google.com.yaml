@@ -464,7 +464,8 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed ComputeSnapshot
-                      resource. Should be in the format "projects/{{project}}/global/snapshots/{{name}}".
+                      resource. Should be in the format "projects/{{projectID}}/global/snapshots/{{snapshotID}}"
+                      or "projects/{{projectID}}/regions/{{region}}/snapshots/{{snapshotID}}".
                     type: string
                   name:
                     description: The name of a ComputeSnapshot resource.

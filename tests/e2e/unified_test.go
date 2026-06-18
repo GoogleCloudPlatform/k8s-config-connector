@@ -77,9 +77,9 @@ func TestAllInSeries(t *testing.T) {
 
 	subtestTimeout := time.Hour
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
-		// We allow a total of 3 minutes: 2 for the test itself (for deep object chains with retries),
+		// We allow a total of 5 minutes: 4 for the test itself (for deep object chains with retries),
 		// and 1 minute to shutdown envtest / allow kube-apiserver requests to time-out.
-		subtestTimeout = 3 * time.Minute
+		subtestTimeout = 5 * time.Minute
 	}
 
 	t.Run("samples", func(t *testing.T) {
@@ -219,9 +219,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 
 	subtestTimeout := time.Hour
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
-		// We allow a total of 3 minutes: 2 for the test itself (for deep object chains with retries),
+		// We allow a total of 5 minutes: 4 for the test itself (for deep object chains with retries),
 		// and 1 minute to shutdown envtest / allow kube-apiserver requests to time-out.
-		subtestTimeout = 3 * time.Minute
+		subtestTimeout = 5 * time.Minute
 	}
 	if os.Getenv("RUN_E2E") == "" {
 		t.Skip("RUN_E2E not set; skipping")
@@ -430,6 +430,19 @@ func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.Reso
 			h.CompareGoldenFile(filepath.Join(dir, "_final_object.diff"), diff)
 		} else {
 			h.AssertGoldenFileNotFound(filepath.Join(dir, "_final_object.diff"))
+		}
+	}
+
+	// _exported_object.diff
+	{
+		oldPath := filepath.Join(dir, "_exported_old_controller.golden.yaml")
+		newPath := filepath.Join(dir, "_exported.yaml")
+
+		if fileExists(oldPath) && fileExists(newPath) {
+			diff := computeDiff(oldPath, newPath)
+			h.CompareGoldenFile(filepath.Join(dir, "_exported_object.diff"), diff)
+		} else {
+			h.AssertGoldenFileNotFound(filepath.Join(dir, "_exported_object.diff"))
 		}
 	}
 
@@ -650,7 +663,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						// Try to export the resource (and compare against golden file)
 						exportedYAML := exportResource(h, obj, &Expectations{})
 
-						fileName := fmt.Sprintf("_generated_export_%v.golden", testName) // TODO: Including the test name creates busywork
+						fileName := "_exported.yaml"
 						if options.FallbackToOldController {
 							fileName = "_exported_old_controller.golden.yaml"
 						}
