@@ -31,7 +31,6 @@ import (
 	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/google/uuid"
 )
 
@@ -94,10 +93,6 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
-
-		if err := r.syncReplication(ctx, obj); err != nil {
-			return nil, err
-		}
 
 		retObj := proto.CloneOf(obj)
 		retObj.State = pb.Instance_ACTIVE
@@ -278,54 +273,54 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
 		obj.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
 	}
-	if crr := obj.CrossInstanceReplicationConfig; crr != nil {
-		switch crr.InstanceRole {
+	if obj.CrossInstanceReplicationConfig != nil {
+		config := obj.CrossInstanceReplicationConfig
+		if config.UpdateTime == nil {
+			config.UpdateTime = timestamppb.Now()
+		}
+		membership := &pb.CrossInstanceReplicationConfig_Membership{}
+		switch config.InstanceRole {
 		case pb.CrossInstanceReplicationConfig_PRIMARY:
-			crr.PrimaryInstance = nil
-			crr.Membership = &pb.CrossInstanceReplicationConfig_Membership{
-				PrimaryInstance: &pb.CrossInstanceReplicationConfig_RemoteInstance{
-					Instance: name.String(),
-					Uid:      obj.Uid,
-				},
-				SecondaryInstances: []*pb.CrossInstanceReplicationConfig_RemoteInstance{},
+			if len(config.SecondaryInstances) == 0 {
+				return status.Errorf(codes.InvalidArgument, "no secondary instances specified")
 			}
-			for _, secondaryInstance := range crr.SecondaryInstances {
-				secondaryName, err := s.parseInstanceName(secondaryInstance.Instance)
-				if err != nil {
-					return err
+			membership.PrimaryInstance = &pb.CrossInstanceReplicationConfig_RemoteInstance{
+				Instance: obj.Name,
+				Uid:      obj.Uid,
+			}
+			for _, secondary := range config.SecondaryInstances {
+				secondaryInstance := &pb.CrossInstanceReplicationConfig_RemoteInstance{
+					Instance: secondary.Instance,
+					Uid:      uuid.NewString(),
 				}
-				secondaryInstance.Uid = fmt.Sprintf("instance-%s", secondaryName.Name)
-				crr.Membership.SecondaryInstances = append(crr.Membership.SecondaryInstances, &pb.CrossInstanceReplicationConfig_RemoteInstance{
-					Instance: secondaryInstance.Instance,
-					Uid:      secondaryInstance.Uid,
-				})
+				membership.SecondaryInstances = append(membership.SecondaryInstances, secondaryInstance)
 			}
+			config.PrimaryInstance = nil
+			config.SecondaryInstances = membership.SecondaryInstances
 		case pb.CrossInstanceReplicationConfig_SECONDARY:
-			if crr.PrimaryInstance == nil {
+			if config.PrimaryInstance == nil {
 				return status.Errorf(codes.InvalidArgument, "no primary instance specified")
 			}
-			primaryName, err := s.parseInstanceName(crr.PrimaryInstance.Instance)
-			if err != nil {
-				return err
+			if config.PrimaryInstance != nil {
+				primaryInstance := &pb.CrossInstanceReplicationConfig_RemoteInstance{
+					Instance: config.PrimaryInstance.GetInstance(),
+					Uid:      uuid.NewString(),
+				}
+				membership.PrimaryInstance = primaryInstance
 			}
-			crr.PrimaryInstance.Uid = fmt.Sprintf("instance-%s", primaryName.Name)
-			crr.Membership = &pb.CrossInstanceReplicationConfig_Membership{
-				PrimaryInstance: &pb.CrossInstanceReplicationConfig_RemoteInstance{
-					Instance: crr.PrimaryInstance.Instance,
-					Uid:      crr.PrimaryInstance.Uid,
-				},
-				SecondaryInstances: []*pb.CrossInstanceReplicationConfig_RemoteInstance{
-					{
-						Instance: name.String(),
-						Uid:      obj.Uid,
-					},
-				},
-			}
+			membership.SecondaryInstances = append(membership.SecondaryInstances, &pb.CrossInstanceReplicationConfig_RemoteInstance{
+				Instance: obj.Name,
+				Uid:      obj.Uid,
+			})
+			// This field is only set for a primary instance.
+			config.PrimaryInstance = membership.PrimaryInstance
+			config.SecondaryInstances = nil
 		case pb.CrossInstanceReplicationConfig_NONE, pb.CrossInstanceReplicationConfig_INSTANCE_ROLE_UNSPECIFIED:
 			obj.CrossInstanceReplicationConfig = nil
 		default:
-			return fmt.Errorf("unknown instance role %v", crr.InstanceRole)
+			return fmt.Errorf("unknown instance role %v", config.InstanceRole)
 		}
+		config.Membership = membership
 	}
 	// PscAutoConnections is not included in the response
 	obj.PscAutoConnections = nil
@@ -397,10 +392,7 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		case "automatedBackupConfig":
 			obj.AutomatedBackupConfig = req.Instance.AutomatedBackupConfig
 		case "crossInstanceReplicationConfig":
-			if req.Instance.CrossInstanceReplicationConfig != nil {
-				obj.CrossInstanceReplicationConfig = req.Instance.CrossInstanceReplicationConfig
-				obj.CrossInstanceReplicationConfig.UpdateTime = timestamppb.New(now)
-			}
+			obj.CrossInstanceReplicationConfig = req.Instance.CrossInstanceReplicationConfig
 		case "gcsSource":
 			if gcsSource := req.Instance.GetGcsSource(); gcsSource != nil {
 				obj.ImportSources = &pb.Instance_GcsSource{GcsSource: gcsSource}
@@ -501,12 +493,6 @@ func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 		}
 	}
 
-	// Clean up replication references before deletion
-	obj.CrossInstanceReplicationConfig = nil
-	if err := r.syncReplication(ctx, obj); err != nil {
-		return nil, err
-	}
-
 	obj.State = pb.Instance_DELETING
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -529,65 +515,7 @@ func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 
 func (r *instanceServer) syncReplication(ctx context.Context, obj *pb.Instance) error {
 	config := obj.GetCrossInstanceReplicationConfig()
-
-	// If the config is nil or NONE/UNSPECIFIED
-	if config == nil || config.InstanceRole == pb.CrossInstanceReplicationConfig_NONE || config.InstanceRole == pb.CrossInstanceReplicationConfig_INSTANCE_ROLE_UNSPECIFIED {
-		// Ensure the config itself is nil on obj
-		obj.CrossInstanceReplicationConfig = nil
-
-		// Remove this instance from any other instance's replication config
-		instanceKind := (&pb.Instance{}).ProtoReflect().Descriptor()
-		var updates []*pb.Instance
-		if err := r.storage.List(ctx, instanceKind, storage.ListOptions{}, func(o proto.Message) error {
-			inst := o.(*pb.Instance)
-			if inst.Name == obj.Name {
-				return nil
-			}
-			instConfig := inst.GetCrossInstanceReplicationConfig()
-			if instConfig == nil {
-				return nil
-			}
-			modified := false
-			if instConfig.InstanceRole == pb.CrossInstanceReplicationConfig_PRIMARY {
-				// Remove obj from secondary_instances
-				var newSecondaries []*pb.CrossInstanceReplicationConfig_RemoteInstance
-				for _, sc := range instConfig.SecondaryInstances {
-					if sc.GetInstance() == obj.Name {
-						modified = true
-					} else {
-						newSecondaries = append(newSecondaries, sc)
-					}
-				}
-				if modified {
-					instConfig.SecondaryInstances = newSecondaries
-					if instConfig.Membership != nil {
-						instConfig.Membership.SecondaryInstances = newSecondaries
-					}
-				}
-			} else if instConfig.InstanceRole == pb.CrossInstanceReplicationConfig_SECONDARY {
-				if instConfig.GetPrimaryInstance().GetInstance() == obj.Name {
-					inst.CrossInstanceReplicationConfig = nil
-					modified = true
-				}
-			}
-			if modified {
-				inst.UpdateTime = timestamppb.Now()
-				updates = append(updates, inst)
-			}
-			return nil
-		}); err != nil {
-			return err
-		}
-
-		for _, u := range updates {
-			if err := r.storage.Update(ctx, u.Name, u); err != nil {
-				return err
-			}
-		}
-		// Save current obj (with nil config)
-		if err := r.storage.Update(ctx, obj.Name, obj); err != nil {
-			return err
-		}
+	if config == nil {
 		return nil
 	}
 
@@ -632,44 +560,6 @@ func (r *instanceServer) syncReplication(ctx context.Context, obj *pb.Instance) 
 				}
 			}
 		}
-
-		// Also remove this primary from any OTHER instance in storage that is SECONDARY and thinks this was its primary, but is not in our secondaries list!
-		instanceKind := (&pb.Instance{}).ProtoReflect().Descriptor()
-		var updates []*pb.Instance
-		if err := r.storage.List(ctx, instanceKind, storage.ListOptions{}, func(o proto.Message) error {
-			inst := o.(*pb.Instance)
-			if inst.Name == obj.Name {
-				return nil
-			}
-			instConfig := inst.GetCrossInstanceReplicationConfig()
-			if instConfig == nil || instConfig.InstanceRole != pb.CrossInstanceReplicationConfig_SECONDARY {
-				return nil
-			}
-			if instConfig.GetPrimaryInstance().GetInstance() == obj.Name {
-				// Check if this instance is in the secondary list
-				found := false
-				for _, sc := range secondaryInstances {
-					if sc.GetInstance() == inst.Name {
-						found = true
-						break
-					}
-				}
-				if !found {
-					inst.CrossInstanceReplicationConfig = nil
-					inst.UpdateTime = timestamppb.Now()
-					updates = append(updates, inst)
-				}
-			}
-			return nil
-		}); err != nil {
-			return err
-		}
-		for _, u := range updates {
-			if err := r.storage.Update(ctx, u.Name, u); err != nil {
-				return err
-			}
-		}
-
 		// Save obj with updated membership
 		if err := r.storage.Update(ctx, obj.Name, obj); err != nil {
 			return err
