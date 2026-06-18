@@ -462,7 +462,7 @@
 | recaptchaenterprise.cnrm.cloud.google.com     | ReCAPTCHAEnterpriseFirewallPolicy               | True         | False       | False  | Direct     | True        |
 | recaptchaenterprise.cnrm.cloud.google.com     | RecaptchaEnterpriseKey                          | False        | True        | False  | DCL        | False       |
 | redis.cnrm.cloud.google.com                   | RedisCluster                                    | True         | True        | False  | Direct     | True        |
-| redis.cnrm.cloud.google.com                   | RedisInstance                                   | False        | True        | False  | Terraform  | False       |
+| redis.cnrm.cloud.google.com                   | RedisInstance                                   | False        | True        | False  | Terraform  | True        |
 | resourcemanager.cnrm.cloud.google.com         | ResourceManagerLien                             | False        | True        | False  | Terraform  | False       |
 | resourcemanager.cnrm.cloud.google.com         | ResourceManagerPolicy                           | False        | True        | False  | Terraform  | False       |
 | run.cnrm.cloud.google.com                     | RunJob                                          | False        | True        | False  | Terraform  | True        |
