@@ -71,6 +71,12 @@ var (
 		Kind:    reflect.TypeOf(EventarcEnrollment{}).Name(),
 	}
 
+	EventarcGoogleApiSourceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(EventarcGoogleApiSource{}).Name(),
+	}
+
 	EventarcGoogleChannelConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
