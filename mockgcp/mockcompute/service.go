@@ -333,6 +333,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			r = httpmux.RewriteRequest(r, &u2)
 		}
 
+		if strings.HasPrefix(r.URL.Path, "/compute/v1/projects/") && strings.Contains(r.URL.Path, "/global/httpHealthChecks") {
+			s.handleHttpHealthChecks(w, r)
+			return
+		}
+
 		// Merge multiple 'paths' query parameters into a single comma-separated 'paths' parameter.
 		// This is needed because the Compute API (and Terraform) can send multiple 'paths' parameters,
 		// but our generated proto has 'paths' as a single string field, and grpc-gateway fails
