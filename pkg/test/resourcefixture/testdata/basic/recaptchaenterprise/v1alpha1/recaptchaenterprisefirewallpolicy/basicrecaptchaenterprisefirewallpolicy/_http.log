@@ -65,21 +65,6 @@ OK
 
 ---
 
-GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetFirewallPolicy
-
-{
-  "name": "projects/${projectId}/firewallpolicies/200"
-}
-
-OK
-
-{
-  "description": "Updated description",
-  "name": "projects/${projectId}/firewallpolicies/200"
-}
-
----
-
 GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/DeleteFirewallPolicy
 
 {

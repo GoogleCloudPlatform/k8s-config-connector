@@ -90,26 +90,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
-
-{
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-full-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Full mirroring endpoint group description",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-full-${uniqueId}",
-  "state": "ACTIVE",
-  "type": "DIRECT",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.Mirroring/UpdateMirroringEndpointGroup
 
 {
@@ -166,46 +146,6 @@ OK
     "type": "DIRECT",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
-
-{
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-full-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description for full mirroring endpoint group",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-full-${uniqueId}",
-  "state": "ACTIVE",
-  "type": "DIRECT",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
-
-{
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-full-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description for full mirroring endpoint group",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-full-${uniqueId}",
-  "state": "ACTIVE",
-  "type": "DIRECT",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
