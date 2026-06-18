@@ -147,8 +147,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dlp.googleapis.com/projects/{}/locations/{}/connections/{}": true,
 
 		// DNS
-		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}": true,
-		"//dns.googleapis.com/projects/{}/responsePolicies/{}":       true,
+		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}":    true,
+		"//dns.googleapis.com/projects/{}/responsePolicies/{}":          true,
+		"//dns.googleapis.com/projects/{}/responsePolicies/{}/rules/{}": true,
 
 		// Firestore
 		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":             true,
