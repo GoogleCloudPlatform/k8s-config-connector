@@ -21,7 +21,7 @@ spec:
     plural: cloudtalentsolutioncompanies
     shortNames:
     - gcpcloudtalentsolutioncompany
-    - gcpcloudtalentsolutioncompanys
+    - gcpcloudtalentsolutioncompanies
     singular: cloudtalentsolutioncompany
   preserveUnknownFields: false
   scope: Namespaced
