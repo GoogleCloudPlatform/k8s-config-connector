@@ -33,6 +33,8 @@ type NetworkSecurityMirroringDeploymentExpansion interface{}
 
 type NetworkSecurityMirroringEndpointGroupExpansion interface{}
 
+type NetworkSecurityPartnerSSEGatewayExpansion interface{}
+
 type NetworkSecurityPartnerSSERealmExpansion interface{}
 
 type NetworkSecuritySACRealmExpansion interface{}
