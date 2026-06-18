@@ -8,8 +8,8 @@ When the golden tests for K8s Config Connector mock output diverge from real GCP
 
 ### Align Mockgcp
 
-1.  Run `dev/tools/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior.
-2.  Run `dev/tools/compare-mock "fixtures/^<testname>$"` to check mock behavior.
+1.  Run `hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior.
+2.  Run `hack/compare-mock "fixtures/^<testname>$"` to check mock behavior.
 3.  Iteratively fix discrepancies in the mock implementation or `normalize.go`.
 
 #### Tips for fixing the discrepancies:
@@ -25,4 +25,3 @@ When the golden tests for K8s Config Connector mock output diverge from real GCP
 
 * It is important to commit the files modified by running realgcp tests in its own commit.
 * This is for the human reviewer to compare the diff in the test artifacts when running real and mockgcp.
-
