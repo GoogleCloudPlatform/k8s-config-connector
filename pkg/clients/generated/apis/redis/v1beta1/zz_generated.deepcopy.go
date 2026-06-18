@@ -1055,22 +1055,22 @@ func (in *InstanceStartTime) DeepCopyInto(out *InstanceStartTime) {
 	*out = *in
 	if in.Hours != nil {
 		in, out := &in.Hours, &out.Hours
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Minutes != nil {
 		in, out := &in.Minutes, &out.Minutes
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Nanos != nil {
 		in, out := &in.Nanos, &out.Nanos
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Seconds != nil {
 		in, out := &in.Seconds, &out.Seconds
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return

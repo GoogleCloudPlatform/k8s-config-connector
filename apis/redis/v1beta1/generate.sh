@@ -24,15 +24,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 go run . generate-types \
-  --service google.cloud.redis.cluster.v1 \
+  --service google.cloud.redis.cluster.v1,google.cloud.redis.v1 \
   --api-version redis.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
-  --resource RedisCluster:Cluster
+  --resource RedisCluster:Cluster \
+  --resource RedisInstance:Instance
 
 go run . generate-mapper \
-  --service google.cloud.redis.cluster.v1 \
+  --service google.cloud.redis.cluster.v1,google.cloud.redis.v1 \
   --api-version redis.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
