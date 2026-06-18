@@ -56,6 +56,7 @@ func (s *changesServer) CreateChange(ctx context.Context, req *pb.CreateChangeRe
 
 	// Apply deletions first
 	for _, rrset := range change.GetDeletions() {
+		populateRecordSetDefaults(rrset)
 		name, err := s.parseResourceRecordSetName(projectData.ID, zoneName, rrset.GetName(), rrset.GetType())
 		if err != nil {
 			return nil, err
@@ -70,16 +71,13 @@ func (s *changesServer) CreateChange(ctx context.Context, req *pb.CreateChangeRe
 
 	// Apply additions
 	for _, rrset := range change.GetAdditions() {
+		populateRecordSetDefaults(rrset)
 		name, err := s.parseResourceRecordSetName(projectData.ID, zoneName, rrset.GetName(), rrset.GetType())
 		if err != nil {
 			return nil, err
 		}
 		fqn := name.String()
 		obj := proto.Clone(rrset).(*pb.ResourceRecordSet)
-		obj.Kind = PtrTo("dns#resourceRecordSet")
-		if obj.SignatureRrdatas == nil {
-			obj.SignatureRrdatas = []string{}
-		}
 		if err := s.storage.Create(ctx, fqn, obj); err != nil {
 			return nil, err
 		}

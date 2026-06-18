@@ -92,6 +92,9 @@ func (s *RegionalHealthCheckV1) Patch(ctx context.Context, req *pb.PatchRegionHe
 	fqn := name.String()
 	obj := &pb.HealthCheck{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -126,6 +129,9 @@ func (s *RegionalHealthCheckV1) Update(ctx context.Context, req *pb.UpdateRegion
 	fqn := name.String()
 	obj := &pb.HealthCheck{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -168,6 +174,9 @@ func (s *RegionalHealthCheckV1) Delete(ctx context.Context, req *pb.DeleteRegion
 
 	deleted := &pb.HealthCheck{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

@@ -61,11 +61,7 @@ func (s *resourceRecordSetsService) CreateResourceRecordSet(ctx context.Context,
 	fqn := name.String()
 
 	obj := proto.CloneOf(req.ResourceRecordSet)
-	obj.Kind = PtrTo("dns#resourceRecordSet")
-
-	if obj.SignatureRrdatas == nil {
-		obj.SignatureRrdatas = []string{}
-	}
+	populateRecordSetDefaults(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -96,6 +92,10 @@ func (s *resourceRecordSetsService) PatchResourceRecordSet(ctx context.Context, 
 	if len(req.GetResourceRecordSet().GetRrdatas()) > 0 {
 		updated.Rrdatas = req.GetResourceRecordSet().GetRrdatas()
 	}
+	if req.GetResourceRecordSet().GetRoutingPolicy() != nil {
+		updated.RoutingPolicy = req.GetResourceRecordSet().GetRoutingPolicy()
+	}
+	populateRecordSetDefaults(updated)
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
@@ -191,4 +191,51 @@ func (s *MockService) parseResourceRecordSetName(project, managedZone, name, rec
 		Name:        name,
 		Type:        recordType,
 	}, nil
+}
+
+func populateRecordSetDefaults(obj *pb.ResourceRecordSet) {
+	obj.Kind = PtrTo("dns#resourceRecordSet")
+	if obj.Rrdatas == nil {
+		obj.Rrdatas = []string{}
+	}
+	if obj.SignatureRrdatas == nil {
+		obj.SignatureRrdatas = []string{}
+	}
+	if obj.RoutingPolicy != nil {
+		obj.RoutingPolicy.Kind = PtrTo("dns#rRSetRoutingPolicy")
+		if obj.RoutingPolicy.Wrr != nil {
+			obj.RoutingPolicy.Wrr.Kind = PtrTo("dns#rRSetRoutingPolicyWrrPolicy")
+			for _, item := range obj.RoutingPolicy.Wrr.Items {
+				item.Kind = PtrTo("dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem")
+				if item.Rrdatas == nil {
+					item.Rrdatas = []string{}
+				}
+				if item.SignatureRrdatas == nil {
+					item.SignatureRrdatas = []string{}
+				}
+				if item.HealthCheckedTargets != nil {
+					if item.HealthCheckedTargets.InternalLoadBalancers == nil {
+						item.HealthCheckedTargets.InternalLoadBalancers = []*pb.RRSetRoutingPolicyLoadBalancerTarget{}
+					}
+				}
+			}
+		}
+		if obj.RoutingPolicy.Geo != nil {
+			obj.RoutingPolicy.Geo.Kind = PtrTo("dns#rRSetRoutingPolicyGeoPolicy")
+			for _, item := range obj.RoutingPolicy.Geo.Items {
+				item.Kind = PtrTo("dns#rRSetRoutingPolicyGeoPolicyGeoPolicyItem")
+				if item.Rrdatas == nil {
+					item.Rrdatas = []string{}
+				}
+				if item.SignatureRrdatas == nil {
+					item.SignatureRrdatas = []string{}
+				}
+				if item.HealthCheckedTargets != nil {
+					if item.HealthCheckedTargets.InternalLoadBalancers == nil {
+						item.HealthCheckedTargets.InternalLoadBalancers = []*pb.RRSetRoutingPolicyLoadBalancerTarget{}
+					}
+				}
+			}
+		}
+	}
 }

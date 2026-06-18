@@ -47,7 +47,7 @@ func (s *managedZonesService) GetManagedZone(ctx context.Context, req *pb.GetMan
 	obj := &pb.ManagedZone{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "managedZone %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "The 'parameters.managedZone' resource named '%s' does not exist.", name.Name)
 		}
 		return nil, err
 	}
@@ -64,6 +64,9 @@ func (s *managedZonesService) CreateManagedZone(ctx context.Context, req *pb.Cre
 	fqn := name.String()
 
 	obj := proto.CloneOf(req.ManagedZone)
+	if obj.GetVisibility() == "" || obj.GetVisibility() == "public" {
+		obj.PrivateVisibilityConfig = nil
+	}
 
 	obj.CreationTime = PtrTo(time.Now().UTC().Format(time.RFC3339))
 
@@ -136,12 +139,15 @@ func (s *managedZonesService) UpdateManagedZone(ctx context.Context, req *pb.Upd
 
 	if err := s.storage.Get(ctx, fqn, &existing); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "managedZone %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "The 'parameters.managedZone' resource named '%s' does not exist.", name.Name)
 		}
 		return nil, err
 	}
 
 	updated := proto.CloneOf(req.ManagedZone)
+	if updated.GetVisibility() == "" || updated.GetVisibility() == "public" {
+		updated.PrivateVisibilityConfig = nil
+	}
 
 	// These fields are output only and cannot be changed.
 	updated.CreationTime = existing.CreationTime
@@ -180,7 +186,7 @@ func (s *managedZonesService) PatchManagedZone(ctx context.Context, req *pb.Patc
 
 	if err := s.storage.Get(ctx, fqn, &existing); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "managedZone %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "The 'parameters.managedZone' resource named '%s' does not exist.", name.Name)
 		}
 		return nil, err
 	}
@@ -197,6 +203,9 @@ func (s *managedZonesService) PatchManagedZone(ctx context.Context, req *pb.Patc
 	}
 	if req.GetManagedZone().PrivateVisibilityConfig != nil {
 		updated.PrivateVisibilityConfig = req.GetManagedZone().PrivateVisibilityConfig
+	}
+	if updated.GetVisibility() == "" || updated.GetVisibility() == "public" {
+		updated.PrivateVisibilityConfig = nil
 	}
 	if req.GetManagedZone().CloudLoggingConfig != nil {
 		updated.CloudLoggingConfig = req.GetManagedZone().CloudLoggingConfig
@@ -233,6 +242,9 @@ func (s *managedZonesService) DeleteManagedZone(ctx context.Context, req *pb.Del
 	var existing pb.ManagedZone
 
 	if err := s.storage.Delete(ctx, fqn, &existing); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "The 'parameters.managedZone' resource named '%s' does not exist.", name.Name)
+		}
 		return nil, err
 	}
 

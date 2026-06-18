@@ -48,6 +48,23 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
 		replacements.ReplacePath(".changes[].startTime", mockgcpregistry.PlaceholderTimestamp)
 	}
+
+	replacements.RemovePath(".rrsets[].signatureRrdatas")
+	replacements.RemovePath(".changes[].additions[].signatureRrdatas")
+	replacements.RemovePath(".changes[].deletions[].signatureRrdatas")
+	replacements.RemovePath(".additions[].signatureRrdatas")
+	replacements.RemovePath(".deletions[].signatureRrdatas")
+
+	replacements.RemovePath(".error.status")
+	replacements.TransformObject(".", func(m map[string]any) {
+		if m["kind"] == "dns#resourceRecordSetsListResponse" {
+			if rrsets, ok := m["rrsets"]; ok {
+				if rrsetsSlice, ok := rrsets.([]any); ok && len(rrsetsSlice) == 0 {
+					delete(m, "rrsets")
+				}
+			}
+		}
+	})
 }
 
 func isDNSAPI(url string) bool {
@@ -58,6 +75,20 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	if !isDNSAPI(event.URL()) {
 		return
 	}
+
+	// Normalize name servers in response string values
+	event.VisitResponseStringValues(func(path string, value string) {
+		re := regexp.MustCompile(`ns-cloud-[a-z]([0-9])\.googledomains\.com\.`)
+		matches := re.FindAllStringSubmatch(value, -1)
+		for _, match := range matches {
+			if len(match) == 2 {
+				index := match[1] // "1", "2", "3" or "4"
+				oldNS := match[0] // e.g. "ns-cloud-c1.googledomains.com."
+				newNS := "ns-cloud-a" + index + ".googledomains.com."
+				replacements.ReplaceStringValue(oldNS, newNS)
+			}
+		}
+	})
 
 	u := event.URL()
 	// Extract changeId from URL path (e.g., .../changes/<changeId>)

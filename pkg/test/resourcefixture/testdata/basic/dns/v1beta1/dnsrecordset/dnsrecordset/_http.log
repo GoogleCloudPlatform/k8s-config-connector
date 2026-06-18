@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The 'parameters.managedZone' resource named 'dnsmanagedzone-${uniqueId}' does not exist.",
+        "message": "managedZone \"projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "The 'parameters.managedZone' resource named 'dnsmanagedzone-${uniqueId}' does not exist."
+    "message": "managedZone \"projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}\" not found"
   }
 }
 
@@ -241,37 +241,50 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east7/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west8/subnetworks/${networkID}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}"
   ]
 }
 
@@ -404,13 +417,15 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "${addressID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "networkTier": "PREMIUM",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "status": "RESERVED"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -438,19 +453,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "setLabels",
-  "progress": 100,
+  "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "user": "user@example.com"
+  "status": "DONE"
 }
 
 ---
@@ -482,12 +492,10 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "${addressID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "networkTier": "PREMIUM",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "status": "RESERVED"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -619,13 +627,15 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "${addressID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "networkTier": "PREMIUM",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "status": "RESERVED"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -653,19 +663,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "setLabels",
-  "progress": 100,
+  "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "user": "user@example.com"
+  "status": "DONE"
 }
 
 ---
@@ -697,12 +702,10 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "${addressID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "networkTier": "PREMIUM",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "status": "RESERVED"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -721,8 +724,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "kind": "dns#resourceRecordSetsListResponse",
-  "rrsets": []
+  "kind": "dns#resourceRecordSetsListResponse"
 }
 
 ---
@@ -747,12 +749,11 @@ X-Xss-Protection: 0
       "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "rrdatas": [
-        "ns-cloud-c1.googledomains.com.",
-        "ns-cloud-c2.googledomains.com.",
-        "ns-cloud-c3.googledomains.com.",
-        "ns-cloud-c4.googledomains.com."
+        "ns-cloud-a1.googledomains.com.",
+        "ns-cloud-a2.googledomains.com.",
+        "ns-cloud-a3.googledomains.com.",
+        "ns-cloud-a4.googledomains.com."
       ],
-      "signatureRrdatas": [],
       "ttl": 21600,
       "type": "NS"
     },
@@ -760,9 +761,8 @@ X-Xss-Protection: 0
       "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "rrdatas": [
-        "ns-cloud-c1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+        "ns-cloud-a1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
       ],
-      "signatureRrdatas": [],
       "ttl": 21600,
       "type": "SOA"
     }
@@ -781,7 +781,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "rrdatas": [
         "198.51.100.5",
-        "10.75.0.0"
+        "8.8.8.8"
       ],
       "ttl": 300,
       "type": "A"
@@ -806,86 +806,12 @@ X-Xss-Protection: 0
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "rrdatas": [
         "198.51.100.5",
-        "10.75.0.0"
+        "8.8.8.8"
       ],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
   ],
-  "deletions": [],
-  "id": "000000000000000000000",
-  "kind": "dns#change",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "pending"
-}
-
----
-
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "additions": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "rrdatas": [
-        "198.51.100.5",
-        "10.75.0.0"
-      ],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "deletions": [],
-  "id": "000000000000000000000",
-  "kind": "dns#change",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "pending"
-}
-
----
-
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "additions": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "rrdatas": [
-        "198.51.100.5",
-        "10.75.0.0"
-      ],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "deletions": [],
   "id": "000000000000000000000",
   "kind": "dns#change",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -894,112 +820,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/rrsets?alt=json&name=cnrm-dns-example-${uniqueId}.com.&prettyPrint=false&type=A
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "kind": "dns#resourceRecordSetsListResponse",
-  "rrsets": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "rrdatas": [
-        "198.51.100.5",
-        "10.75.0.0"
-      ],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ]
-}
-
----
-
-POST https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "additions": [
-    {
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "rrdatas": [
-        "10.30.0.0",
-        "198.51.100.10"
-      ],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "deletions": [
-    {
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "rrdatas": [
-        "198.51.100.5",
-        "10.75.0.0"
-      ],
-      "ttl": 300,
-      "type": "A"
-    }
-  ]
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "additions": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "rrdatas": [
-        "10.30.0.0",
-        "198.51.100.10"
-      ],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "deletions": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "rrdatas": [
-        "198.51.100.5",
-        "10.75.0.0"
-      ],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "id": "000000000000000000000",
-  "kind": "dns#change",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "pending"
-}
-
----
-
 GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1019,71 +839,9 @@ X-Xss-Protection: 0
       "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "rrdatas": [
-        "10.30.0.0",
-        "198.51.100.10"
-      ],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "deletions": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "rrdatas": [
         "198.51.100.5",
-        "10.75.0.0"
+        "8.8.8.8"
       ],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "id": "000000000000000000000",
-  "kind": "dns#change",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "pending"
-}
-
----
-
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "additions": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "rrdatas": [
-        "10.30.0.0",
-        "198.51.100.10"
-      ],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "deletions": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "rrdatas": [
-        "198.51.100.5",
-        "10.75.0.0"
-      ],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
@@ -1116,10 +874,158 @@ X-Xss-Protection: 0
       "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "rrdatas": [
-        "10.30.0.0",
+        "198.51.100.5",
+        "8.8.8.8"
+      ],
+      "ttl": 300,
+      "type": "A"
+    }
+  ]
+}
+
+---
+
+POST https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "additions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "8.8.8.8",
         "198.51.100.10"
       ],
-      "signatureRrdatas": [],
+      "ttl": 300,
+      "type": "A"
+    }
+  ],
+  "deletions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "198.51.100.5",
+        "8.8.8.8"
+      ],
+      "ttl": 300,
+      "type": "A"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "additions": [
+    {
+      "kind": "dns#resourceRecordSet",
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "8.8.8.8",
+        "198.51.100.10"
+      ],
+      "ttl": 300,
+      "type": "A"
+    }
+  ],
+  "deletions": [
+    {
+      "kind": "dns#resourceRecordSet",
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "198.51.100.5",
+        "8.8.8.8"
+      ],
+      "ttl": 300,
+      "type": "A"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "dns#change",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "done"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "additions": [
+    {
+      "kind": "dns#resourceRecordSet",
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "8.8.8.8",
+        "198.51.100.10"
+      ],
+      "ttl": 300,
+      "type": "A"
+    }
+  ],
+  "deletions": [
+    {
+      "kind": "dns#resourceRecordSet",
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "198.51.100.5",
+        "8.8.8.8"
+      ],
+      "ttl": 300,
+      "type": "A"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "dns#change",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "done"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/rrsets?alt=json&name=cnrm-dns-example-${uniqueId}.com.&prettyPrint=false&type=A
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "kind": "dns#resourceRecordSetsListResponse",
+  "rrsets": [
+    {
+      "kind": "dns#resourceRecordSet",
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "8.8.8.8",
+        "198.51.100.10"
+      ],
       "ttl": 300,
       "type": "A"
     }
@@ -1137,7 +1043,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     {
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "rrdatas": [
-        "10.30.0.0",
+        "8.8.8.8",
         "198.51.100.10"
       ],
       "ttl": 300,
@@ -1157,16 +1063,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "additions": [],
   "deletions": [
     {
       "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "rrdatas": [
-        "10.30.0.0",
+        "8.8.8.8",
         "198.51.100.10"
       ],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
@@ -1174,7 +1078,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "dns#change",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "pending"
+  "status": "done"
 }
 
 ---
@@ -1193,52 +1097,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "additions": [],
   "deletions": [
     {
       "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "rrdatas": [
-        "10.30.0.0",
+        "8.8.8.8",
         "198.51.100.10"
       ],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "id": "000000000000000000000",
-  "kind": "dns#change",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "pending"
-}
-
----
-
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "additions": [],
-  "deletions": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "rrdatas": [
-        "10.30.0.0",
-        "198.51.100.10"
-      ],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
@@ -1278,12 +1144,10 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "${addressID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "networkTier": "PREMIUM",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "status": "RESERVED"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -1377,12 +1241,10 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "${addressID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "networkTier": "PREMIUM",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "status": "RESERVED"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -1471,37 +1333,50 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east7/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west8/subnetworks/${networkID}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}"
   ]
 }
 
