@@ -34,24 +34,86 @@
 <       "encoding": "JSON",
 ---
 >       "encoding": 1,
-206c208,209
+206,230d207
+<   }
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true",
+<     "newkey": "newval"
+<   },
+<   "messageRetentionDuration": "3600s",
+<   "messageStoragePolicy": {
+<     "allowedPersistenceRegions": [
+<       "us-central1"
+<     ]
+232,236c209
+<   "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
+<   "schemaSettings": {
+<     "encoding": "JSON",
+<     "schema": "projects/${projectId}/schemas/pubsubschema-${uniqueId}"
 <   }
 ---
->   },
 >   "updateMask": "labels,messageRetentionDuration,messageStoragePolicy"
-234c237
-<     "encoding": "JSON",
----
->     "encoding": 1,
-241c244
+239,243d211
+< ---
+< 
 < GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
----
-> GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-269c272
+< Content-Type: application/json
+< 
+269c237
 <     "encoding": "JSON",
 ---
 >     "encoding": 1,
-276c279
+311,346c279
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true",
+<     "newkey": "newval"
+<   },
+<   "messageRetentionDuration": "3600s",
+<   "messageStoragePolicy": {
+<     "allowedPersistenceRegions": [
+<       "us-central1"
+<     ]
+<   },
+<   "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
+<   "schemaSettings": {
+<     "encoding": "JSON",
+<     "schema": "projects/${projectId}/schemas/pubsubschema-${uniqueId}"
+<   }
+< }
+< 
+< ---
+< 
 < DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
 ---
 > DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
