@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.networksecurity.v1alpha1
 // resource: NetworkSecurityPartnerSSERealm:PartnerSSERealm
+// resource: NetworkSecurityPartnerSSEGateway:PartnerSSEGateway
 
 package v1alpha1
 
