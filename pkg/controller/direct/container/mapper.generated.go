@@ -84,6 +84,64 @@ func AdditionalIPRangesConfig_ToProto(mapCtx *direct.MapContext, in *krm.Additio
 	out.PodIpv4RangeNames = in.PodIPV4RangeNames
 	return out
 }
+func AdditionalNodeNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.AdditionalNodeNetworkConfig) *krm.AdditionalNodeNetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AdditionalNodeNetworkConfig{}
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	return out
+}
+func AdditionalNodeNetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.AdditionalNodeNetworkConfig) *pb.AdditionalNodeNetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AdditionalNodeNetworkConfig{}
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = in.SubnetworkRef.External
+	}
+	return out
+}
+
+/* found existing non-generated mapping function "AdditionalPodNetworkConfig_FromProto", skipping
+func AdditionalPodNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.AdditionalPodNetworkConfig) *krm.AdditionalPodNetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AdditionalPodNetworkConfig{}
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	out.SecondaryPodRange = direct.LazyPtr(in.GetSecondaryPodRange())
+	out.MaxPodsPerNode = int_FromProto(mapCtx, in.GetMaxPodsPerNode())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AdditionalPodNetworkConfig_ToProto", skipping
+
+	func AdditionalPodNetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.AdditionalPodNetworkConfig) *pb.AdditionalPodNetworkConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AdditionalPodNetworkConfig{}
+		if in.SubnetworkRef != nil {
+			out.Subnetwork = in.SubnetworkRef.External
+		}
+		out.SecondaryPodRange = direct.ValueOf(in.SecondaryPodRange)
+		out.MaxPodsPerNode = int_ToProto(mapCtx, in.MaxPodsPerNode)
+		return out
+	}
+*/
 func AdditionalPodRangesConfig_FromProto(mapCtx *direct.MapContext, in *pb.AdditionalPodRangesConfig) *krm.AdditionalPodRangesConfig {
 	if in == nil {
 		return nil
@@ -632,97 +690,159 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 }
 */
 
-/*
-found existing non-generated mapping function "ContainerClusterSpec_ToProto", skipping
+/* found existing non-generated mapping function "ContainerClusterSpec_ToProto", skipping
+func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerClusterSpec) *pb.Cluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.InitialNodeCount = direct.ValueOf(in.InitialNodeCount)
+	out.NodeConfig = NodeConfig_ToProto(mapCtx, in.NodeConfig)
+	out.MasterAuth = MasterAuth_ToProto(mapCtx, in.MasterAuth)
+	out.LoggingService = direct.ValueOf(in.LoggingService)
+	out.MonitoringService = direct.ValueOf(in.MonitoringService)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	out.ClusterIpv4Cidr = direct.ValueOf(in.ClusterIPV4CIDR)
+	out.AddonsConfig = AddonsConfig_ToProto(mapCtx, in.AddonsConfig)
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = in.SubnetworkRef.External
+	}
+	// MISSING: NodePools
+	// MISSING: Locations
+	out.EnableKubernetesAlpha = direct.ValueOf(in.EnableKubernetesAlpha)
+	// MISSING: AlphaClusterFeatureGates
+	// MISSING: ResourceLabels
+	// MISSING: LabelFingerprint
+	// MISSING: LegacyAbac
+	out.NetworkPolicy = NetworkPolicy_ToProto(mapCtx, in.NetworkPolicy)
+	out.IpAllocationPolicy = IPAllocationPolicy_ToProto(mapCtx, in.IPAllocationPolicy)
+	out.MasterAuthorizedNetworksConfig = MasterAuthorizedNetworksConfig_ToProto(mapCtx, in.MasterAuthorizedNetworksConfig)
+	out.MaintenancePolicy = MaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
+	out.BinaryAuthorization = BinaryAuthorization_ToProto(mapCtx, in.BinaryAuthorization)
+	// MISSING: Autoscaling
+	// MISSING: NetworkConfig
+	// MISSING: DefaultMaxPodsConstraint
+	out.ResourceUsageExportConfig = ResourceUsageExportConfig_ToProto(mapCtx, in.ResourceUsageExportConfig)
+	out.AuthenticatorGroupsConfig = AuthenticatorGroupsConfig_ToProto(mapCtx, in.AuthenticatorGroupsConfig)
+	out.PrivateClusterConfig = PrivateClusterConfig_ToProto(mapCtx, in.PrivateClusterConfig)
+	out.DatabaseEncryption = DatabaseEncryption_ToProto(mapCtx, in.DatabaseEncryption)
+	out.VerticalPodAutoscaling = VerticalPodAutoscaling_ToProto(mapCtx, in.VerticalPodAutoscaling)
+	// MISSING: ShieldedNodes
+	out.ReleaseChannel = ReleaseChannel_ToProto(mapCtx, in.ReleaseChannel)
+	out.WorkloadIdentityConfig = WorkloadIdentityConfig_ToProto(mapCtx, in.WorkloadIdentityConfig)
+	out.MeshCertificates = MeshCertificates_ToProto(mapCtx, in.MeshCertificates)
+	out.CostManagementConfig = CostManagementConfig_ToProto(mapCtx, in.CostManagementConfig)
+	out.NotificationConfig = NotificationConfig_ToProto(mapCtx, in.NotificationConfig)
+	out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
+	out.IdentityServiceConfig = IdentityServiceConfig_ToProto(mapCtx, in.IdentityServiceConfig)
+	// MISSING: SelfLink
+	// MISSING: Zone
+	// MISSING: Endpoint
+	// MISSING: InitialClusterVersion
+	// MISSING: CurrentMasterVersion
+	// MISSING: CurrentNodeVersion
+	// MISSING: CreateTime
+	// MISSING: Status
+	// MISSING: StatusMessage
+	// MISSING: NodeIPV4CIDRSize
+	// MISSING: ServicesIPV4CIDR
+	// MISSING: InstanceGroupUrls
+	// MISSING: CurrentNodeCount
+	// MISSING: ExpireTime
+	out.Location = direct.ValueOf(in.Location)
+	out.EnableTpu = direct.ValueOf(in.EnableTpu)
+	// MISSING: TpuIPV4CIDRBlock
+	// MISSING: Conditions
+	// MISSING: Autopilot
+	// MISSING: ID
+	out.NodePoolDefaults = NodePoolDefaults_ToProto(mapCtx, in.NodePoolDefaults)
+	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.MonitoringConfig = MonitoringConfig_ToProto(mapCtx, in.MonitoringConfig)
+	out.NodePoolAutoConfig = NodePoolAutoConfig_ToProto(mapCtx, in.NodePoolAutoConfig)
+	// MISSING: PodAutoscaling
+	// MISSING: Etag
+	// MISSING: Fleet
+	out.SecurityPostureConfig = SecurityPostureConfig_ToProto(mapCtx, in.SecurityPostureConfig)
+	out.ControlPlaneEndpointsConfig = ControlPlaneEndpointsConfig_ToProto(mapCtx, in.ControlPlaneEndpointsConfig)
+	// MISSING: EnableK8sBetaApis
+	// (near miss): "EnableK8sBetaApis" vs "EnableK8SBetaApis"
+	// MISSING: EnterpriseConfig
+	// MISSING: SecretManagerConfig
+	// MISSING: CompliancePostureConfig
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	// MISSING: UserManagedKeysConfig
+	// MISSING: RbacBindingConfig
+	// MISSING: GKEAutoUpgradeConfig
+	// MISSING: AnonymousAuthenticationConfig
+	return out
+}
+*/
 
-	func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerClusterSpec) *pb.Cluster {
+/* found existing non-generated mapping function "ContainerNodePoolSpec_FromProto", skipping
+func ContainerNodePoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.NodePool) *krm.ContainerNodePoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContainerNodePoolSpec{}
+	// MISSING: Name
+	// MISSING: Config
+	out.InitialNodeCount = direct.LazyPtr(in.GetInitialNodeCount())
+	// MISSING: Locations
+	out.NetworkConfig = NodeNetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
+	// MISSING: SelfLink
+	out.Version = direct.LazyPtr(in.GetVersion())
+	// MISSING: InstanceGroupUrls
+	// MISSING: Status
+	// MISSING: StatusMessage
+	out.Autoscaling = NodePoolAutoscaling_FromProto(mapCtx, in.GetAutoscaling())
+	out.Management = NodePoolManagement_FromProto(mapCtx, in.GetManagement())
+	// MISSING: MaxPodsConstraint
+	// MISSING: Conditions
+	// MISSING: PodIPV4CIDRSize
+	out.UpgradeSettings = NodePoolUpgradeSettings_FromProto(mapCtx, in.GetUpgradeSettings())
+	out.PlacementPolicy = NodePool_PlacementPolicy_FromProto(mapCtx, in.GetPlacementPolicy())
+	// MISSING: UpdateInfo
+	// MISSING: Etag
+	// MISSING: QueuedProvisioning
+	// MISSING: BestEffortProvisioning
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ContainerNodePoolSpec_ToProto", skipping
+
+	func ContainerNodePoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerNodePoolSpec) *pb.NodePool {
 		if in == nil {
 			return nil
 		}
-		out := &pb.Cluster{}
+		out := &pb.NodePool{}
 		// MISSING: Name
-		out.Description = direct.ValueOf(in.Description)
+		// MISSING: Config
 		out.InitialNodeCount = direct.ValueOf(in.InitialNodeCount)
-		out.NodeConfig = NodeConfig_ToProto(mapCtx, in.NodeConfig)
-		out.MasterAuth = MasterAuth_ToProto(mapCtx, in.MasterAuth)
-		out.LoggingService = direct.ValueOf(in.LoggingService)
-		out.MonitoringService = direct.ValueOf(in.MonitoringService)
-		if in.NetworkRef != nil {
-			out.Network = in.NetworkRef.External
-		}
-		out.ClusterIpv4Cidr = direct.ValueOf(in.ClusterIPV4CIDR)
-		out.AddonsConfig = AddonsConfig_ToProto(mapCtx, in.AddonsConfig)
-		if in.SubnetworkRef != nil {
-			out.Subnetwork = in.SubnetworkRef.External
-		}
-		// MISSING: NodePools
 		// MISSING: Locations
-		out.EnableKubernetesAlpha = direct.ValueOf(in.EnableKubernetesAlpha)
-		// MISSING: AlphaClusterFeatureGates
-		// MISSING: ResourceLabels
-		// MISSING: LabelFingerprint
-		// MISSING: LegacyAbac
-		out.NetworkPolicy = NetworkPolicy_ToProto(mapCtx, in.NetworkPolicy)
-		out.IpAllocationPolicy = IPAllocationPolicy_ToProto(mapCtx, in.IPAllocationPolicy)
-		out.MasterAuthorizedNetworksConfig = MasterAuthorizedNetworksConfig_ToProto(mapCtx, in.MasterAuthorizedNetworksConfig)
-		out.MaintenancePolicy = MaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
-		out.BinaryAuthorization = BinaryAuthorization_ToProto(mapCtx, in.BinaryAuthorization)
-		// MISSING: Autoscaling
-		// MISSING: NetworkConfig
-		// MISSING: DefaultMaxPodsConstraint
-		out.ResourceUsageExportConfig = ResourceUsageExportConfig_ToProto(mapCtx, in.ResourceUsageExportConfig)
-		out.AuthenticatorGroupsConfig = AuthenticatorGroupsConfig_ToProto(mapCtx, in.AuthenticatorGroupsConfig)
-		out.PrivateClusterConfig = PrivateClusterConfig_ToProto(mapCtx, in.PrivateClusterConfig)
-		out.DatabaseEncryption = DatabaseEncryption_ToProto(mapCtx, in.DatabaseEncryption)
-		out.VerticalPodAutoscaling = VerticalPodAutoscaling_ToProto(mapCtx, in.VerticalPodAutoscaling)
-		// MISSING: ShieldedNodes
-		out.ReleaseChannel = ReleaseChannel_ToProto(mapCtx, in.ReleaseChannel)
-		out.WorkloadIdentityConfig = WorkloadIdentityConfig_ToProto(mapCtx, in.WorkloadIdentityConfig)
-		out.MeshCertificates = MeshCertificates_ToProto(mapCtx, in.MeshCertificates)
-		out.CostManagementConfig = CostManagementConfig_ToProto(mapCtx, in.CostManagementConfig)
-		out.NotificationConfig = NotificationConfig_ToProto(mapCtx, in.NotificationConfig)
-		out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
-		out.IdentityServiceConfig = IdentityServiceConfig_ToProto(mapCtx, in.IdentityServiceConfig)
+		out.NetworkConfig = NodeNetworkConfig_ToProto(mapCtx, in.NetworkConfig)
 		// MISSING: SelfLink
-		// MISSING: Zone
-		// MISSING: Endpoint
-		// MISSING: InitialClusterVersion
-		// MISSING: CurrentMasterVersion
-		// MISSING: CurrentNodeVersion
-		// MISSING: CreateTime
+		out.Version = direct.ValueOf(in.Version)
+		// MISSING: InstanceGroupUrls
 		// MISSING: Status
 		// MISSING: StatusMessage
-		// MISSING: NodeIPV4CIDRSize
-		// MISSING: ServicesIPV4CIDR
-		// MISSING: InstanceGroupUrls
-		// MISSING: CurrentNodeCount
-		// MISSING: ExpireTime
-		out.Location = direct.ValueOf(in.Location)
-		out.EnableTpu = direct.ValueOf(in.EnableTpu)
-		// MISSING: TpuIPV4CIDRBlock
+		out.Autoscaling = NodePoolAutoscaling_ToProto(mapCtx, in.Autoscaling)
+		out.Management = NodePoolManagement_ToProto(mapCtx, in.Management)
+		// MISSING: MaxPodsConstraint
 		// MISSING: Conditions
-		// MISSING: Autopilot
-		// MISSING: ID
-		out.NodePoolDefaults = NodePoolDefaults_ToProto(mapCtx, in.NodePoolDefaults)
-		out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
-		out.MonitoringConfig = MonitoringConfig_ToProto(mapCtx, in.MonitoringConfig)
-		out.NodePoolAutoConfig = NodePoolAutoConfig_ToProto(mapCtx, in.NodePoolAutoConfig)
-		// MISSING: PodAutoscaling
+		// MISSING: PodIPV4CIDRSize
+		out.UpgradeSettings = NodePoolUpgradeSettings_ToProto(mapCtx, in.UpgradeSettings)
+		out.PlacementPolicy = NodePool_PlacementPolicy_ToProto(mapCtx, in.PlacementPolicy)
+		// MISSING: UpdateInfo
 		// MISSING: Etag
-		// MISSING: Fleet
-		out.SecurityPostureConfig = SecurityPostureConfig_ToProto(mapCtx, in.SecurityPostureConfig)
-		out.ControlPlaneEndpointsConfig = ControlPlaneEndpointsConfig_ToProto(mapCtx, in.ControlPlaneEndpointsConfig)
-		// MISSING: EnableK8sBetaApis
-		// (near miss): "EnableK8sBetaApis" vs "EnableK8SBetaApis"
-		// MISSING: EnterpriseConfig
-		// MISSING: SecretManagerConfig
-		// MISSING: CompliancePostureConfig
-		// MISSING: SatisfiesPzs
-		// MISSING: SatisfiesPzi
-		// MISSING: UserManagedKeysConfig
-		// MISSING: RbacBindingConfig
-		// MISSING: GKEAutoUpgradeConfig
-		// MISSING: AnonymousAuthenticationConfig
+		// MISSING: QueuedProvisioning
+		// MISSING: BestEffortProvisioning
 		return out
 	}
 */
@@ -1803,6 +1923,48 @@ func NodeManagementObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Node
 	out.UpgradeOptions = AutoUpgradeOptionsObservedState_ToProto(mapCtx, in.UpgradeOptions)
 	return out
 }
+func NodeNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeNetworkConfig) *krm.NodeNetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeNetworkConfig{}
+	out.CreatePodRange = direct.LazyPtr(in.GetCreatePodRange())
+	out.PodRange = direct.LazyPtr(in.GetPodRange())
+	// MISSING: PodIPV4CIDRBlock
+	// (near miss): "PodIPV4CIDRBlock" vs "PodIpv4CidrBlock"
+	out.EnablePrivateNodes = in.EnablePrivateNodes
+	// MISSING: NetworkPerformanceConfig
+	// MISSING: PodCIDROverprovisionConfig
+	// (near miss): "PodCIDROverprovisionConfig" vs "PodCidrOverprovisionConfig"
+	out.AdditionalNodeNetworkConfigs = direct.Slice_FromProto(mapCtx, in.AdditionalNodeNetworkConfigs, AdditionalNodeNetworkConfig_FromProto)
+	out.AdditionalPodNetworkConfigs = direct.Slice_FromProto(mapCtx, in.AdditionalPodNetworkConfigs, AdditionalPodNetworkConfig_FromProto)
+	// MISSING: PodIPV4RangeUtilization
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	return out
+}
+func NodeNetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeNetworkConfig) *pb.NodeNetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeNetworkConfig{}
+	out.CreatePodRange = direct.ValueOf(in.CreatePodRange)
+	out.PodRange = direct.ValueOf(in.PodRange)
+	// MISSING: PodIPV4CIDRBlock
+	// (near miss): "PodIPV4CIDRBlock" vs "PodIpv4CidrBlock"
+	out.EnablePrivateNodes = in.EnablePrivateNodes
+	// MISSING: NetworkPerformanceConfig
+	// MISSING: PodCIDROverprovisionConfig
+	// (near miss): "PodCIDROverprovisionConfig" vs "PodCidrOverprovisionConfig"
+	out.AdditionalNodeNetworkConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalNodeNetworkConfigs, AdditionalNodeNetworkConfig_ToProto)
+	out.AdditionalPodNetworkConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalPodNetworkConfigs, AdditionalPodNetworkConfig_ToProto)
+	// MISSING: PodIPV4RangeUtilization
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = in.SubnetworkRef.External
+	}
+	return out
+}
 func NodePoolAutoConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodePoolAutoConfig) *krm.NodePoolAutoConfig {
 	if in == nil {
 		return nil
@@ -1825,6 +1987,34 @@ func NodePoolAutoConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolAutoC
 	// MISSING: LinuxNodeConfig
 	return out
 }
+func NodePoolAutoscaling_FromProto(mapCtx *direct.MapContext, in *pb.NodePoolAutoscaling) *krm.NodePoolAutoscaling {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodePoolAutoscaling{}
+	// MISSING: Enabled
+	out.MinNodeCount = direct.LazyPtr(in.GetMinNodeCount())
+	out.MaxNodeCount = direct.LazyPtr(in.GetMaxNodeCount())
+	// MISSING: Autoprovisioned
+	out.LocationPolicy = direct.Enum_FromProto(mapCtx, in.GetLocationPolicy())
+	out.TotalMinNodeCount = direct.LazyPtr(in.GetTotalMinNodeCount())
+	out.TotalMaxNodeCount = direct.LazyPtr(in.GetTotalMaxNodeCount())
+	return out
+}
+func NodePoolAutoscaling_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolAutoscaling) *pb.NodePoolAutoscaling {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodePoolAutoscaling{}
+	// MISSING: Enabled
+	out.MinNodeCount = direct.ValueOf(in.MinNodeCount)
+	out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
+	// MISSING: Autoprovisioned
+	out.LocationPolicy = direct.Enum_ToProto[pb.NodePoolAutoscaling_LocationPolicy](mapCtx, in.LocationPolicy)
+	out.TotalMinNodeCount = direct.ValueOf(in.TotalMinNodeCount)
+	out.TotalMaxNodeCount = direct.ValueOf(in.TotalMaxNodeCount)
+	return out
+}
 func NodePoolDefaults_FromProto(mapCtx *direct.MapContext, in *pb.NodePoolDefaults) *krm.NodePoolDefaults {
 	if in == nil {
 		return nil
@@ -1841,6 +2031,232 @@ func NodePoolDefaults_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolDefault
 	out.NodeConfigDefaults = NodeConfigDefaults_ToProto(mapCtx, in.NodeConfigDefaults)
 	return out
 }
+func NodePoolManagement_FromProto(mapCtx *direct.MapContext, in *pb.NodeManagement) *krm.NodePoolManagement {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodePoolManagement{}
+	out.AutoUpgrade = direct.LazyPtr(in.GetAutoUpgrade())
+	out.AutoRepair = direct.LazyPtr(in.GetAutoRepair())
+	// MISSING: UpgradeOptions
+	return out
+}
+func NodePoolManagement_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolManagement) *pb.NodeManagement {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeManagement{}
+	out.AutoUpgrade = direct.ValueOf(in.AutoUpgrade)
+	out.AutoRepair = direct.ValueOf(in.AutoRepair)
+	// MISSING: UpgradeOptions
+	return out
+}
+func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.NodePoolNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodePoolNodeConfig{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	// MISSING: DiskSizeGB
+	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+	out.OauthScopes = in.OauthScopes
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.Metadata = in.Metadata
+	out.ImageType = direct.LazyPtr(in.GetImageType())
+	out.Labels = in.Labels
+	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
+	out.Tags = in.Tags
+	out.Preemptible = direct.LazyPtr(in.GetPreemptible())
+	// MISSING: Accelerators
+	out.DiskType = direct.LazyPtr(in.GetDiskType())
+	out.MinCPUPlatform = direct.LazyPtr(in.GetMinCpuPlatform())
+	// MISSING: WorkloadMetadataConfig
+	// MISSING: Taints
+	out.SandboxConfig = SandboxConfig_FromProto(mapCtx, in.GetSandboxConfig())
+	if in.GetNodeGroup() != "" {
+		out.NodeGroupRef = &krmcomputev1beta1.ComputeNodeGroupRef{External: in.GetNodeGroup()}
+	}
+	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
+	out.ShieldedInstanceConfig = ShieldedInstanceConfig_FromProto(mapCtx, in.GetShieldedInstanceConfig())
+	out.LinuxNodeConfig = LinuxNodeConfig_FromProto(mapCtx, in.GetLinuxNodeConfig())
+	out.KubeletConfig = KubeletConfig_FromProto(mapCtx, in.GetKubeletConfig())
+	// MISSING: BootDiskKMSKey
+	out.GcfsConfig = GcfsConfig_FromProto(mapCtx, in.GetGcfsConfig())
+	out.AdvancedMachineFeatures = NodeConfig_AdvancedMachineFeatures_FromProto(mapCtx, in.GetAdvancedMachineFeatures())
+	// MISSING: Gvnic
+	out.Spot = direct.LazyPtr(in.GetSpot())
+	out.ConfidentialNodes = ConfidentialNodes_FromProto(mapCtx, in.GetConfidentialNodes())
+	out.FastSocket = FastSocket_FromProto(mapCtx, in.GetFastSocket())
+	out.ResourceLabels = in.ResourceLabels
+	// MISSING: LoggingConfig
+	out.WindowsNodeConfig = WindowsNodeConfig_FromProto(mapCtx, in.GetWindowsNodeConfig())
+	// MISSING: LocalNvmeSsdBlockConfig
+	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_FromProto(mapCtx, in.GetEphemeralStorageLocalSsdConfig())
+	// MISSING: SoleTenantConfig
+	// MISSING: ContainerdConfig
+	// MISSING: ResourceManagerTags
+	// MISSING: EnableConfidentialStorage
+	// MISSING: SecondaryBootDisks
+	// MISSING: StoragePools
+	// MISSING: SecondaryBootDiskUpdateStrategy
+	// MISSING: MaxRunDuration
+	// MISSING: LocalSsdEncryptionMode
+	// MISSING: EffectiveCgroupMode
+	// MISSING: FlexStart
+	// MISSING: BootDisk
+	return out
+}
+func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeConfig) *pb.NodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeConfig{}
+	out.MachineType = direct.ValueOf(in.MachineType)
+	// MISSING: DiskSizeGB
+	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+	out.OauthScopes = in.OauthScopes
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.Metadata = in.Metadata
+	out.ImageType = direct.ValueOf(in.ImageType)
+	out.Labels = in.Labels
+	out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
+	out.Tags = in.Tags
+	out.Preemptible = direct.ValueOf(in.Preemptible)
+	// MISSING: Accelerators
+	out.DiskType = direct.ValueOf(in.DiskType)
+	out.MinCpuPlatform = direct.ValueOf(in.MinCPUPlatform)
+	// MISSING: WorkloadMetadataConfig
+	// MISSING: Taints
+	out.SandboxConfig = SandboxConfig_ToProto(mapCtx, in.SandboxConfig)
+	if in.NodeGroupRef != nil {
+		out.NodeGroup = in.NodeGroupRef.External
+	}
+	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
+	out.ShieldedInstanceConfig = ShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)
+	out.LinuxNodeConfig = LinuxNodeConfig_ToProto(mapCtx, in.LinuxNodeConfig)
+	out.KubeletConfig = KubeletConfig_ToProto(mapCtx, in.KubeletConfig)
+	// MISSING: BootDiskKMSKey
+	out.GcfsConfig = GcfsConfig_ToProto(mapCtx, in.GcfsConfig)
+	out.AdvancedMachineFeatures = NodeConfig_AdvancedMachineFeatures_ToProto(mapCtx, in.AdvancedMachineFeatures)
+	// MISSING: Gvnic
+	out.Spot = direct.ValueOf(in.Spot)
+	out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
+	out.FastSocket = FastSocket_ToProto(mapCtx, in.FastSocket)
+	out.ResourceLabels = in.ResourceLabels
+	// MISSING: LoggingConfig
+	out.WindowsNodeConfig = WindowsNodeConfig_ToProto(mapCtx, in.WindowsNodeConfig)
+	// MISSING: LocalNvmeSsdBlockConfig
+	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
+	// MISSING: SoleTenantConfig
+	// MISSING: ContainerdConfig
+	// MISSING: ResourceManagerTags
+	// MISSING: EnableConfidentialStorage
+	// MISSING: SecondaryBootDisks
+	// MISSING: StoragePools
+	// MISSING: SecondaryBootDiskUpdateStrategy
+	// MISSING: MaxRunDuration
+	// MISSING: LocalSsdEncryptionMode
+	// MISSING: EffectiveCgroupMode
+	// MISSING: FlexStart
+	// MISSING: BootDisk
+	return out
+}
+
+/* found existing non-generated mapping function "NodePoolUpgradeSettings_FromProto", skipping
+func NodePoolUpgradeSettings_FromProto(mapCtx *direct.MapContext, in *pb.NodePool_UpgradeSettings) *krm.NodePoolUpgradeSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodePoolUpgradeSettings{}
+	out.MaxSurge = direct.LazyPtr(in.GetMaxSurge())
+	out.MaxUnavailable = direct.LazyPtr(in.GetMaxUnavailable())
+	out.Strategy = direct.Enum_FromProto(mapCtx, in.GetStrategy())
+	out.BlueGreenSettings = NodePoolBlueGreenSettings_FromProto(mapCtx, in.GetBlueGreenSettings())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "NodePoolUpgradeSettings_ToProto", skipping
+func NodePoolUpgradeSettings_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolUpgradeSettings) *pb.NodePool_UpgradeSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodePool_UpgradeSettings{}
+	out.MaxSurge = direct.ValueOf(in.MaxSurge)
+	out.MaxUnavailable = direct.ValueOf(in.MaxUnavailable)
+	if oneof := NodePoolUpgradeSettings_Strategy_ToProto(mapCtx, in.Strategy); oneof != nil {
+		out.Strategy = oneof
+	}
+	out.BlueGreenSettings = NodePoolBlueGreenSettings_ToProto(mapCtx, in.BlueGreenSettings)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "NodePool_PlacementPolicy_FromProto", skipping
+func NodePool_PlacementPolicy_FromProto(mapCtx *direct.MapContext, in *pb.NodePool_PlacementPolicy) *krm.NodePool_PlacementPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodePool_PlacementPolicy{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.TpuTopology = direct.LazyPtr(in.GetTpuTopology())
+	if in.GetPolicyName() != "" {
+		out.PolicyNameRef = &krmcomputev1beta1.ComputeResourcePolicyRef{External: in.GetPolicyName()}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "NodePool_PlacementPolicy_ToProto", skipping
+func NodePool_PlacementPolicy_ToProto(mapCtx *direct.MapContext, in *krm.NodePool_PlacementPolicy) *pb.NodePool_PlacementPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodePool_PlacementPolicy{}
+	out.Type = direct.Enum_ToProto[pb.NodePool_PlacementPolicy_Type](mapCtx, in.Type)
+	out.TpuTopology = direct.ValueOf(in.TpuTopology)
+	if in.PolicyNameRef != nil {
+		out.PolicyName = in.PolicyNameRef.External
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "NodePool_UpgradeSettings_FromProto", skipping
+func NodePool_UpgradeSettings_FromProto(mapCtx *direct.MapContext, in *pb.NodePool_UpgradeSettings) *krm.NodePool_UpgradeSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodePool_UpgradeSettings{}
+	out.MaxSurge = direct.LazyPtr(in.GetMaxSurge())
+	out.MaxUnavailable = direct.LazyPtr(in.GetMaxUnavailable())
+	out.Strategy = direct.Enum_FromProto(mapCtx, in.GetStrategy())
+	// MISSING: BlueGreenSettings
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "NodePool_UpgradeSettings_ToProto", skipping
+
+	func NodePool_UpgradeSettings_ToProto(mapCtx *direct.MapContext, in *krm.NodePool_UpgradeSettings) *pb.NodePool_UpgradeSettings {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NodePool_UpgradeSettings{}
+		out.MaxSurge = direct.ValueOf(in.MaxSurge)
+		out.MaxUnavailable = direct.ValueOf(in.MaxUnavailable)
+		if oneof := NodePool_UpgradeSettings_Strategy_ToProto(mapCtx, in.Strategy); oneof != nil {
+			out.Strategy = oneof
+		}
+		// MISSING: BlueGreenSettings
+		return out
+	}
+*/
 func NodeTaint_FromProto(mapCtx *direct.MapContext, in *pb.NodeTaint) *krm.NodeTaint {
 	if in == nil {
 		return nil
@@ -2201,6 +2617,22 @@ func VerticalPodAutoscaling_ToProto(mapCtx *direct.MapContext, in *krm.VerticalP
 	}
 	out := &pb.VerticalPodAutoscaling{}
 	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
+func WindowsNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.WindowsNodeConfig) *krm.WindowsNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WindowsNodeConfig{}
+	out.OSVersion = direct.Enum_FromProto(mapCtx, in.GetOsVersion())
+	return out
+}
+func WindowsNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.WindowsNodeConfig) *pb.WindowsNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WindowsNodeConfig{}
+	out.OsVersion = direct.Enum_ToProto[pb.WindowsNodeConfig_OSVersion](mapCtx, in.OSVersion)
 	return out
 }
 func WorkloadIdentityConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadIdentityConfig) *krm.WorkloadIdentityConfig {

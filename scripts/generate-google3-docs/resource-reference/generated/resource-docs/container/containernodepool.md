@@ -248,7 +248,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage. To disable autoscaling, set minNodeCount and maxNodeCount to 0.</p>
+            <p>Autoscaler configuration for this NodePool. Autoscaler is enabled only if a valid configuration is present.</p>
         </td>
     </tr>
     <tr>
@@ -258,7 +258,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Location policy specifies the algorithm used when scaling-up the node pool. "BALANCED" - Is a best effort policy that aims to balance the sizes of available zones. "ANY" - Instructs the cluster autoscaler to prioritize utilization of unused reservations, and reduces preemption risk for Spot VMs.</p>
+            <p>Location policy used when scaling up a nodepool.</p>
         </td>
     </tr>
     <tr>
@@ -268,7 +268,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Maximum number of nodes per zone in the node pool. Must be >= min_node_count. Cannot be used with total limits.</p>
+            <p>Maximum number of nodes for one location in the node pool. Must be >= min_node_count. There has to be enough quota to scale up the cluster.</p>
         </td>
     </tr>
     <tr>
@@ -278,7 +278,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Minimum number of nodes per zone in the node pool. Must be >=0 and <= max_node_count. Cannot be used with total limits.</p>
+            <p>Minimum number of nodes for one location in the node pool. Must be greater than or equal to 0 and less than or equal to max_node_count.</p>
         </td>
     </tr>
     <tr>
@@ -288,7 +288,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Maximum number of all nodes in the node pool. Must be >= total_min_node_count. Cannot be used with per zone limits.</p>
+            <p>Maximum number of nodes in the node pool. Must be greater than or equal to total_min_node_count. There has to be enough quota to scale up the cluster. The total_*_node_count fields are mutually exclusive with the *_node_count fields.</p>
         </td>
     </tr>
     <tr>
@@ -298,7 +298,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Minimum number of all nodes in the node pool. Must be >=0 and <= total_max_node_count. Cannot be used with per zone limits.</p>
+            <p>Minimum number of nodes in the node pool. Must be greater than or equal to 0 and less than or equal to total_max_node_count. The total_*_node_count fields are mutually exclusive with the *_node_count fields.</p>
         </td>
     </tr>
     <tr>
@@ -308,7 +308,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The GKE cluster this node pool belongs to.</p>
         </td>
     </tr>
     <tr>
@@ -318,7 +318,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `ContainerCluster` resource.</p>
+            <p>The GKE cluster. Valid formats: `projects/{projectID}/locations/{location}/clusters/{clusterID}` `projects/{projectID}/zones/{zone}/clusters/{clusterID}`</p>
         </td>
     </tr>
     <tr>
@@ -328,7 +328,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>Name of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */</p>
         </td>
     </tr>
     <tr>
@@ -338,7 +338,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>Namespace of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */</p>
         </td>
     </tr>
     <tr>
@@ -348,7 +348,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource.</p>
+            <p>The initial node count for the pool. You must ensure that your Compute Engine resource quota is sufficient for this number of instances. You must also have available firewall and routes quota.</p>
         </td>
     </tr>
     <tr>
@@ -368,7 +368,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Node management configuration, wherein auto-repair and auto-upgrade is configured.</p>
+            <p>NodeManagement configuration for this NodePool.</p>
         </td>
     </tr>
     <tr>
@@ -378,7 +378,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Whether the nodes will be automatically repaired.</p>
+            <p>A flag that specifies whether the node auto-repair is enabled for the node pool. If enabled, the nodes in this node pool will be monitored and, if they fail health checks too many times, an automatic repair action will be triggered.</p>
         </td>
     </tr>
     <tr>
@@ -388,7 +388,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Whether the nodes will be automatically upgraded.</p>
+            <p>A flag that specifies whether node auto-upgrade is enabled for the node pool. If enabled, node auto-upgrade helps keep the nodes in your node pool up to date with the latest release version of Kubernetes.</p>
         </td>
     </tr>
     <tr>
@@ -398,7 +398,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. The maximum number of pods per node in this node pool. Note that this does not work on node pools which are "route-based" - that is, node pools belonging to clusters that do not have IP Aliasing enabled.</p>
+            <p>The constraint on the maximum number of pods that can be run simultaneously on a node in the node pool.</p>
         </td>
     </tr>
     <tr>
@@ -428,7 +428,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Immutable. We specify the additional node networks for this node pool using this list. Each node network corresponds to an additional interface.</p>
+            <p>We specify the additional node networks for this node pool using this list. Each node network corresponds to an additional interface.</p>
         </td>
     </tr>
     <tr>
@@ -448,7 +448,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Name of the VPC where the additional interface belongs.</p>
+            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -458,7 +458,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -468,7 +468,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -478,7 +478,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -488,7 +488,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Name of the subnetwork where the additional interface belongs.</p>
+            <p>ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.</p>
         </td>
     </tr>
     <tr>
@@ -498,7 +498,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -508,7 +508,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -518,7 +518,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -528,7 +528,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Immutable. We specify the additional pod networks for this node pool using this list. Each pod network corresponds to an additional alias IP range for the node.</p>
+            <p>We specify the additional pod networks for this node pool using this list. Each pod network corresponds to an additional alias IP range for the node.</p>
         </td>
     </tr>
     <tr>
@@ -548,7 +548,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. The maximum number of pods per node which use this pod network.</p>
+            <p>The maximum number of pods per node which use this pod network.</p>
         </td>
     </tr>
     <tr>
@@ -558,7 +558,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The name of the secondary range on the subnet which provides IP address for this pod range.</p>
+            <p>The name of the secondary range on the subnet which provides IP address for this pod range.</p>
         </td>
     </tr>
     <tr>
@@ -568,7 +568,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Name of the subnetwork where the additional pod network belongs.</p>
+            <p>ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.</p>
         </td>
     </tr>
     <tr>
@@ -578,7 +578,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -588,7 +588,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -598,7 +598,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -608,7 +608,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Whether to create a new range for pod IPs in this node pool. Defaults are provided for pod_range and pod_ipv4_cidr_block if they are not specified.</p>
+            <p>Input only. Whether to create a new range for pod IPs in this node pool. Defaults are provided for `pod_range` and `pod_ipv4_cidr_block` if they are not specified. If neither `create_pod_range` or `pod_range` are specified, the cluster-level default (`ip_allocation_policy.cluster_ipv4_cidr_block`) is used. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.</p>
         </td>
     </tr>
     <tr>
@@ -618,7 +618,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Whether nodes have internal IP addresses only.</p>
+            <p>Whether nodes have internal IP addresses only. If enable_private_nodes is not specified, then the value is derived from [Cluster.NetworkConfig.default_enable_private_nodes].</p>
         </td>
     </tr>
     <tr>
@@ -628,7 +628,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Configuration for node-pool level pod cidr overprovision. If not set, the cluster level setting will be inherited.</p>
+            <p>[PRIVATE FIELD] Pod CIDR size overprovisioning config for the nodepool. Pod CIDR size per node depends on max_pods_per_node. By default, the value of max_pods_per_node is rounded off to next power of 2 and we then double that to get the size of pod CIDR block per node. Example: max_pods_per_node of 30 would result in 64 IPs (/26). This config can disable the doubling of IPs (we still round off to next power of 2) Example: max_pods_per_node of 30 will result in 32 IPs (/27) when overprovisioning is disabled.</p>
         </td>
     </tr>
     <tr>
@@ -648,7 +648,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The IP address range for pod IPs in this node pool. Only applicable if create_pod_range is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) to pick a specific range to use.</p>
+            <p>The IP address range for pod IPs in this node pool. Only applicable if `create_pod_range` is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. `/14`) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. `10.96.0.0/14`) to pick a specific range to use. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.</p>
         </td>
     </tr>
     <tr>
@@ -658,7 +658,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The ID of the secondary range for pod IPs. If create_pod_range is true, this ID is used for the new range. If create_pod_range is false, uses an existing secondary range with this ID.</p>
+            <p>The ID of the secondary range for pod IPs. If `create_pod_range` is true, this ID is used for the new range. If `create_pod_range` is false, uses an existing secondary range with this ID. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.</p>
         </td>
     </tr>
     <tr>
@@ -668,7 +668,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The subnetwork path for the node pool. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}. If not set, the provider/API will choose the subnetwork (e.g. based on IP utilization) and report it here.</p>
+            <p>ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.</p>
         </td>
     </tr>
     <tr>
@@ -678,7 +678,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -688,7 +688,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -698,7 +698,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -708,7 +708,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The configuration of the nodepool.</p>
+            <p>The node configuration of the pool.</p>
         </td>
     </tr>
     <tr>
@@ -748,7 +748,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>Immutable. Cryptographic key used to encrypt the boot disk.</p>
         </td>
     </tr>
     <tr>
@@ -758,7 +758,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -768,7 +768,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -778,7 +778,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -918,7 +918,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Whether or not GCFS is enabled.</p>
+            <p>Whether or not GCFS is enabled.</p>
         </td>
     </tr>
     <tr>
@@ -1128,7 +1128,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node.</p>
+            <p>Immutable. The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node.</p>
         </td>
     </tr>
     <tr>
@@ -1238,9 +1238,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Setting this field will assign instances
-of this pool to run on the specified node group. This is useful
-for running workloads on sole tenant nodes.</p>
+            <p>Immutable. Setting this field will assign instances of this pool to run on the specified node group. This is useful for running workloads on sole tenant nodes.</p>
         </td>
     </tr>
     <tr>
@@ -1250,7 +1248,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `ComputeNodeGroup` resource.</p>
+            <p>A reference to an externally managed ComputeNodeGroup resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/nodeGroups/{{nodeGroupID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1260,7 +1258,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNodeGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -1270,7 +1268,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNodeGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -1400,7 +1398,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1620,7 +1618,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>os_version specifies the Windows Server release version to be used on the node.</p>
+            <p>Operating system version of the Windows nodes.</p>
         </td>
     </tr>
     <tr>
@@ -1660,7 +1658,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The number of nodes per instance group. This field can be used to update the number of nodes per instance group but should not be used alongside autoscaling.</p>
+            <p>The node count of the pool.</p>
         </td>
     </tr>
     <tr>
@@ -1670,7 +1668,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>The list of zones in which the node pool's nodes should be located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If unspecified, the cluster-level node_locations will be used.</p>
+            <p>The list of Google Compute Engine zones in which the NodePool's nodes should be located.</p>
         </td>
     </tr>
     <tr>
@@ -1690,7 +1688,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Specifies the node placement policy.</p>
+            <p>Specifies the node placement policy.</p>
         </td>
     </tr>
     <tr>
@@ -1700,7 +1698,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. If not found, InvalidArgument error is returned.</p>
+            <p>If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. If not found, InvalidArgument error is returned.</p>
         </td>
     </tr>
     <tr>
@@ -1710,7 +1708,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeResourcePolicy` resource.</p>
+            <p>A reference to an externally managed ComputeResourcePolicy resource. Should be in the format "projects/{project}/regions/{region}/resourcePolicies/{resourcePolicy}".</p>
         </td>
     </tr>
     <tr>
@@ -1720,7 +1718,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeResourcePolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -1730,7 +1728,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeResourcePolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -1740,7 +1738,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>TPU placement topology for pod slice node pool. https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies.</p>
+            <p>Optional. TPU placement topology for pod slice node pool.</p>
         </td>
     </tr>
     <tr>
@@ -1750,7 +1748,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Type defines the type of placement policy.</p>
+            <p>The type of placement.</p>
         </td>
     </tr>
     <tr>
@@ -1770,7 +1768,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specify node upgrade settings to change how many nodes GKE attempts to upgrade at once. The number of nodes upgraded simultaneously is the sum of max_surge and max_unavailable. The maximum number of nodes upgraded simultaneously is limited to 20.</p>
+            <p>Upgrade settings control disruption and speed of the upgrade.</p>
         </td>
     </tr>
     <tr>
@@ -1780,7 +1778,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Settings for BlueGreen node pool upgrade.</p>
+            <p>Settings for blue-green upgrade strategy.</p>
         </td>
     </tr>
     <tr>
@@ -1800,7 +1798,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Standard rollout policy is the default policy for blue-green.</p>
+            <p>Standard policy for the blue-green upgrade.</p>
         </td>
     </tr>
     <tr>
@@ -1820,7 +1818,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>Percentage of the blue pool nodes to drain in a batch.</p>
+            <p>Percentage of the bool pool nodes to drain in a batch. The range of this field should be (0.0, 1.0].</p>
         </td>
     </tr>
     <tr>
@@ -1830,7 +1828,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Soak time after each batch gets drained.</p>
+            <p>Soak time after each batch gets drained. A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".</p>
         </td>
     </tr>
     <tr>
@@ -1840,7 +1838,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater.</p>
+            <p>The maximum number of nodes that can be created beyond the current size of the node pool during the upgrade process.</p>
         </td>
     </tr>
     <tr>
@@ -1850,7 +1848,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater.</p>
+            <p>The maximum number of nodes that can be simultaneously unavailable during the upgrade process. A node is considered available if its status is Ready.</p>
         </td>
     </tr>
     <tr>
@@ -1860,7 +1858,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Update strategy for the given nodepool.</p>
+            <p>Update strategy of the node pool.</p>
         </td>
     </tr>
     <tr>
@@ -1870,7 +1868,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>The version of Kubernetes running on this NodePool's nodes.</p>
         </td>
     </tr>
 </tbody>
@@ -1908,7 +1906,7 @@ operation: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ContainerNodePool's current state.</p>
         </td>
     </tr>
     <tr>
