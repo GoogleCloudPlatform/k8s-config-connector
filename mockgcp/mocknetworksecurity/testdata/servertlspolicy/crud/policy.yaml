@@ -1,0 +1,5 @@
+name: test-${uniqueId}
+description: A test server TLS policy
+allowOpen: true
+labels:
+  foo: bar

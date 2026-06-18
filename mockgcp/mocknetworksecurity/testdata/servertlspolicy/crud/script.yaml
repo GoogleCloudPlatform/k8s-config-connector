@@ -1,0 +1,3 @@
+- exec: gcloud beta network-security server-tls-policies import test-${uniqueId} --source=policy.yaml --location=global
+- exec: gcloud beta network-security server-tls-policies export test-${uniqueId} --location=global
+- exec: gcloud beta network-security server-tls-policies delete test-${uniqueId} --location=global --quiet
