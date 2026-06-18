@@ -3081,7 +3081,7 @@
 [missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.riskLevel" is not set in unstructured objects
 [missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.schedule.intervalDurationDays" is not set in unstructured objects
 [missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.schedule.scheduleTime" is not set in unstructured objects
-[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.startingUrls[]" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.startingURLs[]" is not set in unstructured objects
 [missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.staticIPScan" is not set in unstructured objects
 [missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.userAgent" is not set in unstructured objects
 [missing_field] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: field ".spec.callLogLevel" is not set in unstructured objects
