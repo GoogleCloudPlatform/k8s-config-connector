@@ -255,6 +255,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - blockchainnodeengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - certificatemanager.cnrm.cloud.google.com
   resources:
   - '*'

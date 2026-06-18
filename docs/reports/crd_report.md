@@ -97,6 +97,7 @@
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationAttestor                     | False        | True        | False  | DCL        | False       |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPlatformPolicy               | True         | False       | False  | Direct     | True        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPolicy                       | False        | True        | False  | DCL        | False       |
+| blockchainnodeengine.cnrm.cloud.google.com    | BlockchainNodeEngineBlockchainNode              | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com   | CCInsightsConversation                          | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com   | CCInsightsIssueModel                            | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com   | CCInsightsPhraseMatcher                         | True         | False       | False  | Direct     | True        |
