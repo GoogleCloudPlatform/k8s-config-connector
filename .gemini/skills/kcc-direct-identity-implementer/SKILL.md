@@ -20,6 +20,7 @@ This skill guides the implementation of the IdentityV2 and ExternalIdentifier in
     - Use `gcpurls.Template` for URL parsing.
     - Implement `ExternalIdentifier()`.
     - Implement `ParentString() string` to return the GCP parent URI (e.g., `projects/{project}` or `projects/{project}/locations/{location}`).
+    - **Error Preservation**: Always propagate and wrap any errors returned when resolving fields (like location, project, or organization) from the Spec (e.g., `fmt.Errorf("cannot resolve location: %w", err)`). Never swallow or discard underlying error details, as this hides critical troubleshooting information.
 
 2.  **Parent & Hierarchy Support**:
     - Ensure the `Spec` struct has a `ProjectRef` (and `Location` if applicable).
