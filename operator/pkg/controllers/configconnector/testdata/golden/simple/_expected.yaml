@@ -3780,6 +3780,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - videostitcher.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - vmwareengine.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5115,6 +5127,14 @@ rules:
   - watch
 - apiGroups:
   - vertexai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - videostitcher.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
