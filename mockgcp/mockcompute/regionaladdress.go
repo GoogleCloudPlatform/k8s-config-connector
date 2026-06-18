@@ -178,6 +178,7 @@ func (s *RegionalAddressesV1) SetLabels(ctx context.Context, req *pb.SetLabelsAd
 	}
 
 	obj.Labels = req.GetRegionSetLabelsRequestResource().GetLabels()
+	obj.LabelFingerprint = PtrTo(labelsFingerprint(obj.Labels))
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
