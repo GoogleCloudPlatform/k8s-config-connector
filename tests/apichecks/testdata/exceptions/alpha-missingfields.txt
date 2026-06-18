@@ -2776,6 +2776,16 @@
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].substitute.path" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.condition" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.path" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.blueprint.package" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputVariableDefaults[].type" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputVariableDefaults[].value" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputVariableDefaults[].variable" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.releaseRequirements.upgradeableFromReleases[]" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.unitKind" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.configId" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
