@@ -325,8 +325,8 @@ func (in *WebSecurityScannerScanConfigSpec) DeepCopyInto(out *WebSecurityScanner
 		*out = new(ScanconfigSchedule)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.StartingUrls != nil {
-		in, out := &in.StartingUrls, &out.StartingUrls
+	if in.StartingURLs != nil {
+		in, out := &in.StartingURLs, &out.StartingURLs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}

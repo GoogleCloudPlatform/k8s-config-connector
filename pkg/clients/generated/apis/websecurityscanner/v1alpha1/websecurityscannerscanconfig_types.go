@@ -147,7 +147,7 @@ type WebSecurityScannerScanConfigSpec struct {
 	Schedule *ScanconfigSchedule `json:"schedule,omitempty"`
 
 	/* Required. The starting URLs from which the scanner finds site pages. */
-	StartingUrls []string `json:"startingUrls"`
+	StartingURLs []string `json:"startingURLs"`
 
 	/* Whether the scan configuration has enabled static IP address scan feature. If enabled, the scanner will access applications from static IP addresses. */
 	// +optional

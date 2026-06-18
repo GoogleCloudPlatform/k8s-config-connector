@@ -127,7 +127,7 @@ type WebSecurityScannerScanConfigSpec struct {
 	// Required. The starting URLs from which the scanner finds site pages.
 	// +kcc:proto:field=google.cloud.websecurityscanner.v1.ScanConfig.starting_urls
 	// +required
-	StartingUrls []string `json:"startingUrls,omitempty"`
+	StartingURLs []string `json:"startingURLs,omitempty"`
 
 	// The authentication configuration. If specified, service will use the
 	// authentication configuration during scanning.

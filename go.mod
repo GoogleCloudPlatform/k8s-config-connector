@@ -82,7 +82,6 @@ require (
 	cloud.google.com/go/speech v1.30.0
 	cloud.google.com/go/storage v1.59.2
 	cloud.google.com/go/vmwareengine v1.3.6
-	cloud.google.com/go/websecurityscanner v1.7.7
 	cloud.google.com/go/workflows v1.14.3
 	cloud.google.com/go/workstations v1.1.6
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
