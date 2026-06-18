@@ -277,6 +277,7 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 type: object
+                x-kubernetes-preserve-unknown-fields: true
             type: object
         required:
         - spec

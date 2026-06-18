@@ -150,6 +150,7 @@ type VideoStitcherCdnKeyStatus struct {
 
 // VideoStitcherCdnKeyObservedState is the state of the VideoStitcherCdnKey resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.video.stitcher.v1.CdnKey
+// +kubebuilder:validation:XPreserveUnknownFields
 type VideoStitcherCdnKeyObservedState struct {
 }
 
