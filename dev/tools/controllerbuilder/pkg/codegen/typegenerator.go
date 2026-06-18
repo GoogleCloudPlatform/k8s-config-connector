@@ -245,6 +245,9 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		out.fileAnnotation = g.generatedFileAnnotation
 
 		goTypeName := GoNameForProtoMessage(msg)
+		if strings.Contains(goTypeName, ".") {
+			continue
+		}
 		skipGenerated := true
 		goType, err := g.findTypeDeclaration(goTypeName, out.OutputDir(), skipGenerated)
 		if err != nil {

@@ -21,6 +21,7 @@
 // resource: VertexAIMetadataStore:MetadataStore
 // resource: VertexAIDeploymentResourcePool:DeploymentResourcePool
 // resource: VertexAIExampleStore:ExampleStore
+// resource: VertexAIFeatureGroup:FeatureGroup
 
 package v1alpha1
 
@@ -48,6 +49,16 @@ type AutoscalingMetricSpec struct {
 	//  https://cloud.google.com/monitoring/api/v3/metric-model#generic-label-info
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.monitored_resource_labels
 	MonitoredResourceLabels map[string]string `json:"monitoredResourceLabels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.BigQuerySource
+type BigQuerySource struct {
+	// Required. BigQuery URI to a table, up to 2000 characters long.
+	//  Accepted forms:
+	//
+	//  *  BigQuery path. For example: `bq://projectId.bqDatasetId.bqTableId`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BigQuerySource.input_uri
+	InputURI *string `json:"inputURI,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.DedicatedResources
@@ -138,6 +149,55 @@ type ExampleStoreConfig struct {
 	//  * "text-multilingual-embedding-002"
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStoreConfig.vertex_embedding_model
 	VertexEmbeddingModel *string `json:"vertexEmbeddingModel,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery
+type FeatureGroup_BigQuery struct {
+	// Required. Immutable. The BigQuery source URI that points to either a
+	//  BigQuery Table or View.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.big_query_source
+	BigQuerySource *BigQuerySource `json:"bigQuerySource,omitempty"`
+
+	// Optional. Columns to construct entity_id / row keys.
+	//  If not provided defaults to `entity_id`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.entity_id_columns
+	EntityIDColumns []string `json:"entityIDColumns,omitempty"`
+
+	// Optional. Set if the data source is not a time-series.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.static_data_source
+	StaticDataSource *bool `json:"staticDataSource,omitempty"`
+
+	// Optional. If the source is a time-series source, this can be set to
+	//  control how downstream sources (ex:
+	//  [FeatureView][google.cloud.aiplatform.v1beta1.FeatureView] ) will treat
+	//  time-series sources. If not set, will treat the source as a time-series
+	//  source with `feature_timestamp` as timestamp column and no scan boundary.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.time_series
+	TimeSeries *FeatureGroup_BigQuery_TimeSeries `json:"timeSeries,omitempty"`
+
+	// Optional. If set, all feature values will be fetched
+	//  from a single row per unique entityId including nulls.
+	//  If not set, will collapse all rows for each unique entityId into a singe
+	//  row with any non-null values if present, if no non-null values are
+	//  present will sync null.
+	//  ex: If source has schema
+	//  `(entity_id, feature_timestamp, f0, f1)` and the following rows:
+	//  `(e1, 2020-01-01T10:00:00.123Z, 10, 15)`
+	//  `(e1, 2020-02-01T10:00:00.123Z, 20, null)`
+	//  If dense is set, `(e1, 20, null)` is synced to online stores. If dense is
+	//  not set, `(e1, 20, 15)` is synced to online stores.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.dense
+	Dense *bool `json:"dense,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.TimeSeries
+type FeatureGroup_BigQuery_TimeSeries struct {
+	// Optional. Column hosting timestamp values for a time-series source.
+	//  Will be used to determine the latest `feature_values` for each entity.
+	//  Optional. If not provided, column named `feature_timestamp` of
+	//  type `TIMESTAMP` will be used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.TimeSeries.timestamp_column
+	TimestampColumn *string `json:"timestampColumn,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig

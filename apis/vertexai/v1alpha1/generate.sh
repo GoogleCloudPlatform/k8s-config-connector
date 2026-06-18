@@ -44,6 +44,9 @@ go run . generate-types \
 
 mv ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go ${REPO_ROOT}/apis/vertexai/v1alpha1/v1_types.generated.go
 
+# Deduplicate overlapping generated types and handwritten reference types
+python3 ${REPO_ROOT}/apis/vertexai/v1alpha1/deduplicate_types.py
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
