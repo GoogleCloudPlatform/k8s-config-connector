@@ -75,6 +75,13 @@ type InstanceCrossInstanceReplicationConfig struct {
 	This field is only set for a secondary instance. */
 	// +optional
 	PrimaryInstance *InstancePrimaryInstance `json:"primaryInstance,omitempty"`
+
+	/* Optional. List of secondary instances that are replicating from this
+	primary instance.
+
+	This field is only set for a primary instance. */
+	// +optional
+	SecondaryInstances []InstanceSecondaryInstances `json:"secondaryInstances,omitempty"`
 }
 
 type InstanceEndpoints struct {
@@ -131,6 +138,12 @@ type InstanceRdbConfig struct {
 	/* Optional. Time that the first snapshot was/will be attempted, and to which future snapshots will be aligned. If not provided, the current time will be used. */
 	// +optional
 	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
+}
+
+type InstanceSecondaryInstances struct {
+	/* Optional. The full resource path of the remote instance. */
+	// +optional
+	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
 }
 
 type InstanceStartTime struct {
@@ -279,6 +292,10 @@ type InstanceCrossInstanceReplicationConfigStatus struct {
 	This field is only set for a primary instance. */
 	// +optional
 	SecondaryInstances []InstanceSecondaryInstancesStatus `json:"secondaryInstances,omitempty"`
+
+	/* Output only. The last time cross instance replication config was updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type InstanceEncryptionInfoStatus struct {
