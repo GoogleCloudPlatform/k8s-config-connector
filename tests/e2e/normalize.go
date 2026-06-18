@@ -1349,5 +1349,8 @@ func isGetOperation(e *test.LogEntry) bool {
 	if e.Request.URL == "/google.longrunning.Operations/GetOperation" {
 		return true
 	}
+	if strings.Contains(e.Request.URL, "/changes/${changeId}") {
+		return true
+	}
 	return false
 }

@@ -108,7 +108,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	if changeId != "" {
 		replacements.TransformString("{url}", func(s string) string {
 			re := regexp.MustCompile(`/changes/` + regexp.QuoteMeta(changeId) + `([/?:]|$)`)
-			return re.ReplaceAllString(s, `/changes/${changeId}$1`)
+			return re.ReplaceAllString(s, `/changes/$${changeId}$1`)
 		})
 		replacements.TransformString(".id", func(s string) string {
 			if s == changeId {

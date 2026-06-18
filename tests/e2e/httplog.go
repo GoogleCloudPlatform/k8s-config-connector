@@ -90,8 +90,8 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 		if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
 			return true
 		}
-		// compute operations return status==DONE
-		if status, _, _ := unstructured.NestedString(responseBody, "status"); status == "DONE" {
+		// compute operations return status==DONE, dns changes return status==done
+		if status, _, _ := unstructured.NestedString(responseBody, "status"); status == "DONE" || status == "done" {
 			return true
 		}
 		// remove if not done - and done can be omitted when false

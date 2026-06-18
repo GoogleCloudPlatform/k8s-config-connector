@@ -162,7 +162,8 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
 			return true
 		}
-		if status, _, _ := unstructured.NestedString(responseBody, "status"); status == "DONE" {
+		// compute operations return status==DONE, dns changes return status==done
+		if status, _, _ := unstructured.NestedString(responseBody, "status"); status == "DONE" || status == "done" {
 			return true
 		}
 		// remove if not done - and done can be omitted when false
@@ -746,6 +747,9 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 			delete(responseMap, "details")
 		}
 	})
+	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+		deleteNilValues(obj)
+	})
 	addReplacement("creationTime", "123456789")
 	addReplacement("lastModifiedTime", "123456789")
 
@@ -770,4 +774,23 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 
 	return got, normalizers
 
+}
+
+func deleteNilValues(m map[string]any) {
+	for k, v := range m {
+		if v == nil {
+			delete(m, k)
+			continue
+		}
+		switch val := v.(type) {
+		case map[string]any:
+			deleteNilValues(val)
+		case []any:
+			for _, item := range val {
+				if itemMap, ok := item.(map[string]any); ok {
+					deleteNilValues(itemMap)
+				}
+			}
+		}
+	}
 }

@@ -44,7 +44,7 @@ func (s *changesServer) CreateChange(ctx context.Context, req *pb.CreateChangeRe
 	var zone pb.ManagedZone
 	if err := s.storage.Get(ctx, zoneFqn, &zone); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "managedZone %q not found", zoneFqn)
+			return nil, status.Errorf(codes.NotFound, "The 'parameters.managedZone' resource named '%s' does not exist.", zoneName)
 		}
 		return nil, err
 	}
@@ -83,10 +83,19 @@ func (s *changesServer) CreateChange(ctx context.Context, req *pb.CreateChangeRe
 		}
 	}
 
-	changeId := fmt.Sprintf("%d", time.Now().UnixNano())
+	prefix := fmt.Sprintf("projects/%s/managedZones/%s/changes/", projectData.ID, zoneName)
+	changeKind := (&pb.Change{}).ProtoReflect().Descriptor()
+	existingChangesCount := 0
+	if err := s.storage.List(ctx, changeKind, storage.ListOptions{Prefix: prefix}, func(item proto.Message) error {
+		existingChangesCount++
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	changeId := fmt.Sprintf("%d", existingChangesCount)
 	change.Id = PtrTo(changeId)
 	change.StartTime = PtrTo(time.Now().Format(time.RFC3339))
-	change.Status = PtrTo("done")
+	change.Status = PtrTo("pending")
 	change.Kind = PtrTo("dns#change")
 
 	changeFqn := fmt.Sprintf("projects/%s/managedZones/%s/changes/%s", projectData.ID, zoneName, changeId)
@@ -114,6 +123,13 @@ func (s *changesServer) GetChange(ctx context.Context, req *pb.GetChangeRequest)
 		return nil, err
 	}
 
+	if obj.GetStatus() == "pending" {
+		obj.Status = PtrTo("done")
+		if err := s.storage.Update(ctx, changeFqn, obj); err != nil {
+			return nil, err
+		}
+	}
+
 	return obj, nil
 }
 
@@ -134,6 +150,17 @@ func (s *changesServer) ListChanges(ctx context.Context, req *pb.ListChangesRequ
 		return nil
 	}); err != nil {
 		return nil, err
+	}
+
+	for _, change := range items {
+		if change.GetStatus() == "pending" {
+			change.Status = PtrTo("done")
+			changeId := change.GetId()
+			changeFqn := fmt.Sprintf("projects/%s/managedZones/%s/changes/%s", projectData.ID, zoneName, changeId)
+			if err := s.storage.Update(ctx, changeFqn, change); err != nil {
+				return nil, err
+			}
+		}
 	}
 
 	return &pb.ChangesListResponse{

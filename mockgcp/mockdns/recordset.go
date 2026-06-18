@@ -222,6 +222,9 @@ func populateRecordSetDefaults(obj *pb.ResourceRecordSet) {
 		}
 		if obj.RoutingPolicy.Geo != nil {
 			obj.RoutingPolicy.Geo.Kind = PtrTo("dns#rRSetRoutingPolicyGeoPolicy")
+			if obj.RoutingPolicy.Geo.EnableFencing == nil {
+				obj.RoutingPolicy.Geo.EnableFencing = PtrTo(false)
+			}
 			for _, item := range obj.RoutingPolicy.Geo.Items {
 				item.Kind = PtrTo("dns#rRSetRoutingPolicyGeoPolicyGeoPolicyItem")
 				if item.Rrdatas == nil {
@@ -233,6 +236,38 @@ func populateRecordSetDefaults(obj *pb.ResourceRecordSet) {
 				if item.HealthCheckedTargets != nil {
 					if item.HealthCheckedTargets.InternalLoadBalancers == nil {
 						item.HealthCheckedTargets.InternalLoadBalancers = []*pb.RRSetRoutingPolicyLoadBalancerTarget{}
+					}
+				}
+			}
+		}
+		if obj.RoutingPolicy.PrimaryBackup != nil {
+			obj.RoutingPolicy.PrimaryBackup.Kind = PtrTo("dns#rRSetRoutingPolicyPrimaryBackupPolicy")
+			pbPolicy := obj.RoutingPolicy.PrimaryBackup
+			if pbPolicy.TrickleTraffic == nil {
+				pbPolicy.TrickleTraffic = PtrTo(0.0)
+			}
+			if pbPolicy.PrimaryTargets != nil {
+				if pbPolicy.PrimaryTargets.InternalLoadBalancers == nil {
+					pbPolicy.PrimaryTargets.InternalLoadBalancers = []*pb.RRSetRoutingPolicyLoadBalancerTarget{}
+				}
+			}
+			if pbPolicy.BackupGeoTargets != nil {
+				pbPolicy.BackupGeoTargets.Kind = PtrTo("dns#rRSetRoutingPolicyGeoPolicy")
+				if pbPolicy.BackupGeoTargets.EnableFencing == nil {
+					pbPolicy.BackupGeoTargets.EnableFencing = PtrTo(false)
+				}
+				for _, item := range pbPolicy.BackupGeoTargets.Items {
+					item.Kind = PtrTo("dns#rRSetRoutingPolicyGeoPolicyGeoPolicyItem")
+					if item.Rrdatas == nil {
+						item.Rrdatas = []string{}
+					}
+					if item.SignatureRrdatas == nil {
+						item.SignatureRrdatas = []string{}
+					}
+					if item.HealthCheckedTargets != nil {
+						if item.HealthCheckedTargets.InternalLoadBalancers == nil {
+							item.HealthCheckedTargets.InternalLoadBalancers = []*pb.RRSetRoutingPolicyLoadBalancerTarget{}
+						}
 					}
 				}
 			}
