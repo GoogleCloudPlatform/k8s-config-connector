@@ -87,6 +87,7 @@ type ServiceIdentityObservedState struct {
 
 // ServiceIdentity is the Schema for the ServiceIdentity API
 // +k8s:openapi-gen=true
+// +kcc:proto=google.api.serviceusage.v1beta1.ServiceIdentity
 type ServiceIdentity struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

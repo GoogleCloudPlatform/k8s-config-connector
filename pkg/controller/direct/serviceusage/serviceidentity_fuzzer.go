@@ -34,8 +34,8 @@ func serviceIdentityFuzzer() fuzztesting.KRMFuzzer {
 		ServiceIdentityObservedState_FromProto, ServiceIdentityObservedState_ToProto,
 	)
 
-	f.StatusFields.Insert(".email")
-	f.StatusFields.Insert(".unique_id")
+	f.StatusField(".email")
+	f.StatusField(".unique_id")
 
 	return f
 }
