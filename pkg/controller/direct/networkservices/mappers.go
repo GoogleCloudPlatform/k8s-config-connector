@@ -68,3 +68,27 @@ func NetworkServicesGatewaySpec_ToProto(mapCtx *direct.MapContext, in *krm.Netwo
 	out.Type = direct.Enum_ToProto[pb.Gateway_Type](mapCtx, in.Type)
 	return out
 }
+
+// NetworkServicesGatewayStatus_FromProto converts a Proto Gateway message to a KRM NetworkServicesGatewayStatus.
+func NetworkServicesGatewayStatus_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krm.NetworkServicesGatewayStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkServicesGatewayStatus{}
+	out.SelfLink = direct.LazyPtr(in.GetSelfLink())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+// NetworkServicesGatewayStatus_ToProto converts a KRM NetworkServicesGatewayStatus to a Proto Gateway message.
+func NetworkServicesGatewayStatus_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesGatewayStatus) *pb.Gateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Gateway{}
+	out.SelfLink = direct.ValueOf(in.SelfLink)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
