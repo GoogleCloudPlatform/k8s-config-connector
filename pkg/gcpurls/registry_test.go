@@ -98,6 +98,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//iam.googleapis.com/policies/{}/denypolicies/{}":                                          true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/sacRealms/{}":                    true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":                    true,
+		"//gkebackup.googleapis.com/projects/{}/locations/{}/backupChannels/{}":                     true,
 		"//logging.googleapis.com/projects/{}/exclusions/{}":                                        true,
 		"//logging.googleapis.com/folders/{}/exclusions/{}":                                         true,
 		"//logging.googleapis.com/organizations/{}/exclusions/{}":                                   true,
