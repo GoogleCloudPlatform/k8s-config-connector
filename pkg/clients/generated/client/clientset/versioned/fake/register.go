@@ -142,6 +142,7 @@ import (
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iap/v1beta1"
 	identityplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/identityplatform/v1alpha1"
 	identityplatformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/identityplatform/v1beta1"
+	jobsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/jobs/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
@@ -339,6 +340,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	iapv1beta1.AddToScheme,
 	identityplatformv1alpha1.AddToScheme,
 	identityplatformv1beta1.AddToScheme,
+	jobsv1alpha1.AddToScheme,
 	k8sv1alpha1.AddToScheme,
 	kmsv1alpha1.AddToScheme,
 	kmsv1beta1.AddToScheme,

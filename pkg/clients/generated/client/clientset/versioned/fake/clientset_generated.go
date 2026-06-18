@@ -263,6 +263,8 @@ import (
 	fakeidentityplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/identityplatform/v1alpha1/fake"
 	identityplatformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/identityplatform/v1beta1"
 	fakeidentityplatformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/identityplatform/v1beta1/fake"
+	jobsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/jobs/v1alpha1"
+	fakejobsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/jobs/v1alpha1/fake"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/k8s/v1alpha1"
 	fakek8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/k8s/v1alpha1/fake"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1"
@@ -1066,6 +1068,11 @@ func (c *Clientset) IdentityplatformV1alpha1() identityplatformv1alpha1.Identity
 // IdentityplatformV1beta1 retrieves the IdentityplatformV1beta1Client
 func (c *Clientset) IdentityplatformV1beta1() identityplatformv1beta1.IdentityplatformV1beta1Interface {
 	return &fakeidentityplatformv1beta1.FakeIdentityplatformV1beta1{Fake: &c.Fake}
+}
+
+// JobsV1alpha1 retrieves the JobsV1alpha1Client
+func (c *Clientset) JobsV1alpha1() jobsv1alpha1.JobsV1alpha1Interface {
+	return &fakejobsv1alpha1.FakeJobsV1alpha1{Fake: &c.Fake}
 }
 
 // K8sV1alpha1 retrieves the K8sV1alpha1Client

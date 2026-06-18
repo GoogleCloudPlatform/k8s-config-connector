@@ -145,6 +145,7 @@ import (
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iap/v1beta1"
 	identityplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/identityplatform/v1alpha1"
 	identityplatformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/identityplatform/v1beta1"
+	jobsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/jobs/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/k8s/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1"
@@ -338,6 +339,7 @@ type Interface interface {
 	IapV1beta1() iapv1beta1.IapV1beta1Interface
 	IdentityplatformV1alpha1() identityplatformv1alpha1.IdentityplatformV1alpha1Interface
 	IdentityplatformV1beta1() identityplatformv1beta1.IdentityplatformV1beta1Interface
+	JobsV1alpha1() jobsv1alpha1.JobsV1alpha1Interface
 	K8sV1alpha1() k8sv1alpha1.K8sV1alpha1Interface
 	KmsV1alpha1() kmsv1alpha1.KmsV1alpha1Interface
 	KmsV1beta1() kmsv1beta1.KmsV1beta1Interface
@@ -529,6 +531,7 @@ type Clientset struct {
 	iapV1beta1                      *iapv1beta1.IapV1beta1Client
 	identityplatformV1alpha1        *identityplatformv1alpha1.IdentityplatformV1alpha1Client
 	identityplatformV1beta1         *identityplatformv1beta1.IdentityplatformV1beta1Client
+	jobsV1alpha1                    *jobsv1alpha1.JobsV1alpha1Client
 	k8sV1alpha1                     *k8sv1alpha1.K8sV1alpha1Client
 	kmsV1alpha1                     *kmsv1alpha1.KmsV1alpha1Client
 	kmsV1beta1                      *kmsv1beta1.KmsV1beta1Client
@@ -1195,6 +1198,11 @@ func (c *Clientset) IdentityplatformV1alpha1() identityplatformv1alpha1.Identity
 // IdentityplatformV1beta1 retrieves the IdentityplatformV1beta1Client
 func (c *Clientset) IdentityplatformV1beta1() identityplatformv1beta1.IdentityplatformV1beta1Interface {
 	return c.identityplatformV1beta1
+}
+
+// JobsV1alpha1 retrieves the JobsV1alpha1Client
+func (c *Clientset) JobsV1alpha1() jobsv1alpha1.JobsV1alpha1Interface {
+	return c.jobsV1alpha1
 }
 
 // K8sV1alpha1 retrieves the K8sV1alpha1Client
@@ -2051,6 +2059,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.jobsV1alpha1, err = jobsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.k8sV1alpha1, err = k8sv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2456,6 +2468,7 @@ func New(c rest.Interface) *Clientset {
 	cs.iapV1beta1 = iapv1beta1.New(c)
 	cs.identityplatformV1alpha1 = identityplatformv1alpha1.New(c)
 	cs.identityplatformV1beta1 = identityplatformv1beta1.New(c)
+	cs.jobsV1alpha1 = jobsv1alpha1.New(c)
 	cs.k8sV1alpha1 = k8sv1alpha1.New(c)
 	cs.kmsV1alpha1 = kmsv1alpha1.New(c)
 	cs.kmsV1beta1 = kmsv1beta1.New(c)
