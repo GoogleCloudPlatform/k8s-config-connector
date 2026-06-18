@@ -242,6 +242,7 @@
 | datalabeling.cnrm.cloud.google.com            | DataLabelingEvaluationJob                       | True         | False       | False  | Direct     | True        |
 | datalabeling.cnrm.cloud.google.com            | DataLabelingInstruction                         | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexAspectType                              | True         | False       | False  | Direct     | True        |
+| dataplex.cnrm.cloud.google.com                | DataplexDataAttributeBinding                    | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexDataTaxonomy                            | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexEntryGroup                              | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexEntryType                               | True         | False       | False  | Direct     | True        |
