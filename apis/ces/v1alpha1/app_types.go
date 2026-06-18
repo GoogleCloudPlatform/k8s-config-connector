@@ -22,6 +22,32 @@ import (
 
 var CESAppGVK = GroupVersion.WithKind("CESApp")
 
+// CESGuardrailRef defines the resource reference to CESGuardrail.
+type CESGuardrailRef struct {
+	// A reference to an externally managed CES Guardrail.
+	// Format: `projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}`
+	External string `json:"external,omitempty"`
+
+	// The `name` of a `CESGuardrail` resource.
+	Name string `json:"name,omitempty"`
+
+	// The `namespace` of a `CESGuardrail` resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
+// CESAgentRef defines the resource reference to CESAgent.
+type CESAgentRef struct {
+	// A reference to an externally managed CES Agent.
+	// Format: `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
+	External string `json:"external,omitempty"`
+
+	// The `name` of a `CESAgent` resource.
+	Name string `json:"name,omitempty"`
+
+	// The `namespace` of a `CESAgent` resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
 // CESAppSpec defines the desired state of CESApp
 // +kcc:spec:proto=google.cloud.ces.v1beta.App
 type CESAppSpec struct {
@@ -44,8 +70,7 @@ type CESAppSpec struct {
 	Pinned *bool `json:"pinned,omitempty"`
 
 	// Optional. The root agent is the entry point of the app.
-	//  Format: `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
-	RootAgent *string `json:"rootAgent,omitempty"`
+	RootAgentRef *CESAgentRef `json:"rootAgentRef,omitempty"`
 
 	// Optional. Language settings of the app.
 	LanguageSettings *LanguageSettings `json:"languageSettings,omitempty"`
@@ -83,9 +108,7 @@ type CESAppSpec struct {
 	GlobalInstruction *string `json:"globalInstruction,omitempty"`
 
 	// Optional. List of guardrails for the app.
-	//  Format:
-	//  `projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}`
-	Guardrails []string `json:"guardrails,omitempty"`
+	GuardrailRefs []CESGuardrailRef `json:"guardrailRefs,omitempty"`
 
 	// Optional. The data store settings for the app.
 	DataStoreSettings *DataStoreSettings `json:"dataStoreSettings,omitempty"`

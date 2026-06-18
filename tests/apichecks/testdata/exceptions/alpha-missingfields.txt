@@ -563,10 +563,16 @@
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationPersonas[].speechConfig.voiceID" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationSettings.goldenEvaluationToolCallBehaviour" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationSettings.goldenRunMethod" is not set in unstructured objects
+[missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationSettings.metricsConfig.goldenMetricsConfig.semanticSimilarityMetricsConfig.enableSemanticSimilarityMetrics" is not set in unstructured objects
+[missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationSettings.metricsConfig.goldenMetricsConfig.stepToolCorrectnessMetricsConfig.enableToolCorrectnessMetrics" is not set in unstructured objects
+[missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationSettings.metricsConfig.goldenMetricsConfig.toolCorrectnessMetricsConfig.enableToolCorrectnessMetrics" is not set in unstructured objects
+[missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationSettings.metricsConfig.scenarioMetricsConfig.expectationsMetMetricsConfig.enableExpectationsMetMetrics" is not set in unstructured objects
+[missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationSettings.metricsConfig.scenarioMetricsConfig.userGoalMetMetricsConfig.enableUserGoalMetMetrics" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationSettings.scenarioConversationInitiator" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationSettings.scenarioEvaluationToolCallBehaviour" is not set in unstructured objects
+[missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationSettings.scenarioExecutionMode" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.globalInstruction" is not set in unstructured objects
-[missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.guardrails[]" is not set in unstructured objects
+[missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.guardrailRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.languageSettings.defaultLanguageCode" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.languageSettings.enableMultilingualSupport" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.languageSettings.fallbackAction" is not set in unstructured objects
@@ -587,12 +593,14 @@
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingSettings.redactionConfig.deidentifyTemplate" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingSettings.redactionConfig.enableRedaction" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingSettings.redactionConfig.inspectTemplate" is not set in unstructured objects
+[missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingSettings.unredactedAudioRecordingConfig.gcsBucket" is not set in unstructured objects
+[missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingSettings.unredactedAudioRecordingConfig.gcsPathPrefix" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelSettings.model" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelSettings.temperature" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.pinned" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.rootAgent" is not set in unstructured objects
+[missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.rootAgentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZoneSettings.timeZone" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolExecutionMode" is not set in unstructured objects
 [missing_field] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.variableDeclarations[].description" is not set in unstructured objects

@@ -21,20 +21,27 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-./generate-proto.sh
+# Pin a googleapis SHA that contains the google.cloud.ces.v1beta service definition
+PROTO_SHA="1526e545e9d26f23b9c5d0f04af17297def8d045"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
+OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
+unset SKIP_GENERATE_PROTOS
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# Restore SKIP_GENERATE_PROTOS
+if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
 
 go run . generate-types \
   --service google.cloud.ces.v1beta \
   --api-version ces.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource CESApp:App
-
-go run . generate-mapper \
-  --service google.cloud.ces.v1beta \
-  --api-version ces.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+  --resource CESApp:App \
+  --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
-
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/ces/

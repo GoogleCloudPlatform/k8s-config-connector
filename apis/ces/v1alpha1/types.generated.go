@@ -165,6 +165,10 @@ type App struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.App.client_certificate_settings
 	ClientCertificateSettings *ClientCertificateSettings `json:"clientCertificateSettings,omitempty"`
 
+	// Optional. VPC-SC settings for the app.
+	// +kcc:proto:field=google.cloud.ces.v1beta.App.vpc_sc_settings
+	VPCScSettings *VPCScSettings `json:"vpcScSettings,omitempty"`
+
 	// Optional. Indicates whether the app is locked for changes. If the app is
 	//  locked, modifications to the app resources will be rejected.
 	// +kcc:proto:field=google.cloud.ces.v1beta.App.locked
@@ -470,6 +474,75 @@ type ErrorHandlingSettings_FallbackResponseConfig struct {
 	MaxFallbackAttempts *int32 `json:"maxFallbackAttempts,omitempty"`
 }
 
+// +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsConfig
+type EvaluationMetricsConfig struct {
+	// Optional. Configuration for the golden metrics for the evaluation.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsConfig.golden_metrics_config
+	GoldenMetricsConfig *EvaluationMetricsConfig_GoldenMetricsConfig `json:"goldenMetricsConfig,omitempty"`
+
+	// Optional. Configuration for the scenario metrics for the evaluation.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsConfig.scenario_metrics_config
+	ScenarioMetricsConfig *EvaluationMetricsConfig_ScenarioMetricsConfig `json:"scenarioMetricsConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsConfig.ExpectationsMetMetricsConfig
+type EvaluationMetricsConfig_ExpectationsMetMetricsConfig struct {
+	// Optional. Whether to calculate the expectation level metrics for the
+	//  evaluation.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsConfig.ExpectationsMetMetricsConfig.enable_expectations_met_metrics
+	EnableExpectationsMetMetrics *bool `json:"enableExpectationsMetMetrics,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsConfig.GoldenMetricsConfig
+type EvaluationMetricsConfig_GoldenMetricsConfig struct {
+	// Optional. Global configuration for semantic similarity metrics.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsConfig.GoldenMetricsConfig.semantic_similarity_metrics_config
+	SemanticSimilarityMetricsConfig *EvaluationMetricsConfig_SemanticSimilarityMetricsConfig `json:"semanticSimilarityMetricsConfig,omitempty"`
+
+	// Optional. Configuration for turn level tool correctness metrics.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsConfig.GoldenMetricsConfig.tool_correctness_metrics_config
+	ToolCorrectnessMetricsConfig *EvaluationMetricsConfig_ToolCorrectnessMetricsConfig `json:"toolCorrectnessMetricsConfig,omitempty"`
+
+	// Optional. Configuration for step level tool correctness metrics.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsConfig.GoldenMetricsConfig.step_tool_correctness_metrics_config
+	StepToolCorrectnessMetricsConfig *EvaluationMetricsConfig_ToolCorrectnessMetricsConfig `json:"stepToolCorrectnessMetricsConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsConfig.ScenarioMetricsConfig
+type EvaluationMetricsConfig_ScenarioMetricsConfig struct {
+	// Optional. Configuration for user goal met metrics.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsConfig.ScenarioMetricsConfig.user_goal_met_metrics_config
+	UserGoalMetMetricsConfig *EvaluationMetricsConfig_UserGoalMetMetricsConfig `json:"userGoalMetMetricsConfig,omitempty"`
+
+	// Optional. Configuration for expectation level metrics.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsConfig.ScenarioMetricsConfig.expectations_met_metrics_config
+	ExpectationsMetMetricsConfig *EvaluationMetricsConfig_ExpectationsMetMetricsConfig `json:"expectationsMetMetricsConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsConfig.SemanticSimilarityMetricsConfig
+type EvaluationMetricsConfig_SemanticSimilarityMetricsConfig struct {
+	// Optional. Whether to calculate semantic similarity metrics for the
+	//  evaluation.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsConfig.SemanticSimilarityMetricsConfig.enable_semantic_similarity_metrics
+	EnableSemanticSimilarityMetrics *bool `json:"enableSemanticSimilarityMetrics,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsConfig.ToolCorrectnessMetricsConfig
+type EvaluationMetricsConfig_ToolCorrectnessMetricsConfig struct {
+	// Optional. Whether to calculate tool correctness metrics for the
+	//  evaluation.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsConfig.ToolCorrectnessMetricsConfig.enable_tool_correctness_metrics
+	EnableToolCorrectnessMetrics *bool `json:"enableToolCorrectnessMetrics,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsConfig.UserGoalMetMetricsConfig
+type EvaluationMetricsConfig_UserGoalMetMetricsConfig struct {
+	// Optional. Whether to calculate the user goal met metrics for the
+	//  evaluation.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsConfig.UserGoalMetMetricsConfig.enable_user_goal_met_metrics
+	EnableUserGoalMetMetrics *bool `json:"enableUserGoalMetMetrics,omitempty"`
+}
+
 // +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsThresholds
 type EvaluationMetricsThresholds struct {
 	// Optional. The golden evaluation metrics thresholds.
@@ -603,6 +676,15 @@ type EvaluationSettings struct {
 	//  evaluations.
 	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationSettings.scenario_evaluation_tool_call_behaviour
 	ScenarioEvaluationToolCallBehaviour *string `json:"scenarioEvaluationToolCallBehaviour,omitempty"`
+
+	// Optional. Configures the default metrics for evaluations.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationSettings.metrics_config
+	MetricsConfig *EvaluationMetricsConfig `json:"metricsConfig,omitempty"`
+
+	// Optional. The execution mode for scenario evaluations. If not provided,
+	//  will default to QUALITY_OPTIMIZED.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationSettings.scenario_execution_mode
+	ScenarioExecutionMode *string `json:"scenarioExecutionMode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.ces.v1beta.LanguageSettings
@@ -644,12 +726,22 @@ type LoggingSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.LoggingSettings.redaction_config
 	RedactionConfig *RedactionConfig `json:"redactionConfig,omitempty"`
 
-	// Optional. Configuration for how audio interactions should be recorded.
+	// Optional. Configuration for how audio interactions should be recorded. The
+	//  audio is subject to redaction as configured in
+	//  [RedactionConfig][google.cloud.ces.v1beta.LoggingSettings.redaction_config].
 	// +kcc:proto:field=google.cloud.ces.v1beta.LoggingSettings.audio_recording_config
 	AudioRecordingConfig *AudioRecordingConfig `json:"audioRecordingConfig,omitempty"`
 
-	// Optional. Settings to describe the BigQuery export behaviors for the app.
-	//  The conversation data will be exported to BigQuery tables if it is enabled.
+	// Optional. Configures an additional recording of unredacted audio. This can
+	//  be used to maintain a raw audio copy when audio redaction is
+	//  [enabled][google.cloud.ces.v1beta.RedactionConfig.enable_redaction],
+	//  typically for auditing or monitoring purposes.
+	// +kcc:proto:field=google.cloud.ces.v1beta.LoggingSettings.unredacted_audio_recording_config
+	UnredactedAudioRecordingConfig *AudioRecordingConfig `json:"unredactedAudioRecordingConfig,omitempty"`
+
+	// Optional. Configures the BigQuery export behaviors for the app. The
+	//  conversation data is subject to redaction as configured in
+	//  [RedactionConfig][google.cloud.ces.v1beta.LoggingSettings.redaction_config].
 	// +kcc:proto:field=google.cloud.ces.v1beta.LoggingSettings.bigquery_export_settings
 	BigqueryExportSettings *BigQueryExportSettings `json:"bigqueryExportSettings,omitempty"`
 
@@ -857,6 +949,19 @@ type TimeZoneSettings struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 }
 
+/* unreachable type VPCScSettings
+// +kcc:proto=google.cloud.ces.v1beta.VpcScSettings
+type VPCScSettings struct {
+	// Optional. The allowed HTTP(s) origins that OpenAPI tools in the App are
+	//  able to directly call when VPC Service Controls are enabled. These strings
+	//  must match the origin exactly, including the port if specified. For
+	//  example, "https://example.com" or "https://example.com:443". This list does
+	//  not yet apply to Python tools that may make direct HTTP calls.
+	// +kcc:proto:field=google.cloud.ces.v1beta.VpcScSettings.allowed_origins
+	AllowedOrigins []string `json:"allowedOrigins,omitempty"`
+}
+*/
+
 // +kcc:proto=google.protobuf.ListValue
 type ListValue struct {
 	// Repeated field of dynamically typed values.
@@ -920,6 +1025,10 @@ type AppObservedState struct {
 	// Output only. Number of deployments in the app.
 	// +kcc:proto:field=google.cloud.ces.v1beta.App.deployment_count
 	DeploymentCount *int32 `json:"deploymentCount,omitempty"`
+
+	// Output only. Misconfigurations or warnings in the app.
+	// +kcc:proto:field=google.cloud.ces.v1beta.App.validation_errors
+	ValidationErrors []string `json:"validationErrors,omitempty"`
 }
 */
 
