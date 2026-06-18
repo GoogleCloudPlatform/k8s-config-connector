@@ -30,125 +30,22 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-/* found existing non-generated mapping function "AIPlatformModelObservedState_FromProto", skipping
-func AIPlatformModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AIPlatformModelObservedState {
+func BigQuerySource_FromProto(mapCtx *direct.MapContext, in *pb.BigQuerySource) *krm.BigQuerySource {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AIPlatformModelObservedState{}
-	// MISSING: Name
-	out.VersionID = direct.LazyPtr(in.GetVersionId())
-	out.VersionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVersionCreateTime())
-	out.VersionUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVersionUpdateTime())
-	// MISSING: DefaultCheckpointID
-	out.SupportedExportFormats = direct.Slice_FromProto(mapCtx, in.SupportedExportFormats, Model_ExportFormat_FromProto)
-	out.TrainingPipeline = direct.LazyPtr(in.GetTrainingPipeline())
-	out.SupportedDeploymentResourcesTypes = direct.EnumSlice_FromProto(mapCtx, in.SupportedDeploymentResourcesTypes)
-	out.SupportedInputStorageFormats = in.SupportedInputStorageFormats
-	out.SupportedOutputStorageFormats = in.SupportedOutputStorageFormats
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeployedModels = direct.Slice_FromProto(mapCtx, in.DeployedModels, DeployedModelRef_FromProto)
-	// MISSING: Etag
-	out.ModelSourceInfo = ModelSourceInfo_FromProto(mapCtx, in.GetModelSourceInfo())
-	out.OriginalModelInfo = Model_OriginalModelInfo_FromProto(mapCtx, in.GetOriginalModelInfo())
-	out.MetadataArtifact = direct.LazyPtr(in.GetMetadataArtifact())
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
-	// MISSING: Checkpoints
+	out := &krm.BigQuerySource{}
+	out.InputURI = direct.LazyPtr(in.GetInputUri())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AIPlatformModelObservedState_ToProto", skipping
-func AIPlatformModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformModelObservedState) *pb.Model {
+func BigQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.BigQuerySource) *pb.BigQuerySource {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Model{}
-	// MISSING: Name
-	out.VersionId = direct.ValueOf(in.VersionID)
-	out.VersionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.VersionCreateTime)
-	out.VersionUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.VersionUpdateTime)
-	// MISSING: DefaultCheckpointID
-	out.SupportedExportFormats = direct.Slice_ToProto(mapCtx, in.SupportedExportFormats, Model_ExportFormat_ToProto)
-	out.TrainingPipeline = direct.ValueOf(in.TrainingPipeline)
-	out.SupportedDeploymentResourcesTypes = direct.EnumSlice_ToProto[pb.Model_DeploymentResourcesType](mapCtx, in.SupportedDeploymentResourcesTypes)
-	out.SupportedInputStorageFormats = in.SupportedInputStorageFormats
-	out.SupportedOutputStorageFormats = in.SupportedOutputStorageFormats
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeployedModels = direct.Slice_ToProto(mapCtx, in.DeployedModels, DeployedModelRef_ToProto)
-	// MISSING: Etag
-	out.ModelSourceInfo = ModelSourceInfo_ToProto(mapCtx, in.ModelSourceInfo)
-	out.OriginalModelInfo = Model_OriginalModelInfo_ToProto(mapCtx, in.OriginalModelInfo)
-	out.MetadataArtifact = direct.ValueOf(in.MetadataArtifact)
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
-	// MISSING: Checkpoints
+	out := &pb.BigQuerySource{}
+	out.InputUri = direct.ValueOf(in.InputURI)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AIPlatformModelSpec_FromProto", skipping
-func AIPlatformModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AIPlatformModelSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AIPlatformModelSpec{}
-	// MISSING: Name
-	out.VersionAliases = in.VersionAliases
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.VersionDescription = direct.LazyPtr(in.GetVersionDescription())
-	// MISSING: DefaultCheckpointID
-	out.PredictSchemata = PredictSchemata_FromProto(mapCtx, in.GetPredictSchemata())
-	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
-	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
-	out.PipelineJob = direct.LazyPtr(in.GetPipelineJob())
-	out.ContainerSpec = ModelContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
-	out.ArtifactURI = direct.LazyPtr(in.GetArtifactUri())
-	out.ExplanationSpec = ExplanationSpec_FromProto(mapCtx, in.GetExplanationSpec())
-	// MISSING: Etag
-	out.Labels = in.Labels
-	out.DataStats = Model_DataStats_FromProto(mapCtx, in.GetDataStats())
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
-	out.BaseModelSource = Model_BaseModelSource_FromProto(mapCtx, in.GetBaseModelSource())
-	// MISSING: Checkpoints
-	return out
-}
-*/
-
-/*
-found existing non-generated mapping function "AIPlatformModelSpec_ToProto", skipping
-
-	func AIPlatformModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformModelSpec) *pb.Model {
-		if in == nil {
-			return nil
-		}
-		out := &pb.Model{}
-		// MISSING: Name
-		out.VersionAliases = in.VersionAliases
-		out.DisplayName = direct.ValueOf(in.DisplayName)
-		out.Description = direct.ValueOf(in.Description)
-		out.VersionDescription = direct.ValueOf(in.VersionDescription)
-		// MISSING: DefaultCheckpointID
-		out.PredictSchemata = PredictSchemata_ToProto(mapCtx, in.PredictSchemata)
-		out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
-		out.Metadata = Value_ToProto(mapCtx, in.Metadata)
-		out.PipelineJob = direct.ValueOf(in.PipelineJob)
-		out.ContainerSpec = ModelContainerSpec_ToProto(mapCtx, in.ContainerSpec)
-		out.ArtifactUri = direct.ValueOf(in.ArtifactURI)
-		out.ExplanationSpec = ExplanationSpec_ToProto(mapCtx, in.ExplanationSpec)
-		// MISSING: Etag
-		out.Labels = in.Labels
-		out.DataStats = Model_DataStats_ToProto(mapCtx, in.DataStats)
-		out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-		out.BaseModelSource = Model_BaseModelSource_ToProto(mapCtx, in.BaseModelSource)
-		// MISSING: Checkpoints
-		return out
-	}
-*/
 func BlurBaselineConfig_FromProto(mapCtx *direct.MapContext, in *pb.BlurBaselineConfig) *krm.BlurBaselineConfig {
 	if in == nil {
 		return nil
@@ -315,6 +212,46 @@ func ExplanationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationSpec)
 	out := &pb.ExplanationSpec{}
 	out.Parameters = ExplanationParameters_ToProto(mapCtx, in.Parameters)
 	out.Metadata = ExplanationMetadata_ToProto(mapCtx, in.Metadata)
+	return out
+}
+func FeatureGroup_BigQuery_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup_BigQuery) *krm.FeatureGroup_BigQuery {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureGroup_BigQuery{}
+	out.BigQuerySource = BigQuerySource_FromProto(mapCtx, in.GetBigQuerySource())
+	out.EntityIDColumns = in.EntityIdColumns
+	out.StaticDataSource = direct.LazyPtr(in.GetStaticDataSource())
+	out.TimeSeries = FeatureGroup_BigQuery_TimeSeries_FromProto(mapCtx, in.GetTimeSeries())
+	out.Dense = direct.LazyPtr(in.GetDense())
+	return out
+}
+func FeatureGroup_BigQuery_ToProto(mapCtx *direct.MapContext, in *krm.FeatureGroup_BigQuery) *pb.FeatureGroup_BigQuery {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureGroup_BigQuery{}
+	out.BigQuerySource = BigQuerySource_ToProto(mapCtx, in.BigQuerySource)
+	out.EntityIdColumns = in.EntityIDColumns
+	out.StaticDataSource = direct.ValueOf(in.StaticDataSource)
+	out.TimeSeries = FeatureGroup_BigQuery_TimeSeries_ToProto(mapCtx, in.TimeSeries)
+	out.Dense = direct.ValueOf(in.Dense)
+	return out
+}
+func FeatureGroup_BigQuery_TimeSeries_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup_BigQuery_TimeSeries) *krm.FeatureGroup_BigQuery_TimeSeries {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureGroup_BigQuery_TimeSeries{}
+	out.TimestampColumn = direct.LazyPtr(in.GetTimestampColumn())
+	return out
+}
+func FeatureGroup_BigQuery_TimeSeries_ToProto(mapCtx *direct.MapContext, in *krm.FeatureGroup_BigQuery_TimeSeries) *pb.FeatureGroup_BigQuery_TimeSeries {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureGroup_BigQuery_TimeSeries{}
+	out.TimestampColumn = direct.ValueOf(in.TimestampColumn)
 	return out
 }
 func FeatureNoiseSigma_FromProto(mapCtx *direct.MapContext, in *pb.FeatureNoiseSigma) *krm.FeatureNoiseSigma {
@@ -867,17 +804,54 @@ func SmoothGradConfig_ToProto(mapCtx *direct.MapContext, in *krm.SmoothGradConfi
 	out.NoisySampleCount = direct.ValueOf(in.NoisySampleCount)
 	return out
 }
-
-/*
-found existing non-generated mapping function "SmoothGradConfig_NoiseSigma_ToProto", skipping
-
-	func SmoothGradConfig_NoiseSigma_ToProto(mapCtx *direct.MapContext, in *float32) *pb.SmoothGradConfig_NoiseSigma {
-		if in == nil {
-			return nil
-		}
-		return &pb.SmoothGradConfig_NoiseSigma{NoiseSigma: *in}
+func VertexAIFeatureGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup) *krm.VertexAIFeatureGroupObservedState {
+	if in == nil {
+		return nil
 	}
-*/
+	out := &krm.VertexAIFeatureGroupObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	return out
+}
+func VertexAIFeatureGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIFeatureGroupObservedState) *pb.FeatureGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureGroup{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	return out
+}
+func VertexAIFeatureGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup) *krm.VertexAIFeatureGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIFeatureGroupSpec{}
+	out.BigQuery = FeatureGroup_BigQuery_FromProto(mapCtx, in.GetBigQuery())
+	// MISSING: Name
+	// MISSING: Etag
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func VertexAIFeatureGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIFeatureGroupSpec) *pb.FeatureGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureGroup{}
+	if oneof := FeatureGroup_BigQuery_ToProto(mapCtx, in.BigQuery); oneof != nil {
+		out.Source = &pb.FeatureGroup_BigQuery_{BigQuery: oneof}
+	}
+	// MISSING: Name
+	// MISSING: Etag
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 func VertexAIFeatureOnlineStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore) *krm.VertexAIFeatureOnlineStoreObservedState {
 	if in == nil {
 		return nil

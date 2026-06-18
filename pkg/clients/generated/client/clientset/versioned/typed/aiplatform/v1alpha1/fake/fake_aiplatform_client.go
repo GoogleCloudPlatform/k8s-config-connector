@@ -35,6 +35,10 @@ func (c *FakeAiplatformV1alpha1) AIPlatformModels(namespace string) v1alpha1.AIP
 	return newFakeAIPlatformModels(c, namespace)
 }
 
+func (c *FakeAiplatformV1alpha1) VertexAIFeatureGroups(namespace string) v1alpha1.VertexAIFeatureGroupInterface {
+	return newFakeVertexAIFeatureGroups(c, namespace)
+}
+
 func (c *FakeAiplatformV1alpha1) VertexAIFeatureOnlineStores(namespace string) v1alpha1.VertexAIFeatureOnlineStoreInterface {
 	return newFakeVertexAIFeatureOnlineStores(c, namespace)
 }
