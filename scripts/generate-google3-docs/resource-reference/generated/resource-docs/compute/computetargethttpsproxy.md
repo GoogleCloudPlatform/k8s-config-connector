@@ -366,7 +366,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSSLPolicy` resource.</p>
+            <p>A reference to an externally managed ComputeSSLPolicy resource. Should be in the format "projects/{{projectID}}/global/sslPolicies/{{sslPolicyID}}" or "projects/{{projectID}}/regions/{{region}}/sslPolicies/{{sslPolicyID}}".</p>
         </td>
     </tr>
     <tr>
