@@ -942,7 +942,7 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 				continue
 			}
 
-			if diff := cmp.Diff(string(expectedDiff), allDiffs.String()); diff != "" {
+			if string(expectedDiff) != allDiffs.String() {
 				// To address inconsistencies between local and CI environments,
 				// we normalize the diff output by replacing non-breaking spaces with regular spaces
 				// and folding multiline strings.Join blocks into a single line.
