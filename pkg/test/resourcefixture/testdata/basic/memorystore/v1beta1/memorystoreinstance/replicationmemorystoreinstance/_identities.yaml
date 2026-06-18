@@ -7,6 +7,6 @@
 - caisURL: unknown
   group: memorystore.cnrm.cloud.google.com
   kind: MemorystoreInstance
-  name: memorystoreinstance-${uniqueId}
+  name: instance-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
