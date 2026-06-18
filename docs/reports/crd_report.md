@@ -200,7 +200,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeSharedVPCServiceProject                  | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeSnapshot                                 | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeSSLCertificate                           | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeSSLPolicy                                | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeSSLPolicy                                | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeSubnetwork                               | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeTargetGRPCProxy                          | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeTargetHTTPProxy                          | False        | True        | False  | Terraform  | False       |
