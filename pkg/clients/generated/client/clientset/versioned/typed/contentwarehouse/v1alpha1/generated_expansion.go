@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type ContentWarehouseDocumentExpansion interface{}
+
 type ContentWarehouseRuleSetExpansion interface{}
 
 type ContentWarehouseSchemaExpansion interface{}
