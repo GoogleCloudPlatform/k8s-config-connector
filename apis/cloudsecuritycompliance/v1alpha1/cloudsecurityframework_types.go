@@ -38,7 +38,7 @@ type CloudSecurityFrameworkSpec struct {
 	// +required
 	Location *string `json:"location"`
 
-	// The CloudSecurityFramework name. If not given, the metadata.name will be used.
+	// Optional. The CloudSecurityFramework name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Optional. The friendly name of the framework. The maximum length is 200 characters.

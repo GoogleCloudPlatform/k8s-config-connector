@@ -338,8 +338,8 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The CloudSecurityComplianceFramework name. If not given,
-                  the metadata.name will be used.
+                description: Optional. The CloudSecurityComplianceFramework name.
+                  If not given, the metadata.name will be used.
                 type: string
             required:
             - location

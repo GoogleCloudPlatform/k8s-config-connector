@@ -133,7 +133,7 @@ type CloudSecurityComplianceFrameworkSpec struct {
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* The CloudSecurityComplianceFramework name. If not given, the metadata.name will be used. */
+	/* Optional. The CloudSecurityComplianceFramework name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }

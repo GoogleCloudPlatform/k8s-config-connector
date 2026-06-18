@@ -92,7 +92,7 @@ func GetIdentityFromCloudSecurityFrameworkSpec(ctx context.Context, reader clien
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location")
+		return nil, fmt.Errorf("cannot resolve location: %w", err)
 	}
 
 	// Resolve Project or Organization

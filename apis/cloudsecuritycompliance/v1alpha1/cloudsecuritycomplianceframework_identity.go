@@ -34,6 +34,7 @@ var (
 var (
 	ProjectCloudSecurityComplianceFrameworkIdentityFormat      = gcpurls.Template[CloudSecurityComplianceFrameworkIdentity]("cloudsecuritycompliance.googleapis.com", "projects/{project}/locations/{location}/frameworks/{framework}")
 	OrganizationCloudSecurityComplianceFrameworkIdentityFormat = gcpurls.Template[CloudSecurityComplianceFrameworkIdentity]("cloudsecuritycompliance.googleapis.com", "organizations/{organization}/locations/{location}/frameworks/{framework}")
+	CloudSecurityComplianceFrameworkIdentityFormat             = OrganizationCloudSecurityComplianceFrameworkIdentityFormat
 )
 
 // +k8s:deepcopy-gen=false
@@ -92,7 +93,7 @@ func getIdentityFromCloudSecurityComplianceFrameworkSpec(ctx context.Context, re
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location")
+		return nil, fmt.Errorf("cannot resolve location: %w", err)
 	}
 
 	// Resolve Project or Organization
