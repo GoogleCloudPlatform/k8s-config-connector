@@ -69,7 +69,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	// NOTE ON "WRONG" PATTERNS / MISMATCHES:
 	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
 	ignoredTemplates := map[string]bool{
-		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,
 		// Add known exceptions here.
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
 		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":                            true,
@@ -113,6 +112,14 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/controls/{}":           true,
 		"//cloudsecuritycompliance.googleapis.com/projects/{}/locations/{}/frameworks/{}":              true,
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/frameworks/{}":         true,
+		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig":                       true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":          true,
+		"//monitoring.googleapis.com/projects/{}/groups/{}":                                            true,
+		"//monitoring.googleapis.com/projects/{}/metricDescriptors/{}":                                 true,
+		"//monitoring.googleapis.com/locations/global/metricsScopes/{}/projects/{}":                    true,
+		"//monitoring.googleapis.com/projects/{}/services/{}":                                          true,
+		"//notebooks.googleapis.com/projects/{}/locations/{}/environments/{}":                          true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/aspectTypes/{}":                            true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
