@@ -23,20 +23,23 @@ import (
 	"strings"
 
 	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(dashboardFuzzer())
+	fuzztesting.RegisterKRMFuzzer(dashboardFuzzer())
 }
 
 func dashboardFuzzer() fuzztesting.KRMFuzzer {
-	fuzzer := fuzztesting.NewKRMTypedSpecFuzzer(
+	fuzzer := fuzztesting.NewKRMTypedFuzzer[*pb.Dashboard, krm.MonitoringDashboardSpec, krm.MonitoringDashboardStatus](
 		&pb.Dashboard{},
 		MonitoringDashboardSpec_FromProto,
 		MonitoringDashboardSpec_ToProto,
+		MonitoringDashboardStatus_FromProto,
+		MonitoringDashboardStatus_ToProto,
 	)
 
 	fuzzer.FilterSpec = func(in *pb.Dashboard) {
@@ -65,8 +68,26 @@ func dashboardFuzzer() fuzztesting.KRMFuzzer {
 		})
 	}
 
-	fuzzer.UnimplementedFields.Insert(".name")
-	fuzzer.UnimplementedFields.Insert(".labels")
+	// Field comparison between KRM Spec (MonitoringDashboardSpec) and GCP Proto (google.monitoring.dashboard.v1.Dashboard):
+	// - ProjectRef (KRM Spec) maps to GCP project URL segment, not part of standard Dashboard fields.
+	// - ResourceID (KRM Spec) maps to the name segment of the Dashboard GCP name.
+	// - DisplayName (KRM Spec) maps to `.display_name` (GCP Proto).
+	// - GridLayout (KRM Spec) maps to `.grid_layout` (GCP Proto).
+	// - MosaicLayout (KRM Spec) maps to `.mosaic_layout` (GCP Proto).
+	// - RowLayout (KRM Spec) maps to `.row_layout` (GCP Proto).
+	// - ColumnLayout (KRM Spec) maps to `.column_layout` (GCP Proto).
+	// - DashboardFilters (KRM Spec) maps to `.dashboard_filters` (GCP Proto).
+
+	fuzzer.SpecField(".display_name")
+	fuzzer.SpecField(".grid_layout")
+	fuzzer.SpecField(".mosaic_layout")
+	fuzzer.SpecField(".row_layout")
+	fuzzer.SpecField(".column_layout")
+	fuzzer.SpecField(".dashboard_filters")
+
+	// Identity and Unimplemented fields
+	fuzzer.Unimplemented_Identity(".name")
+	fuzzer.Unimplemented_NotYetTriaged(".labels")
 
 	widgetPaths := []string{
 		".grid_layout.widgets[]",
@@ -75,31 +96,32 @@ func dashboardFuzzer() fuzztesting.KRMFuzzer {
 		".row_layout.rows[].widgets[]",
 	}
 	for _, widgetPath := range widgetPaths {
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.time_series_filter.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.time_series_filter.pick_time_series_filter.interval")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.time_series_filter_ratio.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".scorecard.time_series_query.time_series_filter.statistical_time_series_filter")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".scorecard.time_series_query.time_series_filter.pick_time_series_filter.interval")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".scorecard.time_series_query.time_series_filter_ratio.statistical_time_series_filter")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".scorecard.time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
 		// Resource names need to be in a special format.
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".logs_panel.resource_names") // the proto 'resource_names' needs to be a special format.
+		fuzzer.Unimplemented_NotYetTriaged(widgetPath + ".logs_panel.resource_names") // the proto 'resource_names' needs to be a special format.
 	}
 
-	fuzzer.StatusFields.Insert(".etag")
+	// Status fields
+	fuzzer.StatusField(".etag")
 
 	return fuzzer
 }
