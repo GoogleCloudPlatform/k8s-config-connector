@@ -17,7 +17,7 @@
   name: cluster-sample-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //container.googleapis.com/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/containernodepool-sample-${uniqueId}
   group: container.cnrm.cloud.google.com
   kind: ContainerNodePool
   name: containernodepool-sample-${uniqueId}

@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ package identity
 
 import (
 	"context"
+	"strings"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -43,4 +44,23 @@ type ServerGeneratedIdentity interface {
 type Resource interface {
 	// GetIdentity gets the identity of a resource.
 	GetIdentity(ctx context.Context, reader client.Reader) (Identity, error)
+}
+
+// StripReferencePrefixes trims optional scheme, the given host, and optional GVK version segments from a reference string.
+func StripReferencePrefixes(ref string, host string) string {
+	ref = strings.TrimPrefix(ref, "https://")
+	ref = strings.TrimPrefix(ref, "http://")
+	ref = strings.TrimPrefix(ref, "//")
+
+	if strings.HasPrefix(ref, host+"/") {
+		ref = strings.TrimPrefix(ref, host+"/")
+		// Trim standard API versions
+		for _, version := range []string{"v1/", "v1beta1/", "v1alpha1/", "v1beta/", "v2/"} {
+			if strings.HasPrefix(ref, version) {
+				ref = strings.TrimPrefix(ref, version)
+				break
+			}
+		}
+	}
+	return ref
 }
