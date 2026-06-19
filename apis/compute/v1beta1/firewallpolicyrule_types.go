@@ -105,7 +105,7 @@ type ComputeFirewallPolicyRuleSpec struct {
 	EnableLogging *bool `json:"enableLogging,omitempty"`
 
 	/* Immutable. */
-	FirewallPolicyRef *refs.ComputeFirewallPolicyRef `json:"firewallPolicyRef"`
+	FirewallPolicyRef *ComputeFirewallPolicyRef `json:"firewallPolicyRef"`
 
 	/* A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced. */
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.match

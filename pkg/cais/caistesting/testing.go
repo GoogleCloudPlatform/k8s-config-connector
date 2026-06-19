@@ -82,6 +82,15 @@ func ReplacePlaceholdersInCAIS(caisYAMLStr string, dir string, createBytes []byt
 func NormalizeDynamicIDs(s string) string {
 	lines := strings.Split(s, "\n")
 	for i, line := range lines {
+		// Normalize ComputeFirewallPolicy IDs: locations/global/firewallPolicies/<firewallPolicyId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/firewallPolicies/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize BigQuery Connection IDs: locations/.../connections/<connectionId>
 		if idx := strings.Index(line, "/connections/"); idx != -1 {
 			lines[i] = line[:idx+len("/connections/")]

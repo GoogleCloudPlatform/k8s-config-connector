@@ -1,0 +1,117 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1beta1
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var (
+	_ identity.ServerGeneratedIdentity = &ComputeFirewallPolicyIdentity{}
+	_ identity.Resource                = &ComputeFirewallPolicy{}
+)
+
+var ComputeFirewallPolicyIdentityFormat = gcpurls.Template[ComputeFirewallPolicyIdentity]("compute.googleapis.com", "locations/global/firewallPolicies/{firewallPolicy}")
+
+// ComputeFirewallPolicyIdentity is the identity of a GCP ComputeFirewallPolicy resource.
+// +k8s:deepcopy-gen=false
+type ComputeFirewallPolicyIdentity struct {
+	FirewallPolicy string
+}
+
+func (i *ComputeFirewallPolicyIdentity) HasIdentitySpecified() bool {
+	return i.FirewallPolicy != ""
+}
+
+func (i *ComputeFirewallPolicyIdentity) String() string {
+	return ComputeFirewallPolicyIdentityFormat.ToString(*i)
+}
+
+func (i *ComputeFirewallPolicyIdentity) FromExternal(ref string) error {
+	ref = apirefs.TrimComputeURIPrefix(ref)
+	parsed, match, err := ComputeFirewallPolicyIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of ComputeFirewallPolicy external=%q was not known (use %s): %w", ref, ComputeFirewallPolicyIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of ComputeFirewallPolicy external=%q was not known (use %s)", ref, ComputeFirewallPolicyIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *ComputeFirewallPolicyIdentity) Host() string {
+	return ComputeFirewallPolicyIdentityFormat.Host()
+}
+
+func (i *ComputeFirewallPolicyIdentity) ParentString() string {
+	return "locations/global"
+}
+
+func ParseComputeFirewallPolicyExternal(external string) (*ComputeFirewallPolicyIdentity, error) {
+	if external == "" {
+		return nil, fmt.Errorf("empty ComputeFirewallPolicy external value")
+	}
+	id := &ComputeFirewallPolicyIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func getIdentityFromComputeFirewallPolicySpec(ctx context.Context, reader client.Reader, obj *ComputeFirewallPolicy) (*ComputeFirewallPolicyIdentity, error) {
+	// For ComputeFirewallPolicy, resourceID is optional and can be empty.
+	// We retrieve it directly from Spec.ResourceID to avoid falling back to GetName().
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+
+	identity := &ComputeFirewallPolicyIdentity{
+		FirewallPolicy: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *ComputeFirewallPolicy) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromComputeFirewallPolicySpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against status.selfLink, if present.
+	selfLink := common.ValueOf(obj.Status.SelfLink)
+	if selfLink != "" {
+		statusIdentity := &ComputeFirewallPolicyIdentity{}
+		if err := statusIdentity.FromExternal(selfLink); err != nil {
+			return nil, err
+		}
+
+		if specIdentity.FirewallPolicy == "" {
+			specIdentity.FirewallPolicy = statusIdentity.FirewallPolicy
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change ComputeFirewallPolicy identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
+}
