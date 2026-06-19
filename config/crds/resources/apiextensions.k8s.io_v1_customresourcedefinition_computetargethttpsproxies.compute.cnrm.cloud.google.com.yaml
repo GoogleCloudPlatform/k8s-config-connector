@@ -261,8 +261,9 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `selfLink` field of a `ComputeSSLPolicy`
-                      resource.'
+                    description: A reference to an externally managed ComputeSSLPolicy
+                      resource. Should be in the format "projects/{{projectID}}/global/sslPolicies/{{sslPolicyID}}"
+                      or "projects/{{projectID}}/regions/{{region}}/sslPolicies/{{sslPolicyID}}".
                     type: string
                   name:
                     description: The name of a ComputeSSLPolicy resource.

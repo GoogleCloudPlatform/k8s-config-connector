@@ -34,6 +34,11 @@ func TestComputeSSLPolicyRef_ValidateExternal(t *testing.T) {
 			ref:     "projects/my-project/global/sslPolicies/my-policy",
 			wantErr: false,
 		},
+		{
+			name:    "invalid external reference",
+			ref:     "invalid/format",
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -79,7 +84,7 @@ func TestComputeSSLPolicyRef_Normalize(t *testing.T) {
 				Name:      "my-policy",
 				Namespace: "my-ns",
 			},
-			want: "https://www.googleapis.com/compute/v1/projects/my-project/global/sslPolicies/my-policy",
+			want: "projects/my-project/global/sslPolicies/my-policy",
 		},
 		{
 			name: "internal reference with default namespace",
@@ -87,7 +92,7 @@ func TestComputeSSLPolicyRef_Normalize(t *testing.T) {
 				Name: "my-policy",
 			},
 			defaultNamespace: "my-ns",
-			want:             "https://www.googleapis.com/compute/v1/projects/my-project/global/sslPolicies/my-policy",
+			want:             "projects/my-project/global/sslPolicies/my-policy",
 		},
 		{
 			name: "internal reference not found",
