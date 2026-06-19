@@ -865,7 +865,7 @@ X-Xss-Protection: 0
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/forwardingRules/${forwardingRuleID}",
-  "subnetwork": "https://www.googleapis.com/compute/beta/projects/example-project-01/regions/us-west3/subnetworks/${subnetworkID}"
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/subnetworks/${subnetworkID}"
 }
 
 ---
@@ -947,7 +947,7 @@ X-Xss-Protection: 0
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/forwardingRules/${forwardingRuleID}",
-  "subnetwork": "https://www.googleapis.com/compute/beta/projects/example-project-01/regions/us-west3/subnetworks/${subnetworkID}"
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/subnetworks/${subnetworkID}"
 }
 
 ---
@@ -1451,7 +1451,7 @@ X-Xss-Protection: 0
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/forwardingRules/${forwardingRuleID}",
-  "subnetwork": "https://www.googleapis.com/compute/beta/projects/example-project-01/regions/us-west3/subnetworks/${subnetworkID}"
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/subnetworks/${subnetworkID}"
 }
 
 ---

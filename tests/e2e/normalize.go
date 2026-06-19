@@ -1128,7 +1128,7 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		switch path {
-		case ".network", ".region", ".selfLink", ".selfLinkWithId", ".sourceImage", ".subnetworks[]", ".target", ".targetLink", ".zone":
+		case ".network", ".region", ".selfLink", ".selfLinkWithId", ".sourceImage", ".subnetwork", ".subnetworks[]", ".target", ".targetLink", ".zone":
 			return rewriteComputeURL(s)
 		}
 		return s
