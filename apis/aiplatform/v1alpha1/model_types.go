@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -77,7 +78,7 @@ type AIPlatformModelSpec struct {
 	//  [metadata_schema][google.cloud.aiplatform.v1.Model.metadata_schema_uri].
 	//  Unset if the Model does not have any additional information.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.metadata
-	Metadata *Value `json:"metadata,omitempty"`
+	Metadata *apiextensionsv1.JSON `json:"metadata,omitempty"`
 
 	// Optional. This field is populated if the model is produced by a pipeline
 	//  job.
@@ -265,7 +266,7 @@ type AIPlatformModelObservedState struct {
 	// Output only. The formats in which this Model may be exported. If empty,
 	//  this Model is not available for export.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.supported_export_formats
-	SupportedExportFormats []Model_ExportFormat `json:"supportedExportFormats,omitempty"`
+	SupportedExportFormats []Model_ExportFormatObservedState `json:"supportedExportFormats,omitempty"`
 
 	// Output only. The resource name of the TrainingPipeline that uploaded this
 	//  Model, if any.
@@ -404,7 +405,7 @@ type AIPlatformModelObservedState struct {
 	// Output only. If this Model is a copy of another Model, this contains info
 	//  about the original.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.original_model_info
-	OriginalModelInfo *Model_OriginalModelInfo `json:"originalModelInfo,omitempty"`
+	OriginalModelInfo *Model_OriginalModelInfoObservedState `json:"originalModelInfo,omitempty"`
 
 	// Output only. The resource name of the Artifact that was created in
 	//  MetadataStore when creating the Model. The Artifact resource name pattern
@@ -421,21 +422,6 @@ type AIPlatformModelObservedState struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.satisfies_pzi
 	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
 }
-
-// +kcc:proto=google.protobuf.ListValue
-// type ListValue struct {
-// 	// Repeated field of dynamically typed values.
-// 	// Changed the structure to avoid looping between ListValue and Value structs.
-// 	Values []*ListTypeValue `json:"values,omitempty"`
-// }
-
-// ListTypeValue records the type and value for each entry in the ListValue.
-// type ListTypeValue struct {
-// 	Type        int               `json:"type,omitempty"`
-// 	Value       string            `json:"value,omitempty"`
-// 	ListValue   []*ListTypeValue  `json:"listValue,omitempty"`
-// 	structValue map[string]string `json:"structValue,omitempty"`
-// }
 
 const (
 	// Null value.

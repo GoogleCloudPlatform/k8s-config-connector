@@ -29,16 +29,20 @@ go run . generate-types \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
     --resource VertexAISpecialistPool:SpecialistPool
 
-# Revert types.generated.go to avoid deleting types of other resources in the same package
-git checkout HEAD -- "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+go run . generate-types \
+    --service google.cloud.aiplatform.v1 \
+    --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+    --resource VertexAITrainingPipeline:TrainingPipeline
 
 go run . generate-mapper \
     --service google.cloud.aiplatform.v1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
     --include-skipped-output
 
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+
 cd ${REPO_ROOT}
 
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/aiplatform/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/aiplatform/

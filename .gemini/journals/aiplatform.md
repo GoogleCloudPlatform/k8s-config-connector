@@ -1,0 +1,7 @@
+### 2026-06-05 VertexAITrainingPipeline Types Implementation
+- **Context**: Implementing direct types, Identity, Reference, and generated clients for `VertexAITrainingPipeline` (Issue #9251).
+- **Problem 1**: The controller builder generator mapped `google.protobuf.Struct` to `apiextensionsv1.JSON` inside `types.generated.go` but omitted importing `apiextensionsv1`, leading to compiler errors during CRD generation.
+- **Solution 1**: Updated `dev/tools/controllerbuilder/pkg/codegen/typegenerator.go` to explicitly detect `google.protobuf.Struct` fields and automatically inject the correct import for `apiextensionsv1`.
+- **Problem 2**: The client generation script failed when translating OpenAPI `type: array` fields that contained schemaless objects without an explicit type (e.g., `google.protobuf.ListValue`'s `values` field). The fielddesc parser panicked on empty `props.Type`, and the client generator generated an undefined `[]Values` slice type.
+- **Solution 2**: Fixed the fielddesc parser in `pkg/crd/fielddesc/fielddesc.go` to safely treat an empty `props.Type` as a schemaless field, and updated `scripts/generate-go-crd-clients/generate-types-file.go` to map empty/schemaless list elements to `[]apiextensionsv1.JSON`.
+- **Impact**: Resolves all downstream compilation and deepcopy generation errors for resources that use raw struct/list schemas, allowing direct resource types to compile cleanly.

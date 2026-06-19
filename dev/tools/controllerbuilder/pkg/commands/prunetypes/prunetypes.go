@@ -135,7 +135,7 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 	pkg := pkgs[0]
 
 	fset := pkg.Fset
-	
+
 	typeToFile := make(map[*types.TypeName]string)
 	typeToDecl := make(map[*types.TypeName]*ast.GenDecl)
 	fileToTypes := make(map[string][]*types.TypeName)
@@ -145,7 +145,7 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 	// Map AST GenDecls to their TypeNames
 	for _, astFile := range pkg.Syntax {
 		filePath := fset.File(astFile.Pos()).Name()
-		
+
 		for _, decl := range astFile.Decls {
 			genDecl, ok := decl.(*ast.GenDecl)
 			if !ok || genDecl.Tok != token.TYPE {
@@ -170,7 +170,7 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 	for _, astFile := range pkg.Syntax {
 		filePath := fset.File(astFile.Pos()).Name()
 		isGen := isGeneratedFile(filePath, astFile)
-		
+
 		ast.Inspect(astFile, func(n ast.Node) bool {
 			if ident, ok := n.(*ast.Ident); ok {
 				if obj := pkg.TypesInfo.Uses[ident]; obj != nil {

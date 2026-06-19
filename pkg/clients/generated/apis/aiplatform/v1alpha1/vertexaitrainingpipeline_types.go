@@ -38,23 +38,39 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type ModelBaseModelSource struct {
+type VertexaitrainingpipelineBaseModelSource struct {
 	/* Information about the base model of Genie models. */
 	// +optional
-	GenieSource *ModelGenieSource `json:"genieSource,omitempty"`
+	GenieSource *VertexaitrainingpipelineGenieSource `json:"genieSource,omitempty"`
 
 	/* Source information of Model Garden models. */
 	// +optional
-	ModelGardenSource *ModelModelGardenSource `json:"modelGardenSource,omitempty"`
+	ModelGardenSource *VertexaitrainingpipelineModelGardenSource `json:"modelGardenSource,omitempty"`
 }
 
-type ModelBlurBaselineConfig struct {
+type VertexaitrainingpipelineBigqueryDestination struct {
+	/* Required. BigQuery URI to a project or table, up to 2000 characters long.
+
+	When only the project is specified, the Dataset and Table is created.
+	When the full table reference is specified, the Dataset must exist and
+	table must not exist.
+
+	Accepted forms:
+
+	*  BigQuery path. For example:
+	`bq://projectId` or `bq://projectId.bqDatasetId` or
+	`bq://projectId.bqDatasetId.bqTableId`. */
+	// +optional
+	OutputURI *string `json:"outputURI,omitempty"`
+}
+
+type VertexaitrainingpipelineBlurBaselineConfig struct {
 	/* The standard deviation of the blur kernel for the blurred baseline. The same blurring parameter is used for both the height and the width dimension. If not set, the method defaults to the zero (i.e. black for images) baseline. */
 	// +optional
 	MaxBlurSigma *float64 `json:"maxBlurSigma,omitempty"`
 }
 
-type ModelContainerSpec struct {
+type VertexaitrainingpipelineContainerSpec struct {
 	/* Immutable. Specifies arguments for the command that runs when the container
 	starts. This overrides the container's
 	[`CMD`](https://docs.docker.com/engine/reference/builder/#cmd). Specify
@@ -165,7 +181,7 @@ type ModelContainerSpec struct {
 	[v1 core
 	API](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#container-v1-core). */
 	// +optional
-	Env []ModelEnv `json:"env,omitempty"`
+	Env []VertexaitrainingpipelineEnv `json:"env,omitempty"`
 
 	/* Immutable. List of ports to expose from the container. Vertex AI sends gRPC
 	prediction requests that it receives to the first port on this list. Vertex
@@ -177,11 +193,11 @@ type ModelContainerSpec struct {
 	Vertex AI does not use ports other than the first one listed. This field
 	corresponds to the `ports` field of the Kubernetes Containers v1 core API. */
 	// +optional
-	GrpcPorts []ModelGrpcPorts `json:"grpcPorts,omitempty"`
+	GrpcPorts []VertexaitrainingpipelineGrpcPorts `json:"grpcPorts,omitempty"`
 
 	/* Immutable. Specification for Kubernetes readiness probe. */
 	// +optional
-	HealthProbe *ModelHealthProbe `json:"healthProbe,omitempty"`
+	HealthProbe *VertexaitrainingpipelineHealthProbe `json:"healthProbe,omitempty"`
 
 	/* Immutable. HTTP path on the container to send health checks to. Vertex AI
 	intermittently sends GET requests to this path on the container's IP
@@ -249,7 +265,7 @@ type ModelContainerSpec struct {
 
 	/* Immutable. Specification for Kubernetes liveness probe. */
 	// +optional
-	LivenessProbe *ModelLivenessProbe `json:"livenessProbe,omitempty"`
+	LivenessProbe *VertexaitrainingpipelineLivenessProbe `json:"livenessProbe,omitempty"`
 
 	/* Immutable. List of ports to expose from the container. Vertex AI sends any
 	prediction requests that it receives to the first port on this list. Vertex
@@ -273,7 +289,7 @@ type ModelContainerSpec struct {
 	[v1 core
 	API](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#container-v1-core). */
 	// +optional
-	Ports []ModelPorts `json:"ports,omitempty"`
+	Ports []VertexaitrainingpipelinePorts `json:"ports,omitempty"`
 
 	/* Immutable. HTTP path on the container to send prediction requests to.
 	Vertex AI forwards requests sent using
@@ -314,10 +330,10 @@ type ModelContainerSpec struct {
 
 	/* Immutable. Specification for Kubernetes startup probe. */
 	// +optional
-	StartupProbe *ModelStartupProbe `json:"startupProbe,omitempty"`
+	StartupProbe *VertexaitrainingpipelineStartupProbe `json:"startupProbe,omitempty"`
 }
 
-type ModelDataStats struct {
+type VertexaitrainingpipelineDataStats struct {
 	/* Number of Annotations that are used for evaluating this Model. If the Model is evaluated multiple times, this will be the number of test Annotations used by the first evaluation. If the Model is not evaluated, the number is 0. */
 	// +optional
 	TestAnnotationsCount *int64 `json:"testAnnotationsCount,omitempty"`
@@ -343,13 +359,13 @@ type ModelDataStats struct {
 	ValidationDataItemsCount *int64 `json:"validationDataItemsCount,omitempty"`
 }
 
-type ModelEncryptionSpec struct {
+type VertexaitrainingpipelineEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
 	KmsKeyName *string `json:"kmsKeyName,omitempty"`
 }
 
-type ModelEnv struct {
+type VertexaitrainingpipelineEnv struct {
 	/* Required. Name of the environment variable. Must be a valid C identifier. */
 	// +optional
 	Name *string `json:"name,omitempty"`
@@ -359,20 +375,20 @@ type ModelEnv struct {
 	Value *string `json:"value,omitempty"`
 }
 
-type ModelExampleGCSSource struct {
+type VertexaitrainingpipelineExampleGCSSource struct {
 	/* The format in which instances are given, if not specified, assume it's JSONL format. Currently only JSONL format is supported. */
 	// +optional
 	DataFormat *string `json:"dataFormat,omitempty"`
 
 	/* The Cloud Storage location for the input instances. */
 	// +optional
-	GcsSource *ModelGcsSource `json:"gcsSource,omitempty"`
+	GcsSource *VertexaitrainingpipelineGcsSource `json:"gcsSource,omitempty"`
 }
 
-type ModelExamples struct {
+type VertexaitrainingpipelineExamples struct {
 	/* The Cloud Storage input instances. */
 	// +optional
-	ExampleGCSSource *ModelExampleGCSSource `json:"exampleGCSSource,omitempty"`
+	ExampleGCSSource *VertexaitrainingpipelineExampleGCSSource `json:"exampleGCSSource,omitempty"`
 
 	/* The full configuration for the generated index, the semantics are the same as [metadata][google.cloud.aiplatform.v1.Index.metadata] and should match [NearestNeighborSearchConfig](https://cloud.google.com/vertex-ai/docs/explainable-ai/configuring-explanations-example-based#nearest-neighbor-search-config). */
 	// +optional
@@ -384,32 +400,32 @@ type ModelExamples struct {
 
 	/* Simplified preset configuration, which automatically sets configuration values based on the desired query speed-precision trade-off and modality. */
 	// +optional
-	Presets *ModelPresets `json:"presets,omitempty"`
+	Presets *VertexaitrainingpipelinePresets `json:"presets,omitempty"`
 }
 
-type ModelExec struct {
+type VertexaitrainingpipelineExec struct {
 	/* Command is the command line to execute inside the container, the working directory for the command is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy. */
 	// +optional
 	Command []string `json:"command,omitempty"`
 }
 
-type ModelExplanationSpec struct {
+type VertexaitrainingpipelineExplanationSpec struct {
 	/* Optional. Metadata describing the Model's input and output for explanation. */
 	// +optional
-	Metadata *ModelMetadata `json:"metadata,omitempty"`
+	Metadata *VertexaitrainingpipelineMetadata `json:"metadata,omitempty"`
 
 	/* Required. Parameters that configure explaining of the Model's predictions. */
 	// +optional
-	Parameters *ModelParameters `json:"parameters,omitempty"`
+	Parameters *VertexaitrainingpipelineParameters `json:"parameters,omitempty"`
 }
 
-type ModelFeatureNoiseSigma struct {
+type VertexaitrainingpipelineFeatureNoiseSigma struct {
 	/* Noise sigma per feature. No noise is added to features that are not set. */
 	// +optional
-	NoiseSigma []ModelNoiseSigma `json:"noiseSigma,omitempty"`
+	NoiseSigma []VertexaitrainingpipelineNoiseSigma `json:"noiseSigma,omitempty"`
 }
 
-type ModelFeatureValueDomain struct {
+type VertexaitrainingpipelineFeatureValueDomain struct {
 	/* The maximum permissible value for this feature. */
 	// +optional
 	MaxValue *float64 `json:"maxValue,omitempty"`
@@ -427,19 +443,53 @@ type ModelFeatureValueDomain struct {
 	OriginalStddev *float64 `json:"originalStddev,omitempty"`
 }
 
-type ModelGcsSource struct {
+type VertexaitrainingpipelineFilterSplit struct {
+	/* Required. A filter on DataItems of the Dataset. DataItems that match this filter are used to test the Model. A filter with same syntax as the one used in [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems] may be used. If a single DataItem is matched by more than one of the FilterSplit filters, then it is assigned to the first set that applies to it in the training, validation, test order. */
+	// +optional
+	TestFilter *string `json:"testFilter,omitempty"`
+
+	/* Required. A filter on DataItems of the Dataset. DataItems that match this filter are used to train the Model. A filter with same syntax as the one used in [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems] may be used. If a single DataItem is matched by more than one of the FilterSplit filters, then it is assigned to the first set that applies to it in the training, validation, test order. */
+	// +optional
+	TrainingFilter *string `json:"trainingFilter,omitempty"`
+
+	/* Required. A filter on DataItems of the Dataset. DataItems that match this filter are used to validate the Model. A filter with same syntax as the one used in [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems] may be used. If a single DataItem is matched by more than one of the FilterSplit filters, then it is assigned to the first set that applies to it in the training, validation, test order. */
+	// +optional
+	ValidationFilter *string `json:"validationFilter,omitempty"`
+}
+
+type VertexaitrainingpipelineFractionSplit struct {
+	/* The fraction of the input data that is to be used to evaluate the Model. */
+	// +optional
+	TestFraction *float64 `json:"testFraction,omitempty"`
+
+	/* The fraction of the input data that is to be used to train the Model. */
+	// +optional
+	TrainingFraction *float64 `json:"trainingFraction,omitempty"`
+
+	/* The fraction of the input data that is to be used to validate the Model. */
+	// +optional
+	ValidationFraction *float64 `json:"validationFraction,omitempty"`
+}
+
+type VertexaitrainingpipelineGcsDestination struct {
+	/* Required. Google Cloud Storage URI to output directory. If the uri doesn't end with '/', a '/' will be automatically appended. The directory is created if it doesn't exist. */
+	// +optional
+	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
+}
+
+type VertexaitrainingpipelineGcsSource struct {
 	/* Required. Google Cloud Storage URI(-s) to the input file(s). May contain wildcards. For more information on wildcards, see https://cloud.google.com/storage/docs/wildcards. */
 	// +optional
 	Uris []string `json:"uris,omitempty"`
 }
 
-type ModelGenieSource struct {
+type VertexaitrainingpipelineGenieSource struct {
 	/* Required. The public base model URI. */
 	// +optional
 	BaseModelURI *string `json:"baseModelURI,omitempty"`
 }
 
-type ModelGrpc struct {
+type VertexaitrainingpipelineGrpc struct {
 	/* Port number of the gRPC service. Number must be in the range 1 to 65535. */
 	// +optional
 	Port *int32 `json:"port,omitempty"`
@@ -453,16 +503,16 @@ type ModelGrpc struct {
 	Service *string `json:"service,omitempty"`
 }
 
-type ModelGrpcPorts struct {
+type VertexaitrainingpipelineGrpcPorts struct {
 	/* The number of the port to expose on the pod's IP address. Must be a valid port number, between 1 and 65535 inclusive. */
 	// +optional
 	ContainerPort *int32 `json:"containerPort,omitempty"`
 }
 
-type ModelHealthProbe struct {
+type VertexaitrainingpipelineHealthProbe struct {
 	/* ExecAction probes the health of a container by executing a command. */
 	// +optional
-	Exec *ModelExec `json:"exec,omitempty"`
+	Exec *VertexaitrainingpipelineExec `json:"exec,omitempty"`
 
 	/* Number of consecutive failures before the probe is considered failed.
 	Defaults to 3. Minimum value is 1.
@@ -473,11 +523,11 @@ type ModelHealthProbe struct {
 
 	/* GrpcAction probes the health of a container by sending a gRPC request. */
 	// +optional
-	Grpc *ModelGrpc `json:"grpc,omitempty"`
+	Grpc *VertexaitrainingpipelineGrpc `json:"grpc,omitempty"`
 
 	/* HttpGetAction probes the health of a container by sending an HTTP GET request. */
 	// +optional
-	HttpGet *ModelHttpGet `json:"httpGet,omitempty"`
+	HttpGet *VertexaitrainingpipelineHttpGet `json:"httpGet,omitempty"`
 
 	/* Number of seconds to wait before starting the probe. Defaults to 0.
 	Minimum value is 0.
@@ -502,7 +552,7 @@ type ModelHealthProbe struct {
 
 	/* TcpSocketAction probes the health of a container by opening a TCP socket connection. */
 	// +optional
-	TcpSocket *ModelTcpSocket `json:"tcpSocket,omitempty"`
+	TcpSocket *VertexaitrainingpipelineTcpSocket `json:"tcpSocket,omitempty"`
 
 	/* Number of seconds after which the probe times out. Defaults to 1 second.
 	Minimum value is 1. Must be greater or equal to period_seconds.
@@ -512,14 +562,14 @@ type ModelHealthProbe struct {
 	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
 }
 
-type ModelHttpGet struct {
+type VertexaitrainingpipelineHttpGet struct {
 	/* Host name to connect to, defaults to the model serving container's IP. You probably want to set "Host" in httpHeaders instead. */
 	// +optional
 	Host *string `json:"host,omitempty"`
 
 	/* Custom headers to set in the request. HTTP allows repeated headers. */
 	// +optional
-	HttpHeaders []ModelHttpHeaders `json:"httpHeaders,omitempty"`
+	HttpHeaders []VertexaitrainingpipelineHttpHeaders `json:"httpHeaders,omitempty"`
 
 	/* Path to access on the HTTP server. */
 	// +optional
@@ -534,7 +584,7 @@ type ModelHttpGet struct {
 	Scheme *string `json:"scheme,omitempty"`
 }
 
-type ModelHttpHeaders struct {
+type VertexaitrainingpipelineHttpHeaders struct {
 	/* The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. */
 	// +optional
 	Name *string `json:"name,omitempty"`
@@ -544,7 +594,149 @@ type ModelHttpHeaders struct {
 	Value *string `json:"value,omitempty"`
 }
 
-type ModelInputs struct {
+type VertexaitrainingpipelineInputDataConfig struct {
+	/* Applicable only to custom training with Datasets that have DataItems and
+	Annotations.
+
+	Cloud Storage URI that points to a YAML file describing the annotation
+	schema. The schema is defined as an OpenAPI 3.0.2 [Schema
+	Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject).
+	The schema files that can be used here are found in
+	gs://google-cloud-aiplatform/schema/dataset/annotation/ , note that the
+	chosen schema must be consistent with
+	[metadata][google.cloud.aiplatform.v1.Dataset.metadata_schema_uri] of the
+	Dataset specified by
+	[dataset_id][google.cloud.aiplatform.v1.InputDataConfig.dataset_id].
+
+	Only Annotations that both match this schema and belong to DataItems not
+	ignored by the split method are used in respectively training, validation
+	or test role, depending on the role of the DataItem they are on.
+
+	When used in conjunction with
+	[annotations_filter][google.cloud.aiplatform.v1.InputDataConfig.annotations_filter],
+	the Annotations used for training are filtered by both
+	[annotations_filter][google.cloud.aiplatform.v1.InputDataConfig.annotations_filter]
+	and
+	[annotation_schema_uri][google.cloud.aiplatform.v1.InputDataConfig.annotation_schema_uri]. */
+	// +optional
+	AnnotationSchemaURI *string `json:"annotationSchemaURI,omitempty"`
+
+	/* Applicable only to Datasets that have DataItems and Annotations.
+
+	A filter on Annotations of the Dataset. Only Annotations that both
+	match this filter and belong to DataItems not ignored by the split method
+	are used in respectively training, validation or test role, depending on
+	the role of the DataItem they are on (for the auto-assigned that role is
+	decided by Vertex AI). A filter with same syntax as the one used in
+	[ListAnnotations][google.cloud.aiplatform.v1.DatasetService.ListAnnotations]
+	may be used, but note here it filters across all Annotations of the
+	Dataset, and not just within a single DataItem. */
+	// +optional
+	AnnotationsFilter *string `json:"annotationsFilter,omitempty"`
+
+	/* Only applicable to custom training with tabular Dataset with BigQuery
+	source.
+
+	The BigQuery project location where the training data is to be written
+	to. In the given project a new dataset is created with name
+	`dataset_<dataset-id>_<annotation-type>_<timestamp-of-training-call>`
+	where timestamp is in YYYY_MM_DDThh_mm_ss_sssZ format. All training
+	input data is written into that dataset. In the dataset three
+	tables are created, `training`, `validation` and `test`.
+
+	* AIP_DATA_FORMAT = "bigquery".
+	* AIP_TRAINING_DATA_URI  =
+	"bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.training"
+
+	* AIP_VALIDATION_DATA_URI =
+	"bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.validation"
+
+	* AIP_TEST_DATA_URI =
+	"bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.test" */
+	// +optional
+	BigqueryDestination *VertexaitrainingpipelineBigqueryDestination `json:"bigqueryDestination,omitempty"`
+
+	/* Required. The ID of the Dataset in the same Project and Location which data will be used to train the Model. The Dataset must use schema compatible with Model being trained, and what is compatible should be described in the used TrainingPipeline's [training_task_definition] [google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]. For tabular Datasets, all their data is exported to training, to pick and choose from. */
+	// +optional
+	DatasetID *string `json:"datasetID,omitempty"`
+
+	/* Split based on the provided filters for each set. */
+	// +optional
+	FilterSplit *VertexaitrainingpipelineFilterSplit `json:"filterSplit,omitempty"`
+
+	/* Split based on fractions defining the size of each set. */
+	// +optional
+	FractionSplit *VertexaitrainingpipelineFractionSplit `json:"fractionSplit,omitempty"`
+
+	/* The Cloud Storage location where the training data is to be
+	written to. In the given directory a new directory is created with
+	name:
+	`dataset-<dataset-id>-<annotation-type>-<timestamp-of-training-call>`
+	where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format.
+	All training input data is written into that directory.
+
+	The Vertex AI environment variables representing Cloud Storage
+	data URIs are represented in the Cloud Storage wildcard
+	format to support sharded data. e.g.: "gs://.../training-*.jsonl"
+
+	* AIP_DATA_FORMAT = "jsonl" for non-tabular data, "csv" for tabular data
+	* AIP_TRAINING_DATA_URI =
+	"gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/training-*.${AIP_DATA_FORMAT}"
+
+	* AIP_VALIDATION_DATA_URI =
+	"gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/validation-*.${AIP_DATA_FORMAT}"
+
+	* AIP_TEST_DATA_URI =
+	"gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/test-*.${AIP_DATA_FORMAT}" */
+	// +optional
+	GcsDestination *VertexaitrainingpipelineGcsDestination `json:"gcsDestination,omitempty"`
+
+	/* Whether to persist the ML use assignment to data item system labels. */
+	// +optional
+	PersistMlUseAssignment *bool `json:"persistMlUseAssignment,omitempty"`
+
+	/* Supported only for tabular Datasets.
+
+	Split based on a predefined key. */
+	// +optional
+	PredefinedSplit *VertexaitrainingpipelinePredefinedSplit `json:"predefinedSplit,omitempty"`
+
+	/* Only applicable to Datasets that have SavedQueries.
+
+	The ID of a SavedQuery (annotation set) under the Dataset specified by
+	[dataset_id][google.cloud.aiplatform.v1.InputDataConfig.dataset_id] used
+	for filtering Annotations for training.
+
+	Only Annotations that are associated with this SavedQuery are used in
+	respectively training. When used in conjunction with
+	[annotations_filter][google.cloud.aiplatform.v1.InputDataConfig.annotations_filter],
+	the Annotations used for training are filtered by both
+	[saved_query_id][google.cloud.aiplatform.v1.InputDataConfig.saved_query_id]
+	and
+	[annotations_filter][google.cloud.aiplatform.v1.InputDataConfig.annotations_filter].
+
+	Only one of
+	[saved_query_id][google.cloud.aiplatform.v1.InputDataConfig.saved_query_id]
+	and
+	[annotation_schema_uri][google.cloud.aiplatform.v1.InputDataConfig.annotation_schema_uri]
+	should be specified as both of them represent the same thing: problem type. */
+	// +optional
+	SavedQueryID *string `json:"savedQueryID,omitempty"`
+
+	/* Supported only for tabular Datasets.
+
+	Split based on the distribution of the specified column. */
+	// +optional
+	StratifiedSplit *VertexaitrainingpipelineStratifiedSplit `json:"stratifiedSplit,omitempty"`
+
+	/* Supported only for tabular Datasets.
+
+	Split based on the timestamp of the input data pieces. */
+	// +optional
+	TimestampSplit *VertexaitrainingpipelineTimestampSplit `json:"timestampSplit,omitempty"`
+}
+
+type VertexaitrainingpipelineInputs struct {
 	/* Specifies the shape of the values of the input if the input is a sparse representation. Refer to Tensorflow documentation for more details: https://www.tensorflow.org/api_docs/python/tf/sparse/SparseTensor. */
 	// +optional
 	DenseShapeTensorName *string `json:"denseShapeTensorName,omitempty"`
@@ -576,7 +768,7 @@ type ModelInputs struct {
 
 	/* The domain details of the input feature value. Like min/max, original mean or standard deviation if normalized. */
 	// +optional
-	FeatureValueDomain *ModelFeatureValueDomain `json:"featureValueDomain,omitempty"`
+	FeatureValueDomain *VertexaitrainingpipelineFeatureValueDomain `json:"featureValueDomain,omitempty"`
 
 	/* Name of the group that the input belongs to. Features with the same group name will be treated as one feature when computing attributions. Features grouped together can have different shapes in value. If provided, there will be one single attribution generated in [Attribution.feature_attributions][google.cloud.aiplatform.v1.Attribution.feature_attributions], keyed by the group name. */
 	// +optional
@@ -621,10 +813,10 @@ type ModelInputs struct {
 
 	/* Visualization configurations for image explanation. */
 	// +optional
-	Visualization *ModelVisualization `json:"visualization,omitempty"`
+	Visualization *VertexaitrainingpipelineVisualization `json:"visualization,omitempty"`
 }
 
-type ModelIntegratedGradientsAttribution struct {
+type VertexaitrainingpipelineIntegratedGradientsAttribution struct {
 	/* Config for IG with blur baseline.
 
 	When enabled, a linear path from the maximally blurred image to the input
@@ -632,7 +824,7 @@ type ModelIntegratedGradientsAttribution struct {
 	motivated by the BlurIG approach explained here:
 	https://arxiv.org/abs/2004.03383 */
 	// +optional
-	BlurBaselineConfig *ModelBlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
+	BlurBaselineConfig *VertexaitrainingpipelineBlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 
 	/* Config for SmoothGrad approximation of gradients.
 
@@ -641,7 +833,7 @@ type ModelIntegratedGradientsAttribution struct {
 	noise can help improve the computed gradients. Refer to this paper for more
 	details: https://arxiv.org/pdf/1706.03825.pdf */
 	// +optional
-	SmoothGradConfig *ModelSmoothGradConfig `json:"smoothGradConfig,omitempty"`
+	SmoothGradConfig *VertexaitrainingpipelineSmoothGradConfig `json:"smoothGradConfig,omitempty"`
 
 	/* Required. The number of steps for approximating the path integral.
 	A good value to start is 50 and gradually increase until the
@@ -652,10 +844,10 @@ type ModelIntegratedGradientsAttribution struct {
 	StepCount *int32 `json:"stepCount,omitempty"`
 }
 
-type ModelLivenessProbe struct {
+type VertexaitrainingpipelineLivenessProbe struct {
 	/* ExecAction probes the health of a container by executing a command. */
 	// +optional
-	Exec *ModelExec `json:"exec,omitempty"`
+	Exec *VertexaitrainingpipelineExec `json:"exec,omitempty"`
 
 	/* Number of consecutive failures before the probe is considered failed.
 	Defaults to 3. Minimum value is 1.
@@ -666,11 +858,11 @@ type ModelLivenessProbe struct {
 
 	/* GrpcAction probes the health of a container by sending a gRPC request. */
 	// +optional
-	Grpc *ModelGrpc `json:"grpc,omitempty"`
+	Grpc *VertexaitrainingpipelineGrpc `json:"grpc,omitempty"`
 
 	/* HttpGetAction probes the health of a container by sending an HTTP GET request. */
 	// +optional
-	HttpGet *ModelHttpGet `json:"httpGet,omitempty"`
+	HttpGet *VertexaitrainingpipelineHttpGet `json:"httpGet,omitempty"`
 
 	/* Number of seconds to wait before starting the probe. Defaults to 0.
 	Minimum value is 0.
@@ -695,7 +887,7 @@ type ModelLivenessProbe struct {
 
 	/* TcpSocketAction probes the health of a container by opening a TCP socket connection. */
 	// +optional
-	TcpSocket *ModelTcpSocket `json:"tcpSocket,omitempty"`
+	TcpSocket *VertexaitrainingpipelineTcpSocket `json:"tcpSocket,omitempty"`
 
 	/* Number of seconds after which the probe times out. Defaults to 1 second.
 	Minimum value is 1. Must be greater or equal to period_seconds.
@@ -705,7 +897,7 @@ type ModelLivenessProbe struct {
 	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
 }
 
-type ModelMetadata struct {
+type VertexaitrainingpipelineMetadata struct {
 	/* Points to a YAML file stored on Google Cloud Storage describing the format of the [feature attributions][google.cloud.aiplatform.v1.Attribution.feature_attributions]. The schema is defined as an OpenAPI 3.0.2 [Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject). AutoML tabular Models always have this field populated by Vertex AI. Note: The URI given on output may be different, including the URI scheme, than the one given on input. The output URI will point to a location where the user only has a read access. */
 	// +optional
 	FeatureAttributionsSchemaURI *string `json:"featureAttributionsSchemaURI,omitempty"`
@@ -726,7 +918,7 @@ type ModelMetadata struct {
 	For custom images, the key must match with the key in
 	[instance][google.cloud.aiplatform.v1.ExplainRequest.instances]. */
 	// +optional
-	Inputs map[string]ModelInputs `json:"inputs,omitempty"`
+	Inputs map[string]VertexaitrainingpipelineInputs `json:"inputs,omitempty"`
 
 	/* Name of the source to generate embeddings for example based explanations. */
 	// +optional
@@ -742,10 +934,10 @@ type ModelMetadata struct {
 
 	Currently only one key is allowed. */
 	// +optional
-	Outputs map[string]ModelOutputs `json:"outputs,omitempty"`
+	Outputs map[string]VertexaitrainingpipelineOutputs `json:"outputs,omitempty"`
 }
 
-type ModelModelGardenSource struct {
+type VertexaitrainingpipelineModelGardenSource struct {
 	/* Required. The model garden source model resource name. */
 	// +optional
 	PublicModelName *string `json:"publicModelName,omitempty"`
@@ -759,7 +951,118 @@ type ModelModelGardenSource struct {
 	VersionID *string `json:"versionID,omitempty"`
 }
 
-type ModelNoiseSigma struct {
+type VertexaitrainingpipelineModelToUpload struct {
+	/* Immutable. The path to the directory containing the Model artifact and any of its supporting files. Not required for AutoML Models. */
+	// +optional
+	ArtifactURI *string `json:"artifactURI,omitempty"`
+
+	/* Optional. User input field to specify the base model source. Currently it only supports specifying the Model Garden models and Genie models. */
+	// +optional
+	BaseModelSource *VertexaitrainingpipelineBaseModelSource `json:"baseModelSource,omitempty"`
+
+	/* Input only. The specification of the container that is to be used when deploying this Model. The specification is ingested upon [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel], and all binaries it contains are copied and stored internally by Vertex AI. Not required for AutoML Models. */
+	// +optional
+	ContainerSpec *VertexaitrainingpipelineContainerSpec `json:"containerSpec,omitempty"`
+
+	/* Stats of data used for training or evaluating the Model.
+
+	Only populated when the Model is trained by a TrainingPipeline with
+	[data_input_config][google.cloud.aiplatform.v1.TrainingPipeline.input_data_config]. */
+	// +optional
+	DataStats *VertexaitrainingpipelineDataStats `json:"dataStats,omitempty"`
+
+	/* The description of the Model. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Required. The display name of the Model. The name can be up to 128 characters long and can consist of any UTF-8 characters. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Customer-managed encryption key spec for a Model. If set, this Model and all sub-resources of this Model will be secured by this key. */
+	// +optional
+	EncryptionSpec *VertexaitrainingpipelineEncryptionSpec `json:"encryptionSpec,omitempty"`
+
+	/* The default explanation specification for this Model.
+
+	The Model can be used for
+	[requesting
+	explanation][google.cloud.aiplatform.v1.PredictionService.Explain] after
+	being [deployed][google.cloud.aiplatform.v1.EndpointService.DeployModel] if
+	it is populated. The Model can be used for [batch
+	explanation][google.cloud.aiplatform.v1.BatchPredictionJob.generate_explanation]
+	if it is populated.
+
+	All fields of the explanation_spec can be overridden by
+	[explanation_spec][google.cloud.aiplatform.v1.DeployedModel.explanation_spec]
+	of
+	[DeployModelRequest.deployed_model][google.cloud.aiplatform.v1.DeployModelRequest.deployed_model],
+	or
+	[explanation_spec][google.cloud.aiplatform.v1.BatchPredictionJob.explanation_spec]
+	of [BatchPredictionJob][google.cloud.aiplatform.v1.BatchPredictionJob].
+
+	If the default explanation specification is not set for this Model, this
+	Model can still be used for
+	[requesting
+	explanation][google.cloud.aiplatform.v1.PredictionService.Explain] by
+	setting
+	[explanation_spec][google.cloud.aiplatform.v1.DeployedModel.explanation_spec]
+	of
+	[DeployModelRequest.deployed_model][google.cloud.aiplatform.v1.DeployModelRequest.deployed_model]
+	and for [batch
+	explanation][google.cloud.aiplatform.v1.BatchPredictionJob.generate_explanation]
+	by setting
+	[explanation_spec][google.cloud.aiplatform.v1.BatchPredictionJob.explanation_spec]
+	of [BatchPredictionJob][google.cloud.aiplatform.v1.BatchPredictionJob]. */
+	// +optional
+	ExplanationSpec *VertexaitrainingpipelineExplanationSpec `json:"explanationSpec,omitempty"`
+
+	/* The labels with user-defined metadata to organize your Models.
+
+	Label keys and values can be no longer than 64 characters
+	(Unicode codepoints), can only contain lowercase letters, numeric
+	characters, underscores and dashes. International characters are allowed.
+
+	See https://goo.gl/xmQnxf for more information and examples of labels. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	/* Immutable. The location where the model should reside. */
+	Location string `json:"location"`
+
+	/* Immutable. An additional information about the Model; the schema of the metadata can be found in [metadata_schema][google.cloud.aiplatform.v1.Model.metadata_schema_uri]. Unset if the Model does not have any additional information. */
+	// +optional
+	Metadata VertexaitrainingpipelineMetadata `json:"metadata,omitempty"`
+
+	/* Immutable. Points to a YAML file stored on Google Cloud Storage describing additional information about the Model, that is specific to it. Unset if the Model does not have any additional information. The schema is defined as an OpenAPI 3.0.2 [Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject). AutoML Models always have this field populated by Vertex AI, if no additional metadata is needed, this field is set to an empty string. Note: The URI given on output will be immutable and probably different, including the URI scheme, than the one given on input. The output URI will point to a location where the user only has a read access. */
+	// +optional
+	MetadataSchemaURI *string `json:"metadataSchemaURI,omitempty"`
+
+	/* Optional. This field is populated if the model is produced by a pipeline job. */
+	// +optional
+	PipelineJob *string `json:"pipelineJob,omitempty"`
+
+	/* The schemata that describe formats of the Model's predictions and explanations as given and returned via [PredictionService.Predict][google.cloud.aiplatform.v1.PredictionService.Predict] and [PredictionService.Explain][google.cloud.aiplatform.v1.PredictionService.Explain]. */
+	// +optional
+	PredictSchemata *VertexaitrainingpipelinePredictSchemata `json:"predictSchemata,omitempty"`
+
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+
+	/* The AIPlatformModel name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* User provided version aliases so that a model version can be referenced via alias (i.e. `projects/{project}/locations/{location}/models/{model_id}@{version_alias}` instead of auto-generated version id (i.e. `projects/{project}/locations/{location}/models/{model_id}@{version_id})`. The format is [a-z][a-zA-Z0-9-]{0,126}[a-z0-9] to distinguish from version_id. A default version alias will be created for the first version of the model, and there must be exactly one default version alias for a model. */
+	// +optional
+	VersionAliases []string `json:"versionAliases,omitempty"`
+
+	/* The description of this version. */
+	// +optional
+	VersionDescription *string `json:"versionDescription,omitempty"`
+}
+
+type VertexaitrainingpipelineNoiseSigma struct {
 	/* The name of the input feature for which noise sigma is provided. The features are defined in [explanation metadata inputs][google.cloud.aiplatform.v1.ExplanationMetadata.inputs]. */
 	// +optional
 	Name *string `json:"name,omitempty"`
@@ -769,7 +1072,7 @@ type ModelNoiseSigma struct {
 	Sigma *float64 `json:"sigma,omitempty"`
 }
 
-type ModelOutputs struct {
+type VertexaitrainingpipelineOutputs struct {
 	/* Specify a field name in the prediction to look for the display name.
 
 	Use this if the prediction contains the display names for the outputs.
@@ -803,14 +1106,14 @@ type ModelOutputs struct {
 	OutputTensorName *string `json:"outputTensorName,omitempty"`
 }
 
-type ModelParameters struct {
+type VertexaitrainingpipelineParameters struct {
 	/* Example-based explanations that returns the nearest neighbors from the provided dataset. */
 	// +optional
-	Examples *ModelExamples `json:"examples,omitempty"`
+	Examples *VertexaitrainingpipelineExamples `json:"examples,omitempty"`
 
 	/* An attribution method that computes Aumann-Shapley values taking advantage of the model's fully differentiable structure. Refer to this paper for more details: https://arxiv.org/abs/1703.01365 */
 	// +optional
-	IntegratedGradientsAttribution *ModelIntegratedGradientsAttribution `json:"integratedGradientsAttribution,omitempty"`
+	IntegratedGradientsAttribution *VertexaitrainingpipelineIntegratedGradientsAttribution `json:"integratedGradientsAttribution,omitempty"`
 
 	/* If populated, only returns attributions that have
 	[output_index][google.cloud.aiplatform.v1.Attribution.output_index]
@@ -829,7 +1132,7 @@ type ModelParameters struct {
 
 	/* An attribution method that approximates Shapley values for features that contribute to the label being predicted. A sampling strategy is used to approximate the value rather than considering all subsets of features. Refer to this paper for model details: https://arxiv.org/abs/1306.4265. */
 	// +optional
-	SampledShapleyAttribution *ModelSampledShapleyAttribution `json:"sampledShapleyAttribution,omitempty"`
+	SampledShapleyAttribution *VertexaitrainingpipelineSampledShapleyAttribution `json:"sampledShapleyAttribution,omitempty"`
 
 	/* If populated, returns attributions for top K indices of outputs (defaults to 1). Only applies to Models that predicts more than one outputs (e,g, multi-class Models). When set to -1, returns explanations for all outputs. */
 	// +optional
@@ -845,16 +1148,22 @@ type ModelParameters struct {
 	like a lab or manufacturing line, or from diagnostic equipment, like
 	x-rays or quality-control cameras, use Integrated Gradients instead. */
 	// +optional
-	XraiAttribution *ModelXraiAttribution `json:"xraiAttribution,omitempty"`
+	XraiAttribution *VertexaitrainingpipelineXraiAttribution `json:"xraiAttribution,omitempty"`
 }
 
-type ModelPorts struct {
+type VertexaitrainingpipelinePorts struct {
 	/* The number of the port to expose on the pod's IP address. Must be a valid port number, between 1 and 65535 inclusive. */
 	// +optional
 	ContainerPort *int32 `json:"containerPort,omitempty"`
 }
 
-type ModelPredictSchemata struct {
+type VertexaitrainingpipelinePredefinedSplit struct {
+	/* Required. The key is a name of one of the Dataset's data columns. The value of the key (either the label's value or value in the column) must be one of {`training`, `validation`, `test`}, and it defines to which set the given piece of data is assigned. If for a piece of data the key is not present or has an invalid value, that piece is ignored by the pipeline. */
+	// +optional
+	Key *string `json:"key,omitempty"`
+}
+
+type VertexaitrainingpipelinePredictSchemata struct {
 	/* Immutable. Points to a YAML file stored on Google Cloud Storage describing the format of a single instance, which are used in [PredictRequest.instances][google.cloud.aiplatform.v1.PredictRequest.instances], [ExplainRequest.instances][google.cloud.aiplatform.v1.ExplainRequest.instances] and [BatchPredictionJob.input_config][google.cloud.aiplatform.v1.BatchPredictionJob.input_config]. The schema is defined as an OpenAPI 3.0.2 [Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject). AutoML Models always have this field populated by Vertex AI. Note: The URI given on output will be immutable and probably different, including the URI scheme, than the one given on input. The output URI will point to a location where the user only has a read access. */
 	// +optional
 	InstanceSchemaURI *string `json:"instanceSchemaURI,omitempty"`
@@ -868,7 +1177,7 @@ type ModelPredictSchemata struct {
 	PredictionSchemaURI *string `json:"predictionSchemaURI,omitempty"`
 }
 
-type ModelPresets struct {
+type VertexaitrainingpipelinePresets struct {
 	/* The modality of the uploaded model, which automatically configures the distance measurement and feature normalization for the underlying example index and queries. If your model does not precisely fit one of these types, it is okay to choose the closest type. */
 	// +optional
 	Modality *string `json:"modality,omitempty"`
@@ -878,7 +1187,7 @@ type ModelPresets struct {
 	Query *string `json:"query,omitempty"`
 }
 
-type ModelSampledShapleyAttribution struct {
+type VertexaitrainingpipelineSampledShapleyAttribution struct {
 	/* Required. The number of feature permutations to consider when approximating
 	the Shapley values.
 
@@ -887,10 +1196,10 @@ type ModelSampledShapleyAttribution struct {
 	PathCount *int32 `json:"pathCount,omitempty"`
 }
 
-type ModelSmoothGradConfig struct {
+type VertexaitrainingpipelineSmoothGradConfig struct {
 	/* This is similar to [noise_sigma][google.cloud.aiplatform.v1.SmoothGradConfig.noise_sigma], but provides additional flexibility. A separate noise sigma can be provided for each feature, which is useful if their distributions are different. No noise is added to features that are not set. If this field is unset, [noise_sigma][google.cloud.aiplatform.v1.SmoothGradConfig.noise_sigma] will be used for all features. */
 	// +optional
-	FeatureNoiseSigma *ModelFeatureNoiseSigma `json:"featureNoiseSigma,omitempty"`
+	FeatureNoiseSigma *VertexaitrainingpipelineFeatureNoiseSigma `json:"featureNoiseSigma,omitempty"`
 
 	/* This is a single float value and will be used to add noise to all the
 	features. Use this field when all features are normalized to have the
@@ -906,17 +1215,17 @@ type ModelSmoothGradConfig struct {
 	[feature_noise_sigma][google.cloud.aiplatform.v1.SmoothGradConfig.feature_noise_sigma]
 	instead for each feature. */
 	// +optional
-	NoiseSigma *ModelNoiseSigma `json:"noiseSigma,omitempty"`
+	NoiseSigma *VertexaitrainingpipelineNoiseSigma `json:"noiseSigma,omitempty"`
 
 	/* The number of gradient samples to use for approximation. The higher this number, the more accurate the gradient is, but the runtime complexity increases by this factor as well. Valid range of its value is [1, 50]. Defaults to 3. */
 	// +optional
 	NoisySampleCount *int32 `json:"noisySampleCount,omitempty"`
 }
 
-type ModelStartupProbe struct {
+type VertexaitrainingpipelineStartupProbe struct {
 	/* ExecAction probes the health of a container by executing a command. */
 	// +optional
-	Exec *ModelExec `json:"exec,omitempty"`
+	Exec *VertexaitrainingpipelineExec `json:"exec,omitempty"`
 
 	/* Number of consecutive failures before the probe is considered failed.
 	Defaults to 3. Minimum value is 1.
@@ -927,11 +1236,11 @@ type ModelStartupProbe struct {
 
 	/* GrpcAction probes the health of a container by sending a gRPC request. */
 	// +optional
-	Grpc *ModelGrpc `json:"grpc,omitempty"`
+	Grpc *VertexaitrainingpipelineGrpc `json:"grpc,omitempty"`
 
 	/* HttpGetAction probes the health of a container by sending an HTTP GET request. */
 	// +optional
-	HttpGet *ModelHttpGet `json:"httpGet,omitempty"`
+	HttpGet *VertexaitrainingpipelineHttpGet `json:"httpGet,omitempty"`
 
 	/* Number of seconds to wait before starting the probe. Defaults to 0.
 	Minimum value is 0.
@@ -956,7 +1265,7 @@ type ModelStartupProbe struct {
 
 	/* TcpSocketAction probes the health of a container by opening a TCP socket connection. */
 	// +optional
-	TcpSocket *ModelTcpSocket `json:"tcpSocket,omitempty"`
+	TcpSocket *VertexaitrainingpipelineTcpSocket `json:"tcpSocket,omitempty"`
 
 	/* Number of seconds after which the probe times out. Defaults to 1 second.
 	Minimum value is 1. Must be greater or equal to period_seconds.
@@ -966,7 +1275,25 @@ type ModelStartupProbe struct {
 	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
 }
 
-type ModelTcpSocket struct {
+type VertexaitrainingpipelineStratifiedSplit struct {
+	/* Required. The key is a name of one of the Dataset's data columns. The key provided must be for a categorical column. */
+	// +optional
+	Key *string `json:"key,omitempty"`
+
+	/* The fraction of the input data that is to be used to evaluate the Model. */
+	// +optional
+	TestFraction *float64 `json:"testFraction,omitempty"`
+
+	/* The fraction of the input data that is to be used to train the Model. */
+	// +optional
+	TrainingFraction *float64 `json:"trainingFraction,omitempty"`
+
+	/* The fraction of the input data that is to be used to validate the Model. */
+	// +optional
+	ValidationFraction *float64 `json:"validationFraction,omitempty"`
+}
+
+type VertexaitrainingpipelineTcpSocket struct {
 	/* Optional: Host name to connect to, defaults to the model serving container's IP. */
 	// +optional
 	Host *string `json:"host,omitempty"`
@@ -976,7 +1303,25 @@ type ModelTcpSocket struct {
 	Port *int32 `json:"port,omitempty"`
 }
 
-type ModelVisualization struct {
+type VertexaitrainingpipelineTimestampSplit struct {
+	/* Required. The key is a name of one of the Dataset's data columns. The values of the key (the values in the column) must be in RFC 3339 `date-time` format, where `time-offset` = `"Z"` (e.g. 1985-04-12T23:20:50.52Z). If for a piece of data the key is not present or has an invalid value, that piece is ignored by the pipeline. */
+	// +optional
+	Key *string `json:"key,omitempty"`
+
+	/* The fraction of the input data that is to be used to evaluate the Model. */
+	// +optional
+	TestFraction *float64 `json:"testFraction,omitempty"`
+
+	/* The fraction of the input data that is to be used to train the Model. */
+	// +optional
+	TrainingFraction *float64 `json:"trainingFraction,omitempty"`
+
+	/* The fraction of the input data that is to be used to validate the Model. */
+	// +optional
+	ValidationFraction *float64 `json:"validationFraction,omitempty"`
+}
+
+type VertexaitrainingpipelineVisualization struct {
 	/* Excludes attributions below the specified percentile, from the highlighted areas. Defaults to 62. */
 	// +optional
 	ClipPercentLowerbound *float64 `json:"clipPercentLowerbound,omitempty"`
@@ -1013,7 +1358,7 @@ type ModelVisualization struct {
 	Type *string `json:"type,omitempty"`
 }
 
-type ModelXraiAttribution struct {
+type VertexaitrainingpipelineXraiAttribution struct {
 	/* Config for XRAI with blur baseline.
 
 	When enabled, a linear path from the maximally blurred image to the input
@@ -1021,7 +1366,7 @@ type ModelXraiAttribution struct {
 	motivated by the BlurIG approach explained here:
 	https://arxiv.org/abs/2004.03383 */
 	// +optional
-	BlurBaselineConfig *ModelBlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
+	BlurBaselineConfig *VertexaitrainingpipelineBlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 
 	/* Config for SmoothGrad approximation of gradients.
 
@@ -1030,7 +1375,7 @@ type ModelXraiAttribution struct {
 	noise can help improve the computed gradients. Refer to this paper for more
 	details: https://arxiv.org/pdf/1706.03825.pdf */
 	// +optional
-	SmoothGradConfig *ModelSmoothGradConfig `json:"smoothGradConfig,omitempty"`
+	SmoothGradConfig *VertexaitrainingpipelineSmoothGradConfig `json:"smoothGradConfig,omitempty"`
 
 	/* Required. The number of steps for approximating the path integral.
 	A good value to start is 50 and gradually increase until the
@@ -1041,73 +1386,25 @@ type ModelXraiAttribution struct {
 	StepCount *int32 `json:"stepCount,omitempty"`
 }
 
-type AIPlatformModelSpec struct {
-	/* Immutable. The path to the directory containing the Model artifact and any of its supporting files. Not required for AutoML Models. */
-	// +optional
-	ArtifactURI *string `json:"artifactURI,omitempty"`
-
-	/* Optional. User input field to specify the base model source. Currently it only supports specifying the Model Garden models and Genie models. */
-	// +optional
-	BaseModelSource *ModelBaseModelSource `json:"baseModelSource,omitempty"`
-
-	/* Input only. The specification of the container that is to be used when deploying this Model. The specification is ingested upon [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel], and all binaries it contains are copied and stored internally by Vertex AI. Not required for AutoML Models. */
-	// +optional
-	ContainerSpec *ModelContainerSpec `json:"containerSpec,omitempty"`
-
-	/* Stats of data used for training or evaluating the Model.
-
-	Only populated when the Model is trained by a TrainingPipeline with
-	[data_input_config][google.cloud.aiplatform.v1.TrainingPipeline.input_data_config]. */
-	// +optional
-	DataStats *ModelDataStats `json:"dataStats,omitempty"`
-
-	/* The description of the Model. */
-	// +optional
-	Description *string `json:"description,omitempty"`
-
-	/* Required. The display name of the Model. The name can be up to 128 characters long and can consist of any UTF-8 characters. */
+type VertexAITrainingPipelineSpec struct {
+	/* Required. The user-defined name of this TrainingPipeline. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Customer-managed encryption key spec for a Model. If set, this Model and all sub-resources of this Model will be secured by this key. */
+	/* Customer-managed encryption key spec for a TrainingPipeline. If set, this
+	TrainingPipeline will be secured by this key.
+
+	Note: Model trained by this TrainingPipeline is also secured by this key if
+	[model_to_upload][google.cloud.aiplatform.v1.TrainingPipeline.encryption_spec]
+	is not set separately. */
 	// +optional
-	EncryptionSpec *ModelEncryptionSpec `json:"encryptionSpec,omitempty"`
+	EncryptionSpec *VertexaitrainingpipelineEncryptionSpec `json:"encryptionSpec,omitempty"`
 
-	/* The default explanation specification for this Model.
-
-	The Model can be used for
-	[requesting
-	explanation][google.cloud.aiplatform.v1.PredictionService.Explain] after
-	being [deployed][google.cloud.aiplatform.v1.EndpointService.DeployModel] if
-	it is populated. The Model can be used for [batch
-	explanation][google.cloud.aiplatform.v1.BatchPredictionJob.generate_explanation]
-	if it is populated.
-
-	All fields of the explanation_spec can be overridden by
-	[explanation_spec][google.cloud.aiplatform.v1.DeployedModel.explanation_spec]
-	of
-	[DeployModelRequest.deployed_model][google.cloud.aiplatform.v1.DeployModelRequest.deployed_model],
-	or
-	[explanation_spec][google.cloud.aiplatform.v1.BatchPredictionJob.explanation_spec]
-	of [BatchPredictionJob][google.cloud.aiplatform.v1.BatchPredictionJob].
-
-	If the default explanation specification is not set for this Model, this
-	Model can still be used for
-	[requesting
-	explanation][google.cloud.aiplatform.v1.PredictionService.Explain] by
-	setting
-	[explanation_spec][google.cloud.aiplatform.v1.DeployedModel.explanation_spec]
-	of
-	[DeployModelRequest.deployed_model][google.cloud.aiplatform.v1.DeployModelRequest.deployed_model]
-	and for [batch
-	explanation][google.cloud.aiplatform.v1.BatchPredictionJob.generate_explanation]
-	by setting
-	[explanation_spec][google.cloud.aiplatform.v1.BatchPredictionJob.explanation_spec]
-	of [BatchPredictionJob][google.cloud.aiplatform.v1.BatchPredictionJob]. */
+	/* Specifies Vertex AI owned input data that may be used for training the Model. The TrainingPipeline's [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition] should make clear whether this config is used and if there are any special requirements on how it should be filled. If nothing about this config is mentioned in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition], then it should be assumed that the TrainingPipeline does not depend on this configuration. */
 	// +optional
-	ExplanationSpec *ModelExplanationSpec `json:"explanationSpec,omitempty"`
+	InputDataConfig *VertexaitrainingpipelineInputDataConfig `json:"inputDataConfig,omitempty"`
 
-	/* The labels with user-defined metadata to organize your Models.
+	/* The labels with user-defined metadata to organize TrainingPipelines.
 
 	Label keys and values can be no longer than 64 characters
 	(Unicode codepoints), can only contain lowercase letters, numeric
@@ -1117,42 +1414,42 @@ type AIPlatformModelSpec struct {
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
-	/* Immutable. The location where the model should reside. */
+	/* The location of this resource. */
 	Location string `json:"location"`
 
-	/* Immutable. An additional information about the Model; the schema of the metadata can be found in [metadata_schema][google.cloud.aiplatform.v1.Model.metadata_schema_uri]. Unset if the Model does not have any additional information. */
-	// +optional
-	Metadata ModelMetadata `json:"metadata,omitempty"`
+	/* Optional. The ID to use for the uploaded Model, which will become the final
+	component of the model resource name.
 
-	/* Immutable. Points to a YAML file stored on Google Cloud Storage describing additional information about the Model, that is specific to it. Unset if the Model does not have any additional information. The schema is defined as an OpenAPI 3.0.2 [Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject). AutoML Models always have this field populated by Vertex AI, if no additional metadata is needed, this field is set to an empty string. Note: The URI given on output will be immutable and probably different, including the URI scheme, than the one given on input. The output URI will point to a location where the user only has a read access. */
+	This value may be up to 63 characters, and valid characters are
+	`[a-z0-9_-]`. The first character cannot be a number or hyphen. */
 	// +optional
-	MetadataSchemaURI *string `json:"metadataSchemaURI,omitempty"`
+	ModelID *string `json:"modelID,omitempty"`
 
-	/* Optional. This field is populated if the model is produced by a pipeline job. */
+	/* Describes the Model that may be uploaded (via [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel]) by this TrainingPipeline. The TrainingPipeline's [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition] should make clear whether this Model description should be populated, and if there are any special requirements regarding how it should be filled. If nothing is mentioned in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition], then it should be assumed that this field should not be filled and the training task either uploads the Model without a need of this information, or that training task does not support uploading a Model as part of the pipeline. When the Pipeline's state becomes `PIPELINE_STATE_SUCCEEDED` and the trained Model had been uploaded into Vertex AI, then the model_to_upload's resource [name][google.cloud.aiplatform.v1.Model.name] is populated. The Model is always uploaded into the Project and Location in which this pipeline is. */
 	// +optional
-	PipelineJob *string `json:"pipelineJob,omitempty"`
+	ModelToUpload *VertexaitrainingpipelineModelToUpload `json:"modelToUpload,omitempty"`
 
-	/* The schemata that describe formats of the Model's predictions and explanations as given and returned via [PredictionService.Predict][google.cloud.aiplatform.v1.PredictionService.Predict] and [PredictionService.Explain][google.cloud.aiplatform.v1.PredictionService.Explain]. */
+	/* Optional. When specify this field, the `model_to_upload` will not be uploaded as a new model, instead, it will become a new version of this `parent_model`. */
 	// +optional
-	PredictSchemata *ModelPredictSchemata `json:"predictSchemata,omitempty"`
+	ParentModel *string `json:"parentModel,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The AIPlatformModel name. If not given, the metadata.name will be used. */
+	/* The VertexAITrainingPipeline name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* User provided version aliases so that a model version can be referenced via alias (i.e. `projects/{project}/locations/{location}/models/{model_id}@{version_alias}` instead of auto-generated version id (i.e. `projects/{project}/locations/{location}/models/{model_id}@{version_id})`. The format is [a-z][a-zA-Z0-9-]{0,126}[a-z0-9] to distinguish from version_id. A default version alias will be created for the first version of the model, and there must be exactly one default version alias for a model. */
+	/* Required. A Google Cloud Storage path to the YAML file that defines the training task which is responsible for producing the model artifact, and may also include additional auxiliary work. The definition files that can be used here are found in gs://google-cloud-aiplatform/schema/trainingjob/definition/. Note: The URI given on output will be immutable and probably different, including the URI scheme, than the one given on input. The output URI will point to a location where the user only has a read access. */
 	// +optional
-	VersionAliases []string `json:"versionAliases,omitempty"`
+	TrainingTaskDefinition *string `json:"trainingTaskDefinition,omitempty"`
 
-	/* The description of this version. */
+	/* Required. The training task's parameter(s), as specified in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]'s `inputs`. */
 	// +optional
-	VersionDescription *string `json:"versionDescription,omitempty"`
+	TrainingTaskInputs apiextensionsv1.JSON `json:"trainingTaskInputs,omitempty"`
 }
 
-type ModelDeployedModelsStatus struct {
+type VertexaitrainingpipelineDeployedModelsStatus struct {
 	/* Immutable. An ID of a DeployedModel in the above Endpoint. */
 	// +optional
 	DeployedModelID *string `json:"deployedModelID,omitempty"`
@@ -1162,7 +1459,17 @@ type ModelDeployedModelsStatus struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 }
 
-type ModelModelSourceInfoStatus struct {
+type VertexaitrainingpipelineErrorStatus struct {
+	/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
+	// +optional
+	Code *int32 `json:"code,omitempty"`
+
+	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
+	// +optional
+	Message *string `json:"message,omitempty"`
+}
+
+type VertexaitrainingpipelineModelSourceInfoStatus struct {
 	/* If this Model is copy of another Model. If true then [source_type][google.cloud.aiplatform.v1.ModelSourceInfo.source_type] pertains to the original. */
 	// +optional
 	Copy *bool `json:"copy,omitempty"`
@@ -1172,14 +1479,14 @@ type ModelModelSourceInfoStatus struct {
 	SourceType *string `json:"sourceType,omitempty"`
 }
 
-type ModelObservedStateStatus struct {
+type VertexaitrainingpipelineModelToUploadStatus struct {
 	/* Output only. Timestamp when this Model was uploaded into Vertex AI. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
 	/* Output only. The pointers to DeployedModels created from this Model. Note that Model could have been deployed to Endpoints in different Locations. */
 	// +optional
-	DeployedModels []ModelDeployedModelsStatus `json:"deployedModels,omitempty"`
+	DeployedModels []VertexaitrainingpipelineDeployedModelsStatus `json:"deployedModels,omitempty"`
 
 	/* Output only. The resource name of the Artifact that was created in MetadataStore when creating the Model. The Artifact resource name pattern is `projects/{project}/locations/{location}/metadataStores/{metadata_store}/artifacts/{artifact}`. */
 	// +optional
@@ -1187,11 +1494,11 @@ type ModelObservedStateStatus struct {
 
 	/* Output only. Source of a model. It can either be automl training pipeline, custom training pipeline, BigQuery ML, or saved and tuned from Genie or Model Garden. */
 	// +optional
-	ModelSourceInfo *ModelModelSourceInfoStatus `json:"modelSourceInfo,omitempty"`
+	ModelSourceInfo *VertexaitrainingpipelineModelSourceInfoStatus `json:"modelSourceInfo,omitempty"`
 
 	/* Output only. If this Model is a copy of another Model, this contains info about the original. */
 	// +optional
-	OriginalModelInfo *ModelOriginalModelInfoStatus `json:"originalModelInfo,omitempty"`
+	OriginalModelInfo *VertexaitrainingpipelineOriginalModelInfoStatus `json:"originalModelInfo,omitempty"`
 
 	/* Output only. Reserved for future use. */
 	// +optional
@@ -1207,7 +1514,7 @@ type ModelObservedStateStatus struct {
 
 	/* Output only. The formats in which this Model may be exported. If empty, this Model is not available for export. */
 	// +optional
-	SupportedExportFormats []ModelSupportedExportFormatsStatus `json:"supportedExportFormats,omitempty"`
+	SupportedExportFormats []VertexaitrainingpipelineSupportedExportFormatsStatus `json:"supportedExportFormats,omitempty"`
 
 	/* Output only. The formats this Model supports in
 	[BatchPredictionJob.input_config][google.cloud.aiplatform.v1.BatchPredictionJob.input_config].
@@ -1318,13 +1625,51 @@ type ModelObservedStateStatus struct {
 	VersionUpdateTime *string `json:"versionUpdateTime,omitempty"`
 }
 
-type ModelOriginalModelInfoStatus struct {
+type VertexaitrainingpipelineObservedStateStatus struct {
+	/* Output only. Time when the TrainingPipeline was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. Time when the TrainingPipeline entered any of the following states: `PIPELINE_STATE_SUCCEEDED`, `PIPELINE_STATE_FAILED`, `PIPELINE_STATE_CANCELLED`. */
+	// +optional
+	EndTime *string `json:"endTime,omitempty"`
+
+	/* Output only. Only populated when the pipeline's state is `PIPELINE_STATE_FAILED` or `PIPELINE_STATE_CANCELLED`. */
+	// +optional
+	Error *VertexaitrainingpipelineErrorStatus `json:"error,omitempty"`
+
+	/* Describes the Model that may be uploaded (via [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel]) by this TrainingPipeline. The TrainingPipeline's [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition] should make clear whether this Model description should be populated, and if there are any special requirements regarding how it should be filled. If nothing is mentioned in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition], then it should be assumed that this field should not be filled and the training task either uploads the Model without a need of this information, or that training task does not support uploading a Model as part of the pipeline. When the Pipeline's state becomes `PIPELINE_STATE_SUCCEEDED` and the trained Model had been uploaded into Vertex AI, then the model_to_upload's resource [name][google.cloud.aiplatform.v1.Model.name] is populated. The Model is always uploaded into the Project and Location in which this pipeline is. */
+	// +optional
+	ModelToUpload *VertexaitrainingpipelineModelToUploadStatus `json:"modelToUpload,omitempty"`
+
+	/* Output only. Resource name of the TrainingPipeline. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Output only. Time when the TrainingPipeline for the first time entered the `PIPELINE_STATE_RUNNING` state. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
+
+	/* Output only. The detailed state of the pipeline. */
+	// +optional
+	State *string `json:"state,omitempty"`
+
+	/* Output only. The metadata information as specified in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]'s `metadata`. This metadata is an auxiliary runtime and final information about the training task. While the pipeline is running this information is populated only at a best effort basis. Only present if the pipeline's [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition] contains `metadata` object. */
+	// +optional
+	TrainingTaskMetadata apiextensionsv1.JSON `json:"trainingTaskMetadata,omitempty"`
+
+	/* Output only. Time when the TrainingPipeline was most recently updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type VertexaitrainingpipelineOriginalModelInfoStatus struct {
 	/* Output only. The resource name of the Model this Model is a copy of, including the revision. Format: `projects/{project}/locations/{location}/models/{model_id}@{version_id}` */
 	// +optional
 	Model *string `json:"model,omitempty"`
 }
 
-type ModelSupportedExportFormatsStatus struct {
+type VertexaitrainingpipelineSupportedExportFormatsStatus struct {
 	/* Output only. The content of this Model that may be exported. */
 	// +optional
 	ExportableContents []string `json:"exportableContents,omitempty"`
@@ -1354,11 +1699,11 @@ type ModelSupportedExportFormatsStatus struct {
 	Id *string `json:"id,omitempty"`
 }
 
-type AIPlatformModelStatus struct {
+type VertexAITrainingPipelineStatus struct {
 	/* Conditions represent the latest available observations of the
-	   AIPlatformModel's current state. */
+	   VertexAITrainingPipeline's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the AIPlatformModel resource in GCP. */
+	/* A unique specifier for the VertexAITrainingPipeline resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -1368,39 +1713,40 @@ type AIPlatformModelStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *ModelObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *VertexaitrainingpipelineObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpaiplatformmodel;gcpaiplatformmodels
+// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaitrainingpipeline;gcpvertexaitrainingpipelines
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// AIPlatformModel is the Schema for the aiplatform API
+// VertexAITrainingPipeline is the Schema for the aiplatform API
 // +k8s:openapi-gen=true
-type AIPlatformModel struct {
+type VertexAITrainingPipeline struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   AIPlatformModelSpec   `json:"spec,omitempty"`
-	Status AIPlatformModelStatus `json:"status,omitempty"`
+	Spec   VertexAITrainingPipelineSpec   `json:"spec,omitempty"`
+	Status VertexAITrainingPipelineStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// AIPlatformModelList contains a list of AIPlatformModel
-type AIPlatformModelList struct {
+// VertexAITrainingPipelineList contains a list of VertexAITrainingPipeline
+type VertexAITrainingPipelineList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []AIPlatformModel `json:"items"`
+	Items           []VertexAITrainingPipeline `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&AIPlatformModel{}, &AIPlatformModelList{})
+	SchemeBuilder.Register(&VertexAITrainingPipeline{}, &VertexAITrainingPipelineList{})
 }
