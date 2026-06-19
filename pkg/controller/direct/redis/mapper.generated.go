@@ -428,6 +428,8 @@ func InstanceMaintenanceSchedule_ToProto(mapCtx *direct.MapContext, in *krm.Inst
 	out.ScheduleDeadlineTime = direct.StringTimestamp_ToProto(mapCtx, in.ScheduleDeadlineTime)
 	return out
 }
+
+/* found existing non-generated mapping function "InstanceObservedStateStatus_FromProto", skipping
 func InstanceObservedStateStatus_FromProto(mapCtx *direct.MapContext, in *redispb.Instance) *krm.InstanceObservedStateStatus {
 	if in == nil {
 		return nil
@@ -470,48 +472,54 @@ func InstanceObservedStateStatus_FromProto(mapCtx *direct.MapContext, in *redisp
 	// MISSING: AvailableMaintenanceVersions
 	return out
 }
-func InstanceObservedStateStatus_ToProto(mapCtx *direct.MapContext, in *krm.InstanceObservedStateStatus) *redispb.Instance {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "InstanceObservedStateStatus_ToProto", skipping
+
+	func InstanceObservedStateStatus_ToProto(mapCtx *direct.MapContext, in *krm.InstanceObservedStateStatus) *redispb.Instance {
+		if in == nil {
+			return nil
+		}
+		out := &redispb.Instance{}
+		// MISSING: Name
+		// MISSING: DisplayName
+		// MISSING: Labels
+		// MISSING: LocationID
+		// MISSING: AlternativeLocationID
+		// MISSING: RedisVersion
+		// MISSING: ReservedIPRange
+		// MISSING: SecondaryIPRange
+		// MISSING: Host
+		// MISSING: Port
+		// MISSING: CurrentLocationID
+		// MISSING: CreateTime
+		// MISSING: State
+		// MISSING: StatusMessage
+		// MISSING: RedisConfigs
+		// MISSING: Tier
+		// MISSING: MemorySizeGB
+		// MISSING: AuthorizedNetwork
+		// MISSING: PersistenceIAMIdentity
+		// MISSING: ConnectMode
+		// MISSING: AuthEnabled
+		// MISSING: ServerCACerts
+		// MISSING: TransitEncryptionMode
+		// MISSING: MaintenancePolicy
+		// MISSING: MaintenanceSchedule
+		// MISSING: ReplicaCount
+		// MISSING: Nodes
+		// MISSING: ReadEndpoint
+		// MISSING: ReadEndpointPort
+		// MISSING: ReadReplicasMode
+		// MISSING: CustomerManagedKey
+		// MISSING: PersistenceConfig
+		// MISSING: SuspensionReasons
+		// MISSING: MaintenanceVersion
+		// MISSING: AvailableMaintenanceVersions
+		return out
 	}
-	out := &redispb.Instance{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: LocationID
-	// MISSING: AlternativeLocationID
-	// MISSING: RedisVersion
-	// MISSING: ReservedIPRange
-	// MISSING: SecondaryIPRange
-	// MISSING: Host
-	// MISSING: Port
-	// MISSING: CurrentLocationID
-	// MISSING: CreateTime
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: RedisConfigs
-	// MISSING: Tier
-	// MISSING: MemorySizeGB
-	// MISSING: AuthorizedNetwork
-	// MISSING: PersistenceIAMIdentity
-	// MISSING: ConnectMode
-	// MISSING: AuthEnabled
-	// MISSING: ServerCACerts
-	// MISSING: TransitEncryptionMode
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
-	// MISSING: ReplicaCount
-	// MISSING: Nodes
-	// MISSING: ReadEndpoint
-	// MISSING: ReadEndpointPort
-	// MISSING: ReadReplicasMode
-	// MISSING: CustomerManagedKey
-	// MISSING: PersistenceConfig
-	// MISSING: SuspensionReasons
-	// MISSING: MaintenanceVersion
-	// MISSING: AvailableMaintenanceVersions
-	return out
-}
+*/
 func InstancePersistenceConfig_FromProto(mapCtx *direct.MapContext, in *redispb.PersistenceConfig) *krm.InstancePersistenceConfig {
 	if in == nil {
 		return nil
