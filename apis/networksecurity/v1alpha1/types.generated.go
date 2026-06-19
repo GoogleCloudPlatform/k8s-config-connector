@@ -16,22 +16,48 @@
 // +generated:types
 // krm.group: networksecurity.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.networksecurity.v1alpha1
-// resource: NetworkSecurityPartnerSSERealm:PartnerSSERealm
+// proto.service: google.cloud.networksecurity.v1
+// resource: NetworkSecurityBackendAuthenticationConfig:BackendAuthenticationConfig
+// resource: NetworkSecurityInterceptDeployment:InterceptDeployment
+// resource: NetworkSecurityInterceptDeploymentGroup:InterceptDeploymentGroup
+// resource: NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup
+// resource: NetworkSecurityMirroringDeployment:MirroringDeployment
+// resource: NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup
+// resource: NetworkSecuritySACRealm:SACRealm
+// resource: NetworkSecurityAddressGroup:AddressGroup
+// resource: NetworkSecuritySecurityProfile:SecurityProfile
 
 package v1alpha1
 
-/* unreachable type PartnerSseRealm_PartnerSseRealmPanOptions
-// +kcc:proto=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions
-type PartnerSseRealm_PartnerSseRealmPanOptions struct {
-	// Optional. serial_number is provided by PAN to identify GCP customer on
-	//  PAN side.
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions.serial_number
-	SerialNumber *string `json:"serialNumber,omitempty"`
-
-	// Optional. tenant_id is provided by PAN to identify GCP customer on PAN
-	//  side.
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions.tenant_id
-	TenantID *string `json:"tenantID,omitempty"`
+/* unreachable type InterceptDeploymentGroup_ConnectedEndpointGroup
+// +kcc:proto=google.cloud.networksecurity.v1.InterceptDeploymentGroup.ConnectedEndpointGroup
+type InterceptDeploymentGroup_ConnectedEndpointGroup struct {
 }
 */
+
+/* unreachable type InterceptDeploymentGroup_Deployment
+// +kcc:proto=google.cloud.networksecurity.v1.InterceptDeploymentGroup.Deployment
+type InterceptDeploymentGroup_Deployment struct {
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.InterceptDeploymentGroup.ConnectedEndpointGroup
+type InterceptDeploymentGroup_ConnectedEndpointGroupObservedState struct {
+	// Output only. The connected endpoint group's resource name, for example:
+	//  `projects/123456789/locations/global/interceptEndpointGroups/my-eg`.
+	//  See https://google.aip.dev/124.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptDeploymentGroup.ConnectedEndpointGroup.name
+	Name *string `json:"name,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.InterceptDeploymentGroup.Deployment
+type InterceptDeploymentGroup_DeploymentObservedState struct {
+	// Output only. The name of the Intercept Deployment, in the format:
+	//  `projects/{project}/locations/{location}/interceptDeployments/{intercept_deployment}`.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptDeploymentGroup.Deployment.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. Most recent known state of the deployment.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptDeploymentGroup.Deployment.state
+	State *string `json:"state,omitempty"`
+}

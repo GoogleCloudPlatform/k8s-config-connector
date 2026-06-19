@@ -1,0 +1,11 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityInterceptEndpointGroup
+metadata:
+  name: networksecurityinterceptendpointgroup-sample
+spec:
+  projectRef:
+    name: ${projectId}
+  location: "global"
+  description: "A sample intercept endpoint group"
+  interceptDeploymentGroupRef:
+    name: networksecurity-dep-${uniqueId}
