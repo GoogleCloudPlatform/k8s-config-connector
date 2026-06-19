@@ -60,7 +60,7 @@ func NewUnstructuredStream(params *parameters.Parameters, provider *schema.Provi
 	}
 
 	gcpClient := gcpclient.New(provider, smLoader)
-	unstructuredResourceStream := stream.NewUnstructuredResourceStreamFromURL(params.URI, provider, smLoader, gcpClient, httpClient, controllerConfig)
+	unstructuredResourceStream := stream.NewUnstructuredResourceStreamFromURL(params.URI, provider, smLoader, gcpClient, httpClient, controllerConfig, params.DisableDirectExport)
 	fixupStream := stream.NewUnstructuredResourceFixupStream(unstructuredResourceStream)
 	if params.IAMFormat == commonparams.NoneIAMFormatOption {
 		return fixupStream, nil

@@ -37,11 +37,13 @@ type URLToUnstructuredResourceStream struct {
 	smLoader   *servicemappingloader.ServiceMappingLoader
 	tfProvider *schema.Provider
 	httpClient *http.Client
+	// disableDirect forces a fallback to the old terraform/dcl export logic
+	disableDirect bool
 
 	controllerConfig *config.ControllerConfig
 }
 
-func NewUnstructuredResourceStreamFromURL(url string, provider *schema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, gcpClient gcpclient.Client, httpClient *http.Client, controllerConfig *config.ControllerConfig) *URLToUnstructuredResourceStream {
+func NewUnstructuredResourceStreamFromURL(url string, provider *schema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, gcpClient gcpclient.Client, httpClient *http.Client, controllerConfig *config.ControllerConfig, disableDirect bool) *URLToUnstructuredResourceStream {
 	stream := URLToUnstructuredResourceStream{
 		url:              url,
 		smLoader:         smLoader,
@@ -49,6 +51,7 @@ func NewUnstructuredResourceStreamFromURL(url string, provider *schema.Provider,
 		gcpClient:        gcpClient,
 		httpClient:       httpClient,
 		controllerConfig: controllerConfig,
+		disableDirect:    disableDirect,
 	}
 	return &stream
 }
@@ -58,14 +61,16 @@ func (s *URLToUnstructuredResourceStream) Next(ctx context.Context) (*unstructur
 		return nil, io.EOF
 	}
 
-	// First check if this resource uses our direct-reconciliation model
-	exported, err := direct.Export(ctx, s.url, s.controllerConfig)
-	if err != nil {
-		return nil, err
-	}
-	if exported != nil {
-		s.done = true
-		return exported, nil
+	if !s.disableDirect {
+		// First check if this resource uses our direct-reconciliation model
+		exported, err := direct.Export(ctx, s.url, s.controllerConfig)
+		if err != nil {
+			return nil, err
+		}
+		if exported != nil {
+			s.done = true
+			return exported, nil
+		}
 	}
 
 	skel, err := resourceskeleton.NewFromURI(s.url, s.smLoader, s.tfProvider)
