@@ -69,6 +69,8 @@ func startTestEnv() (*rest.Config, func()) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	cfg.QPS = 1000.0
+	cfg.Burst = 2000.0
 	stop := func() {
 		if err := testEnv.Stop(); err != nil {
 			log.Printf("unable to stop the test environment: %v", err)

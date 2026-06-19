@@ -17,3 +17,13 @@
 - **Problem**: Need to manually define KRM Spec/ObservedState fields in `plugin_types.go` that align with proto-defined `Plugin` structures.
 - **Solution**: Hand-coded `ApiHubPluginSpec` with `DisplayName` (Required, `*string`), `Type` (Required, `*AttributeValues`), and `Description` (Optional, `*string`). Implemented `ApiHubPluginIdentity` utilizing `gcpurls.Template` for the path pattern `projects/{project}/locations/{location}/plugins/{plugin}` and wrote unit tests for `FromExternal`.
 - **Impact**: Provides valid schema and identity parsing matching GCP's ApiHub Plugin resource specifications.
+
+### [2026-05-19] APIHubAttribute implementation
+- **Context**: Implementing APIHubAttribute (direct).
+- **Problem**: 
+  1. `generate-fuzzer` attempts to run a `gemini-cli prompt` tool which may fail in certain environments.
+  2. `fuzz-roundtrippers` fails if Spec-only fields are lost during `ObservedState` roundtripping.
+- **Solution**: 
+  1. Wrote the fuzzer manually utilizing `fuzztesting.NewKRMTypedFuzzer`.
+  2. Added Spec-only fields to `f.SpecFields` (e.g. `f.SpecFields.Insert(".display_name")`) so that the fuzzer understands they will not roundtrip from ObservedState.
+- **Impact**: Agents scaffolding direct resources for ApiHub (or similar) should manually scaffold fuzzers if the generation script fails, and ensure they properly register Spec and Status fields to pass `fuzz-roundtrippers`.

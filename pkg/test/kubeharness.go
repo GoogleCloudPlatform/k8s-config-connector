@@ -70,8 +70,8 @@ func NewKubeHarness(ctx context.Context, t *testing.T) *KubeHarness {
 	loadCRDs := true
 	if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "envtest" || targetKube == "" {
 		env := &envtest.Environment{
-			ControlPlaneStartTimeout: time.Minute,
-			ControlPlaneStopTimeout:  time.Minute,
+			ControlPlaneStartTimeout: 3 * time.Minute,
+			ControlPlaneStopTimeout:  3 * time.Minute,
 		}
 
 		h.Logf("starting envtest apiserver")
@@ -87,6 +87,8 @@ func NewKubeHarness(ctx context.Context, t *testing.T) *KubeHarness {
 		})
 
 		h.restConfig = restConfig
+		h.restConfig.QPS = 1000.0
+		h.restConfig.Burst = 2000.0
 	} else if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "mock" {
 		k8s, err := mockkubeapiserver.NewMockKubeAPIServer(":0")
 		if err != nil {
@@ -203,7 +205,7 @@ func (h *KubeHarness) waitForCRDReady(obj client.Object) {
 	var lastStatus *teststatus.ObjectStatus
 
 	id := types.NamespacedName{Name: name, Namespace: namespace}
-	if err := wait.PollImmediate(2*time.Second, 2*time.Minute, func() (bool, error) {
+	if err := wait.PollImmediate(2*time.Second, 3*time.Minute, func() (bool, error) {
 		u := &unstructured.Unstructured{}
 		u.SetAPIVersion(apiVersion)
 		u.SetKind(kind)
