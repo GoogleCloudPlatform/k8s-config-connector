@@ -52,10 +52,10 @@ X-Xss-Protection: 0
   ],
   "etag": "abcdef0123A=",
   "maxRequestDuration": "1800s",
-  "name": "folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+  "name": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
   "privilegedAccess": {
     "gcpIamAccess": {
-      "resource": "//cloudresourcemanager.googleapis.com/folders/123451001",
+      "resource": "//cloudresourcemanager.googleapis.com/folders/${folderID}",
       "resourceType": "cloudresourcemanager.googleapis.com/Folder",
       "roleBindings": [
         {

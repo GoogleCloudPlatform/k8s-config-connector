@@ -114,9 +114,16 @@ func ResolveFolder(ctx context.Context, reader client.Reader, src client.Object,
 		return nil, fmt.Errorf("error reading referenced Folder %v: %w", key, err)
 	}
 
-	folderID, err := GetResourceID(folder)
-	if err != nil {
-		return nil, err
+	folderID, _, _ := unstructured.NestedString(folder.Object, "status", "folderId")
+	if folderID == "" {
+		folderID, _, _ = unstructured.NestedString(folder.Object, "status", "uniqueId")
+	}
+	if folderID == "" {
+		var err error
+		folderID, err = GetResourceID(folder)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return &Folder{

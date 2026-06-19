@@ -5,8 +5,7 @@
   name: folder-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
-  error: not yet supported
+- caisURL: //logging.googleapis.com/folders/${folderId}/locations/global/buckets/_Default
   group: logging.cnrm.cloud.google.com
   kind: LoggingLogBucket
   name: logginglogbucket-${uniqueId}

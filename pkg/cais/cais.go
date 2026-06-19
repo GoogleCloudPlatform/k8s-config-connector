@@ -57,7 +57,6 @@ var unsupportedKinds = map[schema.GroupKind]bool{
 	{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreIndex"}:                        true,
 	{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringUptimeCheckConfig"}:          true,
 	{Group: "container.cnrm.cloud.google.com", Kind: "ContainerCluster"}:                      true,
-	{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogBucket"}:                        true,
 }
 
 func GetCAISIdentities(ctx context.Context, scheme *runtime.Scheme, reader client.Reader, objectsList []*unstructured.Unstructured) ([]CAISIdentityResult, error) {

@@ -52,6 +52,30 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	if folderID != "" {
 		replacements.PathIDs[folderID] = "${folderID}"
 	}
+	if testgcp.TestFolderID.Get() != "" {
+		replacements.PathIDs[testgcp.TestFolderID.Get()] = "${folderID}"
+	}
+
+	// Extract folderID from name if it contains "folders-<numericID>"
+	if u.GetName() != "" {
+		name := u.GetName()
+		if strings.HasPrefix(name, "folders-") {
+			parts := strings.Split(name, "-")
+			if len(parts) > 1 {
+				fid := parts[1]
+				isNumeric := true
+				for _, r := range fid {
+					if r < '0' || r > '9' {
+						isNumeric = false
+						break
+					}
+				}
+				if isNumeric && len(fid) > 5 {
+					replacements.PathIDs[fid] = "${folderID}"
+				}
+			}
+		}
+	}
 
 	annotations := u.GetAnnotations()
 	if annotations["cnrm.cloud.google.com/observed-secret-versions"] != "" {
