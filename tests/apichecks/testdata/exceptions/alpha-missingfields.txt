@@ -2508,6 +2508,18 @@
 [missing_field] crd=healthcarehl7v2stores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.parserConfig.schema" is not set in unstructured objects
 [missing_field] crd=healthcarehl7v2stores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.parserConfig.segmentTerminator" is not set in unstructured objects
 [missing_field] crd=healthcarehl7v2stores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.parserConfig.version" is not set in unstructured objects
+[missing_field] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.details.rules[].description" is not set in unstructured objects
+[missing_field] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.details.rules[].effect" is not set in unstructured objects
+[missing_field] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.details.rules[].excludedPrincipals[]" is not set in unstructured objects
+[missing_field] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.details.rules[].operation.excludedPermissions[]" is not set in unstructured objects
+[missing_field] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.details.rules[].operation.permissions[]" is not set in unstructured objects
+[missing_field] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.details.rules[].principals[]" is not set in unstructured objects
+[missing_field] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.denialCondition.description" is not set in unstructured objects

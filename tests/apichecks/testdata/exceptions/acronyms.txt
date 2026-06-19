@@ -522,6 +522,7 @@
 [acronyms] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultConsentTtl" should be ".spec.defaultConsentTTL"
 [acronyms] crd=healthcaredicomstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.streamConfigs[].bigqueryDestination.tableUri" should be ".spec.streamConfigs[].bigqueryDestination.tableURI"
 [acronyms] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.streamConfigs[].bigqueryDestination.datasetUri" should be ".spec.streamConfigs[].bigqueryDestination.datasetURI"
+[acronyms] crd=iamaccesspolicies.iam.cnrm.cloud.google.com: kind "IamAccessPolicy" should be "IAMAccessPolicy"
 [acronyms] crd=iamserviceaccounts.iam.cnrm.cloud.google.com version=v1beta1: field ".status.uniqueId" should be ".status.uniqueID"
 [acronyms] crd=iamworkforcepoolproviders.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.oidc.clientId" should be ".spec.oidc.clientID"
 [acronyms] crd=iamworkforcepoolproviders.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.oidc.issuerUri" should be ".spec.oidc.issuerURI"
