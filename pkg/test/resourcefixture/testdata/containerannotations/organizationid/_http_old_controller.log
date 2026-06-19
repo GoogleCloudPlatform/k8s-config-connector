@@ -1,5 +1,4 @@
-GET https://cloudresourcemanager.googleapis.com/v3/folders:search?%24alt=json%3Benum-encoding%3Dint&query=state%3DACTIVE+AND+parent%3Dorganizations%2F${organizationID}+AND+displayName%3D%22KCC+${uniqueId}%22
-Content-Type: application/json
+GET https://cloudresourcemanager.googleapis.com/v3/folders:search?alt=json&pageToken=&prettyPrint=false&query=state%3DACTIVE+AND+parent%3Dorganizations%2F${organizationID}+AND+displayName%3D%22KCC+${uniqueId}%22
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -15,7 +14,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudresourcemanager.googleapis.com/v3/folders?%24alt=json%3Benum-encoding%3Dint
+POST https://cloudresourcemanager.googleapis.com/v3/folders?alt=json&prettyPrint=false
 Content-Type: application/json
 
 {
@@ -39,7 +38,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -69,8 +68,36 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "KCC ${uniqueId}",
+    "etag": "abcdef0123A=",
+    "name": "folders/${folderID}",
+    "parent": "organizations/${organizationID}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -88,18 +115,17 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "name": "folders/${folderID}",
   "parent": "organizations/${organizationID}",
-  "state": 1,
+  "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+PATCH https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
 Content-Type: application/json
 
 {
-  "displayName": "KCC-2 ${uniqueId}",
-  "name": "folders/${folderID}"
+  "displayName": "KCC-2 ${uniqueId}"
 }
 
 200 OK
@@ -121,41 +147,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.UpdateFolderMetadata"
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "KCC-2 ${uniqueId}",
-    "etag": "abcdef0123A=",
-    "name": "folders/${folderID}",
-    "parent": "organizations/${organizationID}",
-    "state": "ACTIVE",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
+GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -173,14 +165,13 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "name": "folders/${folderID}",
   "parent": "organizations/${organizationID}",
-  "state": 1,
+  "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
+DELETE https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -201,7 +192,7 @@ X-Xss-Protection: 0
     "etag": "abcdef0123A=",
     "name": "folders/${folderID}",
     "parent": "organizations/${organizationID}",
-    "state": 2,
+    "state": "DELETE_REQUESTED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }

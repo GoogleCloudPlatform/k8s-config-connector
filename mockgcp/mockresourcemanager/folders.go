@@ -29,6 +29,7 @@ import (
 	"k8s.io/klog/v2"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v3"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
@@ -58,11 +59,65 @@ func (s *Folders) GetFolder(ctx context.Context, req *pb.GetFolderRequest) (*pb.
 func (s *Folders) SearchFolders(ctx context.Context, req *pb.SearchFoldersRequest) (*pb.SearchFoldersResponse, error) {
 	log := klog.FromContext(ctx)
 
-	// TODO: Implement search properly
-	log.Info("SearchFolders is stub implemented", "request", req)
+	log.Info("SearchFolders implementation running", "request", req)
 
-	response := &pb.SearchFoldersResponse{}
+	parentFilter, displayNameFilter, stateFilter := parseSearchFoldersQuery(req.GetQuery())
+
+	folderKind := (&pb.Folder{}).ProtoReflect().Descriptor()
+
+	var matched []*pb.Folder
+	if err := s.storage.List(ctx, folderKind, storage.ListOptions{}, func(obj proto.Message) error {
+		folder := obj.(*pb.Folder)
+
+		if stateFilter != "" {
+			if strings.ToUpper(stateFilter) == "ACTIVE" && folder.State != pb.Folder_ACTIVE {
+				return nil
+			}
+		}
+
+		if parentFilter != "" {
+			if folder.Parent != parentFilter {
+				return nil
+			}
+		}
+
+		if displayNameFilter != "" {
+			if folder.DisplayName != displayNameFilter {
+				return nil
+			}
+		}
+
+		matched = append(matched, folder)
+		return nil
+	}); err != nil {
+		return nil, status.Errorf(codes.Internal, "error searching folders: %v", err)
+	}
+
+	response := &pb.SearchFoldersResponse{
+		Folders: matched,
+	}
 	return response, nil
+}
+
+func parseSearchFoldersQuery(query string) (parent string, displayName string, state string) {
+	parts := strings.Split(query, " AND ")
+	for _, part := range parts {
+		part = strings.TrimSpace(part)
+		if strings.HasPrefix(part, "parent=") {
+			parent = strings.TrimPrefix(part, "parent=")
+			parent = strings.Trim(parent, "\"")
+		} else if strings.HasPrefix(part, "displayName=") {
+			displayName = strings.TrimPrefix(part, "displayName=")
+			displayName = strings.Trim(displayName, "\"")
+		} else if strings.HasPrefix(part, "display_name=") {
+			displayName = strings.TrimPrefix(part, "display_name=")
+			displayName = strings.Trim(displayName, "\"")
+		} else if strings.HasPrefix(part, "state=") {
+			state = strings.TrimPrefix(part, "state=")
+			state = strings.Trim(state, "\"")
+		}
+	}
+	return
 }
 
 func (s *Folders) CreateFolder(ctx context.Context, req *pb.CreateFolderRequest) (*longrunningpb.Operation, error) {
@@ -120,7 +175,7 @@ func (s *Folders) UpdateFolder(ctx context.Context, req *pb.UpdateFolderRequest)
 	paths := req.GetUpdateMask().GetPaths()
 	for _, path := range paths {
 		switch path {
-		case "display_name":
+		case "display_name", "displayName":
 			obj.DisplayName = req.GetFolder().GetDisplayName()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not implemented by mockgcp", path)

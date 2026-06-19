@@ -1,0 +1,105 @@
+1c1,2
+< GET https://cloudresourcemanager.googleapis.com/v3/folders:search?alt=json&pageToken=&prettyPrint=false&query=state%3DACTIVE+AND+parent%3Dfolders%2F${folderID}+AND+displayName%3D%22KCC+${uniqueId}%22
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/folders:search?%24alt=json%3Benum-encoding%3Dint&query=state%3DACTIVE+AND+parent%3Dfolders%2F${folderID}+AND+displayName%3D%22KCC+${uniqueId}%22
+> Content-Type: application/json
+17c18
+< POST https://cloudresourcemanager.googleapis.com/v3/folders?alt=json&prettyPrint=false
+---
+> POST https://cloudresourcemanager.googleapis.com/v3/folders?%24alt=json%3Benum-encoding%3Dint
+41c42
+< GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+71c72,73
+< GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+84,95c86,92
+<   "done": true,
+<   "name": "operations/${operationID}",
+<   "response": {
+<     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
+<     "createTime": "2024-04-01T12:34:56.123456Z",
+<     "displayName": "KCC ${uniqueId}",
+<     "etag": "abcdef0123A=",
+<     "name": "folders/${folderID}",
+<     "parent": "folders/${folderID}",
+<     "state": "ACTIVE",
+<     "updateTime": "2024-04-01T12:34:56.123456Z"
+<   }
+---
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "displayName": "KCC ${uniqueId}",
+>   "etag": "abcdef0123A=",
+>   "name": "folders/${folderID}",
+>   "parent": "folders/${folderID}",
+>   "state": 1,
+>   "updateTime": "2024-04-01T12:34:56.123456Z"
+100c97,103
+< GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
+---
+> PATCH https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+> Content-Type: application/json
+> 
+> {
+>   "displayName": "KCC-2 ${uniqueId}",
+>   "name": "folders/${folderID}"
+> }
+113,119c116,119
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "KCC ${uniqueId}",
+<   "etag": "abcdef0123A=",
+<   "name": "folders/${folderID}",
+<   "parent": "folders/${folderID}",
+<   "state": "ACTIVE",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+---
+>   "metadata": {
+>     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.UpdateFolderMetadata"
+>   },
+>   "name": "operations/${operationID}"
+124c124
+< PATCH https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+127,130d126
+< {
+<   "displayName": "KCC-2 ${uniqueId}"
+< }
+< 
+141a138
+>   "done": true,
+145c142,152
+<   "name": "operations/${operationID}"
+---
+>   "name": "operations/${operationID}",
+>   "response": {
+>     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
+>     "createTime": "2024-04-01T12:34:56.123456Z",
+>     "displayName": "KCC-2 ${uniqueId}",
+>     "etag": "abcdef0123A=",
+>     "name": "folders/${folderID}",
+>     "parent": "folders/${folderID}",
+>     "state": "ACTIVE",
+>     "updateTime": "2024-04-01T12:34:56.123456Z"
+>   }
+150c157,158
+< GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+168c176
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+174c182,183
+< DELETE https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
+---
+> DELETE https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+195c204
+<     "state": "DELETE_REQUESTED",
+---
+>     "state": 2,
