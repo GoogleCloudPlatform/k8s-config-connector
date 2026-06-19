@@ -16,8 +16,8 @@ spec:
   names:
     categories:
     - gcp
-    kind: EventarcGoogleApiSource
-    listKind: EventarcGoogleApiSourceList
+    kind: EventarcGoogleAPISource
+    listKind: EventarcGoogleAPISourceList
     plural: eventarcgoogleapisources
     shortNames:
     - gcpeventarcgoogleapisource
@@ -45,7 +45,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: EventarcGoogleApiSource is the Schema for the EventarcGoogleApiSource
+        description: EventarcGoogleAPISource is the Schema for the EventarcGoogleAPISource
           API
         properties:
           apiVersion:
@@ -61,8 +61,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: EventarcGoogleApiSourceSpec defines the desired state of
-              EventarcGoogleApiSource
+            description: EventarcGoogleAPISourceSpec defines the desired state of
+              EventarcGoogleAPISource
             properties:
               annotations:
                 additionalProperties:
@@ -196,7 +196,7 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The EventarcGoogleApiSource name. If not given, the metadata.name
+                description: The EventarcGoogleAPISource name. If not given, the metadata.name
                   will be used.
                 type: string
             required:
@@ -205,8 +205,8 @@ spec:
             - projectRef
             type: object
           status:
-            description: EventarcGoogleApiSourceStatus defines the config connector
-              machine state of EventarcGoogleApiSource
+            description: EventarcGoogleAPISourceStatus defines the config connector
+              machine state of EventarcGoogleAPISource
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -235,7 +235,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the EventarcGoogleApiSource resource
+                description: A unique specifier for the EventarcGoogleAPISource resource
                   in GCP.
                 type: string
               observedGeneration:

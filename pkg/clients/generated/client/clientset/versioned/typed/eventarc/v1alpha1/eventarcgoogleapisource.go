@@ -32,43 +32,43 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// EventarcGoogleApiSourcesGetter has a method to return a EventarcGoogleApiSourceInterface.
+// EventarcGoogleAPISourcesGetter has a method to return a EventarcGoogleAPISourceInterface.
 // A group's client should implement this interface.
-type EventarcGoogleApiSourcesGetter interface {
-	EventarcGoogleApiSources(namespace string) EventarcGoogleApiSourceInterface
+type EventarcGoogleAPISourcesGetter interface {
+	EventarcGoogleAPISources(namespace string) EventarcGoogleAPISourceInterface
 }
 
-// EventarcGoogleApiSourceInterface has methods to work with EventarcGoogleApiSource resources.
-type EventarcGoogleApiSourceInterface interface {
-	Create(ctx context.Context, eventarcGoogleApiSource *eventarcv1alpha1.EventarcGoogleApiSource, opts v1.CreateOptions) (*eventarcv1alpha1.EventarcGoogleApiSource, error)
-	Update(ctx context.Context, eventarcGoogleApiSource *eventarcv1alpha1.EventarcGoogleApiSource, opts v1.UpdateOptions) (*eventarcv1alpha1.EventarcGoogleApiSource, error)
+// EventarcGoogleAPISourceInterface has methods to work with EventarcGoogleAPISource resources.
+type EventarcGoogleAPISourceInterface interface {
+	Create(ctx context.Context, eventarcGoogleAPISource *eventarcv1alpha1.EventarcGoogleAPISource, opts v1.CreateOptions) (*eventarcv1alpha1.EventarcGoogleAPISource, error)
+	Update(ctx context.Context, eventarcGoogleAPISource *eventarcv1alpha1.EventarcGoogleAPISource, opts v1.UpdateOptions) (*eventarcv1alpha1.EventarcGoogleAPISource, error)
 	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, eventarcGoogleApiSource *eventarcv1alpha1.EventarcGoogleApiSource, opts v1.UpdateOptions) (*eventarcv1alpha1.EventarcGoogleApiSource, error)
+	UpdateStatus(ctx context.Context, eventarcGoogleAPISource *eventarcv1alpha1.EventarcGoogleAPISource, opts v1.UpdateOptions) (*eventarcv1alpha1.EventarcGoogleAPISource, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*eventarcv1alpha1.EventarcGoogleApiSource, error)
-	List(ctx context.Context, opts v1.ListOptions) (*eventarcv1alpha1.EventarcGoogleApiSourceList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*eventarcv1alpha1.EventarcGoogleAPISource, error)
+	List(ctx context.Context, opts v1.ListOptions) (*eventarcv1alpha1.EventarcGoogleAPISourceList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *eventarcv1alpha1.EventarcGoogleApiSource, err error)
-	EventarcGoogleApiSourceExpansion
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *eventarcv1alpha1.EventarcGoogleAPISource, err error)
+	EventarcGoogleAPISourceExpansion
 }
 
-// eventarcGoogleApiSources implements EventarcGoogleApiSourceInterface
-type eventarcGoogleApiSources struct {
-	*gentype.ClientWithList[*eventarcv1alpha1.EventarcGoogleApiSource, *eventarcv1alpha1.EventarcGoogleApiSourceList]
+// eventarcGoogleAPISources implements EventarcGoogleAPISourceInterface
+type eventarcGoogleAPISources struct {
+	*gentype.ClientWithList[*eventarcv1alpha1.EventarcGoogleAPISource, *eventarcv1alpha1.EventarcGoogleAPISourceList]
 }
 
-// newEventarcGoogleApiSources returns a EventarcGoogleApiSources
-func newEventarcGoogleApiSources(c *EventarcV1alpha1Client, namespace string) *eventarcGoogleApiSources {
-	return &eventarcGoogleApiSources{
-		gentype.NewClientWithList[*eventarcv1alpha1.EventarcGoogleApiSource, *eventarcv1alpha1.EventarcGoogleApiSourceList](
+// newEventarcGoogleAPISources returns a EventarcGoogleAPISources
+func newEventarcGoogleAPISources(c *EventarcV1alpha1Client, namespace string) *eventarcGoogleAPISources {
+	return &eventarcGoogleAPISources{
+		gentype.NewClientWithList[*eventarcv1alpha1.EventarcGoogleAPISource, *eventarcv1alpha1.EventarcGoogleAPISourceList](
 			"eventarcgoogleapisources",
 			c.RESTClient(),
 			scheme.ParameterCodec,
 			namespace,
-			func() *eventarcv1alpha1.EventarcGoogleApiSource { return &eventarcv1alpha1.EventarcGoogleApiSource{} },
-			func() *eventarcv1alpha1.EventarcGoogleApiSourceList {
-				return &eventarcv1alpha1.EventarcGoogleApiSourceList{}
+			func() *eventarcv1alpha1.EventarcGoogleAPISource { return &eventarcv1alpha1.EventarcGoogleAPISource{} },
+			func() *eventarcv1alpha1.EventarcGoogleAPISourceList {
+				return &eventarcv1alpha1.EventarcGoogleAPISourceList{}
 			},
 		),
 	}

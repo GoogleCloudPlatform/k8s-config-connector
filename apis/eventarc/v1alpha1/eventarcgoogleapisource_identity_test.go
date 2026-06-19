@@ -18,7 +18,7 @@ import (
 	"testing"
 )
 
-func TestEventarcGoogleApiSourceIdentity_FromExternal(t *testing.T) {
+func TestEventarcGoogleAPISourceIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name                string
 		ref                 string
@@ -60,7 +60,7 @@ func TestEventarcGoogleApiSourceIdentity_FromExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := &EventarcGoogleApiSourceIdentity{}
+			i := &EventarcGoogleAPISourceIdentity{}
 			err := i.FromExternal(tt.ref)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
@@ -81,8 +81,8 @@ func TestEventarcGoogleApiSourceIdentity_FromExternal(t *testing.T) {
 	}
 }
 
-func TestEventarcGoogleApiSourceIdentity_Methods(t *testing.T) {
-	i := &EventarcGoogleApiSourceIdentity{
+func TestEventarcGoogleAPISourceIdentity_Methods(t *testing.T) {
+	i := &EventarcGoogleAPISourceIdentity{
 		Project:           "my-project",
 		Location:          "us-central1",
 		Google_api_source: "my-source",

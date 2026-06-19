@@ -26,45 +26,45 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &EventarcGoogleApiSourceIdentity{}
-	_ identity.Resource   = &EventarcGoogleApiSource{}
+	_ identity.IdentityV2 = &EventarcGoogleAPISourceIdentity{}
+	_ identity.Resource   = &EventarcGoogleAPISource{}
 )
 
-var EventarcGoogleApiSourceIdentityFormat = gcpurls.Template[EventarcGoogleApiSourceIdentity]("eventarc.googleapis.com", "projects/{project}/locations/{location}/googleApiSources/{google_api_source}")
+var EventarcGoogleAPISourceIdentityFormat = gcpurls.Template[EventarcGoogleAPISourceIdentity]("eventarc.googleapis.com", "projects/{project}/locations/{location}/googleApiSources/{google_api_source}")
 
 // +k8s:deepcopy-gen=false
-type EventarcGoogleApiSourceIdentity struct {
+type EventarcGoogleAPISourceIdentity struct {
 	Project           string
 	Location          string
 	Google_api_source string
 }
 
-func (i *EventarcGoogleApiSourceIdentity) String() string {
-	return EventarcGoogleApiSourceIdentityFormat.ToString(*i)
+func (i *EventarcGoogleAPISourceIdentity) String() string {
+	return EventarcGoogleAPISourceIdentityFormat.ToString(*i)
 }
 
-func (i *EventarcGoogleApiSourceIdentity) FromExternal(ref string) error {
-	parsed, match, err := EventarcGoogleApiSourceIdentityFormat.Parse(ref)
+func (i *EventarcGoogleAPISourceIdentity) FromExternal(ref string) error {
+	parsed, match, err := EventarcGoogleAPISourceIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of EventarcGoogleApiSource external=%q was not known (use %s): %w", ref, EventarcGoogleApiSourceIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of EventarcGoogleAPISource external=%q was not known (use %s): %w", ref, EventarcGoogleAPISourceIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of EventarcGoogleApiSource external=%q was not known (use %s)", ref, EventarcGoogleApiSourceIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of EventarcGoogleAPISource external=%q was not known (use %s)", ref, EventarcGoogleAPISourceIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *EventarcGoogleApiSourceIdentity) Host() string {
-	return EventarcGoogleApiSourceIdentityFormat.Host()
+func (i *EventarcGoogleAPISourceIdentity) Host() string {
+	return EventarcGoogleAPISourceIdentityFormat.Host()
 }
 
-func (i *EventarcGoogleApiSourceIdentity) ParentString() string {
+func (i *EventarcGoogleAPISourceIdentity) ParentString() string {
 	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-func NewEventarcGoogleApiSourceIdentity(ctx context.Context, reader client.Reader, obj client.Object) (*EventarcGoogleApiSourceIdentity, error) {
+func NewEventarcGoogleAPISourceIdentity(ctx context.Context, reader client.Reader, obj client.Object) (*EventarcGoogleAPISourceIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
@@ -80,7 +80,7 @@ func NewEventarcGoogleApiSourceIdentity(ctx context.Context, reader client.Reade
 		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
 
-	identity := &EventarcGoogleApiSourceIdentity{
+	identity := &EventarcGoogleAPISourceIdentity{
 		Project:           projectID,
 		Location:          location,
 		Google_api_source: resourceID,
@@ -88,8 +88,8 @@ func NewEventarcGoogleApiSourceIdentity(ctx context.Context, reader client.Reade
 	return identity, nil
 }
 
-func (obj *EventarcGoogleApiSource) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := NewEventarcGoogleApiSourceIdentity(ctx, reader, obj)
+func (obj *EventarcGoogleAPISource) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := NewEventarcGoogleAPISourceIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -97,20 +97,20 @@ func (obj *EventarcGoogleApiSource) GetIdentity(ctx context.Context, reader clie
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &EventarcGoogleApiSourceIdentity{}
+		statusIdentity := &EventarcGoogleAPISourceIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change EventarcGoogleApiSource identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			return nil, fmt.Errorf("cannot change EventarcGoogleAPISource identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 
 	return specIdentity, nil
 }
 
-func (obj *EventarcGoogleApiSource) ExternalIdentifier() *string {
+func (obj *EventarcGoogleAPISource) ExternalIdentifier() *string {
 	if obj.Status.ExternalRef != nil {
 		return obj.Status.ExternalRef
 	}

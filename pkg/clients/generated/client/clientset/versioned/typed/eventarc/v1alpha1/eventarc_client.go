@@ -34,7 +34,7 @@ type EventarcV1alpha1Interface interface {
 	EventarcChannelsGetter
 	EventarcChannelConnectionsGetter
 	EventarcEnrollmentsGetter
-	EventarcGoogleApiSourcesGetter
+	EventarcGoogleAPISourcesGetter
 	EventarcGoogleChannelConfigsGetter
 }
 
@@ -55,8 +55,8 @@ func (c *EventarcV1alpha1Client) EventarcEnrollments(namespace string) EventarcE
 	return newEventarcEnrollments(c, namespace)
 }
 
-func (c *EventarcV1alpha1Client) EventarcGoogleApiSources(namespace string) EventarcGoogleApiSourceInterface {
-	return newEventarcGoogleApiSources(c, namespace)
+func (c *EventarcV1alpha1Client) EventarcGoogleAPISources(namespace string) EventarcGoogleAPISourceInterface {
+	return newEventarcGoogleAPISources(c, namespace)
 }
 
 func (c *EventarcV1alpha1Client) EventarcGoogleChannelConfigs(namespace string) EventarcGoogleChannelConfigInterface {

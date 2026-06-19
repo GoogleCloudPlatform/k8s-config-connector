@@ -21,7 +21,7 @@
 // resource: EventarcGoogleChannelConfig:GoogleChannelConfig
 // resource: EventarcEnrollment:Enrollment
 // resource: EventarcChannelConnection:ChannelConnection
-// resource: EventarcGoogleApiSource:GoogleApiSource
+// resource: EventarcGoogleAPISource:GoogleApiSource
 
 package v1alpha1
 

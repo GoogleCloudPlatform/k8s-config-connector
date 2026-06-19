@@ -20,11 +20,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var EventarcGoogleApiSourceGVK = GroupVersion.WithKind("EventarcGoogleApiSource")
+var EventarcGoogleAPISourceGVK = GroupVersion.WithKind("EventarcGoogleAPISource")
 
-// EventarcGoogleApiSourceSpec defines the desired state of EventarcGoogleApiSource
+// EventarcGoogleAPISourceSpec defines the desired state of EventarcGoogleAPISource
 // +kcc:spec:proto=google.cloud.eventarc.v1.GoogleApiSource
-type EventarcGoogleApiSourceSpec struct {
+type EventarcGoogleAPISourceSpec struct {
 	// The project that this resource belongs to.
 	// +kubebuilder:validation:Required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
@@ -33,7 +33,7 @@ type EventarcGoogleApiSourceSpec struct {
 	// +kubebuilder:validation:Required
 	Location *string `json:"location,omitempty"`
 
-	// The EventarcGoogleApiSource name. If not given, the metadata.name will be used.
+	// The EventarcGoogleAPISource name. If not given, the metadata.name will be used.
 	// +kubebuilder:validation:Optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -83,8 +83,8 @@ type LoggingConfig struct {
 	LogSeverity *string `json:"logSeverity,omitempty"`
 }
 
-// EventarcGoogleApiSourceStatus defines the config connector machine state of EventarcGoogleApiSource
-type EventarcGoogleApiSourceStatus struct {
+// EventarcGoogleAPISourceStatus defines the config connector machine state of EventarcGoogleAPISource
+type EventarcGoogleAPISourceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -92,16 +92,16 @@ type EventarcGoogleApiSourceStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the EventarcGoogleApiSource resource in GCP.
+	// A unique specifier for the EventarcGoogleAPISource resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *EventarcGoogleApiSourceObservedState `json:"observedState,omitempty"`
+	ObservedState *EventarcGoogleAPISourceObservedState `json:"observedState,omitempty"`
 }
 
-// EventarcGoogleApiSourceObservedState is the state of the EventarcGoogleApiSource resource as most recently observed in GCP.
+// EventarcGoogleAPISourceObservedState is the state of the EventarcGoogleAPISource resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.eventarc.v1.GoogleApiSource
-type EventarcGoogleApiSourceObservedState struct {
+type EventarcGoogleAPISourceObservedState struct {
 	// Output only. Server assigned unique identifier for the channel. The value
 	// is a UUID4 string and guaranteed to remain unchanged until the resource is
 	// deleted.
@@ -135,25 +135,25 @@ type EventarcGoogleApiSourceObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// EventarcGoogleApiSource is the Schema for the EventarcGoogleApiSource API
+// EventarcGoogleAPISource is the Schema for the EventarcGoogleAPISource API
 // +k8s:openapi-gen=true
-type EventarcGoogleApiSource struct {
+type EventarcGoogleAPISource struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   EventarcGoogleApiSourceSpec   `json:"spec,omitempty"`
-	Status EventarcGoogleApiSourceStatus `json:"status,omitempty"`
+	Spec   EventarcGoogleAPISourceSpec   `json:"spec,omitempty"`
+	Status EventarcGoogleAPISourceStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// EventarcGoogleApiSourceList contains a list of EventarcGoogleApiSource
-type EventarcGoogleApiSourceList struct {
+// EventarcGoogleAPISourceList contains a list of EventarcGoogleAPISource
+type EventarcGoogleAPISourceList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []EventarcGoogleApiSource `json:"items"`
+	Items           []EventarcGoogleAPISource `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&EventarcGoogleApiSource{}, &EventarcGoogleApiSourceList{})
+	SchemeBuilder.Register(&EventarcGoogleAPISource{}, &EventarcGoogleAPISourceList{})
 }

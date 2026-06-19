@@ -27,26 +27,26 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// fakeEventarcGoogleApiSources implements EventarcGoogleApiSourceInterface
-type fakeEventarcGoogleApiSources struct {
-	*gentype.FakeClientWithList[*v1alpha1.EventarcGoogleApiSource, *v1alpha1.EventarcGoogleApiSourceList]
+// fakeEventarcGoogleAPISources implements EventarcGoogleAPISourceInterface
+type fakeEventarcGoogleAPISources struct {
+	*gentype.FakeClientWithList[*v1alpha1.EventarcGoogleAPISource, *v1alpha1.EventarcGoogleAPISourceList]
 	Fake *FakeEventarcV1alpha1
 }
 
-func newFakeEventarcGoogleApiSources(fake *FakeEventarcV1alpha1, namespace string) eventarcv1alpha1.EventarcGoogleApiSourceInterface {
-	return &fakeEventarcGoogleApiSources{
-		gentype.NewFakeClientWithList[*v1alpha1.EventarcGoogleApiSource, *v1alpha1.EventarcGoogleApiSourceList](
+func newFakeEventarcGoogleAPISources(fake *FakeEventarcV1alpha1, namespace string) eventarcv1alpha1.EventarcGoogleAPISourceInterface {
+	return &fakeEventarcGoogleAPISources{
+		gentype.NewFakeClientWithList[*v1alpha1.EventarcGoogleAPISource, *v1alpha1.EventarcGoogleAPISourceList](
 			fake.Fake,
 			namespace,
 			v1alpha1.SchemeGroupVersion.WithResource("eventarcgoogleapisources"),
-			v1alpha1.SchemeGroupVersion.WithKind("EventarcGoogleApiSource"),
-			func() *v1alpha1.EventarcGoogleApiSource { return &v1alpha1.EventarcGoogleApiSource{} },
-			func() *v1alpha1.EventarcGoogleApiSourceList { return &v1alpha1.EventarcGoogleApiSourceList{} },
-			func(dst, src *v1alpha1.EventarcGoogleApiSourceList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.EventarcGoogleApiSourceList) []*v1alpha1.EventarcGoogleApiSource {
+			v1alpha1.SchemeGroupVersion.WithKind("EventarcGoogleAPISource"),
+			func() *v1alpha1.EventarcGoogleAPISource { return &v1alpha1.EventarcGoogleAPISource{} },
+			func() *v1alpha1.EventarcGoogleAPISourceList { return &v1alpha1.EventarcGoogleAPISourceList{} },
+			func(dst, src *v1alpha1.EventarcGoogleAPISourceList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.EventarcGoogleAPISourceList) []*v1alpha1.EventarcGoogleAPISource {
 				return gentype.ToPointerSlice(list.Items)
 			},
-			func(list *v1alpha1.EventarcGoogleApiSourceList, items []*v1alpha1.EventarcGoogleApiSource) {
+			func(list *v1alpha1.EventarcGoogleAPISourceList, items []*v1alpha1.EventarcGoogleAPISource) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),
