@@ -100,8 +100,21 @@ func (m *modelLoggingLogBucket) AdapterForObject(ctx context.Context, op *direct
 }
 
 func (m *modelLoggingLogBucket) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.LogBucketIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &LoggingLogBucketAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type LoggingLogBucketAdapter struct {
@@ -203,6 +216,7 @@ func (a *LoggingLogBucketAdapter) Export(ctx context.Context) (*unstructured.Uns
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	obj.Spec.Location = a.id.Location
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

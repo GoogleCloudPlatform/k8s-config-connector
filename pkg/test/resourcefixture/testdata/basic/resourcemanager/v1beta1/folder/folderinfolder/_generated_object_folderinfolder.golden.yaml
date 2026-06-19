@@ -17,7 +17,7 @@ spec:
   displayName: KCC-2 ${uniqueId}
   folderRef:
     external: ${folderID}
-  resourceID: ${folderId}
+  resourceID: ${folderID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -26,7 +26,7 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  folderId: ${folderId}
+  folderId: ${folderID}
   lifecycleState: ACTIVE
-  name: folders/${folderId}
+  name: folders/${folderID}
   observedGeneration: 3

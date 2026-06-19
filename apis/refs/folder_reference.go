@@ -95,3 +95,26 @@ func (r *FolderRef) Normalize(ctx context.Context, reader client.Reader, default
 	}
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
+
+// ResolveFolder will resolve a FolderRef to a FolderIdentity.
+// Deprecated: use Normalize on the FolderRef directly.
+func ResolveFolder(ctx context.Context, reader client.Reader, src client.Object, ref *FolderRef) (*FolderIdentity, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	namespace := ""
+	if src != nil {
+		namespace = src.GetNamespace()
+	}
+
+	if err := ref.Normalize(ctx, reader, namespace); err != nil {
+		return nil, err
+	}
+
+	id := &FolderIdentity{}
+	if err := id.FromExternal(ref.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}

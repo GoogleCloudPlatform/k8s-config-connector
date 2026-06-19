@@ -78,6 +78,12 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRBackupPlan"}:
 		exportURI = resolveCAISURI(h, obj)
 
+	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogBucket"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
+		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
+
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
 		exportURI = "//bigquery.googleapis.com/projects/" + projectID + "/datasets/" + resourceID
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryTable"}:
