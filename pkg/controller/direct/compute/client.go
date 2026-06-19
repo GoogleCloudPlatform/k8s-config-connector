@@ -23,6 +23,8 @@
 // proto.service: google.cloud.compute.v1.GlobalAddresses
 // proto.service: google.cloud.compute.v1.UrlMaps
 // proto.service: google.cloud.compute.v1.RegionUrlMaps
+// proto.service: google.cloud.compute.v1.Networks
+// proto.service: google.cloud.compute.v1.Routes
 
 package compute
 
@@ -279,6 +281,30 @@ func (m *gcpClient) newRegionUrlMapsClient(ctx context.Context) (*compute.Region
 	client, err := compute.NewRegionUrlMapsRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute RegionUrlMaps client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newNetworksClient(ctx context.Context) (*compute.NetworksClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewNetworksRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute networks client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newRoutesClient(ctx context.Context) (*compute.RoutesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewRoutesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute routes client: %w", err)
 	}
 	return client, err
 }
