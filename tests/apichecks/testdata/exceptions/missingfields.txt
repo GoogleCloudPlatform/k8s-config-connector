@@ -804,12 +804,7 @@
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.internalIpv6Range" is not set in unstructured objects
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.mtu" is not set in unstructured objects
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkFirewallPolicyEnforcementOrder" is not set in unstructured objects
-[missing_field] crd=computenodegroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscalingPolicy.maxNodes" is not set in unstructured objects
-[missing_field] crd=computenodegroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscalingPolicy.minNodes" is not set in unstructured objects
-[missing_field] crd=computenodegroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscalingPolicy.mode" is not set in unstructured objects
 [missing_field] crd=computenodegroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.initialSize" is not set in unstructured objects
-[missing_field] crd=computenodegroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy" is not set in unstructured objects
-[missing_field] crd=computenodegroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenanceWindow.startTime" is not set in unstructured objects
 [missing_field] crd=computenodegroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.shareSettings.projectMap[].idRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computenodegroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.shareSettings.projectMap[].projectIdRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computenodegroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.shareSettings.shareType" is not set in unstructured objects

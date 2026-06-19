@@ -84,9 +84,13 @@ func init() {
 		SkipUpdate:   true,
 	}
 
-	resourceContextMap["computenodegroup"] = ResourceContext{
+	resourceContextMap["computenodegroup-maximal"] = ResourceContext{
 		ResourceKind: "ComputeNodeGroup",
 		SkipUpdate:   true, // The only field which supports update is nodeTemplateRef, which currently cannot be used for testing updates because of b/147506185
+	}
+	resourceContextMap["computenodegroup-minimal"] = ResourceContext{
+		ResourceKind: "ComputeNodeGroup",
+		SkipUpdate:   true,
 	}
 
 	resourceContextMap["computesharedvpchostproject"] = ResourceContext{

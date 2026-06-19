@@ -74,7 +74,8 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkendpointgr
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkfirewallpolicy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkfirewallpolicyassociation
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkpeering
-pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenodegroup
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenodegroup/computenodegroup-maximal
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenodegroup/computenodegroup-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenodetemplate
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computepacketmirroring
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeprojectmetadata

@@ -401,6 +401,7 @@ conditions:
   status: string
   type: string
 creationTimestamp: string
+externalRef: string
 observedGeneration: integer
 selfLink: string
 ```
@@ -466,6 +467,13 @@ selfLink: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>Creation timestamp in RFC3339 text format.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A unique specifier for the ComputeNodeGroup resource in GCP.</p>
         </td>
     </tr>
     <tr>

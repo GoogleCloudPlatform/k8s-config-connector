@@ -1,0 +1,17 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeGroup
+metadata:
+  name: computenodegroup-${uniqueId}
+spec:
+  description: "Sole-tenant node group (maximal)"
+  nodeTemplateRef:
+    name: dep-${uniqueId}
+  size: 1
+  zone: us-central1-a
+  autoscalingPolicy:
+    maxNodes: 10
+    minNodes: 1
+    mode: ONLY_SCALE_OUT
+  maintenancePolicy: RESTART_IN_PLACE
+  maintenanceWindow:
+    startTime: "08:00"
