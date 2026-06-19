@@ -69,6 +69,7 @@ func DataflowFlexTemplateJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Fle
 	out.LauncherMachineType = direct.LazyPtr(in.GetLauncherMachineType())
 	// MISSING: EnableLauncherVMSerialPortLogging
 	// MISSING: StreamingMode
+	// MISSING: AdditionalPipelineOptions
 	return out
 }
 func DataflowFlexTemplateJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataflowFlexTemplateJobSpec) *pb.FlexTemplateRuntimeEnvironment {
@@ -109,6 +110,7 @@ func DataflowFlexTemplateJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Data
 	out.LauncherMachineType = direct.ValueOf(in.LauncherMachineType)
 	// MISSING: EnableLauncherVMSerialPortLogging
 	// MISSING: StreamingMode
+	// MISSING: AdditionalPipelineOptions
 	return out
 }
 
@@ -146,6 +148,7 @@ func DataflowJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Dataf
 	// MISSING: RuntimeUpdatableParams
 	// MISSING: SatisfiesPzi
 	// MISSING: ServiceResources
+	// MISSING: Pausable
 	return out
 }
 */
@@ -184,6 +187,7 @@ func DataflowJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataflowJobSpec)
 	// MISSING: RuntimeUpdatableParams
 	// MISSING: SatisfiesPzi
 	// MISSING: ServiceResources
+	// MISSING: Pausable
 	return out
 }
 */
@@ -222,6 +226,7 @@ func DataflowJobStatus_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Dat
 	// MISSING: RuntimeUpdatableParams
 	// MISSING: SatisfiesPzi
 	// MISSING: ServiceResources
+	// MISSING: Pausable
 	return out
 }
 */
@@ -260,6 +265,7 @@ func DataflowJobStatus_ToProto(mapCtx *direct.MapContext, in *krm.DataflowJobSta
 	// MISSING: RuntimeUpdatableParams
 	// MISSING: SatisfiesPzi
 	// MISSING: ServiceResources
+	// MISSING: Pausable
 	return out
 }
 */

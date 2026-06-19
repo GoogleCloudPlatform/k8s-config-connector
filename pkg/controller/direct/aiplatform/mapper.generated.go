@@ -357,6 +357,9 @@ func FeatureOnlineStore_Bigtable_FromProto(mapCtx *direct.MapContext, in *pb.Fea
 	}
 	out := &krm.FeatureOnlineStore_Bigtable{}
 	out.AutoScaling = FeatureOnlineStore_Bigtable_AutoScaling_FromProto(mapCtx, in.GetAutoScaling())
+	// MISSING: EnableDirectBigtableAccess
+	// MISSING: BigtableMetadata
+	// MISSING: Zone
 	return out
 }
 func FeatureOnlineStore_Bigtable_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStore_Bigtable) *pb.FeatureOnlineStore_Bigtable {
@@ -365,6 +368,9 @@ func FeatureOnlineStore_Bigtable_ToProto(mapCtx *direct.MapContext, in *krm.Feat
 	}
 	out := &pb.FeatureOnlineStore_Bigtable{}
 	out.AutoScaling = FeatureOnlineStore_Bigtable_AutoScaling_ToProto(mapCtx, in.AutoScaling)
+	// MISSING: EnableDirectBigtableAccess
+	// MISSING: BigtableMetadata
+	// MISSING: Zone
 	return out
 }
 func FeatureOnlineStore_Bigtable_AutoScaling_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore_Bigtable_AutoScaling) *krm.FeatureOnlineStore_Bigtable_AutoScaling {
