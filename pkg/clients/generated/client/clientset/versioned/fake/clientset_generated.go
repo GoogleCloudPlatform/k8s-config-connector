@@ -181,6 +181,8 @@ import (
 	fakedatafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1/fake"
 	datalabelingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalabeling/v1alpha1"
 	fakedatalabelingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalabeling/v1alpha1/fake"
+	datalineagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalineage/v1alpha1"
+	fakedatalineagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalineage/v1alpha1/fake"
 	datamigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datamigration/v1alpha1"
 	fakedatamigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datamigration/v1alpha1/fake"
 	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataplex/v1alpha1"
@@ -861,6 +863,11 @@ func (c *Clientset) DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Inter
 // DatalabelingV1alpha1 retrieves the DatalabelingV1alpha1Client
 func (c *Clientset) DatalabelingV1alpha1() datalabelingv1alpha1.DatalabelingV1alpha1Interface {
 	return &fakedatalabelingv1alpha1.FakeDatalabelingV1alpha1{Fake: &c.Fake}
+}
+
+// DatalineageV1alpha1 retrieves the DatalineageV1alpha1Client
+func (c *Clientset) DatalineageV1alpha1() datalineagev1alpha1.DatalineageV1alpha1Interface {
+	return &fakedatalineagev1alpha1.FakeDatalineageV1alpha1{Fake: &c.Fake}
 }
 
 // DatamigrationV1alpha1 retrieves the DatamigrationV1alpha1Client

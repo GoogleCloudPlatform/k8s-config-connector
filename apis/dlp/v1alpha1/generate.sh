@@ -28,7 +28,8 @@ go run . generate-types \
   --service google.privacy.dlp.v2 \
   --api-version dlp.cnrm.cloud.google.com/v1alpha1 \
   --resource DLPDiscoveryConfig:DiscoveryConfig \
-  --prune-unused-types=false
+  --resource DLPConnection:Connection \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

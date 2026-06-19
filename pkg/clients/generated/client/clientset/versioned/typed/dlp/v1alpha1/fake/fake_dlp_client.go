@@ -31,6 +31,10 @@ type FakeDlpV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeDlpV1alpha1) DLPConnections(namespace string) v1alpha1.DLPConnectionInterface {
+	return newFakeDLPConnections(c, namespace)
+}
+
 func (c *FakeDlpV1alpha1) DLPDiscoveryConfigs(namespace string) v1alpha1.DLPDiscoveryConfigInterface {
 	return newFakeDLPDiscoveryConfigs(c, namespace)
 }

@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(DataplexAspectType{}).Name(),
 	}
 
+	DataplexDataAttributeBindingGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataplexDataAttributeBinding{}).Name(),
+	}
+
 	DataplexDataTaxonomyGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
