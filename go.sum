@@ -613,6 +613,8 @@ cloud.google.com/go/dialogflow v1.48.0/go.mod h1:mHly4vU7cPXVweuB5R0zsYKPMzy240a
 cloud.google.com/go/dialogflow v1.48.1/go.mod h1:C1sjs2/g9cEwjCltkKeYp3FFpz8BOzNondEaAlCpt+A=
 cloud.google.com/go/dialogflow v1.48.2/go.mod h1:7A2oDf6JJ1/+hdpnFRfb/RjJUOh2X3rhIa5P8wQSEX4=
 cloud.google.com/go/dialogflow v1.49.0/go.mod h1:dhVrXKETtdPlpPhE7+2/k4Z8FRNUp6kMV3EW3oz/fe0=
+cloud.google.com/go/dialogflow v1.76.0 h1:hP9GY9TSVlZ277IGCPQjem9RW1PDtfYJw98DkRGt+t4=
+cloud.google.com/go/dialogflow v1.76.0/go.mod h1:mdLkMmSCghfcP85X9dFBlirC1OssS65KE5hrrSz2GXY=
 cloud.google.com/go/discoveryengine v1.22.0 h1:NQFGHmvIPHwZW/IT8zfMFPjJDwaJAlrMBL/FTi2toLU=
 cloud.google.com/go/discoveryengine v1.22.0/go.mod h1:wwjQ1QH8MBe8iQS1VxJCIy+WR4e0CXAoI7mDfwnKiNk=
 cloud.google.com/go/dlp v1.6.0/go.mod h1:9eyB2xIhpU0sVwUixfBubDoRwP+GjeUoxxeueZmqvmM=

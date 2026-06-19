@@ -34,3 +34,5 @@ type DialogflowGeneratorExpansion interface{}
 type DialogflowIntentExpansion interface{}
 
 type DialogflowKnowledgeBaseExpansion interface{}
+
+type DialogflowSecuritySettingsExpansion interface{}
