@@ -64,7 +64,7 @@ func (i *NetworkServicesGatewayIdentity) ParentString() string {
 	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-func getIdentityFromNetworkServicesGatewaySpec(ctx context.Context, reader client.Reader, obj *NetworkServicesGateway) (*NetworkServicesGatewayIdentity, error) {
+func NewNetworkServicesGatewayIdentity(ctx context.Context, reader client.Reader, obj *NetworkServicesGateway) (*NetworkServicesGatewayIdentity, error) {
 	resourceID, err := refsv1beta1.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
@@ -89,7 +89,7 @@ func getIdentityFromNetworkServicesGatewaySpec(ctx context.Context, reader clien
 }
 
 func (obj *NetworkServicesGateway) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromNetworkServicesGatewaySpec(ctx, reader, obj)
+	specIdentity, err := NewNetworkServicesGatewayIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}

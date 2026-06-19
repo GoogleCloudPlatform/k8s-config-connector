@@ -92,7 +92,7 @@ func (r *NetworkServicesGatewayRef) Normalize(ctx context.Context, reader client
 		if err != nil {
 			return ""
 		}
-		identity, err := getIdentityFromNetworkServicesGatewaySpec(ctx, reader, obj)
+		identity, err := NewNetworkServicesGatewayIdentity(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}
