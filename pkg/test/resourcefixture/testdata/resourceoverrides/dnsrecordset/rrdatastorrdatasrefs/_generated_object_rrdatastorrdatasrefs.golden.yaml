@@ -17,6 +17,7 @@ spec:
   managedZoneRef:
     name: dnsmanagedzone-${uniqueId}
   name: cnrm-dns-example-${uniqueId}.com.
+  rrdatas: []
   rrdatasRefs:
   - kind: ComputeAddress
     name: ${addressID}

@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "healthCheck \"projects/${projectId}/global/healthChecks/${healthCheckID}\" not found",
+        "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "healthCheck \"projects/${projectId}/global/healthChecks/${healthCheckID}\" not found"
+    "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found"
   }
 }
 
@@ -422,7 +422,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/${changeId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -678,7 +678,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/${changeId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -905,7 +905,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/${changeId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
