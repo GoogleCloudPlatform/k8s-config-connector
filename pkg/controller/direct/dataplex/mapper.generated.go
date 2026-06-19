@@ -165,6 +165,36 @@ func AssetStatus_ToProto(mapCtx *direct.MapContext, in *krm.AssetStatus) *pb.Ass
 	out.SecurityPolicyApplyingAssets = direct.ValueOf(in.SecurityPolicyApplyingAssets)
 	return out
 }
+func DataAttributeBindingPath_FromProto(mapCtx *direct.MapContext, in *pb.DataAttributeBinding_Path) *krm.DataAttributeBindingPath {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataAttributeBindingPath{}
+	out.Name = direct.LazyPtr(in.GetName())
+
+	if v := in.GetAttributes(); len(v) != 0 {
+		for i := range v {
+			out.AttributeRefs = append(out.AttributeRefs, krm.DataAttributeRef{External: v[i]})
+		}
+	}
+
+	return out
+}
+func DataAttributeBindingPath_ToProto(mapCtx *direct.MapContext, in *krm.DataAttributeBindingPath) *pb.DataAttributeBinding_Path {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAttributeBinding_Path{}
+	out.Name = direct.ValueOf(in.Name)
+
+	if v := in.AttributeRefs; len(v) != 0 {
+		for i := range v {
+			out.Attributes = append(out.Attributes, v[i].External)
+		}
+	}
+
+	return out
+}
 func DataplexAspectTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.DataplexAspectTypeObservedState {
 	if in == nil {
 		return nil
@@ -217,6 +247,32 @@ func DataplexAspectTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexA
 	// MISSING: Labels
 	out.Authorization = AspectType_Authorization_ToProto(mapCtx, in.Authorization)
 	out.MetadataTemplate = AspectType_MetadataTemplate_ToProto(mapCtx, in.MetadataTemplate)
+	return out
+}
+func DataplexDataAttributeBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataAttributeBinding) *krm.DataplexDataAttributeBindingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataAttributeBindingObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	// MISSING: Attributes
+	return out
+}
+func DataplexDataAttributeBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataAttributeBindingObservedState) *pb.DataAttributeBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAttributeBinding{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	// MISSING: Attributes
 	return out
 }
 func DataplexDataTaxonomyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataTaxonomy) *krm.DataplexDataTaxonomyObservedState {

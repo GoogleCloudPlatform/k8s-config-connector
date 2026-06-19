@@ -304,6 +304,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				if krmFieldRefs := goFields[strings.TrimSuffix(krmFieldName, "s")+"Refs"]; krmFieldRefs != nil {
+					isPointerSlice := strings.HasPrefix(krmFieldRefs.Type, "[]*")
 					template := `
 						if v := in.{protoAccessor}; len(v) != 0 {
 							for i := range v {
@@ -311,8 +312,19 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 							}
 						}
 					`
+					if !isPointerSlice {
+						template = `
+						if v := in.{protoAccessor}; len(v) != 0 {
+							for i := range v {
+								out.{KRMField} = append(out.{KRMField}, {RefType}{External: v[i]})
+							}
+						}
+					`
+					}
 
-					qualifiedTypeName := strings.TrimPrefix(krmFieldRefs.Type, "*")
+					qualifiedTypeName := krmFieldRefs.Type
+					qualifiedTypeName = strings.TrimPrefix(qualifiedTypeName, "[]")
+					qualifiedTypeName = strings.TrimPrefix(qualifiedTypeName, "*")
 					tokens := strings.SplitN(qualifiedTypeName, ".", 2)
 					if len(tokens) > 1 {
 						alias := v.getGoImportAlias(krmFieldRefs.GoPackage)

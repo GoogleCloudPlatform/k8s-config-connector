@@ -84,6 +84,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                         true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                          true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/aspectTypes/{}":                         true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/dataAttributeBindings/{}":               true,
 		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}":                    true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":        true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                   true,
