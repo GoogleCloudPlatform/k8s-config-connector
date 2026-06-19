@@ -3780,6 +3780,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - vectorsearch.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - vertexai.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5127,6 +5139,14 @@ rules:
   - watch
 - apiGroups:
   - tpu.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - vectorsearch.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
