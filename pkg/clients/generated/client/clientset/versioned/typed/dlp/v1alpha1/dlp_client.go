@@ -31,12 +31,17 @@ import (
 
 type DlpV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	DLPConnectionsGetter
 	DLPDiscoveryConfigsGetter
 }
 
 // DlpV1alpha1Client is used to interact with features provided by the dlp.cnrm.cloud.google.com group.
 type DlpV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *DlpV1alpha1Client) DLPConnections(namespace string) DLPConnectionInterface {
+	return newDLPConnections(c, namespace)
 }
 
 func (c *DlpV1alpha1Client) DLPDiscoveryConfigs(namespace string) DLPDiscoveryConfigInterface {

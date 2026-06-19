@@ -18,12 +18,9 @@
 // krm.version: v1alpha1
 // proto.service: google.privacy.dlp.v2
 // resource: DLPDiscoveryConfig:DiscoveryConfig
+// resource: DLPConnection:Connection
 
 package v1alpha1
-
-import (
-	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-)
 
 // +kcc:proto=google.privacy.dlp.v2.AllOtherDatabaseResources
 type AllOtherDatabaseResources struct {
@@ -184,6 +181,50 @@ type CloudSQLDiscoveryTarget struct {
 	Disabled *Disabled `json:"disabled,omitempty"`
 }
 
+/* found existing non-generated go type "CloudSQLIAMCredential", skipping
+
+// +kcc:proto=google.privacy.dlp.v2.CloudSqlIamCredential
+type CloudSQLIAMCredential struct {
+}
+*/
+
+/* found existing non-generated go type "CloudSQLProperties", skipping
+
+// +kcc:proto=google.privacy.dlp.v2.CloudSqlProperties
+type CloudSQLProperties struct {
+	// Optional. Immutable. The Cloud SQL instance for which the connection is
+	//  defined. Only one connection per instance is allowed. This can only be set
+	//  at creation time, and cannot be updated.
+	//
+	//  It is an error to use a connection_name from different project or region
+	//  than the one that holds the connection.
+	//  For example, a Connection resource for Cloud SQL connection_name
+	//  `project-id:us-central1:sql-instance`
+	//  must be created under the parent
+	//  `projects/project-id/locations/us-central1`
+	// +kcc:proto:field=google.privacy.dlp.v2.CloudSqlProperties.connection_name
+	ConnectionName *string `json:"connectionName,omitempty"`
+
+	// A username and password stored in Secret Manager.
+	// +kcc:proto:field=google.privacy.dlp.v2.CloudSqlProperties.username_password
+	UsernamePassword *SecretManagerCredential `json:"usernamePassword,omitempty"`
+
+	// Built-in IAM authentication (must be configured in Cloud SQL).
+	// +kcc:proto:field=google.privacy.dlp.v2.CloudSqlProperties.cloud_sql_iam
+	CloudSQLIAM *CloudSQLIAMCredential `json:"cloudSQLIAM,omitempty"`
+
+	// Required. The DLP API will limit its connections to max_connections.
+	//  Must be 2 or greater.
+	// +kcc:proto:field=google.privacy.dlp.v2.CloudSqlProperties.max_connections
+	MaxConnections *int32 `json:"maxConnections,omitempty"`
+
+	// Required. The database engine used by the Cloud SQL instance that this
+	//  connection configures.
+	// +kcc:proto:field=google.privacy.dlp.v2.CloudSqlProperties.database_engine
+	DatabaseEngine *string `json:"databaseEngine,omitempty"`
+}
+*/
+
 // +kcc:proto=google.privacy.dlp.v2.CloudStorageDiscoveryTarget
 type CloudStorageDiscoveryTarget struct {
 	// Required. The buckets the generation_cadence applies to. The first target
@@ -231,6 +272,21 @@ type CloudStorageResourceReference struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.CloudStorageResourceReference.project_id
 	ProjectID *string `json:"projectID,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.privacy.dlp.v2.Connection", skipping
+
+// +kcc:proto=google.privacy.dlp.v2.Connection
+type Connection struct {
+
+	// Required. The connection's state in its lifecycle.
+	// +kcc:proto:field=google.privacy.dlp.v2.Connection.state
+	State *string `json:"state,omitempty"`
+
+	// Connect to a Cloud SQL instance.
+	// +kcc:proto:field=google.privacy.dlp.v2.Connection.cloud_sql
+	CloudSQL *CloudSQLProperties `json:"cloudSQL,omitempty"`
+}
+*/
 
 // +kcc:proto=google.privacy.dlp.v2.DataProfileAction
 type DataProfileAction struct {
@@ -304,6 +360,33 @@ type DataProfileAction_Export struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.DataProfileAction.Export.sample_findings_table
 	SampleFindingsTable *BigQueryTable `json:"sampleFindingsTable,omitempty"`
 }
+
+/* found existing non-generated go type "DataProfileAction_PubSubNotification", skipping
+
+// +kcc:proto=google.privacy.dlp.v2.DataProfileAction.PubSubNotification
+type DataProfileAction_PubSubNotification struct {
+	// Cloud Pub/Sub topic to send notifications to.
+	//  Format is projects/{project}/topics/{topic}.
+	// +kcc:proto:field=google.privacy.dlp.v2.DataProfileAction.PubSubNotification.topic
+	Topic *string `json:"topic,omitempty"`
+
+	// The type of event that triggers a Pub/Sub. At most one
+	//  `PubSubNotification` per EventType is permitted.
+	// +kcc:proto:field=google.privacy.dlp.v2.DataProfileAction.PubSubNotification.event
+	Event *string `json:"event,omitempty"`
+
+	// Conditions (e.g., data risk or sensitivity level) for triggering a
+	//  Pub/Sub.
+	// +kcc:proto:field=google.privacy.dlp.v2.DataProfileAction.PubSubNotification.pubsub_condition
+	PubsubCondition *DataProfilePubSubCondition `json:"pubsubCondition,omitempty"`
+
+	// How much data to include in the Pub/Sub message. If the user wishes to
+	//  limit the size of the message, they can use resource_name and fetch the
+	//  profile fields they wish to. Per table profile (not per column).
+	// +kcc:proto:field=google.privacy.dlp.v2.DataProfileAction.PubSubNotification.detail_of_message
+	DetailOfMessage *string `json:"detailOfMessage,omitempty"`
+}
+*/
 
 // +kcc:proto=google.privacy.dlp.v2.DataProfileAction.PublishToChronicle
 type DataProfileAction_PublishToChronicle struct {
@@ -649,6 +732,67 @@ type DiscoveryCloudStorageGenerationCadence struct {
 	InspectTemplateModifiedCadence *DiscoveryInspectTemplateModifiedCadence `json:"inspectTemplateModifiedCadence,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.privacy.dlp.v2.DiscoveryConfig", skipping
+
+// +kcc:proto=google.privacy.dlp.v2.DiscoveryConfig
+type DiscoveryConfig struct {
+	// Unique resource name for the DiscoveryConfig, assigned by the service when
+	//  the DiscoveryConfig is created, for example
+	//  `projects/dlp-test-project/locations/global/discoveryConfigs/53234423`.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// Display name (max 100 chars)
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Only set when the parent is an org.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.org_config
+	OrgConfig *DiscoveryConfig_OrgConfig `json:"orgConfig,omitempty"`
+
+	// Must be set only when scanning other clouds.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.other_cloud_starting_location
+	OtherCloudStartingLocation *OtherCloudDiscoveryStartingLocation `json:"otherCloudStartingLocation,omitempty"`
+
+	// Detection logic for profile generation.
+	//
+	//  Not all template features are used by Discovery. FindingLimits,
+	//  include_quote and exclude_info_types have no impact on
+	//  Discovery.
+	//
+	//  Multiple templates may be provided if there is data in multiple regions.
+	//  At most one template must be specified per-region (including "global").
+	//  Each region is scanned using the applicable template. If no region-specific
+	//  template is specified, but a "global" template is specified, it will be
+	//  copied to that region and used instead. If no global or region-specific
+	//  template is provided for a region with data, that region's data will not be
+	//  scanned.
+	//
+	//  For more information, see
+	//  https://cloud.google.com/sensitive-data-protection/docs/data-profiles#data-residency.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.inspect_templates
+	InspectTemplates []string `json:"inspectTemplates,omitempty"`
+
+	// Actions to execute at the completion of scanning.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.actions
+	Actions []DataProfileAction `json:"actions,omitempty"`
+
+	// Target to match against for determining what to scan and how frequently.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.targets
+	Targets []DiscoveryTarget `json:"targets,omitempty"`
+
+	// Required. A status for this configuration.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.status
+	Status *string `json:"status,omitempty"`
+
+	// Optional. Processing location configuration. Vertex AI dataset scanning
+	//  will set processing_location.image_fallback_type to MultiRegionProcessing
+	//  by default.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.processing_location
+	ProcessingLocation *ProcessingLocation `json:"processingLocation,omitempty"`
+}
+*/
+
 // +kcc:proto=google.privacy.dlp.v2.DiscoveryConfig.OrgConfig
 type DiscoveryConfig_OrgConfig struct {
 	// The data to scan: folder, org, or project
@@ -881,6 +1025,8 @@ type DiscoveryVertexDatasetGenerationCadence struct {
 	InspectTemplateModifiedCadence *DiscoveryInspectTemplateModifiedCadence `json:"inspectTemplateModifiedCadence,omitempty"`
 }
 
+/* found existing non-generated go type "Error", skipping
+
 // +kcc:proto=google.privacy.dlp.v2.Error
 type Error struct {
 	// Detailed error codes and messages.
@@ -896,6 +1042,7 @@ type Error struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.Error.extra_info
 	ExtraInfo *string `json:"extraInfo,omitempty"`
 }
+*/
 
 // +kcc:proto=google.privacy.dlp.v2.FileStoreCollection
 type FileStoreCollection struct {
@@ -1030,6 +1177,21 @@ type ProcessingLocation_ImageFallbackLocation struct {
 type ProcessingLocation_MultiRegionProcessing struct {
 }
 
+/* found existing non-generated go type "SecretManagerCredential", skipping
+
+// +kcc:proto=google.privacy.dlp.v2.SecretManagerCredential
+type SecretManagerCredential struct {
+	// Required. The username.
+	// +kcc:proto:field=google.privacy.dlp.v2.SecretManagerCredential.username
+	Username *string `json:"username,omitempty"`
+
+	// Required. The name of the Secret Manager resource that stores the password,
+	//  in the form `projects/project-id/secrets/secret-name/versions/version`.
+	// +kcc:proto:field=google.privacy.dlp.v2.SecretManagerCredential.password_secret_version_name
+	PasswordSecretVersionName *string `json:"passwordSecretVersionName,omitempty"`
+}
+*/
+
 // +kcc:proto=google.privacy.dlp.v2.SecretsDiscoveryTarget
 type SecretsDiscoveryTarget struct {
 }
@@ -1113,6 +1275,22 @@ type VertexDatasetResourceReference struct {
 	DatasetResourceName *string `json:"datasetResourceName,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.privacy.dlp.v2.Connection", skipping
+
+// +kcc:observedstate:proto=google.privacy.dlp.v2.Connection
+type ConnectionObservedState struct {
+	// Output only. Name of the connection:
+	//  `projects/{project}/locations/{location}/connections/{name}`.
+	// +kcc:proto:field=google.privacy.dlp.v2.Connection.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. Set if status == ERROR, to provide additional details. Will
+	//  store the last 10 errors sorted with the most recent first.
+	// +kcc:proto:field=google.privacy.dlp.v2.Connection.errors
+	Errors []Error `json:"errors,omitempty"`
+}
+*/
+
 // +kcc:observedstate:proto=google.privacy.dlp.v2.DataSourceType
 type DataSourceTypeObservedState struct {
 	// Output only. An identifying string to the type of resource being profiled.
@@ -1125,6 +1303,35 @@ type DataSourceTypeObservedState struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.DataSourceType.data_source
 	DataSource *string `json:"dataSource,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.privacy.dlp.v2.DiscoveryConfig", skipping
+
+// +kcc:observedstate:proto=google.privacy.dlp.v2.DiscoveryConfig
+type DiscoveryConfigObservedState struct {
+	// Target to match against for determining what to scan and how frequently.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.targets
+	Targets []DiscoveryTargetObservedState `json:"targets,omitempty"`
+
+	// Output only. A stream of errors encountered when the config was activated.
+	//  Repeated errors may result in the config automatically being paused. Output
+	//  only field. Will return the last 100 errors. Whenever the config is
+	//  modified this list will be cleared.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.errors
+	Errors []Error `json:"errors,omitempty"`
+
+	// Output only. The creation timestamp of a DiscoveryConfig.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last update timestamp of a DiscoveryConfig.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The timestamp of the last time this config was executed.
+	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.last_run_time
+	LastRunTime *string `json:"lastRunTime,omitempty"`
+}
+*/
 
 // +kcc:observedstate:proto=google.privacy.dlp.v2.DiscoveryTarget
 type DiscoveryTargetObservedState struct {
