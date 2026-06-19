@@ -41,7 +41,19 @@ func TestURLToUnstructuredStream(t *testing.T) {
 	testyaml.AssertFileContentsMatchValue(t, spannerDatabaseURLGoldenFile, unstructs)
 }
 
+func TestURLToUnstructuredStreamWithDisableDirect(t *testing.T) {
+	unstructuredStream := newTestUnstructuredResourceStreamFromURLWithDisableDirect(t, spannerDatabaseURL, true)
+	unstructs := unstructuredStreamToSlice(t, unstructuredStream)
+	if len(unstructs) == 0 {
+		t.Fatalf("expected at least 1 unstructured resource, got 0")
+	}
+}
+
 func newTestUnstructuredResourceStreamFromURL(t *testing.T, url string) *stream.URLToUnstructuredResourceStream {
+	return newTestUnstructuredResourceStreamFromURLWithDisableDirect(t, url, false)
+}
+
+func newTestUnstructuredResourceStreamFromURLWithDisableDirect(t *testing.T, url string, disableDirect bool) *stream.URLToUnstructuredResourceStream {
 	ctx := context.TODO()
 
 	mockClient := newMockGCPClient(t)
@@ -57,5 +69,5 @@ func newTestUnstructuredResourceStreamFromURL(t *testing.T, url string) *stream.
 		t.Fatalf("error initializing controller config: %v", err)
 	}
 
-	return stream.NewUnstructuredResourceStreamFromURL(url, tfProvider, smLoader, mockClient, httpClient, controllerConfig)
+	return stream.NewUnstructuredResourceStreamFromURL(url, tfProvider, smLoader, mockClient, httpClient, controllerConfig, disableDirect)
 }

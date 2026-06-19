@@ -47,7 +47,11 @@ This skill guides an automated agent through the process of implementing a round
 5. **Verify with Fuzzer Tests**
    - Ensure the package is registered centrally by adding an import of the package in `pkg/controller/direct/register/register.go`.
    - **CRITICAL / DO NOT**: Never create a separate test file (e.g. `<resource>_fuzzer_test.go` or any `*_test.go` file inside the direct controller directories) for individual fuzzers. Creating custom, single-fuzzer unit tests is strictly discouraged and will fail reviews. All fuzzers are registered via `init()` and executed centrally under the central fuzz test suite.
-   - Run the central fuzz tests quickly to verify your implementation:
+   - Run the central fuzz tests quickly to verify your implementation. You can target a specific fuzzer by setting the `FOCUS` environment variable:
+     ```bash
+     FOCUS=<ResourceKind> go test -count=1 -v ./pkg/fuzztesting/fuzztests/ -run TestFocusedMappers
+     ```
+     Alternatively, run the entire suite:
      ```bash
      go test -count=1 -v ./pkg/fuzztesting/fuzztests/
      ```

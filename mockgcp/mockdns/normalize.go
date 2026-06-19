@@ -71,6 +71,9 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				if kind == "dns#managedZone" {
 					replacements.ReplaceStringValue(value, "${managedZoneId}")
 				}
+				if kind == "dns#responsePolicy" {
+					replacements.ReplaceStringValue(value, "${dnsResponsePolicyId}")
+				}
 			}
 		}
 	})

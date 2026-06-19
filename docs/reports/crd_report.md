@@ -98,6 +98,7 @@
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationAttestor                     | False        | True        | False  | DCL        | False       |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPlatformPolicy               | True         | False       | False  | Direct     | True        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPolicy                       | False        | True        | False  | DCL        | False       |
+| blockchainnodeengine.cnrm.cloud.google.com    | BlockchainNodeEngineBlockchainNode              | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com   | CCInsightsConversation                          | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com   | CCInsightsIssueModel                            | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com   | CCInsightsPhraseMatcher                         | True         | False       | False  | Direct     | True        |
@@ -287,6 +288,7 @@
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineDataStoreTargetSite              | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineEngine                           | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineIdentityMappingStore             | True         | False       | False  | Direct     | True        |
+| discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineSampleQuerySet                   | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                     | DLPDeidentifyTemplate                           | False        | True        | False  | DCL        | False       |
 | dlp.cnrm.cloud.google.com                     | DLPDiscoveryConfig                              | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                     | DLPInspectTemplate                              | False        | True        | False  | DCL        | False       |
@@ -461,7 +463,7 @@
 | recaptchaenterprise.cnrm.cloud.google.com     | ReCAPTCHAEnterpriseFirewallPolicy               | True         | False       | False  | Direct     | True        |
 | recaptchaenterprise.cnrm.cloud.google.com     | RecaptchaEnterpriseKey                          | False        | True        | False  | DCL        | False       |
 | redis.cnrm.cloud.google.com                   | RedisCluster                                    | True         | True        | False  | Direct     | True        |
-| redis.cnrm.cloud.google.com                   | RedisInstance                                   | False        | True        | False  | Terraform  | False       |
+| redis.cnrm.cloud.google.com                   | RedisInstance                                   | False        | True        | False  | Terraform  | True        |
 | resourcemanager.cnrm.cloud.google.com         | ResourceManagerLien                             | False        | True        | False  | Terraform  | False       |
 | resourcemanager.cnrm.cloud.google.com         | ResourceManagerPolicy                           | False        | True        | False  | Terraform  | False       |
 | run.cnrm.cloud.google.com                     | RunJob                                          | False        | True        | False  | Terraform  | True        |

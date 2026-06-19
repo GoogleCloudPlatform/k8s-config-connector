@@ -16,18 +16,18 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &ComputeSSLPolicyRef{}
+var _ refs.Ref = &ComputeSSLPolicyRef{}
 
 var ComputeSSLPolicyGVK = schema.GroupVersionKind{
 	Group:   "compute.cnrm.cloud.google.com",
@@ -35,9 +35,11 @@ var ComputeSSLPolicyGVK = schema.GroupVersionKind{
 	Kind:    "ComputeSSLPolicy",
 }
 
-// A reference to a ComputeSSLPolicy resource.
+// ComputeSSLPolicyRef is a reference to a GCP ComputeSSLPolicy.
 type ComputeSSLPolicyRef struct {
-	// Allowed value: The `selfLink` field of a `ComputeSSLPolicy` resource.
+	// A reference to an externally managed ComputeSSLPolicy resource.
+	// Should be in the format "projects/{{projectID}}/global/sslPolicies/{{sslPolicyID}}"
+	// or "projects/{{projectID}}/regions/{{region}}/sslPolicies/{{sslPolicyID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeSSLPolicy resource.
@@ -45,6 +47,10 @@ type ComputeSSLPolicyRef struct {
 
 	// The namespace of a ComputeSSLPolicy resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&ComputeSSLPolicyRef{})
 }
 
 func (r *ComputeSSLPolicyRef) GetGVK() schema.GroupVersionKind {
@@ -69,50 +75,47 @@ func (r *ComputeSSLPolicyRef) SetExternal(ref string) {
 }
 
 func (r *ComputeSSLPolicyRef) ValidateExternal(ref string) error {
+	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
+	id := &ComputeSSLPolicyIdentity{}
+	if err := id.FromExternal(trimmedRef); err != nil {
+		return err
+	}
 	return nil
+}
+
+func (r *ComputeSSLPolicyRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ComputeSSLPolicyIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
 func (r *ComputeSSLPolicyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.GetExternal() != "" {
-		return r.ValidateExternal(r.GetExternal())
-	}
-	key := r.GetNamespacedName()
-	if key.Namespace == "" {
-		key.Namespace = defaultNamespace
-	}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(r.GetGVK())
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return fmt.Errorf("reading referenced %s %s: %w", r.GetGVK(), key, err)
+	if r.External != "" {
+		r.External = apirefs.TrimComputeURIPrefix(r.External)
 	}
 
-	// Get external from status.externalRef. This is the most trustworthy place.
-	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if externalRef == "" {
-		if externalRef, err = sslPolicyLegacyExternalRef(ctx, reader, u); err != nil {
-			return err
+	fallback := func(u *unstructured.Unstructured) string {
+		// Get external from status.selfLink. This ensures backward compatibility for TF/DCL-based resources that lack status.externalRef.
+		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		if selfLink != "" {
+			trimmed := apirefs.TrimComputeURIPrefix(selfLink)
+			id := &ComputeSSLPolicyIdentity{}
+			if err := id.FromExternal(trimmed); err == nil {
+				return trimmed
+			}
 		}
-	}
-	if externalRef == "" {
-		return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.SetExternal(externalRef)
-	return nil
-}
 
-func sslPolicyLegacyExternalRef(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (string, error) {
-	selfLink, found, err := unstructured.NestedString(u.Object, "status", "selfLink")
-	if err != nil {
-		return "", fmt.Errorf("reading status.selfLink: %w", err)
+		obj, err := common.ToStructuredType[*ComputeSSLPolicy](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromComputeSSLPolicySpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
 	}
-	if !found || selfLink == "" {
-		return "", nil
-	}
-	return selfLink, nil
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

@@ -19,6 +19,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkedgesecur
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkfirewallpolicyrule/computenetworkfirewallpolicyrulebasic
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeorganizationsecuritypolicy/organizationsecuritypolicyautogen
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeregiondiskresourcepolicyattachment/regiondiskresourcepolicyattachmentautogen
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeaddress/computeaddressipcollection
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeaddress/globalcomputeaddress
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeaddress/regionalcomputeaddress
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendbucket

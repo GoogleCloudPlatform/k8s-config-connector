@@ -42,6 +42,7 @@ type MockService struct {
 	managedZonesService       *managedZonesService
 	resourceRecordSetsService *resourceRecordSetsService
 	policiesService           *policiesService
+	responsePoliciesService   *responsePoliciesService
 }
 
 // New creates a dnsService.
@@ -54,6 +55,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 	s.resourceRecordSetsService = &resourceRecordSetsService{MockService: s}
 	s.managedZonesService = &managedZonesService{MockService: s}
 	s.policiesService = &policiesService{MockService: s}
+	s.responsePoliciesService = &responsePoliciesService{MockService: s}
 	return s
 }
 
@@ -66,6 +68,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterManagedZoneOperationsServerServer(grpcServer, s.operations)
 	pb.RegisterResourceRecordSetsServerServer(grpcServer, s.resourceRecordSetsService)
 	pb.RegisterPoliciesServerServer(grpcServer, s.policiesService)
+	pb.RegisterResponsePoliciesServerServer(grpcServer, s.responsePoliciesService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -74,6 +77,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterResourceRecordSetsServerHandler,
 		pb.RegisterManagedZoneOperationsServerHandler,
 		pb.RegisterPoliciesServerHandler,
+		pb.RegisterResponsePoliciesServerHandler,
 	)
 
 	if err != nil {

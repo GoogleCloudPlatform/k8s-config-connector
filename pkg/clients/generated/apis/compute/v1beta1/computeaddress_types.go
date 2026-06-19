@@ -51,6 +51,14 @@ type ComputeAddressSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Immutable. The PublicDelegatedPrefix IP collection from which to
+	reserve the address. Only external IPv4 addresses can use this.
+
+	Warning: Since ComputePublicDelegatedPrefix is not yet supported as a Config Connector resource,
+	only the 'external' field of this reference can be used. */
+	// +optional
+	IpCollectionRef *v1alpha1.ResourceRef `json:"ipCollectionRef,omitempty"`
+
 	/* Immutable. The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"]. */
 	// +optional
 	IpVersion *string `json:"ipVersion,omitempty"`

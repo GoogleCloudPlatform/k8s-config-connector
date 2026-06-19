@@ -1,0 +1,16 @@
+4,10c4
+<   annotations:
+<     cnrm.cloud.google.com/project-id: ${projectId}
+<   labels:
+<     cnrm-test: "true"
+<     label-one: value-one
+<     managed-by-cnrm: "true"
+<   name: arrepository-${uniqueId}
+---
+>   name: projects-${projectId}-locations-us-west1-repositories-arrepository-${uniqueId}
+14c8
+<   location: us-west1
+---
+>   location: ""
+16d9
+<   resourceID: arrepository-${uniqueId}

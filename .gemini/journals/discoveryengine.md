@@ -10,6 +10,12 @@
 - **Solution**: Added the exception to pkg/gcpurls/registry_test.go.
 - **Impact**: Agents must remember to add unregistered URL templates to registry_test.go when the resource is not supported by CAIS to prevent test failures.
 
+### [2026-06-03] DiscoveryEngine mixed v1 and v1beta service types generation
+- **Context**: Implementing direct types for DiscoveryEngineSampleQuerySet (Issue #8713).
+- **Problem**: `SampleQuerySet` is defined under `google.cloud.discoveryengine.v1beta`, but all other discoveryengine resources in `apis/discoveryengine/v1alpha1` are under `google.cloud.discoveryengine.v1`. Sequential runs of `generate-types` overwrite `types.generated.go`, deleting the other service's types and breaking compilation.
+- **Solution**: Updated `generate.sh` to rename `types.generated.go` to `v1_types.generated.go` and `v1beta_types.generated.go` during sequential generation runs. The `PruneTypes` linter and Go `deepcopy` generator correctly parse all `*.generated.go` files, allowing types from both services to coexist and compile flawlessly.
+- **Impact**: Enables co-existence of types from multiple service API versions under the same KCC group version folder without generation conflicts.
+
 ### [2026-06-05] DiscoveryEngineConversation Type Generation and Mapper Limitation
 - **Context**: Implementing initial KRM types and IdentityV2 for `DiscoveryEngineConversation`.
 - **Problem**: When generating types, nested protobuf types under skipped messages (e.g. `SearchResponse.Summary` inside `SearchResponse` which has the suffix `Response` and is thus skipped in `generatemappercommand.go`) did not get their mapper functions generated. Additionally, when types are first generated, they are commented out in `types.generated.go` as unreachable until the manual spec/status structs reference them.

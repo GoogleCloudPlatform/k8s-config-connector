@@ -29,6 +29,24 @@ import (
 	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1beta1"
 )
 
+func ServiceIdentity_FromProto(mapCtx *direct.MapContext, in *pb.ServiceIdentity) *krm.ServiceIdentity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceIdentity{}
+	// MISSING: Email
+	// MISSING: UniqueID
+	return out
+}
+func ServiceIdentity_ToProto(mapCtx *direct.MapContext, in *krm.ServiceIdentity) *pb.ServiceIdentity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceIdentity{}
+	// MISSING: Email
+	// MISSING: UniqueID
+	return out
+}
 func ServiceIdentityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceIdentity) *krm.ServiceIdentityObservedState {
 	if in == nil {
 		return nil

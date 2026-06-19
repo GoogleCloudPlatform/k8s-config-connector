@@ -133,10 +133,7 @@ transitEncryptionMode: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Only applicable to STANDARD_HA tier which protects the instance
-against zonal failures by provisioning it across two zones.
-If provided, it must be a different zone from the one provided in
-[locationId].</p>
+            <p>Immutable. Only applicable to STANDARD_HA tier which protects the instance against zonal failures by provisioning it across two zones. If provided, it must be a different zone from the one provided in [locationId].</p>
         </td>
     </tr>
     <tr>
@@ -146,9 +143,7 @@ If provided, it must be a different zone from the one provided in
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Optional. Indicates whether OSS Redis AUTH is enabled for the
-instance. If set to "true" AUTH is enabled on the instance.
-Default value is "false" meaning AUTH is disabled.</p>
+            <p>Optional. Indicates whether OSS Redis AUTH is enabled for the instance. If set to "true" AUTH is enabled on the instance. Default value is "false" meaning AUTH is disabled.</p>
         </td>
     </tr>
     <tr>
@@ -168,8 +163,7 @@ Default value is "false" meaning AUTH is disabled.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The network to which the instance is connected. If left
-unspecified, the default network will be used.</p>
+            <p>The network to which the instance is connected. If left unspecified, the default network will be used.</p>
         </td>
     </tr>
     <tr>
@@ -219,9 +213,7 @@ unspecified, the default network will be used.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. The KMS key reference that you want to use to
-encrypt the data at rest for this Redis instance. If this is
-provided, CMEK is enabled.</p>
+            <p>Immutable. Optional. The KMS key reference that you want to use to encrypt the data at rest for this Redis instance. If this is provided, CMEK is enabled.</p>
         </td>
     </tr>
     <tr>
@@ -271,11 +263,7 @@ provided, CMEK is enabled.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The zone where the instance will be provisioned. If not provided,
-the service will choose a zone for the instance. For STANDARD_HA tier,
-instances will be created across two zones for protection against
-zonal failures. If [alternativeLocationId] is also provided, it must
-be different from [locationId].</p>
+            <p>Immutable. The zone where the instance will be provisioned. If not provided, the service will choose a zone for the instance. For STANDARD_HA tier, instances will be created across two zones for protection against zonal failures. If [alternativeLocationId] is also provided, it must be different from [locationId].</p>
         </td>
     </tr>
     <tr>
@@ -295,9 +283,7 @@ be different from [locationId].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The time when the policy was created.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-resolution and up to nine fractional digits.</p>
+            <p>Output only. The time when the policy was created. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.</p>
         </td>
     </tr>
     <tr>
@@ -307,9 +293,7 @@ resolution and up to nine fractional digits.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. Description of what this policy is for.
-Create/Update methods return INVALID_ARGUMENT if the
-length is greater than 512.</p>
+            <p>Optional. Description of what this policy is for. Create/Update methods return INVALID_ARGUMENT if the length is greater than 512.</p>
         </td>
     </tr>
     <tr>
@@ -319,9 +303,7 @@ length is greater than 512.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The time when the policy was last updated.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-resolution and up to nine fractional digits.</p>
+            <p>Output only. The time when the policy was last updated. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.</p>
         </td>
     </tr>
     <tr>
@@ -331,9 +313,7 @@ resolution and up to nine fractional digits.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Optional. Maintenance window that is applied to resources covered by this policy.
-Minimum 1. For the current version, the maximum number
-of weekly_window is expected to be one.</p>
+            <p>Optional. Maintenance window that is applied to resources covered by this policy. Minimum 1. For the current version, the maximum number of weekly_window is expected to be one.</p>
         </td>
     </tr>
     <tr>
@@ -372,10 +352,7 @@ of weekly_window is expected to be one.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. Duration of the maintenance window.
-The current window is fixed at 1 hour.
-A duration in seconds with up to nine fractional digits,
-terminated by 's'. Example: "3.5s".</p>
+            <p>Output only. Duration of the maintenance window. The current window is fixed at 1 hour. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".</p>
         </td>
     </tr>
     <tr>
@@ -395,8 +372,7 @@ terminated by 's'. Example: "3.5s".</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Hours of day in 24 hour format. Should be from 0 to 23.
-An API may choose to allow the value "24:00:00" for scenarios like business closing time.</p>
+            <p>Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.</p>
         </td>
     </tr>
     <tr>
@@ -426,8 +402,7 @@ An API may choose to allow the value "24:00:00" for scenarios like business clos
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Seconds of minutes of the time. Must normally be from 0 to 59.
-An API may allow the value 60 if it allows leap-seconds.</p>
+            <p>Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.</p>
         </td>
     </tr>
     <tr>
@@ -457,9 +432,7 @@ An API may allow the value 60 if it allows leap-seconds.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The end time of any upcoming scheduled maintenance for this instance.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-resolution and up to nine fractional digits.</p>
+            <p>Output only. The end time of any upcoming scheduled maintenance for this instance. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.</p>
         </td>
     </tr>
     <tr>
@@ -469,10 +442,7 @@ resolution and up to nine fractional digits.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The deadline that the maintenance schedule start time
-can not go beyond, including reschedule.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-resolution and up to nine fractional digits.</p>
+            <p>Output only. The deadline that the maintenance schedule start time can not go beyond, including reschedule. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.</p>
         </td>
     </tr>
     <tr>
@@ -482,9 +452,7 @@ resolution and up to nine fractional digits.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The start time of any upcoming scheduled maintenance for this instance.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-resolution and up to nine fractional digits.</p>
+            <p>Output only. The start time of any upcoming scheduled maintenance for this instance. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.</p>
         </td>
     </tr>
     <tr>
@@ -527,10 +495,7 @@ resolution and up to nine fractional digits.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The next time that a snapshot attempt is scheduled to occur.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up
-to nine fractional digits.
-Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
+            <p>Output only. The next time that a snapshot attempt is scheduled to occur. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
         </td>
     </tr>
     <tr>
@@ -555,12 +520,7 @@ Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. Date and time that the first snapshot was/will be attempted,
-and to which future snapshots will be aligned. If not provided,
-the current time will be used.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution
-and up to nine fractional digits.
-Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
+            <p>Optional. Date and time that the first snapshot was/will be attempted, and to which future snapshots will be aligned. If not provided, the current time will be used. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
         </td>
     </tr>
     <tr>
@@ -570,12 +530,7 @@ Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. Read replica mode. Can only be specified when trying to create the instance.
-If not set, Memorystore Redis backend will default to READ_REPLICAS_DISABLED.
-- READ_REPLICAS_DISABLED: If disabled, read endpoint will not be provided and the
-instance cannot scale up or down the number of replicas.
-- READ_REPLICAS_ENABLED: If enabled, read endpoint will be provided and the instance
-can scale up and down the number of replicas. Possible values: ["READ_REPLICAS_DISABLED", "READ_REPLICAS_ENABLED"].</p>
+            <p>Optional. Read replica mode. Can only be specified when trying to create the instance. If not set, Memorystore Redis backend will default to READ_REPLICAS_DISABLED. - READ_REPLICAS_DISABLED: If disabled, read endpoint will not be provided and the instance cannot scale up or down the number of replicas. - READ_REPLICAS_ENABLED: If enabled, read endpoint will be provided and the instance can scale up and down the number of replicas. Possible values: ["READ_REPLICAS_DISABLED", "READ_REPLICAS_ENABLED"].</p>
         </td>
     </tr>
     <tr>
@@ -585,9 +540,7 @@ can scale up and down the number of replicas. Possible values: ["READ_REPLICAS_D
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>Redis configuration parameters, according to http://redis.io/topics/config.
-Please check Memorystore documentation for the list of supported parameters:
-https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance.FIELDS.redis_configs.</p>
+            <p>Redis configuration parameters, according to http://redis.io/topics/config. Please check Memorystore documentation for the list of supported parameters: https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance.FIELDS.redis_configs.</p>
         </td>
     </tr>
     <tr>
@@ -597,9 +550,7 @@ https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The version of Redis software. If not provided, latest supported
-version will be used. Please check the API documentation linked
-at the top for the latest valid values.</p>
+            <p>The version of Redis software. If not provided, latest supported version will be used. Please check the API documentation linked at the top for the latest valid values.</p>
         </td>
     </tr>
     <tr>
@@ -619,10 +570,7 @@ at the top for the latest valid values.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Optional. The number of replica nodes. The valid range for the Standard Tier with
-read replicas enabled is [1-5] and defaults to 2. If read replicas are not enabled
-for a Standard Tier instance, the only valid value is 1 and the default is 1.
-The valid value for basic tier is 0 and the default is also 0.</p>
+            <p>Optional. The number of replica nodes. The valid range for the Standard Tier with read replicas enabled is [1-5] and defaults to 2. If read replicas are not enabled for a Standard Tier instance, the only valid value is 1 and the default is 1. The valid value for basic tier is 0 and the default is also 0.</p>
         </td>
     </tr>
     <tr>
@@ -632,11 +580,7 @@ The valid value for basic tier is 0 and the default is also 0.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The CIDR range of internal addresses that are reserved for this
-instance. If not provided, the service will choose an unused /29
-block, for example, 10.0.0.0/29 or 192.168.0.0/29. Ranges must be
-unique and non-overlapping with existing subnets in an authorized
-network.</p>
+            <p>Immutable. The CIDR range of internal addresses that are reserved for this instance. If not provided, the service will choose an unused /29 block, for example, 10.0.0.0/29 or 192.168.0.0/29. Ranges must be unique and non-overlapping with existing subnets in an authorized network.</p>
         </td>
     </tr>
     <tr>
@@ -656,10 +600,7 @@ network.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. Additional IP range for node placement. Required when enabling read replicas on
-an existing instance. For DIRECT_PEERING mode value must be a CIDR range of size /28, or
-"auto". For PRIVATE_SERVICE_ACCESS mode value must be the name of an allocated address
-range associated with the private service access connection, or "auto".</p>
+            <p>Optional. Additional IP range for node placement. Required when enabling read replicas on an existing instance. For DIRECT_PEERING mode value must be a CIDR range of size /28, or "auto". For PRIVATE_SERVICE_ACCESS mode value must be the name of an allocated address range associated with the private service access connection, or "auto".</p>
         </td>
     </tr>
     <tr>
@@ -737,7 +678,7 @@ serverCaCerts:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the RedisInstance's current state.</p>
         </td>
     </tr>
     <tr>
@@ -786,27 +727,21 @@ serverCaCerts:
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The time the instance was created in RFC3339 UTC "Zulu" format,
-accurate to nanoseconds.</p>
+            <p>The time the instance was created in RFC3339 UTC "Zulu" format, accurate to nanoseconds.</p>
         </td>
     </tr>
     <tr>
         <td><code>currentLocationId</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The current zone where the Redis endpoint is placed.
-For Basic Tier instances, this will always be the same as the
-[locationId] provided by the user at creation time. For Standard Tier
-instances, this can be either [locationId] or [alternativeLocationId]
-and can change after a failover event.</p>
+            <p>The current zone where the Redis endpoint is placed. For Basic Tier instances, this will always be the same as the [locationId] provided by the user at creation time. For Standard Tier instances, this can be either [locationId] or [alternativeLocationId] and can change after a failover event.</p>
         </td>
     </tr>
     <tr>
         <td><code>host</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Hostname or IP address of the exposed Redis endpoint used by clients
-to connect to the service.</p>
+            <p>Hostname or IP address of the exposed Redis endpoint used by clients to connect to the service.</p>
         </td>
     </tr>
     <tr>
@@ -827,28 +762,21 @@ to connect to the service.</p>
         <td><code>maintenanceSchedule[].endTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The end time of any upcoming scheduled maintenance for this instance.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-resolution and up to nine fractional digits.</p>
+            <p>Output only. The end time of any upcoming scheduled maintenance for this instance. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.</p>
         </td>
     </tr>
     <tr>
         <td><code>maintenanceSchedule[].scheduleDeadlineTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The deadline that the maintenance schedule start time
-can not go beyond, including reschedule.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-resolution and up to nine fractional digits.</p>
+            <p>Output only. The deadline that the maintenance schedule start time can not go beyond, including reschedule. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.</p>
         </td>
     </tr>
     <tr>
         <td><code>maintenanceSchedule[].startTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The start time of any upcoming scheduled maintenance for this instance.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-resolution and up to nine fractional digits.</p>
+            <p>Output only. The start time of any upcoming scheduled maintenance for this instance. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.</p>
         </td>
     </tr>
     <tr>
@@ -904,10 +832,7 @@ resolution and up to nine fractional digits.</p>
         <td><code>persistenceIamIdentity</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. Cloud IAM identity used by import / export operations
-to transfer data to/from Cloud Storage. Format is "serviceAccount:".
-The value may change over time for a given instance so should be
-checked before each import/export operation.</p>
+            <p>Output only. Cloud IAM identity used by import / export operations to transfer data to/from Cloud Storage. Format is "serviceAccount:". The value may change over time for a given instance so should be checked before each import/export operation.</p>
         </td>
     </tr>
     <tr>
@@ -921,17 +846,14 @@ checked before each import/export operation.</p>
         <td><code>readEndpoint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. Hostname or IP address of the exposed readonly Redis endpoint. Standard tier only.
-Targets all healthy replica nodes in instance. Replication is asynchronous and replica nodes
-will exhibit some lag behind the primary. Write requests must target 'host'.</p>
+            <p>Output only. Hostname or IP address of the exposed readonly Redis endpoint. Standard tier only. Targets all healthy replica nodes in instance. Replication is asynchronous and replica nodes will exhibit some lag behind the primary. Write requests must target 'host'.</p>
         </td>
     </tr>
     <tr>
         <td><code>readEndpointPort</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Output only. The port number of the exposed readonly redis endpoint. Standard tier only.
-Write requests should target 'port'.</p>
+            <p>Output only. The port number of the exposed readonly redis endpoint. Standard tier only. Write requests should target 'port'.</p>
         </td>
     </tr>
     <tr>

@@ -33,6 +33,20 @@ func computeAddressFuzzer() fuzztesting.KRMFuzzer {
 		ComputeAddressStatus_v1beta1_FromProto, ComputeAddressStatus_v1beta1_ToProto,
 	)
 
+	// Field comparison: ComputeAddress Spec vs pb.Address Proto
+	// - Spec.Address           maps to proto field .address
+	// - Spec.AddressType       maps to proto field .address_type
+	// - Spec.Description       maps to proto field .description
+	// - Spec.IPVersion         maps to proto field .ip_version
+	// - Spec.IPV6EndpointType  maps to proto field .ipv6_endpoint_type
+	// - Spec.Location          is handled via the GCP URI/ID, not mapped to a proto body field directly (proto .region is output-only/ignored)
+	// - Spec.NetworkRef        maps to proto field .network
+	// - Spec.NetworkTier       maps to proto field .network_tier
+	// - Spec.PrefixLength      maps to proto field .prefix_length
+	// - Spec.Purpose           maps to proto field .purpose
+	// - Spec.ResourceID        maps to proto field .name (handled as Unimplemented_Identity)
+	// - Spec.SubnetworkRef     maps to proto field .subnetwork
+	//
 	// Spec fields
 	f.SpecField(".address")
 	f.SpecField(".address_type")
