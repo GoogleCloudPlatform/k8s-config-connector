@@ -31,19 +31,20 @@ var (
 )
 
 var RegionalContainerNodePoolIdentityFormat = gcpurls.Template[ContainerNodePoolIdentity]("container.googleapis.com", "projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{nodePool}")
-var ZonalContainerNodePoolIdentityFormat = gcpurls.Template[ContainerNodePoolIdentity]("container.googleapis.com", "projects/{project}/zones/{location}/clusters/{cluster}/nodePools/{nodePool}")
+var ZonalContainerNodePoolIdentityFormat = gcpurls.Template[ContainerNodePoolIdentity]("container.googleapis.com", "projects/{project}/zones/{zone}/clusters/{cluster}/nodePools/{nodePool}")
 
 // +k8s:deepcopy-gen=false
 // ContainerNodePoolIdentity is the identity of a GCP ContainerNodePool resource.
 type ContainerNodePoolIdentity struct {
 	Project  string
 	Location string
+	Zone     string
 	Cluster  string
 	NodePool string
 }
 
 func (i *ContainerNodePoolIdentity) String() string {
-	if strings.Count(i.Location, "-") >= 2 {
+	if i.Zone != "" {
 		return ZonalContainerNodePoolIdentityFormat.ToString(*i)
 	}
 	return RegionalContainerNodePoolIdentityFormat.ToString(*i)
@@ -53,15 +54,15 @@ func (i *ContainerNodePoolIdentity) FromExternal(ref string) error {
 	if idx := strings.Index(ref, "projects/"); idx != -1 {
 		ref = ref[idx:]
 	}
-	if parsed, match, _ := RegionalContainerNodePoolIdentityFormat.Parse(ref); match {
-		*i = *parsed
-		return nil
-	}
 	if parsed, match, _ := ZonalContainerNodePoolIdentityFormat.Parse(ref); match {
 		*i = *parsed
 		return nil
 	}
-	return fmt.Errorf("format of ContainerNodePool external=%q was not known (use %s or %s)", ref, RegionalContainerNodePoolIdentityFormat.CanonicalForm(), ZonalContainerNodePoolIdentityFormat.CanonicalForm())
+	if parsed, match, _ := RegionalContainerNodePoolIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	}
+	return fmt.Errorf("format of ContainerNodePool external=%q was not known (use %s or %s)", ref, ZonalContainerNodePoolIdentityFormat.CanonicalForm(), RegionalContainerNodePoolIdentityFormat.CanonicalForm())
 }
 
 func (i *ContainerNodePoolIdentity) Host() string {
@@ -70,8 +71,8 @@ func (i *ContainerNodePoolIdentity) Host() string {
 
 // ParentString returns the parent ContainerCluster GCP URI.
 func (i *ContainerNodePoolIdentity) ParentString() string {
-	if strings.Count(i.Location, "-") >= 2 {
-		return fmt.Sprintf("projects/%s/zones/%s/clusters/%s", i.Project, i.Location, i.Cluster)
+	if i.Zone != "" {
+		return fmt.Sprintf("projects/%s/zones/%s/clusters/%s", i.Project, i.Zone, i.Cluster)
 	}
 	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", i.Project, i.Location, i.Cluster)
 }
@@ -97,12 +98,19 @@ func getIdentityFromContainerNodePoolSpec(ctx context.Context, reader client.Rea
 		location = clusterId.Location
 	}
 
-	return &ContainerNodePoolIdentity{
+	identity := &ContainerNodePoolIdentity{
 		Project:  clusterId.Project,
-		Location: location,
 		Cluster:  clusterId.Cluster,
 		NodePool: resourceID,
-	}, nil
+	}
+
+	if len(strings.Split(location, "-")) == 3 {
+		identity.Zone = location
+	} else {
+		identity.Location = location
+	}
+
+	return identity, nil
 }
 
 func (obj *ContainerNodePool) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

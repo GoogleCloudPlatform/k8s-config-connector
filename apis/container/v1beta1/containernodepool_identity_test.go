@@ -42,7 +42,7 @@ func TestContainerNodePoolIdentity_FromExternal(t *testing.T) {
 			ref:  "projects/my-project/zones/us-central1-a/clusters/my-cluster/nodePools/my-nodepool",
 			want: &ContainerNodePoolIdentity{
 				Project:  "my-project",
-				Location: "us-central1-a",
+				Zone:     "us-central1-a",
 				Cluster:  "my-cluster",
 				NodePool: "my-nodepool",
 			},
@@ -62,7 +62,7 @@ func TestContainerNodePoolIdentity_FromExternal(t *testing.T) {
 			ref:  "https://container.googleapis.com/v1/projects/my-project/zones/us-central1-a/clusters/my-cluster/nodePools/my-nodepool",
 			want: &ContainerNodePoolIdentity{
 				Project:  "my-project",
-				Location: "us-central1-a",
+				Zone:     "us-central1-a",
 				Cluster:  "my-cluster",
 				NodePool: "my-nodepool",
 			},
@@ -110,7 +110,7 @@ func TestContainerNodePoolIdentity_String(t *testing.T) {
 			name: "zonal",
 			identity: &ContainerNodePoolIdentity{
 				Project:  "my-project",
-				Location: "us-central1-a",
+				Zone:     "us-central1-a",
 				Cluster:  "my-cluster",
 				NodePool: "my-nodepool",
 			},
@@ -147,7 +147,7 @@ func TestContainerNodePoolIdentity_ParentString(t *testing.T) {
 			name: "zonal parent",
 			identity: &ContainerNodePoolIdentity{
 				Project:  "my-project",
-				Location: "us-central1-a",
+				Zone:     "us-central1-a",
 				Cluster:  "my-cluster",
 				NodePool: "my-nodepool",
 			},
