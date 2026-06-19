@@ -34,7 +34,7 @@
   name: iap.googleapis.com
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //iap.googleapis.com/projects/iapclient-${uniqueId}/brands/
+- caisURL: unknown
   group: iap.cnrm.cloud.google.com
   kind: IAPBrand
   name: iapbrand-${uniqueId}
