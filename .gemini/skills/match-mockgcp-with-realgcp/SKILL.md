@@ -8,8 +8,13 @@ When the golden tests for K8s Config Connector mock output diverge from real GCP
 
 ### Align Mockgcp
 
-1.  Run `dev/tools/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior.
-2.  Run `dev/tools/compare-mock "fixtures/^<testname>$"` to check mock behavior.
+1.  Run `hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior.
+    *   **Troubleshooting Service Not Enabled**: If `hack/record-gcp` fails because a GCP service is not enabled (e.g., error mentions that the API is disabled or has not been used in the project before), enable the service using `gcloud` and try again:
+        ```bash
+        gcloud services enable <service-name>.googleapis.com
+        ```
+        *(For example: `gcloud services enable compute.googleapis.com` or `gcloud services enable run.googleapis.com`)*
+2.  Run `hack/compare-mock "fixtures/^<testname>$"` to check mock behavior.
 3.  Iteratively fix discrepancies in the mock implementation or `normalize.go`.
 
 #### Tips for fixing the discrepancies:
