@@ -768,6 +768,12 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
 	}
 
+	normalizers = append(normalizers, ReplaceString("%24alt=json%3Benum-encoding%3Dint", "alt=json"))
+	normalizers = append(normalizers, ReplaceString("$alt=json%3Benum-encoding%3Dint", "alt=json"))
+	normalizers = append(normalizers, ReplaceString("%24alt=json;enum-encoding=int", "alt=json"))
+	normalizers = append(normalizers, ReplaceString("$alt=json;enum-encoding=int", "alt=json"))
+	normalizers = append(normalizers, ReplaceString("operations/${operationID}?alt=json", "operations/${operationID}"))
+
 	return got, normalizers
 
 }
