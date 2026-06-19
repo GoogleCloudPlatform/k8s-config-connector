@@ -47,6 +47,12 @@ go run . generate-types \
   --resource NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup \
   --resource NetworkSecuritySACRealm:SACRealm \
   --resource NetworkSecuritySecurityProfile:SecurityProfile \
+  --resource NetworkSecurityInterceptEndpointGroupAssociation:InterceptEndpointGroupAssociation \
+  --proto-source-path ${PROTO_OUT}
+
+go run . generate-mapper \
+  --service google.cloud.networksecurity.v1 \
+  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --proto-source-path ${PROTO_OUT}
 
 # Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)

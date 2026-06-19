@@ -30,34 +30,43 @@ var (
 	_ identity.Resource   = &NetworkSecurityInterceptDeployment{}
 )
 
-var NetworkSecurityInterceptDeploymentIdentityFormat = gcpurls.Template[NetworkSecurityInterceptDeploymentIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/interceptDeployments/{interceptdeployment}")
+var (
+	ProjectInterceptDeploymentIdentityFormat      = gcpurls.Template[NetworkSecurityInterceptDeploymentIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/interceptDeployments/{interceptdeployment}")
+	OrganizationInterceptDeploymentIdentityFormat = gcpurls.Template[NetworkSecurityInterceptDeploymentIdentity]("networksecurity.googleapis.com", "organizations/{organization}/locations/{location}/interceptDeployments/{interceptdeployment}")
+)
 
 // +k8s:deepcopy-gen=false
 type NetworkSecurityInterceptDeploymentIdentity struct {
 	Project             string
+	Organization        string
 	Location            string
 	InterceptDeployment string
 }
 
 func (i *NetworkSecurityInterceptDeploymentIdentity) String() string {
-	return NetworkSecurityInterceptDeploymentIdentityFormat.ToString(*i)
+	if i.Project != "" {
+		return ProjectInterceptDeploymentIdentityFormat.ToString(*i)
+	}
+	if i.Organization != "" {
+		return OrganizationInterceptDeploymentIdentityFormat.ToString(*i)
+	}
+	return ""
 }
 
 func (i *NetworkSecurityInterceptDeploymentIdentity) FromExternal(ref string) error {
-	parsed, match, err := NetworkSecurityInterceptDeploymentIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of NetworkSecurityInterceptDeployment external=%q was not known (use %s): %w", ref, NetworkSecurityInterceptDeploymentIdentityFormat.CanonicalForm(), err)
+	if parsed, match, _ := ProjectInterceptDeploymentIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
 	}
-	if !match {
-		return fmt.Errorf("format of NetworkSecurityInterceptDeployment external=%q was not known (use %s)", ref, NetworkSecurityInterceptDeploymentIdentityFormat.CanonicalForm())
+	if parsed, match, _ := OrganizationInterceptDeploymentIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
 	}
-
-	*i = *parsed
-	return nil
+	return fmt.Errorf("format of NetworkSecurityInterceptDeployment external=%q was not known (use %s or %s)", ref, ProjectInterceptDeploymentIdentityFormat.CanonicalForm(), OrganizationInterceptDeploymentIdentityFormat.CanonicalForm())
 }
 
 func (i *NetworkSecurityInterceptDeploymentIdentity) Host() string {
-	return NetworkSecurityInterceptDeploymentIdentityFormat.Host()
+	return "networksecurity.googleapis.com"
 }
 
 func getIdentityFromNetworkSecurityInterceptDeploymentSpec(ctx context.Context, reader client.Reader, obj client.Object) (*NetworkSecurityInterceptDeploymentIdentity, error) {
@@ -103,4 +112,12 @@ func (obj *NetworkSecurityInterceptDeployment) GetIdentity(ctx context.Context, 
 	}
 
 	return specIdentity, nil
+}
+
+// ExternalIdentifier returns the GCP external identifier (the GCP URL).
+func (obj *NetworkSecurityInterceptDeployment) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
 }
