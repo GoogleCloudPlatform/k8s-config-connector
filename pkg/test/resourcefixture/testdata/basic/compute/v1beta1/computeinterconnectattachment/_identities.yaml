@@ -4,7 +4,7 @@
   name: default
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-west2/routers/computerouter-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeRouter
   name: computerouter-${uniqueId}
