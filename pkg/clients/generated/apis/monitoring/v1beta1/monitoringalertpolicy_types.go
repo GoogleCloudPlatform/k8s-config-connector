@@ -39,88 +39,19 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type AlertpolicyAggregations struct {
-	/* The alignment period for per-time
-	series alignment. If present,
-	alignmentPeriod must be at least
-	60 seconds. After per-time series
-	alignment, each time series will
-	contain data points only on the
-	period boundaries. If
-	perSeriesAligner is not specified
-	or equals ALIGN_NONE, then this
-	field is ignored. If
-	perSeriesAligner is specified and
-	does not equal ALIGN_NONE, then
-	this field must be defined;
-	otherwise an error is returned. */
+	/* The alignment period for per-time series alignment. If present, alignmentPeriod must be at least 60 seconds. After per-time series alignment, each time series will contain data points only on the period boundaries. If perSeriesAligner is not specified or equals ALIGN_NONE, then this field is ignored. If perSeriesAligner is specified and does not equal ALIGN_NONE, then this field must be defined; otherwise an error is returned. */
 	// +optional
 	AlignmentPeriod *string `json:"alignmentPeriod,omitempty"`
 
-	/* The approach to be used to combine
-	time series. Not all reducer
-	functions may be applied to all
-	time series, depending on the
-	metric type and the value type of
-	the original time series.
-	Reduction may change the metric
-	type of value type of the time
-	series.Time series data must be
-	aligned in order to perform cross-
-	time series reduction. If
-	crossSeriesReducer is specified,
-	then perSeriesAligner must be
-	specified and not equal ALIGN_NONE
-	and alignmentPeriod must be
-	specified; otherwise, an error is
-	returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"]. */
+	/* The approach to be used to combine time series. Not all reducer functions may be applied to all time series, depending on the metric type and the value type of the original time series. Reduction may change the metric type of value type of the time series.Time series data must be aligned in order to perform cross- time series reduction. If crossSeriesReducer is specified, then perSeriesAligner must be specified and not equal ALIGN_NONE and alignmentPeriod must be specified; otherwise, an error is returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"]. */
 	// +optional
 	CrossSeriesReducer *string `json:"crossSeriesReducer,omitempty"`
 
-	/* The set of fields to preserve when
-	crossSeriesReducer is specified.
-	The groupByFields determine how
-	the time series are partitioned
-	into subsets prior to applying the
-	aggregation function. Each subset
-	contains time series that have the
-	same value for each of the
-	grouping fields. Each individual
-	time series is a member of exactly
-	one subset. The crossSeriesReducer
-	is applied to each subset of time
-	series. It is not possible to
-	reduce across different resource
-	types, so this field implicitly
-	contains resource.type. Fields not
-	specified in groupByFields are
-	aggregated away. If groupByFields
-	is not specified and all the time
-	series have the same resource
-	type, then the time series are
-	aggregated into a single output
-	time series. If crossSeriesReducer
-	is not defined, this field is
-	ignored. */
+	/* The set of fields to preserve when crossSeriesReducer is specified. The groupByFields determine how the time series are partitioned into subsets prior to applying the aggregation function. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The crossSeriesReducer is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains resource.type. Fields not specified in groupByFields are aggregated away. If groupByFields is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If crossSeriesReducer is not defined, this field is ignored. */
 	// +optional
 	GroupByFields []string `json:"groupByFields,omitempty"`
 
-	/* The approach to be used to align
-	individual time series. Not all
-	alignment functions may be applied
-	to all time series, depending on
-	the metric type and value type of
-	the original time series.
-	Alignment may change the metric
-	type or the value type of the time
-	series.Time series data must be
-	aligned in order to perform cross-
-	time series reduction. If
-	crossSeriesReducer is specified,
-	then perSeriesAligner must be
-	specified and not equal ALIGN_NONE
-	and alignmentPeriod must be
-	specified; otherwise, an error is
-	returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"]. */
+	/* The approach to be used to align individual time series. Not all alignment functions may be applied to all time series, depending on the metric type and value type of the original time series. Alignment may change the metric type or the value type of the time series.Time series data must be aligned in order to perform cross- time series reduction. If crossSeriesReducer is specified, then perSeriesAligner must be specified and not equal ALIGN_NONE and alignmentPeriod must be specified; otherwise, an error is returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"]. */
 	// +optional
 	PerSeriesAligner *string `json:"perSeriesAligner,omitempty"`
 }
@@ -130,64 +61,33 @@ type AlertpolicyAlertStrategy struct {
 	// +optional
 	AutoClose *string `json:"autoClose,omitempty"`
 
-	/* Control over how the notification channels in 'notification_channels'
-	are notified when this alert fires, on a per-channel basis. */
+	/* Control over how the notification channels in 'notification_channels' are notified when this alert fires, on a per-channel basis. */
 	// +optional
 	NotificationChannelStrategy []AlertpolicyNotificationChannelStrategy `json:"notificationChannelStrategy,omitempty"`
 
-	/* Required for alert policies with a LogMatch condition.
-	This limit is not implemented for alert policies that are not log-based. */
+	/* Required for alert policies with a LogMatch condition. This limit is not implemented for alert policies that are not log-based. */
 	// +optional
 	NotificationRateLimit *AlertpolicyNotificationRateLimit `json:"notificationRateLimit,omitempty"`
 }
 
 type AlertpolicyBooleanTest struct {
-	/* The name of the column containing the boolean value. If the value in a row is
-	NULL, that row is ignored. */
+	/* The name of the column containing the boolean value. */
 	Column string `json:"column"`
 }
 
 type AlertpolicyConditionAbsent struct {
-	/* Specifies the alignment of data points in
-	individual time series as well as how to
-	combine the retrieved time series together
-	(such as when aggregating multiple streams
-	on each resource to a single stream for each
-	resource or when aggregating streams across
-	all members of a group of resources).
-	Multiple aggregations are applied in the
-	order specified. */
+	/* Specifies the alignment of data points in individual time series as well as how to combine the retrieved time series together (such as when aggregating multiple streams on each resource to a single stream for each resource or when aggregating streams across all members of a group of resources). Multiple aggregations are applied in the order specified. */
 	// +optional
 	Aggregations []AlertpolicyAggregations `json:"aggregations,omitempty"`
 
-	/* The amount of time that a time series must
-	fail to report new data to be considered
-	failing. Currently, only values that are a
-	multiple of a minute--e.g. 60s, 120s, or 300s
-	--are supported. */
+	/* The amount of time that a time series must fail to report new data to be considered failing. Currently, only values that are a multiple of a minute--e.g. 60s, 120s, or 300s --are supported. */
 	Duration string `json:"duration"`
 
-	/* A filter that identifies which time series
-	should be compared with the threshold.The
-	filter is similar to the one that is
-	specified in the
-	MetricService.ListTimeSeries request (that
-	call is useful to verify the time series
-	that will be retrieved / processed) and must
-	specify the metric type and optionally may
-	contain restrictions on resource type,
-	resource labels, and metric labels. This
-	field may not exceed 2048 Unicode characters
-	in length. */
+	/* A filter that identifies which time series should be compared with the threshold.The filter is similar to the one that is specified in the MetricService.ListTimeSeries request (that call is useful to verify the time series that will be retrieved / processed) and must specify the metric type and optionally may contain restrictions on resource type, resource labels, and metric labels. This field may not exceed 2048 Unicode characters in length. */
 	// +optional
 	Filter *string `json:"filter,omitempty"`
 
-	/* The number/percent of time series for which
-	the comparison must hold in order for the
-	condition to trigger. If unspecified, then
-	the condition will trigger if the comparison
-	is true for any of the time series that have
-	been identified by filter and aggregations. */
+	/* The number/percent of time series for which the comparison must hold in order for the condition to trigger. If unspecified, then the condition will trigger if the comparison is true for any of the time series that have been identified by filter and aggregations. */
 	// +optional
 	Trigger *AlertpolicyTrigger `json:"trigger,omitempty"`
 }
@@ -196,52 +96,23 @@ type AlertpolicyConditionMatchedLog struct {
 	/* A logs-based filter. */
 	Filter string `json:"filter"`
 
-	/* A map from a label key to an extractor expression, which is used to
-	extract the value for this label key. Each entry in this map is
-	a specification for how data should be extracted from log entries that
-	match filter. Each combination of extracted values is treated as
-	a separate rule for the purposes of triggering notifications.
-	Label keys and corresponding values can be used in notifications
-	generated by this condition. */
+	/* A map from a label key to an extractor expression, which is used to extract the value for this label key. Each entry in this map is a specification for how data should be extracted from log entries that match filter. Each combination of extracted values is treated as a separate rule for the purposes of triggering notifications. Label keys and corresponding values can be used in notifications generated by this condition. */
 	// +optional
 	LabelExtractors map[string]string `json:"labelExtractors,omitempty"`
 }
 
 type AlertpolicyConditionMonitoringQueryLanguage struct {
-	/* The amount of time that a time series must
-	violate the threshold to be considered
-	failing. Currently, only values that are a
-	multiple of a minute--e.g., 0, 60, 120, or
-	300 seconds--are supported. If an invalid
-	value is given, an error will be returned.
-	When choosing a duration, it is useful to
-	keep in mind the frequency of the underlying
-	time series data (which may also be affected
-	by any alignments specified in the
-	aggregations field); a good duration is long
-	enough so that a single outlier does not
-	generate spurious alerts, but short enough
-	that unhealthy states are detected and
-	alerted on quickly. */
+	/* The amount of time that a time series must violate the threshold to be considered failing. Currently, only values that are a multiple of a minute--e.g., 0, 60, 120, or 300 seconds--are supported. If an invalid value is given, an error will be returned. When choosing a duration, it is useful to keep in mind the frequency of the underlying time series data (which may also be affected by any alignments specified in the aggregations field); a good duration is long enough so that a single outlier does not generate spurious alerts, but short enough that unhealthy states are detected and alerted on quickly. */
 	Duration string `json:"duration"`
 
-	/* A condition control that determines how
-	metric-threshold conditions are evaluated when
-	data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"]. */
+	/* A condition control that determines how metric-threshold conditions are evaluated when data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"]. */
 	// +optional
 	EvaluationMissingData *string `json:"evaluationMissingData,omitempty"`
 
 	/* Monitoring Query Language query that outputs a boolean stream. */
 	Query string `json:"query"`
 
-	/* The number/percent of time series for which
-	the comparison must hold in order for the
-	condition to trigger. If unspecified, then
-	the condition will trigger if the comparison
-	is true for any of the time series that have
-	been identified by filter and aggregations,
-	or by the ratio, if denominator_filter and
-	denominator_aggregations are specified. */
+	/* The number/percent of time series for which the comparison must hold in order for the condition to trigger. If unspecified, then the condition will trigger if the comparison is true for any of the time series that have been identified by filter and aggregations, or by the ratio, if denominator_filter and denominator_aggregations are specified. */
 	// +optional
 	Trigger *AlertpolicyTrigger `json:"trigger,omitempty"`
 }
@@ -261,18 +132,11 @@ type AlertpolicyConditionPrometheusQueryLanguage struct {
 	// +optional
 	AlertRule *string `json:"alertRule,omitempty"`
 
-	/* Alerts are considered firing once their PromQL expression evaluated
-	to be "true" for this long. Alerts whose PromQL expression was not
-	evaluated to be "true" for long enough are considered pending. The
-	default value is zero. Must be zero or positive. */
+	/* Alerts are considered firing once their PromQL expression evaluated to be "true" for this long. Alerts whose PromQL expression was not evaluated to be "true" for long enough are considered pending. The default value is zero. Must be zero or positive. */
 	// +optional
 	Duration *string `json:"duration,omitempty"`
 
-	/* How often this rule should be evaluated. Must be a positive multiple
-	of 30 seconds or missing. The default value is 30 seconds. If this
-	PrometheusQueryLanguageCondition was generated from a Prometheus
-	alerting rule, then this value should be taken from the enclosing
-	rule group. */
+	/* How often this rule should be evaluated. Must be a positive multiple of 30 seconds or missing. The default value is 30 seconds. If this PrometheusQueryLanguageCondition was generated from a Prometheus alerting rule, then this value should be taken from the enclosing rule group. */
 	// +optional
 	EvaluationInterval *string `json:"evaluationInterval,omitempty"`
 
@@ -286,9 +150,7 @@ type AlertpolicyConditionPrometheusQueryLanguage struct {
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
-	/* The PromQL expression to evaluate. Every evaluation cycle this
-	expression is evaluated at the current time, and all resultant time
-	series become pending/firing alerts. This field must not be empty. */
+	/* The PromQL expression to evaluate. Every evaluation cycle this expression is evaluated at the current time, and all resultant time series become pending/firing alerts. This field must not be empty. */
 	Query string `json:"query"`
 
 	/* The rule group name of this alert in the corresponding Prometheus
@@ -307,170 +169,76 @@ type AlertpolicyConditionPrometheusQueryLanguage struct {
 }
 
 type AlertpolicyConditionSql struct {
-	/* A test that uses an alerting result in a boolean column produced by the SQL query. */
+	/* Test the boolean value in the indicated column. */
 	// +optional
 	BooleanTest *AlertpolicyBooleanTest `json:"booleanTest,omitempty"`
 
-	/* Used to schedule the query to run every so many days. */
+	/* Schedule the query to execute every so many days. */
 	// +optional
 	Daily *AlertpolicyDaily `json:"daily,omitempty"`
 
-	/* Used to schedule the query to run every so many hours. */
+	/* Schedule the query to execute every so many hours. */
 	// +optional
 	Hourly *AlertpolicyHourly `json:"hourly,omitempty"`
 
-	/* Used to schedule the query to run every so many minutes. */
+	/* Schedule the query to execute every so many minutes. */
 	// +optional
 	Minutes *AlertpolicyMinutes `json:"minutes,omitempty"`
 
-	/* The Log Analytics SQL query to run, as a string.  The query must
-	conform to the required shape. Specifically, the query must not try to
-	filter the input by time.  A filter will automatically be applied
-	to filter the input so that the query receives all rows received
-	since the last time the query was run. */
+	/* The Log Analytics SQL query to run, as a string. */
 	Query string `json:"query"`
 
-	/* A test that checks if the number of rows in the result set violates some threshold. */
+	/* Test the row count against a threshold. */
 	// +optional
 	RowCountTest *AlertpolicyRowCountTest `json:"rowCountTest,omitempty"`
 }
 
 type AlertpolicyConditionThreshold struct {
-	/* Specifies the alignment of data points in
-	individual time series as well as how to
-	combine the retrieved time series together
-	(such as when aggregating multiple streams
-	on each resource to a single stream for each
-	resource or when aggregating streams across
-	all members of a group of resources).
-	Multiple aggregations are applied in the
-	order specified.This field is similar to the
-	one in the MetricService.ListTimeSeries
-	request. It is advisable to use the
-	ListTimeSeries method when debugging this
-	field. */
+	/* Specifies the alignment of data points in individual time series as well as how to combine the retrieved time series together (such as when aggregating multiple streams on each resource to a single stream for each resource or when aggregating streams across all members of a group of resources). Multiple aggregations are applied in the order specified.This field is similar to the one in the MetricService.ListTimeSeries request. It is advisable to use the ListTimeSeries method when debugging this field. */
 	// +optional
 	Aggregations []AlertpolicyAggregations `json:"aggregations,omitempty"`
 
-	/* The comparison to apply between the time
-	series (indicated by filter and aggregation)
-	and the threshold (indicated by
-	threshold_value). The comparison is applied
-	on each time series, with the time series on
-	the left-hand side and the threshold on the
-	right-hand side. Only COMPARISON_LT and
-	COMPARISON_GT are supported currently. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"]. */
+	/* The comparison to apply between the time series (indicated by filter and aggregation) and the threshold (indicated by threshold_value). The comparison is applied on each time series, with the time series on the left-hand side and the threshold on the right-hand side. Only COMPARISON_LT and COMPARISON_GT are supported currently. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"]. */
 	Comparison string `json:"comparison"`
 
-	/* Specifies the alignment of data points in
-	individual time series selected by
-	denominatorFilter as well as how to combine
-	the retrieved time series together (such as
-	when aggregating multiple streams on each
-	resource to a single stream for each
-	resource or when aggregating streams across
-	all members of a group of resources).When
-	computing ratios, the aggregations and
-	denominator_aggregations fields must use the
-	same alignment period and produce time
-	series that have the same periodicity and
-	labels.This field is similar to the one in
-	the MetricService.ListTimeSeries request. It
-	is advisable to use the ListTimeSeries
-	method when debugging this field. */
+	/* Specifies the alignment of data points in individual time series selected by denominatorFilter as well as how to combine the retrieved time series together (such as when aggregating multiple streams on each resource to a single stream for each resource or when aggregating streams across all members of a group of resources).When computing ratios, the aggregations and denominator_aggregations fields must use the same alignment period and produce time series that have the same periodicity and labels.This field is similar to the one in the MetricService.ListTimeSeries request. It is advisable to use the ListTimeSeries method when debugging this field. */
 	// +optional
 	DenominatorAggregations []AlertpolicyDenominatorAggregations `json:"denominatorAggregations,omitempty"`
 
-	/* A filter that identifies a time series that
-	should be used as the denominator of a ratio
-	that will be compared with the threshold. If
-	a denominator_filter is specified, the time
-	series specified by the filter field will be
-	used as the numerator.The filter is similar
-	to the one that is specified in the
-	MetricService.ListTimeSeries request (that
-	call is useful to verify the time series
-	that will be retrieved / processed) and must
-	specify the metric type and optionally may
-	contain restrictions on resource type,
-	resource labels, and metric labels. This
-	field may not exceed 2048 Unicode characters
-	in length. */
+	/* A filter that identifies a time series that should be used as the denominator of a ratio that will be compared with the threshold. If a denominator_filter is specified, the time series specified by the filter field will be used as the numerator.The filter is similar to the one that is specified in the MetricService.ListTimeSeries request (that call is useful to verify the time series that will be retrieved / processed) and must specify the metric type and optionally may contain restrictions on resource type, resource labels, and metric labels. This field may not exceed 2048 Unicode characters in length. */
 	// +optional
 	DenominatorFilter *string `json:"denominatorFilter,omitempty"`
 
-	/* The amount of time that a time series must
-	violate the threshold to be considered
-	failing. Currently, only values that are a
-	multiple of a minute--e.g., 0, 60, 120, or
-	300 seconds--are supported. If an invalid
-	value is given, an error will be returned.
-	When choosing a duration, it is useful to
-	keep in mind the frequency of the underlying
-	time series data (which may also be affected
-	by any alignments specified in the
-	aggregations field); a good duration is long
-	enough so that a single outlier does not
-	generate spurious alerts, but short enough
-	that unhealthy states are detected and
-	alerted on quickly. */
+	/* The amount of time that a time series must violate the threshold to be considered failing. Currently, only values that are a multiple of a minute--e.g., 0, 60, 120, or 300 seconds--are supported. If an invalid value is given, an error will be returned. When choosing a duration, it is useful to keep in mind the frequency of the underlying time series data (which may also be affected by any alignments specified in the aggregations field); a good duration is long enough so that a single outlier does not generate spurious alerts, but short enough that unhealthy states are detected and alerted on quickly. */
 	Duration string `json:"duration"`
 
-	/* A condition control that determines how
-	metric-threshold conditions are evaluated when
-	data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"]. */
+	/* A condition control that determines how metric-threshold conditions are evaluated when data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"]. */
 	// +optional
 	EvaluationMissingData *string `json:"evaluationMissingData,omitempty"`
 
-	/* A filter that identifies which time series
-	should be compared with the threshold.The
-	filter is similar to the one that is
-	specified in the
-	MetricService.ListTimeSeries request (that
-	call is useful to verify the time series
-	that will be retrieved / processed) and must
-	specify the metric type and optionally may
-	contain restrictions on resource type,
-	resource labels, and metric labels. This
-	field may not exceed 2048 Unicode characters
-	in length. */
+	/* A filter that identifies which time series should be compared with the threshold.The filter is similar to the one that is specified in the MetricService.ListTimeSeries request (that call is useful to verify the time series that will be retrieved / processed) and must specify the metric type and optionally may contain restrictions on resource type, resource labels, and metric labels. This field may not exceed 2048 Unicode characters in length. */
 	// +optional
 	Filter *string `json:"filter,omitempty"`
 
-	/* When this field is present, the 'MetricThreshold'
-	condition forecasts whether the time series is
-	predicted to violate the threshold within the
-	'forecastHorizon'. When this field is not set, the
-	'MetricThreshold' tests the current value of the
-	timeseries against the threshold. */
+	/* When this field is present, the 'MetricThreshold' condition forecasts whether the time series is predicted to violate the threshold within the 'forecastHorizon'. When this field is not set, the 'MetricThreshold' tests the current value of the timeseries against the threshold. */
 	// +optional
 	ForecastOptions *AlertpolicyForecastOptions `json:"forecastOptions,omitempty"`
 
-	/* A value against which to compare the time
-	series. */
+	/* A value against which to compare the time series. */
 	// +optional
 	ThresholdValue *float64 `json:"thresholdValue,omitempty"`
 
-	/* The number/percent of time series for which
-	the comparison must hold in order for the
-	condition to trigger. If unspecified, then
-	the condition will trigger if the comparison
-	is true for any of the time series that have
-	been identified by filter and aggregations,
-	or by the ratio, if denominator_filter and
-	denominator_aggregations are specified. */
+	/* The number/percent of time series for which the comparison must hold in order for the condition to trigger. If unspecified, then the condition will trigger if the comparison is true for any of the time series that have been identified by filter and aggregations, or by the ratio, if denominator_filter and denominator_aggregations are specified. */
 	// +optional
 	Trigger *AlertpolicyTrigger `json:"trigger,omitempty"`
 }
 
 type AlertpolicyConditions struct {
-	/* A condition that checks that a time series
-	continues to receive new data points. */
+	/* A condition that checks that a time series continues to receive new data points. */
 	// +optional
 	ConditionAbsent *AlertpolicyConditionAbsent `json:"conditionAbsent,omitempty"`
 
-	/* A condition that checks for log messages matching given constraints.
-	If set, no other conditions can be present. */
+	/* A condition that checks for log messages matching given constraints. If set, no other conditions can be present. */
 	// +optional
 	ConditionMatchedLog *AlertpolicyConditionMatchedLog `json:"conditionMatchedLog,omitempty"`
 
@@ -488,205 +256,98 @@ type AlertpolicyConditions struct {
 	// +optional
 	ConditionPrometheusQueryLanguage *AlertpolicyConditionPrometheusQueryLanguage `json:"conditionPrometheusQueryLanguage,omitempty"`
 
-	/* A condition that allows alerting policies to be defined using GoogleSQL.
-	SQL conditions examine a sliding window of logs using GoogleSQL.
-	Alert policies with SQL conditions may incur additional billing. */
+	/* A condition that allows alerting policies to be defined using GoogleSQL. */
 	// +optional
 	ConditionSql *AlertpolicyConditionSql `json:"conditionSql,omitempty"`
 
-	/* A condition that compares a time series against a
-	threshold. */
+	/* A condition that compares a time series against a threshold. */
 	// +optional
 	ConditionThreshold *AlertpolicyConditionThreshold `json:"conditionThreshold,omitempty"`
 
-	/* A short name or phrase used to identify the
-	condition in dashboards, notifications, and
-	incidents. To avoid confusion, don't use the same
-	display name for multiple conditions in the same
-	policy. */
+	/* A short name or phrase used to identify the condition in dashboards, notifications, and incidents. To avoid confusion, don't use the same display name for multiple conditions in the same policy. */
 	DisplayName string `json:"displayName"`
 
-	/* The unique resource name for this condition.
-	Its syntax is:
-	projects/[PROJECT_ID]/alertPolicies/[POLICY_ID]/conditions/[CONDITION_ID]
-	[CONDITION_ID] is assigned by Stackdriver Monitoring when
-	the condition is created as part of a new or updated alerting
-	policy. */
+	/* The unique resource name for this condition. Its syntax is: projects/[PROJECT_ID]/alertPolicies/[POLICY_ID]/conditions/[CONDITION_ID] [CONDITION_ID] is assigned by Stackdriver Monitoring when the condition is created as part of a new or updated alerting policy. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 }
 
 type AlertpolicyDaily struct {
-	/* The time of day (in UTC) at which the query should run. If left
-	unspecified, the server picks an arbitrary time of day and runs
-	the query at the same time each day. */
+	/* The time of day (in UTC) at which the query should run. */
 	// +optional
 	ExecutionTime *AlertpolicyExecutionTime `json:"executionTime,omitempty"`
 
-	/* The number of days between runs. Must be greater than or equal
-	to 1 day and less than or equal to 30 days. */
-	Periodicity int64 `json:"periodicity"`
+	/* The number of days between runs. */
+	Periodicity int32 `json:"periodicity"`
 }
 
 type AlertpolicyDenominatorAggregations struct {
-	/* The alignment period for per-time
-	series alignment. If present,
-	alignmentPeriod must be at least
-	60 seconds. After per-time series
-	alignment, each time series will
-	contain data points only on the
-	period boundaries. If
-	perSeriesAligner is not specified
-	or equals ALIGN_NONE, then this
-	field is ignored. If
-	perSeriesAligner is specified and
-	does not equal ALIGN_NONE, then
-	this field must be defined;
-	otherwise an error is returned. */
+	/* The alignment period for per-time series alignment. If present, alignmentPeriod must be at least 60 seconds. After per-time series alignment, each time series will contain data points only on the period boundaries. If perSeriesAligner is not specified or equals ALIGN_NONE, then this field is ignored. If perSeriesAligner is specified and does not equal ALIGN_NONE, then this field must be defined; otherwise an error is returned. */
 	// +optional
 	AlignmentPeriod *string `json:"alignmentPeriod,omitempty"`
 
-	/* The approach to be used to combine
-	time series. Not all reducer
-	functions may be applied to all
-	time series, depending on the
-	metric type and the value type of
-	the original time series.
-	Reduction may change the metric
-	type of value type of the time
-	series.Time series data must be
-	aligned in order to perform cross-
-	time series reduction. If
-	crossSeriesReducer is specified,
-	then perSeriesAligner must be
-	specified and not equal ALIGN_NONE
-	and alignmentPeriod must be
-	specified; otherwise, an error is
-	returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"]. */
+	/* The approach to be used to combine time series. Not all reducer functions may be applied to all time series, depending on the metric type and the value type of the original time series. Reduction may change the metric type of value type of the time series.Time series data must be aligned in order to perform cross- time series reduction. If crossSeriesReducer is specified, then perSeriesAligner must be specified and not equal ALIGN_NONE and alignmentPeriod must be specified; otherwise, an error is returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"]. */
 	// +optional
 	CrossSeriesReducer *string `json:"crossSeriesReducer,omitempty"`
 
-	/* The set of fields to preserve when
-	crossSeriesReducer is specified.
-	The groupByFields determine how
-	the time series are partitioned
-	into subsets prior to applying the
-	aggregation function. Each subset
-	contains time series that have the
-	same value for each of the
-	grouping fields. Each individual
-	time series is a member of exactly
-	one subset. The crossSeriesReducer
-	is applied to each subset of time
-	series. It is not possible to
-	reduce across different resource
-	types, so this field implicitly
-	contains resource.type. Fields not
-	specified in groupByFields are
-	aggregated away. If groupByFields
-	is not specified and all the time
-	series have the same resource
-	type, then the time series are
-	aggregated into a single output
-	time series. If crossSeriesReducer
-	is not defined, this field is
-	ignored. */
+	/* The set of fields to preserve when crossSeriesReducer is specified. The groupByFields determine how the time series are partitioned into subsets prior to applying the aggregation function. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The crossSeriesReducer is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains resource.type. Fields not specified in groupByFields are aggregated away. If groupByFields is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If crossSeriesReducer is not defined, this field is ignored. */
 	// +optional
 	GroupByFields []string `json:"groupByFields,omitempty"`
 
-	/* The approach to be used to align
-	individual time series. Not all
-	alignment functions may be applied
-	to all time series, depending on
-	the metric type and value type of
-	the original time series.
-	Alignment may change the metric
-	type or the value type of the time
-	series.Time series data must be
-	aligned in order to perform cross-
-	time series reduction. If
-	crossSeriesReducer is specified,
-	then perSeriesAligner must be
-	specified and not equal ALIGN_NONE
-	and alignmentPeriod must be
-	specified; otherwise, an error is
-	returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"]. */
+	/* The approach to be used to align individual time series. Not all alignment functions may be applied to all time series, depending on the metric type and value type of the original time series. Alignment may change the metric type or the value type of the time series.Time series data must be aligned in order to perform cross- time series reduction. If crossSeriesReducer is specified, then perSeriesAligner must be specified and not equal ALIGN_NONE and alignmentPeriod must be specified; otherwise, an error is returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"]. */
 	// +optional
 	PerSeriesAligner *string `json:"perSeriesAligner,omitempty"`
 }
 
 type AlertpolicyDocumentation struct {
-	/* The text of the documentation, interpreted according to mimeType.
-	The content may not exceed 8,192 Unicode characters and may not
-	exceed more than 10,240 bytes when encoded in UTF-8 format,
-	whichever is smaller. */
+	/* The text of the documentation, interpreted according to mimeType. The content may not exceed 8,192 Unicode characters and may not exceed more than 10,240 bytes when encoded in UTF-8 format, whichever is smaller. */
 	// +optional
 	Content *string `json:"content,omitempty"`
 
-	/* The format of the content field. Presently, only the value
-	"text/markdown" is supported. */
+	/* The format of the content field. Presently, only the value "text/markdown" is supported. */
 	// +optional
 	MimeType *string `json:"mimeType,omitempty"`
 }
 
 type AlertpolicyExecutionTime struct {
-	/* Hours of a day in 24 hour format. Must be greater than or equal
-	to 0 and typically must be less than or equal to 23. An API may
-	choose to allow the value "24:00:00" for scenarios like business
-	closing time. */
+	/* Hours of day in 24 hour format. */
 	// +optional
-	Hours *int64 `json:"hours,omitempty"`
+	Hours *int32 `json:"hours,omitempty"`
 
-	/* Minutes of an hour. Must be greater than or equal to 0 and
-	less than or equal to 59. */
+	/* Minutes of hour of day. */
 	// +optional
 	Minutes *AlertpolicyMinutes `json:"minutes,omitempty"`
 
-	/* Fractions of seconds, in nanoseconds. Must be greater than or
-	equal to 0 and less than or equal to 999,999,999. */
+	/* Fractions of seconds in nanoseconds. */
 	// +optional
-	Nanos *int64 `json:"nanos,omitempty"`
+	Nanos *int32 `json:"nanos,omitempty"`
 
-	/* Seconds of a minute. Must be greater than or equal to 0 and
-	typically must be less than or equal to 59. An API may allow the
-	value 60 if it allows leap-seconds. */
+	/* Seconds of minutes of the time. */
 	// +optional
-	Seconds *int64 `json:"seconds,omitempty"`
+	Seconds *int32 `json:"seconds,omitempty"`
 }
 
 type AlertpolicyForecastOptions struct {
-	/* The length of time into the future to forecast
-	whether a timeseries will violate the threshold.
-	If the predicted value is found to violate the
-	threshold, and the violation is observed in all
-	forecasts made for the Configured 'duration',
-	then the timeseries is considered to be failing. */
+	/* The length of time into the future to forecast whether a timeseries will violate the threshold. If the predicted value is found to violate the threshold, and the violation is observed in all forecasts made for the Configured 'duration', then the timeseries is considered to be failing. */
 	ForecastHorizon string `json:"forecastHorizon"`
 }
 
 type AlertpolicyHourly struct {
-	/* The number of minutes after the hour (in UTC) to run the query.
-	Must be greater than or equal to 0 minutes and less than or equal to
-	59 minutes.  If left unspecified, then an arbitrary offset is used. */
+	/* The number of minutes after the hour (in UTC) to run the query. */
 	// +optional
-	MinuteOffset *int64 `json:"minuteOffset,omitempty"`
+	MinuteOffset *int32 `json:"minuteOffset,omitempty"`
 
-	/* Number of hours between runs. The interval must be greater than or
-	equal to 1 hour and less than or equal to 48 hours. */
-	Periodicity int64 `json:"periodicity"`
+	/* Number of hours between runs. */
+	Periodicity int32 `json:"periodicity"`
 }
 
 type AlertpolicyMinutes struct {
-	/* Number of minutes between runs. The interval must be greater than or
-	equal to 5 minutes and less than or equal to 1440 minutes. */
-	Periodicity int64 `json:"periodicity"`
+	/* Number of minutes between runs. */
+	Periodicity int32 `json:"periodicity"`
 }
 
 type AlertpolicyNotificationChannelStrategy struct {
-	/* The notification channels that these settings apply to. Each of these
-	correspond to the name field in one of the NotificationChannel objects
-	referenced in the notification_channels field of this AlertPolicy. The format is
-	'projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]'. */
+	/* The notification channels that these settings apply to. Each of these correspond to the name field in one of the NotificationChannel objects referenced in the notification_channels field of this AlertPolicy. The format is 'projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]'. */
 	// +optional
 	NotificationChannelNames []string `json:"notificationChannelNames,omitempty"`
 
@@ -702,20 +363,7 @@ type AlertpolicyNotificationRateLimit struct {
 }
 
 type AlertpolicyRowCountTest struct {
-	/* The comparison to apply between the time series
-	(indicated by filter and aggregation) and the
-	threshold (indicated by threshold_value). The
-	comparison is applied on each time series, with
-	the time series on the left-hand side and the
-	threshold on the right-hand side.
-
-	The Cloud Monitoring API only supports
-	'COMPARISON_LT' and 'COMPARISON_GT' for SQL
-	row-count thresholds; the other values are kept
-	in the schema for backward compatibility with
-	imported state but will be rejected by the API.
-	See
-	https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#MetricThreshold. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"]. */
+	/* The comparison to apply between the number of rows returned by the query and the threshold. */
 	Comparison string `json:"comparison"`
 
 	/* The value against which to compare the row count. */
@@ -723,15 +371,11 @@ type AlertpolicyRowCountTest struct {
 }
 
 type AlertpolicyTrigger struct {
-	/* The absolute number of time series
-	that must fail the predicate for the
-	condition to be triggered. */
+	/* The absolute number of time series that must fail the predicate for the condition to be triggered. */
 	// +optional
 	Count *int64 `json:"count,omitempty"`
 
-	/* The percentage of time series that
-	must fail the predicate for the
-	condition to be triggered. */
+	/* The percentage of time series that must fail the predicate for the condition to be triggered. */
 	// +optional
 	Percent *float64 `json:"percent,omitempty"`
 }
@@ -741,27 +385,16 @@ type MonitoringAlertPolicySpec struct {
 	// +optional
 	AlertStrategy *AlertpolicyAlertStrategy `json:"alertStrategy,omitempty"`
 
-	/* How to combine the results of multiple conditions to
-	determine if an incident should be opened. Possible values: ["AND", "OR", "AND_WITH_MATCHING_RESOURCE"]. */
+	/* How to combine the results of multiple conditions to determine if an incident should be opened. Possible values: ["AND", "OR", "AND_WITH_MATCHING_RESOURCE"]. */
 	Combiner string `json:"combiner"`
 
-	/* A list of conditions for the policy. The conditions are combined by
-	AND or OR according to the combiner field. If the combined conditions
-	evaluate to true, then an incident is created. A policy can have from
-	one to six conditions. */
+	/* A list of conditions for the policy. The conditions are combined by AND or OR according to the combiner field. If the combined conditions evaluate to true, then an incident is created. A policy can have from one to six conditions. */
 	Conditions []AlertpolicyConditions `json:"conditions"`
 
-	/* A short name or phrase used to identify the policy in
-	dashboards, notifications, and incidents. To avoid confusion, don't use
-	the same display name for multiple policies in the same project. The
-	name is limited to 512 Unicode characters. */
+	/* A short name or phrase used to identify the policy in dashboards, notifications, and incidents. To avoid confusion, don't use the same display name for multiple policies in the same project. The name is limited to 512 Unicode characters. */
 	DisplayName string `json:"displayName"`
 
-	/* Documentation that is included with notifications and incidents related
-	to this policy. Best practice is for the documentation to include information
-	to help responders understand, mitigate, escalate, and correct the underlying
-	problems detected by the alerting policy. Notification channels that have
-	limited capacity might not show this documentation. */
+	/* Documentation that is included with notifications and incidents related to this policy. Best practice is for the documentation to include information to help responders understand, mitigate, escalate, and correct the underlying problems detected by the alerting policy. Notification channels that have limited capacity might not show this documentation. */
 	// +optional
 	Documentation *AlertpolicyDocumentation `json:"documentation,omitempty"`
 
@@ -776,9 +409,7 @@ type MonitoringAlertPolicySpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The severity of an alert policy indicates how important
-	incidents generated by that policy are. The severity level will be displayed on
-	the Incident detail page and in notifications. Possible values: ["CRITICAL", "ERROR", "WARNING"]. */
+	/* The severity of an alert policy indicates how important incidents generated by that policy are. The severity level will be displayed on the Incident detail page and in notifications. Possible values: ["CRITICAL", "ERROR", "WARNING"]. */
 	// +optional
 	Severity *string `json:"severity,omitempty"`
 }
@@ -797,14 +428,11 @@ type MonitoringAlertPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MonitoringAlertPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A read-only record of the creation of the alerting policy.
-	If provided in a call to create or update, this field will
-	be ignored. */
+	/* A read-only record of the creation of the alerting policy. If provided in a call to create or update, this field will be ignored. */
 	// +optional
 	CreationRecord []AlertpolicyCreationRecordStatus `json:"creationRecord,omitempty"`
 
-	/* The unique resource name for this policy.
-	Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]. */
+	/* The unique resource name for this policy. Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 

@@ -33,7 +33,8 @@ go run . generate-types \
   --resource MonitoringUptimeCheckConfig:UptimeCheckConfig \
   --resource MonitoringService:Service \
   --resource MonitoringMonitoredProject:MonitoredProject \
-  --resource MonitoringDashboard:Dashboard
+  --resource MonitoringDashboard:Dashboard \
+  --resource MonitoringAlertPolicy:AlertPolicy
 
 go run . generate-mapper \
   --service google.monitoring.v3,google.api,google.monitoring.metricsscope.v1,google.monitoring.dashboard.v1 \

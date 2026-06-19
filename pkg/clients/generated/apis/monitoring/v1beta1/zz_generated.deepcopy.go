@@ -505,7 +505,7 @@ func (in *AlertpolicyExecutionTime) DeepCopyInto(out *AlertpolicyExecutionTime) 
 	*out = *in
 	if in.Hours != nil {
 		in, out := &in.Hours, &out.Hours
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Minutes != nil {
@@ -515,12 +515,12 @@ func (in *AlertpolicyExecutionTime) DeepCopyInto(out *AlertpolicyExecutionTime) 
 	}
 	if in.Nanos != nil {
 		in, out := &in.Nanos, &out.Nanos
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Seconds != nil {
 		in, out := &in.Seconds, &out.Seconds
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -557,7 +557,7 @@ func (in *AlertpolicyHourly) DeepCopyInto(out *AlertpolicyHourly) {
 	*out = *in
 	if in.MinuteOffset != nil {
 		in, out := &in.MinuteOffset, &out.MinuteOffset
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return

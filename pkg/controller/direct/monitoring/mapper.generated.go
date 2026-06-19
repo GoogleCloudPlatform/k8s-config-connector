@@ -73,14 +73,580 @@ func AlertChart_FromProto(mapCtx *direct.MapContext, in *dashboardpb.AlertChart)
 }
 */
 
-/* found existing non-generated mapping function "AlertChart_ToProto", skipping
-func AlertChart_ToProto(mapCtx *direct.MapContext, in *krm.AlertChart) *dashboardpb.AlertChart {
+/*
+found existing non-generated mapping function "AlertChart_ToProto", skipping
+
+	func AlertChart_ToProto(mapCtx *direct.MapContext, in *krm.AlertChart) *dashboardpb.AlertChart {
+		if in == nil {
+			return nil
+		}
+		out := &dashboardpb.AlertChart{}
+		// MISSING: Name
+		return out
+	}
+*/
+func AlertpolicyAggregations_FromProto(mapCtx *direct.MapContext, in *pb.Aggregation) *krm.AlertpolicyAggregations {
 	if in == nil {
 		return nil
 	}
-	out := &dashboardpb.AlertChart{}
-	// MISSING: Name
+	out := &krm.AlertpolicyAggregations{}
+	out.AlignmentPeriod = direct.StringDuration_FromProto(mapCtx, in.GetAlignmentPeriod())
+	out.PerSeriesAligner = direct.Enum_FromProto(mapCtx, in.GetPerSeriesAligner())
+	out.CrossSeriesReducer = direct.Enum_FromProto(mapCtx, in.GetCrossSeriesReducer())
+	out.GroupByFields = in.GroupByFields
 	return out
+}
+func AlertpolicyAggregations_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyAggregations) *pb.Aggregation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Aggregation{}
+	out.AlignmentPeriod = direct.StringDuration_ToProto(mapCtx, in.AlignmentPeriod)
+	out.PerSeriesAligner = direct.Enum_ToProto[pb.Aggregation_Aligner](mapCtx, in.PerSeriesAligner)
+	out.CrossSeriesReducer = direct.Enum_ToProto[pb.Aggregation_Reducer](mapCtx, in.CrossSeriesReducer)
+	out.GroupByFields = in.GroupByFields
+	return out
+}
+func AlertpolicyAlertStrategy_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_AlertStrategy) *krm.AlertpolicyAlertStrategy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyAlertStrategy{}
+	out.NotificationRateLimit = AlertpolicyNotificationRateLimit_FromProto(mapCtx, in.GetNotificationRateLimit())
+	// MISSING: NotificationPrompts
+	out.AutoClose = direct.StringDuration_FromProto(mapCtx, in.GetAutoClose())
+	out.NotificationChannelStrategy = direct.Slice_FromProto(mapCtx, in.NotificationChannelStrategy, AlertpolicyNotificationChannelStrategy_FromProto)
+	return out
+}
+func AlertpolicyAlertStrategy_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyAlertStrategy) *pb.AlertPolicy_AlertStrategy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_AlertStrategy{}
+	out.NotificationRateLimit = AlertpolicyNotificationRateLimit_ToProto(mapCtx, in.NotificationRateLimit)
+	// MISSING: NotificationPrompts
+	out.AutoClose = direct.StringDuration_ToProto(mapCtx, in.AutoClose)
+	out.NotificationChannelStrategy = direct.Slice_ToProto(mapCtx, in.NotificationChannelStrategy, AlertpolicyNotificationChannelStrategy_ToProto)
+	return out
+}
+func AlertpolicyBooleanTest_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_SqlCondition_BooleanTest) *krm.AlertpolicyBooleanTest {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyBooleanTest{}
+	out.Column = in.GetColumn()
+	return out
+}
+func AlertpolicyBooleanTest_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyBooleanTest) *pb.AlertPolicy_Condition_SqlCondition_BooleanTest {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_Condition_SqlCondition_BooleanTest{}
+	out.Column = AlertpolicyBooleanTest_Column_ToProto(mapCtx, in.Column)
+	return out
+}
+
+/* found existing non-generated mapping function "AlertpolicyConditionAbsent_FromProto", skipping
+func AlertpolicyConditionAbsent_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_MetricAbsence) *krm.AlertpolicyConditionAbsent {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyConditionAbsent{}
+	out.Filter = direct.LazyPtr(in.GetFilter())
+	out.Aggregations = direct.Slice_FromProto(mapCtx, in.Aggregations, AlertpolicyAggregations_FromProto)
+	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
+	out.Trigger = AlertpolicyTrigger_FromProto(mapCtx, in.GetTrigger())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyConditionAbsent_ToProto", skipping
+func AlertpolicyConditionAbsent_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyConditionAbsent) *pb.AlertPolicy_Condition_MetricAbsence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_Condition_MetricAbsence{}
+	out.Filter = direct.ValueOf(in.Filter)
+	out.Aggregations = direct.Slice_ToProto(mapCtx, in.Aggregations, AlertpolicyAggregations_ToProto)
+	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
+	out.Trigger = AlertpolicyTrigger_ToProto(mapCtx, in.Trigger)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyConditionMatchedLog_FromProto", skipping
+func AlertpolicyConditionMatchedLog_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_LogMatch) *krm.AlertpolicyConditionMatchedLog {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyConditionMatchedLog{}
+	out.Filter = in.GetFilter()
+	out.LabelExtractors = in.LabelExtractors
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyConditionMatchedLog_ToProto", skipping
+func AlertpolicyConditionMatchedLog_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyConditionMatchedLog) *pb.AlertPolicy_Condition_LogMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_Condition_LogMatch{}
+	out.Filter = AlertpolicyConditionMatchedLog_Filter_ToProto(mapCtx, in.Filter)
+	out.LabelExtractors = in.LabelExtractors
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyConditionMonitoringQueryLanguage_FromProto", skipping
+func AlertpolicyConditionMonitoringQueryLanguage_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_MonitoringQueryLanguageCondition) *krm.AlertpolicyConditionMonitoringQueryLanguage {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyConditionMonitoringQueryLanguage{}
+	out.Query = in.GetQuery()
+	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
+	out.Trigger = AlertpolicyTrigger_FromProto(mapCtx, in.GetTrigger())
+	out.EvaluationMissingData = direct.Enum_FromProto(mapCtx, in.GetEvaluationMissingData())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyConditionMonitoringQueryLanguage_ToProto", skipping
+func AlertpolicyConditionMonitoringQueryLanguage_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyConditionMonitoringQueryLanguage) *pb.AlertPolicy_Condition_MonitoringQueryLanguageCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_Condition_MonitoringQueryLanguageCondition{}
+	out.Query = AlertpolicyConditionMonitoringQueryLanguage_Query_ToProto(mapCtx, in.Query)
+	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
+	out.Trigger = AlertpolicyTrigger_ToProto(mapCtx, in.Trigger)
+	out.EvaluationMissingData = direct.Enum_ToProto[pb.AlertPolicy_Condition_EvaluationMissingData](mapCtx, in.EvaluationMissingData)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyConditionPrometheusQueryLanguage_FromProto", skipping
+func AlertpolicyConditionPrometheusQueryLanguage_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_PrometheusQueryLanguageCondition) *krm.AlertpolicyConditionPrometheusQueryLanguage {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyConditionPrometheusQueryLanguage{}
+	out.Query = in.GetQuery()
+	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
+	out.EvaluationInterval = direct.StringDuration_FromProto(mapCtx, in.GetEvaluationInterval())
+	out.Labels = in.Labels
+	out.RuleGroup = direct.LazyPtr(in.GetRuleGroup())
+	out.AlertRule = direct.LazyPtr(in.GetAlertRule())
+	// MISSING: DisableMetricValidation
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AlertpolicyConditionPrometheusQueryLanguage_ToProto", skipping
+
+	func AlertpolicyConditionPrometheusQueryLanguage_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyConditionPrometheusQueryLanguage) *pb.AlertPolicy_Condition_PrometheusQueryLanguageCondition {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AlertPolicy_Condition_PrometheusQueryLanguageCondition{}
+		out.Query = AlertpolicyConditionPrometheusQueryLanguage_Query_ToProto(mapCtx, in.Query)
+		out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
+		out.EvaluationInterval = direct.StringDuration_ToProto(mapCtx, in.EvaluationInterval)
+		out.Labels = in.Labels
+		out.RuleGroup = direct.ValueOf(in.RuleGroup)
+		out.AlertRule = direct.ValueOf(in.AlertRule)
+		// MISSING: DisableMetricValidation
+		return out
+	}
+*/
+func AlertpolicyConditionSql_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_SqlCondition) *krm.AlertpolicyConditionSql {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyConditionSql{}
+	out.Query = in.GetQuery()
+	out.Minutes = AlertpolicyMinutes_FromProto(mapCtx, in.GetMinutes())
+	out.Hourly = AlertpolicyHourly_FromProto(mapCtx, in.GetHourly())
+	out.Daily = AlertpolicyDaily_FromProto(mapCtx, in.GetDaily())
+	out.RowCountTest = AlertpolicyRowCountTest_FromProto(mapCtx, in.GetRowCountTest())
+	out.BooleanTest = AlertpolicyBooleanTest_FromProto(mapCtx, in.GetBooleanTest())
+	return out
+}
+func AlertpolicyConditionSql_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyConditionSql) *pb.AlertPolicy_Condition_SqlCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_Condition_SqlCondition{}
+	out.Query = AlertpolicyConditionSql_Query_ToProto(mapCtx, in.Query)
+	if oneof := AlertpolicyMinutes_ToProto(mapCtx, in.Minutes); oneof != nil {
+		out.Schedule = &pb.AlertPolicy_Condition_SqlCondition_Minutes_{Minutes: oneof}
+	}
+	if oneof := AlertpolicyHourly_ToProto(mapCtx, in.Hourly); oneof != nil {
+		out.Schedule = &pb.AlertPolicy_Condition_SqlCondition_Hourly_{Hourly: oneof}
+	}
+	if oneof := AlertpolicyDaily_ToProto(mapCtx, in.Daily); oneof != nil {
+		out.Schedule = &pb.AlertPolicy_Condition_SqlCondition_Daily_{Daily: oneof}
+	}
+	if oneof := AlertpolicyRowCountTest_ToProto(mapCtx, in.RowCountTest); oneof != nil {
+		out.Evaluate = &pb.AlertPolicy_Condition_SqlCondition_RowCountTest_{RowCountTest: oneof}
+	}
+	if oneof := AlertpolicyBooleanTest_ToProto(mapCtx, in.BooleanTest); oneof != nil {
+		out.Evaluate = &pb.AlertPolicy_Condition_SqlCondition_BooleanTest_{BooleanTest: oneof}
+	}
+	return out
+}
+
+/* found existing non-generated mapping function "AlertpolicyConditionThreshold_FromProto", skipping
+func AlertpolicyConditionThreshold_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_MetricThreshold) *krm.AlertpolicyConditionThreshold {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyConditionThreshold{}
+	out.Filter = direct.LazyPtr(in.GetFilter())
+	out.Aggregations = direct.Slice_FromProto(mapCtx, in.Aggregations, AlertpolicyAggregations_FromProto)
+	out.DenominatorFilter = direct.LazyPtr(in.GetDenominatorFilter())
+	out.DenominatorAggregations = direct.Slice_FromProto(mapCtx, in.DenominatorAggregations, AlertpolicyDenominatorAggregations_FromProto)
+	out.ForecastOptions = AlertpolicyForecastOptions_FromProto(mapCtx, in.GetForecastOptions())
+	out.Comparison = direct.Enum_FromProto(mapCtx, in.GetComparison())
+	out.ThresholdValue = direct.LazyPtr(in.GetThresholdValue())
+	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
+	out.Trigger = AlertpolicyTrigger_FromProto(mapCtx, in.GetTrigger())
+	out.EvaluationMissingData = direct.Enum_FromProto(mapCtx, in.GetEvaluationMissingData())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyConditionThreshold_ToProto", skipping
+func AlertpolicyConditionThreshold_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyConditionThreshold) *pb.AlertPolicy_Condition_MetricThreshold {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_Condition_MetricThreshold{}
+	out.Filter = direct.ValueOf(in.Filter)
+	out.Aggregations = direct.Slice_ToProto(mapCtx, in.Aggregations, AlertpolicyAggregations_ToProto)
+	out.DenominatorFilter = direct.ValueOf(in.DenominatorFilter)
+	out.DenominatorAggregations = direct.Slice_ToProto(mapCtx, in.DenominatorAggregations, AlertpolicyDenominatorAggregations_ToProto)
+	out.ForecastOptions = AlertpolicyForecastOptions_ToProto(mapCtx, in.ForecastOptions)
+	out.Comparison = direct.Enum_ToProto[pb.ComparisonType](mapCtx, in.Comparison)
+	out.ThresholdValue = direct.ValueOf(in.ThresholdValue)
+	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
+	out.Trigger = AlertpolicyTrigger_ToProto(mapCtx, in.Trigger)
+	out.EvaluationMissingData = direct.Enum_ToProto[pb.AlertPolicy_Condition_EvaluationMissingData](mapCtx, in.EvaluationMissingData)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyConditions_FromProto", skipping
+func AlertpolicyConditions_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition) *krm.AlertpolicyConditions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyConditions{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = in.GetDisplayName()
+	out.ConditionThreshold = AlertpolicyConditionThreshold_FromProto(mapCtx, in.GetConditionThreshold())
+	out.ConditionAbsent = AlertpolicyConditionAbsent_FromProto(mapCtx, in.GetConditionAbsent())
+	out.ConditionMatchedLog = AlertpolicyConditionMatchedLog_FromProto(mapCtx, in.GetConditionMatchedLog())
+	out.ConditionMonitoringQueryLanguage = AlertpolicyConditionMonitoringQueryLanguage_FromProto(mapCtx, in.GetConditionMonitoringQueryLanguage())
+	out.ConditionPrometheusQueryLanguage = AlertpolicyConditionPrometheusQueryLanguage_FromProto(mapCtx, in.GetConditionPrometheusQueryLanguage())
+	// MISSING: ConditionSQL
+	// (near miss): "ConditionSQL" vs "ConditionSql"
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AlertpolicyConditions_ToProto", skipping
+
+	func AlertpolicyConditions_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyConditions) *pb.AlertPolicy_Condition {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AlertPolicy_Condition{}
+		out.Name = direct.ValueOf(in.Name)
+		out.DisplayName = AlertpolicyConditions_DisplayName_ToProto(mapCtx, in.DisplayName)
+		if oneof := AlertpolicyConditionThreshold_ToProto(mapCtx, in.ConditionThreshold); oneof != nil {
+			out.Condition = &pb.AlertPolicy_Condition_ConditionThreshold{ConditionThreshold: oneof}
+		}
+		if oneof := AlertpolicyConditionAbsent_ToProto(mapCtx, in.ConditionAbsent); oneof != nil {
+			out.Condition = &pb.AlertPolicy_Condition_ConditionAbsent{ConditionAbsent: oneof}
+		}
+		if oneof := AlertpolicyConditionMatchedLog_ToProto(mapCtx, in.ConditionMatchedLog); oneof != nil {
+			out.Condition = &pb.AlertPolicy_Condition_ConditionMatchedLog{ConditionMatchedLog: oneof}
+		}
+		if oneof := AlertpolicyConditionMonitoringQueryLanguage_ToProto(mapCtx, in.ConditionMonitoringQueryLanguage); oneof != nil {
+			out.Condition = &pb.AlertPolicy_Condition_ConditionMonitoringQueryLanguage{ConditionMonitoringQueryLanguage: oneof}
+		}
+		if oneof := AlertpolicyConditionPrometheusQueryLanguage_ToProto(mapCtx, in.ConditionPrometheusQueryLanguage); oneof != nil {
+			out.Condition = &pb.AlertPolicy_Condition_ConditionPrometheusQueryLanguage{ConditionPrometheusQueryLanguage: oneof}
+		}
+		// MISSING: ConditionSQL
+		// (near miss): "ConditionSQL" vs "ConditionSql"
+		return out
+	}
+*/
+func AlertpolicyCreationRecordStatus_FromProto(mapCtx *direct.MapContext, in *pb.MutationRecord) *krm.AlertpolicyCreationRecordStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyCreationRecordStatus{}
+	out.MutateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetMutateTime())
+	out.MutatedBy = direct.LazyPtr(in.GetMutatedBy())
+	return out
+}
+func AlertpolicyCreationRecordStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyCreationRecordStatus) *pb.MutationRecord {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MutationRecord{}
+	out.MutateTime = direct.StringTimestamp_ToProto(mapCtx, in.MutateTime)
+	out.MutatedBy = direct.ValueOf(in.MutatedBy)
+	return out
+}
+
+/* found existing non-generated mapping function "AlertpolicyDaily_FromProto", skipping
+func AlertpolicyDaily_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_SqlCondition_Daily) *krm.AlertpolicyDaily {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyDaily{}
+	out.Periodicity = in.GetPeriodicity()
+	out.ExecutionTime = AlertpolicyExecutionTime_FromProto(mapCtx, in.GetExecutionTime())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AlertpolicyDaily_ToProto", skipping
+
+	func AlertpolicyDaily_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyDaily) *pb.AlertPolicy_Condition_SqlCondition_Daily {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AlertPolicy_Condition_SqlCondition_Daily{}
+		out.Periodicity = direct.ValueOf(in.Periodicity)
+		out.ExecutionTime = AlertpolicyExecutionTime_ToProto(mapCtx, in.ExecutionTime)
+		return out
+	}
+*/
+func AlertpolicyDenominatorAggregations_FromProto(mapCtx *direct.MapContext, in *pb.Aggregation) *krm.AlertpolicyDenominatorAggregations {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyDenominatorAggregations{}
+	out.AlignmentPeriod = direct.StringDuration_FromProto(mapCtx, in.GetAlignmentPeriod())
+	out.PerSeriesAligner = direct.Enum_FromProto(mapCtx, in.GetPerSeriesAligner())
+	out.CrossSeriesReducer = direct.Enum_FromProto(mapCtx, in.GetCrossSeriesReducer())
+	out.GroupByFields = in.GroupByFields
+	return out
+}
+func AlertpolicyDenominatorAggregations_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyDenominatorAggregations) *pb.Aggregation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Aggregation{}
+	out.AlignmentPeriod = direct.StringDuration_ToProto(mapCtx, in.AlignmentPeriod)
+	out.PerSeriesAligner = direct.Enum_ToProto[pb.Aggregation_Aligner](mapCtx, in.PerSeriesAligner)
+	out.CrossSeriesReducer = direct.Enum_ToProto[pb.Aggregation_Reducer](mapCtx, in.CrossSeriesReducer)
+	out.GroupByFields = in.GroupByFields
+	return out
+}
+func AlertpolicyDocumentation_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Documentation) *krm.AlertpolicyDocumentation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyDocumentation{}
+	out.Content = direct.LazyPtr(in.GetContent())
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	// MISSING: Subject
+	// MISSING: Links
+	return out
+}
+func AlertpolicyDocumentation_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyDocumentation) *pb.AlertPolicy_Documentation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_Documentation{}
+	out.Content = direct.ValueOf(in.Content)
+	out.MimeType = direct.ValueOf(in.MimeType)
+	// MISSING: Subject
+	// MISSING: Links
+	return out
+}
+
+/* found existing non-generated mapping function "AlertpolicyForecastOptions_FromProto", skipping
+func AlertpolicyForecastOptions_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_MetricThreshold_ForecastOptions) *krm.AlertpolicyForecastOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyForecastOptions{}
+	out.ForecastHorizon = direct.StringDuration_FromProto(mapCtx, in.GetForecastHorizon())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyForecastOptions_ToProto", skipping
+func AlertpolicyForecastOptions_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyForecastOptions) *pb.AlertPolicy_Condition_MetricThreshold_ForecastOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_Condition_MetricThreshold_ForecastOptions{}
+	out.ForecastHorizon = direct.StringDuration_ToProto(mapCtx, in.ForecastHorizon)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyHourly_FromProto", skipping
+func AlertpolicyHourly_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_SqlCondition_Hourly) *krm.AlertpolicyHourly {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyHourly{}
+	out.Periodicity = in.GetPeriodicity()
+	out.MinuteOffset = in.MinuteOffset
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyHourly_ToProto", skipping
+func AlertpolicyHourly_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyHourly) *pb.AlertPolicy_Condition_SqlCondition_Hourly {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_Condition_SqlCondition_Hourly{}
+	out.Periodicity = direct.ValueOf(in.Periodicity)
+	out.MinuteOffset = in.MinuteOffset
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyMinutes_FromProto", skipping
+func AlertpolicyMinutes_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_SqlCondition_Minutes) *krm.AlertpolicyMinutes {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyMinutes{}
+	out.Periodicity = in.GetPeriodicity()
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AlertpolicyMinutes_ToProto", skipping
+
+	func AlertpolicyMinutes_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyMinutes) *pb.AlertPolicy_Condition_SqlCondition_Minutes {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AlertPolicy_Condition_SqlCondition_Minutes{}
+		out.Periodicity = direct.ValueOf(in.Periodicity)
+		return out
+	}
+*/
+func AlertpolicyNotificationChannelStrategy_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_AlertStrategy_NotificationChannelStrategy) *krm.AlertpolicyNotificationChannelStrategy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyNotificationChannelStrategy{}
+	out.NotificationChannelNames = in.NotificationChannelNames
+	out.RenotifyInterval = direct.StringDuration_FromProto(mapCtx, in.GetRenotifyInterval())
+	return out
+}
+func AlertpolicyNotificationChannelStrategy_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyNotificationChannelStrategy) *pb.AlertPolicy_AlertStrategy_NotificationChannelStrategy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_AlertStrategy_NotificationChannelStrategy{}
+	out.NotificationChannelNames = in.NotificationChannelNames
+	out.RenotifyInterval = direct.StringDuration_ToProto(mapCtx, in.RenotifyInterval)
+	return out
+}
+func AlertpolicyNotificationRateLimit_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_AlertStrategy_NotificationRateLimit) *krm.AlertpolicyNotificationRateLimit {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyNotificationRateLimit{}
+	out.Period = direct.StringDuration_FromProto(mapCtx, in.GetPeriod())
+	return out
+}
+func AlertpolicyNotificationRateLimit_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyNotificationRateLimit) *pb.AlertPolicy_AlertStrategy_NotificationRateLimit {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_AlertStrategy_NotificationRateLimit{}
+	out.Period = direct.StringDuration_ToProto(mapCtx, in.Period)
+	return out
+}
+
+/* found existing non-generated mapping function "AlertpolicyRowCountTest_FromProto", skipping
+func AlertpolicyRowCountTest_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_SqlCondition_RowCountTest) *krm.AlertpolicyRowCountTest {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyRowCountTest{}
+	out.Comparison = direct.Enum_FromProto(mapCtx, in.GetComparison())
+	out.Threshold = in.GetThreshold()
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyRowCountTest_ToProto", skipping
+func AlertpolicyRowCountTest_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyRowCountTest) *pb.AlertPolicy_Condition_SqlCondition_RowCountTest {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_Condition_SqlCondition_RowCountTest{}
+	out.Comparison = direct.Enum_ToProto[pb.ComparisonType](mapCtx, in.Comparison)
+	out.Threshold = direct.ValueOf(in.Threshold)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyTrigger_FromProto", skipping
+func AlertpolicyTrigger_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_Condition_Trigger) *krm.AlertpolicyTrigger {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertpolicyTrigger{}
+	out.Count = direct.LazyPtr(in.GetCount())
+	out.Percent = direct.LazyPtr(in.GetPercent())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyTrigger_ToProto", skipping
+func AlertpolicyTrigger_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyTrigger) *pb.AlertPolicy_Condition_Trigger {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy_Condition_Trigger{}
+	if oneof := AlertpolicyTrigger_Count_ToProto(mapCtx, in.Count); oneof != nil {
+		out.Type = oneof
+	}
+	if oneof := AlertpolicyTrigger_Percent_ToProto(mapCtx, in.Percent); oneof != nil {
+		out.Type = oneof
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyTrigger_Count_ToProto", skipping
+func AlertpolicyTrigger_Count_ToProto(mapCtx *direct.MapContext, in *int64) *pb.AlertPolicy_Condition_Trigger_Count {
+	if in == nil {
+		return nil
+	}
+	return &pb.AlertPolicy_Condition_Trigger_Count{Count: *in}
+}
+*/
+
+/* found existing non-generated mapping function "AlertpolicyTrigger_Percent_ToProto", skipping
+func AlertpolicyTrigger_Percent_ToProto(mapCtx *direct.MapContext, in *float64) *pb.AlertPolicy_Condition_Trigger_Percent {
+	if in == nil {
+		return nil
+	}
+	return &pb.AlertPolicy_Condition_Trigger_Percent{Percent: *in}
 }
 */
 
@@ -353,6 +919,52 @@ func MonitoredResource_ToProto(mapCtx *direct.MapContext, in *krm.MonitoredResou
 	out := &monitoredrespb.MonitoredResource{}
 	out.Type = direct.ValueOf(in.Type)
 	out.Labels = in.Labels
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "MonitoringAlertPolicySpec_FromProto", skipping
+func MonitoringAlertPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy) *krm.MonitoringAlertPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringAlertPolicySpec{}
+	// MISSING: Name
+	out.DisplayName = in.GetDisplayName()
+	out.Documentation = AlertpolicyDocumentation_FromProto(mapCtx, in.GetDocumentation())
+	// MISSING: UserLabels
+	out.Conditions = direct.Slice_FromProto(mapCtx, in.Conditions, AlertpolicyConditions_FromProto)
+	out.Combiner = direct.Enum_FromProto(mapCtx, in.GetCombiner())
+	out.Enabled = direct.BoolValue_FromProto(mapCtx, in.GetEnabled())
+	// MISSING: Validity
+	out.NotificationChannels = MonitoringAlertPolicySpec_NotificationChannels_FromProto(mapCtx, in.NotificationChannels)
+	// MISSING: CreationRecord
+	// MISSING: MutationRecord
+	out.AlertStrategy = AlertpolicyAlertStrategy_FromProto(mapCtx, in.GetAlertStrategy())
+	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "MonitoringAlertPolicySpec_ToProto", skipping
+func MonitoringAlertPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringAlertPolicySpec) *pb.AlertPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertPolicy{}
+	// MISSING: Name
+	out.DisplayName = MonitoringAlertPolicySpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	out.Documentation = AlertpolicyDocumentation_ToProto(mapCtx, in.Documentation)
+	// MISSING: UserLabels
+	out.Conditions = direct.Slice_ToProto(mapCtx, in.Conditions, AlertpolicyConditions_ToProto)
+	out.Combiner = direct.Enum_ToProto[pb.AlertPolicy_ConditionCombinerType](mapCtx, in.Combiner)
+	out.Enabled = direct.BoolValue_ToProto(mapCtx, in.Enabled)
+	// MISSING: Validity
+	out.NotificationChannels = MonitoringAlertPolicySpec_NotificationChannels_ToProto(mapCtx, in.NotificationChannels)
+	// MISSING: CreationRecord
+	// MISSING: MutationRecord
+	out.AlertStrategy = AlertpolicyAlertStrategy_ToProto(mapCtx, in.AlertStrategy)
+	out.Severity = direct.Enum_ToProto[pb.AlertPolicy_Severity](mapCtx, in.Severity)
 	return out
 }
 */
