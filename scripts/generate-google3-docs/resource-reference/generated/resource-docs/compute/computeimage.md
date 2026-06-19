@@ -139,8 +139,7 @@ storageLocations:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. An optional description of this resource. Provide this property when
-you create the resource.</p>
+            <p>Immutable. An optional description of this resource. Provide this property when you create the resource.</p>
         </td>
     </tr>
     <tr>
@@ -150,9 +149,7 @@ you create the resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The source disk to create this image based on.
-You must provide either this property or the
-rawDisk.source property but not both to create an image.</p>
+            <p>The source disk to create this image based on. You must provide either this property or the rawDisk.source property but not both to create an image.</p>
         </td>
     </tr>
     <tr>
@@ -162,7 +159,7 @@ rawDisk.source property but not both to create an image.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeDisk` resource.</p>
+            <p>A reference to an externally managed ComputeDisk resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/disks/{{diskID}}" or "projects/{{projectID}}/regions/{{region}}/disks/{{diskID}}".</p>
         </td>
     </tr>
     <tr>
@@ -172,7 +169,7 @@ rawDisk.source property but not both to create an image.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeDisk resource.</p>
         </td>
     </tr>
     <tr>
@@ -182,7 +179,7 @@ rawDisk.source property but not both to create an image.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeDisk resource.</p>
         </td>
     </tr>
     <tr>
@@ -202,11 +199,7 @@ rawDisk.source property but not both to create an image.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The name of the image family to which this image belongs. You can
-create disks by specifying an image family instead of a specific
-image name. The image family always returns its latest image that is
-not deprecated. The name of the image family must comply with
-RFC1035.</p>
+            <p>Immutable. The name of the image family to which this image belongs. You can create disks by specifying an image family instead of a specific image name. The image family always returns its latest image that is not deprecated. The name of the image family must comply with RFC1035.</p>
         </td>
     </tr>
     <tr>
@@ -216,8 +209,7 @@ RFC1035.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Immutable. A list of features to enable on the guest operating system.
-Applicable only for bootable images.</p>
+            <p>Immutable. A list of features to enable on the guest operating system. Applicable only for bootable images.</p>
         </td>
     </tr>
     <tr>
@@ -261,8 +253,7 @@ disk from the image).</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The self link of the encryption key that is stored in Google Cloud
-KMS.</p>
+            <p>The self link of the encryption key that is stored in Google Cloud KMS.</p>
         </td>
     </tr>
     <tr>
@@ -272,7 +263,7 @@ KMS.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".</p>
         </td>
     </tr>
     <tr>
@@ -282,7 +273,7 @@ KMS.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -292,7 +283,7 @@ KMS.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -302,9 +293,7 @@ KMS.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The service account being used for the encryption request for the
-given KMS key. If absent, the Compute Engine default service account
-is used.</p>
+            <p>The service account being used for the encryption request for the given KMS key. If absent, the Compute Engine default service account is used.</p>
         </td>
     </tr>
     <tr>
@@ -314,7 +303,7 @@ is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -374,10 +363,7 @@ is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The format used to encode and transmit the block device, which
-should be TAR. This is just a container and transmission format
-and not a runtime format. Provided by the client when the disk
-image is created. Default value: "TAR" Possible values: ["TAR"].</p>
+            <p>Immutable. The format used to encode and transmit the block device, which should be TAR. This is just a container and transmission format and not a runtime format. Provided by the client when the disk image is created. Default value: "TAR" Possible values: ["TAR"].</p>
         </td>
     </tr>
     <tr>
@@ -387,8 +373,7 @@ image is created. Default value: "TAR" Possible values: ["TAR"].</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. An optional SHA1 checksum of the disk image before unpackaging.
-This is provided by the client when the disk image is created.</p>
+            <p>Immutable. An optional SHA1 checksum of the disk image before unpackaging. This is provided by the client when the disk image is created.</p>
         </td>
     </tr>
     <tr>
@@ -398,9 +383,7 @@ This is provided by the client when the disk image is created.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The full Google Cloud Storage URL where disk storage is stored
-You must provide either this property or the sourceDisk property
-but not both.</p>
+            <p>Immutable. The full Google Cloud Storage URL where disk storage is stored You must provide either this property or the sourceDisk property but not both.</p>
         </td>
     </tr>
     <tr>
@@ -430,7 +413,7 @@ but not both.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
+            <p>A reference to an externally managed ComputeImage resource. Should be in the format "projects/{{project}}/global/images/{{name}}".</p>
         </td>
     </tr>
     <tr>
@@ -440,7 +423,7 @@ but not both.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeImage resource.</p>
         </td>
     </tr>
     <tr>
@@ -450,7 +433,7 @@ but not both.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeImage resource.</p>
         </td>
     </tr>
     <tr>
@@ -470,7 +453,7 @@ but not both.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSnapshot` resource.</p>
+            <p>A reference to an externally managed ComputeSnapshot resource. Should be in the format "projects/{{projectID}}/global/snapshots/{{snapshotID}}" or "projects/{{projectID}}/regions/{{region}}/snapshots/{{snapshotID}}".</p>
         </td>
     </tr>
     <tr>
@@ -480,7 +463,7 @@ but not both.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSnapshot resource.</p>
         </td>
     </tr>
     <tr>
@@ -490,7 +473,7 @@ but not both.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSnapshot resource.</p>
         </td>
     </tr>
     <tr>
@@ -500,9 +483,7 @@ but not both.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Cloud Storage bucket storage location of the image
-(regional or multi-regional).
-Reference link: https://cloud.google.com/compute/docs/reference/rest/v1/images.</p>
+            <p>Immutable. Cloud Storage bucket storage location of the image (regional or multi-regional). Reference link: https://cloud.google.com/compute/docs/reference/rest/v1/images.</p>
         </td>
     </tr>
     <tr>
@@ -547,15 +528,14 @@ selfLink: string
         <td><code>archiveSizeBytes</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Size of the image tar.gz archive stored in Google Cloud Storage (in
-bytes).</p>
+            <p>Size of the image tar.gz archive stored in Google Cloud Storage (in bytes).</p>
         </td>
     </tr>
     <tr>
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeImage's current state.</p>
         </td>
     </tr>
     <tr>
@@ -611,8 +591,7 @@ bytes).</p>
         <td><code>labelFingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The fingerprint used for optimistic locking of this resource. Used
-internally during updates.</p>
+            <p>The fingerprint used for optimistic locking of this resource. Used internally during updates.</p>
         </td>
     </tr>
     <tr>

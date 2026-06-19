@@ -1185,6 +1185,194 @@ func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 }
 */
 
+/* found existing non-generated mapping function "ComputeImageSpec_v1beta1_FromProto", skipping
+func ComputeImageSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Image) *krm.ComputeImageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeImageSpec{}
+	// MISSING: Architecture
+	// MISSING: ArchiveSizeBytes
+	// MISSING: CreationTimestamp
+	// MISSING: Deprecated
+	out.Description = in.Description
+	// MISSING: DiskSizeGB
+	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+	// MISSING: EnableConfidentialCompute
+	out.Family = in.Family
+	// MISSING: GuestOSFeatures
+	// (near miss): "GuestOSFeatures" vs "GuestOsFeatures"
+	// MISSING: ID
+	out.ImageEncryptionKey = ImageImageEncryptionKey_v1beta1_FromProto(mapCtx, in.GetImageEncryptionKey())
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: Name
+	out.RawDisk = ImageRawDisk_v1beta1_FromProto(mapCtx, in.GetRawDisk())
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	if in.GetSourceImage() != "" {
+		out.SourceImageRef = &krm.ComputeImageRef{External: in.GetSourceImage()}
+	}
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	if in.GetSourceSnapshot() != "" {
+		out.SourceSnapshotRef = &krm.ComputeSnapshotRef{External: in.GetSourceSnapshot()}
+	}
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeImageSpec_v1beta1_ToProto", skipping
+func ComputeImageSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeImageSpec) *pb.Image {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Image{}
+	// MISSING: Architecture
+	// MISSING: ArchiveSizeBytes
+	// MISSING: CreationTimestamp
+	// MISSING: Deprecated
+	out.Description = in.Description
+	// MISSING: DiskSizeGB
+	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+	// MISSING: EnableConfidentialCompute
+	out.Family = in.Family
+	// MISSING: GuestOSFeatures
+	// (near miss): "GuestOSFeatures" vs "GuestOsFeatures"
+	// MISSING: ID
+	out.ImageEncryptionKey = ImageImageEncryptionKey_v1beta1_ToProto(mapCtx, in.ImageEncryptionKey)
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: Name
+	out.RawDisk = ImageRawDisk_v1beta1_ToProto(mapCtx, in.RawDisk)
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	if in.SourceImageRef != nil {
+		out.SourceImage = &in.SourceImageRef.External
+	}
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	if in.SourceSnapshotRef != nil {
+		out.SourceSnapshot = &in.SourceSnapshotRef.External
+	}
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeImageStatus_v1beta1_FromProto", skipping
+func ComputeImageStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Image) *krm.ComputeImageStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeImageStatus{}
+	// MISSING: Architecture
+	out.ArchiveSizeBytes = in.ArchiveSizeBytes
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Deprecated
+	// MISSING: Description
+	// MISSING: DiskSizeGB
+	// MISSING: EnableConfidentialCompute
+	// MISSING: Family
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: ImageEncryptionKey
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	// MISSING: Licenses
+	// MISSING: Name
+	// MISSING: RawDisk
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	// MISSING: SourceImage
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	// MISSING: SourceSnapshot
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
+	// MISSING: StorageLocations
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeImageStatus_v1beta1_ToProto", skipping
+func ComputeImageStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeImageStatus) *pb.Image {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Image{}
+	// MISSING: Architecture
+	out.ArchiveSizeBytes = in.ArchiveSizeBytes
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Deprecated
+	// MISSING: Description
+	// MISSING: DiskSizeGB
+	// MISSING: EnableConfidentialCompute
+	// MISSING: Family
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: ImageEncryptionKey
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	// MISSING: Licenses
+	// MISSING: Name
+	// MISSING: RawDisk
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	// MISSING: SourceImage
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	// MISSING: SourceSnapshot
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
+	// MISSING: StorageLocations
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeInstanceGroupSpec_v1beta1_FromProto", skipping
 func ComputeInstanceGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroup) *krm.ComputeInstanceGroupSpec {
 	if in == nil {

@@ -29,6 +29,7 @@ go run . generate-types \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeHTTPHealthCheck:HTTPHealthCheck \
+  --resource ComputeImage:Image \
   --resource ComputeHealthCheck:HealthCheck \
   --resource ComputeInstance:Instance \
   --resource ComputeInstanceGroup:InstanceGroup \
