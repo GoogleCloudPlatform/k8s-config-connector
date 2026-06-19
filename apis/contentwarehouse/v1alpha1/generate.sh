@@ -26,8 +26,10 @@ cd "${REPO_ROOT}/dev/tools/controllerbuilder"
 go run . generate-types \
     --service google.cloud.contentwarehouse.v1 \
     --api-version "contentwarehouse.cnrm.cloud.google.com/v1alpha1" \
+    --include-skipped-output \
     --resource ContentWarehouseSchema:DocumentSchema \
-    --resource ContentWarehouseRuleSet:RuleSet
+    --resource ContentWarehouseRuleSet:RuleSet \
+    --resource ContentWarehouseDocument:Document
 
 cd "${REPO_ROOT}"
 dev/tasks/generate-crds

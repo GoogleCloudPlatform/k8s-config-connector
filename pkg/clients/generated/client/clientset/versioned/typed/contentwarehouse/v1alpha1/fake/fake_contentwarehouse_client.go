@@ -31,6 +31,10 @@ type FakeContentwarehouseV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeContentwarehouseV1alpha1) ContentWarehouseDocuments(namespace string) v1alpha1.ContentWarehouseDocumentInterface {
+	return newFakeContentWarehouseDocuments(c, namespace)
+}
+
 func (c *FakeContentwarehouseV1alpha1) ContentWarehouseRuleSets(namespace string) v1alpha1.ContentWarehouseRuleSetInterface {
 	return newFakeContentWarehouseRuleSets(c, namespace)
 }
