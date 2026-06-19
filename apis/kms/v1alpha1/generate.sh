@@ -26,7 +26,8 @@ go run . generate-types \
   --service google.cloud.kms.v1 \
   --api-version kms.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource KMSCryptoKeyVersion:CryptoKeyVersion
+  --resource KMSCryptoKeyVersion:CryptoKeyVersion \
+  --resource KMSKeyRingImportJob:ImportJob
 
 go run . generate-mapper \
   --service google.cloud.kms.v1 \

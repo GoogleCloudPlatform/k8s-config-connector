@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.kms.v1
 // resource: KMSCryptoKeyVersion:CryptoKeyVersion
+// resource: KMSKeyRingImportJob:ImportJob
 
 package v1alpha1
 
@@ -57,6 +58,41 @@ type ExternalProtectionLevelOptions struct {
 	//  [EkmConnection][google.cloud.kms.v1.EkmConnection].
 	// +kcc:proto:field=google.cloud.kms.v1.ExternalProtectionLevelOptions.ekm_connection_key_path
 	EkmConnectionKeyPath *string `json:"ekmConnectionKeyPath,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.kms.v1.ImportJob", skipping
+
+// +kcc:proto=google.cloud.kms.v1.ImportJob
+type ImportJob struct {
+
+	// Required. Immutable. The wrapping method to be used for incoming key
+	//  material.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.import_method
+	ImportMethod *string `json:"importMethod,omitempty"`
+
+	// Required. Immutable. The protection level of the
+	//  [ImportJob][google.cloud.kms.v1.ImportJob]. This must match the
+	//  [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level]
+	//  of the [version_template][google.cloud.kms.v1.CryptoKey.version_template]
+	//  on the [CryptoKey][google.cloud.kms.v1.CryptoKey] you attempt to import
+	//  into.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.protection_level
+	ProtectionLevel *string `json:"protectionLevel,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.kms.v1.ImportJob.WrappingPublicKey", skipping
+
+// +kcc:proto=google.cloud.kms.v1.ImportJob.WrappingPublicKey
+type ImportJob_WrappingPublicKey struct {
+	// The public key, encoded in PEM format. For more information, see the [RFC
+	//  7468](https://tools.ietf.org/html/rfc7468) sections for [General
+	//  Considerations](https://tools.ietf.org/html/rfc7468#section-2) and
+	//  [Textual Encoding of Subject Public Key Info]
+	//  (https://tools.ietf.org/html/rfc7468#section-13).
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.WrappingPublicKey.pem
+	Pem *string `json:"pem,omitempty"`
 }
 */
 
@@ -179,6 +215,60 @@ type CryptoKeyVersionObservedState struct {
 	//  [ImportCryptoKeyVersionRequest.crypto_key_version][google.cloud.kms.v1.ImportCryptoKeyVersionRequest.crypto_key_version].
 	// +kcc:proto:field=google.cloud.kms.v1.CryptoKeyVersion.reimport_eligible
 	ReimportEligible *bool `json:"reimportEligible,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.kms.v1.ImportJob", skipping
+
+// +kcc:observedstate:proto=google.cloud.kms.v1.ImportJob
+type ImportJobObservedState struct {
+	// Output only. The resource name for this
+	//  [ImportJob][google.cloud.kms.v1.ImportJob] in the format
+	//  `projects/* /locations/* /keyRings/* /importJobs/*`.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The time at which this
+	//  [ImportJob][google.cloud.kms.v1.ImportJob] was created.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob]'s key
+	//  material was generated.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.generate_time
+	GenerateTime *string `json:"generateTime,omitempty"`
+
+	// Output only. The time at which this
+	//  [ImportJob][google.cloud.kms.v1.ImportJob] is scheduled for expiration and
+	//  can no longer be used to import key material.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob]
+	//  expired. Only present if [state][google.cloud.kms.v1.ImportJob.state] is
+	//  [EXPIRED][google.cloud.kms.v1.ImportJob.ImportJobState.EXPIRED].
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.expire_event_time
+	ExpireEventTime *string `json:"expireEventTime,omitempty"`
+
+	// Output only. The current state of the
+	//  [ImportJob][google.cloud.kms.v1.ImportJob], indicating if it can be used.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The public key with which to wrap key material prior to
+	//  import. Only returned if [state][google.cloud.kms.v1.ImportJob.state] is
+	//  [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE].
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.public_key
+	PublicKey *ImportJob_WrappingPublicKey `json:"publicKey,omitempty"`
+
+	// Output only. Statement that was generated and signed by the key creator
+	//  (for example, an HSM) at key creation time. Use this statement to verify
+	//  attributes of the key as stored on the HSM, independently of Google.
+	//  Only present if the chosen
+	//  [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod] is one with a
+	//  protection level of [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.attestation
+	Attestation *KeyOperationAttestationObservedState `json:"attestation,omitempty"`
 }
 */
 

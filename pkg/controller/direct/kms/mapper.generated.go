@@ -476,6 +476,94 @@ func KMSKeyHandleSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyHandleSpe
 	return out
 }
 
+/* found existing non-generated mapping function "KMSKeyRingImportJobSpec_FromProto", skipping
+func KMSKeyRingImportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.ImportJob) *krmkmsv1alpha1.KMSKeyRingImportJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmkmsv1alpha1.KMSKeyRingImportJobSpec{}
+	// MISSING: Name
+	out.ImportMethod = direct.Enum_FromProto(mapCtx, in.GetImportMethod())
+	out.ProtectionLevel = direct.Enum_FromProto(mapCtx, in.GetProtectionLevel())
+	// MISSING: CreateTime
+	// MISSING: GenerateTime
+	// MISSING: ExpireTime
+	// MISSING: ExpireEventTime
+	// MISSING: State
+	// MISSING: PublicKey
+	// MISSING: Attestation
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "KMSKeyRingImportJobSpec_ToProto", skipping
+func KMSKeyRingImportJobSpec_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.KMSKeyRingImportJobSpec) *pb.ImportJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImportJob{}
+	// MISSING: Name
+	out.ImportMethod = direct.Enum_ToProto[pb.ImportJob_ImportMethod](mapCtx, in.ImportMethod)
+	out.ProtectionLevel = direct.Enum_ToProto[pb.ProtectionLevel](mapCtx, in.ProtectionLevel)
+	// MISSING: CreateTime
+	// MISSING: GenerateTime
+	// MISSING: ExpireTime
+	// MISSING: ExpireEventTime
+	// MISSING: State
+	// MISSING: PublicKey
+	// MISSING: Attestation
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "KMSKeyRingImportJobStatus_FromProto", skipping
+func KMSKeyRingImportJobStatus_FromProto(mapCtx *direct.MapContext, in *pb.ImportJob) *krmkmsv1alpha1.KMSKeyRingImportJobStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmkmsv1alpha1.KMSKeyRingImportJobStatus{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: ImportMethod
+	// MISSING: ProtectionLevel
+	// MISSING: CreateTime
+	// MISSING: GenerateTime
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	// MISSING: ExpireEventTime
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	if v := in.GetPublicKey(); v != nil {
+		out.PublicKey = []krmkmsv1alpha1.KeyringimportjobPublicKeyStatus{KeyringimportjobPublicKeyStatus_FromProto(mapCtx, v)}
+	}
+	if v := in.GetAttestation(); v != nil {
+		out.Attestation = []krmkmsv1alpha1.KeyringimportjobAttestationStatus{KeyringimportjobAttestationStatus_FromProto(mapCtx, v)}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "KMSKeyRingImportJobStatus_ToProto", skipping
+func KMSKeyRingImportJobStatus_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.KMSKeyRingImportJobStatus) *pb.ImportJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImportJob{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: ImportMethod
+	// MISSING: ProtectionLevel
+	// MISSING: CreateTime
+	// MISSING: GenerateTime
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	// MISSING: ExpireEventTime
+	out.State = direct.Enum_ToProto[pb.ImportJob_ImportJobState](mapCtx, in.State)
+	if len(in.PublicKey) > 0 && in.PublicKey[0] != nil {
+		out.PublicKey = KeyringimportjobPublicKeyStatus_ToProto(mapCtx, in.PublicKey[0])
+	}
+	if len(in.Attestation) > 0 && in.Attestation[0] != nil {
+		out.Attestation = KeyringimportjobAttestationStatus_ToProto(mapCtx, in.Attestation[0])
+	}
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "KMSKeyRingSpec_FromProto", skipping
 func KMSKeyRingSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyRing) *krm.KMSKeyRingSpec {
 	if in == nil {
@@ -565,3 +653,51 @@ func KeyOperationAttestation_CertificateChains_ToProto(mapCtx *direct.MapContext
 	out.GooglePartitionCerts = in.GooglePartitionCerts
 	return out
 }
+
+/* found existing non-generated mapping function "KeyringimportjobAttestationStatus_FromProto", skipping
+func KeyringimportjobAttestationStatus_FromProto(mapCtx *direct.MapContext, in *pb.KeyOperationAttestation) *krmkmsv1alpha1.KeyringimportjobAttestationStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmkmsv1alpha1.KeyringimportjobAttestationStatus{}
+	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
+	out.Content = direct.LazyPtr(in.GetContent())
+	// MISSING: CertChains
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "KeyringimportjobAttestationStatus_ToProto", skipping
+func KeyringimportjobAttestationStatus_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.KeyringimportjobAttestationStatus) *pb.KeyOperationAttestation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyOperationAttestation{}
+	out.Format = direct.Enum_ToProto[pb.KeyOperationAttestation_AttestationFormat](mapCtx, in.Format)
+	out.Content = in.Content
+	// MISSING: CertChains
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "KeyringimportjobPublicKeyStatus_FromProto", skipping
+func KeyringimportjobPublicKeyStatus_FromProto(mapCtx *direct.MapContext, in *pb.ImportJob_WrappingPublicKey) *krmkmsv1alpha1.KeyringimportjobPublicKeyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmkmsv1alpha1.KeyringimportjobPublicKeyStatus{}
+	out.Pem = direct.LazyPtr(in.GetPem())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "KeyringimportjobPublicKeyStatus_ToProto", skipping
+func KeyringimportjobPublicKeyStatus_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.KeyringimportjobPublicKeyStatus) *pb.ImportJob_WrappingPublicKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImportJob_WrappingPublicKey{}
+	out.Pem = direct.ValueOf(in.Pem)
+	return out
+}
+*/
