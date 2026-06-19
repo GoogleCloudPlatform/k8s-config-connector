@@ -423,19 +423,12 @@ type AIPlatformModelObservedState struct {
 }
 
 // +kcc:proto=google.protobuf.ListValue
-// type ListValue struct {
-// 	// Repeated field of dynamically typed values.
-// 	// Changed the structure to avoid looping between ListValue and Value structs.
-// 	Values []*ListTypeValue `json:"values,omitempty"`
-// }
+type ListValue struct {
+}
 
 // ListTypeValue records the type and value for each entry in the ListValue.
-// type ListTypeValue struct {
-// 	Type        int               `json:"type,omitempty"`
-// 	Value       string            `json:"value,omitempty"`
-// 	ListValue   []*ListTypeValue  `json:"listValue,omitempty"`
-// 	structValue map[string]string `json:"structValue,omitempty"`
-// }
+type ListTypeValue struct {
+}
 
 const (
 	// Null value.

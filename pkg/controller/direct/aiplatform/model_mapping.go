@@ -19,6 +19,7 @@ import (
 
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/structpb"
 )
@@ -126,16 +127,16 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 		}
 	}
 	if in.NullValue != nil {
-		strVal := direct.ValueOf(in.NullValue)
-		var value int
-		if val, ok := structpb.NullValue_value[strVal]; ok {
-			value = int(val)
+		var value int32
+		s := direct.ValueOf(in.NullValue)
+		if v, ok := structpb.NullValue_value[s]; ok {
+			value = v
 		} else {
-			var err error
-			value, err = strconv.Atoi(strVal)
+			i, err := strconv.Atoi(s)
 			if err != nil {
-				mapCtx.Errorf("error converting value %s from string to int", strVal)
+				mapCtx.Errorf("error converting value %s to NullValue: %v", s, err)
 			}
+			value = int32(i)
 		}
 		out.Kind = &structpb.Value_NullValue{
 			NullValue: structpb.NullValue(value),
@@ -151,9 +152,9 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 			StringValue: direct.ValueOf(in.StringValue),
 		}
 	}
-	if in.StructValue != nil {
+	if len(in.StructValue.Raw) > 0 {
 		out.Kind = &structpb.Value_StructValue{
-			StructValue: StructValue_ToProto(mapCtx, in.StructValue),
+			StructValue: direct.Struct_ToProto(mapCtx, &in.StructValue),
 		}
 	}
 	return out
@@ -178,36 +179,8 @@ func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
 		value := in.GetBoolValue()
 		out.BoolValue = &value
 	case *structpb.Value_StructValue:
-		out.StructValue = StructValue_FromProto(mapCtx, in.GetStructValue())
-	}
-	return out
-}
-
-func StructValue_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) map[string]string {
-	if in == nil {
-		return nil
-	}
-	out := make(map[string]string)
-	for key, val := range in.Fields {
-		out[key] = val.GetStringValue()
-	}
-	return out
-}
-
-func StructValue_ToProto(mapCtx *direct.MapContext, in map[string]string) *structpb.Struct {
-	if in == nil {
-		return nil
-	}
-	out := &structpb.Struct{}
-	if len(in) > 0 {
-		out.Fields = make(map[string]*structpb.Value)
-	}
-	for key, val := range in {
-		value := &structpb.Value_StringValue{
-			StringValue: val,
-		}
-		out.Fields[key] = &structpb.Value{
-			Kind: value,
+		if structVal := direct.Struct_FromProto(mapCtx, in.GetStructValue()); structVal != nil {
+			out.StructValue = *structVal
 		}
 	}
 	return out
@@ -413,5 +386,123 @@ func SmoothGradConfig_NoiseSigma_ToProto(mapCtx *direct.MapContext, in *float32)
 	}
 	out := &pb.SmoothGradConfig_NoiseSigma{}
 	out.NoiseSigma = direct.ValueOf(in)
+	return out
+}
+
+func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
+	if in == nil {
+		return nil
+	}
+	return &krm.ListValue{}
+}
+
+func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
+	if in == nil {
+		return nil
+	}
+	return &structpb.ListValue{}
+}
+
+func APIAuth_APIKeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.ApiAuth_ApiKeyConfig) *krm.APIAuth_APIKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIAuth_APIKeyConfig{}
+	if in.GetApiKeySecretVersion() != "" {
+		out.APIKeySecretVersionRef = &refs.SecretManagerSecretVersionRef{
+			External: in.GetApiKeySecretVersion(),
+		}
+	}
+	return out
+}
+
+func APIAuth_APIKeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.APIAuth_APIKeyConfig) *pb.ApiAuth_ApiKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiAuth_ApiKeyConfig{}
+	if in.APIKeySecretVersionRef != nil {
+		out.ApiKeySecretVersion = in.APIKeySecretVersionRef.External
+	}
+	return out
+}
+
+func RagEmbeddingModelConfig_VertexPredictionEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.RagEmbeddingModelConfig_VertexPredictionEndpoint) *krm.RagEmbeddingModelConfig_VertexPredictionEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagEmbeddingModelConfig_VertexPredictionEndpoint{}
+	if in.GetEndpoint() != "" {
+		out.EndpointRef = &refs.VertexAIEndpointRef{
+			External: in.GetEndpoint(),
+		}
+	}
+	return out
+}
+
+func RagEmbeddingModelConfig_VertexPredictionEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.RagEmbeddingModelConfig_VertexPredictionEndpoint) *pb.RagEmbeddingModelConfig_VertexPredictionEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagEmbeddingModelConfig_VertexPredictionEndpoint{}
+	if in.EndpointRef != nil {
+		out.Endpoint = in.EndpointRef.External
+	}
+	return out
+}
+
+func RagVectorDbConfig_VertexVectorSearch_FromProto(mapCtx *direct.MapContext, in *pb.RagVectorDbConfig_VertexVectorSearch) *krm.RagVectorDbConfig_VertexVectorSearch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagVectorDbConfig_VertexVectorSearch{}
+	if in.GetIndexEndpoint() != "" {
+		out.IndexEndpointRef = &refs.VertexAIIndexEndpointRef{
+			External: in.GetIndexEndpoint(),
+		}
+	}
+	if in.GetIndex() != "" {
+		out.IndexRef = &refs.VertexAIIndexRef{
+			External: in.GetIndex(),
+		}
+	}
+	return out
+}
+
+func RagVectorDbConfig_VertexVectorSearch_ToProto(mapCtx *direct.MapContext, in *krm.RagVectorDbConfig_VertexVectorSearch) *pb.RagVectorDbConfig_VertexVectorSearch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagVectorDbConfig_VertexVectorSearch{}
+	if in.IndexEndpointRef != nil {
+		out.IndexEndpoint = in.IndexEndpointRef.External
+	}
+	if in.IndexRef != nil {
+		out.Index = in.IndexRef.External
+	}
+	return out
+}
+
+func VertexAiSearchConfig_FromProto(mapCtx *direct.MapContext, in *pb.VertexAiSearchConfig) *krm.VertexAiSearchConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAiSearchConfig{}
+	if in.GetServingConfig() != "" {
+		out.ServingConfigRef = &refs.VertexAISearchServingConfigRef{
+			External: in.GetServingConfig(),
+		}
+	}
+	return out
+}
+
+func VertexAiSearchConfig_ToProto(mapCtx *direct.MapContext, in *krm.VertexAiSearchConfig) *pb.VertexAiSearchConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VertexAiSearchConfig{}
+	if in.ServingConfigRef != nil {
+		out.ServingConfig = in.ServingConfigRef.External
+	}
 	return out
 }
