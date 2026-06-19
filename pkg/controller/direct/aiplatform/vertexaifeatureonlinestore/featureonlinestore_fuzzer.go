@@ -48,6 +48,7 @@ func featureonlinestoreFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".dedicated_serving_endpoint.private_service_connect_config.psc_automation_configs[].state")
 	f.Unimplemented_NotYetTriaged(".dedicated_serving_endpoint.private_service_connect_config.psc_automation_configs[].error_message")
 	f.Unimplemented_NotYetTriaged(".dedicated_serving_endpoint.private_service_connect_config.service_attachment")
+	f.Unimplemented_NotYetTriaged(".encryption_spec.kms_key_name")
 
 	f.SpecFields.Insert(".bigtable")
 	f.SpecFields.Insert(".optimized")
