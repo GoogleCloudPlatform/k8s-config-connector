@@ -184,6 +184,7 @@ import (
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/resourcemanager/v1beta1"
+	runv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1alpha1"
 	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1"
 	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1beta1"
@@ -378,6 +379,7 @@ type Interface interface {
 	RecaptchaenterpriseV1beta1() recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Interface
 	RedisV1beta1() redisv1beta1.RedisV1beta1Interface
 	ResourcemanagerV1beta1() resourcemanagerv1beta1.ResourcemanagerV1beta1Interface
+	RunV1alpha1() runv1alpha1.RunV1alpha1Interface
 	RunV1beta1() runv1beta1.RunV1beta1Interface
 	SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface
 	SecuresourcemanagerV1beta1() securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Interface
@@ -570,6 +572,7 @@ type Clientset struct {
 	recaptchaenterpriseV1beta1      *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
 	redisV1beta1                    *redisv1beta1.RedisV1beta1Client
 	resourcemanagerV1beta1          *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
+	runV1alpha1                     *runv1alpha1.RunV1alpha1Client
 	runV1beta1                      *runv1beta1.RunV1beta1Client
 	secretmanagerV1beta1            *secretmanagerv1beta1.SecretmanagerV1beta1Client
 	securesourcemanagerV1beta1      *securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Client
@@ -1395,6 +1398,11 @@ func (c *Clientset) ResourcemanagerV1beta1() resourcemanagerv1beta1.Resourcemana
 	return c.resourcemanagerV1beta1
 }
 
+// RunV1alpha1 retrieves the RunV1alpha1Client
+func (c *Clientset) RunV1alpha1() runv1alpha1.RunV1alpha1Interface {
+	return c.runV1alpha1
+}
+
 // RunV1beta1 retrieves the RunV1beta1Client
 func (c *Clientset) RunV1beta1() runv1beta1.RunV1beta1Interface {
 	return c.runV1beta1
@@ -2215,6 +2223,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.runV1alpha1, err = runv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.runV1beta1, err = runv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2507,6 +2519,7 @@ func New(c rest.Interface) *Clientset {
 	cs.recaptchaenterpriseV1beta1 = recaptchaenterprisev1beta1.New(c)
 	cs.redisV1beta1 = redisv1beta1.New(c)
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.New(c)
+	cs.runV1alpha1 = runv1alpha1.New(c)
 	cs.runV1beta1 = runv1beta1.New(c)
 	cs.secretmanagerV1beta1 = secretmanagerv1beta1.New(c)
 	cs.securesourcemanagerV1beta1 = securesourcemanagerv1beta1.New(c)
