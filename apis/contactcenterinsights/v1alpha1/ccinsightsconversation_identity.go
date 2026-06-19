@@ -107,3 +107,12 @@ func (obj *CCInsightsConversation) GetIdentity(ctx context.Context, reader clien
 
 	return specIdentity, nil
 }
+
+// NewCCInsightsConversationIdentity builds a CCInsightsConversationIdentity from the Config Connector object.
+func NewCCInsightsConversationIdentity(ctx context.Context, reader client.Reader, obj *CCInsightsConversation) (*CCInsightsConversationIdentity, error) {
+	id, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+	return id.(*CCInsightsConversationIdentity), nil
+}
