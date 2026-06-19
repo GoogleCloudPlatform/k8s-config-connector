@@ -15,9 +15,13 @@
 package mockcompute
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -333,6 +337,37 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			r = httpmux.RewriteRequest(r, &u2)
 		}
 
+		var isLegacyHealthCheck bool
+		var isHTTPS bool
+		if strings.Contains(r.URL.Path, "/global/httpHealthChecks") {
+			isLegacyHealthCheck = true
+			isHTTPS = false
+		} else if strings.Contains(r.URL.Path, "/global/httpsHealthChecks") {
+			isLegacyHealthCheck = true
+			isHTTPS = true
+		}
+
+		if isLegacyHealthCheck {
+			if r.Method == http.MethodPost || r.Method == http.MethodPut || r.Method == http.MethodPatch {
+				bodyBytes, err := io.ReadAll(r.Body)
+				if err == nil && len(bodyBytes) > 0 {
+					translatedBody, err := transformLegacyToModernRequest(bodyBytes, isHTTPS)
+					if err == nil {
+						r.Body = io.NopCloser(bytes.NewBuffer(translatedBody))
+						r.ContentLength = int64(len(translatedBody))
+					}
+				}
+			}
+
+			u2 := *r.URL
+			if isHTTPS {
+				u2.Path = strings.ReplaceAll(u2.Path, "/global/httpsHealthChecks", "/global/healthChecks")
+			} else {
+				u2.Path = strings.ReplaceAll(u2.Path, "/global/httpHealthChecks", "/global/healthChecks")
+			}
+			r = httpmux.RewriteRequest(r, &u2)
+		}
+
 		// Merge multiple 'paths' query parameters into a single comma-separated 'paths' parameter.
 		// This is needed because the Compute API (and Terraform) can send multiple 'paths' parameters,
 		// but our generated proto has 'paths' as a single string field, and grpc-gateway fails
@@ -365,8 +400,122 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			}
 		}
 
+		if isLegacyHealthCheck {
+			captured := &responseCapture{ResponseWriter: w}
+			mux.ServeHTTP(captured, r)
+
+			if len(captured.body) > 0 && captured.code < 400 {
+				bodyBytes := captured.body
+				bodyStr := string(bodyBytes)
+				if isHTTPS {
+					bodyStr = strings.ReplaceAll(bodyStr, "healthChecks/", "httpsHealthChecks/")
+				} else {
+					bodyStr = strings.ReplaceAll(bodyStr, "healthChecks/", "httpHealthChecks/")
+				}
+				bodyBytes = []byte(bodyStr)
+
+				if transformed, err := transformModernToLegacyResponse(bodyBytes, isHTTPS); err == nil {
+					bodyBytes = transformed
+				}
+
+				w.Header().Set("Content-Length", strconv.Itoa(len(bodyBytes)))
+				if captured.code != 0 {
+					w.WriteHeader(captured.code)
+				}
+				w.Write(bodyBytes)
+			} else {
+				if captured.code != 0 {
+					w.WriteHeader(captured.code)
+				}
+				w.Write(captured.body)
+			}
+			return
+		}
+
 		mux.ServeHTTP(w, r)
 	}
 
 	return http.HandlerFunc(rewriteBetaToV1), nil
+}
+
+type responseCapture struct {
+	http.ResponseWriter
+	body []byte
+	code int
+}
+
+func (w *responseCapture) WriteHeader(statusCode int) {
+	w.code = statusCode
+}
+
+func (w *responseCapture) Write(b []byte) (int, error) {
+	w.body = append(w.body, b...)
+	return len(b), nil
+}
+
+func transformLegacyToModernRequest(body []byte, isHTTPS bool) ([]byte, error) {
+	var data map[string]any
+	if err := json.Unmarshal(body, &data); err != nil {
+		return nil, err
+	}
+
+	nested := make(map[string]any)
+	if host, ok := data["host"]; ok {
+		nested["host"] = host
+		delete(data, "host")
+	}
+	if port, ok := data["port"]; ok {
+		nested["port"] = port
+		delete(data, "port")
+	}
+	if requestPath, ok := data["requestPath"]; ok {
+		nested["requestPath"] = requestPath
+		delete(data, "requestPath")
+	}
+
+	if isHTTPS {
+		data["type"] = "HTTPS"
+		if len(nested) > 0 {
+			data["httpsHealthCheck"] = nested
+		}
+	} else {
+		data["type"] = "HTTP"
+		if len(nested) > 0 {
+			data["httpHealthCheck"] = nested
+		}
+	}
+
+	return json.Marshal(data)
+}
+
+func transformModernToLegacyResponse(body []byte, isHTTPS bool) ([]byte, error) {
+	var data map[string]any
+	if err := json.Unmarshal(body, &data); err != nil {
+		return nil, err
+	}
+
+	if kind, ok := data["kind"].(string); ok {
+		if kind == "compute#healthCheck" {
+			if isHTTPS {
+				data["kind"] = "compute#httpsHealthCheck"
+				if nested, ok := data["httpsHealthCheck"].(map[string]any); ok {
+					for k, v := range nested {
+						data[k] = v
+					}
+					delete(data, "httpsHealthCheck")
+				}
+			} else {
+				data["kind"] = "compute#httpHealthCheck"
+				if nested, ok := data["httpHealthCheck"].(map[string]any); ok {
+					for k, v := range nested {
+						data[k] = v
+					}
+					delete(data, "httpHealthCheck")
+				}
+			}
+			delete(data, "type")
+		}
+	}
+
+	return json.Marshal(data)
 }
