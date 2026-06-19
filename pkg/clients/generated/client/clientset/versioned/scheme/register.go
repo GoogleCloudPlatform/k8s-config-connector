@@ -54,6 +54,7 @@ import (
 	bigquerybiglakev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerybiglake/v1beta1"
 	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryconnection/v1beta1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatapolicy/v1alpha1"
+	bigquerydatatransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1alpha1"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1beta1"
 	bigquerymigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerymigration/v1alpha1"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1alpha1"
@@ -251,6 +252,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	bigquerybiglakev1beta1.AddToScheme,
 	bigqueryconnectionv1beta1.AddToScheme,
 	bigquerydatapolicyv1alpha1.AddToScheme,
+	bigquerydatatransferv1alpha1.AddToScheme,
 	bigquerydatatransferv1beta1.AddToScheme,
 	bigquerymigrationv1alpha1.AddToScheme,
 	bigqueryreservationv1alpha1.AddToScheme,

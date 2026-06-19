@@ -87,6 +87,8 @@ import (
 	fakebigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1beta1/fake"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1"
 	fakebigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1/fake"
+	bigquerydatatransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1alpha1"
+	fakebigquerydatatransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1alpha1/fake"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1"
 	fakebigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1/fake"
 	bigquerymigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerymigration/v1alpha1"
@@ -626,6 +628,11 @@ func (c *Clientset) BigqueryconnectionV1beta1() bigqueryconnectionv1beta1.Bigque
 // BigquerydatapolicyV1alpha1 retrieves the BigquerydatapolicyV1alpha1Client
 func (c *Clientset) BigquerydatapolicyV1alpha1() bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Interface {
 	return &fakebigquerydatapolicyv1alpha1.FakeBigquerydatapolicyV1alpha1{Fake: &c.Fake}
+}
+
+// BigquerydatatransferV1alpha1 retrieves the BigquerydatatransferV1alpha1Client
+func (c *Clientset) BigquerydatatransferV1alpha1() bigquerydatatransferv1alpha1.BigquerydatatransferV1alpha1Interface {
+	return &fakebigquerydatatransferv1alpha1.FakeBigquerydatatransferV1alpha1{Fake: &c.Fake}
 }
 
 // BigquerydatatransferV1beta1 retrieves the BigquerydatatransferV1beta1Client

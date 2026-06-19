@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,10 +23,11 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types --config ${REPO_ROOT}/apis/bigquerydatatransfer/v1beta1/generatetypes.yaml
-go run . generate-mapper --config ${REPO_ROOT}/apis/bigquerydatatransfer/v1beta1/generatetypes.yaml --multiversion
+go run . generate-types \
+  --service google.cloud.bigquery.datatransfer.v1 \
+  --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource BigQueryDataTransferTransferConfig:TransferConfig
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
-
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/bigquerydatatransfer/
