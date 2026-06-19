@@ -604,6 +604,15 @@
 [missing_field] crd=cloudassetprojectfeeds.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.feedId" is not set in unstructured objects
 [missing_field] crd=cloudassetprojectfeeds.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.feedOutputConfig.pubsubDestination.topic" is not set in unstructured objects
 [missing_field] crd=cloudassetprojectfeeds.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudassetsavedqueries.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.resourceSelector.fullResourceName.apiVersion" is not set in unstructured objects
+[missing_field] crd=cloudassetsavedqueries.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.resourceSelector.fullResourceName.kind" is not set in unstructured objects
+[missing_field] crd=cloudassetsavedqueries.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.resourceSelector.fullResourceName.name" is not set in unstructured objects
+[missing_field] crd=cloudassetsavedqueries.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.resourceSelector.fullResourceName.namespace" is not set in unstructured objects
+[missing_field] crd=cloudassetsavedqueries.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.scope.folderRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudassetsavedqueries.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.scope.organizationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudassetsavedqueries.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudassetsavedqueries.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=cloudassetsavedqueries.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildconnections.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=cloudbuildconnections.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketCloudConfig.authorizerCredential.userTokenSecretVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildconnections.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.bitbucketCloudConfig.readAuthorizerCredential.userTokenSecretVersionRef" is not set; neither 'external' nor 'name' are set

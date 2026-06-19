@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: cloudasset.cnrm.cloud.google.com
+  kind: CloudAssetSavedQuery
+  name: cloudassetsavedquery-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
