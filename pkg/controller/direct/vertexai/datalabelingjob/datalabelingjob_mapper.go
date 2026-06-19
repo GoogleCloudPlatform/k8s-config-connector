@@ -16,15 +16,13 @@ package datalabelingjob
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/genproto/googleapis/type/money"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/types/known/structpb"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 func VertexAIDataLabelingJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataLabelingJob) *krm.VertexAIDataLabelingJobObservedState {
@@ -68,7 +66,7 @@ func VertexAIDataLabelingJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Dat
 	out.LabelerCount = direct.LazyPtr(in.GetLabelerCount())
 	out.InstructionURI = direct.LazyPtr(in.GetInstructionUri())
 	out.InputsSchemaURI = direct.LazyPtr(in.GetInputsSchemaUri())
-	out.Inputs = JSON_FromProto(mapCtx, in.GetInputs())
+	out.Inputs = direct.JSON_FromProto(mapCtx, in.GetInputs())
 	out.Labels = in.GetLabels()
 	out.SpecialistPools = in.GetSpecialistPools()
 	out.EncryptionSpec = EncryptionSpecV1_FromProto(mapCtx, in.GetEncryptionSpec())
@@ -87,7 +85,7 @@ func VertexAIDataLabelingJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Vert
 	out.LabelerCount = direct.ValueOf(in.LabelerCount)
 	out.InstructionUri = direct.ValueOf(in.InstructionURI)
 	out.InputsSchemaUri = direct.ValueOf(in.InputsSchemaURI)
-	out.Inputs = JSON_ToProto(mapCtx, in.Inputs)
+	out.Inputs = direct.JSON_ToProto(mapCtx, in.Inputs)
 	out.Labels = in.Labels
 	out.SpecialistPools = in.SpecialistPools
 	out.EncryptionSpec = EncryptionSpecV1_ToProto(mapCtx, in.EncryptionSpec)
@@ -139,45 +137,23 @@ func Money_ToProto(mapCtx *direct.MapContext, in *krm.Money) *money.Money {
 	return out
 }
 
-func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.Status {
+func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *common.Status {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Status{}
+	out := &common.Status{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	out.Message = direct.LazyPtr(in.GetMessage())
 	return out
 }
 
-func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *status.Status {
+func Status_ToProto(mapCtx *direct.MapContext, in *common.Status) *status.Status {
 	if in == nil {
 		return nil
 	}
 	out := &status.Status{}
 	out.Code = direct.ValueOf(in.Code)
 	out.Message = direct.ValueOf(in.Message)
-	return out
-}
-
-func JSON_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *apiextensionsv1.JSON {
-	if in == nil {
-		return nil
-	}
-	b, err := protojson.Marshal(in)
-	if err != nil {
-		return nil
-	}
-	return &apiextensionsv1.JSON{Raw: b}
-}
-
-func JSON_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) *structpb.Value {
-	if in == nil || in.Raw == nil {
-		return nil
-	}
-	out := &structpb.Value{}
-	if err := protojson.Unmarshal(in.Raw, out); err != nil {
-		return nil
-	}
 	return out
 }
 

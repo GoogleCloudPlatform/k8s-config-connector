@@ -23,6 +23,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
+# Generate v1beta1 types
 go run . generate-types \
     --service google.cloud.aiplatform.v1beta1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
@@ -30,8 +31,21 @@ go run . generate-types \
     --resource VertexAIMetadataStore:MetadataStore \
     --resource VertexAIDeploymentResourcePool:DeploymentResourcePool \
     --resource VertexAIExampleStore:ExampleStore \
-    --resource VertexAIFeatureGroup:FeatureGroup \
-    --resource VertexAIDataLabelingJob:DataLabelingJob
+    --resource VertexAIFeatureGroup:FeatureGroup
+
+mv ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go ${REPO_ROOT}/apis/vertexai/v1alpha1/v1beta1_types.generated.go
+
+# Generate v1 types
+go run . generate-types \
+    --service google.cloud.aiplatform.v1 \
+    --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
+    --resource VertexAIDataLabelingJob:DataLabelingJob \
+    --resource VertexAICachedContent:CachedContent
+
+mv ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go ${REPO_ROOT}/apis/vertexai/v1alpha1/v1_types.generated.go
+
+# Deduplicate overlapping generated types and handwritten reference types
+python3 ${REPO_ROOT}/apis/vertexai/v1alpha1/deduplicate_types.py
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
