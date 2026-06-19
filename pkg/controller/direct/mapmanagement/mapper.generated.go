@@ -29,6 +29,24 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func MapFeatures_FromProto(mapCtx *direct.MapContext, in *pb.MapFeatures) *krm.MapFeatures {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MapFeatures{}
+	out.SimpleFeatures = direct.EnumSlice_FromProto(mapCtx, in.SimpleFeatures)
+	out.PoiBoostLevel = in.PoiBoostLevel
+	return out
+}
+func MapFeatures_ToProto(mapCtx *direct.MapContext, in *krm.MapFeatures) *pb.MapFeatures {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MapFeatures{}
+	out.SimpleFeatures = direct.EnumSlice_ToProto[pb.MapFeatures_SimpleFeature](mapCtx, in.SimpleFeatures)
+	out.PoiBoostLevel = in.PoiBoostLevel
+	return out
+}
 func MapManagementMapConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MapConfig) *krm.MapManagementMapConfigObservedState {
 	if in == nil {
 		return nil

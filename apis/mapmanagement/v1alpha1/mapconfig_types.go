@@ -54,6 +54,7 @@ type MapManagementMapConfigSpec struct {
 	MapType *string `json:"mapType,omitempty"`
 }
 
+// +kcc:proto=google.maps.mapmanagement.v2beta.MapFeatures
 type MapFeatures struct {
 	// Optional. The visual feature to use for this map.
 	// +kcc:proto:field=google.maps.mapmanagement.v2beta.MapFeatures.simple_features
