@@ -16,6 +16,13 @@
 [refs] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.externalDataConfiguration.connectionId" should be a reference
 [refs] crd=billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com version=v1beta1: field ".spec.allUpdatesRule.monitoringNotificationChannels[].external" should be a reference
 [refs] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultAdmissionRule.requireAttestationsBy[].external" should be a reference
+[refs] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.clientCertificateSettings.passphrase" should be a reference
+[refs] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.clientCertificateSettings.privateKey" should be a reference
+[refs] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationPersonas[].name" should be a reference
+[refs] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.guardrails" should be a reference
+[refs] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingSettings.redactionConfig.deidentifyTemplate" should be a reference
+[refs] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingSettings.redactionConfig.inspectTemplate" should be a reference
+[refs] crd=cesapps.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.rootAgent" should be a reference
 [refs] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.workerPool" should be a reference
 [refs] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyName" should be a reference
 [refs] crd=computedisks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.resourcePolicies[].external" should be a reference
