@@ -51,9 +51,7 @@ func (i *ContainerNodePoolIdentity) String() string {
 }
 
 func (i *ContainerNodePoolIdentity) FromExternal(ref string) error {
-	if idx := strings.Index(ref, "projects/"); idx != -1 {
-		ref = ref[idx:]
-	}
+	ref = identity.StripReferencePrefixes(ref, "container.googleapis.com")
 	if parsed, match, _ := ZonalContainerNodePoolIdentityFormat.Parse(ref); match {
 		*i = *parsed
 		return nil
