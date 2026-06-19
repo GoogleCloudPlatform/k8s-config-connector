@@ -179,6 +179,9 @@ func (a *gkeHubAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 	// emptying the membershipspec is sufficient
 	a.desired = &krm.GKEHubFeatureMembership{}
 	if _, err := a.patchMembershipSpec(ctx); err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
 		return false, fmt.Errorf("deleting membershipspec for %s: %w", a.membershipID, err)
 	}
 	return true, nil
