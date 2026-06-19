@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //networksecurity.googleapis.com/projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-${uniqueId}
   group: networksecurity.cnrm.cloud.google.com
   kind: NetworkSecurityMirroringEndpointGroup
   name: mirroringeg-${uniqueId}
