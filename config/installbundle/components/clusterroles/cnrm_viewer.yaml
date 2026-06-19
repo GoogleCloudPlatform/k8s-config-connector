@@ -399,6 +399,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - config.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - configcontroller.cnrm.cloud.google.com
   resources:
   - '*'
