@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -30,6 +31,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -457,11 +459,21 @@ func EnsureObjectsExist(t *testing.T, objs []*unstructured.Unstructured, c clien
 }
 
 func EnsureObjectExists(t *testing.T, obj *unstructured.Unstructured, c client.Client) {
-	if err := c.Create(context.Background(), obj); err != nil {
-		if !errors.IsAlreadyExists(err) {
-			t.Errorf("error creating resource %v %v/%v: %v",
-				obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
+	err := wait.PollImmediate(100*time.Millisecond, 10*time.Second, func() (bool, error) {
+		if err := c.Create(context.Background(), obj); err != nil {
+			if errors.IsAlreadyExists(err) {
+				return true, nil
+			}
+			if strings.Contains(err.Error(), "no matches for kind") {
+				return false, nil // Retry, APIServer discovery cache may be delayed
+			}
+			return false, err
 		}
+		return true, nil
+	})
+	if err != nil {
+		t.Errorf("error creating resource %v %v/%v: %v",
+			obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
 	}
 }
 
