@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package vertexai
+package customjob
 
 import (
 	"math/rand"
 	"testing"
 
-	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
+	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	"k8s.io/apimachinery/pkg/util/sets"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -28,19 +28,25 @@ import (
 	"google.golang.org/protobuf/testing/protocmp"
 )
 
-func FuzzVertexAIMetadataStore(f *testing.F) {
+func FuzzVertexAICustomJob(f *testing.F) {
 	f.Fuzz(func(t *testing.T, seed int64) {
 		randStream := rand.New(rand.NewSource(seed))
 
-		p1 := &pb.MetadataStore{}
+		p1 := &pb.CustomJob{}
 		fuzz.FillWithRandom(t, randStream, p1)
 
-		// Status fields
+		// Status/Metadata fields that are not in spec
 		statusFields := sets.New(
 			".name",
-			".create_time",
 			".state",
+			".create_time",
+			".start_time",
+			".end_time",
 			".update_time",
+			".error",
+			".web_access_uris",
+			".satisfies_pzs",
+			".satisfies_pzi",
 		)
 
 		clearFields := &fuzz.ClearFields{
@@ -49,12 +55,12 @@ func FuzzVertexAIMetadataStore(f *testing.F) {
 		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 
 		ctx := &direct.MapContext{}
-		k := VertexAIMetadataStoreSpec_FromProto(ctx, p1)
+		k := VertexAICustomJobSpec_FromProto(ctx, p1)
 		if ctx.Err() != nil {
 			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
 		}
 
-		p2 := VertexAIMetadataStoreSpec_ToProto(ctx, k)
+		p2 := VertexAICustomJobSpec_ToProto(ctx, k)
 		if ctx.Err() != nil {
 			t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 		}

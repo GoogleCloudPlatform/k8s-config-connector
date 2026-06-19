@@ -269,3 +269,111 @@ type ComputeForwardingRuleRef struct {
 	/* The namespace field of a ComputeForwardingRule resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type ComputeNetworkRef struct {
+	/* A reference to an externally managed Compute Network resource.
+	Should be of the format `projects/{{projectID}}/global/networks/{{network}}`. */
+	External string `json:"external,omitempty"`
+
+	/* The `name` of a `ComputeNetwork` resource. */
+	Name string `json:"name,omitempty"`
+
+	/* The `namespace` of a `ComputeNetwork` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+func (r *ComputeNetworkRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	_, err := r.NormalizedExternal(ctx, reader, defaultNamespace)
+	return err
+}
+
+func (r *ComputeNetworkRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if r.External != "" {
+		return r.External, nil
+	}
+	if r.Name == "" {
+		return "", fmt.Errorf("must specify either name or external on ComputeNetworkRef")
+	}
+
+	key := types.NamespacedName{
+		Namespace: r.Namespace,
+		Name:      r.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = otherNamespace
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeNetwork",
+	})
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return "", fmt.Errorf("referenced ComputeNetwork %v not found", key)
+		}
+		return "", fmt.Errorf("error reading referenced ComputeNetwork %v: %w", key, err)
+	}
+
+	external, err := GetResourceID(u)
+	if err != nil {
+		return "", err
+	}
+	r.External = external
+	return r.External, nil
+}
+
+type ComputeNetworkAttachmentRef struct {
+	/* A reference to an externally managed Compute NetworkAttachment resource.
+	Should be of the format `projects/{{projectID}}/regions/{{region}}/networkAttachments/{{networkAttachment}}`. */
+	External string `json:"external,omitempty"`
+
+	/* The `name` of a `ComputeNetworkAttachment` resource. */
+	Name string `json:"name,omitempty"`
+
+	/* The `namespace` of a `ComputeNetworkAttachment` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+func (r *ComputeNetworkAttachmentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	_, err := r.NormalizedExternal(ctx, reader, defaultNamespace)
+	return err
+}
+
+func (r *ComputeNetworkAttachmentRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if r.External != "" {
+		return r.External, nil
+	}
+	if r.Name == "" {
+		return "", fmt.Errorf("must specify either name or external on ComputeNetworkAttachmentRef")
+	}
+
+	key := types.NamespacedName{
+		Namespace: r.Namespace,
+		Name:      r.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = otherNamespace
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeNetworkAttachment",
+	})
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return "", fmt.Errorf("referenced ComputeNetworkAttachment %v not found", key)
+		}
+		return "", fmt.Errorf("error reading referenced ComputeNetworkAttachment %v: %w", key, err)
+	}
+
+	external, err := GetResourceID(u)
+	if err != nil {
+		return "", err
+	}
+	r.External = external
+	return r.External, nil
+}

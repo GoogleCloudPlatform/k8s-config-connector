@@ -946,8 +946,8 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 				// To address inconsistencies between local and CI environments,
 				// we normalize the diff output by replacing non-breaking spaces with regular spaces
 				// and folding multiline strings.Join blocks into a single line.
-				normalizedActual := normalizeStringsJoin(strings.ReplaceAll(allDiffs.String(), " ", " "))
-				normalizedExpected := normalizeStringsJoin(strings.ReplaceAll(string(expectedDiff), " ", " "))
+				normalizedActual := normalizeStringsJoin(strings.ReplaceAll(allDiffs.String(), "\u00a0", " "))
+				normalizedExpected := normalizeStringsJoin(strings.ReplaceAll(string(expectedDiff), "\u00a0", " "))
 				if diff := cmp.Diff(normalizedExpected, normalizedActual); diff != "" {
 					t.Errorf("crd %s schema diff does not match golden file %s:\n%s", crd.Name, diffFilePath, diff)
 				}

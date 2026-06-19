@@ -187,3 +187,27 @@ func VertexAIDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Da
 func VertexAIDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.VertexAIDatasetObservedState) *pb.Dataset {
 	return VertexAIDatasetObservedState_v1beta1_ToProto(mapCtx, in)
 }
+
+func ExampleStore_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExampleStore) *krmv1alpha1.VertexAIExampleStore {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.VertexAIExampleStore{}
+	out.Name = in.GetName()
+	out.Spec.DisplayName = in.GetDisplayName()
+	out.Spec.Description = direct.LazyPtr(in.GetDescription())
+	out.Spec.ExampleStoreConfig = ExampleStoreConfig_v1alpha1_FromProto(mapCtx, in.GetExampleStoreConfig())
+	return out
+}
+
+func ExampleStore_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VertexAIExampleStore) *pb.ExampleStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExampleStore{}
+	out.Name = in.Name
+	out.DisplayName = in.Spec.DisplayName
+	out.Description = direct.ValueOf(in.Spec.Description)
+	out.ExampleStoreConfig = ExampleStoreConfig_v1alpha1_ToProto(mapCtx, in.Spec.ExampleStoreConfig)
+	return out
+}
