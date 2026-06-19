@@ -9,3 +9,9 @@
 - **Problem**: The proto generator skipped compiling all nested types (such as `Rule`, `Action`, etc.) inside `types.generated.go`, labeling them as "unreachable" because they were not explicitly referenced by Go types during the first generation.
 - **Solution**: Copied the nested structures explicitly into `ruleset_types.go` and mapped them to the `ContentWarehouseRuleSetSpec` type with `+optional` tags. This ensured all nested structs are fully typed and accessible, and subsequent generation runs cleanly marked them as reachable and fully compiled.
 - **Impact**: Ensures schema compatibility and complete coverage for nested array structures under direct types.
+
+### 2026-06-05 Implementation of ContentWarehouseSynonymSet types and IdentityV2
+- **Context**: Greenfield implementation of KRM types and IdentityV2 for `ContentWarehouseSynonymSet` (Kind: `ContentWarehouseSynonymSet`, Service: `google.cloud.contentwarehouse.v1`).
+- **Problem**: The resource is missing from `cloudassetinventory_names.jsonl` (CAI) because ContentWarehouse does not report metadata to Cloud Asset Inventory yet. This caused registry validations in `TestRegisteredTemplatesMatchCAI` to fail since it wasn't registered.
+- **Solution**: Hand-coded `_identity.go` and `_reference.go` following the canonical `gcpurls.Template` patterns, and added an exception for `"//contentwarehouse.googleapis.com/projects/{}/locations/{}/synonymSets/{}"` in `pkg/gcpurls/registry_test.go` under `ignoredTemplates`.
+- **Impact**: Enables smooth validation of the ContentWarehouse API group and prevents registry test failures while ensuring the resource model is clean and conforms to all pointer and formatting standards.
