@@ -21,7 +21,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # We need a newer googleapis to get BackendAuthenticationConfig
-PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced" 
+PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
 # Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
@@ -49,11 +49,12 @@ go run . generate-types \
   --resource NetworkSecuritySecurityProfile:SecurityProfile \
   --proto-source-path ${PROTO_OUT}
 
-# Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)
+# Run for google.cloud.networksecurity.v1alpha1 resources
 go run . generate-types \
   --service google.cloud.networksecurity.v1alpha1 \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkSecurityPartnerSSERealm:PartnerSSERealm \
+  --resource NetworkSecurityPartnerSSEGateway:PartnerSSEGateway \
   --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}

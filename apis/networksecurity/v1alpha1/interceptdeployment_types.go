@@ -24,7 +24,7 @@ import (
 var NetworkSecurityInterceptDeploymentGVK = GroupVersion.WithKind("NetworkSecurityInterceptDeployment")
 
 // NetworkSecurityInterceptDeploymentSpec defines the desired state of NetworkSecurityInterceptDeployment
-// +kcc:spec:proto=google.cloud.networksecurity.v1.InterceptDeployment
+// +kcc:spec:proto=google.cloud.networksecurity.v1alpha1.InterceptDeployment
 type NetworkSecurityInterceptDeploymentSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
@@ -70,7 +70,7 @@ type NetworkSecurityInterceptDeploymentStatus struct {
 }
 
 // NetworkSecurityInterceptDeploymentObservedState is the state of the NetworkSecurityInterceptDeployment resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.InterceptDeployment
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.InterceptDeployment
 type NetworkSecurityInterceptDeploymentObservedState struct {
 	// Output only. The timestamp when the resource was created.
 	// See https://google.aip.dev/148#timestamps.

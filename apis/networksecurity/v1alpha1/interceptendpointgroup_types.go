@@ -23,7 +23,7 @@ import (
 var NetworkSecurityInterceptEndpointGroupGVK = GroupVersion.WithKind("NetworkSecurityInterceptEndpointGroup")
 
 // NetworkSecurityInterceptEndpointGroupSpec defines the desired state of NetworkSecurityInterceptEndpointGroup
-// +kcc:spec:proto=google.cloud.networksecurity.v1.InterceptEndpointGroup
+// +kcc:spec:proto=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup
 type NetworkSecurityInterceptEndpointGroupSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
@@ -36,19 +36,19 @@ type NetworkSecurityInterceptEndpointGroupSpec struct {
 
 	// Optional. Labels are key/value pairs that help to organize and filter
 	// resources.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.labels
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. Immutable. The deployment group that this endpoint group is
 	// connected to, for example:
 	// `projects/123456789/locations/global/interceptDeploymentGroups/my-dg`.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.intercept_deployment_group
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.intercept_deployment_group
 	// +kubebuilder:validation:Required
 	InterceptDeploymentGroupRef *refsv1beta1.NetworkSecurityInterceptDeploymentGroupRef `json:"interceptDeploymentGroupRef"`
 
 	// Optional. User-provided description of the endpoint group.
 	// Used as additional context for the endpoint group.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.description
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.description
 	Description *string `json:"description,omitempty"`
 }
 
@@ -69,80 +69,80 @@ type NetworkSecurityInterceptEndpointGroupStatus struct {
 }
 
 // NetworkSecurityInterceptEndpointGroupObservedState is the state of the NetworkSecurityInterceptEndpointGroup resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.InterceptEndpointGroup
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup
 type NetworkSecurityInterceptEndpointGroupObservedState struct {
 	// Output only. The timestamp when the resource was created.
 	// See https://google.aip.dev/148#timestamps.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.create_time
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The timestamp when the resource was most recently updated.
 	// See https://google.aip.dev/148#timestamps.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.update_time
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. Details about the connected deployment group to this endpoint
 	// group.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.connected_deployment_group
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.connected_deployment_group
 	ConnectedDeploymentGroup *InterceptEndpointGroup_ConnectedDeploymentGroupObservedState `json:"connectedDeploymentGroup,omitempty"`
 
 	// Output only. The current state of the endpoint group.
 	// See https://google.aip.dev/216.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.state
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.state
 	State *string `json:"state,omitempty"`
 
 	// Output only. The current state of the resource does not match the user's
 	// intended state, and the system is working to reconcile them. This is part
 	// of the normal operation (e.g. adding a new association to the group). See
 	// https://google.aip.dev/128.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.reconciling
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.reconciling
 	Reconciling *bool `json:"reconciling,omitempty"`
 
 	// Output only. List of associations to this endpoint group.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.associations
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.associations
 	Associations []InterceptEndpointGroup_AssociationDetailsObservedState `json:"associations,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.InterceptEndpointGroup.ConnectedDeploymentGroup
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.ConnectedDeploymentGroup
 type InterceptEndpointGroup_ConnectedDeploymentGroupObservedState struct {
 	// Output only. The connected deployment group's resource name, for example:
 	// `projects/123456789/locations/global/interceptDeploymentGroups/my-dg`.
 	// See https://google.aip.dev/124.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.ConnectedDeploymentGroup.name
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.ConnectedDeploymentGroup.name
 	Name *string `json:"name,omitempty"`
 
 	// Output only. The list of locations where the deployment group is present.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.ConnectedDeploymentGroup.locations
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.ConnectedDeploymentGroup.locations
 	Locations []InterceptLocationObservedState `json:"locations,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.InterceptLocation
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.InterceptLocation
 type InterceptLocationObservedState struct {
 	// Output only. The cloud location, e.g. "us-central1-a" or "asia-south1".
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptLocation.location
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptLocation.location
 	Location *string `json:"location,omitempty"`
 
 	// Output only. The current state of the association in this location.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptLocation.state
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptLocation.state
 	State *string `json:"state,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.InterceptEndpointGroup.AssociationDetails
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.AssociationDetails
 type InterceptEndpointGroup_AssociationDetailsObservedState struct {
 	// Output only. The connected association's resource name, for example:
 	// `projects/123456789/locations/global/interceptEndpointGroupAssociations/my-ega`.
 	// See https://google.aip.dev/124.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.AssociationDetails.name
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.AssociationDetails.name
 	Name *string `json:"name,omitempty"`
 
 	// Output only. The associated network, for example:
 	// projects/123456789/global/networks/my-network.
 	// See https://google.aip.dev/124.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.AssociationDetails.network
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.AssociationDetails.network
 	Network *string `json:"network,omitempty"`
 
 	// Output only. Most recent known state of the association.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.AssociationDetails.state
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.InterceptEndpointGroup.AssociationDetails.state
 	State *string `json:"state,omitempty"`
 }
 

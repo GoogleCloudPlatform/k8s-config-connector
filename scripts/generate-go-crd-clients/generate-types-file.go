@@ -44,6 +44,8 @@ var handwrittenIAMTypes = []string{
 	iamv1beta1.IAMAuditConfigGVK.Kind,
 }
 
+var skipGeneratedClients = sets.NewString()
+
 type fieldProperties struct {
 	Name        string
 	Type        string
@@ -88,7 +90,15 @@ func main() {
 	}
 
 	for _, crdFile := range crdFiles {
-		resources = append(resources, constructResourceDefinitions(crdsPath, crdFile.Name())...)
+		defs := constructResourceDefinitions(crdsPath, crdFile.Name())
+		var filtered []*resourceDefinition
+		for _, def := range defs {
+			if skipGeneratedClients.Has(def.Kind) {
+				continue
+			}
+			filtered = append(filtered, def)
+		}
+		resources = append(resources, filtered...)
 	}
 
 	for _, rd := range resources {

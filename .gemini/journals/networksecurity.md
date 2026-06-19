@@ -12,7 +12,6 @@
   2. Updated `dev/tools/controllerbuilder/generate-proto.sh` to include `${REPO_ROOT}/mockgcp/apis/google/cloud/networksecurity/*/*.proto`.
   3. Created `NetworkSecurityInterceptDeploymentGroupRef` in `apis/refs/v1beta1/networksecurity_refs.go`.
 - **Impact**: Future agents working on Greenfield resources where protos are missing from the pinned SHA should vendor the proto files into `mockgcp/apis/google/cloud/...` and update `generate-proto.sh` instead of attempting to bump the `apis/git.versions` SHA.
-
 ### [2026-06-03] Protobuf SHA Override in generate.sh for NetworkSecurity v1alpha1
 - **Context**: Implementing types for `NetworkSecuritySACRealm` (Issue #8736).
 - **Problem**: The main pinned `googleapis` SHA (`731d7f2ab6`) does not contain `BackendAuthenticationConfig` or `SACRealm`. When attempting to regenerate the protobuf with `731d7f2ab6`, the generation fails because `BackendAuthenticationConfig` is not found.
@@ -24,3 +23,9 @@
 - **Problem**: `NetworkSecuritySecurityProfile` contains two references to endpoint groups (`mirroringEndpointGroup` and `interceptEndpointGroup`), which did not have pre-existing reference structs in `apis/refs/v1beta1/networksecurityrefs.go`.
 - **Solution**: Defined `NetworkSecurityMirroringEndpointGroupRef` and `NetworkSecurityInterceptEndpointGroupRef` in `apis/refs/v1beta1/networksecurityrefs.go` to provide structured validation for endpoint group references, and used them in `CustomMirroringProfile` and `CustomInterceptProfile` respectively.
 - **Impact**: Enables strict validation and clean reference resolution for endpoint group fields within a SecurityProfile definition.
+
+### [2026-05-27] PartnerSSEGateway Proto Versioning and Naming Quirk
+- **Context**: Implementing `NetworkSecurityPartnerSSEGateway` direct types.
+- **Problem**: The proto `sse_gateway.proto` containing `PartnerSSEGateway` was not present in the pinned `googleapis` SHA. Furthermore, when generating types, `protoc` normalizes `PartnerSSEGateway` to `PartnerSseGateway` in Go, which causes `prunetypes.go` to prune the fields as "unreachable" because the resource definition uses `NetworkSecurityPartnerSSEGateway:PartnerSSEGateway`.
+- **Solution**: First, the missing proto was copied from a newer `googleapis` commit to `mockgcp/apis/google/cloud/networksecurity/v1/` and included by appending `${REPO_ROOT}/mockgcp/apis/google/cloud/networksecurity/*/*.proto` to `generate-proto.sh`. Second, to scaffold the CRD types, `--prune-unused-types=false` was temporarily used so the Go struct `PartnerSseGateway` was kept in `types.generated.go`, allowing the fields to be manually copied into `NetworkSecurityPartnerSSEGatewaySpec` and `NetworkSecurityPartnerSSEGatewayObservedState`. Finally, the `Location` field was changed from `string` to `*string` to satisfy the pointer primitive requirement.
+- **Impact**: Future agents implementing resources that rely on protos added *after* the pinned `googleapis` SHA should know they can place the proto in `mockgcp/apis` and update `generate-proto.sh`. Also, when `protoc` re-cases consecutive uppercase letters (like SSE to Sse), `prunetypes.go` may aggressively drop them, necessitating manual field copying.
