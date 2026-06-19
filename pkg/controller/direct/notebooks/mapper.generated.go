@@ -70,6 +70,70 @@ func ContainerImage_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Container
 	out.Tag = direct.ValueOf(in.Tag)
 	return out
 }
+func Execution_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krmnotebooksv1alpha1.Execution {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.Execution{}
+	out.ExecutionTemplate = ExecutionTemplate_v1alpha1_FromProto(mapCtx, in.GetExecutionTemplate())
+	// MISSING: Name
+	// MISSING: DisplayName
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: State
+	out.OutputNotebookFile = direct.LazyPtr(in.GetOutputNotebookFile())
+	// MISSING: JobURI
+	return out
+}
+func Execution_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.Execution) *pb.Execution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Execution{}
+	out.ExecutionTemplate = ExecutionTemplate_v1alpha1_ToProto(mapCtx, in.ExecutionTemplate)
+	// MISSING: Name
+	// MISSING: DisplayName
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: State
+	out.OutputNotebookFile = direct.ValueOf(in.OutputNotebookFile)
+	// MISSING: JobURI
+	return out
+}
+func ExecutionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krmnotebooksv1alpha1.ExecutionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.ExecutionObservedState{}
+	out.ExecutionTemplate = ExecutionTemplateObservedState_v1alpha1_FromProto(mapCtx, in.GetExecutionTemplate())
+	// MISSING: Name
+	// MISSING: DisplayName
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.OutputNotebookFile = direct.LazyPtr(in.GetOutputNotebookFile())
+	out.JobURI = direct.LazyPtr(in.GetJobUri())
+	return out
+}
+func ExecutionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.ExecutionObservedState) *pb.Execution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Execution{}
+	out.ExecutionTemplate = ExecutionTemplateObservedState_v1alpha1_ToProto(mapCtx, in.ExecutionTemplate)
+	// MISSING: Name
+	// MISSING: DisplayName
+	out.Description = direct.ValueOf(in.Description)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.Execution_State](mapCtx, in.State)
+	out.OutputNotebookFile = direct.ValueOf(in.OutputNotebookFile)
+	out.JobUri = direct.ValueOf(in.JobURI)
+	return out
+}
 func ExecutionTemplate_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionTemplate) *krmnotebooksv1alpha1.ExecutionTemplate {
 	if in == nil {
 		return nil
@@ -126,6 +190,54 @@ func ExecutionTemplate_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebo
 	}
 	return out
 }
+func ExecutionTemplateObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionTemplate) *krmnotebooksv1alpha1.ExecutionTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.ExecutionTemplateObservedState{}
+	out.ScaleTier = direct.Enum_FromProto(mapCtx, in.GetScaleTier())
+	out.MasterType = direct.LazyPtr(in.GetMasterType())
+	out.AcceleratorConfig = ExecutionTemplate_SchedulerAcceleratorConfig_v1alpha1_FromProto(mapCtx, in.GetAcceleratorConfig())
+	out.Labels = in.Labels
+	out.InputNotebookFile = direct.LazyPtr(in.GetInputNotebookFile())
+	out.ContainerImageURI = direct.LazyPtr(in.GetContainerImageUri())
+	out.OutputNotebookFolder = direct.LazyPtr(in.GetOutputNotebookFolder())
+	out.ParamsYamlFile = direct.LazyPtr(in.GetParamsYamlFile())
+	out.Parameters = direct.LazyPtr(in.GetParameters())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
+	out.DataprocParameters = ExecutionTemplate_DataprocParametersObservedState_v1alpha1_FromProto(mapCtx, in.GetDataprocParameters())
+	out.VertexAiParameters = ExecutionTemplate_VertexAiParametersObservedState_v1alpha1_FromProto(mapCtx, in.GetVertexAiParameters())
+	out.KernelSpec = direct.LazyPtr(in.GetKernelSpec())
+	out.Tensorboard = direct.LazyPtr(in.GetTensorboard())
+	return out
+}
+func ExecutionTemplateObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.ExecutionTemplateObservedState) *pb.ExecutionTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionTemplate{}
+	out.ScaleTier = direct.Enum_ToProto[pb.ExecutionTemplate_ScaleTier](mapCtx, in.ScaleTier)
+	out.MasterType = direct.ValueOf(in.MasterType)
+	out.AcceleratorConfig = ExecutionTemplate_SchedulerAcceleratorConfig_v1alpha1_ToProto(mapCtx, in.AcceleratorConfig)
+	out.Labels = in.Labels
+	out.InputNotebookFile = direct.ValueOf(in.InputNotebookFile)
+	out.ContainerImageUri = direct.ValueOf(in.ContainerImageURI)
+	out.OutputNotebookFolder = direct.ValueOf(in.OutputNotebookFolder)
+	out.ParamsYamlFile = direct.ValueOf(in.ParamsYamlFile)
+	out.Parameters = direct.ValueOf(in.Parameters)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.JobType = direct.Enum_ToProto[pb.ExecutionTemplate_JobType](mapCtx, in.JobType)
+	if oneof := ExecutionTemplate_DataprocParametersObservedState_v1alpha1_ToProto(mapCtx, in.DataprocParameters); oneof != nil {
+		out.JobParameters = &pb.ExecutionTemplate_DataprocParameters_{DataprocParameters: oneof}
+	}
+	if oneof := ExecutionTemplate_VertexAiParametersObservedState_v1alpha1_ToProto(mapCtx, in.VertexAiParameters); oneof != nil {
+		out.JobParameters = &pb.ExecutionTemplate_VertexAiParameters{VertexAiParameters: oneof}
+	}
+	out.KernelSpec = direct.ValueOf(in.KernelSpec)
+	out.Tensorboard = direct.ValueOf(in.Tensorboard)
+	return out
+}
 func ExecutionTemplate_DataprocParameters_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionTemplate_DataprocParameters) *krmnotebooksv1alpha1.ExecutionTemplate_DataprocParameters {
 	if in == nil {
 		return nil
@@ -144,6 +256,22 @@ func ExecutionTemplate_DataprocParameters_v1alpha1_ToProto(mapCtx *direct.MapCon
 	if in.ClusterRef != nil {
 		out.Cluster = in.ClusterRef.External
 	}
+	return out
+}
+func ExecutionTemplate_DataprocParametersObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionTemplate_DataprocParameters) *krmnotebooksv1alpha1.ExecutionTemplate_DataprocParametersObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.ExecutionTemplate_DataprocParametersObservedState{}
+	out.Cluster = direct.LazyPtr(in.GetCluster())
+	return out
+}
+func ExecutionTemplate_DataprocParametersObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.ExecutionTemplate_DataprocParametersObservedState) *pb.ExecutionTemplate_DataprocParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionTemplate_DataprocParameters{}
+	out.Cluster = direct.ValueOf(in.Cluster)
 	return out
 }
 func ExecutionTemplate_SchedulerAcceleratorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionTemplate_SchedulerAcceleratorConfig) *krmnotebooksv1alpha1.ExecutionTemplate_SchedulerAcceleratorConfig {
@@ -183,6 +311,24 @@ func ExecutionTemplate_VertexAiParameters_v1alpha1_ToProto(mapCtx *direct.MapCon
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
 	}
+	out.Env = in.Env
+	return out
+}
+func ExecutionTemplate_VertexAiParametersObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionTemplate_VertexAIParameters) *krmnotebooksv1alpha1.ExecutionTemplate_VertexAiParametersObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.ExecutionTemplate_VertexAiParametersObservedState{}
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.Env = in.Env
+	return out
+}
+func ExecutionTemplate_VertexAiParametersObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.ExecutionTemplate_VertexAiParametersObservedState) *pb.ExecutionTemplate_VertexAIParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionTemplate_VertexAIParameters{}
+	out.Network = direct.ValueOf(in.Network)
 	out.Env = in.Env
 	return out
 }
@@ -544,6 +690,56 @@ func NotebooksExecutionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmn
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
 	out.OutputNotebookFile = direct.ValueOf(in.OutputNotebookFile)
+	return out
+}
+func NotebooksScheduleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Schedule) *krmnotebooksv1alpha1.NotebooksScheduleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.NotebooksScheduleObservedState{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.RecentExecutions = direct.Slice_FromProto(mapCtx, in.RecentExecutions, ExecutionObservedState_v1alpha1_FromProto)
+	return out
+}
+func NotebooksScheduleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.NotebooksScheduleObservedState) *pb.Schedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schedule{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.RecentExecutions = direct.Slice_ToProto(mapCtx, in.RecentExecutions, ExecutionObservedState_v1alpha1_ToProto)
+	return out
+}
+func NotebooksScheduleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Schedule) *krmnotebooksv1alpha1.NotebooksScheduleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.NotebooksScheduleSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CronSchedule = direct.LazyPtr(in.GetCronSchedule())
+	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
+	out.ExecutionTemplate = ExecutionTemplate_v1alpha1_FromProto(mapCtx, in.GetExecutionTemplate())
+	return out
+}
+func NotebooksScheduleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.NotebooksScheduleSpec) *pb.Schedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schedule{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.State = direct.Enum_ToProto[pb.Schedule_State](mapCtx, in.State)
+	out.CronSchedule = direct.ValueOf(in.CronSchedule)
+	out.TimeZone = direct.ValueOf(in.TimeZone)
+	out.ExecutionTemplate = ExecutionTemplate_v1alpha1_ToProto(mapCtx, in.ExecutionTemplate)
 	return out
 }
 func ReservationAffinity_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {

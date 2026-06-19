@@ -1,0 +1,473 @@
+GET https://storage.googleapis.com/storage/v1/b/notebooks-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-west1",
+  "name": "notebooks-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-WEST1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "notebooks-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/notebooks-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/notebooks-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-WEST1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "notebooks-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/notebooks-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/GetSchedule
+
+{
+  "name": "projects/${projectId}/locations/us-west1/schedules/notebooksschedule-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = schedule "projects/${projectId}/locations/us-west1/schedules/notebooksschedule-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/CreateSchedule
+
+{
+  "parent": "projects/${projectId}/locations/us-west1",
+  "schedule": {
+    "cronSchedule": "0 0 * * WED",
+    "description": "My notebook schedule description",
+    "executionTemplate": {
+      "acceleratorConfig": {
+        "coreCount": "1"
+      },
+      "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
+      "inputNotebookFile": "gs://notebooks-${uniqueId}/notebook.ipynb",
+      "jobType": "VERTEX_AI",
+      "kernelSpec": "python3",
+      "labels": {
+        "my-label-key": "my-label-val"
+      },
+      "masterType": "n1-standard-4",
+      "outputNotebookFolder": "gs://notebooks-${uniqueId}/output",
+      "parameters": "a=1,b=2",
+      "paramsYamlFile": "gs://notebooks-${uniqueId}/params.yaml",
+      "scaleTier": "CUSTOM",
+      "serviceAccount": "notebooksschedule-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "tensorboard": "projects/${projectId}/locations/us-west1/tensorboards/my-tensorboard",
+      "vertexAiParameters": {
+        "env": {
+          "MY_ENV_VAR": "my-env-value"
+        },
+        "network": "projects/${projectId}/global/networks/default"
+      }
+    },
+    "state": "ENABLED",
+    "timeZone": "utc"
+  },
+  "scheduleId": "notebooksschedule-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateSchedule",
+    "target": "projects/${projectId}/locations/us-west1/schedules/notebooksschedule-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateSchedule",
+    "target": "projects/${projectId}/locations/us-west1/schedules/notebooksschedule-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.Schedule",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "cronSchedule": "0 0 * * WED",
+    "description": "My notebook schedule description",
+    "executionTemplate": {
+      "acceleratorConfig": {
+        "coreCount": "1"
+      },
+      "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
+      "inputNotebookFile": "gs://notebooks-${uniqueId}/notebook.ipynb",
+      "jobType": "VERTEX_AI",
+      "kernelSpec": "python3",
+      "labels": {
+        "my-label-key": "my-label-val"
+      },
+      "masterType": "n1-standard-4",
+      "outputNotebookFolder": "gs://notebooks-${uniqueId}/output",
+      "parameters": "a=1,b=2",
+      "paramsYamlFile": "gs://notebooks-${uniqueId}/params.yaml",
+      "scaleTier": "CUSTOM",
+      "serviceAccount": "notebooksschedule-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "tensorboard": "projects/${projectId}/locations/us-west1/tensorboards/my-tensorboard",
+      "vertexAiParameters": {
+        "env": {
+          "MY_ENV_VAR": "my-env-value"
+        },
+        "network": "projects/${projectId}/global/networks/default"
+      }
+    },
+    "name": "projects/${projectId}/locations/us-west1/schedules/notebooksschedule-${uniqueId}",
+    "state": "ENABLED",
+    "timeZone": "utc",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/GetSchedule
+
+{
+  "name": "projects/${projectId}/locations/us-west1/schedules/notebooksschedule-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "cronSchedule": "0 0 * * WED",
+  "description": "My notebook schedule description",
+  "executionTemplate": {
+    "acceleratorConfig": {
+      "coreCount": "1"
+    },
+    "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
+    "inputNotebookFile": "gs://notebooks-${uniqueId}/notebook.ipynb",
+    "jobType": "VERTEX_AI",
+    "kernelSpec": "python3",
+    "labels": {
+      "my-label-key": "my-label-val"
+    },
+    "masterType": "n1-standard-4",
+    "outputNotebookFolder": "gs://notebooks-${uniqueId}/output",
+    "parameters": "a=1,b=2",
+    "paramsYamlFile": "gs://notebooks-${uniqueId}/params.yaml",
+    "scaleTier": "CUSTOM",
+    "serviceAccount": "notebooksschedule-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+    "tensorboard": "projects/${projectId}/locations/us-west1/tensorboards/my-tensorboard",
+    "vertexAiParameters": {
+      "env": {
+        "MY_ENV_VAR": "my-env-value"
+      },
+      "network": "projects/${projectId}/global/networks/default"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-west1/schedules/notebooksschedule-${uniqueId}",
+  "state": "ENABLED",
+  "timeZone": "utc",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/GetSchedule
+
+{
+  "name": "projects/${projectId}/locations/us-west1/schedules/notebooksschedule-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "cronSchedule": "0 0 * * WED",
+  "description": "My notebook schedule description",
+  "executionTemplate": {
+    "acceleratorConfig": {
+      "coreCount": "1"
+    },
+    "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
+    "inputNotebookFile": "gs://notebooks-${uniqueId}/notebook.ipynb",
+    "jobType": "VERTEX_AI",
+    "kernelSpec": "python3",
+    "labels": {
+      "my-label-key": "my-label-val"
+    },
+    "masterType": "n1-standard-4",
+    "outputNotebookFolder": "gs://notebooks-${uniqueId}/output",
+    "parameters": "a=1,b=2",
+    "paramsYamlFile": "gs://notebooks-${uniqueId}/params.yaml",
+    "scaleTier": "CUSTOM",
+    "serviceAccount": "notebooksschedule-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+    "tensorboard": "projects/${projectId}/locations/us-west1/tensorboards/my-tensorboard",
+    "vertexAiParameters": {
+      "env": {
+        "MY_ENV_VAR": "my-env-value"
+      },
+      "network": "projects/${projectId}/global/networks/default"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-west1/schedules/notebooksschedule-${uniqueId}",
+  "state": "ENABLED",
+  "timeZone": "utc",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/DeleteSchedule
+
+{
+  "name": "projects/${projectId}/locations/us-west1/schedules/notebooksschedule-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteSchedule",
+    "target": "projects/${projectId}/locations/us-west1/schedules/notebooksschedule-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteSchedule",
+    "target": "projects/${projectId}/locations/us-west1/schedules/notebooksschedule-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/notebooks-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-WEST1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "notebooks-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/notebooks-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/notebooks-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/notebooks-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
