@@ -27,4 +27,6 @@ type EventarcChannelConnectionExpansion interface{}
 
 type EventarcEnrollmentExpansion interface{}
 
+type EventarcGoogleAPISourceExpansion interface{}
+
 type EventarcGoogleChannelConfigExpansion interface{}

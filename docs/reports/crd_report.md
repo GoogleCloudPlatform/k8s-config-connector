@@ -312,6 +312,7 @@
 | eventarc.cnrm.cloud.google.com                | EventarcChannelConnection                       | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcChannel                                 | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcEnrollment                              | True         | False       | False  | Direct     | True        |
+| eventarc.cnrm.cloud.google.com                | EventarcGoogleAPISource                         | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcGoogleChannelConfig                     | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcTrigger                                 | False        | True        | False  | DCL        | False       |
 | filestore.cnrm.cloud.google.com               | FilestoreBackup                                 | False        | True        | False  | DCL        | False       |
