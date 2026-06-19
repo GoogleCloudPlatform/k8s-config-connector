@@ -1049,6 +1049,7 @@ func TestCRDObjectTypes(t *testing.T) {
 	// We want to eventually fix these, but for now we allowlist them so the test passes.
 	// This allows us to detect new regressions.
 	knownInvalidCRDs := map[string]bool{
+		"dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com":                    true, // status.observedState is an empty object
 		"billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com":                     true, // spec.amount.lastPeriodAmount is an empty object
 		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":    true, // status.observedState is an empty object
 		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                              true, // status.observedState.supportedExportFormats[] is an empty object
