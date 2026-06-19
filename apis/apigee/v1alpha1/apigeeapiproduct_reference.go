@@ -34,10 +34,10 @@ type ApigeeAPIProductRef struct {
 	// Should be in the format "organizations/{{organizationID}}/apiproducts/{{apiproductID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ApigeeAPIProduct resource.
+	// The name of an ApigeeAPIProduct resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ApigeeAPIProduct resource.
+	// The namespace of an ApigeeAPIProduct resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
