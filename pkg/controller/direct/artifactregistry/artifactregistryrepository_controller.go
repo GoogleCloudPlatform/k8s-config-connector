@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -237,14 +238,21 @@ func (a *ArtifactRegistryRepositoryAdapter) Export(ctx context.Context) (*unstru
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.Location = a.id.Location
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Repository)
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.Repository)
 	u.SetGroupVersionKind(krm.ArtifactRegistryRepositoryGVK)
+
+	export.SetProjectID(u, a.id.Project)
+	export.SetLabels(u, a.actual.Labels)
+
 	return u, nil
 }
 
