@@ -566,6 +566,70 @@ func ReservationAffinity_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Rese
 	out.Values = in.Values
 	return out
 }
+func Runtime_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Runtime) *krmnotebooksv1alpha1.Runtime {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.Runtime{}
+	// MISSING: Name
+	// MISSING: VirtualMachine
+	// MISSING: State
+	// MISSING: HealthState
+	// MISSING: AccessConfig
+	// MISSING: SoftwareConfig
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func Runtime_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.Runtime) *pb.Runtime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Runtime{}
+	// MISSING: Name
+	// MISSING: VirtualMachine
+	// MISSING: State
+	// MISSING: HealthState
+	// MISSING: AccessConfig
+	// MISSING: SoftwareConfig
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func RuntimeObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Runtime) *krmnotebooksv1alpha1.RuntimeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.RuntimeObservedState{}
+	// MISSING: Name
+	// MISSING: VirtualMachine
+	// MISSING: State
+	// MISSING: HealthState
+	// MISSING: AccessConfig
+	// MISSING: SoftwareConfig
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func RuntimeObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.RuntimeObservedState) *pb.Runtime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Runtime{}
+	// MISSING: Name
+	// MISSING: VirtualMachine
+	// MISSING: State
+	// MISSING: HealthState
+	// MISSING: AccessConfig
+	// MISSING: SoftwareConfig
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
 func VMImage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VmImage) *krmnotebooksv1alpha1.VMImage {
 	if in == nil {
 		return nil

@@ -2811,6 +2811,8 @@
 [missing_field] crd=networkserviceswasmplugins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.mainVersionID" is not set in unstructured objects
 [missing_field] crd=networkserviceswasmplugins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networkserviceswasmplugins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.versions" is not set in unstructured objects
+[missing_field] crd=notebookruntimes.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=notebookruntimes.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerImage.tag" is not set in unstructured objects
 [missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
