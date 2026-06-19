@@ -50,7 +50,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.membership.primaryCluster.uid", "0123456789abcdef")
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.primaryCluster.uid", "0123456789abcdef")
-	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.secondaryClusters[].uid", "0123456789abcdef")
+	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.membership.secondaryClusters[].uid", "0123456789abcdef")
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.secondaryClusters[].uid", "0123456789abcdef")
 
 	// Standardize zone locations to us-central1-a
@@ -66,9 +66,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath(".response.availableMaintenanceVersions")
 	replacements.RemovePath(".maintenanceVersion")
 	replacements.RemovePath(".response.maintenanceVersion")
-
-	// Remove LRO 'done' field to align mock and real GCP formats
-	replacements.RemovePath(".done")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
