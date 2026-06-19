@@ -138,6 +138,56 @@ func (s *Operations) StartLROWithOptions(ctx context.Context, prefix string, met
 	return op, nil
 }
 
+func (s *Operations) StartLROWithDone(ctx context.Context, prefix string, metadata proto.Message, callback func() (proto.Message, error)) (*pb.Operation, error) {
+	op := &pb.Operation{}
+
+	op.Name = buildOperationName(prefix)
+	op.Done = true
+
+	if metadata != nil {
+		metadataAny, err := anypb.New(metadata)
+		if err != nil {
+			return nil, fmt.Errorf("error building anypb for metadata: %w", err)
+		}
+		rewriteTypes(metadataAny)
+
+		op.Metadata = metadataAny
+	}
+	fqn := op.Name
+
+	if err := s.storage.Create(ctx, fqn, op); err != nil {
+		return nil, status.Errorf(codes.Internal, "error creating LRO: %v", err)
+	}
+
+	result, err := callback()
+	finished := &pb.Operation{}
+	if err2 := s.storage.Get(ctx, fqn, finished); err2 != nil {
+		klog.Warningf("error getting LRO: %v", err2)
+		return op, nil
+	}
+
+	// metadata may have changed
+	if metadata != nil {
+		metadataAny, err2 := anypb.New(metadata)
+		if err2 != nil {
+			klog.Warningf("error building metadata: %v", err2)
+		} else {
+			rewriteTypes(metadataAny)
+			finished.Metadata = metadataAny
+		}
+	}
+
+	if err2 := markDone(finished, result, err, true); err2 != nil {
+		klog.Warningf("error marking LRO as done: %v", err2)
+	}
+
+	if err2 := s.storage.Update(ctx, fqn, finished); err2 != nil {
+		klog.Warningf("error updating LRO: %v", err2)
+	}
+
+	return op, nil
+}
+
 func markDone(op *pb.Operation, result proto.Message, err error, keepMetadataOnDone bool) error {
 	op.Done = true
 	if err != nil {

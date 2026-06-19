@@ -27,6 +27,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/security/privateca/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -110,8 +111,8 @@ func (s *PrivateCAV1) CreateCertificateTemplate(ctx context.Context, req *pb.Cre
 		Target:                fqn,
 	}
 	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
-		opMetadata.EndTime = timestamppb.Now()
+	return s.operations.StartLROWithDone(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
+		opMetadata.EndTime = timestamppb.New(now)
 		return obj, nil
 	})
 }
@@ -132,13 +133,21 @@ func (s *PrivateCAV1) UpdateCertificateTemplate(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
-	// Overwrite, updating the updateTime
-	newObj := proto.Clone(req.CertificateTemplate).(*pb.CertificateTemplate)
-	newObj.Name = fqn
-	newObj.CreateTime = obj.CreateTime
-	newObj.UpdateTime = timestamppb.New(now)
+	updated := proto.Clone(obj).(*pb.CertificateTemplate)
 
-	if err := s.storage.Update(ctx, fqn, newObj); err != nil {
+	if req.UpdateMask != nil && len(req.UpdateMask.Paths) > 0 {
+		if err := fields.UpdateByFieldMask(updated, req.CertificateTemplate, req.UpdateMask.Paths); err != nil {
+			return nil, err
+		}
+	} else {
+		updated = proto.Clone(req.CertificateTemplate).(*pb.CertificateTemplate)
+	}
+
+	updated.Name = fqn
+	updated.CreateTime = obj.CreateTime
+	updated.UpdateTime = timestamppb.New(now)
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
@@ -150,9 +159,9 @@ func (s *PrivateCAV1) UpdateCertificateTemplate(ctx context.Context, req *pb.Upd
 		Target:                fqn,
 	}
 	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
-		opMetadata.EndTime = timestamppb.Now()
-		return newObj, nil
+	return s.operations.StartLROWithDone(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
+		opMetadata.EndTime = timestamppb.New(now)
+		return updated, nil
 	})
 }
 
@@ -178,8 +187,8 @@ func (s *PrivateCAV1) DeleteCertificateTemplate(ctx context.Context, req *pb.Del
 		Target:                fqn,
 	}
 	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
-		opMetadata.EndTime = timestamppb.Now()
+	return s.operations.StartLROWithDone(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
+		opMetadata.EndTime = timestamppb.New(now)
 		return &emptypb.Empty{}, nil
 	})
 }
