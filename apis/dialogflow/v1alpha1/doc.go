@@ -13,4 +13,5 @@
 // limitations under the License.
 
 // +kcc:proto=google.cloud.dialogflow.v2
+// +kcc:proto=google.cloud.dialogflow.cx.v3
 package v1alpha1

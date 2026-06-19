@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type NetworkSecurityAddressGroupExpansion interface{}
+
 type NetworkSecurityBackendAuthenticationConfigExpansion interface{}
 
 type NetworkSecurityInterceptDeploymentExpansion interface{}

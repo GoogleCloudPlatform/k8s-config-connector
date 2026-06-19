@@ -40,7 +40,9 @@ func InstanceWeeklyMaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &redispb.WeeklyMaintenanceWindow{}
 	out.Day = direct.Enum_ToProto[dayofweekpb.DayOfWeek](mapCtx, &in.Day)
-	out.StartTime = TimeOfDay_ToProto(mapCtx, &in.StartTime)
+	if in.StartTime.Hours != nil || in.StartTime.Minutes != nil || in.StartTime.Seconds != nil || in.StartTime.Nanos != nil {
+		out.StartTime = TimeOfDay_ToProto(mapCtx, &in.StartTime)
+	}
 	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
 	return out
 }
@@ -108,5 +110,21 @@ func RedisInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisInstanceS
 	out.SecondaryIpRange = direct.ValueOf(in.SecondaryIpRange)
 	out.Tier = direct.Enum_ToProto[redispb.Instance_Tier](mapCtx, in.Tier)
 	out.TransitEncryptionMode = direct.Enum_ToProto[redispb.Instance_TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
+	return out
+}
+
+func InstanceObservedStateStatus_FromProto(mapCtx *direct.MapContext, in *redispb.Instance) *krm.InstanceObservedStateStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceObservedStateStatus{}
+	return out
+}
+
+func InstanceObservedStateStatus_ToProto(mapCtx *direct.MapContext, in *krm.InstanceObservedStateStatus) *redispb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &redispb.Instance{}
 	return out
 }

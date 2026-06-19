@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -45,9 +44,7 @@ func (i *ContainerClusterIdentity) String() string {
 }
 
 func (i *ContainerClusterIdentity) FromExternal(ref string) error {
-	if idx := strings.Index(ref, "projects/"); idx != -1 {
-		ref = ref[idx:]
-	}
+	ref = identity.StripReferencePrefixes(ref, "container.googleapis.com")
 	if parsed, match, _ := RegionalContainerClusterIdentityFormat.Parse(ref); match {
 		*i = *parsed
 		return nil

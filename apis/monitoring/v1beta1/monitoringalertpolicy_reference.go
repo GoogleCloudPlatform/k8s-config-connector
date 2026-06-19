@@ -25,12 +25,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var MonitoringAlertPolicyGVK = schema.GroupVersionKind{
-	Group:   "monitoring.cnrm.cloud.google.com",
-	Version: "v1beta1",
-	Kind:    "MonitoringAlertPolicy",
-}
-
 var _ refs.Ref = &MonitoringAlertPolicyRef{}
 
 // MonitoringAlertPolicyRef is a reference to a MonitoringAlertPolicy.

@@ -833,7 +833,6 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1&network_attachmen
   "connectionPreference": "ACCEPT_MANUAL",
   "description": "Updated description",
   "fingerprint": "abcdef0123A=",
-  "name": "${networkAttachmentID}",
   "producerAcceptLists": [
     "project-1-${uniqueId}"
   ],

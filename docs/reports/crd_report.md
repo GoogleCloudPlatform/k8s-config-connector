@@ -145,7 +145,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeDiskResourcePolicyAttachment             | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeDisk                                     | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeExternalVPNGateway                       | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeFirewallPolicy                           | False        | True        | False  | DCL        | False       |
+| compute.cnrm.cloud.google.com                 | ComputeFirewallPolicy                           | False        | True        | False  | DCL        | True        |
 | compute.cnrm.cloud.google.com                 | ComputeFirewallPolicyAssociation                | False        | True        | False  | DCL        | False       |
 | compute.cnrm.cloud.google.com                 | ComputeFirewallPolicyRule                       | False        | True        | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeFirewall                                 | False        | True        | False  | Terraform  | True        |
@@ -156,7 +156,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeHealthCheck                              | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeHTTPHealthCheck                          | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeHTTPSHealthCheck                         | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeImage                                    | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeImage                                    | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeInstanceGroupManager                     | False        | True        | False  | DCL        | False       |
 | compute.cnrm.cloud.google.com                 | ComputeInstanceGroupNamedPort                   | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeInstanceGroup                            | False        | True        | False  | Terraform  | True        |
@@ -194,7 +194,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeRouterInterface                          | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRouterNAT                                | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRouterPeer                               | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeRouter                                   | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeRouter                                   | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeRoute                                    | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeSecurityPolicy                           | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeServiceAttachment                        | False        | True        | False  | DCL        | False       |
@@ -282,6 +282,7 @@
 | dialogflow.cnrm.cloud.google.com              | DialogflowGenerator                             | True         | False       | False  | Direct     | True        |
 | dialogflow.cnrm.cloud.google.com              | DialogflowIntent                                | True         | False       | False  | Terraform  | False       |
 | dialogflow.cnrm.cloud.google.com              | DialogflowKnowledgeBase                         | True         | False       | False  | Direct     | True        |
+| dialogflow.cnrm.cloud.google.com              | DialogflowSecuritySettings                      | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineControl                          | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineConversation                     | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineDataStore                        | True         | False       | False  | Direct     | True        |
@@ -312,6 +313,7 @@
 | eventarc.cnrm.cloud.google.com                | EventarcChannelConnection                       | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcChannel                                 | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcEnrollment                              | True         | False       | False  | Direct     | True        |
+| eventarc.cnrm.cloud.google.com                | EventarcGoogleAPISource                         | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcGoogleChannelConfig                     | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcTrigger                                 | False        | True        | False  | DCL        | False       |
 | filestore.cnrm.cloud.google.com               | FilestoreBackup                                 | False        | True        | False  | DCL        | False       |
@@ -376,7 +378,7 @@
 | kms.cnrm.cloud.google.com                     | KMSCryptoKeyVersion                             | True         | False       | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                     | KMSImportJob                                    | True         | True        | False  | Direct     | True        |
 | kms.cnrm.cloud.google.com                     | KMSKeyHandle                                    | True         | True        | False  | Direct     | True        |
-| kms.cnrm.cloud.google.com                     | KMSKeyRingImportJob                             | True         | False       | False  | Terraform  | False       |
+| kms.cnrm.cloud.google.com                     | KMSKeyRingImportJob                             | True         | False       | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                     | KMSKeyRing                                      | False        | True        | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                     | KMSSecretCiphertext                             | True         | False       | False  | Terraform  | False       |
 | logging.cnrm.cloud.google.com                 | LoggingLink                                     | True         | True        | False  | Direct     | True        |
@@ -396,7 +398,7 @@
 | metastore.cnrm.cloud.google.com               | MetastoreService                                | True         | False       | False  | Direct     | True        |
 | mlengine.cnrm.cloud.google.com                | MLEngineModel                                   | True         | False       | False  | Terraform  | False       |
 | modelarmor.cnrm.cloud.google.com              | ModelArmorTemplate                              | True         | False       | False  | Direct     | True        |
-| monitoring.cnrm.cloud.google.com              | MonitoringAlertPolicy                           | False        | True        | False  | Terraform  | False       |
+| monitoring.cnrm.cloud.google.com              | MonitoringAlertPolicy                           | False        | True        | False  | Terraform  | True        |
 | monitoring.cnrm.cloud.google.com              | MonitoringDashboard                             | False        | True        | False  | Direct     | True        |
 | monitoring.cnrm.cloud.google.com              | MonitoringGroup                                 | False        | True        | False  | DCL        | True        |
 | monitoring.cnrm.cloud.google.com              | MonitoringMetricDescriptor                      | False        | True        | False  | DCL        | True        |
@@ -413,6 +415,7 @@
 | networkconnectivity.cnrm.cloud.google.com     | NetworkConnectivityServiceConnectionPolicy      | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com     | NetworkConnectivitySpoke                        | False        | True        | False  | DCL        | False       |
 | networkmanagement.cnrm.cloud.google.com       | NetworkManagementConnectivityTest               | True         | False       | False  | Direct     | True        |
+| networksecurity.cnrm.cloud.google.com         | NetworkSecurityAddressGroup                     | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityAuthorizationPolicy              | False        | True        | False  | DCL        | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityBackendAuthenticationConfig      | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityClientTLSPolicy                  | False        | True        | False  | DCL        | True        |

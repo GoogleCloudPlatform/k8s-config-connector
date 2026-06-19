@@ -44,46 +44,34 @@ type ImageGuestOsFeatures struct {
 }
 
 type ImageImageEncryptionKey struct {
-	/* The self link of the encryption key that is stored in Google Cloud
-	KMS. */
+	/* The self link of the encryption key that is stored in Google Cloud KMS. */
 	// +optional
 	KmsKeySelfLinkRef *v1alpha1.ResourceRef `json:"kmsKeySelfLinkRef,omitempty"`
 
-	/* The service account being used for the encryption request for the
-	given KMS key. If absent, the Compute Engine default service account
-	is used. */
+	/* The service account being used for the encryption request for the given KMS key. If absent, the Compute Engine default service account is used. */
 	// +optional
 	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 }
 
 type ImageRawDisk struct {
-	/* Immutable. The format used to encode and transmit the block device, which
-	should be TAR. This is just a container and transmission format
-	and not a runtime format. Provided by the client when the disk
-	image is created. Default value: "TAR" Possible values: ["TAR"]. */
+	/* Immutable. The format used to encode and transmit the block device, which should be TAR. This is just a container and transmission format and not a runtime format. Provided by the client when the disk image is created. Default value: "TAR" Possible values: ["TAR"]. */
 	// +optional
 	ContainerType *string `json:"containerType,omitempty"`
 
-	/* Immutable. An optional SHA1 checksum of the disk image before unpackaging.
-	This is provided by the client when the disk image is created. */
+	/* Immutable. An optional SHA1 checksum of the disk image before unpackaging. This is provided by the client when the disk image is created. */
 	// +optional
 	Sha1 *string `json:"sha1,omitempty"`
 
-	/* Immutable. The full Google Cloud Storage URL where disk storage is stored
-	You must provide either this property or the sourceDisk property
-	but not both. */
+	/* Immutable. The full Google Cloud Storage URL where disk storage is stored You must provide either this property or the sourceDisk property but not both. */
 	Source string `json:"source"`
 }
 
 type ComputeImageSpec struct {
-	/* Immutable. An optional description of this resource. Provide this property when
-	you create the resource. */
+	/* Immutable. An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The source disk to create this image based on.
-	You must provide either this property or the
-	rawDisk.source property but not both to create an image. */
+	/* The source disk to create this image based on. You must provide either this property or the rawDisk.source property but not both to create an image. */
 	// +optional
 	DiskRef *v1alpha1.ResourceRef `json:"diskRef,omitempty"`
 
@@ -91,16 +79,11 @@ type ComputeImageSpec struct {
 	// +optional
 	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
 
-	/* Immutable. The name of the image family to which this image belongs. You can
-	create disks by specifying an image family instead of a specific
-	image name. The image family always returns its latest image that is
-	not deprecated. The name of the image family must comply with
-	RFC1035. */
+	/* Immutable. The name of the image family to which this image belongs. You can create disks by specifying an image family instead of a specific image name. The image family always returns its latest image that is not deprecated. The name of the image family must comply with RFC1035. */
 	// +optional
 	Family *string `json:"family,omitempty"`
 
-	/* Immutable. A list of features to enable on the guest operating system.
-	Applicable only for bootable images. */
+	/* Immutable. A list of features to enable on the guest operating system. Applicable only for bootable images. */
 	// +optional
 	GuestOsFeatures []ImageGuestOsFeatures `json:"guestOsFeatures,omitempty"`
 
@@ -132,9 +115,7 @@ type ComputeImageSpec struct {
 	// +optional
 	SourceSnapshotRef *v1alpha1.ResourceRef `json:"sourceSnapshotRef,omitempty"`
 
-	/* Immutable. Cloud Storage bucket storage location of the image
-	(regional or multi-regional).
-	Reference link: https://cloud.google.com/compute/docs/reference/rest/v1/images. */
+	/* Immutable. Cloud Storage bucket storage location of the image (regional or multi-regional). Reference link: https://cloud.google.com/compute/docs/reference/rest/v1/images. */
 	// +optional
 	StorageLocations []string `json:"storageLocations,omitempty"`
 }
@@ -143,8 +124,7 @@ type ComputeImageStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeImage's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Size of the image tar.gz archive stored in Google Cloud Storage (in
-	bytes). */
+	/* Size of the image tar.gz archive stored in Google Cloud Storage (in bytes). */
 	// +optional
 	ArchiveSizeBytes *int64 `json:"archiveSizeBytes,omitempty"`
 
@@ -152,8 +132,7 @@ type ComputeImageStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* The fingerprint used for optimistic locking of this resource. Used
-	internally during updates. */
+	/* The fingerprint used for optimistic locking of this resource. Used internally during updates. */
 	// +optional
 	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
 

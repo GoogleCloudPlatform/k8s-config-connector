@@ -43,8 +43,7 @@ type RouterAdvertisedIpRanges struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The IP range to advertise. The value must be a
-	CIDR-formatted string. */
+	/* The IP range to advertise. The value must be a CIDR-formatted string. */
 	Range string `json:"range"`
 }
 
@@ -63,18 +62,11 @@ type RouterBgp struct {
 	// +optional
 	AdvertisedGroups []string `json:"advertisedGroups,omitempty"`
 
-	/* User-specified list of individual IP ranges to advertise in
-	custom mode. This field can only be populated if advertiseMode
-	is CUSTOM and is advertised to all peers of the router. These IP
-	ranges will be advertised in addition to any specified groups.
-	Leave this field blank to advertise no custom IP ranges. */
+	/* User-specified list of individual IP ranges to advertise in custom mode. This field can only be populated if advertiseMode is CUSTOM and is advertised to all peers of the router. These IP ranges will be advertised in addition to any specified groups. Leave this field blank to advertise no custom IP ranges. */
 	// +optional
 	AdvertisedIpRanges []RouterAdvertisedIpRanges `json:"advertisedIpRanges,omitempty"`
 
-	/* Local BGP Autonomous System Number (ASN). Must be an RFC6996
-	private ASN, either 16-bit or 32-bit. The value will be fixed for
-	this router resource. All VPN tunnels that link to this router
-	will have the same local ASN. */
+	/* Local BGP Autonomous System Number (ASN). Must be an RFC6996 private ASN, either 16-bit or 32-bit. The value will be fixed for this router resource. All VPN tunnels that link to this router will have the same local ASN. */
 	Asn int64 `json:"asn"`
 
 	/* The interval in seconds between BGP keepalive messages that are sent
@@ -100,8 +92,7 @@ type ComputeRouterSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Indicates if a router is dedicated for use with encrypted VLAN
-	attachments (interconnectAttachments). */
+	/* Immutable. Indicates if a router is dedicated for use with encrypted VLAN attachments (interconnectAttachments). */
 	// +optional
 	EncryptedInterconnectRouter *bool `json:"encryptedInterconnectRouter,omitempty"`
 

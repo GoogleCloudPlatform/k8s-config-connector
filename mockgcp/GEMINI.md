@@ -24,8 +24,8 @@ This command will download necessary tools, sync the required version of the `go
 
 Tests are standard `go test` tests, but some helper scripts are provided:
 
-* `dev/tools/record-gcp [<testpath>]` will record the results of running the tests against (real) GCP; writing the golden output logs.
-* `dev/tools/compare-mock [<testpath>]` will record the results of running the tests against our mocks of GCP; ideally the golden output will not change.
+* `hack/record-gcp [<testpath>]` will record the results of running the tests against (real) GCP; writing the golden output logs.
+* `hack/compare-mock [<testpath>]` will record the results of running the tests against our mocks of GCP; ideally the golden output will not change.
 
 ## Development Conventions
 
@@ -51,6 +51,11 @@ Whenever you add a new field or modify GCP communication, you MUST align the moc
 1.  **Establish a Baseline**: 
     - Identify the `<testname>` (final folder name) and `<fixture-path>` (full relative path).
     - Run `hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior (writes `_http.log` and `_generated_object_*.golden.yaml`).
+      - **Troubleshooting Service Not Enabled**: If `hack/record-gcp` fails because a GCP service is not enabled (e.g., error mentions that the API has not been used or is disabled), enable the service using `gcloud` and try again:
+        ```bash
+        gcloud services enable <service-name>.googleapis.com
+        ```
+        *(For example: `gcloud services enable compute.googleapis.com`)*
     - **CRITICAL**: `git add <fixture-path>` and `git commit -m "Update real GCP golden logs"` to establish a clean git baseline.
 
 2.  **Identify Discrepancies**:

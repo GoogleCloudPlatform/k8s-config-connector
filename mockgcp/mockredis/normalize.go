@@ -52,6 +52,20 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.primaryCluster.uid", "0123456789abcdef")
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.membership.secondaryClusters[].uid", "0123456789abcdef")
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.secondaryClusters[].uid", "0123456789abcdef")
+
+	// Standardize zone locations to us-central1-a
+	replacements.ReplacePath(".currentLocationId", "us-central1-a")
+	replacements.ReplacePath(".response.currentLocationId", "us-central1-a")
+	replacements.ReplacePath(".locationId", "us-central1-a")
+	replacements.ReplacePath(".response.locationId", "us-central1-a")
+	replacements.ReplacePath(".nodes[].zone", "us-central1-a")
+	replacements.ReplacePath(".response.nodes[].zone", "us-central1-a")
+
+	// Remove maintenance fields since they are volatile and not supported by the mock
+	replacements.RemovePath(".availableMaintenanceVersions")
+	replacements.RemovePath(".response.availableMaintenanceVersions")
+	replacements.RemovePath(".maintenanceVersion")
+	replacements.RemovePath(".response.maintenanceVersion")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

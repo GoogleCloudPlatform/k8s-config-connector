@@ -296,11 +296,13 @@ spec:
 		t.Fatalf("PubSubTopic CRD not established: %v", err)
 	}
 
+	h := NewHarness(ctx, t)
+
 	t.Logf("Waiting for KCC system components (webhook and controller managers) to be ready")
-	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=condition=Available", "deployment/cnrm-webhook-manager", "--timeout=5m"); err != nil {
+	if err := h.WaitForDeploymentAvailable("cnrm-system", "cnrm-webhook-manager", 5*time.Minute); err != nil {
 		t.Fatalf("cnrm-webhook-manager failed to become ready: %v", err)
 	}
-	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=jsonpath={.status.readyReplicas}=1", "statefulset/cnrm-controller-manager", "--timeout=5m"); err != nil {
+	if err := h.WaitForStatefulSetReady("cnrm-system", "cnrm-controller-manager", 5*time.Minute); err != nil {
 		t.Fatalf("cnrm-controller-manager failed to become ready: %v", err)
 	}
 
@@ -351,8 +353,6 @@ spec:
 		t.Logf("Apply failed, likely validating webhook propagation delay. Retrying in %v... Error: %v\nOutput: %s", applyInterval, err, string(output))
 		time.Sleep(applyInterval)
 	}
-
-	h := NewHarness(ctx, t)
 
 	t.Logf("Waiting for StorageBucket reconciliation (expected to fail with permission error)")
 	bucketName := "kcc-test-" + ns
@@ -483,6 +483,77 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 		t.Fatalf("%v", err)
 	}
 	return h
+}
+
+func (h *Harness) WaitForDeploymentAvailable(ns, name string, timeout time.Duration) error {
+	h.Logf("Waiting for deployment %s/%s to be available", ns, name)
+	gvr := schema.GroupVersionResource{Group: "apps", Version: "v1", Resource: "deployments"}
+	deadline := time.Now().Add(timeout)
+	for {
+		if h.ctx.Err() != nil {
+			return h.ctx.Err()
+		}
+		obj, err := h.dynamicClient.Resource(gvr).Namespace(ns).Get(h.ctx, name, metav1.GetOptions{})
+		if err != nil {
+			h.Logf("deployment %s/%s not found or error occurred: %v. Retrying...", ns, name, err)
+		} else {
+			// Check status.conditions for Available == True
+			status, found, err := unstructured.NestedMap(obj.Object, "status")
+			if err == nil && found {
+				conditions, foundConditions, err := unstructured.NestedSlice(status, "conditions")
+				if err == nil && foundConditions {
+					available := false
+					for _, condVal := range conditions {
+						cond, ok := condVal.(map[string]any)
+						if !ok {
+							continue
+						}
+						cType, _ := cond["type"].(string)
+						cStatus, _ := cond["status"].(string)
+						if cType == "Available" && cStatus == "True" {
+							available = true
+							break
+						}
+					}
+					if available {
+						h.Logf("deployment %s/%s is now available", ns, name)
+						return nil
+					}
+				}
+			}
+		}
+
+		if time.Now().After(deadline) {
+			return fmt.Errorf("timeout waiting for deployment %s/%s to be available", ns, name)
+		}
+		time.Sleep(2 * time.Second)
+	}
+}
+
+func (h *Harness) WaitForStatefulSetReady(ns, name string, timeout time.Duration) error {
+	h.Logf("Waiting for statefulset %s/%s to be ready (readyReplicas >= 1)", ns, name)
+	gvr := schema.GroupVersionResource{Group: "apps", Version: "v1", Resource: "statefulsets"}
+	deadline := time.Now().Add(timeout)
+	for {
+		if h.ctx.Err() != nil {
+			return h.ctx.Err()
+		}
+		obj, err := h.dynamicClient.Resource(gvr).Namespace(ns).Get(h.ctx, name, metav1.GetOptions{})
+		if err != nil {
+			h.Logf("statefulset %s/%s not found or error occurred: %v. Retrying...", ns, name, err)
+		} else {
+			readyReplicas, found, err := unstructured.NestedInt64(obj.Object, "status", "readyReplicas")
+			if err == nil && found && readyReplicas >= 1 {
+				h.Logf("statefulset %s/%s is now ready (readyReplicas: %d)", ns, name, readyReplicas)
+				return nil
+			}
+		}
+
+		if time.Now().After(deadline) {
+			return fmt.Errorf("timeout waiting for statefulset %s/%s to be ready", ns, name)
+		}
+		time.Sleep(2 * time.Second)
+	}
 }
 
 func (h *Harness) MustWaitForObservedGeneration(gvr schema.GroupVersionResource, ns, name string, expectedGeneration int64) {

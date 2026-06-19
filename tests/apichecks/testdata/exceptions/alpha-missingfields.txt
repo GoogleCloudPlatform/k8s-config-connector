@@ -2122,6 +2122,22 @@
 [missing_field] crd=dialogflowknowledgebases.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.languageCode" is not set in unstructured objects
 [missing_field] crd=dialogflowknowledgebases.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=dialogflowknowledgebases.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioExportSettings.audioExportPattern" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioExportSettings.audioFormat" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioExportSettings.enableAudioRedaction" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioExportSettings.gcsBucket" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioExportSettings.storeTtsAudio" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.deidentifyTemplate" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.insightsExportSettings.enableInsightsExport" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inspectTemplate" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.purgeDataTypes[]" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.redactionScope" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.redactionStrategy" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.retentionStrategy" is not set in unstructured objects
+[missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.retentionWindowDays" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.boost" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.filter" is not set in unstructured objects
@@ -2335,6 +2351,14 @@
 [missing_field] crd=eventarcenrollments.eventarc.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=eventarcenrollments.eventarc.cnrm.cloud.google.com version=v1alpha1: field ".spec.messageBusRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=eventarcenrollments.eventarc.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=eventarcgoogleapisources.eventarc.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=eventarcgoogleapisources.eventarc.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=eventarcgoogleapisources.eventarc.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=eventarcgoogleapisources.eventarc.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=eventarcgoogleapisources.eventarc.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=eventarcgoogleapisources.eventarc.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingConfig.logSeverity" is not set in unstructured objects
+[missing_field] crd=eventarcgoogleapisources.eventarc.cnrm.cloud.google.com version=v1alpha1: field ".spec.messageBusRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=eventarcgoogleapisources.eventarc.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=eventarcgooglechannelconfigs.eventarc.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=filestoresnapshots.filestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=filestoresnapshots.filestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.instance" is not set in unstructured objects
@@ -2621,6 +2645,14 @@
 [missing_field] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.sqlInstance.external" is not set in unstructured objects
 [missing_field] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.sqlInstance.name" is not set in unstructured objects
 [missing_field] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.sqlInstance.namespace" is not set in unstructured objects
+[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacity" is not set in unstructured objects
+[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.items[]" is not set in unstructured objects
+[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.purpose[]" is not set in unstructured objects
+[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=networksecuritybackendauthenticationconfigs.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.clientCertificateRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networksecuritybackendauthenticationconfigs.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=networksecuritybackendauthenticationconfigs.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects

@@ -186,6 +186,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.ReplacePath(".spec.softDeletePolicy.effectiveTime", mockgcpregistry.PlaceholderTime)
 	visitor.ReplacePath(".status.observedState.softDeletePolicy.effectiveTime", mockgcpregistry.PlaceholderTime)
 
+	// Specific to Redis
+	visitor.replacePaths[".status.host"] = "10.20.30.40"
+	visitor.replacePaths[".status.currentLocationId"] = "us-central1-a"
+	visitor.replacePaths[".status.nodes[].zone"] = "us-central1-a"
+
 	// Specific to Compute
 	visitor.replacePaths[".status.observedState.certificateID"] = 1111111111111111
 	visitor.replacePaths[".status.instanceId"] = "1111111111111111"
