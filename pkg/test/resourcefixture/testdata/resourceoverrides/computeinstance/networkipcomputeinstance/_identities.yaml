@@ -10,7 +10,7 @@
   name: default
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/zones/us-central1-a/instances/computeinstance-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeInstance
   name: computeinstance-${uniqueId}
