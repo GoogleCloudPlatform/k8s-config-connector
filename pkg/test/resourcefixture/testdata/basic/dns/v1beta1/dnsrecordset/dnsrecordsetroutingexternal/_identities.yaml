@@ -1,19 +1,7 @@
-- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/network-${uniqueId}
-  group: compute.cnrm.cloud.google.com
-  kind: ComputeNetwork
-  name: network-${uniqueId}
-  namespace: ${uniqueId}
-  version: v1beta1
 - caisURL: unknown
   group: compute.cnrm.cloud.google.com
-  kind: ComputeAddress
-  name: computeaddress-${uniqueId}-1
-  namespace: ${uniqueId}
-  version: v1beta1
-- caisURL: unknown
-  group: compute.cnrm.cloud.google.com
-  kind: ComputeAddress
-  name: computeaddress-${uniqueId}-2
+  kind: ComputeHealthCheck
+  name: computehealthcheck-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
 - caisURL: //dns.googleapis.com/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}

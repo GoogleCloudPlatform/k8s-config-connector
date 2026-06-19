@@ -1,13 +1,13 @@
-- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/default
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/network-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeNetwork
-  name: default
+  name: network-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/subnetworks/default
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeSubnetwork
-  name: default
+  name: subnet-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
 - caisURL: unknown

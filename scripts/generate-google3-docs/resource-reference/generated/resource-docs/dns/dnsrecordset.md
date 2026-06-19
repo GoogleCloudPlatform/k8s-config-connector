@@ -79,6 +79,8 @@ routingPolicy:
   enableGeoFencing: boolean
   geo:
   - healthCheckedTargets:
+      externalEndpoints:
+      - string
       internalLoadBalancers:
       - ipAddressRef:
           external: string
@@ -105,9 +107,15 @@ routingPolicy:
       kind: string
       name: string
       namespace: string
+  healthCheckRef:
+    external: string
+    name: string
+    namespace: string
   primaryBackup:
     backupGeo:
     - healthCheckedTargets:
+        externalEndpoints:
+        - string
         internalLoadBalancers:
         - ipAddressRef:
             external: string
@@ -136,6 +144,8 @@ routingPolicy:
         namespace: string
     enableGeoFencingForBackups: boolean
     primary:
+      externalEndpoints:
+      - string
       internalLoadBalancers:
       - ipAddressRef:
           external: string
@@ -159,6 +169,8 @@ routingPolicy:
     trickleRatio: float
   wrr:
   - healthCheckedTargets:
+      externalEndpoints:
+      - string
       internalLoadBalancers:
       - ipAddressRef:
           external: string
@@ -305,8 +317,28 @@ type: string
     </tr>
     <tr>
         <td>
+            <p><code>routingPolicy.geo[].healthCheckedTargets.externalEndpoints</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>The Internet IP addresses to be health checked.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.geo[].healthCheckedTargets.externalEndpoints[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>routingPolicy.geo[].healthCheckedTargets.internalLoadBalancers</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
@@ -316,7 +348,7 @@ type: string
     <tr>
         <td>
             <p><code>routingPolicy.geo[].healthCheckedTargets.internalLoadBalancers[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -585,6 +617,46 @@ type: string
     </tr>
     <tr>
         <td>
+            <p><code>routingPolicy.healthCheckRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.healthCheckRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The compute health check name, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.healthCheckRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Name of a ComputeHealthCheck object.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.healthCheckRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Namespace of a ComputeHealthCheck object</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>routingPolicy.primaryBackup</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -625,8 +697,28 @@ type: string
     </tr>
     <tr>
         <td>
+            <p><code>routingPolicy.primaryBackup.backupGeo[].healthCheckedTargets.externalEndpoints</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>The Internet IP addresses to be health checked.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.primaryBackup.backupGeo[].healthCheckedTargets.externalEndpoints[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>routingPolicy.primaryBackup.backupGeo[].healthCheckedTargets.internalLoadBalancers</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
@@ -636,7 +728,7 @@ type: string
     <tr>
         <td>
             <p><code>routingPolicy.primaryBackup.backupGeo[].healthCheckedTargets.internalLoadBalancers[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -925,8 +1017,28 @@ type: string
     </tr>
     <tr>
         <td>
+            <p><code>routingPolicy.primaryBackup.primary.externalEndpoints</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>The Internet IP addresses to be health checked.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.primaryBackup.primary.externalEndpoints[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>routingPolicy.primaryBackup.primary.internalLoadBalancers</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
@@ -936,7 +1048,7 @@ type: string
     <tr>
         <td>
             <p><code>routingPolicy.primaryBackup.primary.internalLoadBalancers[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -1175,8 +1287,28 @@ type: string
     </tr>
     <tr>
         <td>
+            <p><code>routingPolicy.wrr[].healthCheckedTargets.externalEndpoints</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>The Internet IP addresses to be health checked.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.wrr[].healthCheckedTargets.externalEndpoints[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>routingPolicy.wrr[].healthCheckedTargets.internalLoadBalancers</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
@@ -1186,7 +1318,7 @@ type: string
     <tr>
         <td>
             <p><code>routingPolicy.wrr[].healthCheckedTargets.internalLoadBalancers[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
