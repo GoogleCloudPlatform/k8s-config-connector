@@ -2307,10 +2307,7 @@
 [missing_field] crd=dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com version=v1alpha1: field ".spec.targets[].vertexDatasetTarget.filter.vertexDatasetResourceReference.datasetResourceName" is not set in unstructured objects
 [missing_field] crd=dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com version=v1alpha1: field ".spec.targets[].vertexDatasetTarget.generationCadence.inspectTemplateModifiedCadence.frequency" is not set in unstructured objects
 [missing_field] crd=dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com version=v1alpha1: field ".spec.targets[].vertexDatasetTarget.generationCadence.refreshFrequency" is not set in unstructured objects
-[missing_field] crd=dnsresponsepolicies.dns.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=dnsresponsepolicies.dns.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkeClusters[].gkeClusterName" is not set in unstructured objects
-[missing_field] crd=dnsresponsepolicies.dns.cnrm.cloud.google.com version=v1alpha1: field ".spec.networks[].networkUrl" is not set in unstructured objects
-[missing_field] crd=dnsresponsepolicies.dns.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dnsresponsepolicyrules.dns.cnrm.cloud.google.com version=v1alpha1: field ".spec.behavior" is not set in unstructured objects
 [missing_field] crd=dnsresponsepolicyrules.dns.cnrm.cloud.google.com version=v1alpha1: field ".spec.dnsName" is not set in unstructured objects
 [missing_field] crd=dnsresponsepolicyrules.dns.cnrm.cloud.google.com version=v1alpha1: field ".spec.localData.localDatas[].name" is not set in unstructured objects
