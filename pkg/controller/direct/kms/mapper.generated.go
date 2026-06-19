@@ -179,6 +179,7 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 		out.KeyProjectRef = &refsv1beta1.ProjectRef{External: in.GetKeyProject()}
 	}
 	// MISSING: Etag
+	out.KeyProjectResolutionMode = direct.Enum_FromProto(mapCtx, in.GetKeyProjectResolutionMode())
 	return out
 }
 */
@@ -196,6 +197,7 @@ found existing non-generated mapping function "KMSAutokeyConfigSpec_ToProto", sk
 			out.KeyProject = in.KeyProjectRef.External
 		}
 		// MISSING: Etag
+		out.KeyProjectResolutionMode = direct.Enum_ToProto[pb.AutokeyConfig_KeyProjectResolutionMode](mapCtx, in.KeyProjectResolutionMode)
 		return out
 	}
 */
@@ -394,6 +396,7 @@ func KMSImportJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Impor
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.PublicKey = ImportJob_WrappingPublicKeyObservedState_FromProto(mapCtx, in.GetPublicKey())
 	out.Attestation = KeyOperationAttestationObservedState_FromProto(mapCtx, in.GetAttestation())
+	// MISSING: CryptoKeyBackend
 	return out
 }
 func KMSImportJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KMSImportJobObservedState) *pb.ImportJob {
@@ -409,6 +412,7 @@ func KMSImportJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KMSImp
 	out.State = direct.Enum_ToProto[pb.ImportJob_ImportJobState](mapCtx, in.State)
 	out.PublicKey = ImportJob_WrappingPublicKeyObservedState_ToProto(mapCtx, in.PublicKey)
 	out.Attestation = KeyOperationAttestationObservedState_ToProto(mapCtx, in.Attestation)
+	// MISSING: CryptoKeyBackend
 	return out
 }
 
@@ -421,6 +425,7 @@ func KMSImportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.ImportJob) *kr
 	// MISSING: Name
 	out.ImportMethod = direct.Enum_FromProto(mapCtx, in.GetImportMethod())
 	out.ProtectionLevel = direct.Enum_FromProto(mapCtx, in.GetProtectionLevel())
+	// MISSING: CryptoKeyBackend
 	return out
 }
 */
@@ -436,6 +441,7 @@ found existing non-generated mapping function "KMSImportJobSpec_ToProto", skippi
 		// MISSING: Name
 		out.ImportMethod = direct.Enum_ToProto[pb.ImportJob_ImportMethod](mapCtx, in.ImportMethod)
 		out.ProtectionLevel = direct.Enum_ToProto[pb.ProtectionLevel](mapCtx, in.ProtectionLevel)
+		// MISSING: CryptoKeyBackend
 		return out
 	}
 */

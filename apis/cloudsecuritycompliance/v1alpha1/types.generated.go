@@ -112,58 +112,22 @@ type CloudControl struct {
 
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails
 type CloudControlDetails struct {
-	// Required. The name of the CloudControl in the format:
-	//  “organizations/{organization}/locations/{location}/
-	//  cloudControls/{cloud-control}”
+	// Required. The name of the cloud control, in the format
+	//  `organizations/{organization}/locations/{location}/cloudControls/{cloud-control}`.
+	//  The only supported location is `global`.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. Major revision of cloudcontrol
+	// Required. The major version of the cloud control.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails.major_revision_id
 	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
 
-	// Optional. Parameters is a key-value pair that is required by the
-	//  CloudControl. The specification of these parameters will be present in
-	//  cloudcontrol.Eg: { "name": "location","value": "us-west-1"}.
+	// Optional. Parameters are key-value pairs that let you provide your custom
+	//  location requirements, environment requirements, or other settings that are
+	//  relevant to the cloud control. An example parameter is
+	//  `{"name": "location","value": "us-west-1"}`.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails.parameters
 	Parameters []Parameter `json:"parameters,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "CloudControlGroup", skipping
-
-// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
-type CloudControlGroup struct {
-	// Required. The name of the cloud control group in the format:
-	//  “organizations/{organization}/locations/{location}/
-	//  cloudControlGroups/{cloud-control-group}”
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. The description of the cloud control group.The maximum length is
-	//  2000 characters.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. The control identifier used to fetch the findings. This is same
-	//  as the control report name.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.control_id
-	ControlID *string `json:"controlID,omitempty"`
-
-	// Required. The details of the cloud controls to be referred to in the
-	//  framework.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.cloud_control_details
-	CloudControlDetails []CloudControlDetails `json:"cloudControlDetails,omitempty"`
-
-	// Optional. Major revision of the cloud control group.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.major_revision_id
-	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
-
-	// Optional. The industry-defined Control assciated with the cloud controls in
-	//  this group.
-	//  organizations/{organization}/locations/{location}/controls/{control_id}
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.control
-	Control *string `json:"control,omitempty"`
 }
 */
 
@@ -171,13 +135,13 @@ type CloudControlGroup struct {
 
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.Framework
 type Framework struct {
-	// Required. Identifier. The name of the framework.
-	//  Format:
-	//  organizations/{organization}/locations/{location}/frameworks/{framework_id}
+	// Required. Identifier. The name of the framework, in the format
+	//  `organizations/{organization}/locations/{location}/frameworks/{framework_id}`.
+	//  The only supported location is `global`.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.name
 	Name *string `json:"name,omitempty"`
 
-	// Optional. Display name of the framework. The maximum length is 200
+	// Optional. The friendly name of the framework. The maximum length is 200
 	//  characters.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.display_name
 	DisplayName *string `json:"displayName,omitempty"`
@@ -187,12 +151,7 @@ type Framework struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.description
 	Description *string `json:"description,omitempty"`
 
-	// Optional. The details of the cloud control groups included in the
-	//  framework.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.cloud_control_group_details
-	CloudControlGroupDetails []Framework_CloudControlGroupDetails `json:"cloudControlGroupDetails,omitempty"`
-
-	// Optional. The details of the cloud controls directly added without any
+	// Optional. The cloud control details that are directly added without any
 	//  grouping in the framework.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.cloud_control_details
 	CloudControlDetails []CloudControlDetails `json:"cloudControlDetails,omitempty"`
@@ -202,13 +161,6 @@ type Framework struct {
 	Category []string `json:"category,omitempty"`
 }
 */
-
-// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.Framework.CloudControlGroupDetails
-type Framework_CloudControlGroupDetails struct {
-	// The cloud control group included in the framework.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.CloudControlGroupDetails.cloud_control_group
-	CloudControlGroup *CloudControlGroup `json:"cloudControlGroup,omitempty"`
-}
 
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.IntRange
 type IntRange struct {
@@ -393,48 +345,29 @@ type CloudControlObservedState struct {
 }
 */
 
-/* found existing non-generated go type "CloudControlGroupObservedState", skipping
-
-// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
-type CloudControlGroupObservedState struct {
-	// Optional. Output only. The type of the cloud control group. Default is
-	//  TYPE_CUSTOM.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.type
-	Type *string `json:"type,omitempty"`
-}
-*/
-
 /* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.Framework", skipping
 
 // +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.Framework
 type FrameworkObservedState struct {
-	// Output only. Major revision of the framework incremented in ascending
-	//  order.
+	// Output only. The major version of the framework, which is incremented in
+	//  ascending order.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.major_revision_id
 	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
 
-	// Output only. The type of the framework. The default is TYPE_CUSTOM.
+	// Output only. The type of framework.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.type
 	Type *string `json:"type,omitempty"`
 
-	// Optional. The details of the cloud control groups included in the
-	//  framework.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.cloud_control_group_details
-	CloudControlGroupDetails []Framework_CloudControlGroupDetailsObservedState `json:"cloudControlGroupDetails,omitempty"`
-
-	// Output only. cloud providers supported
+	// Output only. The cloud providers that are supported by the framework.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.supported_cloud_providers
 	SupportedCloudProviders []string `json:"supportedCloudProviders,omitempty"`
 
-	// Output only. target resource types supported by the Framework.
+	// Output only. The target resource types that are supported by the framework.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.supported_target_resource_types
 	SupportedTargetResourceTypes []string `json:"supportedTargetResourceTypes,omitempty"`
+
+	// Output only. The supported enforcement modes of the framework.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.supported_enforcement_modes
+	SupportedEnforcementModes []string `json:"supportedEnforcementModes,omitempty"`
 }
 */
-
-// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.Framework.CloudControlGroupDetails
-type Framework_CloudControlGroupDetailsObservedState struct {
-	// The cloud control group included in the framework.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.CloudControlGroupDetails.cloud_control_group
-	CloudControlGroup *CloudControlGroupObservedState `json:"cloudControlGroup,omitempty"`
-}

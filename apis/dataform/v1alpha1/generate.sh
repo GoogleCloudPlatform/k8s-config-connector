@@ -21,35 +21,13 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd "${REPO_ROOT}/dev/tools/controllerbuilder"
 
-# We need a newer googleapis to get Folder
-PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
-PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
-
-# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
-OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
-unset SKIP_GENERATE_PROTOS
-
-./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
-
-# Restore SKIP_GENERATE_PROTOS
-if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
-  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
-fi
+./generate-proto.sh
 
 go run . generate-types \
-  --service google.cloud.dataform.v1beta1 \
+  --service google.cloud.dataform.v1 \
   --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
-  --overlay ${REPO_ROOT}/apis/dataform/v1alpha1/overlay.proto \
-  --resource DataformFolder:Folder \
-  --proto-source-path ${PROTO_OUT}
-
-go run . generate-mapper \
-  --service google.cloud.dataform.v1beta1 \
-  --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
-  --overlay ${REPO_ROOT}/apis/dataform/v1alpha1/overlay.proto \
-  --proto-source-path ${PROTO_OUT}
+  --resource DataformTeamFolder:TeamFolder \
+  --overlay "${REPO_ROOT}/apis/dataform/v1alpha1/teamfolder_overlay.proto"
 
 cd "${REPO_ROOT}"
 dev/tasks/generate-crds
-
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/dataform/

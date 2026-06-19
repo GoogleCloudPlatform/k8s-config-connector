@@ -31,8 +31,8 @@ type FakeDataformV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeDataformV1alpha1) DataformFolders(namespace string) v1alpha1.DataformFolderInterface {
-	return newFakeDataformFolders(c, namespace)
+func (c *FakeDataformV1alpha1) DataformTeamFolders(namespace string) v1alpha1.DataformTeamFolderInterface {
+	return newFakeDataformTeamFolders(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

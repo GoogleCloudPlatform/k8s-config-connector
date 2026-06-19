@@ -139,6 +139,10 @@ func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBu
 		case path == "budgetFilter" || path == "budget_filter" ||
 			strings.HasPrefix(path, "budgetFilter.") || strings.HasPrefix(path, "budget_filter."):
 			obj.BudgetFilter = req.GetBudget().GetBudgetFilter()
+		case path == "budgetFilter.creditTypes":
+			obj.BudgetFilter.CreditTypes = req.Budget.BudgetFilter.CreditTypes
+		case path == "budgetFilter.customPeriod":
+			obj.BudgetFilter.UsagePeriod = req.Budget.BudgetFilter.UsagePeriod
 		case path == "thresholdRules" || path == "threshold_rules":
 			obj.ThresholdRules = req.GetBudget().GetThresholdRules()
 		case path == "allUpdatesRule" || path == "all_updates_rule" || path == "notificationsRule" || path == "notifications_rule" ||

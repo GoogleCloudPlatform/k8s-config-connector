@@ -613,6 +613,11 @@ func (in *RuntimetemplateMachineSpec) DeepCopyInto(out *RuntimetemplateMachineSp
 		*out = new(string)
 		**out = **in
 	}
+	if in.MinGpuDriverVersion != nil {
+		in, out := &in.MinGpuDriverVersion, &out.MinGpuDriverVersion
+		*out = new(string)
+		**out = **in
+	}
 	if in.MultihostGpuNodeCount != nil {
 		in, out := &in.MultihostGpuNodeCount, &out.MultihostGpuNodeCount
 		*out = new(int32)

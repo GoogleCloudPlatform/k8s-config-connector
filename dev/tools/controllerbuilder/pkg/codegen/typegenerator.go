@@ -232,8 +232,10 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 				name := field.Message().FullName()
 				if name == "google.rpc.Status" {
 					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
-					break
 				}
+			}
+			if goType, err := GoTypeForField(field, false); err == nil && strings.Contains(goType, "apiextensionsv1.JSON") {
+				out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 			}
 		}
 
@@ -290,8 +292,10 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 				name := field.Message().FullName()
 				if name == "google.rpc.Status" {
 					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
-					break
 				}
+			}
+			if goType, err := GoTypeForField(field, true); err == nil && strings.Contains(goType, "apiextensionsv1.JSON") {
+				out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 			}
 		}
 

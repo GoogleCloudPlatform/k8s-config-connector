@@ -238,6 +238,7 @@
 | dataflow.cnrm.cloud.google.com                | DataflowJob                                     | False        | True        | False  | Terraform  | True        |
 | dataform.cnrm.cloud.google.com                | DataformFolder                                  | True         | False       | False  | Direct     | True        |
 | dataform.cnrm.cloud.google.com                | DataformRepository                              | True         | True        | False  | Direct     | True        |
+| dataform.cnrm.cloud.google.com                | DataformTeamFolder                              | True         | False       | False  | Direct     | True        |
 | datafusion.cnrm.cloud.google.com              | DataFusionInstance                              | False        | True        | False  | DCL        | False       |
 | datalabeling.cnrm.cloud.google.com            | DataLabelingAnnotationSpecSet                   | True         | False       | False  | Direct     | True        |
 | datalabeling.cnrm.cloud.google.com            | DataLabelingDataset                             | True         | False       | False  | Direct     | True        |

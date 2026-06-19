@@ -31,7 +31,7 @@ import (
 
 type DataformV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	DataformFoldersGetter
+	DataformTeamFoldersGetter
 }
 
 // DataformV1alpha1Client is used to interact with features provided by the dataform.cnrm.cloud.google.com group.
@@ -39,8 +39,8 @@ type DataformV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *DataformV1alpha1Client) DataformFolders(namespace string) DataformFolderInterface {
-	return newDataformFolders(c, namespace)
+func (c *DataformV1alpha1Client) DataformTeamFolders(namespace string) DataformTeamFolderInterface {
+	return newDataformTeamFolders(c, namespace)
 }
 
 // NewForConfig creates a new DataformV1alpha1Client for the given config.

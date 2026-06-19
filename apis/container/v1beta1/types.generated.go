@@ -68,6 +68,10 @@ type AdditionalIPRangesConfig struct {
 	//  Example2: gke-pod-range1,gke-pod-range2
 	// +kcc:proto:field=google.container.v1.AdditionalIPRangesConfig.pod_ipv4_range_names
 	PodIPV4RangeNames []string `json:"podIPV4RangeNames,omitempty"`
+
+	// Draining status of the additional subnet.
+	// +kcc:proto:field=google.container.v1.AdditionalIPRangesConfig.status
+	Status *string `json:"status,omitempty"`
 }
 */
 
@@ -153,7 +157,8 @@ type AddonsConfig struct {
 	DNSCacheConfig *DNSCacheConfig `json:"dnsCacheConfig,omitempty"`
 
 	// Configuration for the ConfigConnector add-on, a Kubernetes
-	//  extension to manage hosted GCP services through the Kubernetes API
+	//  extension to manage hosted Google Cloud services through the Kubernetes
+	//  API.
 	// +kcc:proto:field=google.container.v1.AddonsConfig.config_connector_config
 	ConfigConnectorConfig *ConfigConnectorConfig `json:"configConnectorConfig,omitempty"`
 
@@ -161,7 +166,7 @@ type AddonsConfig struct {
 	// +kcc:proto:field=google.container.v1.AddonsConfig.gce_persistent_disk_csi_driver_config
 	GCEPersistentDiskCsiDriverConfig *GCEPersistentDiskCsiDriverConfig `json:"gcePersistentDiskCsiDriverConfig,omitempty"`
 
-	// Configuration for the GCP Filestore CSI driver.
+	// Configuration for the Filestore CSI driver.
 	// +kcc:proto:field=google.container.v1.AddonsConfig.gcp_filestore_csi_driver_config
 	GcpFilestoreCsiDriverConfig *GcpFilestoreCsiDriverConfig `json:"gcpFilestoreCsiDriverConfig,omitempty"`
 
@@ -192,6 +197,10 @@ type AddonsConfig struct {
 	// Configuration for the Lustre CSI driver.
 	// +kcc:proto:field=google.container.v1.AddonsConfig.lustre_csi_driver_config
 	LustreCsiDriverConfig *LustreCsiDriverConfig `json:"lustreCsiDriverConfig,omitempty"`
+
+	// Optional. Configuration for the slice controller add-on.
+	// +kcc:proto:field=google.container.v1.AddonsConfig.slice_controller_config
+	SliceControllerConfig *SliceControllerConfig `json:"sliceControllerConfig,omitempty"`
 }
 */
 
@@ -261,6 +270,9 @@ type AuthenticatorGroupsConfig struct {
 /* unreachable type AutoIpamConfig
 // +kcc:proto=google.container.v1.AutoIpamConfig
 type AutoIpamConfig struct {
+	// The flag that enables Auto IPAM on this cluster
+	// +kcc:proto:field=google.container.v1.AutoIpamConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
 }
 */
 
@@ -290,6 +302,11 @@ type Autopilot struct {
 	// WorkloadPolicyConfig is the configuration related to GCW workload policy
 	// +kcc:proto:field=google.container.v1.Autopilot.workload_policy_config
 	WorkloadPolicyConfig *WorkloadPolicyConfig `json:"workloadPolicyConfig,omitempty"`
+
+	// PrivilegedAdmissionConfig is the configuration related to privileged
+	//  admission control.
+	// +kcc:proto:field=google.container.v1.Autopilot.privileged_admission_config
+	PrivilegedAdmissionConfig *PrivilegedAdmissionConfig `json:"privilegedAdmissionConfig,omitempty"`
 }
 */
 
@@ -407,10 +424,25 @@ type BlueGreenSettings struct {
 	// +kcc:proto:field=google.container.v1.BlueGreenSettings.standard_rollout_policy
 	StandardRolloutPolicy *BlueGreenSettings_StandardRolloutPolicy `json:"standardRolloutPolicy,omitempty"`
 
+	// Autoscaled policy for cluster autoscaler enabled blue-green upgrade.
+	// +kcc:proto:field=google.container.v1.BlueGreenSettings.autoscaled_rollout_policy
+	AutoscaledRolloutPolicy *BlueGreenSettings_AutoscaledRolloutPolicy `json:"autoscaledRolloutPolicy,omitempty"`
+
 	// Time needed after draining entire blue pool. After this period, blue pool
 	//  will be cleaned up.
 	// +kcc:proto:field=google.container.v1.BlueGreenSettings.node_pool_soak_duration
 	NodePoolSoakDuration *string `json:"nodePoolSoakDuration,omitempty"`
+}
+*/
+
+/* unreachable type BlueGreenSettings_AutoscaledRolloutPolicy
+// +kcc:proto=google.container.v1.BlueGreenSettings.AutoscaledRolloutPolicy
+type BlueGreenSettings_AutoscaledRolloutPolicy struct {
+	// Optional. Time to wait after cordoning the blue pool before draining the
+	//  nodes. Defaults to 3 days. The value can be set between 0 and 7 days,
+	//  inclusive.
+	// +kcc:proto:field=google.container.v1.BlueGreenSettings.AutoscaledRolloutPolicy.wait_for_drain_duration
+	WaitForDrainDuration *string `json:"waitForDrainDuration,omitempty"`
 }
 */
 
@@ -567,7 +599,7 @@ type Cluster struct {
 	Network *string `json:"network,omitempty"`
 
 	// The IP address range of the container pods in this cluster, in
-	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
 	//  notation (e.g. `10.96.0.0/14`). Leave blank to have
 	//  one automatically chosen or specify a `/14` block in `10.0.0.0/8`.
 	// +kcc:proto:field=google.container.v1.Cluster.cluster_ipv4_cidr
@@ -703,8 +735,7 @@ type Cluster struct {
 	// +kcc:proto:field=google.container.v1.Cluster.release_channel
 	ReleaseChannel *ReleaseChannel `json:"releaseChannel,omitempty"`
 
-	// Configuration for the use of Kubernetes Service Accounts in GCP IAM
-	//  policies.
+	// Configuration for the use of Kubernetes Service Accounts in IAM policies.
 	// +kcc:proto:field=google.container.v1.Cluster.workload_identity_config
 	WorkloadIdentityConfig *WorkloadIdentityConfig `json:"workloadIdentityConfig,omitempty"`
 
@@ -805,6 +836,9 @@ type Cluster struct {
 	EnableK8sBetaApis *K8sBetaAPIConfig `json:"enableK8sBetaApis,omitempty"`
 
 	// GKE Enterprise Configuration.
+	//
+	//  Deprecated: GKE Enterprise features are now available without an Enterprise
+	//  tier.
 	// +kcc:proto:field=google.container.v1.Cluster.enterprise_config
 	EnterpriseConfig *EnterpriseConfig `json:"enterpriseConfig,omitempty"`
 
@@ -833,6 +867,10 @@ type Cluster struct {
 	//  health checks.
 	// +kcc:proto:field=google.container.v1.Cluster.anonymous_authentication_config
 	AnonymousAuthenticationConfig *AnonymousAuthenticationConfig `json:"anonymousAuthenticationConfig,omitempty"`
+
+	// Configuration for Managed OpenTelemetry pipeline.
+	// +kcc:proto:field=google.container.v1.Cluster.managed_opentelemetry_config
+	ManagedOpentelemetryConfig *ManagedOpenTelemetryConfig `json:"managedOpentelemetryConfig,omitempty"`
 }
 */
 
@@ -867,6 +905,11 @@ type ClusterAutoscaling struct {
 	// Default compute class is a configuration for default compute class.
 	// +kcc:proto:field=google.container.v1.ClusterAutoscaling.default_compute_class_config
 	DefaultComputeClassConfig *DefaultComputeClassConfig `json:"defaultComputeClassConfig,omitempty"`
+
+	// Autopilot general profile for the cluster, which defines the
+	//  configuration for the cluster.
+	// +kcc:proto:field=google.container.v1.ClusterAutoscaling.autopilot_general_profile
+	AutopilotGeneralProfile *string `json:"autopilotGeneralProfile,omitempty"`
 }
 */
 
@@ -923,6 +966,17 @@ type ContainerdConfig struct {
 	//  for private container registries.
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.private_registry_access_config
 	PrivateRegistryAccessConfig *ContainerdConfig_PrivateRegistryAccessConfig `json:"privateRegistryAccessConfig,omitempty"`
+
+	// Optional. WritableCgroups defines writable cgroups configuration for the
+	//  node pool.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.writable_cgroups
+	WritableCgroups *ContainerdConfig_WritableCgroups `json:"writableCgroups,omitempty"`
+
+	// RegistryHostConfig configures containerd registry host configuration.
+	//  Each registry_hosts represents a hosts.toml file.
+	//  At most 25 registry_hosts are allowed.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.registry_hosts
+	RegistryHosts []ContainerdConfig_RegistryHostConfig `json:"registryHosts,omitempty"`
 }
 */
 
@@ -951,7 +1005,7 @@ type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConf
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.fqdns
 	Fqdns []string `json:"fqdns,omitempty"`
 
-	// Google Secret Manager (GCP) certificate configuration.
+	// Secret Manager certificate configuration.
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.gcp_secret_manager_certificate_config
 	GcpSecretManagerCertificateConfig *ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GcpSecretManagerCertificateConfig `json:"gcpSecretManagerCertificateConfig,omitempty"`
 }
@@ -965,6 +1019,127 @@ type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConf
 	//  Version can be fixed (e.g. "2") or "latest"
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig.secret_uri
 	SecretURI *string `json:"secretURI,omitempty"`
+}
+*/
+
+/* unreachable type ContainerdConfig_RegistryHostConfig
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHostConfig
+type ContainerdConfig_RegistryHostConfig struct {
+	// Defines the host name of the registry server, which will be used to
+	//  create configuration file as /etc/containerd/hosts.d/<server>/hosts.toml.
+	//  It supports fully qualified domain names (FQDN) and IP addresses:
+	//  Specifying port is supported.
+	//  Wildcards are NOT supported.
+	//  Examples:
+	//  - my.customdomain.com
+	//  - 10.0.1.2:5000
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.server
+	Server *string `json:"server,omitempty"`
+
+	// HostConfig configures a list of host-specific configurations for the
+	//  server.
+	//  Each server can have at most 10 host configurations.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.hosts
+	Hosts []ContainerdConfig_RegistryHostConfig_HostConfig `json:"hosts,omitempty"`
+}
+*/
+
+/* unreachable type ContainerdConfig_RegistryHostConfig_CertificateConfig
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHostConfig.CertificateConfig
+type ContainerdConfig_RegistryHostConfig_CertificateConfig struct {
+	// The URI configures a secret from
+	//  [Secret Manager](https://cloud.google.com/secret-manager)
+	//  in the format
+	//  "projects/$PROJECT_ID/secrets/$SECRET_NAME/versions/$VERSION" for
+	//  global secret or
+	//  "projects/$PROJECT_ID/locations/$REGION/secrets/$SECRET_NAME/versions/$VERSION"
+	//  for regional secret. Version can be fixed (e.g. "2") or "latest"
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.CertificateConfig.gcp_secret_manager_secret_uri
+	GcpSecretManagerSecretURI *string `json:"gcpSecretManagerSecretURI,omitempty"`
+}
+*/
+
+/* unreachable type ContainerdConfig_RegistryHostConfig_CertificateConfigPair
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHostConfig.CertificateConfigPair
+type ContainerdConfig_RegistryHostConfig_CertificateConfigPair struct {
+	// Cert configures the client certificate.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.CertificateConfigPair.cert
+	Cert *ContainerdConfig_RegistryHostConfig_CertificateConfig `json:"cert,omitempty"`
+
+	// Key configures the client private key. Optional.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.CertificateConfigPair.key
+	Key *ContainerdConfig_RegistryHostConfig_CertificateConfig `json:"key,omitempty"`
+}
+*/
+
+/* unreachable type ContainerdConfig_RegistryHostConfig_HostConfig
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig
+type ContainerdConfig_RegistryHostConfig_HostConfig struct {
+	// Host configures the registry host/mirror.
+	//  It supports fully qualified domain names (FQDN) and IP addresses:
+	//  Specifying port is supported.
+	//  Wildcards are NOT supported.
+	//  Examples:
+	//  - my.customdomain.com
+	//  - 10.0.1.2:5000
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig.host
+	Host *string `json:"host,omitempty"`
+
+	// Capabilities represent the capabilities of the registry host,
+	//  specifying what operations a host is capable of performing.
+	//  If not set, containerd enables all capabilities by default.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig.capabilities
+	Capabilities []string `json:"capabilities,omitempty"`
+
+	// OverridePath is used to indicate the host's API root endpoint is
+	//  defined in the URL path rather than by the API specification. This may
+	//  be used with non-compliant OCI registries which are missing the /v2
+	//  prefix.
+	//  If not set, containerd sets default false.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig.override_path
+	OverridePath *bool `json:"overridePath,omitempty"`
+
+	// Header configures the registry host headers.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig.header
+	Header []ContainerdConfig_RegistryHostConfig_RegistryHeader `json:"header,omitempty"`
+
+	// CA configures the registry host certificate.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig.ca
+	CA []ContainerdConfig_RegistryHostConfig_CertificateConfig `json:"ca,omitempty"`
+
+	// Client configures the registry host client certificate and key.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig.client
+	Client []ContainerdConfig_RegistryHostConfig_CertificateConfigPair `json:"client,omitempty"`
+
+	// Specifies the maximum duration allowed for a connection attempt to
+	//  complete. A shorter timeout helps reduce delays when falling back to
+	//  the original registry if the mirror is unreachable.
+	//  Maximum allowed value is 180s. If not set, containerd sets default 30s.
+	//  The value should be a decimal number of seconds with an `s` suffix.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig.dial_timeout
+	DialTimeout *string `json:"dialTimeout,omitempty"`
+}
+*/
+
+/* unreachable type ContainerdConfig_RegistryHostConfig_RegistryHeader
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHostConfig.RegistryHeader
+type ContainerdConfig_RegistryHostConfig_RegistryHeader struct {
+	// Key configures the header key.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.RegistryHeader.key
+	Key *string `json:"key,omitempty"`
+
+	// Value configures the header value.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.RegistryHeader.value
+	Value []string `json:"value,omitempty"`
+}
+*/
+
+/* unreachable type ContainerdConfig_WritableCgroups
+// +kcc:proto=google.container.v1.ContainerdConfig.WritableCgroups
+type ContainerdConfig_WritableCgroups struct {
+	// Optional. Whether writable cgroups is enabled.
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.WritableCgroups.enabled
+	Enabled *bool `json:"enabled,omitempty"`
 }
 */
 
@@ -988,9 +1163,17 @@ type ControlPlaneEndpointsConfig struct {
 type ControlPlaneEndpointsConfig_DNSEndpointConfig struct {
 
 	// Controls whether user traffic is allowed over this endpoint. Note that
-	//  GCP-managed services may still use the endpoint even if this is false.
+	//  Google-managed services may still use the endpoint even if this is false.
 	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig.allow_external_traffic
 	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
+
+	// Controls whether the k8s token auth is allowed via DNS.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig.enable_k8s_tokens_via_dns
+	EnableK8sTokensViaDNS *bool `json:"enableK8sTokensViaDNS,omitempty"`
+
+	// Controls whether the k8s certs auth is allowed via DNS.
+	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig.enable_k8s_certs_via_dns
+	EnableK8sCertsViaDNS *bool `json:"enableK8sCertsViaDNS,omitempty"`
 }
 */
 
@@ -1344,6 +1527,19 @@ type Fleet struct {
 	//  been registered.
 	// +kcc:proto:field=google.container.v1.Fleet.project
 	Project *string `json:"project,omitempty"`
+
+	// The type of the cluster's fleet membership.
+	// +kcc:proto:field=google.container.v1.Fleet.membership_type
+	MembershipType *string `json:"membershipType,omitempty"`
+}
+*/
+
+/* unreachable type GpuDirectConfig
+// +kcc:proto=google.container.v1.GPUDirectConfig
+type GpuDirectConfig struct {
+	// The type of GPU direct strategy to enable on the node pool.
+	// +kcc:proto:field=google.container.v1.GPUDirectConfig.gpu_direct_strategy
+	GpuDirectStrategy *string `json:"gpuDirectStrategy,omitempty"`
 }
 */
 
@@ -1403,7 +1599,7 @@ type GcfsConfig struct {
 /* unreachable type GcpFilestoreCsiDriverConfig
 // +kcc:proto=google.container.v1.GcpFilestoreCsiDriverConfig
 type GcpFilestoreCsiDriverConfig struct {
-	// Whether the GCP Filestore CSI driver is enabled for this cluster.
+	// Whether the Filestore CSI driver is enabled for this cluster.
 	// +kcc:proto:field=google.container.v1.GcpFilestoreCsiDriverConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
@@ -1538,7 +1734,7 @@ type IPAllocationPolicy struct {
 	//  netmask.
 	//
 	//  Set to a
-	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
 	//  notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
 	//  `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
 	//  to use.
@@ -1555,7 +1751,7 @@ type IPAllocationPolicy struct {
 	//  netmask.
 	//
 	//  Set to a
-	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
 	//  notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
 	//  `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
 	//  to use.
@@ -1573,7 +1769,7 @@ type IPAllocationPolicy struct {
 	//  netmask.
 	//
 	//  Set to a
-	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
 	//  notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
 	//  `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
 	//  to use.
@@ -1591,7 +1787,7 @@ type IPAllocationPolicy struct {
 	//  netmask.
 	//
 	//  Set to a
-	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
 	//  notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
 	//  `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
 	//  to use.
@@ -1634,6 +1830,12 @@ type IPAllocationPolicy struct {
 	// Optional. AutoIpamConfig contains all information related to Auto IPAM
 	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.auto_ipam_config
 	AutoIpamConfig *AutoIpamConfig `json:"autoIpamConfig,omitempty"`
+
+	// Cluster-level network tier configuration is used to determine the default
+	//  network tier for external IP addresses on cluster resources, such as node
+	//  pools and load balancers.
+	// +kcc:proto:field=google.container.v1.IPAllocationPolicy.network_tier_config
+	NetworkTierConfig *NetworkTierConfig `json:"networkTierConfig,omitempty"`
 }
 */
 
@@ -1699,7 +1901,12 @@ type LinuxNodeConfig struct {
 	//  net.ipv4.tcp_rmem
 	//  net.ipv4.tcp_wmem
 	//  net.ipv4.tcp_tw_reuse
+	//  net.ipv4.tcp_mtu_probing
 	//  net.ipv4.tcp_max_orphans
+	//  net.ipv4.tcp_max_tw_buckets
+	//  net.ipv4.tcp_syn_retries
+	//  net.ipv4.tcp_ecn
+	//  net.ipv4.tcp_congestion_control
 	//  net.netfilter.nf_conntrack_max
 	//  net.netfilter.nf_conntrack_buckets
 	//  net.netfilter.nf_conntrack_tcp_timeout_close_wait
@@ -1709,14 +1916,23 @@ type LinuxNodeConfig struct {
 	//  kernel.shmmni
 	//  kernel.shmmax
 	//  kernel.shmall
+	//  kernel.perf_event_paranoid
+	//  kernel.sched_rt_runtime_us
+	//  kernel.softlockup_panic
+	//  kernel.yama.ptrace_scope
+	//  kernel.kptr_restrict
+	//  kernel.dmesg_restrict
+	//  kernel.sysrq
 	//  fs.aio-max-nr
 	//  fs.file-max
 	//  fs.inotify.max_user_instances
 	//  fs.inotify.max_user_watches
 	//  fs.nr_open
 	//  vm.dirty_background_ratio
+	//  vm.dirty_background_bytes
 	//  vm.dirty_expire_centisecs
 	//  vm.dirty_ratio
+	//  vm.dirty_bytes
 	//  vm.dirty_writeback_centisecs
 	//  vm.max_map_count
 	//  vm.overcommit_memory
@@ -1755,6 +1971,17 @@ type LinuxNodeConfig struct {
 	//  for more details.
 	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.transparent_hugepage_defrag
 	TransparentHugepageDefrag *string `json:"transparentHugepageDefrag,omitempty"`
+
+	// Optional. Enables and configures swap space on nodes.
+	//  If omitted, swap is disabled.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.swap_config
+	SwapConfig *LinuxNodeConfig_SwapConfig `json:"swapConfig,omitempty"`
+
+	// Optional. Configuration for kernel module loading on nodes.
+	//  When enabled, the node pool will be provisioned with a Container-Optimized
+	//  OS image that enforces kernel module signature verification.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.node_kernel_module_loading
+	NodeKernelModuleLoading *LinuxNodeConfig_NodeKernelModuleLoading `json:"nodeKernelModuleLoading,omitempty"`
 }
 */
 
@@ -1768,6 +1995,87 @@ type LinuxNodeConfig_HugepagesConfig struct {
 	// Optional. Amount of 1G hugepages
 	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.HugepagesConfig.hugepage_size1g
 	HugepageSize1g *int32 `json:"hugepageSize1g,omitempty"`
+}
+*/
+
+/* unreachable type LinuxNodeConfig_NodeKernelModuleLoading
+// +kcc:proto=google.container.v1.LinuxNodeConfig.NodeKernelModuleLoading
+type LinuxNodeConfig_NodeKernelModuleLoading struct {
+	// Set the node module loading policy for nodes in the node pool.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.NodeKernelModuleLoading.policy
+	Policy *string `json:"policy,omitempty"`
+}
+*/
+
+/* unreachable type LinuxNodeConfig_SwapConfig
+// +kcc:proto=google.container.v1.LinuxNodeConfig.SwapConfig
+type LinuxNodeConfig_SwapConfig struct {
+	// Optional. Enables or disables swap for the node pool.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. If omitted, swap space is encrypted by default.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.encryption_config
+	EncryptionConfig *LinuxNodeConfig_SwapConfig_EncryptionConfig `json:"encryptionConfig,omitempty"`
+
+	// Swap on the node's boot disk.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.boot_disk_profile
+	BootDiskProfile *LinuxNodeConfig_SwapConfig_BootDiskProfile `json:"bootDiskProfile,omitempty"`
+
+	// Swap on the local SSD shared with pod ephemeral storage.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.ephemeral_local_ssd_profile
+	EphemeralLocalSsdProfile *LinuxNodeConfig_SwapConfig_EphemeralLocalSsdProfile `json:"ephemeralLocalSsdProfile,omitempty"`
+
+	// Provisions a new, separate local NVMe SSD exclusively for swap.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.dedicated_local_ssd_profile
+	DedicatedLocalSsdProfile *LinuxNodeConfig_SwapConfig_DedicatedLocalSsdProfile `json:"dedicatedLocalSsdProfile,omitempty"`
+}
+*/
+
+/* unreachable type LinuxNodeConfig_SwapConfig_BootDiskProfile
+// +kcc:proto=google.container.v1.LinuxNodeConfig.SwapConfig.BootDiskProfile
+type LinuxNodeConfig_SwapConfig_BootDiskProfile struct {
+	// Specifies the size of the swap space in gibibytes (GiB).
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.BootDiskProfile.swap_size_gib
+	SwapSizeGib *int64 `json:"swapSizeGib,omitempty"`
+
+	// Specifies the size of the swap space as a percentage of the boot disk
+	//  size.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.BootDiskProfile.swap_size_percent
+	SwapSizePercent *int32 `json:"swapSizePercent,omitempty"`
+}
+*/
+
+/* unreachable type LinuxNodeConfig_SwapConfig_DedicatedLocalSsdProfile
+// +kcc:proto=google.container.v1.LinuxNodeConfig.SwapConfig.DedicatedLocalSsdProfile
+type LinuxNodeConfig_SwapConfig_DedicatedLocalSsdProfile struct {
+	// The number of physical local NVMe SSD disks to attach.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.DedicatedLocalSsdProfile.disk_count
+	DiskCount *int64 `json:"diskCount,omitempty"`
+}
+*/
+
+/* unreachable type LinuxNodeConfig_SwapConfig_EncryptionConfig
+// +kcc:proto=google.container.v1.LinuxNodeConfig.SwapConfig.EncryptionConfig
+type LinuxNodeConfig_SwapConfig_EncryptionConfig struct {
+	// Optional. If true, swap space will not be encrypted.
+	//  Defaults to false (encrypted).
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.EncryptionConfig.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+*/
+
+/* unreachable type LinuxNodeConfig_SwapConfig_EphemeralLocalSsdProfile
+// +kcc:proto=google.container.v1.LinuxNodeConfig.SwapConfig.EphemeralLocalSsdProfile
+type LinuxNodeConfig_SwapConfig_EphemeralLocalSsdProfile struct {
+	// Specifies the size of the swap space in gibibytes (GiB).
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.EphemeralLocalSsdProfile.swap_size_gib
+	SwapSizeGib *int64 `json:"swapSizeGib,omitempty"`
+
+	// Specifies the size of the swap space as a percentage of the ephemeral
+	//  local SSD capacity.
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.EphemeralLocalSsdProfile.swap_size_percent
+	SwapSizePercent *int32 `json:"swapSizePercent,omitempty"`
 }
 */
 
@@ -1832,6 +2140,15 @@ type LustreCsiDriverConfig struct {
 
 	// If set to true, the Lustre CSI driver will install Lustre kernel modules
 	//  using port 6988.
+	//  This serves as a workaround for a port conflict with the
+	//  gke-metadata-server. This field is required ONLY under the following
+	//  conditions:
+	//  1. The GKE node version is older than 1.33.2-gke.4655000.
+	//  2. You're connecting to a Lustre instance that has the
+	//  'gke-support-enabled' flag.
+	//  Deprecated: This flag is no longer required as of GKE node version
+	//  1.33.2-gke.4655000, unless you are connecting to a Lustre instance
+	//  that has the `gke-support-enabled` flag.
 	// +kcc:proto:field=google.container.v1.LustreCsiDriverConfig.enable_legacy_lustre_port
 	EnableLegacyLustrePort *bool `json:"enableLegacyLustrePort,omitempty"`
 }
@@ -1845,6 +2162,10 @@ type MaintenanceExclusionOptions struct {
 	//  exclusion.
 	// +kcc:proto:field=google.container.v1.MaintenanceExclusionOptions.scope
 	Scope *string `json:"scope,omitempty"`
+
+	// EndTimeBehavior specifies the behavior of the exclusion end time.
+	// +kcc:proto:field=google.container.v1.MaintenanceExclusionOptions.end_time_behavior
+	EndTimeBehavior *string `json:"endTimeBehavior,omitempty"`
 }
 */
 
@@ -1882,6 +2203,15 @@ type MaintenanceWindow struct {
 
 	// TODO: unsupported map type with key string and value message
 
+}
+*/
+
+/* unreachable type ManagedOpenTelemetryConfig
+// +kcc:proto=google.container.v1.ManagedOpenTelemetryConfig
+type ManagedOpenTelemetryConfig struct {
+	// Scope of the Managed OpenTelemetry pipeline.
+	// +kcc:proto:field=google.container.v1.ManagedOpenTelemetryConfig.scope
+	Scope *string `json:"scope,omitempty"`
 }
 */
 
@@ -2166,6 +2496,15 @@ type NetworkTags struct {
 }
 */
 
+/* unreachable type NetworkTierConfig
+// +kcc:proto=google.container.v1.NetworkTierConfig
+type NetworkTierConfig struct {
+	// Network tier configuration.
+	// +kcc:proto:field=google.container.v1.NetworkTierConfig.network_tier
+	NetworkTier *string `json:"networkTier,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "NodeConfig", skipping
 
 // +kcc:proto=google.container.v1.NodeConfig
@@ -2194,8 +2533,7 @@ type NodeConfig struct {
 	//  persistent storage on your nodes.
 	//  * `https://www.googleapis.com/auth/devstorage.read_only` is required for
 	//  communicating with **gcr.io**
-	//  (the [Google Container
-	//  Registry](https://cloud.google.com/container-registry/)).
+	//  (the [Artifact Registry](https://cloud.google.com/artifact-registry/)).
 	//
 	//  If unspecified, no scopes are added, unless Cloud Logging or Cloud
 	//  Monitoring are enabled, in which case their required scopes will be added.
@@ -2433,6 +2771,10 @@ type NodeConfig struct {
 	// +kcc:proto:field=google.container.v1.NodeConfig.secondary_boot_disk_update_strategy
 	SecondaryBootDiskUpdateStrategy *SecondaryBootDiskUpdateStrategy `json:"secondaryBootDiskUpdateStrategy,omitempty"`
 
+	// The configuration for GPU Direct
+	// +kcc:proto:field=google.container.v1.NodeConfig.gpu_direct_config
+	GpuDirectConfig *GpuDirectConfig `json:"gpuDirectConfig,omitempty"`
+
 	// The maximum duration for the nodes to exist.
 	//  If unspecified, the nodes can exist indefinitely.
 	// +kcc:proto:field=google.container.v1.NodeConfig.max_run_duration
@@ -2450,6 +2792,12 @@ type NodeConfig struct {
 	// The boot disk configuration for the node pool.
 	// +kcc:proto:field=google.container.v1.NodeConfig.boot_disk
 	BootDisk *BootDisk `json:"bootDisk,omitempty"`
+
+	// Consolidation delay defines duration after which the Cluster Autoscaler can
+	//  scale down underutilized nodes. If not set, nodes are scaled down by
+	//  default behavior, i.e. according to the chosen autoscaling profile.
+	// +kcc:proto:field=google.container.v1.NodeConfig.consolidation_delay
+	ConsolidationDelay *string `json:"consolidationDelay,omitempty"`
 }
 */
 
@@ -2524,7 +2872,7 @@ type NodeKubeletConfig struct {
 	//  The string must be a sequence of decimal numbers, each with optional
 	//  fraction and a unit suffix, such as "300ms".
 	//  Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
-	//  The value must be a positive duration.
+	//  The value must be a positive duration between 1ms and 1 second, inclusive.
 	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.cpu_cfs_quota_period
 	CPUCfsQuotaPeriod *string `json:"cpuCfsQuotaPeriod,omitempty"`
 
@@ -2674,6 +3022,26 @@ type NodeKubeletConfig struct {
 	//  be OOM killed individually instead of as a group.
 	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.single_process_oom_kill
 	SingleProcessOomKill *bool `json:"singleProcessOomKill,omitempty"`
+
+	// Optional. shutdown_grace_period_seconds is the maximum allowed grace period
+	//  (in seconds) the total duration that the node should delay the shutdown
+	//  during a graceful shutdown. This is the total grace period for pod
+	//  termination for both regular and critical pods.
+	//  https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/
+	//  If set to 0, node will not enable the graceful node shutdown functionality.
+	//  This field is only valid for Spot VMs.
+	//  Allowed values: 0, 30, 120.
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.shutdown_grace_period_seconds
+	ShutdownGracePeriodSeconds *int32 `json:"shutdownGracePeriodSeconds,omitempty"`
+
+	// Optional. shutdown_grace_period_critical_pods_seconds is the maximum
+	//  allowed grace period (in seconds) used to terminate critical pods during a
+	//  node shutdown. This value should be <= shutdown_grace_period_seconds, and
+	//  is only valid if shutdown_grace_period_seconds is set.
+	//  https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/
+	//  Range: [0, 120].
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.shutdown_grace_period_critical_pods_seconds
+	ShutdownGracePeriodCriticalPodsSeconds *int32 `json:"shutdownGracePeriodCriticalPodsSeconds,omitempty"`
 }
 */
 
@@ -2782,6 +3150,18 @@ type NodeNetworkConfig struct {
 	//  Each pod network corresponds to an additional alias IP range for the node
 	// +kcc:proto:field=google.container.v1.NodeNetworkConfig.additional_pod_network_configs
 	AdditionalPodNetworkConfigs []AdditionalPodNetworkConfig `json:"additionalPodNetworkConfigs,omitempty"`
+
+	// Optional. The subnetwork name/path for the node pool.
+	//  Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}
+	//  If the cluster is associated with multiple subnetworks, the subnetwork can
+	//  be either:
+	//  1. A user supplied subnetwork name/full path during node pool creation.
+	//     Example1: my-subnet
+	//     Example2: projects/gke-project/regions/us-central1/subnetworks/my-subnet
+	//  2. A subnetwork path picked based on the IP utilization during node pool
+	//     creation and is immutable.
+	// +kcc:proto:field=google.container.v1.NodeNetworkConfig.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
 }
 */
 
@@ -2877,6 +3257,19 @@ type NodePool struct {
 	// Enable best effort provisioning for nodes
 	// +kcc:proto:field=google.container.v1.NodePool.best_effort_provisioning
 	BestEffortProvisioning *BestEffortProvisioning `json:"bestEffortProvisioning,omitempty"`
+
+	// Specifies the node drain configuration for this node pool.
+	// +kcc:proto:field=google.container.v1.NodePool.node_drain_config
+	NodeDrainConfig *NodePool_NodeDrainConfig `json:"nodeDrainConfig,omitempty"`
+}
+*/
+
+/* unreachable type NodePool_NodeDrainConfig
+// +kcc:proto=google.container.v1.NodePool.NodeDrainConfig
+type NodePool_NodeDrainConfig struct {
+	// Whether to respect PDB during node pool deletion.
+	// +kcc:proto:field=google.container.v1.NodePool.NodeDrainConfig.respect_pdb_during_node_pool_deletion
+	RespectPdbDuringNodePoolDeletion *bool `json:"respectPdbDuringNodePoolDeletion,omitempty"`
 }
 */
 
@@ -3209,6 +3602,25 @@ type PrivateClusterMasterGlobalAccessConfig struct {
 }
 */
 
+/* unreachable type PrivilegedAdmissionConfig
+// +kcc:proto=google.container.v1.PrivilegedAdmissionConfig
+type PrivilegedAdmissionConfig struct {
+	// The customer allowlist Cloud Storage paths for the cluster. These paths are
+	//  used with the `--autopilot-privileged-admission` flag to authorize
+	//  privileged workloads in Autopilot clusters.
+	//
+	//  Paths can be GKE-owned, in the format
+	//  `gke://<partner_name>/<app_name>/<allowlist_path>`, or customer-owned, in
+	//  the format `gs://<bucket_name>/<allowlist_path>`.
+	//
+	//  Wildcards (`*`) are supported to authorize all allowlists under specific
+	//  paths or directories. Example: `gs://my-bucket/-*` will authorize all
+	//  allowlists under the `my-bucket` bucket.
+	// +kcc:proto:field=google.container.v1.PrivilegedAdmissionConfig.allowlist_paths
+	AllowlistPaths []string `json:"allowlistPaths,omitempty"`
+}
+*/
+
 /* unreachable type RbacBindingConfig
 // +kcc:proto=google.container.v1.RBACBindingConfig
 type RbacBindingConfig struct {
@@ -3274,7 +3686,7 @@ type RecurringTimeWindow struct {
 	Window *TimeWindow `json:"window,omitempty"`
 
 	// An RRULE (https://tools.ietf.org/html/rfc5545#section-3.8.5.3) for how
-	//  this window reccurs. They go on for the span of time between the start and
+	//  this window recurs. They go on for the span of time between the start and
 	//  end time.
 	//
 	//  For example, to have something repeat every weekday, you'd use:
@@ -3446,6 +3858,24 @@ type SecretManagerConfig struct {
 	// Enable/Disable Secret Manager Config.
 	// +kcc:proto:field=google.container.v1.SecretManagerConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
+
+	// Rotation config for secret manager.
+	// +kcc:proto:field=google.container.v1.SecretManagerConfig.rotation_config
+	RotationConfig *SecretManagerConfig_RotationConfig `json:"rotationConfig,omitempty"`
+}
+*/
+
+/* unreachable type SecretManagerConfig_RotationConfig
+// +kcc:proto=google.container.v1.SecretManagerConfig.RotationConfig
+type SecretManagerConfig_RotationConfig struct {
+	// Whether the rotation is enabled.
+	// +kcc:proto:field=google.container.v1.SecretManagerConfig.RotationConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// The interval between two consecutive rotations. Default rotation interval
+	//  is 2 minutes.
+	// +kcc:proto:field=google.container.v1.SecretManagerConfig.RotationConfig.rotation_interval
+	RotationInterval *string `json:"rotationInterval,omitempty"`
 }
 */
 
@@ -3501,6 +3931,15 @@ type ShieldedInstanceConfig struct {
 type ShieldedNodes struct {
 	// Whether Shielded Nodes features are enabled on all nodes in this cluster.
 	// +kcc:proto:field=google.container.v1.ShieldedNodes.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* unreachable type SliceControllerConfig
+// +kcc:proto=google.container.v1.SliceControllerConfig
+type SliceControllerConfig struct {
+	// Optional. Indicates whether Slice Controller is enabled in the cluster.
+	// +kcc:proto:field=google.container.v1.SliceControllerConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
 */
@@ -3890,7 +4329,7 @@ type ClusterObservedState struct {
 
 	// Output only. The IP address range of the Kubernetes services in
 	//  this cluster, in
-	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
 	//  notation (e.g. `1.2.3.4/29`). Service addresses are
 	//  typically put in the last `/16` from the container CIDR.
 	// +kcc:proto:field=google.container.v1.Cluster.services_ipv4_cidr
@@ -3919,7 +4358,7 @@ type ClusterObservedState struct {
 	Location *string `json:"location,omitempty"`
 
 	// Output only. The IP address range of the Cloud TPUs in this cluster, in
-	//  [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
 	//  notation (e.g. `1.2.3.4/29`).
 	//  This field is deprecated due to the deprecation of 2VM TPU. The end of life
 	//  date for 2VM TPU is 2025-04-25.
@@ -3944,6 +4383,9 @@ type ClusterObservedState struct {
 	ControlPlaneEndpointsConfig *ControlPlaneEndpointsConfigObservedState `json:"controlPlaneEndpointsConfig,omitempty"`
 
 	// GKE Enterprise Configuration.
+	//
+	//  Deprecated: GKE Enterprise features are now available without an Enterprise
+	//  tier.
 	// +kcc:proto:field=google.container.v1.Cluster.enterprise_config
 	EnterpriseConfig *EnterpriseConfigObservedState `json:"enterpriseConfig,omitempty"`
 
@@ -3954,6 +4396,10 @@ type ClusterObservedState struct {
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.container.v1.Cluster.satisfies_pzi
 	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	// The Custom keys configuration for the cluster.
+	// +kcc:proto:field=google.container.v1.Cluster.user_managed_keys_config
+	UserManagedKeysConfig *UserManagedKeysConfigObservedState `json:"userManagedKeysConfig,omitempty"`
 }
 */
 
@@ -4201,13 +4647,11 @@ type NodeNetworkConfigObservedState struct {
 	// +kcc:proto:field=google.container.v1.NodeNetworkConfig.pod_ipv4_range_utilization
 	PodIPV4RangeUtilization *float64 `json:"podIPV4RangeUtilization,omitempty"`
 
-	// Output only. The subnetwork path for the node pool.
-	//  Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}
-	//  If the cluster is associated with multiple subnetworks, the subnetwork for
-	//  the node pool is picked based on the IP utilization during node pool
-	//  creation and is immutable.
-	// +kcc:proto:field=google.container.v1.NodeNetworkConfig.subnetwork
-	Subnetwork *string `json:"subnetwork,omitempty"`
+	// Output only. The network tier configuration for the node pool inherits from
+	//  the cluster-level configuration and remains immutable throughout the node
+	//  pool's lifecycle, including during upgrades.
+	// +kcc:proto:field=google.container.v1.NodeNetworkConfig.network_tier_config
+	NetworkTierConfig *NetworkTierConfig `json:"networkTierConfig,omitempty"`
 }
 */
 
@@ -4308,5 +4752,15 @@ type RangeInfoObservedState struct {
 	// Output only. The utilization of the range.
 	// +kcc:proto:field=google.container.v1.RangeInfo.utilization
 	Utilization *float64 `json:"utilization,omitempty"`
+}
+*/
+
+/* unreachable type UserManagedKeysConfigObservedState
+// +kcc:observedstate:proto=google.container.v1.UserManagedKeysConfig
+type UserManagedKeysConfigObservedState struct {
+	// Output only. All of the versions of the Cloud KMS cryptoKey that are used
+	//  by Confidential Hyperdisks on the control plane nodes.
+	// +kcc:proto:field=google.container.v1.UserManagedKeysConfig.control_plane_disk_encryption_key_versions
+	ControlPlaneDiskEncryptionKeyVersions []string `json:"controlPlaneDiskEncryptionKeyVersions,omitempty"`
 }
 */

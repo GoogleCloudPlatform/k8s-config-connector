@@ -810,6 +810,11 @@ func (in *JobVolumeMounts) DeepCopyInto(out *JobVolumeMounts) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.SubPath != nil {
+		in, out := &in.SubPath, &out.SubPath
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

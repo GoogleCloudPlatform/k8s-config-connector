@@ -29,143 +29,255 @@ package v1alpha1
 
 // +kcc:proto=google.cloud.compute.v1.Interconnect
 type Interconnect struct {
-	// Enable or disable the application awareness feature on this Cloud Interconnect.
+	// Enable or disable the application awareness feature on this Cloud
+	//  Interconnect.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.aai_enabled
 	AaiEnabled *bool `json:"aaiEnabled,omitempty"`
 
-	// Administrative status of the interconnect. When this is set to true, the Interconnect is functional and can carry traffic. When set to false, no packets can be carried over the interconnect and no BGP routes are exchanged over it. By default, the status is set to true.
+	// Administrative status of the interconnect. When this is set to true, the
+	//  Interconnect is functional and can carry traffic.
+	//  When set to false, no packets can be carried over the interconnect and
+	//  no BGP routes are exchanged over it. By default, the status is set to true.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.admin_enabled
 	AdminEnabled *bool `json:"adminEnabled,omitempty"`
 
-	// Configuration information for application awareness on this Cloud Interconnect.
+	// Configuration information for application awareness on this Cloud
+	//  Interconnect.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.application_aware_interconnect
 	ApplicationAwareInterconnect *InterconnectApplicationAwareInterconnect `json:"applicationAwareInterconnect,omitempty"`
 
-	// [Output only] List of features available for this Interconnect connection, which can take one of the following values: - IF_MACSEC If present then the Interconnect connection is provisioned on MACsec capable hardware ports. If not present then the Interconnect connection is provisioned on non-MACsec capable ports and MACsec isn't supported and enabling MACsec fails.
+	// [Output only] List of features available for this Interconnect connection,
+	//  which can take one of the following values:
+	//
+	//     - IF_MACSEC: If present, then the Interconnect connection is
+	//     provisioned on MACsec capable hardware ports. If not present, then the
+	//     Interconnect connection is provisioned on non-MACsec capable ports. Any
+	//     attempt to enable MACsec will fail.
+	//     - IF_CROSS_SITE_NETWORK: If present, then the Interconnect connection is
+	//     provisioned exclusively for Cross-Site Networking. Any attempt to configure
+	//     VLAN attachments will fail. If not present, then the Interconnect
+	//     connection is not provisioned for Cross-Site Networking. Any attempt to use
+	//     it for Cross-Site Networking will fail.
 	//  Check the AvailableFeatures enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.available_features
 	AvailableFeatures []string `json:"availableFeatures,omitempty"`
 
-	// [Output Only] A list of CircuitInfo objects, that describe the individual circuits in this LAG.
+	// Output only. [Output Only] A list of CircuitInfo objects, that describe the individual
+	//  circuits in this LAG.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.circuit_infos
 	CircuitInfos []InterconnectCircuitInfo `json:"circuitInfos,omitempty"`
 
-	// [Output Only] Creation timestamp in RFC3339 text format.
+	// Output only. [Output Only] Creation timestamp inRFC3339
+	//  text format.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	// Customer name, to put in the Letter of Authorization as the party authorized to request a crossconnect.
+	// Customer name, to put in the Letter of Authorization as the party
+	//  authorized to request a crossconnect.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.customer_name
 	CustomerName *string `json:"customerName,omitempty"`
 
-	// An optional description of this resource. Provide this property when you create the resource.
+	// An optional description of this resource. Provide this property when you
+	//  create the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.description
 	Description *string `json:"description,omitempty"`
 
-	// [Output Only] A list of outages expected for this Interconnect.
+	// Output only. [Output Only] A list of outages expected for this Interconnect.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.expected_outages
 	ExpectedOutages []InterconnectOutageNotification `json:"expectedOutages,omitempty"`
 
-	// [Output Only] IP address configured on the Google side of the Interconnect link. This can be used only for ping tests.
+	// Output only. [Output Only] IP address configured on the Google side of the Interconnect
+	//  link. This can be used only for ping tests.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.google_ip_address
 	GoogleIPAddress *string `json:"googleIPAddress,omitempty"`
 
-	// [Output Only] Google reference ID to be used when raising support tickets with Google or otherwise to debug backend connectivity issues.
+	// Output only. [Output Only] Google reference ID to be used when raising support tickets
+	//  with Google or otherwise to debug backend connectivity issues.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.google_reference_id
 	GoogleReferenceID *string `json:"googleReferenceID,omitempty"`
 
-	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// Output only. [Output Only] The unique identifier for the resource. This identifier is
+	//  defined by the server.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.id
 	ID *uint64 `json:"id,omitempty"`
 
-	// [Output Only] A list of the URLs of all InterconnectAttachments configured to use this Interconnect.
+	// Output only. [Output Only] A list of the URLs of all InterconnectAttachments configured
+	//  to use  this Interconnect.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.interconnect_attachments
 	InterconnectAttachments []string `json:"interconnectAttachments,omitempty"`
 
-	// [Output Only] URLs of InterconnectGroups that include this Interconnect. Order is arbitrary and items are unique.
+	// Output only. [Output Only] URLs of InterconnectGroups that include this Interconnect.
+	//  Order is arbitrary and items are unique.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.interconnect_groups
 	InterconnectGroups []string `json:"interconnectGroups,omitempty"`
 
-	// Type of interconnect, which can take one of the following values: - PARTNER: A partner-managed interconnection shared between customers though a partner. - DEDICATED: A dedicated physical interconnection with the customer. Note that a value IT_PRIVATE has been deprecated in favor of DEDICATED.
+	// Type of interconnect, which can take one of the following values:
+	//
+	//     - PARTNER: A partner-managed interconnection shared between customers
+	//     though a partner.
+	//     - DEDICATED: A dedicated physical interconnection with the
+	//     customer.
+	//
+	//
+	//  Note that a value IT_PRIVATE has been deprecated in favor of DEDICATED.
 	//  Check the InterconnectType enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.interconnect_type
 	InterconnectType *string `json:"interconnectType,omitempty"`
 
-	// [Output Only] Type of the resource. Always compute#interconnect for interconnects.
+	// Output only. [Output Only] Type of the resource. Alwayscompute#interconnect for interconnects.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.kind
 	Kind *string `json:"kind,omitempty"`
 
-	// A fingerprint for the labels being applied to this Interconnect, which is essentially a hash of the labels set used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve an Interconnect.
+	// A fingerprint for the labels being applied to this Interconnect, which
+	//  is essentially a hash of the labels set used for optimistic locking. The
+	//  fingerprint is initially generated by Compute Engine and changes after
+	//  every request to modify or update labels. You must always provide an
+	//  up-to-date fingerprint hash in order to update or change labels,
+	//  otherwise the request will fail with error412 conditionNotMet.
+	//
+	//  To see the latest fingerprint, make a get() request to
+	//  retrieve an Interconnect.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.label_fingerprint
 	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
 
-	// Labels for this resource. These can only be added or modified by the setLabels method. Each label key/value pair must comply with RFC1035. Label values may be empty.
+	// Labels for this resource. These can only be added or modified by thesetLabels method. Each label key/value pair must comply withRFC1035.
+	//  Label values may be empty.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// Type of link requested, which can take one of the following values: - LINK_TYPE_ETHERNET_10G_LR: A 10G Ethernet with LR optics - LINK_TYPE_ETHERNET_100G_LR: A 100G Ethernet with LR optics. - LINK_TYPE_ETHERNET_400G_LR4: A 400G Ethernet with LR4 optics. Note that this field indicates the speed of each of the links in the bundle, not the speed of the entire bundle.
+	// Type of link requested, which can take one of the following values:
+	//
+	//     - LINK_TYPE_ETHERNET_10G_LR: A 10G Ethernet with LR optics
+	//     - LINK_TYPE_ETHERNET_100G_LR: A 100G Ethernet with LR optics.
+	//     - LINK_TYPE_ETHERNET_400G_LR4: A 400G Ethernet with LR4 optics.
+	//
+	//
+	//   Note that this field indicates the speed of each of
+	//  the links in the bundle, not the speed of the entire bundle.
 	//  Check the LinkType enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.link_type
 	LinkType *string `json:"linkType,omitempty"`
 
-	// URL of the InterconnectLocation object that represents where this connection is to be provisioned.
+	// URL of the InterconnectLocation object that represents where this
+	//  connection is to be provisioned.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.location
 	Location *string `json:"location,omitempty"`
 
-	// Configuration that enables Media Access Control security (MACsec) on the Cloud Interconnect connection between Google and your on-premises router.
+	// Configuration that enables Media Access Control security (MACsec) on the
+	//  Cloud Interconnect connection between Google and your on-premises router.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.macsec
 	Macsec *InterconnectMacsec `json:"macsec,omitempty"`
 
-	// Enable or disable MACsec on this Interconnect connection. MACsec enablement fails if the MACsec object is not specified.
+	// Enable or disable MACsec on this Interconnect connection. MACsec enablement
+	//  fails if the MACsec object is not specified.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.macsec_enabled
 	MacsecEnabled *bool `json:"macsecEnabled,omitempty"`
 
-	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// Name of the resource. Provided by the client when the resource is created.
+	//  The name must be 1-63 characters long, and comply withRFC1035.
+	//  Specifically, the name must be 1-63 characters long and match the regular
+	//  expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first
+	//  character must be a lowercase letter, and all following characters must be
+	//  a dash, lowercase letter, or digit, except the last character, which cannot
+	//  be a dash.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.name
 	Name *string `json:"name,omitempty"`
 
-	// Email address to contact the customer NOC for operations and maintenance notifications regarding this Interconnect. If specified, this will be used for notifications in addition to all other forms described, such as Cloud Monitoring logs alerting and Cloud Notifications. This field is required for users who sign up for Cloud Interconnect using workforce identity federation.
+	// Email address to contact the customer NOC for operations and maintenance
+	//  notifications regarding this Interconnect. If specified, this will be used
+	//  for notifications in addition to all other forms described, such as
+	//  Cloud Monitoring logs alerting and Cloud Notifications. This field is
+	//  required for users who sign up for Cloud Interconnect using
+	//  workforce identity federation.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.noc_contact_email
 	NocContactEmail *string `json:"nocContactEmail,omitempty"`
 
-	// [Output Only] The current status of this Interconnect's functionality, which can take one of the following values: - OS_ACTIVE: A valid Interconnect, which is turned up and is ready to use. Attachments may be provisioned on this Interconnect. - OS_UNPROVISIONED: An Interconnect that has not completed turnup. No attachments may be provisioned on this Interconnect. - OS_UNDER_MAINTENANCE: An Interconnect that is undergoing internal maintenance. No attachments may be provisioned or updated on this Interconnect.
+	// Output only. [Output Only] The current status of this Interconnect's functionality,
+	//  which can take one of the following values:
+	//
+	//     - OS_ACTIVE: A valid Interconnect, which is turned up and is ready to
+	//     use. Attachments may be provisioned on this Interconnect.
+	//
+	//  - OS_UNPROVISIONED: An Interconnect that has not completed turnup. No
+	//  attachments may be provisioned on this Interconnect.
+	//  - OS_UNDER_MAINTENANCE: An Interconnect that is undergoing internal
+	//  maintenance. No attachments may be provisioned or updated on this
+	//  Interconnect.
 	//  Check the OperationalStatus enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.operational_status
 	OperationalStatus *string `json:"operationalStatus,omitempty"`
 
-	// [Output Only] IP address configured on the customer side of the Interconnect link. The customer should configure this IP address during turnup when prompted by Google NOC. This can be used only for ping tests.
+	// Input only. [Input Only] Additional params passed with the request, but not persisted
+	//  as part of resource payload.
+	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.params
+	Params *InterconnectParams `json:"params,omitempty"`
+
+	// Output only. [Output Only] IP address configured on the customer side of the
+	//  Interconnect link. The customer should configure this IP address during
+	//  turnup when prompted by Google NOC. This can be used only for ping tests.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.peer_ip_address
 	PeerIPAddress *string `json:"peerIPAddress,omitempty"`
 
-	// [Output Only] Number of links actually provisioned in this interconnect.
+	// Output only. [Output Only] Number of links actually provisioned in this interconnect.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.provisioned_link_count
 	ProvisionedLinkCount *int32 `json:"provisionedLinkCount,omitempty"`
 
-	// Indicates that this is a Cross-Cloud Interconnect. This field specifies the location outside of Google's network that the interconnect is connected to.
+	// Indicates that this is a Cross-Cloud Interconnect. This field specifies the
+	//  location outside of Google's network that the interconnect is connected to.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.remote_location
 	RemoteLocation *string `json:"remoteLocation,omitempty"`
 
-	// Optional. List of features requested for this Interconnect connection, which can take one of the following values: - IF_MACSEC If specified then the connection is created on MACsec capable hardware ports. If not specified, the default value is false, which allocates non-MACsec capable ports first if available. This parameter can be provided only with Interconnect INSERT. It isn't valid for Interconnect PATCH.
+	// Optional. This parameter can be provided only with Interconnect INSERT. It
+	//  isn't valid for Interconnect PATCH. List of features requested for this
+	//  Interconnect connection, which can take one of the following values:
+	//
+	//     - IF_MACSEC: If specified, then the connection is created on MACsec
+	//     capable hardware ports. If not specified, non-MACsec capable ports will
+	//     also be considered.
+	//     - IF_CROSS_SITE_NETWORK: If specified, then the connection is created
+	//     exclusively for Cross-Site Networking. The connection can not be used for
+	//     Cross-Site Networking unless this feature is specified.
 	//  Check the RequestedFeatures enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.requested_features
 	RequestedFeatures []string `json:"requestedFeatures,omitempty"`
 
-	// Target number of physical links in the link bundle, as requested by the customer.
+	// Target number of physical links in the link bundle, as requested by the
+	//  customer.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.requested_link_count
 	RequestedLinkCount *int32 `json:"requestedLinkCount,omitempty"`
 
-	// [Output Only] Reserved for future use.
+	// Output only. [Output Only] Reserved for future use.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.satisfies_pzs
 	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
 
-	// [Output Only] Server-defined URL for the resource.
+	// Output only. [Output Only] Server-defined URL for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 
-	// [Output Only] The current state of Interconnect functionality, which can take one of the following values: - ACTIVE: The Interconnect is valid, turned up and ready to use. Attachments may be provisioned on this Interconnect. - UNPROVISIONED: The Interconnect has not completed turnup. No attachments may be provisioned on this Interconnect. - UNDER_MAINTENANCE: The Interconnect is undergoing internal maintenance. No attachments may be provisioned or updated on this Interconnect.
+	// Output only. [Output Only] The current state of Interconnect functionality, which can
+	//  take one of the following values:
+	//
+	//     - ACTIVE: The Interconnect is valid, turned up and ready to use.
+	//     Attachments may be provisioned on this Interconnect.
+	//     - UNPROVISIONED: The Interconnect has not completed turnup. No
+	//     attachments may be provisioned on this Interconnect.
+	//     - UNDER_MAINTENANCE: The Interconnect is undergoing internal maintenance.
+	//     No attachments may be provisioned or updated on this
+	//     Interconnect.
 	//  Check the State enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.state
 	State *string `json:"state,omitempty"`
+
+	// To be deprecated.
+	//  Check the Subzone enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.subzone
+	Subzone *string `json:"subzone,omitempty"`
+
+	// Output only. [Output Only] A list of the URLs of all CrossSiteNetwork WireGroups
+	//  configured to use this Interconnect. The Interconnect cannot be deleted if
+	//  this list is non-empty.
+	// +kcc:proto:field=google.cloud.compute.v1.Interconnect.wire_groups
+	WireGroups []string `json:"wireGroups,omitempty"`
 }
 */
 
@@ -175,11 +287,14 @@ type InterconnectApplicationAwareInterconnect struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectApplicationAwareInterconnect.bandwidth_percentage_policy
 	BandwidthPercentagePolicy *InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy `json:"bandwidthPercentagePolicy,omitempty"`
 
-	// Description for the application awareness profile on this Cloud Interconnect.
+	// Description for the application awareness profile on this Cloud
+	//  Interconnect.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectApplicationAwareInterconnect.profile_description
 	ProfileDescription *string `json:"profileDescription,omitempty"`
 
-	// Optional field to specify a list of shape average percentages to be applied in conjunction with StrictPriorityPolicy or BandwidthPercentagePolicy.
+	// Optional field to specify a list of shape average percentages to be
+	//  applied in conjunction with StrictPriorityPolicy or
+	//  BandwidthPercentagePolicy.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectApplicationAwareInterconnect.shape_average_percentages
 	ShapeAveragePercentages []InterconnectApplicationAwareInterconnectBandwidthPercentage `json:"shapeAveragePercentages,omitempty"`
 
@@ -205,7 +320,8 @@ type InterconnectApplicationAwareInterconnectBandwidthPercentage struct {
 /* unreachable type InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy
 // +kcc:proto=google.cloud.compute.v1.InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy
 type InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy struct {
-	// Specify bandwidth percentages for various traffic classes for queuing type Bandwidth Percent.
+	// Specify bandwidth percentages for various traffic classes for queuing
+	//  type Bandwidth Percent.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy.bandwidth_percentages
 	BandwidthPercentages []InterconnectApplicationAwareInterconnectBandwidthPercentage `json:"bandwidthPercentages,omitempty"`
 }
@@ -229,7 +345,8 @@ type InterconnectCircuitInfo struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectCircuitInfo.google_circuit_id
 	GoogleCircuitID *string `json:"googleCircuitID,omitempty"`
 
-	// Google-side demarc ID for this circuit. Assigned at circuit turn-up and provided by Google to the customer in the LOA.
+	// Google-side demarc ID for this circuit. Assigned at circuit turn-up and
+	//  provided by Google to the customer in the LOA.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectCircuitInfo.google_demarc_id
 	GoogleDemarcID *string `json:"googleDemarcID,omitempty"`
 }
@@ -239,11 +356,18 @@ type InterconnectCircuitInfo struct {
 
 // +kcc:proto=google.cloud.compute.v1.InterconnectMacsec
 type InterconnectMacsec struct {
-	// If set to true, the Interconnect connection is configured with a should-secure MACsec security policy, that allows the Google router to fallback to cleartext traffic if the MKA session cannot be established. By default, the Interconnect connection is configured with a must-secure security policy that drops all traffic if the MKA session cannot be established with your router.
+	// If set to true, the Interconnect connection is configured with ashould-secure MACsec security policy, that allows the Google
+	//  router to fallback to cleartext traffic if the MKA session cannot be
+	//  established. By default, the Interconnect connection is configured with amust-secure security policy that drops all traffic if the
+	//  MKA session cannot be established with your router.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectMacsec.fail_open
 	FailOpen *bool `json:"failOpen,omitempty"`
 
-	// Required. A keychain placeholder describing a set of named key objects along with their start times. A MACsec CKN/CAK is generated for each key in the key chain. Google router automatically picks the key with the most recent startTime when establishing or re-establishing a MACsec secure link.
+	// Required. A keychain placeholder describing a set of named key objects
+	//  along with their start times. A MACsec CKN/CAK is generated for each
+	//  key in the key chain. Google router automatically picks the key with
+	//  the most recent startTime when establishing or re-establishing a MACsec
+	//  secure link.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectMacsec.pre_shared_keys
 	PreSharedKeys []InterconnectMacsecPreSharedKey `json:"preSharedKeys,omitempty"`
 }
@@ -253,11 +377,22 @@ type InterconnectMacsec struct {
 
 // +kcc:proto=google.cloud.compute.v1.InterconnectMacsecPreSharedKey
 type InterconnectMacsecPreSharedKey struct {
-	// Required. A name for this pre-shared key. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// Required. A name for this pre-shared key.
+	//  The name must be 1-63 characters long, and comply withRFC1035. Specifically, the name must be 1-63
+	//  characters long and match the regular expression
+	//  `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a
+	//  lowercase letter, and all following characters must be a dash,
+	//  lowercase letter, or digit, except the last character, which cannot be
+	//  a dash.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectMacsecPreSharedKey.name
 	Name *string `json:"name,omitempty"`
 
-	// A RFC3339 timestamp on or after which the key is valid. startTime can be in the future. If the keychain has a single key, startTime can be omitted. If the keychain has multiple keys, startTime is mandatory for each key. The start times of keys must be in increasing order. The start times of two consecutive keys must be at least 6 hours apart.
+	// A RFC3339 timestamp on or after which the key is
+	//  valid. startTime can be in the future. If the keychain has a single
+	//  key, startTime can be omitted. If the keychain has multiple keys,
+	//  startTime is mandatory for each key. The start times of keys must be in
+	//  increasing order. The start times of two consecutive keys must be
+	//  at least 6 hours apart.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectMacsecPreSharedKey.start_time
 	StartTime *string `json:"startTime,omitempty"`
 }
@@ -267,7 +402,8 @@ type InterconnectMacsecPreSharedKey struct {
 
 // +kcc:proto=google.cloud.compute.v1.InterconnectOutageNotification
 type InterconnectOutageNotification struct {
-	// If issue_type is IT_PARTIAL_OUTAGE, a list of the Google-side circuit IDs that will be affected.
+	// If issue_type is IT_PARTIAL_OUTAGE, a list of the Google-side circuit
+	//  IDs that will be affected.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectOutageNotification.affected_circuits
 	AffectedCircuits []string `json:"affectedCircuits,omitempty"`
 
@@ -275,11 +411,22 @@ type InterconnectOutageNotification struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectOutageNotification.description
 	Description *string `json:"description,omitempty"`
 
-	// Scheduled end time for the outage (milliseconds since Unix epoch).
+	// Scheduled end time for the outage (milliseconds since Unix
+	//  epoch).
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectOutageNotification.end_time
 	EndTime *int64 `json:"endTime,omitempty"`
 
-	// Form this outage is expected to take, which can take one of the following values: - OUTAGE: The Interconnect may be completely out of service for some or all of the specified window. - PARTIAL_OUTAGE: Some circuits comprising the Interconnect as a whole should remain up, but with reduced bandwidth. Note that the versions of this enum prefixed with "IT_" have been deprecated in favor of the unprefixed values.
+	// Form this outage is expected to take, which can take one of the following
+	//  values:
+	//
+	//     - OUTAGE: The Interconnect may be completely out of service for
+	//     some or all of the specified window.
+	//     - PARTIAL_OUTAGE: Some circuits comprising the Interconnect as a whole
+	//     should remain up, but with reduced bandwidth.
+	//
+	//
+	//  Note that the versions of this enum prefixed with "IT_" have been
+	//  deprecated in favor of the unprefixed values.
 	//  Check the IssueType enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectOutageNotification.issue_type
 	IssueType *string `json:"issueType,omitempty"`
@@ -288,19 +435,60 @@ type InterconnectOutageNotification struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectOutageNotification.name
 	Name *string `json:"name,omitempty"`
 
-	// The party that generated this notification, which can take the following value: - GOOGLE: this notification as generated by Google. Note that the value of NSRC_GOOGLE has been deprecated in favor of GOOGLE.
+	// The party that generated this notification, which can take the following
+	//  value:
+	//
+	//     - GOOGLE: this notification as generated by Google.
+	//
+	//
+	//  Note that the value of NSRC_GOOGLE has been deprecated in favor of
+	//  GOOGLE.
 	//  Check the Source enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectOutageNotification.source
 	Source *string `json:"source,omitempty"`
 
-	// Scheduled start time for the outage (milliseconds since Unix epoch).
+	// Scheduled start time for the outage (milliseconds since Unix
+	//  epoch).
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectOutageNotification.start_time
 	StartTime *int64 `json:"startTime,omitempty"`
 
-	// State of this notification, which can take one of the following values: - ACTIVE: This outage notification is active. The event could be in the past, present, or future. See start_time and end_time for scheduling. - CANCELLED: The outage associated with this notification was cancelled before the outage was due to start. - COMPLETED: The outage associated with this notification is complete. Note that the versions of this enum prefixed with "NS_" have been deprecated in favor of the unprefixed values.
+	// State of this notification, which can take one of the following values:
+	//
+	//     - ACTIVE: This outage notification is active. The event could be in
+	//     the past, present, or future. See start_time and end_time for
+	//     scheduling.
+	//     - CANCELLED: The outage associated with this notification was cancelled
+	//     before the outage was due to start.
+	//     - COMPLETED: The outage associated with this notification is complete.
+	//
+	//
+	//  Note that the versions of this enum prefixed with "NS_" have been
+	//  deprecated in favor of the unprefixed values.
 	//  Check the State enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectOutageNotification.state
 	State *string `json:"state,omitempty"`
+}
+*/
+
+/* unreachable type InterconnectParams
+// +kcc:proto=google.cloud.compute.v1.InterconnectParams
+type InterconnectParams struct {
+	// Tag keys/values directly bound to this resource.
+	//  Tag keys and values have the same definition as resource
+	//  manager tags. The field is allowed for INSERT
+	//  only. The keys/values to set on the resource should be specified in
+	//  either ID { : } or Namespaced format
+	//  { : }.
+	//  For example the following are valid inputs:
+	//  * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"}
+	//  * {"123/environment" : "production", "345/abc" : "xyz"}
+	//  Note:
+	//  * Invalid combinations of ID & namespaced format is not supported. For
+	//    instance: {"123/environment" : "tagValues/444"} is invalid.
+	//  * Inconsistent format is not supported. For instance:
+	//    {"tagKeys/333" : "tagValues/444", "123/env" : "prod"} is invalid.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectParams.resource_manager_tags
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 }
 */
 
@@ -308,7 +496,8 @@ type InterconnectOutageNotification struct {
 
 // +kcc:proto=google.cloud.compute.v1.NetworkAttachment
 type NetworkAttachment struct {
-	// [Output Only] An array of connections for all the producers connected to this network attachment.
+	// Output only. [Output Only] An array of connections for all the producers connected
+	//  to this network attachment.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.connection_endpoints
 	ConnectionEndpoints []NetworkAttachmentConnectedEndpoint `json:"connectionEndpoints,omitempty"`
 
@@ -316,55 +505,77 @@ type NetworkAttachment struct {
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.connection_preference
 	ConnectionPreference *string `json:"connectionPreference,omitempty"`
 
-	// [Output Only] Creation timestamp in RFC3339 text format.
+	// Output only. [Output Only] Creation timestamp inRFC3339
+	//  text format.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	// An optional description of this resource. Provide this property when you create the resource.
+	// An optional description of this resource. Provide this property when you
+	//  create the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.description
 	Description *string `json:"description,omitempty"`
 
-	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. An up-to-date fingerprint must be provided in order to patch.
+	// Fingerprint of this resource. A hash of the contents stored
+	//  in this object. This field is used in optimistic locking. An up-to-date
+	//  fingerprint must be provided in order to patch.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.fingerprint
 	Fingerprint *string `json:"fingerprint,omitempty"`
 
-	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// Output only. [Output Only] The unique identifier for the resource type. The server
+	//  generates this identifier.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.id
 	ID *uint64 `json:"id,omitempty"`
 
-	// [Output Only] Type of the resource.
+	// Output only. [Output Only] Type of the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.kind
 	Kind *string `json:"kind,omitempty"`
 
-	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// Name of the resource. Provided by the client when the resource is created.
+	//  The name must be 1-63 characters long, and comply withRFC1035.
+	//  Specifically, the name must be 1-63 characters long and match the regular
+	//  expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first
+	//  character must be a lowercase letter, and all following characters must
+	//  be a dash, lowercase letter, or digit, except the last character, which
+	//  cannot be a dash.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.name
 	Name *string `json:"name,omitempty"`
 
-	// [Output Only] The URL of the network which the Network Attachment belongs to. Practically it is inferred by fetching the network of the first subnetwork associated. Because it is required that all the subnetworks must be from the same network, it is assured that the Network Attachment belongs to the same network as all the subnetworks.
+	// Output only. [Output Only] The URL of the network which the Network Attachment
+	//  belongs to. Practically it is inferred by fetching the network of the first
+	//  subnetwork associated. Because it is required that all the subnetworks must
+	//  be from the same network, it is assured that the Network Attachment belongs
+	//  to the same network as all the subnetworks.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.network
 	Network *string `json:"network,omitempty"`
 
-	// Projects that are allowed to connect to this network attachment. The project can be specified using its id or number.
+	// Projects that are allowed to connect to this network attachment.
+	//  The project can be specified using its id or number.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.producer_accept_lists
 	ProducerAcceptLists []string `json:"producerAcceptLists,omitempty"`
 
-	// Projects that are not allowed to connect to this network attachment. The project can be specified using its id or number.
+	// Projects that are not allowed to connect to this network attachment.
+	//  The project can be specified using its id or number.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.producer_reject_lists
 	ProducerRejectLists []string `json:"producerRejectLists,omitempty"`
 
-	// [Output Only] URL of the region where the network attachment resides. This field applies only to the region resource. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// Output only. [Output Only] URL of the region where the network attachment resides.
+	//  This field applies only to the region resource. You must specify this
+	//  field as part of the HTTP request URL. It is not settable as a field in
+	//  the request body.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.region
 	Region *string `json:"region,omitempty"`
 
-	// [Output Only] Server-defined URL for the resource.
+	// Output only. [Output Only] Server-defined URL for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 
-	// [Output Only] Server-defined URL for this resource's resource id.
+	// Output only. [Output Only] Server-defined URL for this resource's resource id.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 
-	// An array of URLs where each entry is the URL of a subnet provided by the service consumer to use for endpoints in the producers that connect to this network attachment.
+	// An array of URLs where each entry is the URL of a subnet
+	//  provided by the service consumer to use for
+	//  endpoints in the producers that connect to this network attachment.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.subnetworks
 	Subnetworks []string `json:"subnetworks,omitempty"`
 }
@@ -374,11 +585,14 @@ type NetworkAttachment struct {
 
 // +kcc:proto=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint
 type NetworkAttachmentConnectedEndpoint struct {
-	// The IPv4 address assigned to the producer instance network interface. This value will be a range in case of Serverless.
+	// The IPv4 address assigned to the producer instance network interface.
+	//  This value will be a range in case of Serverless.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.ip_address
 	IPAddress *string `json:"ipAddress,omitempty"`
 
-	// The IPv6 address assigned to the producer instance network interface. This is only assigned when the stack types of both the instance network interface and the consumer subnet are IPv4_IPv6.
+	// The IPv6 address assigned to the producer instance network interface.
+	//  This is only assigned when the stack types of both the instance network
+	//  interface and the consumer subnet are IPv4_IPv6.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.ipv6_address
 	IPV6Address *string `json:"ipv6Address,omitempty"`
 
@@ -395,11 +609,13 @@ type NetworkAttachmentConnectedEndpoint struct {
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.status
 	Status *string `json:"status,omitempty"`
 
-	// The subnetwork used to assign the IP to the producer instance network interface.
+	// The subnetwork used to assign the IP to the producer
+	//  instance network interface.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.subnetwork
 	Subnetwork *string `json:"subnetwork,omitempty"`
 
-	// [Output Only] The CIDR range of the subnet from which the IPv4 internal IP was allocated from.
+	// Output only. [Output Only] The CIDR range of the subnet from which the IPv4 internal
+	//  IP was allocated from.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.subnetwork_cidr_range
 	SubnetworkCIDRRange *string `json:"subnetworkCIDRRange,omitempty"`
 }
@@ -409,43 +625,63 @@ type NetworkAttachmentConnectedEndpoint struct {
 
 // +kcc:proto=google.cloud.compute.v1.NetworkEdgeSecurityService
 type NetworkEdgeSecurityService struct {
-	// [Output Only] Creation timestamp in RFC3339 text format.
+	// Output only. [Output Only] Creation timestamp inRFC3339
+	//  text format.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	// An optional description of this resource. Provide this property when you create the resource.
+	// An optional description of this resource. Provide this property when you
+	//  create the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.description
 	Description *string `json:"description,omitempty"`
 
-	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a NetworkEdgeSecurityService. An up-to-date fingerprint must be provided in order to update the NetworkEdgeSecurityService, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve a NetworkEdgeSecurityService.
+	// Fingerprint of this resource. A hash of the contents stored in this object.
+	//  This field is used in optimistic locking. This field will be ignored when
+	//  inserting a NetworkEdgeSecurityService. An up-to-date fingerprint must be
+	//  provided in order to update the NetworkEdgeSecurityService,
+	//  otherwise the request will fail with error412 conditionNotMet.
+	//
+	//  To see the latest fingerprint, make a get() request to
+	//  retrieve a NetworkEdgeSecurityService.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.fingerprint
 	Fingerprint *string `json:"fingerprint,omitempty"`
 
-	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// Output only. [Output Only] The unique identifier for the resource. This identifier is
+	//  defined by the server.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.id
 	ID *uint64 `json:"id,omitempty"`
 
-	// [Output only] Type of the resource. Always compute#networkEdgeSecurityService for NetworkEdgeSecurityServices
+	// Output only. [Output only] Type of the resource. Alwayscompute#networkEdgeSecurityService for
+	//  NetworkEdgeSecurityServices
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.kind
 	Kind *string `json:"kind,omitempty"`
 
-	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// Name of the resource. Provided by the client when the resource is created.
+	//  The name must be 1-63 characters long, and comply withRFC1035.
+	//  Specifically, the name must be 1-63 characters long and match the regular
+	//  expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first
+	//  character must be a lowercase letter, and all following characters must
+	//  be a dash, lowercase letter, or digit, except the last character, which
+	//  cannot be a dash.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.name
 	Name *string `json:"name,omitempty"`
 
-	// [Output Only] URL of the region where the resource resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// Output only. [Output Only] URL of the region where the resource resides. You must
+	//  specify this field as part of the HTTP request URL. It is not settable as a
+	//  field in the request body.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.region
 	Region *string `json:"region,omitempty"`
 
-	// The resource URL for the network edge security service associated with this network edge security service.
+	// The resource URL for the network edge security service associated with this
+	//  network edge security service.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.security_policy
 	SecurityPolicy *string `json:"securityPolicy,omitempty"`
 
-	// [Output Only] Server-defined URL for the resource.
+	// Output only. [Output Only] Server-defined URL for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 
-	// [Output Only] Server-defined URL for this resource with the resource id.
+	// Output only. [Output Only] Server-defined URL for this resource with the resource id.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
@@ -455,19 +691,30 @@ type NetworkEdgeSecurityService struct {
 
 // +kcc:proto=google.cloud.compute.v1.PerInstanceConfig
 type PerInstanceConfig struct {
-	// Fingerprint of this per-instance config. This field can be used in optimistic locking. It is ignored when inserting a per-instance config. An up-to-date fingerprint must be provided in order to update an existing per-instance configuration or the field needs to be unset.
+	// Fingerprint of this per-instance config. This field can be used in
+	//  optimistic locking. It is ignored when inserting a per-instance
+	//  config. An up-to-date fingerprint must be provided in order to update an
+	//  existing per-instance configuration or the field needs to be unset.
 	// +kcc:proto:field=google.cloud.compute.v1.PerInstanceConfig.fingerprint
 	Fingerprint *string `json:"fingerprint,omitempty"`
 
-	// The name of a per-instance configuration and its corresponding instance. Serves as a merge key during UpdatePerInstanceConfigs operations, that is, if a per-instance configuration with the same name exists then it will be updated, otherwise a new one will be created for the VM instance with the same name. An attempt to create a per-instance configuration for a VM instance that either doesn't exist or is not part of the group will result in an error.
+	// The name of a per-instance configuration and its corresponding instance.
+	//  Serves as a merge key during UpdatePerInstanceConfigs
+	//  operations, that is, if a per-instance configuration with the same name
+	//  exists then it will be updated, otherwise a new one will be created for the
+	//  VM instance with the same name. An attempt to create a per-instance
+	//  configuration for a VM instance that either doesn't exist or is not part
+	//  of the group will result in an error.
 	// +kcc:proto:field=google.cloud.compute.v1.PerInstanceConfig.name
 	Name *string `json:"name,omitempty"`
 
-	// The intended preserved state for the given instance. Does not contain preserved state generated from a stateful policy.
+	// The intended preserved state for the given instance. Does not contain
+	//  preserved state generated from a stateful policy.
 	// +kcc:proto:field=google.cloud.compute.v1.PerInstanceConfig.preserved_state
 	PreservedState *PreservedState `json:"preservedState,omitempty"`
 
-	// The status of applying this per-instance configuration on the corresponding managed instance.
+	// The status of applying this per-instance configuration on the corresponding
+	//  managed instance.
 	//  Check the Status enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.PerInstanceConfig.status
 	Status *string `json:"status,omitempty"`
@@ -493,17 +740,24 @@ type PreservedState struct {
 /* unreachable type PreservedStatePreservedDisk
 // +kcc:proto=google.cloud.compute.v1.PreservedStatePreservedDisk
 type PreservedStatePreservedDisk struct {
-	// These stateful disks will never be deleted during autohealing, update, instance recreate operations. This flag is used to configure if the disk should be deleted after it is no longer used by the group, e.g. when the given instance or the whole MIG is deleted. Note: disks attached in READ_ONLY mode cannot be auto-deleted.
+	// These stateful disks will never be deleted during autohealing,
+	//  update, instance recreate operations. This flag is used to configure
+	//  if the disk should be deleted after it is no longer used by the group,
+	//  e.g. when the given instance or the whole MIG is deleted.
+	//  Note: disks attached in READ_ONLY mode cannot be
+	//  auto-deleted.
 	//  Check the AutoDelete enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedDisk.auto_delete
 	AutoDelete *string `json:"autoDelete,omitempty"`
 
-	// The mode in which to attach this disk, either READ_WRITE or READ_ONLY. If not specified, the default is to attach the disk in READ_WRITE mode.
+	// The mode in which to attach this disk, either READ_WRITE orREAD_ONLY. If not specified, the default is to attach the
+	//  disk in READ_WRITE mode.
 	//  Check the Mode enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedDisk.mode
 	Mode *string `json:"mode,omitempty"`
 
-	// The URL of the disk resource that is stateful and should be attached to the VM instance.
+	// The URL of the disk resource that is stateful and should be attached
+	//  to the VM instance.
 	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedDisk.source
 	Source *string `json:"source,omitempty"`
 }
@@ -512,7 +766,11 @@ type PreservedStatePreservedDisk struct {
 /* unreachable type PreservedStatePreservedNetworkIP
 // +kcc:proto=google.cloud.compute.v1.PreservedStatePreservedNetworkIp
 type PreservedStatePreservedNetworkIP struct {
-	// These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted.
+	// These stateful IPs will never be released during autohealing,
+	//  update or VM instance recreate operations.
+	//  This flag is used to configure if the IP reservation should be deleted
+	//  after it is no longer used by the group, e.g. when the given instance
+	//  or the whole group is deleted.
 	//  Check the AutoDelete enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIp.auto_delete
 	AutoDelete *string `json:"autoDelete,omitempty"`
@@ -530,7 +788,8 @@ type PreservedStatePreservedNetworkIPIPAddress struct {
 	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIpIpAddress.address
 	Address *string `json:"address,omitempty"`
 
-	// An IPv4 internal network address to assign to the instance for this network interface.
+	// An IPv4 internal network address to assign to the instance for this
+	//  network interface.
 	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIpIpAddress.literal
 	Literal *string `json:"literal,omitempty"`
 }
@@ -544,7 +803,12 @@ type AcceleratorConfig struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.AcceleratorConfig.accelerator_count
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 
-	// Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types.
+	// Full or partial URL of the accelerator type resource to attach to this
+	//  instance. For example:projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100
+	//  If you are creating an instance template, specify only the
+	//  accelerator name.
+	//  See GPUs on Compute Engine
+	//  for a full list of accelerator types.
 	// +kcc:proto:field=google.cloud.compute.v1beta.AcceleratorConfig.accelerator_type
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 }
@@ -554,7 +818,21 @@ type AcceleratorConfig struct {
 
 // +kcc:proto=google.cloud.compute.v1beta.AllocationAggregateReservation
 type AllocationAggregateReservation struct {
-	// [Output only] List of resources currently in use.
+	// Count of reserved hosts of specified VM family. The host has fixed number
+	//  of accelerators based on the accelerator/vm-family selected.
+	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.host_count
+	HostCount *int32 `json:"hostCount,omitempty"`
+
+	// Output only. Number of hosts currently in use. If there is one or more Instances
+	//  running on the host, it is considered in use.
+	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.in_use_host_count
+	InUseHostCount *int32 `json:"inUseHostCount,omitempty"`
+
+	// Output only. Number of instances currently in use in this reservation.
+	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.in_use_instance_count
+	InUseInstanceCount *int32 `json:"inUseInstanceCount,omitempty"`
+
+	// Output only. [Output only] List of resources currently in use.
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.in_use_resources
 	InUseResources []AllocationAggregateReservationReservedResourceInfo `json:"inUseResources,omitempty"`
 
@@ -562,7 +840,8 @@ type AllocationAggregateReservation struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.reserved_resources
 	ReservedResources []AllocationAggregateReservationReservedResourceInfo `json:"reservedResources,omitempty"`
 
-	// The VM family that all instances scheduled against this reservation must belong to.
+	// The VM family that all instances scheduled against this reservation must
+	//  belong to.
 	//  Check the VmFamily enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.vm_family
 	VMFamily *string `json:"vmFamily,omitempty"`
@@ -592,7 +871,8 @@ type AllocationAggregateReservationReservedResourceInfoAccelerator struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservationReservedResourceInfoAccelerator.accelerator_count
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 
-	// Full or partial URL to accelerator type. e.g. "projects/{PROJECT}/zones/{ZONE}/acceleratorTypes/ct4l"
+	// Full or partial URL to accelerator type. e.g.
+	//  "projects/{PROJECT}/zones/{ZONE}/acceleratorTypes/ct4l"
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservationReservedResourceInfoAccelerator.accelerator_type
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 }
@@ -606,7 +886,9 @@ type AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk stru
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk.disk_size_gb
 	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
 
-	// Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. For performance characteristics of SCSI over NVMe, see Local SSD performance.
+	// Specifies the disk interface to use for attaching this disk, which is
+	//  either SCSI or NVME. The default isSCSI.
+	//  For performance characteristics of SCSI over NVMe, seeLocal SSD performance.
 	//  Check the Interface enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk.interface
 	Interface *string `json:"interface,omitempty"`
@@ -621,23 +903,30 @@ type AllocationSpecificSkuAllocationReservedInstanceProperties struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationSpecificSKUAllocationReservedInstanceProperties.guest_accelerators
 	GuestAccelerators []AcceleratorConfig `json:"guestAccelerators,omitempty"`
 
-	// Specifies amount of local ssd to reserve with each instance. The type of disk is local-ssd.
+	// Specifies amount of local ssd to reserve with each instance. The type
+	//  of disk is local-ssd.
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationSpecificSKUAllocationReservedInstanceProperties.local_ssds
 	LocalSsds []AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk `json:"localSsds,omitempty"`
 
-	// An opaque location hint used to place the allocation close to other resources. This field is for use by internal tools that use the public API.
+	// An opaque location hint used to place the allocation close to other
+	//  resources.
+	//  This field is for use by internal tools that use the public API.
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationSpecificSKUAllocationReservedInstanceProperties.location_hint
 	LocationHint *string `json:"locationHint,omitempty"`
 
-	// Specifies type of machine (name only) which has fixed number of vCPUs and fixed amount of memory. This also includes specifying custom machine type following custom-NUMBER_OF_CPUS-AMOUNT_OF_MEMORY pattern.
+	// Specifies type of machine (name only) which has fixed number of vCPUs
+	//  and fixed amount of memory. This also includes specifying custom
+	//  machine type following custom-NUMBER_OF_CPUS-AMOUNT_OF_MEMORY pattern.
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationSpecificSKUAllocationReservedInstanceProperties.machine_type
 	MachineType *string `json:"machineType,omitempty"`
 
-	// Specifies the number of hours after reservation creation where instances using the reservation won't be scheduled for maintenance.
+	// Specifies the number of hours after reservation creation where
+	//  instances using the reservation won't be scheduled for maintenance.
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationSpecificSKUAllocationReservedInstanceProperties.maintenance_freeze_duration_hours
 	MaintenanceFreezeDurationHours *int32 `json:"maintenanceFreezeDurationHours,omitempty"`
 
-	// Specifies the frequency of planned maintenance events. The accepted values are: `PERIODIC`.
+	// Specifies the frequency of planned maintenance events. The accepted
+	//  values are: `PERIODIC`.
 	//  Check the MaintenanceInterval enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationSpecificSKUAllocationReservedInstanceProperties.maintenance_interval
 	MaintenanceInterval *string `json:"maintenanceInterval,omitempty"`
@@ -652,11 +941,16 @@ type AllocationSpecificSkuAllocationReservedInstanceProperties struct {
 
 // +kcc:proto=google.cloud.compute.v1beta.Duration
 type Duration struct {
-	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
+	// Span of time that's a fraction of a second at nanosecond resolution.
+	//  Durations less than one second are represented with a 0
+	//  `seconds` field and a positive `nanos` field. Must be from 0
+	//  to 999,999,999 inclusive.
 	// +kcc:proto:field=google.cloud.compute.v1beta.Duration.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
 
-	// Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
+	// Span of time at a resolution of a second. Must be from 0
+	//  to 315,576,000,000 inclusive. Note: these bounds are computed from:
+	//  60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
 	// +kcc:proto:field=google.cloud.compute.v1beta.Duration.seconds
 	Seconds *int64 `json:"seconds,omitempty"`
 }
@@ -666,27 +960,47 @@ type Duration struct {
 
 // +kcc:proto=google.cloud.compute.v1beta.FutureReservation
 type FutureReservation struct {
+	// Advanced control for cluster management, applicable only to DENSE
+	//  deployment type future reservations.
+	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.advanced_deployment_control
+	AdvancedDeploymentControl *ReservationAdvancedDeploymentControl `json:"advancedDeploymentControl,omitempty"`
+
 	// Aggregate reservation details for the future reservation.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.aggregate_reservation
 	AggregateReservation *AllocationAggregateReservation `json:"aggregateReservation,omitempty"`
 
-	// Future timestamp when the FR auto-created reservations will be deleted by Compute Engine. Format of this field must be a valid href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339 value.
+	// Future timestamp when the FR auto-created reservations will be deleted by
+	//  Compute Engine. Format of this field must be a valid
+	//  href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339 value.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.auto_created_reservations_delete_time
 	AutoCreatedReservationsDeleteTime *string `json:"autoCreatedReservationsDeleteTime,omitempty"`
 
-	// Specifies the duration of auto-created reservations. It represents relative time to future reservation start_time when auto-created reservations will be automatically deleted by Compute Engine. Duration time unit is represented as a count of seconds and fractions of seconds at nanosecond resolution.
+	// Specifies the duration of auto-created reservations.
+	//  It represents relative time to future reservation start_time when
+	//  auto-created reservations will be automatically deleted by Compute
+	//  Engine. Duration time unit is represented as a count of seconds
+	//  and fractions of seconds at nanosecond resolution.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.auto_created_reservations_duration
 	AutoCreatedReservationsDuration *Duration `json:"autoCreatedReservationsDuration,omitempty"`
 
-	// Setting for enabling or disabling automatic deletion for auto-created reservation. If set to true, auto-created reservations will be deleted at Future Reservation's end time (default) or at user's defined timestamp if any of the [auto_created_reservations_delete_time, auto_created_reservations_duration] values is specified. For keeping auto-created reservation indefinitely, this value should be set to false.
+	// Setting for enabling or disabling automatic deletion for auto-created
+	//  reservation. If set to true, auto-created reservations will be
+	//  deleted at Future Reservation's end time (default) or at user's defined
+	//  timestamp if any of the
+	//  [auto_created_reservations_delete_time, auto_created_reservations_duration]
+	//  values is specified.
+	//  For keeping auto-created reservation indefinitely, this value should be set
+	//  to false.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.auto_delete_auto_created_reservations
 	AutoDeleteAutoCreatedReservations *bool `json:"autoDeleteAutoCreatedReservations,omitempty"`
 
-	// If not present, then FR will not deliver a new commitment or update an existing commitment.
+	// If not present, then FR will not deliver a new commitment or update an
+	//  existing commitment.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.commitment_info
 	CommitmentInfo *FutureReservationCommitmentInfo `json:"commitmentInfo,omitempty"`
 
-	// [Output Only] The creation timestamp for this future reservation in RFC3339 text format.
+	// Output only. [Output Only] The creation timestamp for this future reservation inRFC3339
+	//  text format.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
@@ -695,7 +1009,8 @@ type FutureReservation struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.deployment_type
 	DeploymentType *string `json:"deploymentType,omitempty"`
 
-	// An optional description of this resource. Provide this property when you create the future reservation.
+	// An optional description of this resource. Provide this property when you
+	//  create the future reservation.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.description
 	Description *string `json:"description,omitempty"`
 
@@ -703,19 +1018,30 @@ type FutureReservation struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.enable_emergent_maintenance
 	EnableEmergentMaintenance *bool `json:"enableEmergentMaintenance,omitempty"`
 
-	// [Output Only] A unique identifier for this future reservation. The server defines this identifier.
+	// Output only. [Output Only] A unique identifier for this future reservation. The server
+	//  defines this identifier.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.id
 	ID *uint64 `json:"id,omitempty"`
 
-	// [Output Only] Type of the resource. Always compute#futureReservation for future reservations.
+	// Output only. [Output Only] Type of the resource. Alwayscompute#futureReservation for future reservations.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.kind
 	Kind *string `json:"kind,omitempty"`
 
-	// The name of the resource, provided by the client when initially creating the resource. The resource name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// The name of the resource, provided by the client when initially creating
+	//  the resource. The resource name must be 1-63 characters long, and comply
+	//  withRFC1035.
+	//  Specifically, the name must be 1-63 characters long and match the regular
+	//  expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first
+	//  character must be a lowercase letter, and all following characters must be
+	//  a dash, lowercase letter, or digit, except the last character, which cannot
+	//  be a dash.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.name
 	Name *string `json:"name,omitempty"`
 
-	// Name prefix for the reservations to be created at the time of delivery. The name prefix must comply with RFC1035. Maximum allowed length for name prefix is 20. Automatically created reservations name format will be -date-####.
+	// Name prefix for the reservations to be created at the time of
+	//  delivery. The name prefix must comply with RFC1035.
+	//  Maximum allowed length for name prefix is 20. Automatically created
+	//  reservations name format will be -date-####.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.name_prefix
 	NamePrefix *string `json:"namePrefix,omitempty"`
 
@@ -724,12 +1050,22 @@ type FutureReservation struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.planning_status
 	PlanningStatus *string `json:"planningStatus,omitempty"`
 
-	// The reservation mode which determines reservation-termination behavior and expected pricing.
+	// Protection tier for the workload.
+	//  Check the ProtectionTier enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.protection_tier
+	ProtectionTier *string `json:"protectionTier,omitempty"`
+
+	// The reservation mode which determines reservation-termination behavior and
+	//  expected pricing.
 	//  Check the ReservationMode enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.reservation_mode
 	ReservationMode *string `json:"reservationMode,omitempty"`
 
-	// Name of reservations where the capacity is provisioned at the time of delivery of future reservations. If the reservation with the given name does not exist already, it is created automatically at the time of Approval with INACTIVE state till specified start-time. Either provide the reservation_name or a name_prefix.
+	// Name of reservations where the capacity is provisioned at the time of
+	//  delivery of  future reservations. If the reservation with the given name
+	//  does not exist already, it is created automatically at the time of Approval
+	//  with INACTIVE state till specified start-time. Either provide the
+	//  reservation_name or a name_prefix.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.reservation_name
 	ReservationName *string `json:"reservationName,omitempty"`
 
@@ -738,11 +1074,11 @@ type FutureReservation struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.scheduling_type
 	SchedulingType *string `json:"schedulingType,omitempty"`
 
-	// [Output Only] Server-defined fully-qualified URL for this resource.
+	// Output only. [Output Only] Server-defined fully-qualified URL for this resource.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 
-	// [Output Only] Server-defined URL for this resource with the resource id.
+	// Output only. [Output Only] Server-defined URL for this resource with the resource id.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 
@@ -750,15 +1086,18 @@ type FutureReservation struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.share_settings
 	ShareSettings *ShareSettings `json:"shareSettings,omitempty"`
 
-	// Indicates whether the auto-created reservation can be consumed by VMs with affinity for "any" reservation. If the field is set, then only VMs that target the reservation by name can consume from the delivered reservation.
+	// Indicates whether the auto-created reservation can be consumed by VMs with
+	//  affinity for "any" reservation. If the field is set, then only VMs that
+	//  target the reservation by name can consume from the delivered reservation.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.specific_reservation_required
 	SpecificReservationRequired *bool `json:"specificReservationRequired,omitempty"`
 
-	// Future Reservation configuration to indicate instance properties and total count.
+	// Future Reservation configuration to indicate instance properties and
+	//  total count.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.specific_sku_properties
 	SpecificSkuProperties *FutureReservationSpecificSkuProperties `json:"specificSkuProperties,omitempty"`
 
-	// [Output only] Status of the Future Reservation
+	// Output only. [Output only] Status of the Future Reservation
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.status
 	Status *FutureReservationStatus `json:"status,omitempty"`
 
@@ -766,7 +1105,7 @@ type FutureReservation struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.time_window
 	TimeWindow *FutureReservationTimeWindow `json:"timeWindow,omitempty"`
 
-	// [Output Only] URL of the Zone where this future reservation resides.
+	// Output only. [Output Only] URL of the Zone where this future reservation resides.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.zone
 	Zone *string `json:"zone,omitempty"`
 }
@@ -780,12 +1119,16 @@ type FutureReservationCommitmentInfo struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationCommitmentInfo.commitment_name
 	CommitmentName *string `json:"commitmentName,omitempty"`
 
-	// Indicates if a Commitment needs to be created as part of FR delivery. If this field is not present, then no commitment needs to be created.
+	// Indicates if a Commitment needs to be created as part of FR delivery. If
+	//  this field is not present, then no
+	//  commitment needs to be created.
 	//  Check the CommitmentPlan enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationCommitmentInfo.commitment_plan
 	CommitmentPlan *string `json:"commitmentPlan,omitempty"`
 
-	// Only applicable if FR is delivering to the same reservation. If set, all parent commitments will be extended to match the end date of the plan for this commitment.
+	// Only applicable if FR is delivering to the same reservation. If set, all
+	//  parent commitments will be extended to match the end date of the plan for
+	//  this commitment.
 	//  Check the PreviousCommitmentTerms enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationCommitmentInfo.previous_commitment_terms
 	PreviousCommitmentTerms *string `json:"previousCommitmentTerms,omitempty"`
@@ -800,11 +1143,13 @@ type FutureReservationSpecificSkuProperties struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationSpecificSKUProperties.instance_properties
 	InstanceProperties *AllocationSpecificSkuAllocationReservedInstanceProperties `json:"instanceProperties,omitempty"`
 
-	// The instance template that will be used to populate the ReservedInstanceProperties of the future reservation
+	// The instance template that will be used to populate the
+	//  ReservedInstanceProperties of the future reservation
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationSpecificSKUProperties.source_instance_template
 	SourceInstanceTemplate *string `json:"sourceInstanceTemplate,omitempty"`
 
-	// Total number of instances for which capacity assurance is requested at a future time period.
+	// Total number of instances for which capacity assurance is requested at a
+	//  future time period.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationSpecificSKUProperties.total_count
 	TotalCount *int64 `json:"totalCount,omitempty"`
 }
@@ -814,32 +1159,44 @@ type FutureReservationSpecificSkuProperties struct {
 
 // +kcc:proto=google.cloud.compute.v1beta.FutureReservationStatus
 type FutureReservationStatus struct {
-	// [Output Only] The current status of the requested amendment.
+	// Output only. [Output Only] The current status of the requested amendment.
 	//  Check the AmendmentStatus enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.amendment_status
 	AmendmentStatus *string `json:"amendmentStatus,omitempty"`
 
-	// Fully qualified urls of the automatically created reservations at start_time.
+	// Output only. Fully qualified urls of the automatically created reservations at
+	//  start_time.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.auto_created_reservations
 	AutoCreatedReservations []string `json:"autoCreatedReservations,omitempty"`
 
-	// [Output Only] Represents the existing matching usage for the future reservation.
+	// Output only. [Output Only] Represents the existing matching usage for the future
+	//  reservation.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.existing_matching_usage_info
 	ExistingMatchingUsageInfo *FutureReservationStatusExistingMatchingUsageInfo `json:"existingMatchingUsageInfo,omitempty"`
 
-	// This count indicates the fulfilled capacity so far. This is set during "PROVISIONING" state. This count also includes capacity delivered as part of existing matching reservations.
+	// Output only. This count indicates the fulfilled capacity so far. This is set during
+	//  "PROVISIONING" state. This count also includes capacity delivered as part
+	//  of existing matching reservations.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.fulfilled_count
 	FulfilledCount *int64 `json:"fulfilledCount,omitempty"`
 
-	// [Output Only] This field represents the future reservation before an amendment was requested. If the amendment is declined, the Future Reservation will be reverted to the last known good state. The last known good state is not set when updating a future reservation whose Procurement Status is DRAFTING.
+	// Output only. [Output Only] This field represents the future reservation before an
+	//  amendment was requested. If the amendment is declined, the Future
+	//  Reservation will be reverted to the last known good state. The last known
+	//  good state is not set when updating a future reservation whose
+	//  Procurement Status is DRAFTING.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.last_known_good_state
 	LastKnownGoodState *FutureReservationStatusLastKnownGoodState `json:"lastKnownGoodState,omitempty"`
 
-	// Time when Future Reservation would become LOCKED, after which no modifications to Future Reservation will be allowed. Applicable only after the Future Reservation is in the APPROVED state. The lock_time is an RFC3339 string. The procurement_status will transition to PROCURING state at this time.
+	// Output only. Time when Future Reservation would become LOCKED, after which no
+	//  modifications to Future Reservation will be allowed. Applicable only
+	//  after the Future Reservation is in the APPROVED state. The lock_time is
+	//  an RFC3339 string. The procurement_status will transition to PROCURING
+	//  state at this time.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.lock_time
 	LockTime *string `json:"lockTime,omitempty"`
 
-	// Current state of this Future Reservation
+	// Output only. Current state of this Future Reservation
 	//  Check the ProcurementStatus enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.procurement_status
 	ProcurementStatus *string `json:"procurementStatus,omitempty"`
@@ -853,11 +1210,12 @@ type FutureReservationStatus struct {
 
 // +kcc:proto=google.cloud.compute.v1beta.FutureReservationStatusExistingMatchingUsageInfo
 type FutureReservationStatusExistingMatchingUsageInfo struct {
-	// Count to represent min(FR total_count, matching_reserved_capacity+matching_unreserved_instances)
+	// Output only. Count to represent min(FR total_count,
+	//  matching_reserved_capacity+matching_unreserved_instances)
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusExistingMatchingUsageInfo.count
 	Count *int64 `json:"count,omitempty"`
 
-	// Timestamp when the matching usage was calculated
+	// Output only. Timestamp when the matching usage was calculated
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusExistingMatchingUsageInfo.timestamp
 	Timestamp *string `json:"timestamp,omitempty"`
 }
@@ -867,26 +1225,31 @@ type FutureReservationStatusExistingMatchingUsageInfo struct {
 
 // +kcc:proto=google.cloud.compute.v1beta.FutureReservationStatusLastKnownGoodState
 type FutureReservationStatusLastKnownGoodState struct {
-	// [Output Only] The description of the FutureReservation before an amendment was requested.
+	// Output only. [Output Only] The description of the FutureReservation before an
+	//  amendment was requested.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusLastKnownGoodState.description
 	Description *string `json:"description,omitempty"`
 
-	// [Output Only] Represents the matching usage for the future reservation before an amendment was requested.
+	// Output only. [Output Only] Represents the matching usage for the future
+	//  reservation before an amendment was requested.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusLastKnownGoodState.existing_matching_usage_info
 	ExistingMatchingUsageInfo *FutureReservationStatusExistingMatchingUsageInfo `json:"existingMatchingUsageInfo,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusLastKnownGoodState.future_reservation_specs
 	FutureReservationSpecs *FutureReservationStatusLastKnownGoodStateFutureReservationSpecs `json:"futureReservationSpecs,omitempty"`
 
-	// [Output Only] The lock time of the FutureReservation before an amendment was requested.
+	// Output only. [Output Only] The lock time of the FutureReservation before an
+	//  amendment was requested.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusLastKnownGoodState.lock_time
 	LockTime *string `json:"lockTime,omitempty"`
 
-	// [Output Only] The name prefix of the Future Reservation before an amendment was requested.
+	// Output only. [Output Only] The name prefix of the Future Reservation before an
+	//  amendment was requested.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusLastKnownGoodState.name_prefix
 	NamePrefix *string `json:"namePrefix,omitempty"`
 
-	// [Output Only] The status of the last known good state for the Future Reservation.
+	// Output only. [Output Only] The status of the last known good state for the Future
+	//  Reservation.
 	//  Check the ProcurementStatus enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusLastKnownGoodState.procurement_status
 	ProcurementStatus *string `json:"procurementStatus,omitempty"`
@@ -897,15 +1260,16 @@ type FutureReservationStatusLastKnownGoodState struct {
 
 // +kcc:proto=google.cloud.compute.v1beta.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs
 type FutureReservationStatusLastKnownGoodStateFutureReservationSpecs struct {
-	// [Output Only] The previous share settings of the Future Reservation.
+	// Output only. [Output Only] The previous share settings of the Future Reservation.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs.share_settings
 	ShareSettings *ShareSettings `json:"shareSettings,omitempty"`
 
-	// [Output Only] The previous instance related properties of the Future Reservation.
+	// Output only. [Output Only] The previous instance related properties of the
+	//  Future Reservation.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs.specific_sku_properties
 	SpecificSkuProperties *FutureReservationSpecificSkuProperties `json:"specificSkuProperties,omitempty"`
 
-	// [Output Only] The previous time window of the Future Reservation.
+	// Output only. [Output Only] The previous time window of the Future Reservation.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs.time_window
 	TimeWindow *FutureReservationTimeWindow `json:"timeWindow,omitempty"`
 }
@@ -915,7 +1279,8 @@ type FutureReservationStatusLastKnownGoodStateFutureReservationSpecs struct {
 
 // +kcc:proto=google.cloud.compute.v1beta.FutureReservationStatusSpecificSKUProperties
 type FutureReservationStatusSpecificSkuProperties struct {
-	// ID of the instance template used to populate the Future Reservation properties.
+	// ID of the instance template used to populate the Future Reservation
+	//  properties.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusSpecificSKUProperties.source_instance_template_id
 	SourceInstanceTemplateID *string `json:"sourceInstanceTemplateID,omitempty"`
 }
@@ -931,9 +1296,20 @@ type FutureReservationTimeWindow struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationTimeWindow.end_time
 	EndTime *string `json:"endTime,omitempty"`
 
-	// Start time of the Future Reservation. The start_time is an RFC3339 string.
+	// Start time of the Future Reservation. The start_time is an RFC3339
+	//  string.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationTimeWindow.start_time
 	StartTime *string `json:"startTime,omitempty"`
+}
+*/
+
+/* unreachable type ReservationAdvancedDeploymentControl
+// +kcc:proto=google.cloud.compute.v1beta.ReservationAdvancedDeploymentControl
+type ReservationAdvancedDeploymentControl struct {
+	// Indicates chosen reservation operational mode for the reservation.
+	//  Check the ReservationOperationalMode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1beta.ReservationAdvancedDeploymentControl.reservation_operational_mode
+	ReservationOperationalMode *string `json:"reservationOperationalMode,omitempty"`
 }
 */
 
@@ -945,7 +1321,9 @@ type ShareSettings struct {
 	// TODO: unsupported map type with key string and value message
 
 
-	// A List of Project names to specify consumer projects for this shared-reservation. This is only valid when share_type's value is SPECIFIC_PROJECTS.
+	// A List of Project names to specify consumer projects for this
+	//  shared-reservation. This is only valid when share_type's value is
+	//  SPECIFIC_PROJECTS.
 	// +kcc:proto:field=google.cloud.compute.v1beta.ShareSettings.projects
 	Projects []string `json:"projects,omitempty"`
 
@@ -960,7 +1338,8 @@ type ShareSettings struct {
 
 // +kcc:proto=google.cloud.compute.v1beta.ShareSettingsProjectConfig
 type ShareSettingsProjectConfig struct {
-	// The project ID, should be same as the key of this project config in the parent map.
+	// The project ID, should be same as the key of this project config in the
+	//  parent map.
 	// +kcc:proto:field=google.cloud.compute.v1beta.ShareSettingsProjectConfig.project_id
 	ProjectID *string `json:"projectID,omitempty"`
 }

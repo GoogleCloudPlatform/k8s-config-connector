@@ -181,6 +181,7 @@ func DataprocAutoscalingPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	out.WorkerConfig = InstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx, in.GetWorkerConfig())
 	out.SecondaryWorkerConfig = SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx, in.GetSecondaryWorkerConfig())
 	// MISSING: Labels
+	// MISSING: ClusterType
 	return out
 }
 func DataprocAutoscalingPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataprocAutoscalingPolicySpec) *pb.AutoscalingPolicy {
@@ -196,6 +197,7 @@ func DataprocAutoscalingPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	out.WorkerConfig = InstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx, in.WorkerConfig)
 	out.SecondaryWorkerConfig = SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx, in.SecondaryWorkerConfig)
 	// MISSING: Labels
+	// MISSING: ClusterType
 	return out
 }
 

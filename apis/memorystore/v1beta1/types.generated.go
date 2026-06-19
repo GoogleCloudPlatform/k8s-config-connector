@@ -102,6 +102,13 @@ type DiscoveryEndpoint struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.EncryptionInfo", skipping
+
+// +kcc:proto=google.cloud.memorystore.v1.EncryptionInfo
+type EncryptionInfo struct {
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.Instance", skipping
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance
@@ -182,6 +189,10 @@ type Instance struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.mode
 	Mode *string `json:"mode,omitempty"`
 
+	// Optional. Input only. Simulate a maintenance event.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.simulate_maintenance_event
+	SimulateMaintenanceEvent *bool `json:"simulateMaintenanceEvent,omitempty"`
+
 	// Optional. Input only. Ondemand maintenance for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ondemand_maintenance
 	OndemandMaintenance *bool `json:"ondemandMaintenance,omitempty"`
@@ -203,9 +214,23 @@ type Instance struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.async_instance_endpoints_deletion_enabled
 	AsyncInstanceEndpointsDeletionEnabled *bool `json:"asyncInstanceEndpointsDeletionEnabled,omitempty"`
 
+	// Optional. The KMS key used to encrypt the at-rest data of the cluster.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+
 	// Optional. The automated backup config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.automated_backup_config
 	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
+	// Optional. This field can be used to trigger self service update to indicate
+	//  the desired maintenance version. The input to this field can be determined
+	//  by the available_maintenance_versions field.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_version
+	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
+
+	// Optional. Immutable. Deprecated, do not use.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.allow_fewer_zones_deployment
+	AllowFewerZonesDeployment *bool `json:"allowFewerZonesDeployment,omitempty"`
 }
 */
 
@@ -538,6 +563,30 @@ type DiscoveryEndpointObservedState struct {
 }
 */
 
+/* found existing non-generated go type "EncryptionInfoObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.EncryptionInfo
+type EncryptionInfoObservedState struct {
+	// Output only. Type of encryption.
+	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.encryption_type
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	// Output only. KMS key versions that are being used to protect the data
+	//  at-rest.
+	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.kms_key_versions
+	KMSKeyVersions []string `json:"kmsKeyVersions,omitempty"`
+
+	// Output only. The state of the primary version of the KMS key perceived by
+	//  the system. This field is not populated in backups.
+	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.kms_key_primary_state
+	KMSKeyPrimaryState *string `json:"kmsKeyPrimaryState,omitempty"`
+
+	// Output only. The most recent time when the encryption info was updated.
+	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.last_update_time
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.Instance", skipping
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance
@@ -562,8 +611,12 @@ type InstanceObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.uid
 	Uid *string `json:"uid,omitempty"`
 
-	// Output only. Deprecated: Use the endpoints.connections.psc_auto_connection
-	//  or endpoints.connections.psc_connection values instead.
+	// Output only. Deprecated: The discovery_endpoints parameter is deprecated.
+	//  As a result, it will not be populated if the connections are created using
+	//  endpoints parameter. Instead of this parameter, for discovery, use
+	//  endpoints.connections.pscConnection and
+	//  endpoints.connections.pscAutoConnection
+	//  with connectionType CONNECTION_TYPE_DISCOVERY.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.discovery_endpoints
 	DiscoveryEndpoints []DiscoveryEndpointObservedState `json:"discoveryEndpoints,omitempty"`
 
@@ -584,6 +637,14 @@ type InstanceObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints
 	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
 
+	// Optional. Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Optional. Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
 	// Optional. The maintenance policy for the instance. If not provided,
 	//  the maintenance event will be performed based on Memorystore
 	//  internal rollout schedule.
@@ -598,10 +659,24 @@ type InstanceObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
 	CrossInstanceReplicationConfig *CrossInstanceReplicationConfigObservedState `json:"crossInstanceReplicationConfig,omitempty"`
 
+	// Output only. Encryption information of the data at rest of the cluster.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.encryption_info
+	EncryptionInfo *EncryptionInfoObservedState `json:"encryptionInfo,omitempty"`
+
 	// Output only. The backup collection full resource name. Example:
 	//  projects/{project}/locations/{location}/backupCollections/{collection}
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.backup_collection
 	BackupCollection *string `json:"backupCollection,omitempty"`
+
+	// Output only. This field represents the actual maintenance version of the
+	//  instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.effective_maintenance_version
+	EffectiveMaintenanceVersion *string `json:"effectiveMaintenanceVersion,omitempty"`
+
+	// Output only. This field is used to determine the available maintenance
+	//  versions for the self service update.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.available_maintenance_versions
+	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
 }
 */
 
