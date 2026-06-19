@@ -33,6 +33,21 @@ func computeSSLPolicyFuzzer() fuzztesting.KRMFuzzer {
 		ComputeSSLPolicyStatus_v1beta1_FromProto, ComputeSSLPolicyStatus_v1beta1_ToProto,
 	)
 
+	// Field mapping comparison:
+	// KRM Spec Fields:
+	// - customFeatures -> .custom_features
+	// - description    -> .description
+	// - minTlsVersion  -> .min_tls_version
+	// - profile        -> .profile
+	// - resourceID     -> .name (Identity)
+	//
+	// KRM Status Fields:
+	// - creationTimestamp -> .creation_timestamp
+	// - enabledFeatures   -> .enabled_features
+	// - fingerprint       -> .fingerprint
+	// - selfLink          -> .self_link
+	// - observedGeneration (not mapped directly to proto)
+
 	// Spec fields
 	f.SpecField(".custom_features")
 	f.SpecField(".description")
