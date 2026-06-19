@@ -84,13 +84,11 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                         true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                          true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/aspectTypes/{}":                         true,
-		"//dataplex.googleapis.com/projects/{}/locations/{}/dataAttributeBindings/{}":               true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/dataProducts/{}":                        true,
 		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}":                    true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":        true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                   true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                     true,
-		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":        true,
-		"//networksecurity.googleapis.com/projects/{}/locations/{}/securityProfiles/{}":             true,
 		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}":                           true,
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/ruleSets/{}":                    true,
 		"//batch.googleapis.com/projects/{}/locations/{}/resourceAllowances/{}":                     true,
@@ -115,7 +113,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//biglake.googleapis.com/projects/{}/locations/{}/catalogs/{}":                             true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":                        true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}":                  true,
-		"//dlp.googleapis.com/projects/{}/locations/{}/connections/{}":                              true,
 		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}":                                true,
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}":                                      true,
 		"//monitoring.googleapis.com/projects/{}/groups/{}":                                         true,
@@ -124,7 +121,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//monitoring.googleapis.com/locations/global/metricsScopes/{}/projects/{}":                 true,
 		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig":                    true,
 		"//iap.googleapis.com/projects/{}/brands/{}":                                                true,
-		"//serviceusage.googleapis.com/projects/{}/services/{}/identity":                            true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()

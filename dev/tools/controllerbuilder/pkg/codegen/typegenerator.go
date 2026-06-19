@@ -226,17 +226,6 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		}
 		out := g.getOutputFile(k)
 
-		for i := 0; i < msg.Fields().Len(); i++ {
-			field := msg.Fields().Get(i)
-			if field.Message() != nil {
-				name := field.Message().FullName()
-				if name == "google.rpc.Status" {
-					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
-					break
-				}
-			}
-		}
-
 		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
@@ -267,6 +256,19 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
+		for i := 0; i < msg.Fields().Len(); i++ {
+			field := msg.Fields().Get(i)
+			if field.Message() != nil {
+				name := field.Message().FullName()
+				if name == "google.rpc.Status" {
+					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
+				}
+				if name == "google.protobuf.Struct" {
+					out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
+				}
+			}
+		}
+
 		WriteMessage(&out.body, msg)
 	}
 	return errors.Join(g.errors...)
@@ -284,16 +286,6 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
-
-		for _, field := range msgDetails.OutputFields {
-			if field.Message() != nil {
-				name := field.Message().FullName()
-				if name == "google.rpc.Status" {
-					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
-					break
-				}
-			}
-		}
 
 		out.goPackage = lastGoComponent(g.goPackage)
 
@@ -323,6 +315,18 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()), g.observedStateMessages)
 			}
 			continue
+		}
+
+		for _, field := range msgDetails.OutputFields {
+			if field.Message() != nil {
+				name := field.Message().FullName()
+				if name == "google.rpc.Status" {
+					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
+				}
+				if name == "google.protobuf.Struct" {
+					out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
+				}
+			}
 		}
 
 		WriteObservedStateMessage(&out.body, msgDetails, g.observedStateMessages)

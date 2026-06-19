@@ -30,7 +30,8 @@ package v1beta1
 // +kcc:proto=google.cloud.kms.v1.AutokeyConfig
 type AutokeyConfig struct {
 	// Identifier. Name of the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
-	//  resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
+	//  resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig` or
+	//  `projects/{PROJECT_NUMBER}/autokeyConfig`.
 	// +kcc:proto:field=google.cloud.kms.v1.AutokeyConfig.name
 	Name *string `json:"name,omitempty"`
 
@@ -54,6 +55,12 @@ type AutokeyConfig struct {
 	//  ABORTED error on a mismatched etag.
 	// +kcc:proto:field=google.cloud.kms.v1.AutokeyConfig.etag
 	Etag *string `json:"etag,omitempty"`
+
+	// Optional. KeyProjectResolutionMode for the AutokeyConfig.
+	//  Valid values are `DEDICATED_KEY_PROJECT`, `RESOURCE_PROJECT`, or
+	//  `DISABLED`.
+	// +kcc:proto:field=google.cloud.kms.v1.AutokeyConfig.key_project_resolution_mode
+	KeyProjectResolutionMode *string `json:"keyProjectResolutionMode,omitempty"`
 }
 */
 
@@ -134,7 +141,12 @@ type CryptoKey struct {
 	//  if [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] have a
 	//  [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of
 	//  [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC], with the
-	//  resource name in the format `projects/* /locations/* /ekmConnections/*`.
+	//  resource name in the format `projects/* /locations/* /ekmConnections/*`. Only
+	//  applicable if [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+	//  have a [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of
+	//  [HSM_SINGLE_TENANT][google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT],
+	//  with the resource name in the format
+	//  `projects/* /locations/* /singleTenantHsmInstances/*`.
 	//  Note, this list is non-exhaustive and may apply to additional
 	//  [ProtectionLevels][google.cloud.kms.v1.ProtectionLevel] in the future.
 	// +kcc:proto:field=google.cloud.kms.v1.CryptoKey.crypto_key_backend
@@ -148,6 +160,10 @@ type CryptoKey struct {
 	//  justification codes.
 	//  https://cloud.google.com/assured-workloads/key-access-justifications/docs/justification-codes
 	//  By default, this field is absent, and all justification codes are allowed.
+	//  If the
+	//  `key_access_justifications_policy.allowed_access_reasons`
+	//  is empty (zero allowed justification code), all encrypt, decrypt, and sign
+	//  operations will fail.
 	// +kcc:proto:field=google.cloud.kms.v1.CryptoKey.key_access_justifications_policy
 	KeyAccessJustificationsPolicy *KeyAccessJustificationsPolicy `json:"keyAccessJustificationsPolicy,omitempty"`
 }
@@ -234,6 +250,16 @@ type ImportJob struct {
 	//  into.
 	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.protection_level
 	ProtectionLevel *string `json:"protectionLevel,omitempty"`
+
+	// Immutable. The resource name of the backend environment where the key
+	//  material for the wrapping key resides and where all related cryptographic
+	//  operations are performed. Currently, this field is only populated for keys
+	//  stored in HSM_SINGLE_TENANT. Note, this list is non-exhaustive and may
+	//  apply to additional [ProtectionLevels][google.cloud.kms.v1.ProtectionLevel]
+	//  in the future. Supported resources:
+	//  * `"projects/* /locations/* /singleTenantHsmInstances/*"`
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.crypto_key_backend
+	CryptoKeyBackend *string `json:"cryptoKeyBackend,omitempty"`
 }
 */
 
@@ -255,10 +281,12 @@ type ImportJob_WrappingPublicKey struct {
 // +kcc:proto=google.cloud.kms.v1.KeyAccessJustificationsPolicy
 type KeyAccessJustificationsPolicy struct {
 	// The list of allowed reasons for access to a
-	//  [CryptoKey][google.cloud.kms.v1.CryptoKey]. Zero allowed access reasons
-	//  means all encrypt, decrypt, and sign operations for the
-	//  [CryptoKey][google.cloud.kms.v1.CryptoKey] associated with this policy will
-	//  fail.
+	//  [CryptoKey][google.cloud.kms.v1.CryptoKey]. Note that empty
+	//  allowed_access_reasons has a different meaning depending on where this
+	//  message appears. If this is under
+	//  [KeyAccessJustificationsPolicyConfig][google.cloud.kms.v1.KeyAccessJustificationsPolicyConfig],
+	//  it means allow-all. If this is under
+	//  [CryptoKey][google.cloud.kms.v1.CryptoKey], it means deny-all.
 	// +kcc:proto:field=google.cloud.kms.v1.KeyAccessJustificationsPolicy.allowed_access_reasons
 	AllowedAccessReasons []string `json:"allowedAccessReasons,omitempty"`
 }

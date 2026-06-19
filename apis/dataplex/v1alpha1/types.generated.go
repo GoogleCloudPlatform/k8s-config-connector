@@ -24,14 +24,15 @@
 // resource: DataplexEntryType:EntryType
 // resource: DataplexDataTaxonomy:DataTaxonomy
 // resource: DataplexAspectType:AspectType
+// resource: DataplexDataProduct:DataProduct
 
 package v1alpha1
 
 // +kcc:proto=google.cloud.dataplex.v1.AspectType.Authorization
 type AspectType_Authorization struct {
 	// Immutable. The IAM permission grantable on the EntryGroup to allow access
-	//  to instantiate Aspects of Dataplex owned AspectTypes, only settable for
-	//  Dataplex owned Types.
+	//  to instantiate Aspects of Dataplex Universal Catalog owned AspectTypes,
+	//  only settable for Dataplex Universal Catalog owned Types.
 	// +kcc:proto:field=google.cloud.dataplex.v1.AspectType.Authorization.alternate_use_permission
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }
@@ -56,8 +57,8 @@ type AspectType_MetadataTemplate struct {
 	//  Primitive types:
 	//
 	//  * string
-	//  * integer
-	//  * boolean
+	//  * int
+	//  * bool
 	//  * double
 	//  * datetime. Must be of the format RFC3339 UTC "Zulu" (Examples:
 	//  "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z").
@@ -200,11 +201,54 @@ type AssetStatus struct {
 	SecurityPolicyApplyingAssets *int32 `json:"securityPolicyApplyingAssets,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataplex.v1.DataProduct.AccessApprovalConfig
+type DataProduct_AccessApprovalConfig struct {
+	// Optional. Specifies the email addresses of users who are potential
+	//  approvers and are notified when an access request is made for the data
+	//  product. The maximum number of emails allowed is 10.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessApprovalConfig.approver_emails
+	ApproverEmails []string `json:"approverEmails,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.DataProduct.AccessGroup
+type DataProduct_AccessGroup struct {
+	// Required. Unique identifier of the access group within the data product.
+	//  User defined. Eg. "analyst", "developer", etc.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.id
+	ID *string `json:"id,omitempty"`
+
+	// Required. User friendly display name of the access group.
+	//  Eg. "Analyst", "Developer", etc.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Description of the access group.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. The principal entity associated with this access group.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.principal
+	Principal *DataProduct_Principal `json:"principal,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.DataProduct.Principal
+type DataProduct_Principal struct {
+	// Optional. Email of the Google Group, as per
+	//  https://cloud.google.com/iam/docs/principals-overview#google-group.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.Principal.google_group
+	GoogleGroup *string `json:"googleGroup,omitempty"`
+
+	// Optional. Specifies the email of the producer service account, as per
+	//  https://cloud.google.com/iam/docs/principals-overview#service-account.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.Principal.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+}
+
 // +kcc:proto=google.cloud.dataplex.v1.EntryType.Authorization
 type EntryType_Authorization struct {
 	// Immutable. The IAM permission grantable on the Entry Group to allow
-	//  access to instantiate Entries of Dataplex owned Entry Types, only
-	//  settable for Dataplex owned Types.
+	//  access to instantiate Entries of Dataplex Universal Catalog owned Entry
+	//  Types, only settable for Dataplex Universal Catalog owned Types.
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.Authorization.alternate_use_permission
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }

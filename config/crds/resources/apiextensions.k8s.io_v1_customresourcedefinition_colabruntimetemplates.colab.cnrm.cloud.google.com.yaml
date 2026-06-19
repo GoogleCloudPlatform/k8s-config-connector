@@ -209,6 +209,12 @@ spec:
                        as part of [WorkerPoolSpec][google.cloud.aiplatform.v1beta1.WorkerPoolSpec]
                        this field is required.
                     type: string
+                  minGpuDriverVersion:
+                    description: Optional. Immutable. The minimum GPU driver version
+                      that this machine requires. For example, "535.104.06". If not
+                      specified, the default GPU driver version will be used by the
+                      underlying infrastructure.
+                    type: string
                   multihostGpuNodeCount:
                     description: Optional. Immutable. The number of nodes per replica
                       for multihost GPU deployments.

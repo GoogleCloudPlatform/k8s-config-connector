@@ -1,17 +1,17 @@
 # Dataplex Journal
 
-### [2026-06-05] Implement DataplexGlossary initial types, CRD, and IdentityV2
-- **Context**: Implementing Greenfield types and identity for `DataplexGlossary` (GroupKind: `DataplexGlossary`, Service: `google.cloud.dataplex.v1.BusinessGlossaryService`).
-- **Problem**: 
-  1. The Google APIs SHA initially was pinned to an older version that did not contain `business_glossary.proto`, leading to a proto-not-found error. 
-  2. While the latest `googleapis` HEAD had the required proto, updating `apis/git.versions` permanently to `HEAD` caused Go compilation / build failures across other packages like `firestore` and `sql` because their corresponding Go SDK client libraries inside KCC did not support the newer protobuf fields yet.
-- **Solution**: 
-  1. Temporarily upgraded `apis/git.versions` to HEAD/ee4a3e1ce to run the generator and compile the `.pb` file.
-  2. Reverted `apis/git.versions` and `generate.sh` back to their original states once generation completed. This avoids breaking build/vet checks in CI for firestore/sql, but preserves the generated `glossary_types.go`, identity, and CRD YAML.
-  3. Ensured `Location` is defined as a pointer (`*string`) in `DataplexGlossarySpec` to adhere to the strict scalar primitive pointer standard in KCC direct resources.
-- **Impact**: Enables `DataplexGlossary` CRD and types to be safely committed and validated in CI without triggering global protobuf mismatch regressions.
 ### 2026-06-05 Implementing DataplexDataTaxonomy Direct Types
 - **Context**: Implementing KRM types, CRD, and IdentityV2 for DataplexDataTaxonomy.
 - **Problem**: The proto-to-KRM generator initially marked `DataTaxonomy` and `DataTaxonomyObservedState` as unreachable because the scaffolded `DataplexDataTaxonomySpec` and `DataplexDataTaxonomyObservedState` were empty, causing those fields/types to be commented out as unreachable in `types.generated.go`.
 - **Solution**: We defined `DataplexDataTaxonomySpec` to use `parent.ProjectAndLocationRef` and standard fields, and implemented `DataplexDataTaxonomyObservedState` with the proper output-only fields (`Uid`, `CreateTime`, `UpdateTime`, `AttributeCount`, `ClassCount`). Running the generator again successfully resolved all unreachability and correctly generated the deepcopy and CRD files.
 - **Impact**: When adding greenfield resources, always ensure Spec and ObservedState map the proto fields before final generation so that types are correctly kept in `types.generated.go`.
+
+### 2026-06-05 DataplexDataProduct Initial Greenfield Implementation
+- **Context**: Implementing the greenfield `DataplexDataProduct` resource (initial types, Identity, and References).
+- **Problem**: 
+  1. The default googleapis commit pin (`1765b559c42386788ff0c6412491277b4791107a`) did not contain the `google/cloud/dataplex/v1/data_products.proto` definitions, which were introduced in later commit `69ca7ae2e` ("feat(dataplex): add DataProductService...").
+  2. The `access_groups` field is of type `map<string, AccessGroup>` which the generator flagged as unsupported and skipped.
+- **Solution**:
+  1. Updated `apis/git.versions` to use the latest googleapis master commit `ee4a3e1ce4e8d16661fcc624322000ad792ffb8a` containing `data_products.proto` and regenerated the types.
+  2. Defined `AccessGroups` as a slice of `DataProduct_AccessGroup` in `DataplexDataProductSpec` to natively support it in KRM. Added a `projects/{project}/locations/{location}/dataProducts/{dataproduct}` template format exception to `pkg/gcpurls/registry_test.go` as it is not currently published in CAI names.
+- **Impact**: Allows the next agents implementing controller/mapper logic for DataplexDataProduct to have fully compiling type structures and valid IdentityV2 / references.
