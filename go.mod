@@ -77,6 +77,7 @@ require (
 	cloud.google.com/go/securesourcemanager v1.4.1
 	cloud.google.com/go/security v1.19.2
 	cloud.google.com/go/securitycenter v1.44.0
+	cloud.google.com/go/securitycentermanagement v1.6.0
 	cloud.google.com/go/servicedirectory v1.12.7
 	cloud.google.com/go/spanner v1.88.0
 	cloud.google.com/go/speech v1.30.0

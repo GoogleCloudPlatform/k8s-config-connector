@@ -1,0 +1,21 @@
+apiVersion: securitycentermanagement.cnrm.cloud.google.com/v1alpha1
+kind: SecurityCenterManagementSecurityHealthAnalyticsCustomModule
+metadata:
+  name: securityhealthanalyticscustommodule-project
+  labels:
+    test-label: create
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: "global"
+  displayName: "custom_module_test"
+  enablementState: "ENABLED"
+  customConfig:
+    predicate:
+      expression: "resource.name == 'test'"
+    severity: "LOW"
+    description: "test description"
+    recommendation: "test recommendation"
+    resourceSelector:
+      resourceTypes:
+      - "compute.googleapis.com/Instance"

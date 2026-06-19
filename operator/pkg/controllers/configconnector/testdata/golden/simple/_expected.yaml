@@ -2484,18 +2484,6 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - bigquerymigration.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
   - bigqueryreservation.cnrm.cloud.google.com
   resources:
   - '*'
@@ -2545,18 +2533,6 @@ rules:
   - delete
 - apiGroups:
   - binaryauthorization.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - blockchainnodeengine.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -2905,18 +2881,6 @@ rules:
   - delete
 - apiGroups:
   - datalabeling.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - datalineage.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -3637,6 +3601,18 @@ rules:
   - delete
 - apiGroups:
   - securitycenter.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - securitycentermanagement.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -4270,14 +4246,6 @@ rules:
   - list
   - watch
 - apiGroups:
-  - bigquerymigration.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
   - bigqueryreservation.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4311,14 +4279,6 @@ rules:
   - watch
 - apiGroups:
   - binaryauthorization.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - blockchainnodeengine.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -4551,14 +4511,6 @@ rules:
   - watch
 - apiGroups:
   - datalabeling.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - datalineage.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -5039,6 +4991,14 @@ rules:
   - watch
 - apiGroups:
   - securitycenter.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - securitycentermanagement.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

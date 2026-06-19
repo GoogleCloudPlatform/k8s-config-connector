@@ -1,0 +1,8 @@
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: ${projectId}
+spec:
+  name: ${projectId}
+  organizationRef:
+    external: "${orgId}"
