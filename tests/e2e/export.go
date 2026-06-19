@@ -57,22 +57,21 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	// This list should match https://cloud.google.com/asset-inventory/docs/resource-name-format
 	gvk := obj.GroupVersionKind()
 	switch gvk.GroupKind() {
-	case schema.GroupKind{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic"}:
-		exportURI = resolveCAISURI(h, obj)
-
-	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRouter"}:
-		exportURI = resolveCAISURI(h, obj)
-
 	case schema.GroupKind{Group: "artifactregistry.cnrm.cloud.google.com", Kind: "ArtifactRegistryRepository"}:
 		exportURI = resolveCAISURI(h, obj)
 
-	case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryNamespace"}:
+	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
+		exportURI = "//bigquery.googleapis.com/projects/" + projectID + "/datasets/" + resourceID
+	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryTable"}:
+		if statusSelfLink == "" {
+			h.T.Errorf("status.selfLink not set in BigQueryTable object")
+		}
+		exportURI = strings.ReplaceAll(statusSelfLink, "https://bigquery.googleapis.com/bigquery/v2/", "//bigquery.googleapis.com/")
+
+	case schema.GroupKind{Group: "billing.cnrm.cloud.google.com", Kind: "BillingAccount"}:
 		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificate"}:
-		exportURI = resolveCAISURI(h, obj)
-
-	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerDNSAuthorization"}:
 		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateIssuanceConfig"}:
@@ -84,16 +83,14 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateMapEntry"}:
 		exportURI = resolveCAISURI(h, obj)
 
-	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
-		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
+	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerDNSAuthorization"}:
+		exportURI = resolveCAISURI(h, obj)
 
-	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
-		exportURI = "//bigquery.googleapis.com/projects/" + projectID + "/datasets/" + resourceID
-	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryTable"}:
-		if statusSelfLink == "" {
-			h.T.Errorf("status.selfLink not set in BigQueryTable object")
-		}
-		exportURI = strings.ReplaceAll(statusSelfLink, "https://bigquery.googleapis.com/bigquery/v2/", "//bigquery.googleapis.com/")
+	case schema.GroupKind{Group: "cloudbuild.cnrm.cloud.google.com", Kind: "CloudBuildWorkerPool"}:
+		exportURI = "//cloudbuild.googleapis.com/projects/" + projectID + "/locations/" + location + "/workerPools/" + resourceID
+
+	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRouter"}:
+		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 		exportURI = "//discoveryengine.googleapis.com/projects/{projectID}/locations/{.spec.location}/collections/{.spec.collection}/dataStores/{resourceID}"
@@ -110,18 +107,24 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
 		exportURI = "//monitoring.googleapis.com/projects/" + projectID + "/dashboards/" + resourceID
 
-	case schema.GroupKind{Group: "cloudbuild.cnrm.cloud.google.com", Kind: "CloudBuildWorkerPool"}:
-		exportURI = "//cloudbuild.googleapis.com/projects/" + projectID + "/locations/" + location + "/workerPools/" + resourceID
+	case schema.GroupKind{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
+		exportURI = "//run.googleapis.com/v2/projects/{projectID}/locations/{.spec.location}/jobs/{resourceID}"
 
 	case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
 		exportURI = "//secretmanager.googleapis.com/projects/" + projectID + "/secrets/" + resourceID
+
+	case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryNamespace"}:
+		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDnsDomain"}:
 		network := resolveNetwork(h, obj)
 		exportURI = fmt.Sprintf("//servicenetworking.googleapis.com/services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/{resourceID}", network.Project, network.Network)
 
-	case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
-		exportURI = "//run.googleapis.com/v2/projects/{projectID}/locations/{.spec.location}/jobs/{resourceID}"
+	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
+		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
 	}
 
 	if exportURI == "" {

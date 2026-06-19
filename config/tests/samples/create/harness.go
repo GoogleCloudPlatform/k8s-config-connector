@@ -802,20 +802,22 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	}()
 
 	// Wait for the webhook server to start (mgr.Start runs asynchronously)
-	webhookWaitStart := time.Now()
-	webhookTimeout := 10 * time.Second
-	for {
-		webhookStarted := mgr.GetWebhookServer().StartedChecker()
-		req := &http.Request{}
-		err := webhookStarted(req)
-		if err == nil {
-			break
+	if len(webhooks) > 0 {
+		webhookWaitStart := time.Now()
+		webhookTimeout := 10 * time.Second
+		for {
+			webhookStarted := mgr.GetWebhookServer().StartedChecker()
+			req := &http.Request{}
+			err := webhookStarted(req)
+			if err == nil {
+				break
+			}
+			if time.Since(webhookWaitStart) > webhookTimeout {
+				t.Fatalf("webhook did not start within %v timeout", webhookTimeout)
+			}
+			t.Logf("waiting for webhook to start (%v)", err)
+			time.Sleep(100 * time.Millisecond)
 		}
-		if time.Since(webhookWaitStart) > webhookTimeout {
-			t.Fatalf("webhook did not start within %v timeout", webhookTimeout)
-		}
-		t.Logf("waiting for webhook to start (%v)", err)
-		time.Sleep(100 * time.Millisecond)
 	}
 
 	// Wait for all controllers to register and their caches to sync before proceeding to avoid CPU starvation or starting tasks prematurely
