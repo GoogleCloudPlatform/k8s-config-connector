@@ -27,3 +27,13 @@
 - **Problem**: When a new resource is first added to `generate.sh`, its nested types (e.g., `Condition`, `Control_BoostAction`) are initially generated as "unreachable types" and commented out in `types.generated.go`.
 - **Solution**: First define the Spec fields referencing these types in `<resource>_types.go` and run `./generate.sh` again. The generator automatically identifies them as reachable, uncomments them, and makes them available.
 - **Impact**: This avoids the need to manually copy or define nested proto structs, keeping types.generated.go fully managed by the builder.
+
+### [2026-06-05] DiscoveryEngineSampleQuery Proto defined only in v1beta
+- **Context**: Implementing direct types, CRD, and IdentityV2 for DiscoveryEngineSampleQuery (Issue #9239).
+- **Problem**: The issue description specified using service `google.cloud.discoveryengine.v1`. However, `SampleQuery` is only defined in the `google.cloud.discoveryengine.v1beta` proto, not `v1`. Sequential runs of the generator for different proto versions overwrite and prune each other's types in the shared `types.generated.go`.
+- **Solution**:
+  1. Ran `generate-types` pointing to a temporary output folder with `--prune-unused-types=false` to isolate `SampleQuery`'s raw types.
+  2. Surgically appended the new types to the end of `apis/discoveryengine/v1alpha1/types.generated.go`.
+  3. Updated `apis/discoveryengine/v1alpha1/generate.sh` to use `google.cloud.discoveryengine.v1beta` for generating types for all resources.
+  4. Registered the unregistered URL template exception in `pkg/gcpurls/registry_test.go` to prevent CAI test failure.
+- **Impact**: When adding a new resource whose proto is in a different version of the same service, generating to a temporary folder and merging is a safe and reliable workaround to avoid overwriting types.
