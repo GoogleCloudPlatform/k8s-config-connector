@@ -1,0 +1,74 @@
+1c1
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+30c30
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks
+40,41c40,41
+<   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+<   "zone": "projects/${projectId}/global/zones/us-central1-a"
+---
+>   "physicalBlockSizeBytes": "4096",
+>   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
+72c72,73
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+> Content-Type: application/json
+103c104
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+135c136
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+164c165
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks
+174,176c175,177
+<   "sourceDisk": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+<   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+<   "zone": "projects/${projectId}/global/zones/us-central1-a"
+---
+>   "physicalBlockSizeBytes": "4096",
+>   "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+>   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
+207c208,209
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+> Content-Type: application/json
+238c240
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+263c265
+<   "sourceDisk": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+---
+>   "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+271c273
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+302c304,305
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+> Content-Type: application/json
+333c336
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+365c368
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+396c399,400
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+> Content-Type: application/json

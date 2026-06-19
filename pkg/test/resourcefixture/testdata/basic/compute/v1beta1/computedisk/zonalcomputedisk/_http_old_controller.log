@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -27,18 +27,20 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks?alt=json
 Content-Type: application/json
 
 {
   "description": "an example disk without reference",
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "${diskID}",
-  "physicalBlockSizeBytes": "4096",
-  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
+  "sizeGb": 10,
+  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
+  "zone": "projects/${projectId}/global/zones/us-central1-a"
 }
 
 200 OK
@@ -69,8 +71,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -101,7 +102,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -121,11 +122,13 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "sizeGb": "10",
   "status": "READY",
   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
@@ -133,50 +136,18 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}/setLabels?alt=json
 Content-Type: application/json
 
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
 {
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The resource 'projects/${projectId}/zones/us-central1-a/disks/${diskID}' was not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The resource 'projects/${projectId}/zones/us-central1-a/disks/${diskID}' was not found"
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one-updated",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
   }
 }
 
----
-
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks
-Content-Type: application/json
-
-{
-  "description": "an example disk from source disk",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "${diskID}",
-  "physicalBlockSizeBytes": "4096",
-  "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
-  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
-}
-
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -192,86 +163,20 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${diskID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
-  "user": "user@example.com",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+  "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}/resize?alt=json
 Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "insert",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${diskID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
-  "user": "user@example.com",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+  "sizeGb": 12
 }
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "an example disk from source disk",
-  "id": "000000000000000000000",
-  "kind": "compute#disk",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "${diskID}",
-  "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
-  "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
-  "status": "READY",
-  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -288,52 +193,15 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "delete",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${diskID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
-  "user": "user@example.com",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+  "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${diskID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
-  "user": "user@example.com",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -353,11 +221,14 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one-updated",
+    "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "sizeGb": "12",
   "status": "READY",
   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
@@ -365,7 +236,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -396,8 +267,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
