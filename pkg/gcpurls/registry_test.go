@@ -125,6 +125,11 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig":                    true,
 		"//iap.googleapis.com/projects/{}/brands/{}":                                                true,
 		"//serviceusage.googleapis.com/projects/{}/services/{}/identity":                            true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/interceptDeployments/{}":         true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/interceptEndpointGroups/{}":      true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/mirroringDeploymentGroups/{}":    true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/mirroringDeployments/{}":         true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/mirroringEndpointGroups/{}":      true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()

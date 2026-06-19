@@ -51,6 +51,10 @@ func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringDeployments(namesp
 	return newFakeNetworkSecurityMirroringDeployments(c, namespace)
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringDeploymentGroups(namespace string) v1alpha1.NetworkSecurityMirroringDeploymentGroupInterface {
+	return newFakeNetworkSecurityMirroringDeploymentGroups(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringEndpointGroups(namespace string) v1alpha1.NetworkSecurityMirroringEndpointGroupInterface {
 	return newFakeNetworkSecurityMirroringEndpointGroups(c, namespace)
 }
