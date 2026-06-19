@@ -5,12 +5,13 @@ Migrating `ContainerNodePool` to the `identity` and `refs` pattern with `gcpurls
 ## Observations & Learnings
 
 1. **Zonal vs. Regional Variations**:
-   - Similar to `ContainerCluster`, `ContainerNodePool` has two primary formats: a regional path (`projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{nodePool}`) and a zonal path (`projects/{project}/zones/{location}/clusters/{cluster}/nodePools/{nodePool}`).
-   - GKE templates parse regional and zonal locations into a single `Location` field on the identity struct.
+   - Similar to `ContainerCluster`, `ContainerNodePool` has two primary formats: a regional path (`projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{nodePool}`) and a zonal path (`projects/{project}/zones/{zone}/clusters/{cluster}/nodePools/{nodePool}`).
+   - Rather than storing both regional locations and zonal zones into a single `Location` field and using hyphen-counting string parsing, we split them into separate `Zone` and `Location` fields in the `ContainerNodePoolIdentity` struct (similar to the `ComputeDisk` identity pattern).
+   - This keeps the fields matching GKE's templates more cleanly and avoids string parsing in `String()` and `ParentString()`.
 
 2. **Parent Path Reconstitution (`ParentString()`)**:
-   - Since both zonal and regional paths map to a single `Location` field, we implement `ParentString()` to construct the parent GKE cluster's GCP URI based on the format of the location.
-   - We determine whether a location is zonal or regional using a simple, robust hyphen-count check (`strings.Count(Location, "-") >= 2`), which matches standard GCP region vs. zone naming patterns (e.g. `us-central1` vs `us-central1-a`).
+   - Since regional and zonal paths are cleanly split into `Location` and `Zone` fields respectively, we implement `ParentString()` to construct the parent GKE cluster's GCP URI without any hyphen-counting.
+   - We check if the `Zone` field is set to determine the parent structure (e.g. `projects/{project}/zones/{zone}/clusters/{cluster}` vs `projects/{project}/locations/{location}/clusters/{cluster}`).
 
 3. **Status Cross-Check**:
    - `ContainerNodePool` does not contain `status.externalRef` or `status.name` in its current schema. According to KCC's strict guidelines to never modify the API schema during this phase, `GetIdentity` skips status cross-checks and delegates directly to the spec identity resolver.
