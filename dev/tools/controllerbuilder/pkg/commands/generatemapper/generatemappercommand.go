@@ -120,7 +120,7 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		if strings.HasSuffix(fullName, "OperationMetadata") {
 			return "", false
 		}
-		if strings.HasSuffix(fullName, "Metadata") {
+		if strings.HasSuffix(fullName, "Metadata") && !strings.HasSuffix(fullName, "DocumentMetadata") && !strings.HasSuffix(fullName, "SummaryWithMetadata") && !strings.HasSuffix(fullName, "CitationMetadata") {
 			return "", false
 		}
 		matchedService := false

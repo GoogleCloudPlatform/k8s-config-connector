@@ -160,6 +160,9 @@ func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescrip
 }
 
 func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
+	for _, nested := range sortIntoMessageSlice(msg.Messages()) {
+		v.visitMessage(nested)
+	}
 	if _, visit := v.goPathForMessage(msg); !visit {
 		return
 	}
@@ -178,10 +181,6 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 			KRMType:        goType,
 			Proto:          msg,
 		})
-	}
-
-	for _, msg := range sortIntoMessageSlice(msg.Messages()) {
-		v.visitMessage(msg)
 	}
 }
 
@@ -227,7 +226,7 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 		out.fileAnnotation = v.generatedFileAnnotation
 
 		{
-			out.addImport("refs", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
+			out.addImport("refsv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
 			out.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
 		}
 
@@ -524,11 +523,18 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
 				}
 
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-					krmFieldName,
-					functionName,
-					protoAccessor,
-				)
+				if functionName == "direct.Struct_FromProto" && !strings.HasPrefix(krmField.Type, "*") {
+					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(direct.Struct_FromProto(mapCtx, in.%s))\n",
+						krmFieldName,
+						protoAccessor,
+					)
+				} else {
+					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+						krmFieldName,
+						functionName,
+						protoAccessor,
+					)
+				}
 			case protoreflect.EnumKind:
 				functionName := "direct.Enum_FromProto"
 				// Not needed if we use the accessor:
@@ -822,10 +828,14 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				oneof := protoField.ContainingOneof()
+				krmAccessor := "in." + krmFieldName
+				if functionName == "direct.Struct_ToProto" && !strings.HasPrefix(krmField.Type, "*") {
+					krmAccessor = "&in." + krmFieldName
+				}
 				if oneof != nil && !protoField.HasOptionalKeyword() {
-					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
+					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, %s); oneof != nil {\n",
 						functionName,
-						krmFieldName,
+						krmAccessor,
 					)
 
 					oneofFieldName := ToGoFieldName(oneof.Name())
@@ -840,10 +850,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, %s)\n",
 					protoFieldName,
 					functionName,
-					krmFieldName,
+					krmAccessor,
 				)
 			case protoreflect.EnumKind:
 				protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
@@ -1219,7 +1229,9 @@ func (o *MapperGenerator) getGoImportAlias(goPackage string) string {
 	importAlias := lastComponent(goPackage)
 
 	// Disambiguate in a way that preserves compatibility with the existing code
-	if strings.Contains(goPackage, "k8s-config-connector/apis/refs/") {
+	if strings.HasSuffix(goPackage, "k8s-config-connector/apis/refs") {
+		importAlias = "refs"
+	} else if strings.Contains(goPackage, "k8s-config-connector/apis/refs/") {
 		importAlias = "refs" + importAlias
 	} else if _, suffix, found := strings.Cut(goPackage, "k8s-config-connector/apis/"); found {
 		tokens := strings.Split(suffix, "/")
