@@ -30,6 +30,7 @@ var (
 	_ identity.Resource   = &TelcoAutomationEdgeSlm{}
 )
 
+// TelcoAutomationEdgeSlmIdentityFormat is the canonical template format for the TelcoAutomationEdgeSlm resource.
 var TelcoAutomationEdgeSlmIdentityFormat = gcpurls.Template[TelcoAutomationEdgeSlmIdentity]("telcoautomation.googleapis.com", "projects/{project}/locations/{location}/edgeSlms/{edgeslm}")
 
 // +k8s:deepcopy-gen=false
