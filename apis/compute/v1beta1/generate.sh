@@ -38,6 +38,7 @@ go run . generate-types \
   --resource ComputeNodeGroup:NodeGroup \
   --resource ComputeNodeTemplate:NodeTemplate \
   --resource ComputeReservation:Reservation \
+  --resource ComputeRouter:Router \
   --resource ComputeResourcePolicy:ResourcePolicy \
   --resource ComputeSecurityPolicy:SecurityPolicy \
   --resource ComputeSnapshot:Snapshot \
