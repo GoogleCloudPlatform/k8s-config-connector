@@ -22,6 +22,8 @@
 package v1alpha1
 
 // +kcc:proto=google.cloud.configdelivery.v1.AllAtOnceStrategy
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type AllAtOnceStrategy struct {
 }
 

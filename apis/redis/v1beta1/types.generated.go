@@ -202,6 +202,8 @@ type ClusterMaintenancePolicy struct {
 
 /* unreachable type ClusterMaintenanceSchedule
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterMaintenanceSchedule
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type ClusterMaintenanceSchedule struct {
 }
 */
@@ -289,6 +291,8 @@ type CrossClusterReplicationConfig struct {
 
 /* unreachable type CrossClusterReplicationConfig_Membership
 // +kcc:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.Membership
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type CrossClusterReplicationConfig_Membership struct {
 }
 */
@@ -306,12 +310,16 @@ type CrossClusterReplicationConfig_RemoteCluster struct {
 
 /* unreachable type DiscoveryEndpoint
 // +kcc:proto=google.cloud.redis.cluster.v1.DiscoveryEndpoint
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type DiscoveryEndpoint struct {
 }
 */
 
 /* unreachable type EncryptionInfo
 // +kcc:proto=google.cloud.redis.cluster.v1.EncryptionInfo
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type EncryptionInfo struct {
 }
 */
@@ -378,6 +386,8 @@ type PSCConnection struct {
 
 /* unreachable type PSCServiceAttachment
 // +kcc:proto=google.cloud.redis.cluster.v1.PscServiceAttachment
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type PSCServiceAttachment struct {
 }
 */
@@ -596,6 +606,8 @@ type MaintenanceSchedule struct {
 
 /* unreachable type NodeInfo
 // +kcc:proto=google.cloud.redis.v1.NodeInfo
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type NodeInfo struct {
 }
 */

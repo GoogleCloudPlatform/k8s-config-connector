@@ -24,11 +24,15 @@
 package v1alpha1
 
 // +kcc:proto=google.firestore.admin.v1.DailyRecurrence
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type DailyRecurrence struct {
 }
 
 /* unreachable type Field_TTLConfig
 // +kcc:proto=google.firestore.admin.v1.Field.TtlConfig
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type Field_TTLConfig struct {
 }
 */
@@ -71,6 +75,8 @@ type Index_IndexField_VectorConfig struct {
 }
 
 // +kcc:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig.FlatIndex
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type Index_IndexField_VectorConfig_FlatIndex struct {
 }
 

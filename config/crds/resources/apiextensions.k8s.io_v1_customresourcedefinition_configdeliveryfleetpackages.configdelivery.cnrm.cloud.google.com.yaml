@@ -240,6 +240,7 @@ spec:
                     description: AllAtOnceStrategy causes all clusters to be updated
                       concurrently.
                     type: object
+                    x-kubernetes-preserve-unknown-fields: true
                   rolling:
                     description: RollingStrategy causes a specified number of clusters
                       to be updated concurrently until all clusters are updated.

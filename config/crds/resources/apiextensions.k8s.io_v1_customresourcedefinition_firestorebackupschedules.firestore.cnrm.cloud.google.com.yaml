@@ -67,6 +67,7 @@ spec:
               dailyRecurrence:
                 description: For a schedule that runs daily.
                 type: object
+                x-kubernetes-preserve-unknown-fields: true
               databaseRef:
                 description: The database that this resource belongs to.
                 oneOf:

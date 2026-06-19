@@ -187,6 +187,8 @@ type Reservation_Autoscale struct {
 
 /* unreachable type Reservation_ReplicationStatus
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type Reservation_ReplicationStatus struct {
 }
 */

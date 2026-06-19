@@ -25,12 +25,16 @@ package v1alpha1
 
 /* unreachable type WorkloadProperties
 // +kcc:proto=google.cloud.apphub.v1.WorkloadProperties
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type WorkloadProperties struct {
 }
 */
 
 /* unreachable type WorkloadReference
 // +kcc:proto=google.cloud.apphub.v1.WorkloadReference
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type WorkloadReference struct {
 }
 */

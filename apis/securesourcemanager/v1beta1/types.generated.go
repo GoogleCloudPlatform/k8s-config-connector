@@ -24,6 +24,8 @@ package v1beta1
 
 /* unreachable type Instance_HostConfig
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type Instance_HostConfig struct {
 }
 */
@@ -182,6 +184,8 @@ type Repository_InitialConfig struct {
 
 /* unreachable type Repository_UrIs
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type Repository_UrIs struct {
 }
 */

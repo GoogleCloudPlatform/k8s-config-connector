@@ -24,6 +24,8 @@
 package v1alpha1
 
 // +kcc:proto=google.cloud.developerconnect.v1.AppHubWorkload
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type AppHubWorkload struct {
 }
 
@@ -273,6 +275,8 @@ type GoogleArtifactRegistry struct {
 }
 
 // +kcc:proto=google.cloud.developerconnect.v1.InstallationState
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type InstallationState struct {
 }
 

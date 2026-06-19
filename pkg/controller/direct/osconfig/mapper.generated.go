@@ -220,7 +220,7 @@ func OSPolicyAssignment_Rollout_FromProto(mapCtx *direct.MapContext, in *pb.OSPo
 	}
 	out := &krm.OSPolicyAssignment_Rollout{}
 	out.DisruptionBudget = FixedOrPercent_FromProto(mapCtx, in.GetDisruptionBudget())
-	out.MinWaitDuration = direct.StringDuration_FromProto(mapCtx, in.GetMinWaitDuration())
+	out.MinWaitDuration = direct.ValueOf(direct.StringDuration_FromProto(mapCtx, in.GetMinWaitDuration()))
 	return out
 }
 */
@@ -232,7 +232,7 @@ func OSPolicyAssignment_Rollout_ToProto(mapCtx *direct.MapContext, in *krm.OSPol
 	}
 	out := &pb.OSPolicyAssignment_Rollout{}
 	out.DisruptionBudget = FixedOrPercent_ToProto(mapCtx, in.DisruptionBudget)
-	out.MinWaitDuration = direct.StringDuration_ToProto(mapCtx, in.MinWaitDuration)
+	out.MinWaitDuration = direct.StringDuration_ToProto(mapCtx, &in.MinWaitDuration)
 	return out
 }
 */

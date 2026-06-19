@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -27,14 +26,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.aiplatform.v1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+    --resource AIPlatformModel:Model \
+    --resource VertexAISchedule:Schedule \
+    --resource VertexAIFeatureOnlineStore:FeatureOnlineStore \
     --resource VertexAISpecialistPool:SpecialistPool
-
-# Revert types.generated.go to avoid deleting types of other resources in the same package
-git checkout HEAD -- "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
 
 go run . generate-mapper \
     --service google.cloud.aiplatform.v1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+    --api-dir ${REPO_ROOT}/apis/aiplatform/v1alpha1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1 \
     --include-skipped-output
 
 cd ${REPO_ROOT}

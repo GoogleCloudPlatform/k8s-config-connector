@@ -86,6 +86,8 @@ type AutomatedBackupPolicy_TimeBasedRetention struct {
 
 /* unreachable type Backup_QuantityBasedExpiry
 // +kcc:proto=google.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type Backup_QuantityBasedExpiry struct {
 }
 */
@@ -110,6 +112,8 @@ type CloudSQLBackupRunSource struct {
 
 /* unreachable type Cluster_PrimaryConfig
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type Cluster_PrimaryConfig struct {
 }
 */
@@ -166,24 +170,32 @@ type ContinuousBackupConfig struct {
 
 /* unreachable type EncryptionInfo
 // +kcc:proto=google.cloud.alloydb.v1beta.EncryptionInfo
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type EncryptionInfo struct {
 }
 */
 
 /* unreachable type GcaInstanceConfig
 // +kcc:proto=google.cloud.alloydb.v1beta.GCAInstanceConfig
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type GcaInstanceConfig struct {
 }
 */
 
 /* unreachable type GeminiClusterConfig
 // +kcc:proto=google.cloud.alloydb.v1beta.GeminiClusterConfig
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type GeminiClusterConfig struct {
 }
 */
 
 /* unreachable type GeminiInstanceConfig
 // +kcc:proto=google.cloud.alloydb.v1beta.GeminiInstanceConfig
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type GeminiInstanceConfig struct {
 }
 */
@@ -224,6 +236,8 @@ type Instance_MachineConfig struct {
 
 /* unreachable type Instance_Node
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.Node
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type Instance_Node struct {
 }
 */
@@ -369,6 +383,8 @@ type Instance_UpdatePolicy struct {
 
 /* unreachable type MaintenanceSchedule
 // +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceSchedule
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type MaintenanceSchedule struct {
 }
 */
