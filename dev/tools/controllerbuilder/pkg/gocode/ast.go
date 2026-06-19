@@ -246,12 +246,12 @@ func (p *Package) addStruct(name *ast.Ident, def *ast.StructType, comments []ast
 			//		Alias:     packageName,
 			//	})
 			// } else {
-				for _, imp := range p.Imports {
-					if imp.Alias == packageName {
-						structField.GoPackage = imp.GoPackage
-						break
-					}
+			for _, imp := range p.Imports {
+				if imp.Alias == packageName {
+					structField.GoPackage = imp.GoPackage
+					break
 				}
+			}
 			// }
 			if structField.GoPackage == "" {
 				for _, imp := range p.Imports {
