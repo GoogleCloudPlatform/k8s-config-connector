@@ -26,6 +26,7 @@ import (
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -40,6 +41,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
@@ -79,10 +82,21 @@ func (m *networkAttachmentModel) AdapterForObject(ctx context.Context, op *direc
 		return nil, err
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	mapCtx := &direct.MapContext{}
+	desired := obj.DeepCopy()
+	resource := ComputeNetworkAttachmentSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	return &NetworkAttachmentAdapter{
 		gcpClient: networkAttachmentClient,
 		id:        id.(*v1alpha1.ComputeNetworkAttachmentIdentity),
-		desired:   obj,
+		desired:   resource,
 		reader:    reader,
 	}, nil
 }
@@ -95,7 +109,7 @@ func (m *networkAttachmentModel) AdapterForURL(ctx context.Context, url string) 
 type NetworkAttachmentAdapter struct {
 	gcpClient *compute.NetworkAttachmentsClient
 	id        *v1alpha1.ComputeNetworkAttachmentIdentity
-	desired   *krm.ComputeNetworkAttachment
+	desired   *computepb.NetworkAttachment
 	actual    *computepb.NetworkAttachment
 	reader    client.Reader
 }
@@ -133,22 +147,12 @@ func (a *NetworkAttachmentAdapter) Create(ctx context.Context, createOp *directb
 	log.V(2).Info("creating NetworkAttachment", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	err := a.resolveDependencies(ctx, a.reader, a.desired)
-	if err != nil {
-		return err
-	}
-
-	desired := a.desired.DeepCopy()
-	resource := ComputeNetworkAttachmentSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = direct.LazyPtr(a.id.NetworkAttachment)
+	a.desired.Name = direct.LazyPtr(a.id.NetworkAttachment)
 
 	req := &computepb.InsertNetworkAttachmentRequest{
 		Project:                   a.id.Project,
 		Region:                    a.id.Region,
-		NetworkAttachmentResource: resource,
+		NetworkAttachmentResource: a.desired,
 	}
 	op, err := a.gcpClient.Insert(ctx, req)
 	if err != nil {
@@ -169,6 +173,9 @@ func (a *NetworkAttachmentAdapter) Create(ctx context.Context, createOp *directb
 
 	status := &krm.ComputeNetworkAttachmentStatus{}
 	status.ObservedState = ComputeNetworkAttachmentObservedState_v1alpha1_FromProto(mapCtx, created)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -179,42 +186,27 @@ func (a *NetworkAttachmentAdapter) Update(ctx context.Context, updateOp *directb
 	log.V(2).Info("updating NetworkAttachment", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	err := a.resolveDependencies(ctx, a.reader, a.desired)
-	if err != nil {
-		return err
-	}
-
-	desired := a.desired.DeepCopy()
-	resource := ComputeNetworkAttachmentSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = direct.LazyPtr(a.id.NetworkAttachment)
-	// An up-to-date fingerprint must be provided in order to patch
-	resource.Fingerprint = a.actual.Fingerprint
-
-	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	diffs, _, err := compareNetworkAttachment(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
 
 	var updated *computepb.NetworkAttachment
-	if len(paths) == 0 {
+	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
-		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-		for path := range paths {
-			report.AddField(path, nil, nil)
-		}
-		structuredreporting.ReportDiff(ctx, report)
+		structuredreporting.ReportDiff(ctx, diffs)
+
+		// An up-to-date fingerprint must be provided in order to patch
+		a.desired.Fingerprint = a.actual.Fingerprint
 
 		req := &computepb.PatchNetworkAttachmentRequest{
 			Project:                   a.id.Project,
 			Region:                    a.id.Region,
 			NetworkAttachment:         a.id.NetworkAttachment,
-			NetworkAttachmentResource: resource,
+			NetworkAttachmentResource: a.desired,
 		}
 		op, err := a.gcpClient.Patch(ctx, req)
 		if err != nil {
@@ -309,39 +301,14 @@ func (a *NetworkAttachmentAdapter) get(ctx context.Context) (*computepb.NetworkA
 	return resource, nil
 }
 
-func (a *NetworkAttachmentAdapter) resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.ComputeNetworkAttachment) error {
-	// resolve subnetwork
-	if obj.Spec.SubnetworkRefs != nil {
-		for _, i := range obj.Spec.SubnetworkRefs {
-			if err := i.Normalize(ctx, reader, obj.Namespace); err != nil {
-				return err
-			}
-		}
+func compareNetworkAttachment(ctx context.Context, actual, desired *computepb.NetworkAttachment) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, ComputeNetworkAttachmentSpec_v1alpha1_FromProto, ComputeNetworkAttachmentSpec_v1alpha1_ToProto)
+	if err != nil {
+		return nil, nil, err
 	}
-	// resolve project
-	if obj.Spec.ProducerRejectLists != nil {
-		var projects []*refsv1beta1.ProjectRef
-		for _, i := range obj.Spec.ProducerRejectLists {
-			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), i)
-			if err != nil {
-				return err
-			}
-			i.External = project.ProjectID
-			projects = append(projects, i)
-		}
-		obj.Spec.ProducerRejectLists = projects
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
 	}
-	if obj.Spec.ProducerAcceptLists != nil {
-		var projects []*refsv1beta1.ProjectRef
-		for _, i := range obj.Spec.ProducerAcceptLists {
-			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), i)
-			if err != nil {
-				return err
-			}
-			i.External = project.ProjectID
-			projects = append(projects, i)
-		}
-		obj.Spec.ProducerAcceptLists = projects
-	}
-	return nil
+	return diffs, updateMask, nil
 }
