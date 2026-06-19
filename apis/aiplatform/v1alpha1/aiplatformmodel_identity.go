@@ -105,3 +105,10 @@ func (obj *AIPlatformModel) GetIdentity(ctx context.Context, reader client.Reade
 
 	return specIdentity, nil
 }
+
+func (obj *AIPlatformModel) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
+}
