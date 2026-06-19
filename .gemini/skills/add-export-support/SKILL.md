@@ -46,7 +46,58 @@ func (m *modelArtifactRegistryRepository) AdapterForURL(ctx context.Context, url
 }
 ```
 
-### Step 2: Register/Integrate with E2E Export Test Harness
+### Step 2: Implement the `Export` method on the Adapter
+
+In the Adapter implementation (e.g. `ArtifactRegistryRepositoryAdapter`), implement the `Export(ctx context.Context)` method. This method is responsible for translating the retrieved GCP state (`a.actual`) back to KRM format.
+
+During export, you must:
+1. **Set the project ID annotation:** Use the helper `export.SetProjectID(u, projectID)` from `github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export`.
+2. **Set the labels:** Use the helper `export.SetLabels(u, labels)` from `github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export`.
+3. **Set the identity fields on spec:** In general, fields that are part of the identity (like `location`, `region`, or `resourceID`) are not mapped automatically in the spec by the from-proto mappers, so you must set them manually on the struct before converting to Unstructured.
+4. **Use the short name:** Make sure you use the short name of the resource (e.g. `a.id.Repository`) when calling `u.SetName()`, instead of the full GCP name.
+
+**Example Implementation:**
+```go
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
+	...
+)
+
+func (a *ArtifactRegistryRepositoryAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.ArtifactRegistryRepository{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(ArtifactRegistryRepositorySpec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	// Identity fields not mapped from proto must be set manually on the Spec struct.
+	obj.Spec.Location = a.id.Location
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Repository)
+
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+
+	u.Object = uObj
+	u.SetName(a.id.Repository)
+	u.SetGroupVersionKind(krm.ArtifactRegistryRepositoryGVK)
+
+	// Set standard metadata such as project-id annotation and labels.
+	export.SetProjectID(u, a.id.Project)
+	export.SetLabels(u, a.actual.Labels)
+
+	return u, nil
+}
+```
+
+### Step 3: Register/Integrate with E2E Export Test Harness
 
 To test your exporter, integrate it with the E2E test harness:
 
@@ -59,7 +110,7 @@ To test your exporter, integrate it with the E2E test harness:
 		exportURI = resolveCAISURI(h, obj)
 ```
 
-### Step 3: Run E2E Test and Generate Golden Export Files
+### Step 4: Run E2E Test and Generate Golden Export Files
 
 Run the target test fixture using:
 ```bash
