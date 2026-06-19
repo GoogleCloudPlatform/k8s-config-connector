@@ -102,8 +102,21 @@ func (m *certificateModel) AdapterForObject(ctx context.Context, op *directbase.
 }
 
 func (m *certificateModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.CertificateManagerCertificateIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &CertificateAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type CertificateAdapter struct {
