@@ -32,6 +32,7 @@ import (
 type IamV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	IAMDenyPoliciesGetter
+	IamAccessPoliciesGetter
 }
 
 // IamV1alpha1Client is used to interact with features provided by the iam.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type IamV1alpha1Client struct {
 
 func (c *IamV1alpha1Client) IAMDenyPolicies(namespace string) IAMDenyPolicyInterface {
 	return newIAMDenyPolicies(c, namespace)
+}
+
+func (c *IamV1alpha1Client) IamAccessPolicies(namespace string) IamAccessPolicyInterface {
+	return newIamAccessPolicies(c, namespace)
 }
 
 // NewForConfig creates a new IamV1alpha1Client for the given config.

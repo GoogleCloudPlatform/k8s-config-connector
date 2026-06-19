@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(IAMDenyPolicy{}).Name(),
 	}
 
+	IamAccessPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IamAccessPolicy{}).Name(),
+	}
+
 	iamAPIVersion = SchemeGroupVersion.String()
 )
