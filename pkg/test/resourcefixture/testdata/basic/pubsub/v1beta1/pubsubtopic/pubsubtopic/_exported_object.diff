@@ -1,0 +1,16 @@
+4,10d3
+<   annotations:
+<     cnrm.cloud.google.com/project-id: ${projectId}
+<   labels:
+<     cnrm-test: "true"
+<     label-one: value-one
+<     managed-by-cnrm: "true"
+<     newkey: newval
+13c6
+<   messageRetentionDuration: 3600s
+---
+>   messageRetentionDuration: 1h0m0s
+17c10
+<   resourceID: pubsubtopic-sample-${uniqueId}
+---
+>     enforceInTransit: false
