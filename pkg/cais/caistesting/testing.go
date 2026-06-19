@@ -90,6 +90,10 @@ func NormalizeDynamicIDs(s string) string {
 		if idx := strings.Index(line, "/notificationChannels/"); idx != -1 {
 			lines[i] = line[:idx+len("/notificationChannels/")]
 		}
+		// Normalize IAP Brand numeric/server-generated IDs
+		if idx := strings.Index(line, "/brands/"); idx != -1 {
+			lines[i] = line[:idx+len("/brands/")]
+		}
 		// Normalize Folder IDs: folders/<folderId>
 		if idx := strings.Index(line, "/folders/"); idx != -1 {
 			start := idx + len("/folders/")
