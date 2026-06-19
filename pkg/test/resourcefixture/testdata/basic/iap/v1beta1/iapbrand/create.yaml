@@ -20,5 +20,5 @@ metadata:
   name: iapbrand-${uniqueId}
 spec:
   applicationTitle: "test brand"
-  # This is not a valid support email, but works from testing perspective
-  supportEmail: "integration-test@${projectId}.iam.gserviceaccount.com"
+  # Use a valid support email (the service account created in dependencies)
+  supportEmail: "iap-sa-${uniqueId}@${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}.iam.gserviceaccount.com"

@@ -11,6 +11,12 @@
   namespace: ${uniqueId}
   version: v1beta1
 - caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMServiceAccount
+  name: iap-sa-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
   group: iap.cnrm.cloud.google.com
   kind: IAPBrand
   name: iapbrand-${uniqueId}

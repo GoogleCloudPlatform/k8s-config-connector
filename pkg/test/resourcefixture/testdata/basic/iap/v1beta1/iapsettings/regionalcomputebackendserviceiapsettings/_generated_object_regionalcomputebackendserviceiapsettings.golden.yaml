@@ -24,7 +24,7 @@ spec:
       external: projects/${projectId}
     region: us-central1
     serviceRef:
-      name: computebackendservice-${uniqueId}
+      name: ${backendServiceID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -32,5 +32,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/iap_web/compute-us-central1/services/computebackendservice-${uniqueId}
+  externalRef: projects/${projectId}/iap_web/compute-us-central1/services/${backendServiceID}
   observedGeneration: 2
