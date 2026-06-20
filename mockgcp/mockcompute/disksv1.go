@@ -70,7 +70,11 @@ func (s *DisksV1) Insert(ctx context.Context, req *pb.InsertDiskRequest) (*pb.Op
 	obj.Kind = PtrTo("compute#disk")
 	obj.Zone = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", name.Project.ID, name.Zone)))
 	obj.Status = PtrTo("READY")
-	if obj.Type == nil {
+	if obj.Type != nil {
+		if t := *obj.Type; t != "" && !strings.HasPrefix(t, "http") {
+			obj.Type = PtrTo(BuildComputeSelfLink(ctx, strings.TrimPrefix(t, "/")))
+		}
+	} else {
 		diskType := "pd-standard"
 		obj.Type = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/diskTypes/%s", name.Project.ID, name.Zone, diskType)))
 	}
