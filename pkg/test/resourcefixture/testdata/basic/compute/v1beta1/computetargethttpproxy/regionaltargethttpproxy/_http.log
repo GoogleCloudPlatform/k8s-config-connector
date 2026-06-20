@@ -278,12 +278,12 @@ X-Xss-Protection: 0
   "description": "",
   "fingerprint": "abcdef0123A=",
   "healthChecks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
   ],
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
-    "oauth2ClientSecret": ""
+    "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   },
   "id": "000000000000000000000",
   "kind": "compute#backendService",
@@ -416,7 +416,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
@@ -543,7 +543,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
@@ -859,7 +859,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
@@ -950,7 +950,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
@@ -1048,12 +1048,12 @@ X-Xss-Protection: 0
   "description": "",
   "fingerprint": "abcdef0123A=",
   "healthChecks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
   ],
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
-    "oauth2ClientSecret": ""
+    "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   },
   "id": "000000000000000000000",
   "kind": "compute#backendService",

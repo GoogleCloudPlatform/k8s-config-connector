@@ -65,7 +65,7 @@ func (s *GlobalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertBack
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#backendService")
 
-	s.populateBackendServiceDefaults(obj)
+	s.populateBackendServiceDefaults(ctx, obj)
 
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 

@@ -65,7 +65,7 @@ func (s *RegionalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertRe
 	obj.Kind = PtrTo("compute#backendService")
 	obj.Region = PtrTo(BuildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/regions/"+name.Region))
 
-	s.populateBackendServiceDefaults(obj)
+	s.populateBackendServiceDefaults(ctx, obj)
 
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
