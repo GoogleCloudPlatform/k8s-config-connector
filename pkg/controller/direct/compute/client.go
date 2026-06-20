@@ -16,6 +16,7 @@
 // proto.service: google.cloud.compute.v1.NetworkEdgeSecurityServices
 // proto.service: google.cloud.compute.v1.NetworkAttachments
 // proto.service: google.cloud.compute.v1.HealthChecks
+// proto.service: google.cloud.compute.v1.Images
 
 package compute
 
@@ -188,6 +189,18 @@ func (m *gcpClient) newRoutersClient(ctx context.Context) (*compute.RoutersClien
 	client, err := compute.NewRoutersRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute Routers client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newImagesClient(ctx context.Context) (*compute.ImagesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewImagesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute Images client: %w", err)
 	}
 	return client, err
 }

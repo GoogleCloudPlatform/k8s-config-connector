@@ -59,7 +59,8 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehealthcheck/regio
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttphealthcheck
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttphealthcheck/computehttphealthcheck-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttpshealthcheck
-pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeimage
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeimage/computeimage
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeimage/computeimage-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancebasicexample
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancebasicexample-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancefromtemplate
