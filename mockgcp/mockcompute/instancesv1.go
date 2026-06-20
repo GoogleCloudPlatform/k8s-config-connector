@@ -377,6 +377,96 @@ func (s *InstancesV1) SetLabels(ctx context.Context, req *pb.SetLabelsInstanceRe
 	})
 }
 
+func (s *InstancesV1) SetMetadata(ctx context.Context, req *pb.SetMetadataInstanceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/instances/" + req.GetInstance()
+	name, err := s.parseZonalInstanceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Instance{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.Metadata = req.GetMetadataResource()
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setMetadata"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *InstancesV1) SetTags(ctx context.Context, req *pb.SetTagsInstanceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/instances/" + req.GetInstance()
+	name, err := s.parseZonalInstanceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Instance{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.Tags = req.GetTagsResource()
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setTags"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *InstancesV1) SetScheduling(ctx context.Context, req *pb.SetSchedulingInstanceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/instances/" + req.GetInstance()
+	name, err := s.parseZonalInstanceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Instance{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.Scheduling = req.GetSchedulingResource()
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setScheduling"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
 type zonalInstanceName struct {
 	Project *projects.ProjectData
 	Zone    string

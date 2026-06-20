@@ -61,8 +61,11 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttphealthcheck/c
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttpshealthcheck
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeimage
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancebasicexample
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancebasicexample-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancefromtemplate
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancefromtemplate-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancewithencrypteddisk
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancewithencrypteddisk-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancegroup
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancegroupmanager/regionalcomputeinstancegroupmanager
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancegroupmanager/zonalcomputeinstancegroupmanager

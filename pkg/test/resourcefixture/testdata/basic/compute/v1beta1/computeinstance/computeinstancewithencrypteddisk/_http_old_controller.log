@@ -260,8 +260,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -289,31 +288,93 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "availableCpuPlatforms": [
+    "Ampere Altra",
+    "Intel Broadwell",
+    "Intel Cascade Lake",
+    "Intel Emerald Rapids",
+    "AMD Genoa",
+    "NVIDIA Grace",
+    "Intel Granite Rapids",
+    "Intel Haswell",
+    "Intel Ice Lake",
+    "Intel Ivy Bridge",
+    "Google Axion",
+    "AMD Milan",
+    "AMD Rome",
+    "Intel Sandy Bridge",
+    "Intel Sapphire Rapids",
+    "Intel Skylake",
+    "AMD Turin"
+  ],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "us-west1-a",
+  "id": "000000000000000000000",
+  "kind": "compute#zone",
+  "name": "us-west1-a",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a",
+  "status": "UP",
+  "supportsPzs": false
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances?alt=json&prettyPrint=false
 Content-Type: application/json
 
 {
+  "canIpForward": false,
+  "deletionProtection": false,
   "description": "an basic instance example",
   "disks": [
     {
-      "autoDelete": false,
       "boot": true,
+      "diskEncryptionKey": {
+        "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+      },
+      "mode": "READ_WRITE",
       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     }
   ],
-  "machineType": "n1-standard-1",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
+  "metadata": {},
   "name": "${instanceID}",
   "networkInterfaces": [
     {
       "network": "projects/${projectId}/global/networks/${networkID}"
     }
   ],
+  "params": {},
   "scheduling": {
     "automaticRestart": false,
+    "instanceTerminationAction": "",
+    "nodeAffinities": [
+      null
+    ],
     "onHostMaintenance": "TERMINATE",
-    "preemptible": true
+    "preemptible": true,
+    "provisioningModel": ""
   },
-  "zone": "us-west1-a"
+  "tags": {}
 }
 
 200 OK
@@ -344,8 +405,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -376,8 +436,66 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "canIpForward": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
+  "description": "an basic instance example",
+  "disks": [
+    {
+      "boot": true,
+      "diskEncryptionKey": {
+        "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+      },
+      "mode": "READ_WRITE",
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
+  "metadata": {},
+  "name": "${instanceID}",
+  "networkInterfaces": [
+    {
+      "network": "projects/${projectId}/global/networks/${networkID}"
+    }
+  ],
+  "params": {},
+  "scheduling": {
+    "automaticRestart": false,
+    "instanceTerminationAction": "",
+    "onHostMaintenance": "TERMINATE",
+    "preemptible": true,
+    "provisioningModel": ""
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "status": "RUNNING",
+  "tags": {},
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -391,101 +509,87 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "diskEncryptionKey": {
+    "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${diskID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "sourceImageId": "2443108620951880213",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "canIpForward": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
   "description": "an basic instance example",
   "disks": [
     {
-      "autoDelete": false,
       "boot": true,
+      "diskEncryptionKey": {
+        "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+      },
+      "mode": "READ_WRITE",
       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     }
   ],
   "id": "000000000000000000000",
   "kind": "compute#instance",
   "labelFingerprint": "abcdef0123A=",
-  "machineType": "n1-standard-1",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
+  "metadata": {},
   "name": "${instanceID}",
   "networkInterfaces": [
     {
       "network": "projects/${projectId}/global/networks/${networkID}"
     }
   ],
+  "params": {},
   "scheduling": {
     "automaticRestart": false,
+    "instanceTerminationAction": "",
     "onHostMaintenance": "TERMINATE",
-    "preemptible": true
+    "preemptible": true,
+    "provisioningModel": ""
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "status": "RUNNING",
+  "tags": {},
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/stop
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "stop",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${instanceID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
-  "user": "user@example.com",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "stop",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${instanceID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
-  "user": "user@example.com",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -499,73 +603,87 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "diskEncryptionKey": {
+    "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${diskID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "sourceImageId": "2443108620951880213",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "canIpForward": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
   "description": "an basic instance example",
   "disks": [
     {
-      "autoDelete": false,
       "boot": true,
+      "diskEncryptionKey": {
+        "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+      },
+      "mode": "READ_WRITE",
       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     }
   ],
   "id": "000000000000000000000",
   "kind": "compute#instance",
   "labelFingerprint": "abcdef0123A=",
-  "machineType": "n1-standard-1",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
+  "metadata": {},
   "name": "${instanceID}",
   "networkInterfaces": [
     {
       "network": "projects/${projectId}/global/networks/${networkID}"
     }
   ],
+  "params": {},
   "scheduling": {
     "automaticRestart": false,
+    "instanceTerminationAction": "",
     "onHostMaintenance": "TERMINATE",
-    "preemptible": true
+    "preemptible": true,
+    "provisioningModel": ""
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
-  "status": "TERMINATED",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
-}
-
----
-
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType
-Content-Type: application/json
-
-{
-  "machineType": "zones/us-west1-a/machineTypes/n1-standard-2"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "setMachineType",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${instanceID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
-  "user": "user@example.com",
+  "tags": {},
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -578,32 +696,29 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "endTime": "2024-04-01T12:34:56.123456Z",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "diskEncryptionKey": {
+    "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+  },
   "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "setMachineType",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${instanceID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
-  "user": "user@example.com",
+  "kind": "compute#disk",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${diskID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "sourceImageId": "2443108620951880213",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setScheduling
-Content-Type: application/json
-
-{
-  "automaticRestart": false,
-  "onHostMaintenance": "TERMINATE",
-  "preemptible": true
-}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -616,63 +731,61 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "canIpForward": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
+  "description": "an basic instance example",
+  "disks": [
+    {
+      "boot": true,
+      "diskEncryptionKey": {
+        "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+      },
+      "mode": "READ_WRITE",
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+    }
+  ],
   "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "setScheduling",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
+  "metadata": {},
+  "name": "${instanceID}",
+  "networkInterfaces": [
+    {
+      "network": "projects/${projectId}/global/networks/${networkID}"
+    }
+  ],
+  "params": {},
+  "scheduling": {
+    "automaticRestart": false,
+    "instanceTerminationAction": "",
+    "onHostMaintenance": "TERMINATE",
+    "preemptible": true,
+    "provisioningModel": ""
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "status": "RUNNING",
-  "targetId": "${instanceID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
-  "user": "user@example.com",
+  "tags": {},
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "setScheduling",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${instanceID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
-  "user": "user@example.com",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
-}
-
----
-
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setLabels
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setLabels?alt=json&prettyPrint=false
 Content-Type: application/json
 
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "env": "prod"
+    "env": "prod",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -704,8 +817,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -736,8 +848,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/start
-Content-Type: application/json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/stop?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -754,7 +865,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "start",
+  "operationType": "stop",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -767,8 +878,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -786,7 +896,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "start",
+  "operationType": "stop",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -799,8 +909,224 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType?alt=json&prettyPrint=false
 Content-Type: application/json
+
+{
+  "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setMachineType",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setMachineType",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "canIpForward": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
+  "description": "an basic instance example",
+  "disks": [
+    {
+      "boot": true,
+      "diskEncryptionKey": {
+        "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+      },
+      "mode": "READ_WRITE",
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "prod",
+    "managed-by-cnrm": "true"
+  },
+  "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
+  "metadata": {},
+  "name": "${instanceID}",
+  "networkInterfaces": [
+    {
+      "network": "projects/${projectId}/global/networks/${networkID}"
+    }
+  ],
+  "params": {},
+  "scheduling": {
+    "automaticRestart": false,
+    "instanceTerminationAction": "",
+    "onHostMaintenance": "TERMINATE",
+    "preemptible": true,
+    "provisioningModel": ""
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "status": "TERMINATED",
+  "tags": {},
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/startWithEncryptionKey?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "disks": [
+    {
+      "diskEncryptionKey": {
+        "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+      },
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+    }
+  ]
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method StartWithEncryptionKey not implemented"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "canIpForward": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
+  "description": "an basic instance example",
+  "disks": [
+    {
+      "boot": true,
+      "diskEncryptionKey": {
+        "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+      },
+      "mode": "READ_WRITE",
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "prod",
+    "managed-by-cnrm": "true"
+  },
+  "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
+  "metadata": {},
+  "name": "${instanceID}",
+  "networkInterfaces": [
+    {
+      "network": "projects/${projectId}/global/networks/${networkID}"
+    }
+  ],
+  "params": {},
+  "scheduling": {
+    "automaticRestart": false,
+    "instanceTerminationAction": "",
+    "onHostMaintenance": "TERMINATE",
+    "preemptible": true,
+    "provisioningModel": ""
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "status": "TERMINATED",
+  "tags": {},
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -814,11 +1140,51 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "diskEncryptionKey": {
+    "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${diskID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "sourceImageId": "2443108620951880213",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "canIpForward": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "deletionProtection": false,
   "description": "an basic instance example",
   "disks": [
     {
-      "autoDelete": false,
       "boot": true,
+      "diskEncryptionKey": {
+        "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+      },
+      "mode": "READ_WRITE",
       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     }
   ],
@@ -827,29 +1193,69 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "env": "prod"
+    "env": "prod",
+    "managed-by-cnrm": "true"
   },
-  "machineType": "zones/us-west1-a/machineTypes/n1-standard-2",
+  "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
+  "metadata": {},
   "name": "${instanceID}",
   "networkInterfaces": [
     {
       "network": "projects/${projectId}/global/networks/${networkID}"
     }
   ],
+  "params": {},
   "scheduling": {
     "automaticRestart": false,
+    "instanceTerminationAction": "",
     "onHostMaintenance": "TERMINATE",
-    "preemptible": true
+    "preemptible": true,
+    "provisioningModel": ""
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
-  "status": "RUNNING",
+  "status": "TERMINATED",
+  "tags": {},
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "diskEncryptionKey": {
+    "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#disk",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${diskID}",
+  "physicalBlockSizeBytes": "4096",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "sourceImageId": "2443108620951880213",
+  "status": "READY",
+  "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -879,8 +1285,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
