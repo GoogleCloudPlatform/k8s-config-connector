@@ -67,11 +67,11 @@
 <     "errors": [
 <       {
 <         "domain": "global",
-<         "message": "image not found",
+<         "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
 <         "reason": "notFound"
 <       }
 <     ],
-<     "message": "image not found"
+<     "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
 <   }
 < }
 < 
