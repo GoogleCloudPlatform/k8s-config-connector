@@ -1,4 +1,4 @@
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -21,7 +21,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates?%24alt=json%3Benum-encoding%3Dint&certificateTemplateId=privatecacertificatetemplate-${uniqueId}
+POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates?alt=json&certificateTemplateId=privatecacertificatetemplate-${uniqueId}
 Content-Type: application/json
 
 {
@@ -41,6 +41,7 @@ Content-Type: application/json
     "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
+  "name": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
   "passthroughExtensions": {
     "additionalExtensions": [
       {
@@ -51,7 +52,7 @@ Content-Type: application/json
       }
     ],
     "knownExtensions": [
-      2
+      "EXTENDED_KEY_USAGE"
     ]
   },
   "predefinedValues": {
@@ -64,7 +65,7 @@ Content-Type: application/json
             6
           ]
         },
-        "value": "YzNSeWFXNW5DZz09"
+        "value": "c3RyaW5nCg=="
       }
     ],
     "aiaOcspServers": [
@@ -76,7 +77,9 @@ Content-Type: application/json
     },
     "keyUsage": {
       "baseKeyUsage": {
+        "certSign": false,
         "contentCommitment": true,
+        "crlSign": false,
         "dataEncipherment": true,
         "decipherOnly": true,
         "digitalSignature": true,
@@ -136,7 +139,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -178,7 +181,7 @@ X-Xss-Protection: 0
       }
     ],
     "knownExtensions": [
-      2
+      "EXTENDED_KEY_USAGE"
     ]
   },
   "predefinedValues": {
@@ -191,7 +194,7 @@ X-Xss-Protection: 0
             6
           ]
         },
-        "value": "YzNSeWFXNW5DZz09"
+        "value": "c3RyaW5nCg=="
       }
     ],
     "aiaOcspServers": [
@@ -242,7 +245,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json&updateMask=labels
 Content-Type: application/json
 
 {
@@ -274,7 +277,7 @@ Content-Type: application/json
       }
     ],
     "knownExtensions": [
-      2
+      "EXTENDED_KEY_USAGE"
     ]
   },
   "predefinedValues": {
@@ -287,7 +290,7 @@ Content-Type: application/json
             6
           ]
         },
-        "value": "YzNSeWFXNW5DZz09"
+        "value": "c3RyaW5nCg=="
       }
     ],
     "aiaOcspServers": [
@@ -299,7 +302,9 @@ Content-Type: application/json
     },
     "keyUsage": {
       "baseKeyUsage": {
+        "certSign": false,
         "contentCommitment": true,
+        "crlSign": false,
         "dataEncipherment": true,
         "decipherOnly": true,
         "digitalSignature": true,
@@ -359,7 +364,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -402,7 +407,7 @@ X-Xss-Protection: 0
       }
     ],
     "knownExtensions": [
-      2
+      "EXTENDED_KEY_USAGE"
     ]
   },
   "predefinedValues": {
@@ -415,7 +420,7 @@ X-Xss-Protection: 0
             6
           ]
         },
-        "value": "YzNSeWFXNW5DZz09"
+        "value": "c3RyaW5nCg=="
       }
     ],
     "aiaOcspServers": [
@@ -466,7 +471,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -493,7 +498,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
