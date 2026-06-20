@@ -24,4 +24,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: //privateca.googleapis.com/projects/${projectId}/locations/us-central1/caPools/capool-${uniqueId}
   observedGeneration: 1
