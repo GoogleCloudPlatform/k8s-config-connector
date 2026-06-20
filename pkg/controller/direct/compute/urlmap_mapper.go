@@ -272,15 +272,20 @@ func UrlmapTimeoutRequired_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Ur
 	if in == nil {
 		return nil
 	}
+	if in.Nanos == nil && in.Seconds == "" {
+		return nil
+	}
 	out := &pb.Duration{}
 	if in.Nanos != nil {
 		out.Nanos = direct.LazyPtr(int32(*in.Nanos))
 	}
-	val, err := strconv.ParseInt(in.Seconds, 10, 64)
-	if err != nil {
-		mapCtx.Errorf("invalid seconds %q: %v", in.Seconds, err)
-	} else {
-		out.Seconds = direct.LazyPtr(val)
+	if in.Seconds != "" {
+		val, err := strconv.ParseInt(in.Seconds, 10, 64)
+		if err != nil {
+			mapCtx.Errorf("invalid seconds %q: %v", in.Seconds, err)
+		} else {
+			out.Seconds = direct.LazyPtr(val)
+		}
 	}
 	return out
 }
@@ -336,15 +341,20 @@ func UrlmapPerTryTimeoutRequired_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	if in == nil {
 		return nil
 	}
+	if in.Nanos == nil && in.Seconds == "" {
+		return nil
+	}
 	out := &pb.Duration{}
 	if in.Nanos != nil {
 		out.Nanos = direct.LazyPtr(int32(*in.Nanos))
 	}
-	val, err := strconv.ParseInt(in.Seconds, 10, 64)
-	if err != nil {
-		mapCtx.Errorf("invalid seconds %q: %v", in.Seconds, err)
-	} else {
-		out.Seconds = direct.LazyPtr(val)
+	if in.Seconds != "" {
+		val, err := strconv.ParseInt(in.Seconds, 10, 64)
+		if err != nil {
+			mapCtx.Errorf("invalid seconds %q: %v", in.Seconds, err)
+		} else {
+			out.Seconds = direct.LazyPtr(val)
+		}
 	}
 	return out
 }
@@ -400,15 +410,20 @@ func UrlmapFixedDelayRequired_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	if in == nil {
 		return nil
 	}
+	if in.Nanos == nil && in.Seconds == "" {
+		return nil
+	}
 	out := &pb.Duration{}
 	if in.Nanos != nil {
 		out.Nanos = direct.LazyPtr(int32(*in.Nanos))
 	}
-	val, err := strconv.ParseInt(in.Seconds, 10, 64)
-	if err != nil {
-		mapCtx.Errorf("invalid seconds %q: %v", in.Seconds, err)
-	} else {
-		out.Seconds = direct.LazyPtr(val)
+	if in.Seconds != "" {
+		val, err := strconv.ParseInt(in.Seconds, 10, 64)
+		if err != nil {
+			mapCtx.Errorf("invalid seconds %q: %v", in.Seconds, err)
+		} else {
+			out.Seconds = direct.LazyPtr(val)
+		}
 	}
 	return out
 }
@@ -899,6 +914,9 @@ func UrlmapAbortRequired_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Htt
 
 func UrlmapAbortRequired_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapAbortRequired) *pb.HttpFaultAbort {
 	if in == nil {
+		return nil
+	}
+	if in.HttpStatus == 0 && in.Percentage == 0 {
 		return nil
 	}
 	out := &pb.HttpFaultAbort{}
