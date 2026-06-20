@@ -17,6 +17,7 @@ kind: ComputeImage
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
+    alpha.cnrm.cloud.google.com/reconciler: direct
   name: computeimage-test-${uniqueId}
   labels:
     label-one: "value-one"
