@@ -58,7 +58,7 @@ type PrivateCACAPoolStatus struct {
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// A unique specifier for the PrivateCACAPool resource in GCP.
-	// ExternalRef *string `json:"externalRef,omitempty"`
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	// ObservedState *PrivateCACAPoolObservedState `json:"observedState,omitempty"`

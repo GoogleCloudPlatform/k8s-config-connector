@@ -934,6 +934,7 @@ conditions:
   reason: string
   status: string
   type: string
+externalRef: string
 observedGeneration: integer
 ```
 
@@ -991,6 +992,13 @@ observedGeneration: integer
         <td>
             <p><code class="apitype">string</code></p>
             <p>Type is the type of the condition.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A unique specifier for the PrivateCACAPool resource in GCP.</p>
         </td>
     </tr>
     <tr>
