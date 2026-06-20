@@ -65,6 +65,10 @@ func (r *PrivateCACAPoolRef) GetExternal() string {
 }
 
 func (r *PrivateCACAPoolRef) SetExternal(ref string) {
+	ref = strings.TrimPrefix(ref, "https:")
+	ref = strings.TrimPrefix(ref, "http:")
+	ref = strings.TrimPrefix(ref, "//")
+	ref = strings.TrimPrefix(ref, "privateca.googleapis.com/")
 	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
@@ -87,6 +91,12 @@ func (r *PrivateCACAPoolRef) ParseExternalToIdentity() (identity.Identity, error
 }
 
 func (r *PrivateCACAPoolRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External != "" {
+		r.External = strings.TrimPrefix(r.External, "https:")
+		r.External = strings.TrimPrefix(r.External, "http:")
+		r.External = strings.TrimPrefix(r.External, "//")
+		r.External = strings.TrimPrefix(r.External, "privateca.googleapis.com/")
+	}
 	fallback := func(u *unstructured.Unstructured) string {
 		identity, err := getIdentityFromPrivateCACAPoolSpec(ctx, reader, u)
 		if err != nil {
@@ -109,6 +119,13 @@ func ResolvePrivateCACAPoolRef(ctx context.Context, reader client.Reader, src cl
 	}
 	if ref.Name != "" && ref.External != "" {
 		return nil, fmt.Errorf("cannot specify both name and external on PrivateCACAPoolRef")
+	}
+
+	if ref.External != "" {
+		ref.External = strings.TrimPrefix(ref.External, "https:")
+		ref.External = strings.TrimPrefix(ref.External, "http:")
+		ref.External = strings.TrimPrefix(ref.External, "//")
+		ref.External = strings.TrimPrefix(ref.External, "privateca.googleapis.com/")
 	}
 
 	// External should be in the `projects/{project_id}/locations/{region}/caPools/{caPool}` format

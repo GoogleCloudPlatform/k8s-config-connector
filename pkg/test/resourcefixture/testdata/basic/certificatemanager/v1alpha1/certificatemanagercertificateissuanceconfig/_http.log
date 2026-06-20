@@ -221,7 +221,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 {
   "certificateAuthorityConfig": {
     "certificateAuthorityServiceConfig": {
-      "caPool": "//privateca.googleapis.com/projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}"
+      "caPool": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}"
     }
   },
   "description": "sample certificate issuance config",
@@ -287,7 +287,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateIssuanceConfig",
     "certificateAuthorityConfig": {
       "certificateAuthorityServiceConfig": {
-        "caPool": "//privateca.googleapis.com/projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}"
+        "caPool": "projects/${projectNumber}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}"
       }
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -324,7 +324,7 @@ X-Xss-Protection: 0
 {
   "certificateAuthorityConfig": {
     "certificateAuthorityServiceConfig": {
-      "caPool": "//privateca.googleapis.com/projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}"
+      "caPool": "projects/${projectNumber}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
