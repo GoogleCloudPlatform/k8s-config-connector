@@ -4,20 +4,26 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
+    test-label: updated-value
   name: ${addressID}
   namespace: ${uniqueId}
 spec:
-  addressType: EXTERNAL
-  description: A test address with ipCollection
-  ipCollectionRef:
-    external: regions/us-central1/publicDelegatedPrefixes/pdp-${uniqueId}
-  location: us-central1
+  addressType: INTERNAL
+  description: a test global address
+  ipVersion: IPV4
+  location: global
+  networkRef:
+    name: default
+  prefixLength: 16
+  purpose: VPC_PEERING
+  resourceID: ${addressID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -27,7 +33,7 @@ status:
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
   labelFingerprint: abcdef0123A=
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     address: 8.8.8.8
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}

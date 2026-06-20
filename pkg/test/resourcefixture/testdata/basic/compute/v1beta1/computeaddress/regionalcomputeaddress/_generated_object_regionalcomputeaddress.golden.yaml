@@ -4,11 +4,10 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
     test-label: updated-value
@@ -18,19 +17,28 @@ spec:
   addressType: INTERNAL
   description: a test address
   location: us-central1
-  resourceID: ${addressID}
   subnetworkRef:
     name: default
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
+    message: 'Update call failed: error updating: ComputeAddress is immutable and
+      cannot be updated. Detected changes: [{address FieldDescriptor{Syntax: proto3,
+      FullName: google.cloud.compute.v1.Address.address, Number: 462920692, Cardinality:
+      optional, Kind: string, HasJSONName: true, JSONName: "address", HasPresence:
+      true, Oneof: _address} 8.8.8.8 } {network_tier FieldDescriptor{Syntax: proto3,
+      FullName: google.cloud.compute.v1.Address.network_tier, Number: 517397843, Cardinality:
+      optional, Kind: string, HasJSONName: true, JSONName: "networkTier", HasPresence:
+      true, Oneof: _network_tier} PREMIUM } {purpose FieldDescriptor{Syntax: proto3,
+      FullName: google.cloud.compute.v1.Address.purpose, Number: 316407070, Cardinality:
+      optional, Kind: string, HasJSONName: true, JSONName: "purpose", HasPresence:
+      true, Oneof: _purpose} GCE_ENDPOINT }]'
+    reason: UpdateFailed
+    status: "False"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
   labelFingerprint: abcdef0123A=
-  observedGeneration: 2
+  observedGeneration: 1
   observedState:
     address: 8.8.8.8
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}

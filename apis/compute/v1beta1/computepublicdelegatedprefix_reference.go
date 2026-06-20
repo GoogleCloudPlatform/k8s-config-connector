@@ -17,11 +17,13 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -94,6 +96,16 @@ func (r *ComputePublicDelegatedPrefixRef) ParseExternalToIdentity() (identity.Id
 func (r *ComputePublicDelegatedPrefixRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	if r.External != "" {
 		r.External = apirefs.TrimComputeURIPrefix(r.External)
+		if !strings.HasPrefix(r.External, "projects/") {
+			projectID := defaultNamespace
+			ns := &corev1.Namespace{}
+			if err := reader.Get(ctx, types.NamespacedName{Name: defaultNamespace}, ns); err == nil {
+				if val := ns.GetAnnotations()["cnrm.cloud.google.com/project-id"]; val != "" {
+					projectID = val
+				}
+			}
+			r.External = fmt.Sprintf("projects/%s/%s", projectID, r.External)
+		}
 	}
 
 	// Since ComputePublicDelegatedPrefix is not yet managed by KCC, we do not have a fallback

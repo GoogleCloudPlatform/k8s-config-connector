@@ -179,3 +179,27 @@ func (m *gcpClient) newInstancesClient(ctx context.Context) (*compute.InstancesC
 	}
 	return client, err
 }
+
+func (m *gcpClient) newAddressesClient(ctx context.Context) (*compute.AddressesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewAddressesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute Addresses client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newGlobalAddressesClient(ctx context.Context) (*compute.GlobalAddressesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewGlobalAddressesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute GlobalAddresses client: %w", err)
+	}
+	return client, err
+}

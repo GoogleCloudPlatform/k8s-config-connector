@@ -266,6 +266,8 @@ func ComputeAddressSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Compu
 	// MISSING: Users
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeAddressStatus_v1beta1_FromProto", skipping
 func ComputeAddressStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressStatus {
 	if in == nil {
 		return nil
@@ -293,33 +295,39 @@ func ComputeAddressStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Ad
 	out.Users = in.Users
 	return out
 }
-func ComputeAddressStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressStatus) *pb.Address {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ComputeAddressStatus_v1beta1_ToProto", skipping
+
+	func ComputeAddressStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressStatus) *pb.Address {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Address{}
+		// MISSING: Address
+		// MISSING: AddressType
+		out.CreationTimestamp = in.CreationTimestamp
+		// MISSING: Description
+		// MISSING: ID
+		// MISSING: IPVersion
+		// MISSING: IPV6EndpointType
+		// MISSING: Kind
+		out.LabelFingerprint = in.LabelFingerprint
+		// MISSING: Labels
+		// MISSING: Name
+		// MISSING: Network
+		// MISSING: NetworkTier
+		// MISSING: PrefixLength
+		// MISSING: Purpose
+		// MISSING: Region
+		out.SelfLink = in.SelfLink
+		// MISSING: Status
+		// MISSING: Subnetwork
+		out.Users = in.Users
+		return out
 	}
-	out := &pb.Address{}
-	// MISSING: Address
-	// MISSING: AddressType
-	out.CreationTimestamp = in.CreationTimestamp
-	// MISSING: Description
-	// MISSING: ID
-	// MISSING: IPVersion
-	// MISSING: IPV6EndpointType
-	// MISSING: Kind
-	out.LabelFingerprint = in.LabelFingerprint
-	// MISSING: Labels
-	// MISSING: Name
-	// MISSING: Network
-	// MISSING: NetworkTier
-	// MISSING: PrefixLength
-	// MISSING: Purpose
-	// MISSING: Region
-	out.SelfLink = in.SelfLink
-	// MISSING: Status
-	// MISSING: Subnetwork
-	out.Users = in.Users
-	return out
-}
+*/
 func ComputeDiskSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Disk) *krm.ComputeDiskSpec {
 	if in == nil {
 		return nil

@@ -1,0 +1,30 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c10
+<   generation: 2
+---
+>   generation: 1
+21d19
+<   resourceID: ${addressID}
+27,29c25,37
+<     message: The resource is up to date
+<     reason: UpToDate
+<     status: "True"
+---
+>     message: 'Update call failed: error updating: ComputeAddress is immutable and
+>       cannot be updated. Detected changes: [{address FieldDescriptor{Syntax: proto3,
+>       FullName: google.cloud.compute.v1.Address.address, Number: 462920692, Cardinality:
+>       optional, Kind: string, HasJSONName: true, JSONName: "address", HasPresence:
+>       true, Oneof: _address} 8.8.8.8 } {network_tier FieldDescriptor{Syntax: proto3,
+>       FullName: google.cloud.compute.v1.Address.network_tier, Number: 517397843, Cardinality:
+>       optional, Kind: string, HasJSONName: true, JSONName: "networkTier", HasPresence:
+>       true, Oneof: _network_tier} PREMIUM } {purpose FieldDescriptor{Syntax: proto3,
+>       FullName: google.cloud.compute.v1.Address.purpose, Number: 316407070, Cardinality:
+>       optional, Kind: string, HasJSONName: true, JSONName: "purpose", HasPresence:
+>       true, Oneof: _purpose} GCE_ENDPOINT }]'
+>     reason: UpdateFailed
+>     status: "False"
+33c41
+<   observedGeneration: 2
+---
+>   observedGeneration: 1
