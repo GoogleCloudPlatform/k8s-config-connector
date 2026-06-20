@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "disk \"projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/zones/us-west1-a/disks/${diskID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "disk \"projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/zones/us-west1-a/disks/${diskID}' was not found"
   }
 }
 
@@ -90,7 +90,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computedisk-${uniqueId}",
+  "name": "${diskID}",
   "sourceImage": "projects/debian-cloud/global/images/family/debian-11",
   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
   "zone": "projects/${projectId}/global/zones/us-west1-a"
@@ -111,15 +111,52 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -141,9 +178,9 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computedisk-${uniqueId}",
+  "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -153,7 +190,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -173,11 +210,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "disk \"projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/zones/us-west1-a/disks/${diskID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "disk \"projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/zones/us-west1-a/disks/${diskID}' was not found"
   }
 }
 
@@ -193,7 +230,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computedisk-1-${uniqueId}",
+  "name": "${diskID}",
   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
   "zone": "projects/${projectId}/global/zones/us-west1-a"
 }
@@ -213,15 +250,52 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -244,9 +318,9 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computedisk-1-${uniqueId}",
+  "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
   "status": "READY",
   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
@@ -830,7 +904,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -849,11 +923,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instance \"projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/zones/us-west1-a/instances/${instanceID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "instance \"projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/zones/us-west1-a/instances/${instanceID}' was not found"
   }
 }
 
@@ -917,11 +991,11 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     {
       "boot": true,
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     },
     {
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     }
   ],
   "labels": {
@@ -946,7 +1020,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       }
     ]
   },
-  "name": "computeinstance-${uniqueId}",
+  "name": "${instanceID}",
   "networkInterfaces": [
     {
       "accessConfigs": [
@@ -996,15 +1070,52 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1026,11 +1137,11 @@ X-Xss-Protection: 0
     {
       "boot": true,
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     },
     {
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     }
   ],
   "id": "000000000000000000000",
@@ -1058,7 +1169,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "computeinstance-${uniqueId}",
+  "name": "${instanceID}",
   "networkInterfaces": [
     {
       "accessConfigs": [
@@ -1079,7 +1190,7 @@ X-Xss-Protection: 0
     "preemptible": true,
     "provisioningModel": ""
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "serviceAccounts": [
     {
       "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
@@ -1095,7 +1206,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1116,9 +1227,9 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computedisk-${uniqueId}",
+  "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -1128,7 +1239,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1150,11 +1261,11 @@ X-Xss-Protection: 0
     {
       "boot": true,
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     },
     {
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     }
   ],
   "id": "000000000000000000000",
@@ -1182,7 +1293,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "computeinstance-${uniqueId}",
+  "name": "${instanceID}",
   "networkInterfaces": [
     {
       "accessConfigs": [
@@ -1203,7 +1314,7 @@ X-Xss-Protection: 0
     "preemptible": true,
     "provisioningModel": ""
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "serviceAccounts": [
     {
       "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
@@ -1219,7 +1330,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1240,9 +1351,9 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computedisk-${uniqueId}",
+  "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -1252,7 +1363,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1274,11 +1385,11 @@ X-Xss-Protection: 0
     {
       "boot": true,
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     },
     {
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     }
   ],
   "id": "000000000000000000000",
@@ -1306,7 +1417,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "computeinstance-${uniqueId}",
+  "name": "${instanceID}",
   "networkInterfaces": [
     {
       "accessConfigs": [
@@ -1327,7 +1438,7 @@ X-Xss-Protection: 0
     "preemptible": true,
     "provisioningModel": ""
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "serviceAccounts": [
     {
       "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
@@ -1343,7 +1454,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1364,9 +1475,9 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computedisk-${uniqueId}",
+  "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -1376,7 +1487,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1398,11 +1509,11 @@ X-Xss-Protection: 0
     {
       "boot": true,
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     },
     {
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     }
   ],
   "id": "000000000000000000000",
@@ -1430,7 +1541,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "computeinstance-${uniqueId}",
+  "name": "${instanceID}",
   "networkInterfaces": [
     {
       "accessConfigs": [
@@ -1451,7 +1562,7 @@ X-Xss-Protection: 0
     "preemptible": true,
     "provisioningModel": ""
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "serviceAccounts": [
     {
       "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
@@ -1467,7 +1578,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}/setLabels?alt=json&prettyPrint=false
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setLabels?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1495,15 +1606,52 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "setLabels",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}/stop?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/stop?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1521,15 +1669,52 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "stop",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}/setMachineType?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "stop",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1552,15 +1737,52 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "setMachineType",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}/setServiceAccount?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setMachineType",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setServiceAccount?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1586,15 +1808,52 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "setServiceAccount",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setServiceAccount",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1616,11 +1875,11 @@ X-Xss-Protection: 0
     {
       "boot": true,
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     },
     {
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     }
   ],
   "id": "000000000000000000000",
@@ -1648,7 +1907,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "computeinstance-${uniqueId}",
+  "name": "${instanceID}",
   "networkInterfaces": [
     {
       "accessConfigs": [
@@ -1669,7 +1928,7 @@ X-Xss-Protection: 0
     "preemptible": true,
     "provisioningModel": ""
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "serviceAccounts": [
     {
       "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
@@ -1685,7 +1944,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}/start?alt=json&prettyPrint=false
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/start?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1703,15 +1962,52 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "start",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "start",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1733,11 +2029,11 @@ X-Xss-Protection: 0
     {
       "boot": true,
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     },
     {
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     }
   ],
   "id": "000000000000000000000",
@@ -1765,7 +2061,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "computeinstance-${uniqueId}",
+  "name": "${instanceID}",
   "networkInterfaces": [
     {
       "accessConfigs": [
@@ -1786,7 +2082,7 @@ X-Xss-Protection: 0
     "preemptible": true,
     "provisioningModel": ""
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "serviceAccounts": [
     {
       "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
@@ -1802,7 +2098,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1823,9 +2119,9 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computedisk-${uniqueId}",
+  "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -1835,7 +2131,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1857,11 +2153,11 @@ X-Xss-Protection: 0
     {
       "boot": true,
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     },
     {
       "mode": "READ_WRITE",
-      "source": "projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}"
+      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
     }
   ],
   "id": "000000000000000000000",
@@ -1889,7 +2185,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "computeinstance-${uniqueId}",
+  "name": "${instanceID}",
   "networkInterfaces": [
     {
       "accessConfigs": [
@@ -1910,7 +2206,7 @@ X-Xss-Protection: 0
     "preemptible": true,
     "provisioningModel": ""
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "serviceAccounts": [
     {
       "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
@@ -1926,7 +2222,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1947,9 +2243,9 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computedisk-${uniqueId}",
+  "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -1959,7 +2255,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1977,10 +2273,47 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "delete",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
@@ -2225,7 +2558,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2248,9 +2581,9 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computedisk-1-${uniqueId}",
+  "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
   "status": "READY",
   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
@@ -2258,7 +2591,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-1-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2277,15 +2610,52 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "delete",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2307,9 +2677,9 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computedisk-${uniqueId}",
+  "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -2319,7 +2689,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2338,8 +2708,45 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "delete",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${diskID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 }

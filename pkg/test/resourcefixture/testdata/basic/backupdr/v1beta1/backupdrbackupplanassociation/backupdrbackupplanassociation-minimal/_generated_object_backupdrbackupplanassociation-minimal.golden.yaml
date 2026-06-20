@@ -17,7 +17,7 @@ spec:
     external: ${projectId}
   resource:
     computeInstanceRef:
-      name: computeinstance-minimal-${uniqueId}
+      name: ${instanceID}
   resourceType: compute.googleapis.com/Instance
 status:
   conditions:

@@ -43,6 +43,9 @@ func (s *DisksV1) Get(ctx context.Context, req *pb.GetDiskRequest) (*pb.Disk, er
 
 	obj := &pb.Disk{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -93,7 +96,15 @@ func (s *DisksV1) Insert(ctx context.Context, req *pb.InsertDiskRequest) (*pb.Op
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a Disk resource in the specified project using the data included in the request.
@@ -117,7 +128,15 @@ func (s *DisksV1) Update(ctx context.Context, req *pb.UpdateDiskRequest) (*pb.Op
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *DisksV1) Delete(ctx context.Context, req *pb.DeleteDiskRequest) (*pb.Operation, error) {
@@ -131,10 +150,21 @@ func (s *DisksV1) Delete(ctx context.Context, req *pb.DeleteDiskRequest) (*pb.Op
 
 	deleted := (&pb.Disk{})
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type zonalDiskName struct {

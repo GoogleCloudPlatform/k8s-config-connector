@@ -16,7 +16,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   diskRef:
-    name: computedisk-${uniqueId}
+    name: ${diskID}
   diskSizeGb: 500
   resourceID: computeimage-test-${uniqueId}
 status:

@@ -14,16 +14,16 @@ metadata:
   labels:
     cnrm-test: "true"
     label-one: value-two
-  name: computeinstance-${uniqueId}
+  name: ${instanceID}
   namespace: ${uniqueId}
 spec:
   attachedDisk:
   - sourceDiskRef:
-      name: computedisk-1-${uniqueId}
+      name: ${diskID}
   bootDisk:
     autoDelete: false
     sourceDiskRef:
-      name: computedisk-${uniqueId}
+      name: ${diskID}
   description: an basic instance example
   machineType: n1-standard-2
   metadata:
@@ -41,7 +41,7 @@ spec:
       name: ${addressID}
     networkRef:
       name: default
-  resourceID: computeinstance-${uniqueId}
+  resourceID: ${instanceID}
   scheduling:
     automaticRestart: false
     onHostMaintenance: TERMINATE
@@ -63,4 +63,4 @@ status:
   instanceId: "1111111111111111"
   labelFingerprint: abcdef0123A=
   observedGeneration: 3
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
