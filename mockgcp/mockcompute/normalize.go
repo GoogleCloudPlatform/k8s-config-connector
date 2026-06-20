@@ -163,6 +163,20 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			delete(m, "status")
 		}
 	})
+
+	// SecurityPolicy
+	replacements.TransformObject("", func(m map[string]any) {
+		if m["kind"] == "compute#securityPolicy" {
+			delete(m, "selfLinkWithId")
+			if rules, ok := m["rules"].([]any); ok {
+				for _, r := range rules {
+					if ruleMap, ok := r.(map[string]any); ok {
+						delete(ruleMap, "ruleNumber")
+					}
+				}
+			}
+		}
+	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
