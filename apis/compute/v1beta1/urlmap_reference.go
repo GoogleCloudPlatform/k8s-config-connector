@@ -16,19 +16,18 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &ComputeURLMapRef{}
+var _ refs.Ref = &ComputeURLMapRef{}
 
 var ComputeURLMapGVK = schema.GroupVersionKind{
 	Group:   "compute.cnrm.cloud.google.com",
@@ -36,9 +35,11 @@ var ComputeURLMapGVK = schema.GroupVersionKind{
 	Kind:    "ComputeURLMap",
 }
 
-// A reference to a ComputeURLMap resource.
+// ComputeURLMapRef is a reference to a GCP ComputeURLMap.
 type ComputeURLMapRef struct {
-	// Allowed value: The `selfLink` field of a `ComputeURLMap` resource.
+	// A reference to an externally managed ComputeURLMap resource.
+	// Should be in the format "projects/{{projectID}}/global/urlMaps/{{name}}"
+	// or "projects/{{projectID}}/regions/{{region}}/urlMaps/{{name}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeURLMap resource.
@@ -46,6 +47,10 @@ type ComputeURLMapRef struct {
 
 	// The namespace of a ComputeURLMap resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&ComputeURLMapRef{})
 }
 
 func (r *ComputeURLMapRef) GetGVK() schema.GroupVersionKind {
@@ -70,53 +75,47 @@ func (r *ComputeURLMapRef) SetExternal(ref string) {
 }
 
 func (r *ComputeURLMapRef) ValidateExternal(ref string) error {
-	if !strings.HasPrefix(ref, "projects/") && !strings.HasPrefix(ref, "https://www.googleapis.com/") {
-		return fmt.Errorf("external reference format %q is not known; expected projects/<project>/global/urlMaps/<name> or https://www.googleapis.com/compute/v1/projects/<project>/global/urlMaps/<name>", ref)
+	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
+	id := &ComputeURLMapIdentity{}
+	if err := id.FromExternal(trimmedRef); err != nil {
+		return err
 	}
 	return nil
+}
+
+func (r *ComputeURLMapRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ComputeURLMapIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
 func (r *ComputeURLMapRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.GetExternal() != "" {
-		return r.ValidateExternal(r.GetExternal())
-	}
-	key := r.GetNamespacedName()
-	if key.Namespace == "" {
-		key.Namespace = defaultNamespace
-	}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(r.GetGVK())
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return fmt.Errorf("reading referenced %s %s: %w", r.GetGVK(), key, err)
+	if r.External != "" {
+		r.External = apirefs.TrimComputeURIPrefix(r.External)
 	}
 
-	// Get external from status.externalRef. This is the most trustworthy place.
-	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if externalRef == "" {
-		if externalRef, err = urlMapLegacyExternalRef(ctx, reader, u); err != nil {
-			return err
+	fallback := func(u *unstructured.Unstructured) string {
+		// Get external from status.selfLink. This ensures backward compatibility for TF/DCL-based resources that lack status.externalRef.
+		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		if selfLink != "" {
+			trimmed := apirefs.TrimComputeURIPrefix(selfLink)
+			id := &ComputeURLMapIdentity{}
+			if err := id.FromExternal(trimmed); err == nil {
+				return trimmed
+			}
 		}
-	}
-	if externalRef == "" {
-		return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.SetExternal(externalRef)
-	return nil
-}
 
-func urlMapLegacyExternalRef(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (string, error) {
-	selfLink, found, err := unstructured.NestedString(u.Object, "status", "selfLink")
-	if err != nil {
-		return "", fmt.Errorf("reading status.selfLink: %w", err)
+		obj, err := common.ToStructuredType[*ComputeURLMap](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromComputeURLMapSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
 	}
-	if !found || selfLink == "" {
-		return "", nil
-	}
-	return selfLink, nil
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
