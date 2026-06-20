@@ -582,7 +582,7 @@ test:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendBucket` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -592,7 +592,7 @@ test:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -602,7 +602,7 @@ test:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -612,10 +612,7 @@ test:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>defaultRouteAction takes effect when none of the hostRules match. The load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend. If defaultRouteAction specifies any weightedBackendServices, defaultService must not be set. Conversely if defaultService is set, defaultRouteAction cannot contain any weightedBackendServices.
-Only one of defaultRouteAction or defaultUrlRedirect must be set.
-URL maps for Classic external HTTP(S) load balancers only support the urlRewrite action within defaultRouteAction.
-defaultRouteAction has no effect when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.</p>
+            <p>defaultRouteAction takes effect when none of the hostRules match. The load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend. If defaultRouteAction specifies any weightedBackendServices, defaultService must not be set. Conversely if defaultService is set, defaultRouteAction cannot contain any weightedBackendServices. Only one of defaultRouteAction or defaultUrlRedirect must be set. URL maps for Classic external HTTP(S) load balancers only support the urlRewrite action within defaultRouteAction. defaultRouteAction has no effect when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.</p>
         </td>
     </tr>
     <tr>
@@ -625,8 +622,7 @@ defaultRouteAction has no effect when the URL map is bound to a target gRPC prox
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The specification for allowing client side cross-origin requests. Please see
-[W3C Recommendation for Cross Origin Resource Sharing](https://www.w3.org/TR/cors/).</p>
+            <p>The specification for allowing client side cross-origin requests. Please see [W3C Recommendation for Cross Origin Resource Sharing](https://www.w3.org/TR/cors/).</p>
         </td>
     </tr>
     <tr>
@@ -636,8 +632,7 @@ defaultRouteAction has no effect when the URL map is bound to a target gRPC prox
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>In response to a preflight request, setting this to true indicates that the actual request can include user credentials. This field translates to the Access-Control-Allow-Credentials header.
-Default is false.</p>
+            <p>In response to a preflight request, setting this to true indicates that the actual request can include user credentials. This translates to the Access- Control-Allow-Credentials header. Defaults to false.</p>
         </td>
     </tr>
     <tr>
@@ -687,9 +682,7 @@ Default is false.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies the regualar expression patterns that match allowed origins. For regular expression grammar
-please see en.cppreference.com/w/cpp/regex/ecmascript
-An origin is allowed if it matches either an item in allowOrigins or an item in allowOriginRegexes.</p>
+            <p>Specifies the regular expression patterns that match allowed origins. For regular expression grammar please see en.cppreference.com/w/cpp/regex/ecmascript An origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
         </td>
     </tr>
     <tr>
@@ -709,8 +702,7 @@ An origin is allowed if it matches either an item in allowOrigins or an item in 
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies the list of origins that will be allowed to do CORS requests.
-An origin is allowed if it matches either an item in allowOrigins or an item in allowOriginRegexes.</p>
+            <p>Specifies the list of origins that will be allowed to do CORS requests. An origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
         </td>
     </tr>
     <tr>
@@ -730,7 +722,7 @@ An origin is allowed if it matches either an item in allowOrigins or an item in 
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If true, the setting specifies the CORS policy is disabled. The default value of false, which indicates that the CORS policy is in effect.</p>
+            <p>If true, specifies the CORS policy is disabled. which indicates that the CORS policy is in effect. Defaults to false.</p>
         </td>
     </tr>
     <tr>
@@ -760,8 +752,7 @@ An origin is allowed if it matches either an item in allowOrigins or an item in 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies how long results of a preflight request can be cached in seconds.
-This translates to the Access-Control-Max-Age header.</p>
+            <p>Specifies how long the results of a preflight request can be cached. This translates to the content for the Access-Control-Max-Age header.</p>
         </td>
     </tr>
     <tr>
@@ -772,10 +763,11 @@ This translates to the Access-Control-Max-Age header.</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>The specification for fault injection introduced into traffic to test the resiliency of clients to backend service failure.
-As part of fault injection, when clients send requests to a backend service, delays can be introduced by a load balancer on a percentage of requests before sending those requests to the backend service.
-Similarly requests from clients can be aborted by the load balancer for a percentage of requests.
-timeout and retryPolicy is ignored by clients that are configured with a faultInjectionPolicy if: 1. The traffic is generated by fault injection AND 2. The fault injection is not a delay fault injection.
-Fault injection is not supported with the global external HTTP(S) load balancer (classic). To see which load balancers support fault injection, see Load balancing: [Routing and traffic management features](https://cloud.google.com/load-balancing/docs/features#routing-traffic-management).</p>
+As part of fault injection, when clients send requests to a backend service, delays can be introduced by Loadbalancer on a
+percentage of requests before sending those request to the backend service. Similarly requests from clients can be aborted
+by the Loadbalancer for a percentage of requests.
+
+timeout and retryPolicy will be ignored by clients that are configured with a faultInjectionPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -795,8 +787,7 @@ Fault injection is not supported with the global external HTTP(S) load balancer 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The HTTP status code used to abort the request.
-The value must be between 200 and 599 inclusive.</p>
+            <p>The HTTP status code used to abort the request. The value must be between 200 and 599 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -806,8 +797,7 @@ The value must be between 200 and 599 inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The percentage of traffic (connections/operations/requests) which will be aborted as part of fault injection.
-The value must be between 0.0 and 100.0 inclusive.</p>
+            <p>The percentage of traffic (connections/operations/requests) which will be aborted as part of fault injection. The value must be between 0.0 and 100.0 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -837,8 +827,7 @@ The value must be between 0.0 and 100.0 inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are
-represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 'seconds' field and a positive 'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -848,8 +837,7 @@ represented with a 0 seconds field and a positive nanos field. Must be from 0 to
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.
-Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years.</p>
+            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -859,8 +847,7 @@ Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.2
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The percentage of traffic (connections/operations/requests) on which delay will be introduced as part of fault injection.
-The value must be between 0.0 and 100.0 inclusive.</p>
+            <p>The percentage of traffic (connections/operations/requests) on which delay will be introduced as part of fault injection. The value must be between 0.0 and 100.0 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -870,9 +857,7 @@ The value must be between 0.0 and 100.0 inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies the policy on how requests intended for the route's backends are shadowed to a separate mirrored backend service.
-The load balancer does not wait for responses from the shadow service. Before sending traffic to the shadow service, the host / authority header is suffixed with -shadow.
-Not supported when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.</p>
+            <p>Specifies the policy on how requests intended for the route's backends are shadowed to a separate mirrored backend service. Loadbalancer does not wait for responses from the shadow service. Prior to sending traffic to the shadow service, the host / authority header is suffixed with -shadow.</p>
         </td>
     </tr>
     <tr>
@@ -882,12 +867,7 @@ Not supported when the URL map is bound to a target gRPC proxy that has the vali
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The backend service resource being mirrored to.
-The backend service configured for a mirroring policy must reference
-backends that are of the same type as the original backend service
-matched in the URL map.
-Serverless NEG backends are not currently supported as a mirrored
-backend service.</p>
+            <p>Required. The backend service resource being mirrored to.</p>
         </td>
     </tr>
     <tr>
@@ -897,7 +877,7 @@ backend service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -907,7 +887,7 @@ backend service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -917,7 +897,7 @@ backend service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -937,7 +917,7 @@ backend service.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies the allowed number retries. This number must be > 0. If not specified, defaults to 1.</p>
+            <p>Specifies the allowed number retries. This number must be > 0.</p>
         </td>
     </tr>
     <tr>
@@ -947,10 +927,7 @@ backend service.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies a non-zero timeout per retry attempt.
-
-If not specified, will use the timeout set in HttpRouteAction. If timeout in HttpRouteAction is not set,
-will use the largest timeout among all backend services associated with the route.</p>
+            <p>Specifies a non-zero timeout per retry attempt.</p>
         </td>
     </tr>
     <tr>
@@ -960,8 +937,7 @@ will use the largest timeout among all backend services associated with the rout
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are
-represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 'seconds' field and a positive 'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -971,8 +947,7 @@ represented with a 0 seconds field and a positive nanos field. Must be from 0 to
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.
-Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years.</p>
+            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -982,18 +957,28 @@ Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.2
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies one or more conditions when this retry policy applies.
-Valid values are listed below. Only the following codes are supported when the URL map is bound to target gRPC proxy that has validateForProxyless field set to true: cancelled, deadline-exceeded, internal, resource-exhausted, unavailable.
-  - 5xx : retry is attempted if the instance or endpoint responds with any 5xx response code, or if the instance or endpoint does not respond at all. For example, disconnects, reset, read timeout, connection failure, and refused streams.
-  - gateway-error : Similar to 5xx, but only applies to response codes 502, 503 or 504.
-  - connect-failure : a retry is attempted on failures connecting to the instance or endpoint. For example, connection timeouts.
-  - retriable-4xx : a retry is attempted if the instance or endpoint responds with a 4xx response code. The only error that you can retry is error code 409.
-  - refused-stream : a retry is attempted if the instance or endpoint resets the stream with a REFUSED_STREAM error code. This reset type indicates that it is safe to retry.
-  - cancelled : a retry is attempted if the gRPC status code in the response header is set to cancelled.
-  - deadline-exceeded : a retry is attempted if the gRPC status code in the response header is set to deadline-exceeded.
-  - internal :  a retry is attempted if the gRPC status code in the response header is set to internal.
-  - resource-exhausted : a retry is attempted if the gRPC status code in the response header is set to resource-exhausted.
-  - unavailable : a retry is attempted if the gRPC status code in the response header is set to unavailable.</p>
+            <p>Specifies one or more conditions when this retry rule applies. Valid values are:
+
+* 5xx: Loadbalancer will attempt a retry if the backend service responds with
+any 5xx response code, or if the backend service does not respond at all,
+example: disconnects, reset, read timeout, connection failure, and refused
+streams.
+* gateway-error: Similar to 5xx, but only applies to response codes
+502, 503 or 504.
+* connect-failure: Loadbalancer will retry on failures
+connecting to backend services, for example due to connection timeouts.
+* retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
+Currently the only retriable error supported is 409.
+* refused-stream: Loadbalancer will retry if the backend service resets the stream with a
+REFUSED_STREAM error code. This reset type indicates that it is safe to retry.
+* cancelled: Loadbalancer will retry if the gRPC status code in the response
+header is set to cancelled
+* deadline-exceeded: Loadbalancer will retry if the
+gRPC status code in the response header is set to deadline-exceeded
+* resource-exhausted: Loadbalancer will retry if the gRPC status code in the response
+header is set to resource-exhausted
+* unavailable: Loadbalancer will retry if the gRPC status code in
+the response header is set to unavailable.</p>
         </td>
     </tr>
     <tr>
@@ -1013,9 +998,10 @@ Valid values are listed below. Only the following codes are supported when the U
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies the timeout for the selected route. Timeout is computed from the time the request has been fully processed (known as end-of-stream) up until the response has been processed. Timeout includes all retries.
-If not specified, this field uses the largest timeout among all backend services associated with the route.
-Not supported when the URL map is bound to a target gRPC proxy that has validateForProxyless field set to true.</p>
+            <p>Specifies the timeout for the selected route. Timeout is computed from the time the request has been
+fully processed (i.e. end-of-stream) up until the response has been completely processed. Timeout includes all retries.
+
+If not specified, will use the largest timeout among all backend services associated with the route.</p>
         </td>
     </tr>
     <tr>
@@ -1025,7 +1011,7 @@ Not supported when the URL map is bound to a target gRPC proxy that has validate
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 'seconds' field and a positive 'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -1035,7 +1021,7 @@ Not supported when the URL map is bound to a target gRPC proxy that has validate
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years.</p>
+            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -1045,9 +1031,7 @@ Not supported when the URL map is bound to a target gRPC proxy that has validate
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The spec to modify the URL of the request, before forwarding the request to the matched service.
-urlRewrite is the only action supported in UrlMaps for external HTTP(S) load balancers.
-Not supported when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.</p>
+            <p>The spec to modify the URL of the request, prior to forwarding the request to the matched service.</p>
         </td>
     </tr>
     <tr>
@@ -1057,8 +1041,7 @@ Not supported when the URL map is bound to a target gRPC proxy that has the vali
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Before forwarding the request to the selected service, the request's host header is replaced with contents of hostRewrite.
-The value must be from 1 to 255 characters.</p>
+            <p>Prior to forwarding the request to the selected service, the request's host header is replaced with contents of hostRewrite. The value must be between 1 and 255 characters.</p>
         </td>
     </tr>
     <tr>
@@ -1068,8 +1051,7 @@ The value must be from 1 to 255 characters.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Before forwarding the request to the selected backend service, the matching portion of the request's path is replaced by pathPrefixRewrite.
-The value must be from 1 to 1024 characters.</p>
+            <p>Prior to forwarding the request to the selected backend service, the matching portion of the request's path is replaced by pathPrefixRewrite. The value must be between 1 and 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -1079,8 +1061,14 @@ The value must be from 1 to 1024 characters.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>A list of weighted backend services to send traffic to when a route match occurs. The weights determine the fraction of traffic that flows to their corresponding backend service. If all traffic needs to go to a single backend service, there must be one weightedBackendService with weight set to a non-zero number.
-After a backend service is identified and before forwarding the request to the backend service, advanced routing actions such as URL rewrites and header transformations are applied depending on additional settings specified in this HttpRouteAction.</p>
+            <p>A list of weighted backend services to send traffic to when a route match occurs.
+The weights determine the fraction of traffic that flows to their corresponding backend service.
+If all traffic needs to go to a single backend service, there must be one weightedBackendService
+with weight set to a non 0 number.
+
+Once a backendService is identified and before forwarding the request to the backend service,
+advanced routing actions like Url rewrites and header transformations are applied depending on
+additional settings specified in this HttpRouteAction.</p>
         </td>
     </tr>
     <tr>
@@ -1100,10 +1088,7 @@ After a backend service is identified and before forwarding the request to the b
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The default backend service resource.
-Before forwarding the request to backendService, the loadbalancer
-applies any relevant headerActions specified as part of this
-backendServiceWeight.</p>
+            <p>Required. The default backend service resource. Before forwarding the request to backendService, the loadbalancer applies any relevant headerActions specified as part of this backendServiceWeight.</p>
         </td>
     </tr>
     <tr>
@@ -1113,7 +1098,7 @@ backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1123,7 +1108,7 @@ backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1133,7 +1118,7 @@ backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1143,10 +1128,7 @@ backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies changes to request and response headers that need to take effect for the selected backendService.
-headerAction specified here take effect before headerAction in the enclosing HttpRouteRule, PathMatcher and UrlMap.
-headerAction is not supported for load balancers that have their loadBalancingScheme set to EXTERNAL.
-Not supported when the URL map is bound to a target gRPC proxy that has validateForProxyless field set to true.</p>
+            <p>Specifies changes to request and response headers that need to take effect for the selected backendService. headerAction specified here take effect before headerAction in the enclosing HttpRouteRule, PathMatcher and UrlMap.</p>
         </td>
     </tr>
     <tr>
@@ -1156,7 +1138,7 @@ Not supported when the URL map is bound to a target gRPC proxy that has validate
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Headers to add to a matching request before forwarding the request to the backendService.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1196,8 +1178,7 @@ Not supported when the URL map is bound to a target gRPC proxy that has validate
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.
-The default value is false.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -1207,7 +1188,7 @@ The default value is false.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the request before forwarding the request to the backendService.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1227,7 +1208,7 @@ The default value is false.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Headers to add the response before sending the response back to the client.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1267,8 +1248,7 @@ The default value is false.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.
-The default value is false.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -1278,7 +1258,7 @@ The default value is false.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the response before sending the response back to the client.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1298,9 +1278,7 @@ The default value is false.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies the fraction of traffic sent to a backend service, computed as weight / (sum of all weightedBackendService weights in routeAction) .
-The selection of a backend service is determined only for new traffic. Once a user's request has been directed to a backend service, subsequent requests are sent to the same backend service as determined by the backend service's session affinity policy.
-The value must be from 0 to 1000.</p>
+            <p>Specifies the fraction of traffic sent to backendService, computed as weight / (sum of all weightedBackendService weights in routeAction) . The selection of a backend service is determined only for new traffic. Once a user's request has been directed to a backendService, subsequent requests will be sent to the same backendService as determined by the BackendService's session affinity policy. The value must be between 0 and 1000.</p>
         </td>
     </tr>
     <tr>
@@ -1310,20 +1288,7 @@ The value must be from 0 to 1000.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The defaultService resource to which traffic is directed if none of
-the hostRules match.
-For the Global URL Map, it should be a reference to the backend
-service or backend bucket.
-For the Regional URL Map, it should be a reference to the backend
-service.
-If defaultRouteAction is additionally specified, advanced routing
-actions like URL Rewrites, etc. take effect prior to sending the
-request to the backend. However, if defaultService is specified,
-defaultRouteAction cannot contain any weightedBackendServices.
-Conversely, if routeAction specifies any weightedBackendServices,
-service must not be specified. Only one of defaultService,
-defaultUrlRedirect or defaultRouteAction.weightedBackendService
-must be set.</p>
+            <p>The defaultService resource to which traffic is directed if none of the hostRules match. For the Global URL Map, it should be a reference to the backend service or backend bucket. For the Regional URL Map, it should be a reference to the backend service. If defaultRouteAction is additionally specified, advanced routing actions like URL Rewrites, etc. take effect prior to sending the request to the backend. However, if defaultService is specified, defaultRouteAction cannot contain any weightedBackendServices. Conversely, if routeAction specifies any weightedBackendServices, service must not be specified. Only one of defaultService, defaultUrlRedirect or defaultRouteAction.weightedBackendService must be set.</p>
         </td>
     </tr>
     <tr>
@@ -1343,7 +1308,7 @@ must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendBucket` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1353,7 +1318,7 @@ must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1363,7 +1328,7 @@ must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1383,7 +1348,7 @@ must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1393,7 +1358,7 @@ must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1403,7 +1368,7 @@ must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1413,9 +1378,7 @@ must be set.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>When none of the specified hostRules match, the request is redirected to a URL specified
-by defaultUrlRedirect. If defaultUrlRedirect is specified, defaultService or
-defaultRouteAction must not be set.</p>
+            <p>When none of the specified hostRules match, the request is redirected to a URL specified by defaultUrlRedirect. If defaultUrlRedirect is specified, defaultService or defaultRouteAction must not be set.</p>
         </td>
     </tr>
     <tr>
@@ -1425,8 +1388,7 @@ defaultRouteAction must not be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The host that will be used in the redirect response instead of the one that was
-supplied in the request. The value must be between 1 and 255 characters.</p>
+            <p>The host that will be used in the redirect response instead of the one that was supplied in the request. The value must be between 1 and 255 characters.</p>
         </td>
     </tr>
     <tr>
@@ -1436,10 +1398,7 @@ supplied in the request. The value must be between 1 and 255 characters.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If set to true, the URL scheme in the redirected request is set to https. If set to
-false, the URL scheme of the redirected request will remain the same as that of the
-request. This must only be set for UrlMaps used in TargetHttpProxys. Setting this
-true for TargetHttpsProxy is not permitted. The default is set to false.</p>
+            <p>If set to true, the URL scheme in the redirected request is set to https. If set to false, the URL scheme of the redirected request will remain the same as that of the request. This must only be set for UrlMaps used in TargetHttpProxys. Setting this true for TargetHttpsProxy is not permitted. The default is set to false.</p>
         </td>
     </tr>
     <tr>
@@ -1449,11 +1408,7 @@ true for TargetHttpsProxy is not permitted. The default is set to false.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The path that will be used in the redirect response instead of the one that was
-supplied in the request. pathRedirect cannot be supplied together with
-prefixRedirect. Supply one alone or neither. If neither is supplied, the path of the
-original request will be used for the redirect. The value must be between 1 and 1024
-characters.</p>
+            <p>The path that will be used in the redirect response instead of the one that was supplied in the request. pathRedirect cannot be supplied together with prefixRedirect. Supply one alone or neither. If neither is supplied, the path of the original request will be used for the redirect. The value must be between 1 and 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -1463,11 +1418,7 @@ characters.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The prefix that replaces the prefixMatch specified in the HttpRouteRuleMatch,
-retaining the remaining portion of the URL before redirecting the request.
-prefixRedirect cannot be supplied together with pathRedirect. Supply one alone or
-neither. If neither is supplied, the path of the original request will be used for
-the redirect. The value must be between 1 and 1024 characters.</p>
+            <p>The prefix that replaces the prefixMatch specified in the HttpRouteRuleMatch, retaining the remaining portion of the URL before redirecting the request. prefixRedirect cannot be supplied together with pathRedirect. Supply one alone or neither. If neither is supplied, the path of the original request will be used for the redirect. The value must be between 1 and 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -1499,10 +1450,7 @@ the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENT
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If set to true, any accompanying query portion of the original URL is removed prior
-to redirecting the request. If set to false, the query portion of the original URL is
-retained.
- This field is required to ensure an empty block is not set. The normal default value is false.</p>
+            <p>If set to true, any accompanying query portion of the original URL is removed prior to redirecting the request. If set to false, the query portion of the original URL is retained. This field is required to ensure an empty block is not set. The normal default value is false.</p>
         </td>
     </tr>
     <tr>
@@ -1512,8 +1460,7 @@ retained.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>An optional description of this resource. Provide this property when
-you create the resource.</p>
+            <p>An optional description of this resource. Provide this property when you create the resource.</p>
         </td>
     </tr>
     <tr>
@@ -1523,9 +1470,7 @@ you create the resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies changes to request and response headers that need to take effect for
-the selected backendService. The headerAction specified here take effect after
-headerAction specified under pathMatcher.</p>
+            <p>Specifies changes to request and response headers that need to take effect for the selected backendService. The headerAction specified here take effect after headerAction specified under pathMatcher.</p>
         </td>
     </tr>
     <tr>
@@ -1535,8 +1480,7 @@ headerAction specified under pathMatcher.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Headers to add to a matching request prior to forwarding the request to the
-backendService.</p>
+            <p>Headers to add to a matching request prior to forwarding the request to the backendService.</p>
         </td>
     </tr>
     <tr>
@@ -1576,9 +1520,7 @@ backendService.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the
-header. If true, headerValue is set for the header, discarding any values that
-were set for that header.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -1588,8 +1530,7 @@ were set for that header.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the request
-prior to forwarding the request to the backendService.</p>
+            <p>A list of header names for headers that need to be removed from the request prior to forwarding the request to the backendService.</p>
         </td>
     </tr>
     <tr>
@@ -1649,9 +1590,7 @@ prior to forwarding the request to the backendService.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the
-header. If true, headerValue is set for the header, discarding any values that
-were set for that header.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -1661,8 +1600,7 @@ were set for that header.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the response
-prior to sending the response back to the client.</p>
+            <p>A list of header names for headers that need to be removed from the response prior to sending the response back to the client.</p>
         </td>
     </tr>
     <tr>
@@ -1702,8 +1640,7 @@ prior to sending the response back to the client.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>An optional description of this HostRule. Provide this property
-when you create the resource.</p>
+            <p>An optional description of this HostRule. Provide this property when you create the resource.</p>
         </td>
     </tr>
     <tr>
@@ -1713,10 +1650,7 @@ when you create the resource.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>The list of host patterns to match. They must be valid
-hostnames, except * will match any string of ([a-z0-9-.]*). In
-that case, * must be the first character and must be followed in
-the pattern by either - or ..</p>
+            <p>The list of host patterns to match. They must be valid hostnames, except * will match any string of ([a-z0-9-.]*). In that case, * must be the first character and must be followed in the pattern by either - or ..</p>
         </td>
     </tr>
     <tr>
@@ -1736,8 +1670,7 @@ the pattern by either - or ..</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of the PathMatcher to use to match the path portion of
-the URL if the hostRule matches the URL's host portion.</p>
+            <p>The name of the PathMatcher to use to match the path portion of the URL if the hostRule matches the URL's host portion.</p>
         </td>
     </tr>
     <tr>
@@ -1857,7 +1790,7 @@ the URL if the hostRule matches the URL's host portion.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendBucket` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1867,7 +1800,7 @@ the URL if the hostRule matches the URL's host portion.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1877,7 +1810,7 @@ the URL if the hostRule matches the URL's host portion.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1902,8 +1835,7 @@ Only one of defaultRouteAction or defaultUrlRedirect must be set.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The specification for allowing client side cross-origin requests. Please see
-[W3C Recommendation for Cross Origin Resource Sharing](https://www.w3.org/TR/cors/).</p>
+            <p>The specification for allowing client side cross-origin requests. Please see W3C Recommendation for Cross Origin Resource Sharing.</p>
         </td>
     </tr>
     <tr>
@@ -1913,8 +1845,7 @@ Only one of defaultRouteAction or defaultUrlRedirect must be set.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>In response to a preflight request, setting this to true indicates that the actual request can include user credentials.
-This translates to the Access-Control-Allow-Credentials header.</p>
+            <p>In response to a preflight request, setting this to true indicates that the actual request can include user credentials. This translates to the Access- Control-Allow-Credentials header. Defaults to false.</p>
         </td>
     </tr>
     <tr>
@@ -1964,9 +1895,7 @@ This translates to the Access-Control-Allow-Credentials header.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies the regular expression patterns that match allowed origins. For regular expression grammar
-please see en.cppreference.com/w/cpp/regex/ecmascript
-An origin is allowed if it matches either an item in allowOrigins or an item in allowOriginRegexes.</p>
+            <p>Specifies the regular expression patterns that match allowed origins. For regular expression grammar please see en.cppreference.com/w/cpp/regex/ecmascript An origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
         </td>
     </tr>
     <tr>
@@ -1986,8 +1915,7 @@ An origin is allowed if it matches either an item in allowOrigins or an item in 
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies the list of origins that will be allowed to do CORS requests.
-An origin is allowed if it matches either an item in allowOrigins or an item in allowOriginRegexes.</p>
+            <p>Specifies the list of origins that will be allowed to do CORS requests. An origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
         </td>
     </tr>
     <tr>
@@ -2007,7 +1935,7 @@ An origin is allowed if it matches either an item in allowOrigins or an item in 
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If true, specifies the CORS policy is disabled. The default value is false, which indicates that the CORS policy is in effect.</p>
+            <p>If true, specifies the CORS policy is disabled. which indicates that the CORS policy is in effect. Defaults to false.</p>
         </td>
     </tr>
     <tr>
@@ -2037,8 +1965,7 @@ An origin is allowed if it matches either an item in allowOrigins or an item in 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies how long results of a preflight request can be cached in seconds.
-This translates to the Access-Control-Max-Age header.</p>
+            <p>Specifies how long the results of a preflight request can be cached. This translates to the content for the Access-Control-Max-Age header.</p>
         </td>
     </tr>
     <tr>
@@ -2048,12 +1975,7 @@ This translates to the Access-Control-Max-Age header.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The specification for fault injection introduced into traffic to test the resiliency of clients to backend service failure.
-As part of fault injection, when clients send requests to a backend service, delays can be introduced by Loadbalancer on a
-percentage of requests before sending those request to the backend service. Similarly requests from clients can be aborted
-by the Loadbalancer for a percentage of requests.
-
-timeout and retryPolicy will be ignored by clients that are configured with a faultInjectionPolicy.</p>
+            <p>The specification for fault injection introduced into traffic to test the resiliency of clients to backend service failure. As part of fault injection, when clients send requests to a backend service, delays can be introduced by Loadbalancer on a percentage of requests before sending those request to the backend service. Similarly requests from clients can be aborted by the Loadbalancer for a percentage of requests. timeout and retry_policy will be ignored by clients that are configured with a fault_injection_policy.</p>
         </td>
     </tr>
     <tr>
@@ -2073,8 +1995,7 @@ timeout and retryPolicy will be ignored by clients that are configured with a fa
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The HTTP status code used to abort the request.
-The value must be between 200 and 599 inclusive.</p>
+            <p>The HTTP status code used to abort the request. The value must be between 200 and 599 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -2084,8 +2005,7 @@ The value must be between 200 and 599 inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The percentage of traffic (connections/operations/requests) which will be aborted as part of fault injection.
-The value must be between 0.0 and 100.0 inclusive.</p>
+            <p>The percentage of traffic (connections/operations/requests) which will be aborted as part of fault injection. The value must be between 0.0 and 100.0 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -2115,8 +2035,7 @@ The value must be between 0.0 and 100.0 inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are
-represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 'seconds' field and a positive 'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -2126,8 +2045,7 @@ represented with a 0 seconds field and a positive nanos field. Must be from 0 to
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.
-Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years.</p>
+            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -2137,8 +2055,7 @@ Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.2
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The percentage of traffic (connections/operations/requests) on which delay will be introduced as part of fault injection.
-The value must be between 0.0 and 100.0 inclusive.</p>
+            <p>The percentage of traffic (connections/operations/requests) on which delay will be introduced as part of fault injection. The value must be between 0.0 and 100.0 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -2148,9 +2065,7 @@ The value must be between 0.0 and 100.0 inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies the policy on how requests intended for the route's backends are shadowed to a separate mirrored backend service.
-Loadbalancer does not wait for responses from the shadow service. Prior to sending traffic to the shadow service,
-the host / authority header is suffixed with -shadow.</p>
+            <p>Specifies the policy on how requests intended for the route's backends are shadowed to a separate mirrored backend service. Loadbalancer does not wait for responses from the shadow service. Prior to sending traffic to the shadow service, the host / authority header is suffixed with -shadow.</p>
         </td>
     </tr>
     <tr>
@@ -2160,7 +2075,7 @@ the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. The backend service resource being mirrored to.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2170,7 +2085,7 @@ the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2180,7 +2095,7 @@ the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2190,7 +2105,7 @@ the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2210,7 +2125,7 @@ the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies the allowed number retries. This number must be > 0. If not specified, defaults to 1.</p>
+            <p>Specifies the allowed number retries. This number must be > 0.</p>
         </td>
     </tr>
     <tr>
@@ -2220,10 +2135,7 @@ the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies a non-zero timeout per retry attempt.
-
-If not specified, will use the timeout set in HttpRouteAction. If timeout in HttpRouteAction is not set,
-will use the largest timeout among all backend services associated with the route.</p>
+            <p>Specifies a non-zero timeout per retry attempt.</p>
         </td>
     </tr>
     <tr>
@@ -2233,8 +2145,7 @@ will use the largest timeout among all backend services associated with the rout
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are
-represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 'seconds' field and a positive 'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -2244,8 +2155,7 @@ represented with a 0 seconds field and a positive nanos field. Must be from 0 to
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.
-Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years.</p>
+            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -2255,22 +2165,28 @@ Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.2
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specfies one or more conditions when this retry rule applies. Valid values are:
+            <p>Specifies one or more conditions when this retry rule applies. Valid values are:
 
-* 5xx: Loadbalancer will attempt a retry if the backend service responds with any 5xx response code,
-  or if the backend service does not respond at all, example: disconnects, reset, read timeout,
-* connection failure, and refused streams.
-* gateway-error: Similar to 5xx, but only applies to response codes 502, 503 or 504.
-* connect-failure: Loadbalancer will retry on failures connecting to backend services,
-  for example due to connection timeouts.
+* 5xx: Loadbalancer will attempt a retry if the backend service responds with
+any 5xx response code, or if the backend service does not respond at all,
+example: disconnects, reset, read timeout, connection failure, and refused
+streams.
+* gateway-error: Similar to 5xx, but only applies to response codes
+502, 503 or 504.
+* connect-failure: Loadbalancer will retry on failures
+connecting to backend services, for example due to connection timeouts.
 * retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
-  Currently the only retriable error supported is 409.
-* refused-stream:Loadbalancer will retry if the backend service resets the stream with a REFUSED_STREAM error code.
-  This reset type indicates that it is safe to retry.
-* cancelled: Loadbalancer will retry if the gRPC status code in the response header is set to cancelled
-* deadline-exceeded: Loadbalancer will retry if the gRPC status code in the response header is set to deadline-exceeded
-* resource-exhausted: Loadbalancer will retry if the gRPC status code in the response header is set to resource-exhausted
-* unavailable: Loadbalancer will retry if the gRPC status code in the response header is set to unavailable.</p>
+Currently the only retriable error supported is 409.
+* refused-stream: Loadbalancer will retry if the backend service resets the stream with a
+REFUSED_STREAM error code. This reset type indicates that it is safe to retry.
+* cancelled: Loadbalancer will retry if the gRPC status code in the response
+header is set to cancelled
+* deadline-exceeded: Loadbalancer will retry if the
+gRPC status code in the response header is set to deadline-exceeded
+* resource-exhausted: Loadbalancer will retry if the gRPC status code in the response
+header is set to resource-exhausted
+* unavailable: Loadbalancer will retry if the gRPC status code in
+the response header is set to unavailable.</p>
         </td>
     </tr>
     <tr>
@@ -2290,10 +2206,7 @@ Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.2
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies the timeout for the selected route. Timeout is computed from the time the request has been
-fully processed (i.e. end-of-stream) up until the response has been completely processed. Timeout includes all retries.
-
-If not specified, will use the largest timeout among all backend services associated with the route.</p>
+            <p>Specifies the timeout for the selected route. Timeout is computed from the time the request is has been fully processed (i.e. end-of-stream) up until the response has been completely processed. Timeout includes all retries. If not specified, the default value is 15 seconds.</p>
         </td>
     </tr>
     <tr>
@@ -2303,8 +2216,7 @@ If not specified, will use the largest timeout among all backend services associ
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented
-with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 'seconds' field and a positive 'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -2314,8 +2226,7 @@ with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.
-Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years.</p>
+            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -2335,10 +2246,7 @@ Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.2
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Prior to forwarding the request to the selected service, the request's host header is replaced
-with contents of hostRewrite.
-
-The value must be between 1 and 255 characters.</p>
+            <p>Prior to forwarding the request to the selected service, the request's host header is replaced with contents of hostRewrite. The value must be between 1 and 255 characters.</p>
         </td>
     </tr>
     <tr>
@@ -2348,10 +2256,7 @@ The value must be between 1 and 255 characters.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Prior to forwarding the request to the selected backend service, the matching portion of the
-request's path is replaced by pathPrefixRewrite.
-
-The value must be between 1 and 1024 characters.</p>
+            <p>Prior to forwarding the request to the selected backend service, the matching portion of the request's path is replaced by pathPrefixRewrite. The value must be between 1 and 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -2361,14 +2266,7 @@ The value must be between 1 and 1024 characters.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>A list of weighted backend services to send traffic to when a route match occurs.
-The weights determine the fraction of traffic that flows to their corresponding backend service.
-If all traffic needs to go to a single backend service, there must be one weightedBackendService
-with weight set to a non 0 number.
-
-Once a backendService is identified and before forwarding the request to the backend service,
-advanced routing actions like Url rewrites and header transformations are applied depending on
-additional settings specified in this HttpRouteAction.</p>
+            <p>A list of weighted backend services to send traffic to when a route match occurs. The weights determine the fraction of traffic that flows to their corresponding backend service. If all traffic needs to go to a single backend service, there must be one  weightedBackendService with weight set to a non 0 number. Once a backendService is identified and before forwarding the request to the backend service, advanced routing actions like Url rewrites and header transformations are applied depending on additional settings specified in this HttpRouteAction.</p>
         </td>
     </tr>
     <tr>
@@ -2388,10 +2286,7 @@ additional settings specified in this HttpRouteAction.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The default backend service resource.
-Before forwarding the request to backendService, the loadbalancer
-applies any relevant headerActions specified as part of this
-backendServiceWeight.</p>
+            <p>Required. The default backend service resource. Before forwarding the request to backendService, the loadbalancer applies any relevant headerActions specified as part of this backendServiceWeight.</p>
         </td>
     </tr>
     <tr>
@@ -2401,7 +2296,7 @@ backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2411,7 +2306,7 @@ backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2421,7 +2316,7 @@ backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2431,11 +2326,7 @@ backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies changes to request and response headers that need to take effect for
-the selected backendService.
-
-headerAction specified here take effect before headerAction in the enclosing
-HttpRouteRule, PathMatcher and UrlMap.</p>
+            <p>Specifies changes to request and response headers that need to take effect for the selected backendService. headerAction specified here take effect before headerAction in the enclosing HttpRouteRule, PathMatcher and UrlMap.</p>
         </td>
     </tr>
     <tr>
@@ -2445,7 +2336,7 @@ HttpRouteRule, PathMatcher and UrlMap.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Headers to add to a matching request prior to forwarding the request to the backendService.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2465,7 +2356,7 @@ HttpRouteRule, PathMatcher and UrlMap.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of the header to add.</p>
+            <p>The name of the header.</p>
         </td>
     </tr>
     <tr>
@@ -2485,8 +2376,7 @@ HttpRouteRule, PathMatcher and UrlMap.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the header.
-If true, headerValue is set for the header, discarding any values that were set for that header.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -2496,8 +2386,7 @@ If true, headerValue is set for the header, discarding any values that were set 
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the request prior to
-forwarding the request to the backendService.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2517,7 +2406,7 @@ forwarding the request to the backendService.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Headers to add the response prior to sending the response back to the client.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2537,7 +2426,7 @@ forwarding the request to the backendService.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of the header to add.</p>
+            <p>The name of the header.</p>
         </td>
     </tr>
     <tr>
@@ -2557,8 +2446,7 @@ forwarding the request to the backendService.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the header.
-If true, headerValue is set for the header, discarding any values that were set for that header.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -2568,8 +2456,7 @@ If true, headerValue is set for the header, discarding any values that were set 
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the response prior to sending the
-response back to the client.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2589,14 +2476,7 @@ response back to the client.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies the fraction of traffic sent to backendService, computed as
-weight / (sum of all weightedBackendService weights in routeAction) .
-
-The selection of a backend service is determined only for new traffic. Once a user's request
-has been directed to a backendService, subsequent requests will be sent to the same backendService
-as determined by the BackendService's session affinity policy.
-
-The value must be between 0 and 1000.</p>
+            <p>Specifies the fraction of traffic sent to backendService, computed as weight / (sum of all weightedBackendService weights in routeAction) . The selection of a backend service is determined only for new traffic. Once a user's request has been directed to a backendService, subsequent requests will be sent to the same backendService as determined by the BackendService's session affinity policy. The value must be between 0 and 1000.</p>
         </td>
     </tr>
     <tr>
@@ -2606,12 +2486,7 @@ The value must be between 0 and 1000.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The default service to use if none of the pathRules defined by this
-PathMatcher is matched by the URL's path portion.
-For the Global URL Map, it should be a reference to the backend
-service or backend bucket.
-For the Regional URL Map, it should be a reference to the backend
-service.</p>
+            <p>The default service to use if none of the pathRules defined by this PathMatcher is matched by the URL's path portion. For the Global URL Map, it should be a reference to the backend service or backend bucket. For the Regional URL Map, it should be a reference to the backend service.</p>
         </td>
     </tr>
     <tr>
@@ -2631,7 +2506,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendBucket` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2641,7 +2516,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2651,7 +2526,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2671,7 +2546,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2681,7 +2556,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2691,7 +2566,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -2701,9 +2576,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>When none of the specified hostRules match, the request is redirected to a URL specified
-by defaultUrlRedirect. If defaultUrlRedirect is specified, defaultService or
-defaultRouteAction must not be set.</p>
+            <p>When none of the specified hostRules match, the request is redirected to a URL specified by defaultUrlRedirect. If defaultUrlRedirect is specified, defaultService or defaultRouteAction must not be set.</p>
         </td>
     </tr>
     <tr>
@@ -2713,8 +2586,7 @@ defaultRouteAction must not be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The host that will be used in the redirect response instead of the one that was
-supplied in the request. The value must be between 1 and 255 characters.</p>
+            <p>The host that will be used in the redirect response instead of the one that was supplied in the request. The value must be between 1 and 255 characters.</p>
         </td>
     </tr>
     <tr>
@@ -2724,10 +2596,7 @@ supplied in the request. The value must be between 1 and 255 characters.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If set to true, the URL scheme in the redirected request is set to https. If set to
-false, the URL scheme of the redirected request will remain the same as that of the
-request. This must only be set for UrlMaps used in TargetHttpProxys. Setting this
-true for TargetHttpsProxy is not permitted. The default is set to false.</p>
+            <p>If set to true, the URL scheme in the redirected request is set to https. If set to false, the URL scheme of the redirected request will remain the same as that of the request. This must only be set for UrlMaps used in TargetHttpProxys. Setting this true for TargetHttpsProxy is not permitted. The default is set to false.</p>
         </td>
     </tr>
     <tr>
@@ -2737,11 +2606,7 @@ true for TargetHttpsProxy is not permitted. The default is set to false.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The path that will be used in the redirect response instead of the one that was
-supplied in the request. pathRedirect cannot be supplied together with
-prefixRedirect. Supply one alone or neither. If neither is supplied, the path of the
-original request will be used for the redirect. The value must be between 1 and 1024
-characters.</p>
+            <p>The path that will be used in the redirect response instead of the one that was supplied in the request. pathRedirect cannot be supplied together with prefixRedirect. Supply one alone or neither. If neither is supplied, the path of the original request will be used for the redirect. The value must be between 1 and 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -2751,11 +2616,7 @@ characters.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The prefix that replaces the prefixMatch specified in the HttpRouteRuleMatch,
-retaining the remaining portion of the URL before redirecting the request.
-prefixRedirect cannot be supplied together with pathRedirect. Supply one alone or
-neither. If neither is supplied, the path of the original request will be used for
-the redirect. The value must be between 1 and 1024 characters.</p>
+            <p>The prefix that replaces the prefixMatch specified in the HttpRouteRuleMatch, retaining the remaining portion of the URL before redirecting the request. prefixRedirect cannot be supplied together with pathRedirect. Supply one alone or neither. If neither is supplied, the path of the original request will be used for the redirect. The value must be between 1 and 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -2787,10 +2648,7 @@ the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENT
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If set to true, any accompanying query portion of the original URL is removed prior
-to redirecting the request. If set to false, the query portion of the original URL is
-retained.
- This field is required to ensure an empty block is not set. The normal default value is false.</p>
+            <p>If set to true, any accompanying query portion of the original URL is removed prior to redirecting the request. If set to false, the query portion of the original URL is retained. This field is required to ensure an empty block is not set. The normal default value is false.</p>
         </td>
     </tr>
     <tr>
@@ -2810,9 +2668,7 @@ retained.
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies changes to request and response headers that need to take effect for
-the selected backendService. HeaderAction specified here are applied after the
-matching HttpRouteRule HeaderAction and before the HeaderAction in the UrlMap.</p>
+            <p>Specifies changes to request and response headers that need to take effect for the selected backendService. HeaderAction specified here are applied after the matching HttpRouteRule HeaderAction and before the HeaderAction in the UrlMap.</p>
         </td>
     </tr>
     <tr>
@@ -2822,8 +2678,7 @@ matching HttpRouteRule HeaderAction and before the HeaderAction in the UrlMap.</
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Headers to add to a matching request prior to forwarding the request to the
-backendService.</p>
+            <p>Headers to add to a matching request prior to forwarding the request to the backendService.</p>
         </td>
     </tr>
     <tr>
@@ -2863,9 +2718,7 @@ backendService.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the
-header. If true, headerValue is set for the header, discarding any values that
-were set for that header.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -2875,8 +2728,7 @@ were set for that header.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the request
-prior to forwarding the request to the backendService.</p>
+            <p>A list of header names for headers that need to be removed from the request prior to forwarding the request to the backendService.</p>
         </td>
     </tr>
     <tr>
@@ -2936,9 +2788,7 @@ prior to forwarding the request to the backendService.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the
-header. If true, headerValue is set for the header, discarding any values that
-were set for that header.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -2948,8 +2798,7 @@ were set for that header.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the response
-prior to sending the response back to the client.</p>
+            <p>A list of header names for headers that need to be removed from the response prior to sending the response back to the client.</p>
         </td>
     </tr>
     <tr>
@@ -2979,12 +2828,7 @@ prior to sending the response back to the client.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>The list of path rules. Use this list instead of routeRules when routing based
-on simple path matching is all that's required. The order by which path rules
-are specified does not matter. Matches are always done on the longest-path-first
-basis. For example: a pathRule with a path /a/b/c/* will match before /a/b/*
-irrespective of the order in which those paths appear in this list. Within a
-given pathMatcher, only one of pathRules or routeRules must be set.</p>
+            <p>The list of path rules. Use this list instead of routeRules when routing based on simple path matching is all that's required. The order by which path rules are specified does not matter. Matches are always done on the longest-path-first basis. For example: a pathRule with a path /a/b/c/* will match before /a/b/* irrespective of the order in which those paths appear in this list. Within a given pathMatcher, only one of pathRules or routeRules must be set.</p>
         </td>
     </tr>
     <tr>
@@ -3004,10 +2848,7 @@ given pathMatcher, only one of pathRules or routeRules must be set.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>The list of path patterns to match. Each must start with / and the only place a
-\* is allowed is at the end following a /. The string fed to the path matcher
-does not include any text after the first ? or #, and those chars are not
-allowed here.</p>
+            <p>The list of path patterns to match. Each must start with / and the only place a \* is allowed is at the end following a /. The string fed to the path matcher does not include any text after the first ? or #, and those chars are not allowed here.</p>
         </td>
     </tr>
     <tr>
@@ -3027,12 +2868,7 @@ allowed here.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>In response to a matching path, the load balancer performs advanced routing
-actions like URL rewrites, header transformations, etc. prior to forwarding the
-request to the selected backend. If routeAction specifies any
-weightedBackendServices, service must not be set. Conversely if service is set,
-routeAction cannot contain any  weightedBackendServices. Only one of routeAction
-or urlRedirect must be set.</p>
+            <p>In response to a matching path, the load balancer performs advanced routing actions like URL rewrites, header transformations, etc. prior to forwarding the request to the selected backend. If routeAction specifies any weightedBackendServices, service must not be set. Conversely if service is set, routeAction cannot contain any  weightedBackendServices. Only one of routeAction or urlRedirect must be set.</p>
         </td>
     </tr>
     <tr>
@@ -3042,8 +2878,7 @@ or urlRedirect must be set.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The specification for allowing client side cross-origin requests. Please see W3C
-Recommendation for Cross Origin Resource Sharing.</p>
+            <p>The specification for allowing client side cross-origin requests. Please see W3C Recommendation for Cross Origin Resource Sharing.</p>
         </td>
     </tr>
     <tr>
@@ -3053,9 +2888,7 @@ Recommendation for Cross Origin Resource Sharing.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>In response to a preflight request, setting this to true indicates that the
-actual request can include user credentials. This translates to the Access-
-Control-Allow-Credentials header. Defaults to false.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3065,7 +2898,7 @@ Control-Allow-Credentials header. Defaults to false.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies the content for the Access-Control-Allow-Headers header.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3085,7 +2918,7 @@ Control-Allow-Credentials header. Defaults to false.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies the content for the Access-Control-Allow-Methods header.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3105,9 +2938,7 @@ Control-Allow-Credentials header. Defaults to false.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies the regular expression patterns that match allowed origins. For
-regular expression grammar please see en.cppreference.com/w/cpp/regex/ecmascript
-An origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3127,8 +2958,7 @@ An origin is allowed if it matches either allow_origins or allow_origin_regex.</
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies the list of origins that will be allowed to do CORS requests. An
-origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3148,7 +2978,7 @@ origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If true, specifies the CORS policy is disabled.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3158,7 +2988,7 @@ origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies the content for the Access-Control-Expose-Headers header.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3178,8 +3008,7 @@ origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies how long the results of a preflight request can be cached. This
-translates to the content for the Access-Control-Max-Age header.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3189,13 +3018,7 @@ translates to the content for the Access-Control-Max-Age header.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The specification for fault injection introduced into traffic to test the
-resiliency of clients to backend service failure. As part of fault injection,
-when clients send requests to a backend service, delays can be introduced by
-Loadbalancer on a percentage of requests before sending those request to the
-backend service. Similarly requests from clients can be aborted by the
-Loadbalancer for a percentage of requests. timeout and retry_policy will be
-ignored by clients that are configured with a fault_injection_policy.</p>
+            <p>The specification for fault injection introduced into traffic to test the resiliency of clients to backend service failure. As part of fault injection, when clients send requests to a backend service, delays can be introduced by Loadbalancer on a percentage of requests before sending those request to the backend service. Similarly requests from clients can be aborted by the Loadbalancer for a percentage of requests. timeout and retry_policy will be ignored by clients that are configured with a fault_injection_policy.</p>
         </td>
     </tr>
     <tr>
@@ -3205,8 +3028,7 @@ ignored by clients that are configured with a fault_injection_policy.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The specification for how client requests are aborted as part of fault
-injection.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3216,8 +3038,7 @@ injection.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The HTTP status code used to abort the request. The value must be between 200
-and 599 inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3227,9 +3048,7 @@ and 599 inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The percentage of traffic (connections/operations/requests) which will be
-aborted as part of fault injection. The value must be between 0.0 and 100.0
-inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3239,8 +3058,7 @@ inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The specification for how client requests are delayed as part of fault
-injection, before being sent to a backend service.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3250,7 +3068,7 @@ injection, before being sent to a backend service.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies the value of the fixed delay interval.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3260,9 +3078,7 @@ injection, before being sent to a backend service.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 'seconds' field and a positive
-'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3272,8 +3088,7 @@ less than one second are represented with a 0 'seconds' field and a positive
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000
-inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3283,9 +3098,7 @@ inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The percentage of traffic (connections/operations/requests) on which delay will
-be introduced as part of fault injection. The value must be between 0.0 and
-100.0 inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3295,10 +3108,7 @@ be introduced as part of fault injection. The value must be between 0.0 and
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies the policy on how requests intended for the route's backends are
-shadowed to a separate mirrored backend service. Loadbalancer does not wait for
-responses from the shadow service. Prior to sending traffic to the shadow
-service, the host / authority header is suffixed with -shadow.</p>
+            <p>Specifies the policy on how requests intended for the route's backends are shadowed to a separate mirrored backend service. Loadbalancer does not wait for responses from the shadow service. Prior to sending traffic to the shadow service, the host / authority header is suffixed with -shadow.</p>
         </td>
     </tr>
     <tr>
@@ -3308,7 +3118,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. The backend service resource being mirrored to.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3318,7 +3128,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3328,7 +3138,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3338,7 +3148,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3358,7 +3168,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies the allowed number retries. This number must be > 0.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3368,7 +3178,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies a non-zero timeout per retry attempt.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3378,9 +3188,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 'seconds' field and a positive
-'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3390,8 +3198,7 @@ less than one second are represented with a 0 'seconds' field and a positive
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000
-inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3401,28 +3208,7 @@ inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies one or more conditions when this retry rule applies. Valid values are:
-
-- 5xx: Loadbalancer will attempt a retry if the backend service responds with
-any 5xx response code, or if the backend service does not respond at all,
-example: disconnects, reset, read timeout, connection failure, and refused
-streams.
-- gateway-error: Similar to 5xx, but only applies to response codes
-502, 503 or 504.
-- connect-failure: Loadbalancer will retry on failures
-connecting to backend services, for example due to connection timeouts.
-- retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
-Currently the only retriable error supported is 409.
-- refused-stream: Loadbalancer will retry if the backend service resets the stream with a
-REFUSED_STREAM error code. This reset type indicates that it is safe to retry.
-- cancelled: Loadbalancer will retry if the gRPC status code in the response
-header is set to cancelled
-- deadline-exceeded: Loadbalancer will retry if the
-gRPC status code in the response header is set to deadline-exceeded
-- resource-exhausted: Loadbalancer will retry if the gRPC status code in the response
-header is set to resource-exhausted
-- unavailable: Loadbalancer will retry if
-the gRPC status code in the response header is set to unavailable.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3442,10 +3228,7 @@ the gRPC status code in the response header is set to unavailable.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies the timeout for the selected route. Timeout is computed from the time
-the request is has been fully processed (i.e. end-of-stream) up until the
-response has been completely processed. Timeout includes all retries. If not
-specified, the default value is 15 seconds.</p>
+            <p>Specifies the timeout for the selected route. Timeout is computed from the time the request is has been fully processed (i.e. end-of-stream) up until the response has been completely processed. Timeout includes all retries. If not specified, the default value is 15 seconds.</p>
         </td>
     </tr>
     <tr>
@@ -3455,9 +3238,7 @@ specified, the default value is 15 seconds.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 'seconds' field and a positive
-'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3467,8 +3248,7 @@ less than one second are represented with a 0 'seconds' field and a positive
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000
-inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3478,8 +3258,7 @@ inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The spec to modify the URL of the request, prior to forwarding the request to
-the matched service.</p>
+            <p>The spec to modify the URL of the request, prior to forwarding the request to the matched service.</p>
         </td>
     </tr>
     <tr>
@@ -3489,9 +3268,7 @@ the matched service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Prior to forwarding the request to the selected service, the request's host
-header is replaced with contents of hostRewrite. The value must be between 1 and
-255 characters.</p>
+            <p>Prior to forwarding the request to the selected service, the request's host header is replaced with contents of hostRewrite. The value must be between 1 and 255 characters.</p>
         </td>
     </tr>
     <tr>
@@ -3501,9 +3278,7 @@ header is replaced with contents of hostRewrite. The value must be between 1 and
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Prior to forwarding the request to the selected backend service, the matching
-portion of the request's path is replaced by pathPrefixRewrite. The value must
-be between 1 and 1024 characters.</p>
+            <p>Prior to forwarding the request to the selected backend service, the matching portion of the request's path is replaced by pathPrefixRewrite. The value must be between 1 and 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -3513,14 +3288,7 @@ be between 1 and 1024 characters.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>A list of weighted backend services to send traffic to when a route match
-occurs. The weights determine the fraction of traffic that flows to their
-corresponding backend service. If all traffic needs to go to a single backend
-service, there must be one  weightedBackendService with weight set to a non 0
-number. Once a backendService is identified and before forwarding the request to
-the backend service, advanced routing actions like Url rewrites and header
-transformations are applied depending on additional settings specified in this
-HttpRouteAction.</p>
+            <p>A list of weighted backend services to send traffic to when a route match occurs. The weights determine the fraction of traffic that flows to their corresponding backend service. If all traffic needs to go to a single backend service, there must be one  weightedBackendService with weight set to a non 0 number. Once a backendService is identified and before forwarding the request to the backend service, advanced routing actions like Url rewrites and header transformations are applied depending on additional settings specified in this HttpRouteAction.</p>
         </td>
     </tr>
     <tr>
@@ -3540,9 +3308,7 @@ HttpRouteAction.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. The default backend service resource. Before forwarding
-the request to backendService, the loadbalancer applies any relevant
-headerActions specified as part of this backendServiceWeight.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3552,7 +3318,7 @@ headerActions specified as part of this backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3562,7 +3328,7 @@ headerActions specified as part of this backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3572,7 +3338,7 @@ headerActions specified as part of this backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3582,9 +3348,7 @@ headerActions specified as part of this backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies changes to request and response headers that need to take effect for
-the selected backendService. headerAction specified here take effect before
-headerAction in the enclosing HttpRouteRule, PathMatcher and UrlMap.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3594,8 +3358,7 @@ headerAction in the enclosing HttpRouteRule, PathMatcher and UrlMap.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Headers to add to a matching request prior to forwarding the request to the
-backendService.</p>
+            <p>Headers to add to a matching request prior to forwarding the request to the backendService.</p>
         </td>
     </tr>
     <tr>
@@ -3635,9 +3398,7 @@ backendService.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the
-header. If true, headerValue is set for the header, discarding any values that
-were set for that header.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -3647,8 +3408,7 @@ were set for that header.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the request
-prior to forwarding the request to the backendService.</p>
+            <p>A list of header names for headers that need to be removed from the request prior to forwarding the request to the backendService.</p>
         </td>
     </tr>
     <tr>
@@ -3708,9 +3468,7 @@ prior to forwarding the request to the backendService.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the
-header. If true, headerValue is set for the header, discarding any values that
-were set for that header.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -3720,8 +3478,7 @@ were set for that header.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the response
-prior to sending the response back to the client.</p>
+            <p>A list of header names for headers that need to be removed from the response prior to sending the response back to the client.</p>
         </td>
     </tr>
     <tr>
@@ -3741,12 +3498,7 @@ prior to sending the response back to the client.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies the fraction of traffic sent to backendService, computed as weight /
-(sum of all weightedBackendService weights in routeAction) . The selection of a
-backend service is determined only for new traffic. Once a user's request has
-been directed to a backendService, subsequent requests will be sent to the same
-backendService as determined by the BackendService's session affinity policy.
-The value must be between 0 and 1000.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3756,19 +3508,7 @@ The value must be between 0 and 1000.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The backend service to which traffic is directed if this rule is
-matched.
-For the Global URL Map, it should be a reference to the backend
-service or backend bucket.
-For the Regional URL Map, it should be a reference to the backend
-service.
-If routeAction is additionally specified, advanced routing actions
-like URL Rewrites, etc. take effect prior to sending the request to
-the backend. However, if service is specified, routeAction cannot
-contain any weightedBackendServices. Conversely, if routeAction
-specifies any weightedBackendServices, service must not be
-specified. Only one of urlRedirect, service or
-routeAction.weightedBackendService must be set.</p>
+            <p>The backend service to which traffic is directed if this rule is matched. For the Global URL Map, it should be a reference to the backend service or backend bucket. For the Regional URL Map, it should be a reference to the backend service. If routeAction is additionally specified, advanced routing actions like URL Rewrites, etc. take effect prior to sending the request to the backend. However, if service is specified, routeAction cannot contain any weightedBackendServices. Conversely, if routeAction specifies any weightedBackendServices, service must not be specified. Only one of urlRedirect, service or routeAction.weightedBackendService must be set.</p>
         </td>
     </tr>
     <tr>
@@ -3788,7 +3528,7 @@ routeAction.weightedBackendService must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendBucket` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3798,7 +3538,7 @@ routeAction.weightedBackendService must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3808,7 +3548,7 @@ routeAction.weightedBackendService must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3828,7 +3568,7 @@ routeAction.weightedBackendService must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3838,7 +3578,7 @@ routeAction.weightedBackendService must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3848,7 +3588,7 @@ routeAction.weightedBackendService must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -3858,9 +3598,7 @@ routeAction.weightedBackendService must be set.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>When a path pattern is matched, the request is redirected to a URL specified
-by urlRedirect. If urlRedirect is specified, service or routeAction must not
-be set.</p>
+            <p>When a path pattern is matched, the request is redirected to a URL specified by urlRedirect. If urlRedirect is specified, service or routeAction must not be set.</p>
         </td>
     </tr>
     <tr>
@@ -3870,9 +3608,7 @@ be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The host that will be used in the redirect response instead of the one
-that was supplied in the request. The value must be between 1 and 255
-characters.</p>
+            <p>The host that will be used in the redirect response instead of the one that was supplied in the request. The value must be between 1 and 255 characters.</p>
         </td>
     </tr>
     <tr>
@@ -3882,11 +3618,7 @@ characters.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If set to true, the URL scheme in the redirected request is set to https.
-If set to false, the URL scheme of the redirected request will remain the
-same as that of the request. This must only be set for UrlMaps used in
-TargetHttpProxys. Setting this true for TargetHttpsProxy is not
-permitted. The default is set to false.</p>
+            <p>If set to true, the URL scheme in the redirected request is set to https. If set to false, the URL scheme of the redirected request will remain the same as that of the request. This must only be set for UrlMaps used in TargetHttpProxys. Setting this true for TargetHttpsProxy is not permitted. The default is set to false.</p>
         </td>
     </tr>
     <tr>
@@ -3896,11 +3628,7 @@ permitted. The default is set to false.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The path that will be used in the redirect response instead of the one
-that was supplied in the request. pathRedirect cannot be supplied
-together with prefixRedirect. Supply one alone or neither. If neither is
-supplied, the path of the original request will be used for the redirect.
-The value must be between 1 and 1024 characters.</p>
+            <p>The path that will be used in the redirect response instead of the one that was supplied in the request. pathRedirect cannot be supplied together with prefixRedirect. Supply one alone or neither. If neither is supplied, the path of the original request will be used for the redirect. The value must be between 1 and 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -3910,12 +3638,7 @@ The value must be between 1 and 1024 characters.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The prefix that replaces the prefixMatch specified in the
-HttpRouteRuleMatch, retaining the remaining portion of the URL before
-redirecting the request. prefixRedirect cannot be supplied together with
-pathRedirect. Supply one alone or neither. If neither is supplied, the
-path of the original request will be used for the redirect. The value
-must be between 1 and 1024 characters.</p>
+            <p>The prefix that replaces the prefixMatch specified in the HttpRouteRuleMatch, retaining the remaining portion of the URL before redirecting the request. prefixRedirect cannot be supplied together with pathRedirect. Supply one alone or neither. If neither is supplied, the path of the original request will be used for the redirect. The value must be between 1 and 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -3947,10 +3670,7 @@ the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENT
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If set to true, any accompanying query portion of the original URL is removed
-prior to redirecting the request. If set to false, the query portion of the
-original URL is retained.
- This field is required to ensure an empty block is not set. The normal default value is false.</p>
+            <p>If set to true, any accompanying query portion of the original URL is removed prior to redirecting the request. If set to false, the query portion of the original URL is retained. This field is required to ensure an empty block is not set. The normal default value is false.</p>
         </td>
     </tr>
     <tr>
@@ -3960,12 +3680,7 @@ original URL is retained.
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>The list of ordered HTTP route rules. Use this list instead of pathRules when
-advanced route matching and routing actions are desired. The order of specifying
-routeRules matters: the first rule that matches will cause its specified routing
-action to take effect. Within a given pathMatcher, only one of pathRules or
-routeRules must be set. routeRules are not supported in UrlMaps intended for
-External load balancers.</p>
+            <p>The list of ordered HTTP route rules. Use this list instead of pathRules when advanced route matching and routing actions are desired. The order of specifying routeRules matters: the first rule that matches will cause its specified routing action to take effect. Within a given pathMatcher, only one of pathRules or routeRules must be set. routeRules are not supported in UrlMaps intended for External load balancers.</p>
         </td>
     </tr>
     <tr>
@@ -3985,10 +3700,7 @@ External load balancers.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies changes to request and response headers that need to take effect for
-the selected backendService. The headerAction specified here are applied before
-the matching pathMatchers[].headerAction and after pathMatchers[].routeRules[].r
-outeAction.weightedBackendService.backendServiceWeightAction[].headerAction.</p>
+            <p>Specifies changes to request and response headers that need to take effect for the selected backendService. The headerAction specified here are applied before the matching pathMatchers[].headerAction and after pathMatchers[].routeRules[].r outeAction.weightedBackendService.backendServiceWeightAction[].headerAction.</p>
         </td>
     </tr>
     <tr>
@@ -3998,8 +3710,7 @@ outeAction.weightedBackendService.backendServiceWeightAction[].headerAction.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Headers to add to a matching request prior to forwarding the request to the
-backendService.</p>
+            <p>Headers to add to a matching request prior to forwarding the request to the backendService.</p>
         </td>
     </tr>
     <tr>
@@ -4039,9 +3750,7 @@ backendService.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the
-header. If true, headerValue is set for the header, discarding any values that
-were set for that header.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -4051,8 +3760,7 @@ were set for that header.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the request
-prior to forwarding the request to the backendService.</p>
+            <p>A list of header names for headers that need to be removed from the request prior to forwarding the request to the backendService.</p>
         </td>
     </tr>
     <tr>
@@ -4112,9 +3820,7 @@ prior to forwarding the request to the backendService.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the
-header. If true, headerValue is set for the header, discarding any values that
-were set for that header.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -4124,8 +3830,7 @@ were set for that header.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the response
-prior to sending the response back to the client.</p>
+            <p>A list of header names for headers that need to be removed from the response prior to sending the response back to the client.</p>
         </td>
     </tr>
     <tr>
@@ -4165,11 +3870,7 @@ prior to sending the response back to the client.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>For satisfying the matchRule condition, the path of the request must exactly
-match the value specified in fullPathMatch after removing any query parameters
-and anchor that may be part of the original URL. FullPathMatch must be between 1
-and 1024 characters. Only one of prefixMatch, fullPathMatch or regexMatch must
-be specified.</p>
+            <p>For satisfying the matchRule condition, the path of the request must exactly match the value specified in fullPathMatch after removing any query parameters and anchor that may be part of the original URL. FullPathMatch must be between 1 and 1024 characters. Only one of prefixMatch, fullPathMatch or regexMatch must be specified.</p>
         </td>
     </tr>
     <tr>
@@ -4179,8 +3880,7 @@ be specified.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Specifies a list of header match criteria, all of which must match corresponding
-headers in the request.</p>
+            <p>Specifies a list of header match criteria, all of which must match corresponding headers in the request.</p>
         </td>
     </tr>
     <tr>
@@ -4200,8 +3900,7 @@ headers in the request.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value should exactly match contents of exactMatch. Only one of exactMatch,
-prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.</p>
+            <p>The value should exactly match contents of exactMatch. Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.</p>
         </td>
     </tr>
     <tr>
@@ -4211,9 +3910,7 @@ prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.</p
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of the HTTP header to match. For matching against the HTTP request's
-authority, use a headerMatch with the header name ":authority". For matching a
-request's method, use the headerName ":method".</p>
+            <p>The name of the HTTP header to match. For matching against the HTTP request's authority, use a headerMatch with the header name ":authority". For matching a request's method, use the headerName ":method".</p>
         </td>
     </tr>
     <tr>
@@ -4223,9 +3920,7 @@ request's method, use the headerName ":method".</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If set to false, the headerMatch is considered a match if the match criteria
-above are met. If set to true, the headerMatch is considered a match if the
-match criteria above are NOT met. Defaults to false.</p>
+            <p>If set to false, the headerMatch is considered a match if the match criteria above are met. If set to true, the headerMatch is considered a match if the match criteria above are NOT met. Defaults to false.</p>
         </td>
     </tr>
     <tr>
@@ -4235,9 +3930,7 @@ match criteria above are NOT met. Defaults to false.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of the header must start with the contents of prefixMatch. Only one of
-exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch
-must be set.</p>
+            <p>The value of the header must start with the contents of prefixMatch. Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.</p>
         </td>
     </tr>
     <tr>
@@ -4247,9 +3940,7 @@ must be set.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>A header with the contents of headerName must exist. The match takes place
-whether or not the request's header has a value or not. Only one of exactMatch,
-prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.</p>
+            <p>A header with the contents of headerName must exist. The match takes place whether or not the request's header has a value or not. Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.</p>
         </td>
     </tr>
     <tr>
@@ -4299,13 +3990,7 @@ rangeMatch must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of the header must match the regular expression specified in
-regexMatch. For regular expression grammar, please see:
-en.cppreference.com/w/cpp/regex/ecmascript  For matching against a port
-specified in the HTTP request, use a headerMatch with headerName set to PORT and
-a regular expression that satisfies the RFC2616 Host header's port specifier.
-Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or
-rangeMatch must be set.</p>
+            <p>The value of the header must match the regular expression specified in regexMatch. For regular expression grammar, please see: en.cppreference.com/w/cpp/regex/ecmascript  For matching against a port specified in the HTTP request, use a headerMatch with headerName set to PORT and a regular expression that satisfies the RFC2616 Host header's port specifier. Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.</p>
         </td>
     </tr>
     <tr>
@@ -4315,9 +4000,7 @@ rangeMatch must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of the header must end with the contents of suffixMatch. Only one of
-exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch
-must be set.</p>
+            <p>The value of the header must end with the contents of suffixMatch. Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.</p>
         </td>
     </tr>
     <tr>
@@ -4327,8 +4010,7 @@ must be set.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Specifies that prefixMatch and fullPathMatch matches are case sensitive.
-Defaults to false.</p>
+            <p>Specifies that prefixMatch and fullPathMatch matches are case sensitive. Defaults to false.</p>
         </td>
     </tr>
     <tr>
@@ -4338,17 +4020,7 @@ Defaults to false.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Opaque filter criteria used by Loadbalancer to restrict routing configuration to
-a limited set xDS compliant clients. In their xDS requests to Loadbalancer, xDS
-clients present node metadata. If a match takes place, the relevant routing
-configuration is made available to those proxies. For each metadataFilter in
-this list, if its filterMatchCriteria is set to MATCH_ANY, at least one of the
-filterLabels must match the corresponding label provided in the metadata. If its
-filterMatchCriteria is set to MATCH_ALL, then all of its filterLabels must match
-with corresponding labels in the provided metadata. metadataFilters specified
-here can be overrides those specified in ForwardingRule that refers to this
-UrlMap. metadataFilters only applies to Loadbalancers that have their
-loadBalancingScheme set to INTERNAL_SELF_MANAGED.</p>
+            <p>Opaque filter criteria used by Loadbalancer to restrict routing configuration to a limited set xDS compliant clients. In their xDS requests to Loadbalancer, xDS clients present node metadata. If a match takes place, the relevant routing configuration is made available to those proxies. For each metadataFilter in this list, if its filterMatchCriteria is set to MATCH_ANY, at least one of the filterLabels must match the corresponding label provided in the metadata. If its filterMatchCriteria is set to MATCH_ALL, then all of its filterLabels must match with corresponding labels in the provided metadata. metadataFilters specified here can be overrides those specified in ForwardingRule that refers to this UrlMap. metadataFilters only applies to Loadbalancers that have their loadBalancingScheme set to INTERNAL_SELF_MANAGED.</p>
         </td>
     </tr>
     <tr>
@@ -4368,9 +4040,7 @@ loadBalancingScheme set to INTERNAL_SELF_MANAGED.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>The list of label value pairs that must match labels in the provided metadata
-based on filterMatchCriteria  This list must not be empty and can have at the
-most 64 entries.</p>
+            <p>The list of label value pairs that must match labels in the provided metadata based on filterMatchCriteria  This list must not be empty and can have at the most 64 entries.</p>
         </td>
     </tr>
     <tr>
@@ -4390,8 +4060,7 @@ most 64 entries.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of metadata label. The name can have a maximum length of 1024 characters
-and must be at least 1 character long.</p>
+            <p>Name of metadata label. The name can have a maximum length of 1024 characters and must be at least 1 character long.</p>
         </td>
     </tr>
     <tr>
@@ -4401,8 +4070,7 @@ and must be at least 1 character long.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of the label must match the specified value. value can have a maximum
-length of 1024 characters.</p>
+            <p>The value of the label must match the specified value. value can have a maximum length of 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -4446,10 +4114,7 @@ captures in total.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>For satisfying the matchRule condition, the request's path must begin with the
-specified prefixMatch. prefixMatch must begin with a /. The value must be
-between 1 and 1024 characters. Only one of prefixMatch, fullPathMatch or
-regexMatch must be specified.</p>
+            <p>For satisfying the matchRule condition, the request's path must begin with the specified prefixMatch. prefixMatch must begin with a /. The value must be between 1 and 1024 characters. Only one of prefixMatch, fullPathMatch or regexMatch must be specified.</p>
         </td>
     </tr>
     <tr>
@@ -4459,8 +4124,7 @@ regexMatch must be specified.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Specifies a list of query parameter match criteria, all of which must match
-corresponding query parameters in the request.</p>
+            <p>Specifies a list of query parameter match criteria, all of which must match corresponding query parameters in the request.</p>
         </td>
     </tr>
     <tr>
@@ -4480,9 +4144,7 @@ corresponding query parameters in the request.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The queryParameterMatch matches if the value of the parameter exactly matches
-the contents of exactMatch. Only one of presentMatch, exactMatch and regexMatch
-must be set.</p>
+            <p>The queryParameterMatch matches if the value of the parameter exactly matches the contents of exactMatch. Only one of presentMatch, exactMatch and regexMatch must be set.</p>
         </td>
     </tr>
     <tr>
@@ -4492,8 +4154,7 @@ must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of the query parameter to match. The query parameter must exist in the
-request, in the absence of which the request match fails.</p>
+            <p>The name of the query parameter to match. The query parameter must exist in the request, in the absence of which the request match fails.</p>
         </td>
     </tr>
     <tr>
@@ -4503,9 +4164,7 @@ request, in the absence of which the request match fails.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Specifies that the queryParameterMatch matches if the request contains the query
-parameter, irrespective of whether the parameter has a value or not. Only one of
-presentMatch, exactMatch and regexMatch must be set.</p>
+            <p>Specifies that the queryParameterMatch matches if the request contains the query parameter, irrespective of whether the parameter has a value or not. Only one of presentMatch, exactMatch and regexMatch must be set.</p>
         </td>
     </tr>
     <tr>
@@ -4515,10 +4174,7 @@ presentMatch, exactMatch and regexMatch must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The queryParameterMatch matches if the value of the parameter matches the
-regular expression specified by regexMatch. For the regular expression grammar,
-please see en.cppreference.com/w/cpp/regex/ecmascript  Only one of presentMatch,
-exactMatch and regexMatch must be set.</p>
+            <p>The queryParameterMatch matches if the value of the parameter matches the regular expression specified by regexMatch. For the regular expression grammar, please see en.cppreference.com/w/cpp/regex/ecmascript  Only one of presentMatch, exactMatch and regexMatch must be set.</p>
         </td>
     </tr>
     <tr>
@@ -4528,11 +4184,7 @@ exactMatch and regexMatch must be set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>For satisfying the matchRule condition, the path of the request must satisfy the
-regular expression specified in regexMatch after removing any query parameters
-and anchor supplied with the original URL. For regular expression grammar please
-see en.cppreference.com/w/cpp/regex/ecmascript  Only one of prefixMatch,
-fullPathMatch or regexMatch must be specified.</p>
+            <p>For satisfying the matchRule condition, the path of the request must satisfy the regular expression specified in regexMatch after removing any query parameters and anchor supplied with the original URL. For regular expression grammar please see en.cppreference.com/w/cpp/regex/ecmascript  Only one of prefixMatch, fullPathMatch or regexMatch must be specified.</p>
         </td>
     </tr>
     <tr>
@@ -4566,12 +4218,7 @@ future without any impact on existing rules.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>In response to a matching matchRule, the load balancer performs advanced routing
-actions like URL rewrites, header transformations, etc. prior to forwarding the
-request to the selected backend. If  routeAction specifies any
-weightedBackendServices, service must not be set. Conversely if service is set,
-routeAction cannot contain any  weightedBackendServices. Only one of routeAction
-or urlRedirect must be set.</p>
+            <p>In response to a matching matchRule, the load balancer performs advanced routing actions like URL rewrites, header transformations, etc. prior to forwarding the request to the selected backend. If  routeAction specifies any weightedBackendServices, service must not be set. Conversely if service is set, routeAction cannot contain any  weightedBackendServices. Only one of routeAction or urlRedirect must be set.</p>
         </td>
     </tr>
     <tr>
@@ -4581,8 +4228,7 @@ or urlRedirect must be set.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The specification for allowing client side cross-origin requests. Please see W3C
-Recommendation for Cross Origin Resource Sharing.</p>
+            <p>The specification for allowing client side cross-origin requests. Please see W3C Recommendation for Cross Origin Resource Sharing.</p>
         </td>
     </tr>
     <tr>
@@ -4592,9 +4238,7 @@ Recommendation for Cross Origin Resource Sharing.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>In response to a preflight request, setting this to true indicates that the
-actual request can include user credentials. This translates to the Access-
-Control-Allow-Credentials header. Defaults to false.</p>
+            <p>In response to a preflight request, setting this to true indicates that the actual request can include user credentials. This translates to the Access- Control-Allow-Credentials header. Defaults to false.</p>
         </td>
     </tr>
     <tr>
@@ -4644,9 +4288,7 @@ Control-Allow-Credentials header. Defaults to false.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies the regular expression patterns that match allowed origins. For
-regular expression grammar please see en.cppreference.com/w/cpp/regex/ecmascript
-An origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
+            <p>Specifies the regular expression patterns that match allowed origins. For regular expression grammar please see en.cppreference.com/w/cpp/regex/ecmascript An origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
         </td>
     </tr>
     <tr>
@@ -4666,8 +4308,7 @@ An origin is allowed if it matches either allow_origins or allow_origin_regex.</
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies the list of origins that will be allowed to do CORS requests. An
-origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
+            <p>Specifies the list of origins that will be allowed to do CORS requests. An origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
         </td>
     </tr>
     <tr>
@@ -4687,8 +4328,7 @@ origin is allowed if it matches either allow_origins or allow_origin_regex.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If true, specifies the CORS policy is disabled.
-which indicates that the CORS policy is in effect. Defaults to false.</p>
+            <p>If true, specifies the CORS policy is disabled. which indicates that the CORS policy is in effect. Defaults to false.</p>
         </td>
     </tr>
     <tr>
@@ -4718,8 +4358,7 @@ which indicates that the CORS policy is in effect. Defaults to false.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies how long the results of a preflight request can be cached. This
-translates to the content for the Access-Control-Max-Age header.</p>
+            <p>Specifies how long the results of a preflight request can be cached. This translates to the content for the Access-Control-Max-Age header.</p>
         </td>
     </tr>
     <tr>
@@ -4729,13 +4368,7 @@ translates to the content for the Access-Control-Max-Age header.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The specification for fault injection introduced into traffic to test the
-resiliency of clients to backend service failure. As part of fault injection,
-when clients send requests to a backend service, delays can be introduced by
-Loadbalancer on a percentage of requests before sending those request to the
-backend service. Similarly requests from clients can be aborted by the
-Loadbalancer for a percentage of requests. timeout and retry_policy will be
-ignored by clients that are configured with a fault_injection_policy.</p>
+            <p>The specification for fault injection introduced into traffic to test the resiliency of clients to backend service failure. As part of fault injection, when clients send requests to a backend service, delays can be introduced by Loadbalancer on a percentage of requests before sending those request to the backend service. Similarly requests from clients can be aborted by the Loadbalancer for a percentage of requests. timeout and retry_policy will be ignored by clients that are configured with a fault_injection_policy.</p>
         </td>
     </tr>
     <tr>
@@ -4745,8 +4378,7 @@ ignored by clients that are configured with a fault_injection_policy.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The specification for how client requests are aborted as part of fault
-injection.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4756,8 +4388,7 @@ injection.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The HTTP status code used to abort the request. The value must be between 200
-and 599 inclusive.</p>
+            <p>The HTTP status code used to abort the request. The value must be between 200 and 599 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -4767,9 +4398,7 @@ and 599 inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The percentage of traffic (connections/operations/requests) which will be
-aborted as part of fault injection. The value must be between 0.0 and 100.0
-inclusive.</p>
+            <p>The percentage of traffic (connections/operations/requests) which will be aborted as part of fault injection. The value must be between 0.0 and 100.0 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -4779,8 +4408,7 @@ inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The specification for how client requests are delayed as part of fault
-injection, before being sent to a backend service.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4790,7 +4418,7 @@ injection, before being sent to a backend service.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies the value of the fixed delay interval.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4800,9 +4428,7 @@ injection, before being sent to a backend service.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 'seconds' field and a positive
-'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4812,8 +4438,7 @@ less than one second are represented with a 0 'seconds' field and a positive
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000
-inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4823,9 +4448,7 @@ inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The percentage of traffic (connections/operations/requests) on which delay will
-be introduced as part of fault injection. The value must be between 0.0 and
-100.0 inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4835,10 +4458,7 @@ be introduced as part of fault injection. The value must be between 0.0 and
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies the policy on how requests intended for the route's backends are
-shadowed to a separate mirrored backend service. Loadbalancer does not wait for
-responses from the shadow service. Prior to sending traffic to the shadow
-service, the host / authority header is suffixed with -shadow.</p>
+            <p>Specifies the policy on how requests intended for the route's backends are shadowed to a separate mirrored backend service. Loadbalancer does not wait for responses from the shadow service. Prior to sending traffic to the shadow service, the host / authority header is suffixed with -shadow.</p>
         </td>
     </tr>
     <tr>
@@ -4848,7 +4468,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. The backend service resource being mirrored to.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4858,7 +4478,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4868,7 +4488,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4878,7 +4498,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4898,7 +4518,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies the allowed number retries. This number must be > 0.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4908,7 +4528,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies a non-zero timeout per retry attempt.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4918,9 +4538,7 @@ service, the host / authority header is suffixed with -shadow.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 'seconds' field and a positive
-'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4930,8 +4548,7 @@ less than one second are represented with a 0 'seconds' field and a positive
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000
-inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4941,28 +4558,7 @@ inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Specifies one or more conditions when this retry rule applies. Valid values are:
-
-* 5xx: Loadbalancer will attempt a retry if the backend service responds with
-  any 5xx response code, or if the backend service does not respond at all,
-  example: disconnects, reset, read timeout, connection failure, and refused
-  streams.
-* gateway-error: Similar to 5xx, but only applies to response codes
-  502, 503 or 504.
-* connect-failure: Loadbalancer will retry on failures
-  connecting to backend services, for example due to connection timeouts.
-* retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
-  Currently the only retriable error supported is 409.
-* refused-stream: Loadbalancer will retry if the backend service resets the stream with a
-  REFUSED_STREAM error code. This reset type indicates that it is safe to retry.
-* cancelled: Loadbalancer will retry if the gRPC status code in the response
-  header is set to cancelled
-* deadline-exceeded: Loadbalancer will retry if the
-  gRPC status code in the response header is set to deadline-exceeded
-* resource-exhausted: Loadbalancer will retry if the gRPC status code in the response
-  header is set to resource-exhausted
-* unavailable: Loadbalancer will retry if the gRPC status code in
-  the response header is set to unavailable.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -4982,10 +4578,7 @@ inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies the timeout for the selected route. Timeout is computed from the time
-the request is has been fully processed (i.e. end-of-stream) up until the
-response has been completely processed. Timeout includes all retries. If not
-specified, the default value is 15 seconds.</p>
+            <p>Specifies the timeout for the selected route. Timeout is computed from the time the request is has been fully processed (i.e. end-of-stream) up until the response has been completely processed. Timeout includes all retries. If not specified, the default value is 15 seconds.</p>
         </td>
     </tr>
     <tr>
@@ -4995,9 +4588,7 @@ specified, the default value is 15 seconds.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 'seconds' field and a positive
-'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5007,8 +4598,7 @@ less than one second are represented with a 0 'seconds' field and a positive
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000
-inclusive.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5018,8 +4608,7 @@ inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The spec to modify the URL of the request, prior to forwarding the request to
-the matched service.</p>
+            <p>The spec to modify the URL of the request, prior to forwarding the request to the matched service.</p>
         </td>
     </tr>
     <tr>
@@ -5029,9 +4618,7 @@ the matched service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Prior to forwarding the request to the selected service, the request's host
-header is replaced with contents of hostRewrite. The value must be between 1 and
-255 characters.</p>
+            <p>Prior to forwarding the request to the selected service, the request's host header is replaced with contents of hostRewrite. The value must be between 1 and 255 characters.</p>
         </td>
     </tr>
     <tr>
@@ -5041,9 +4628,7 @@ header is replaced with contents of hostRewrite. The value must be between 1 and
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Prior to forwarding the request to the selected backend service, the matching
-portion of the request's path is replaced by pathPrefixRewrite. The value must
-be between 1 and 1024 characters.</p>
+            <p>Prior to forwarding the request to the selected backend service, the matching portion of the request's path is replaced by pathPrefixRewrite. The value must be between 1 and 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -5076,14 +4661,7 @@ specified.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>A list of weighted backend services to send traffic to when a route match
-occurs. The weights determine the fraction of traffic that flows to their
-corresponding backend service. If all traffic needs to go to a single backend
-service, there must be one  weightedBackendService with weight set to a non 0
-number. Once a backendService is identified and before forwarding the request to
-the backend service, advanced routing actions like Url rewrites and header
-transformations are applied depending on additional settings specified in this
-HttpRouteAction.</p>
+            <p>A list of weighted backend services to send traffic to when a route match occurs. The weights determine the fraction of traffic that flows to their corresponding backend service. If all traffic needs to go to a single backend service, there must be one  weightedBackendService with weight set to a non 0 number. Once a backendService is identified and before forwarding the request to the backend service, advanced routing actions like Url rewrites and header transformations are applied depending on additional settings specified in this HttpRouteAction.</p>
         </td>
     </tr>
     <tr>
@@ -5103,9 +4681,7 @@ HttpRouteAction.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. The default backend service resource. Before forwarding
-the request to backendService, the loadbalancer applies any relevant
-headerActions specified as part of this backendServiceWeight.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5115,7 +4691,7 @@ headerActions specified as part of this backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5125,7 +4701,7 @@ headerActions specified as part of this backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5135,7 +4711,7 @@ headerActions specified as part of this backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5145,9 +4721,7 @@ headerActions specified as part of this backendServiceWeight.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Specifies changes to request and response headers that need to take effect for
-the selected backendService. headerAction specified here take effect before
-headerAction in the enclosing HttpRouteRule, PathMatcher and UrlMap.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5157,8 +4731,7 @@ headerAction in the enclosing HttpRouteRule, PathMatcher and UrlMap.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Headers to add to a matching request prior to forwarding the request to the
-backendService.</p>
+            <p>Headers to add to a matching request prior to forwarding the request to the backendService.</p>
         </td>
     </tr>
     <tr>
@@ -5198,9 +4771,7 @@ backendService.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the
-header. If true, headerValue is set for the header, discarding any values that
-were set for that header.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -5210,8 +4781,7 @@ were set for that header.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the request
-prior to forwarding the request to the backendService.</p>
+            <p>A list of header names for headers that need to be removed from the request prior to forwarding the request to the backendService.</p>
         </td>
     </tr>
     <tr>
@@ -5271,9 +4841,7 @@ prior to forwarding the request to the backendService.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If false, headerValue is appended to any values that already exist for the
-header. If true, headerValue is set for the header, discarding any values that
-were set for that header.</p>
+            <p>If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.</p>
         </td>
     </tr>
     <tr>
@@ -5283,8 +4851,7 @@ were set for that header.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of header names for headers that need to be removed from the response
-prior to sending the response back to the client.</p>
+            <p>A list of header names for headers that need to be removed from the response prior to sending the response back to the client.</p>
         </td>
     </tr>
     <tr>
@@ -5304,12 +4871,7 @@ prior to sending the response back to the client.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies the fraction of traffic sent to backendService, computed as weight /
-(sum of all weightedBackendService weights in routeAction) . The selection of a
-backend service is determined only for new traffic. Once a user's request has
-been directed to a backendService, subsequent requests will be sent to the same
-backendService as determined by the BackendService's session affinity policy.
-The value must be between 0 and 1000.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5319,13 +4881,7 @@ The value must be between 0 and 1000.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The region backend service resource to which traffic is
-directed if this rule is matched. If routeAction is additionally specified,
-advanced routing actions like URL Rewrites, etc. take effect prior to sending
-the request to the backend. However, if service is specified, routeAction cannot
-contain any weightedBackendService s. Conversely, if routeAction specifies any
-weightedBackendServices, service must not be specified. Only one of urlRedirect,
-service or routeAction.weightedBackendService must be set.</p>
+            <p>The region backend service resource to which traffic is directed if this rule is matched. If routeAction is additionally specified, advanced routing actions like URL Rewrites, etc. take effect prior to sending the request to the backend. However, if service is specified, routeAction cannot contain any weightedBackendService s. Conversely, if routeAction specifies any weightedBackendServices, service must not be specified. Only one of urlRedirect, service or routeAction.weightedBackendService must be set.</p>
         </td>
     </tr>
     <tr>
@@ -5335,9 +4891,7 @@ service or routeAction.weightedBackendService must be set.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>When this rule is matched, the request is redirected to a URL specified by
-urlRedirect. If urlRedirect is specified, service or routeAction must not be
-set.</p>
+            <p>When this rule is matched, the request is redirected to a URL specified by urlRedirect. If urlRedirect is specified, service or routeAction must not be set.</p>
         </td>
     </tr>
     <tr>
@@ -5347,9 +4901,7 @@ set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The host that will be used in the redirect response instead of the one
-that was supplied in the request. The value must be between 1 and 255
-characters.</p>
+            <p>The host that will be used in the redirect response instead of the one that was supplied in the request. The value must be between 1 and 255 characters.</p>
         </td>
     </tr>
     <tr>
@@ -5359,11 +4911,7 @@ characters.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If set to true, the URL scheme in the redirected request is set to https.
-If set to false, the URL scheme of the redirected request will remain the
-same as that of the request. This must only be set for UrlMaps used in
-TargetHttpProxys. Setting this true for TargetHttpsProxy is not
-permitted. The default is set to false.</p>
+            <p>If set to true, the URL scheme in the redirected request is set to https. If set to false, the URL scheme of the redirected request will remain the same as that of the request. This must only be set for UrlMaps used in TargetHttpProxys. Setting this true for TargetHttpsProxy is not permitted. The default is set to false.</p>
         </td>
     </tr>
     <tr>
@@ -5373,11 +4921,7 @@ permitted. The default is set to false.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The path that will be used in the redirect response instead of the one
-that was supplied in the request. pathRedirect cannot be supplied
-together with prefixRedirect. Supply one alone or neither. If neither is
-supplied, the path of the original request will be used for the redirect.
-The value must be between 1 and 1024 characters.</p>
+            <p>The path that will be used in the redirect response instead of the one that was supplied in the request. pathRedirect cannot be supplied together with prefixRedirect. Supply one alone or neither. If neither is supplied, the path of the original request will be used for the redirect. The value must be between 1 and 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -5387,12 +4931,7 @@ The value must be between 1 and 1024 characters.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The prefix that replaces the prefixMatch specified in the
-HttpRouteRuleMatch, retaining the remaining portion of the URL before
-redirecting the request. prefixRedirect cannot be supplied together with
-pathRedirect. Supply one alone or neither. If neither is supplied, the
-path of the original request will be used for the redirect. The value
-must be between 1 and 1024 characters.</p>
+            <p>The prefix that replaces the prefixMatch specified in the HttpRouteRuleMatch, retaining the remaining portion of the URL before redirecting the request. prefixRedirect cannot be supplied together with pathRedirect. Supply one alone or neither. If neither is supplied, the path of the original request will be used for the redirect. The value must be between 1 and 1024 characters.</p>
         </td>
     </tr>
     <tr>
@@ -5424,9 +4963,7 @@ the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENT
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If set to true, any accompanying query portion of the original URL is
-removed prior to redirecting the request. If set to false, the query
-portion of the original URL is retained. The default value is false.</p>
+            <p>If set to true, any accompanying query portion of the original URL is removed prior to redirecting the request. If set to false, the query portion of the original URL is retained. The default value is false.</p>
         </td>
     </tr>
     <tr>
@@ -5446,8 +4983,7 @@ portion of the original URL is retained. The default value is false.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>The list of expected URL mappings. Requests to update this UrlMap will
-succeed only if all of the test cases pass.</p>
+            <p>The list of expected URL mappings. Requests to update this UrlMap will succeed only if all of the test cases pass.</p>
         </td>
     </tr>
     <tr>
@@ -5497,11 +5033,7 @@ succeed only if all of the test cases pass.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The backend service resource that should be matched by this test.
-For the Global URL Map, it should be a reference to the backend
-service or backend bucket.
-For the Regional URL Map, it should be a reference to the backend
-service.</p>
+            <p>The backend service resource that should be matched by this test. For the Global URL Map, it should be a reference to the backend service or backend bucket. For the Regional URL Map, it should be a reference to the backend service.</p>
         </td>
     </tr>
     <tr>
@@ -5521,7 +5053,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendBucket` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5531,7 +5063,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5541,7 +5073,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5561,7 +5093,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5571,7 +5103,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -5581,7 +5113,7 @@ service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p></p>
         </td>
     </tr>
 </tbody>
@@ -5616,7 +5148,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeURLMap's current state.</p>
         </td>
     </tr>
     <tr>
@@ -5672,8 +5204,7 @@ selfLink: string
         <td><code>fingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Fingerprint of this resource. This field is used internally during
-updates of this resource.</p>
+            <p>Fingerprint of this resource. This field is used internally during updates of this resource.</p>
         </td>
     </tr>
     <tr>
