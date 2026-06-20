@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -27,20 +27,17 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks?alt=json
 Content-Type: application/json
 
 {
   "checkIntervalSec": 10,
   "description": "example HTTP health check",
   "healthyThreshold": 2,
-  "httpHealthCheck": {
-    "port": 80,
-    "requestPath": "/"
-  },
   "name": "${healthCheckID}",
+  "port": 80,
+  "requestPath": "/",
   "timeoutSec": 5,
-  "type": "HTTP",
   "unhealthyThreshold": 2
 }
 
@@ -65,14 +62,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -102,7 +98,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -120,35 +116,29 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "example HTTP health check",
   "healthyThreshold": 2,
-  "httpHealthCheck": {
-    "port": 80,
-    "requestPath": "/"
-  },
   "id": "000000000000000000000",
-  "kind": "compute#healthCheck",
+  "kind": "compute#httpHealthCheck",
   "name": "${healthCheckID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "port": 80,
+  "requestPath": "/",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
   "timeoutSec": 5,
-  "type": "HTTP",
   "unhealthyThreshold": 2
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
+PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 
 {
   "checkIntervalSec": 11,
   "description": "example HTTP health check",
   "healthyThreshold": 2,
-  "httpHealthCheck": {
-    "port": 80,
-    "requestPath": "/"
-  },
   "name": "${healthCheckID}",
+  "port": 80,
+  "requestPath": "/",
   "timeoutSec": 5,
-  "type": "HTTP",
   "unhealthyThreshold": 2
 }
 
@@ -167,20 +157,19 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "patch",
+  "operationType": "update",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -198,7 +187,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "patch",
+  "operationType": "update",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -210,7 +199,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -228,22 +217,19 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "example HTTP health check",
   "healthyThreshold": 2,
-  "httpHealthCheck": {
-    "port": 80,
-    "requestPath": "/"
-  },
   "id": "000000000000000000000",
-  "kind": "compute#healthCheck",
+  "kind": "compute#httpHealthCheck",
   "name": "${healthCheckID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "port": 80,
+  "requestPath": "/",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
   "timeoutSec": 5,
-  "type": "HTTP",
   "unhealthyThreshold": 2
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -267,14 +253,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
