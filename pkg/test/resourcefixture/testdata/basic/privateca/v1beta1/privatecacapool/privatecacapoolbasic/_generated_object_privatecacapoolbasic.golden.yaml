@@ -93,4 +93,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: //privateca.googleapis.com/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}
   observedGeneration: 2
