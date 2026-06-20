@@ -504,6 +504,23 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		}
 	})
 
+	// Specific to ComputeNetwork
+	if strings.Contains(t.Name(), "computeaddress") {
+		jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+			normalizeNetwork := func(o map[string]any) {
+				if val, found, err := unstructured.NestedString(o, "kind"); err == nil && found && val == "compute#network" {
+					delete(o, "peerings")
+					delete(o, "routingConfig")
+					delete(o, "subnetworks")
+				}
+			}
+			normalizeNetwork(obj)
+			if responseObj, found, _ := unstructured.NestedMap(obj, "response"); found {
+				normalizeNetwork(responseObj)
+			}
+		})
+	}
+
 	// Specific to KMS
 	addReplacement("policy.etag", "abcdef0123A=")
 	addSetStringReplacement(".cryptoKeyVersions[].createTime", "2024-04-01T12:34:56.123456Z")

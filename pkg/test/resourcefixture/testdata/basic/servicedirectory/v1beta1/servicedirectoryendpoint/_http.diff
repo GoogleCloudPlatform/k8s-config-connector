@@ -1,27 +1,27 @@
-430c430
+432c432
 < GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}?alt=json
 ---
 > GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-453c453
+455c455
 < POST https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints?alt=json&endpointId=servicedirectoryendpoint-${uniqueId}
 ---
 > POST https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints?%24alt=json%3Benum-encoding%3Dint&endpointId=servicedirectoryendpoint-${uniqueId}
-491c491
+493c493
 < GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}?alt=json
 ---
 > GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-518c518
+520c520
 < PATCH https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}?alt=json&updateMask=port%2Cmetadata
 ---
 > PATCH https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=metadata%2Cport
-528a529,530
+530a531,532
 >   "name": "projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}",
 >   "network": "projects/${projectNumber}/global/networks/${networkID}",
-557c559
+559c561
 < GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}?alt=json
 ---
 > GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-585c587
+587c589
 < DELETE https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}?alt=json
 ---
 > DELETE https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

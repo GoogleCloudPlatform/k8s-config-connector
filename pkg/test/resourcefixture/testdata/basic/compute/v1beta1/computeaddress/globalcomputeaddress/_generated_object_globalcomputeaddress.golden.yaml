@@ -11,6 +11,7 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
+    test-label: updated-value
   name: ${addressID}
   namespace: ${uniqueId}
 spec:
