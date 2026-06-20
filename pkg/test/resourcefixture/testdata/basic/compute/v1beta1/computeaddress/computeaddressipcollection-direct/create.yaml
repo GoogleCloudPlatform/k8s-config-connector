@@ -15,10 +15,12 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
   name: computeaddress-${uniqueId}
 spec:
   addressType: EXTERNAL
   description: A test address with ipCollection
   location: us-central1
   ipCollectionRef:
-    external: regions/us-central1/publicDelegatedPrefixes/pdp-${uniqueId}
+    external: projects/${projectId}/regions/us-central1/publicDelegatedPrefixes/pdp-${uniqueId}
