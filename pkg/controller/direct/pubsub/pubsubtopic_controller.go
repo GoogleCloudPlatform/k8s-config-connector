@@ -41,6 +41,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -236,6 +237,8 @@ func (a *pubSubTopicAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Topic)
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -244,6 +247,9 @@ func (a *pubSubTopicAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	u.Object = uObj
 	u.SetName(a.id.Topic)
 	u.SetGroupVersionKind(krm.PubSubTopicGVK)
+
+	export.SetProjectID(u, a.id.Project)
+	export.SetLabels(u, a.actual.Labels)
 
 	return u, nil
 }
