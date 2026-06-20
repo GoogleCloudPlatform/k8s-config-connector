@@ -2,33 +2,36 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeInstance
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/allow-stopping-for-update: "true"
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
-    created-from: image-2
-    network-type: subnetwork-2
+    env: prod
   name: ${instanceID}
   namespace: ${uniqueId}
 spec:
   bootDisk:
-    initializeParams:
-      sourceImageRef:
-        external: debian-cloud/debian-11
-  canIpForward: true
-  machineType: n1-standard-1
+    autoDelete: false
+    diskEncryptionKeyRaw:
+      value: SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=
+    sourceDiskRef:
+      name: ${diskID}
+  description: an basic instance example
+  machineType: n1-standard-2
   networkInterface:
-  - accessConfig:
-    - networkTier: PREMIUM
-    networkIp: 10.128.0.9
-    subnetworkRef:
+  - networkRef:
       name: default
-  zone: us-central1-a
+  scheduling:
+    automaticRestart: false
+    onHostMaintenance: TERMINATE
+    preemptible: true
+  zone: us-west1-a
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -39,5 +42,5 @@ status:
   currentStatus: RUNNING
   instanceId: "1111111111111111"
   labelFingerprint: abcdef0123A=
-  observedGeneration: 1
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}
+  observedGeneration: 2
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}

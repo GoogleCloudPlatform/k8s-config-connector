@@ -4,11 +4,13 @@ metadata:
   annotations:
     cnrm.cloud.google.com/allow-stopping-for-update: "true"
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
     created-from: image-2
@@ -28,6 +30,7 @@ spec:
     networkIp: 10.128.0.9
     subnetworkRef:
       name: default
+  resourceID: ${instanceID}
   zone: us-central1-a
 status:
   conditions:
@@ -39,5 +42,5 @@ status:
   currentStatus: RUNNING
   instanceId: "1111111111111111"
   labelFingerprint: abcdef0123A=
-  observedGeneration: 1
+  observedGeneration: 2
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}
