@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,23 +16,24 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &InstanceRef{}
 var ComputeInstanceGVK = GroupVersion.WithKind("ComputeInstance")
+
+var _ refs.Ref = &InstanceRef{}
 
 // InstanceRef is a reference to a ComputeInstance.
 type InstanceRef struct {
-	// A reference to an externally managed ComputeInstance resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+	// A reference to an externally managed ComputeInstance resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/instances/{{instanceID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeInstance resource.
@@ -42,43 +43,82 @@ type InstanceRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on ComputeInstance.
-// If the "External" is given in the other resource's spec.ComputeInstanceRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual ComputeInstance object from the cluster.
-func (r *InstanceRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", ComputeInstanceGVK.Kind)
+func init() {
+	refs.Register(&InstanceRef{}, &ComputeInstance{})
+}
+
+func (r *InstanceRef) GetGVK() schema.GroupVersionKind {
+	return ComputeInstanceGVK
+}
+
+func (r *InstanceRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	// From given External
+}
+
+func (r *InstanceRef) GetExternal() string {
+	return r.External
+}
+
+func (r *InstanceRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *InstanceRef) ValidateExternal(ref string) error {
+	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
+	id := &ComputeInstanceIdentity{}
+	if err := id.FromExternal(trimmedRef); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *InstanceRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ComputeInstanceIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *InstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	if r.External != "" {
-		if _, _, err := ParseInstanceExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
+		r.External = apirefs.TrimComputeURIPrefix(r.External)
 	}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(ComputeInstanceGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+	fallback := func(u *unstructured.Unstructured) string {
+		// Get external from status.selfLink. This ensures backward compatibility for TF/DCL-based resources that lack status.externalRef.
+		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		if selfLink != "" {
+			trimmed := apirefs.TrimComputeURIPrefix(selfLink)
+			id := &ComputeInstanceIdentity{}
+			if err := id.FromExternal(trimmed); err == nil {
+				return trimmed
+			}
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", ComputeInstanceGVK, key, err)
-	}
 
-	selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
-	if err != nil || selfLink == "" {
-		return "", fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", u.GetKind(), u.GetNamespace())
+		obj, err := common.ToStructuredType[*ComputeInstance](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromComputeInstanceSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
 	}
-	identity, err := ParseSelfLink(selfLink)
-	if err != nil {
-		return "", fmt.Errorf("failed to parse selfLink: %w", err)
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
+// NormalizedExternal is kept for backward compatibility with older controllers.
+// Deprecated: Use Normalize instead.
+func (r *InstanceRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
 	}
-	r.External = identity.String()
 	return r.External, nil
 }
