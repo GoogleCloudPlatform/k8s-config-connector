@@ -18,10 +18,78 @@ import (
 	"context"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
+
+func TestComputeURLMapIdentity_FromExternal(t *testing.T) {
+	tests := []struct {
+		name    string
+		ref     string
+		wantErr bool
+		want    *ComputeURLMapIdentity
+	}{
+		{
+			name: "valid regional reference",
+			ref:  "projects/my-project/regions/us-central1/urlMaps/my-urlmap",
+			want: &ComputeURLMapIdentity{
+				Project: "my-project",
+				Region:  "us-central1",
+				Urlmap:  "my-urlmap",
+			},
+		},
+		{
+			name: "valid global reference",
+			ref:  "projects/my-project/global/urlMaps/my-urlmap",
+			want: &ComputeURLMapIdentity{
+				Project: "my-project",
+				Region:  "global",
+				Urlmap:  "my-urlmap",
+			},
+		},
+		{
+			name:    "invalid reference format",
+			ref:     "invalid/format",
+			wantErr: true,
+		},
+		{
+			name: "full regional url",
+			ref:  "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-central1/urlMaps/my-urlmap",
+			want: &ComputeURLMapIdentity{
+				Project: "my-project",
+				Region:  "us-central1",
+				Urlmap:  "my-urlmap",
+			},
+		},
+		{
+			name: "full global url",
+			ref:  "https://www.googleapis.com/compute/v1/projects/my-project/global/urlMaps/my-urlmap",
+			want: &ComputeURLMapIdentity{
+				Project: "my-project",
+				Region:  "global",
+				Urlmap:  "my-urlmap",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			i := &ComputeURLMapIdentity{}
+			err := i.FromExternal(tt.ref)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr {
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
+				}
+			}
+		})
+	}
+}
 
 func TestComputeURLMapRef_ValidateExternal(t *testing.T) {
 	tests := []struct {
@@ -32,6 +100,11 @@ func TestComputeURLMapRef_ValidateExternal(t *testing.T) {
 		{
 			name:    "valid external reference (projects/)",
 			ref:     "projects/my-project/global/urlMaps/my-urlmap",
+			wantErr: false,
+		},
+		{
+			name:    "valid external reference (regions/)",
+			ref:     "projects/my-project/regions/us-central1/urlMaps/my-urlmap",
 			wantErr: false,
 		},
 		{
@@ -89,7 +162,7 @@ func TestComputeURLMapRef_Normalize(t *testing.T) {
 				Name:      "my-urlmap",
 				Namespace: "my-ns",
 			},
-			want: "https://www.googleapis.com/compute/v1/projects/my-project/global/urlMaps/my-urlmap",
+			want: "projects/my-project/global/urlMaps/my-urlmap",
 		},
 		{
 			name: "internal reference with default namespace",
@@ -97,7 +170,7 @@ func TestComputeURLMapRef_Normalize(t *testing.T) {
 				Name: "my-urlmap",
 			},
 			defaultNamespace: "my-ns",
-			want:             "https://www.googleapis.com/compute/v1/projects/my-project/global/urlMaps/my-urlmap",
+			want:             "projects/my-project/global/urlMaps/my-urlmap",
 		},
 		{
 			name: "internal reference not found",
@@ -115,8 +188,10 @@ func TestComputeURLMapRef_Normalize(t *testing.T) {
 				t.Errorf("Normalize() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if tt.ref.External != tt.want {
-				t.Errorf("Normalize() got = %v, want %v", tt.ref.External, tt.want)
+			if !tt.wantErr {
+				if tt.ref.External != tt.want {
+					t.Errorf("Normalize() got = %v, want %v", tt.ref.External, tt.want)
+				}
 			}
 		})
 	}
