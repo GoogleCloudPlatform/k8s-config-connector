@@ -57,6 +57,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehealthcheck/globa
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehealthcheck/globalcomputehealthchecksourceregions
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehealthcheck/regionalcomputehealthcheck
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttphealthcheck
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttphealthcheck/computehttphealthcheck-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttpshealthcheck
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeimage
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computeinstancebasicexample

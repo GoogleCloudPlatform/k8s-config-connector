@@ -15,6 +15,7 @@
 // +tool:controller-client
 // proto.service: google.cloud.compute.v1.NetworkEdgeSecurityServices
 // proto.service: google.cloud.compute.v1.NetworkAttachments
+// proto.service: google.cloud.compute.v1.HealthChecks
 
 package compute
 
@@ -151,6 +152,18 @@ func (m *gcpClient) newSslPoliciesClient(ctx context.Context) (*compute.SslPolic
 	client, err := compute.NewSslPoliciesRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute SslPolicies client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newHealthChecksClient(ctx context.Context) (*compute.HealthChecksClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewHealthChecksRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute HealthChecksClient: %w", err)
 	}
 	return client, err
 }
