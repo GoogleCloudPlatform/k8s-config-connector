@@ -63,8 +63,10 @@ func (s *RegionalURLMapsV1) Insert(ctx context.Context, req *pb.InsertRegionUrlM
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#urlMap")
-	obj.Region = PtrTo(BuildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/regions/"+name.Region))
+	obj.Region = PtrTo("https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/regions/" + name.Region)
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	s.populateURLMapDefaults(ctx, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -110,6 +112,9 @@ func (s *RegionalURLMapsV1) Patch(ctx context.Context, req *pb.PatchRegionUrlMap
 		obj.DefaultCustomErrorResponsePolicy = nil
 	}
 	proto.Merge(obj, req.GetUrlMapResource())
+	obj.Region = PtrTo("https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/regions/" + name.Region)
+
+	s.populateURLMapDefaults(ctx, obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -146,6 +151,9 @@ func (s *RegionalURLMapsV1) Update(ctx context.Context, req *pb.UpdateRegionUrlM
 	obj.Tests = nil
 	obj.DefaultCustomErrorResponsePolicy = nil
 	proto.Merge(obj, req.GetUrlMapResource())
+	obj.Region = PtrTo("https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/regions/" + name.Region)
+
+	s.populateURLMapDefaults(ctx, obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
