@@ -93,6 +93,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computereservation/share
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeresourcepolicy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeroute/computeroute
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouter
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouter/computerouter-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouterinterface
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouterpeer
