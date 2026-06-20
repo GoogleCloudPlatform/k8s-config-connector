@@ -244,7 +244,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -267,7 +267,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways?%24alt=json%3Benum-encoding%3Dint&gatewayId=networkservicesgateway-${uniqueId}
+POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways?alt=json&gatewayId=networkservicesgateway-${uniqueId}
 Content-Type: application/json
 
 {
@@ -284,7 +284,7 @@ Content-Type: application/json
   ],
   "scope": "${uniqueId}",
   "serverTlsPolicy": "projects/${projectId}/locations/global/serverTlsPolicies/networksecurityservertlspolicy-1-${uniqueId}",
-  "type": 1
+  "type": "OPEN_MESH"
 }
 
 200 OK
@@ -310,7 +310,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -357,7 +357,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -386,13 +386,13 @@ X-Xss-Protection: 0
   "scope": "${uniqueId}",
   "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}",
   "serverTlsPolicy": "projects/${projectId}/locations/global/serverTlsPolicies/networksecurityservertlspolicy-1-${uniqueId}",
-  "type": 1,
+  "type": "OPEN_MESH",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels%2Cports%2CserverTlsPolicy
+PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?alt=json&updateMask=description%2Clabels%2Cports%2CserverTlsPolicy
 Content-Type: application/json
 
 {
@@ -403,13 +403,11 @@ Content-Type: application/json
     "foo1": "bar1",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}",
+  "name": "projects/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}",
   "ports": [
     81
   ],
-  "scope": "${uniqueId}",
-  "serverTlsPolicy": "projects/${projectId}/locations/global/serverTlsPolicies/networksecurityservertlspolicy-2-${uniqueId}",
-  "type": 1
+  "serverTlsPolicy": "projects/${projectId}/locations/global/serverTlsPolicies/networksecurityservertlspolicy-2-${uniqueId}"
 }
 
 200 OK
@@ -435,7 +433,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -483,7 +481,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -512,13 +510,13 @@ X-Xss-Protection: 0
   "scope": "${uniqueId}",
   "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}",
   "serverTlsPolicy": "projects/${projectId}/locations/global/serverTlsPolicies/networksecurityservertlspolicy-2-${uniqueId}",
-  "type": 1,
+  "type": "OPEN_MESH",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -544,7 +542,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -570,6 +568,29 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
   }
 }
 

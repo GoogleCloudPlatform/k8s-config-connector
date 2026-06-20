@@ -155,7 +155,7 @@ func (s *NetworkServicesServer) UpdateGateway(ctx context.Context, req *pb.Updat
 				obj.Description = req.GetGateway().GetDescription()
 			case "ports":
 				obj.Ports = req.GetGateway().GetPorts()
-			case "serverTlsPolicy":
+			case "server_tls_policy", "serverTlsPolicy":
 				obj.ServerTlsPolicy = req.GetGateway().GetServerTlsPolicy()
 			case "addresses":
 				obj.Addresses = req.GetGateway().GetAddresses()

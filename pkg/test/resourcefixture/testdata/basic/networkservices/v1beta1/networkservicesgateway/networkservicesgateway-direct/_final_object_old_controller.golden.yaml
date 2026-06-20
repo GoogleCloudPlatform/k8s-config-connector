@@ -2,6 +2,7 @@ apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGateway
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -21,8 +22,6 @@ spec:
   projectRef:
     external: projects/${projectId}
   scope: ${uniqueId}
-  serverTlsPolicyRef:
-    name: networksecurityservertlspolicy-2-${uniqueId}
   type: OPEN_MESH
 status:
   conditions:
