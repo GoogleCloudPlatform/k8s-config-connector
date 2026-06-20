@@ -33,8 +33,23 @@ func computeImageFuzzer() fuzztesting.KRMFuzzer {
 		ComputeImageStatus_v1beta1_FromProto, ComputeImageStatus_v1beta1_ToProto,
 	)
 
+	// Field comparison of KRM ComputeImageSpec to proto fields:
+	// - description => .description (SpecField)
+	// - diskRef => .source_disk (SpecField)
+	// - diskSizeGb => .disk_size_gb (SpecField)
+	// - family => .family (SpecField)
+	// - guestOsFeatures => .guest_os_features (SpecField)
+	// - imageEncryptionKey => .image_encryption_key (SpecField)
+	// - licenses => .licenses (SpecField)
+	// - rawDisk => .raw_disk (SpecField)
+	// - resourceID => (ignored, used for name/identity)
+	// - sourceImageRef => .source_image (SpecField)
+	// - sourceSnapshotRef => .source_snapshot (SpecField)
+	// - storageLocations => .storage_locations (SpecField)
+
 	// Spec fields
 	f.SpecField(".description")
+	f.SpecField(".disk_size_gb")
 	f.SpecField(".family")
 	f.SpecField(".licenses")
 	f.SpecField(".storage_locations")
@@ -56,6 +71,12 @@ func computeImageFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".image_encryption_key")
 	f.SpecField(".image_encryption_key.kms_key_name")
 	f.SpecField(".image_encryption_key.kms_key_service_account")
+
+	// Field comparison of KRM ComputeImageStatus to proto fields:
+	// - archiveSizeBytes => .archive_size_bytes (StatusField)
+	// - creationTimestamp => .creation_timestamp (StatusField)
+	// - labelFingerprint => .label_fingerprint (StatusField)
+	// - selfLink => .self_link (StatusField)
 
 	// Status fields
 	f.StatusField(".archive_size_bytes")
