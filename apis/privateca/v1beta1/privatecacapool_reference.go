@@ -73,7 +73,7 @@ func TrimServicePrefix(ref string) string {
 }
 
 func (r *PrivateCACAPoolRef) SetExternal(ref string) {
-	r.External = TrimServicePrefix(ref)
+	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
 }
@@ -95,9 +95,6 @@ func (r *PrivateCACAPoolRef) ParseExternalToIdentity() (identity.Identity, error
 }
 
 func (r *PrivateCACAPoolRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.External != "" {
-		r.External = TrimServicePrefix(r.External)
-	}
 	fallback := func(u *unstructured.Unstructured) string {
 		identity, err := getIdentityFromPrivateCACAPoolSpec(ctx, reader, u)
 		if err != nil {
@@ -105,7 +102,13 @@ func (r *PrivateCACAPoolRef) Normalize(ctx context.Context, reader client.Reader
 		}
 		return identity.String()
 	}
-	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	if err := refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback); err != nil {
+		return err
+	}
+	if r.External != "" {
+		r.External = TrimServicePrefix(r.External)
+	}
+	return nil
 }
 
 // ResolvePrivateCACAPoolRef will resolve a PrivateCACAPoolRef to a PrivateCACAPoolRef.
