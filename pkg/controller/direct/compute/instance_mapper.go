@@ -15,6 +15,8 @@
 package compute
 
 import (
+	"strconv"
+
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -23,6 +25,12 @@ import (
 func ComputeInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.ComputeInstanceSpec {
 	if in == nil {
 		return nil
+	}
+	if in.Tags != nil && len(in.Tags.Items) == 0 {
+		in.Tags = nil
+	}
+	if in.Metadata != nil && len(in.Metadata.Items) == 0 {
+		in.Metadata = nil
 	}
 	out := &krm.ComputeInstanceSpec{}
 	out.AdvancedMachineFeatures = InstanceAdvancedMachineFeatures_v1beta1_FromProto(mapCtx, in.GetAdvancedMachineFeatures())
@@ -73,11 +81,57 @@ func ComputeInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comp
 }
 
 func ComputeInstanceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.ComputeInstanceStatus {
-	return nil
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInstanceStatus{}
+	out.CpuPlatform = in.CpuPlatform
+	out.CurrentStatus = in.Status
+	if in.Id != nil {
+		idStr := strconv.FormatUint(*in.Id, 10)
+		out.InstanceId = &idStr
+	}
+	out.LabelFingerprint = in.LabelFingerprint
+	if in.Metadata != nil {
+		out.MetadataFingerprint = in.Metadata.Fingerprint
+	}
+	out.SelfLink = in.SelfLink
+	if in.Tags != nil {
+		out.TagsFingerprint = in.Tags.Fingerprint
+	}
+	return out
 }
 
 func ComputeInstanceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceStatus) *pb.Instance {
-	return nil
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	out.CpuPlatform = in.CpuPlatform
+	out.Status = in.CurrentStatus
+	if in.InstanceId != nil {
+		idVal, err := strconv.ParseUint(*in.InstanceId, 10, 64)
+		if err != nil {
+			mapCtx.Errorf("error converting InstanceId string %s to uint64: %v", *in.InstanceId, err)
+		} else {
+			out.Id = &idVal
+		}
+	}
+	out.LabelFingerprint = in.LabelFingerprint
+	if in.MetadataFingerprint != nil {
+		if out.Metadata == nil {
+			out.Metadata = &pb.Metadata{}
+		}
+		out.Metadata.Fingerprint = in.MetadataFingerprint
+	}
+	out.SelfLink = in.SelfLink
+	if in.TagsFingerprint != nil {
+		if out.Tags == nil {
+			out.Tags = &pb.Tags{}
+		}
+		out.Tags.Fingerprint = in.TagsFingerprint
+	}
+	return out
 }
 
 func ComputeInstanceSpec_ResourcePolicies_FromProto(mapCtx *direct.MapContext, in []string) []krm.InstanceResourceRef {
@@ -115,6 +169,12 @@ func InstanceMetadata_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Metada
 	for _, item := range in.Items {
 		if item == nil {
 			continue
+		}
+		if item.Key == nil {
+			item.Key = direct.PtrTo("")
+		}
+		if item.Value == nil {
+			item.Value = direct.PtrTo("")
 		}
 		out = append(out, krm.InstanceMetadata{
 			Key:   item.GetKey(),
