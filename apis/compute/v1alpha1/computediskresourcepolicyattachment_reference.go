@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1beta1
+package v1alpha1
 
 import (
 	"context"
@@ -26,70 +26,69 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var ComputeDiskGVK = GroupVersion.WithKind("ComputeDisk")
+var _ refs.Ref = &ComputeDiskResourcePolicyAttachmentRef{}
 
-var _ refs.Ref = &ComputeDiskRef{}
-
-// ComputeDiskRef is a reference to a ComputeDisk.
-type ComputeDiskRef struct {
-	// A reference to an externally managed ComputeDisk resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/disks/{{diskID}}" or "projects/{{projectID}}/regions/{{region}}/disks/{{diskID}}".
+// ComputeDiskResourcePolicyAttachmentRef is a reference to a ComputeDiskResourcePolicyAttachment.
+type ComputeDiskResourcePolicyAttachmentRef struct {
+	// A reference to an externally managed ComputeDiskResourcePolicyAttachment resource.
+	// Should be in the format "projects/{{projectID}}/zones/{{zone}}/disks/{{disk}}/{{name}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ComputeDisk resource.
+	// The name of a ComputeDiskResourcePolicyAttachment resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ComputeDisk resource.
+	// The namespace of a ComputeDiskResourcePolicyAttachment resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&ComputeDiskRef{}, &ComputeDisk{})
+	refs.Register(&ComputeDiskResourcePolicyAttachmentRef{}, &ComputeDiskResourcePolicyAttachment{})
 }
 
-func (r *ComputeDiskRef) GetGVK() schema.GroupVersionKind {
-	return ComputeDiskGVK
+func (r *ComputeDiskResourcePolicyAttachmentRef) GetGVK() schema.GroupVersionKind {
+	return ComputeDiskResourcePolicyAttachmentGVK
 }
 
-func (r *ComputeDiskRef) GetNamespacedName() types.NamespacedName {
+func (r *ComputeDiskResourcePolicyAttachmentRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *ComputeDiskRef) GetExternal() string {
+func (r *ComputeDiskResourcePolicyAttachmentRef) GetExternal() string {
 	return r.External
 }
 
-func (r *ComputeDiskRef) SetExternal(ref string) {
+func (r *ComputeDiskResourcePolicyAttachmentRef) SetExternal(ref string) {
 	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
 }
 
-func (r *ComputeDiskRef) ValidateExternal(ref string) error {
-	id := &ComputeDiskIdentity{}
+func (r *ComputeDiskResourcePolicyAttachmentRef) ValidateExternal(ref string) error {
+	id := &ComputeDiskResourcePolicyAttachmentIdentity{}
 	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *ComputeDiskRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &ComputeDiskIdentity{}
+func (r *ComputeDiskResourcePolicyAttachmentRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ComputeDiskResourcePolicyAttachmentIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}
 	return id, nil
 }
 
-func (r *ComputeDiskRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *ComputeDiskResourcePolicyAttachmentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		obj, err := common.ToStructuredType[*ComputeDisk](u)
+		obj, err := common.ToStructuredType[*ComputeDiskResourcePolicyAttachment](u)
 		if err != nil {
 			return ""
 		}
-		identity, err := getIdentityFromComputeDiskSpec(ctx, reader, obj)
+		identity, err := getIdentityFromComputeDiskResourcePolicyAttachmentSpec(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}

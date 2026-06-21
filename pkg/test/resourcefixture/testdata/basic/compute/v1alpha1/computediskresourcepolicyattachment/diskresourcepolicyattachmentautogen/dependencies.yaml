@@ -40,4 +40,4 @@ spec:
   resourceID: computedisk${uniqueId}
   size: 50
   type: pd-ssd
-  zone: us-central1-a
+  location: us-central1-a
