@@ -108,6 +108,9 @@ var (
 var ComputeGlobalPublicDelegatedPrefixIdentityFormat = gcpurls.Template[ComputePublicDelegatedPrefixIdentity]("compute.googleapis.com", "projects/{project}/global/publicDelegatedPrefixes/{publicDelegatedPrefix}")
 var ComputeRegionalPublicDelegatedPrefixIdentityFormat = gcpurls.Template[ComputePublicDelegatedPrefixIdentity]("compute.googleapis.com", "projects/{project}/regions/{region}/publicDelegatedPrefixes/{publicDelegatedPrefix}")
 
+var ComputeGlobalPublicDelegatedPrefixIdentityPartialFormat = gcpurls.Template[ComputePublicDelegatedPrefixIdentity]("compute.googleapis.com", "global/publicDelegatedPrefixes/{publicDelegatedPrefix}")
+var ComputeRegionalPublicDelegatedPrefixIdentityPartialFormat = gcpurls.Template[ComputePublicDelegatedPrefixIdentity]("compute.googleapis.com", "regions/{region}/publicDelegatedPrefixes/{publicDelegatedPrefix}")
+
 // ComputePublicDelegatedPrefixIdentity is the identity of a GCP ComputePublicDelegatedPrefix resource.
 // +k8s:deepcopy-gen=false
 type ComputePublicDelegatedPrefixIdentity struct {
@@ -136,6 +139,15 @@ func (i *ComputePublicDelegatedPrefixIdentity) FromExternal(ref string) error {
 		return nil
 	}
 	if parsed, match, _ := ComputeRegionalPublicDelegatedPrefixIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	}
+	if parsed, match, _ := ComputeGlobalPublicDelegatedPrefixIdentityPartialFormat.Parse(ref); match {
+		*i = *parsed
+		i.Region = "global"
+		return nil
+	}
+	if parsed, match, _ := ComputeRegionalPublicDelegatedPrefixIdentityPartialFormat.Parse(ref); match {
 		*i = *parsed
 		return nil
 	}

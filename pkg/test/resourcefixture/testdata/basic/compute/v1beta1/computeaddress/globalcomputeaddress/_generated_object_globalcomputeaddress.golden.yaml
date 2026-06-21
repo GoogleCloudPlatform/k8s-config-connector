@@ -4,11 +4,10 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
     test-label: updated-value
@@ -23,17 +22,17 @@ spec:
     name: default
   prefixLength: 16
   purpose: VPC_PEERING
-  resourceID: ${addressID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
+    message: 'Update call failed: error updating: ComputeAddress is immutable and
+      cannot be updated'
+    reason: UpdateFailed
+    status: "False"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
   labelFingerprint: abcdef0123A=
-  observedGeneration: 2
+  observedGeneration: 1
   observedState:
     address: 8.8.8.8
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}

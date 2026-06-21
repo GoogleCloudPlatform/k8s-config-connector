@@ -19,6 +19,8 @@
 // proto.service: google.cloud.compute.v1.Images
 // proto.service: google.cloud.compute.v1.SecurityPolicies
 // proto.service: google.cloud.compute.v1.RegionSecurityPolicies
+// proto.service: google.cloud.compute.v1.Addresses
+// proto.service: google.cloud.compute.v1.GlobalAddresses
 
 package compute
 
@@ -219,6 +221,18 @@ func (m *gcpClient) newSecurityPoliciesClient(ctx context.Context) (*compute.Sec
 	return client, err
 }
 
+func (m *gcpClient) newAddressesClient(ctx context.Context) (*compute.AddressesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewAddressesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute Addresses client: %w", err)
+	}
+	return client, err
+}
+
 func (m *gcpClient) newRegionSecurityPoliciesClient(ctx context.Context) (*compute.RegionSecurityPoliciesClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
@@ -227,6 +241,18 @@ func (m *gcpClient) newRegionSecurityPoliciesClient(ctx context.Context) (*compu
 	client, err := compute.NewRegionSecurityPoliciesRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute RegionSecurityPolicies client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newGlobalAddressesClient(ctx context.Context) (*compute.GlobalAddressesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewGlobalAddressesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute GlobalAddresses client: %w", err)
 	}
 	return client, err
 }
