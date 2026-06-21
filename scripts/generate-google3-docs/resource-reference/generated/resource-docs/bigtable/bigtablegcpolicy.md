@@ -124,9 +124,7 @@ tableRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The deletion policy for the GC policy. Setting ABANDON allows the resource
-				to be abandoned rather than deleted. This is useful for GC policy as it cannot be deleted
-				in a replicated instance. Possible values are: "ABANDON".</p>
+            <p>The deletion policy for the GC policy. Setting ABANDON allows the resource to be abandoned rather than deleted. This is useful for GC policy as it cannot be deleted in a replicated instance. Possible values are: "ABANDON".</p>
         </td>
     </tr>
     <tr>
@@ -156,7 +154,7 @@ tableRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `BigtableInstance` resource.</p>
+            <p>A reference to an externally managed BigtableInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -166,7 +164,7 @@ tableRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a BigtableInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -176,7 +174,7 @@ tableRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a BigtableInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -276,7 +274,7 @@ tableRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `BigtableTable` resource.</p>
+            <p>A reference to an externally managed BigtableTable resource.</p>
         </td>
     </tr>
     <tr>
@@ -286,7 +284,7 @@ tableRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a BigtableInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -296,7 +294,7 @@ tableRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a BigtableInstance resource.</p>
         </td>
     </tr>
 </tbody>
@@ -327,7 +325,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
