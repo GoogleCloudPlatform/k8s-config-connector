@@ -28,6 +28,7 @@ import (
 	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 	grpcCode "google.golang.org/grpc/codes"
 	grpcStatus "google.golang.org/grpc/status"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/structpb"
@@ -626,5 +627,53 @@ func Status_ToProto(mapCtx *MapContext, in *common.Status) *statuspb.Status {
 	out := &statuspb.Status{}
 	out.Code = ValueOf(in.Code)
 	out.Message = ValueOf(in.Message)
+	return out
+}
+
+func Value_FromProto(mapCtx *MapContext, in *structpb.Value) apiextensionsv1.JSON {
+	if in == nil {
+		return apiextensionsv1.JSON{}
+	}
+	b, err := protojson.Marshal(in)
+	if err != nil {
+		mapCtx.Errorf("marshalling structpb.Value to json: %v", err)
+		return apiextensionsv1.JSON{}
+	}
+	return apiextensionsv1.JSON{Raw: b}
+}
+
+func Value_ToProto(mapCtx *MapContext, in apiextensionsv1.JSON) *structpb.Value {
+	if in.Raw == nil {
+		return nil
+	}
+	out := &structpb.Value{}
+	if err := protojson.Unmarshal(in.Raw, out); err != nil {
+		mapCtx.Errorf("error unmarshalling json to structpb.Value: %v", err)
+		return nil
+	}
+	return out
+}
+
+func ListValue_FromProto(mapCtx *MapContext, in *structpb.ListValue) apiextensionsv1.JSON {
+	if in == nil {
+		return apiextensionsv1.JSON{}
+	}
+	b, err := protojson.Marshal(in)
+	if err != nil {
+		mapCtx.Errorf("marshalling structpb.ListValue to json: %v", err)
+		return apiextensionsv1.JSON{}
+	}
+	return apiextensionsv1.JSON{Raw: b}
+}
+
+func ListValue_ToProto(mapCtx *MapContext, in apiextensionsv1.JSON) *structpb.ListValue {
+	if in.Raw == nil {
+		return nil
+	}
+	out := &structpb.ListValue{}
+	if err := protojson.Unmarshal(in.Raw, out); err != nil {
+		mapCtx.Errorf("error unmarshalling json to structpb.ListValue: %v", err)
+		return nil
+	}
 	return out
 }
