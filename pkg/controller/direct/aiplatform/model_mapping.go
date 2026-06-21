@@ -15,12 +15,12 @@
 package aiplatform
 
 import (
-	"strconv"
-
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/structpb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 func AIPlatformModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AIPlatformModelObservedState {
@@ -81,7 +81,7 @@ func AIPlatformModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm
 	out.VersionDescription = direct.LazyPtr(in.GetVersionDescription())
 	out.PredictSchemata = PredictSchemata_FromProto(mapCtx, in.GetPredictSchemata())
 	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
-	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
+	out.Metadata = direct.Value_FromProto(mapCtx, in.GetMetadata())
 	out.PipelineJob = direct.LazyPtr(in.GetPipelineJob())
 	out.ContainerSpec = ModelContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
 	out.ArtifactURI = direct.LazyPtr(in.GetArtifactUri())
@@ -103,7 +103,7 @@ func AIPlatformModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformMo
 	out.VersionDescription = direct.ValueOf(in.VersionDescription)
 	out.PredictSchemata = PredictSchemata_ToProto(mapCtx, in.PredictSchemata)
 	out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
-	out.Metadata = Value_ToProto(mapCtx, in.Metadata)
+	out.Metadata = direct.Value_ToProto(mapCtx, in.Metadata)
 	out.PipelineJob = direct.ValueOf(in.PipelineJob)
 	out.ContainerSpec = ModelContainerSpec_ToProto(mapCtx, in.ContainerSpec)
 	out.ArtifactUri = direct.ValueOf(in.ArtifactURI)
@@ -115,102 +115,22 @@ func AIPlatformModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformMo
 	return out
 }
 
-func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
+func Int32Value_FromProto(mapCtx *direct.MapContext, in *wrapperspb.Int32Value) *krm.Int32Value {
 	if in == nil {
 		return nil
 	}
-	out := &structpb.Value{}
-	if in.BoolValue != nil {
-		out.Kind = &structpb.Value_BoolValue{
-			BoolValue: direct.ValueOf(in.BoolValue),
-		}
+	return &krm.Int32Value{
+		Value: &in.Value,
 	}
-	if in.NullValue != nil {
-		strVal := direct.ValueOf(in.NullValue)
-		var value int
-		if val, ok := structpb.NullValue_value[strVal]; ok {
-			value = int(val)
-		} else {
-			var err error
-			value, err = strconv.Atoi(strVal)
-			if err != nil {
-				mapCtx.Errorf("error converting value %s from string to int", strVal)
-			}
-		}
-		out.Kind = &structpb.Value_NullValue{
-			NullValue: structpb.NullValue(value),
-		}
-	}
-	if in.NumberValue != nil {
-		out.Kind = &structpb.Value_NumberValue{
-			NumberValue: direct.ValueOf(in.NumberValue),
-		}
-	}
-	if in.StringValue != nil {
-		out.Kind = &structpb.Value_StringValue{
-			StringValue: direct.ValueOf(in.StringValue),
-		}
-	}
-	if in.StructValue != nil {
-		out.Kind = &structpb.Value_StructValue{
-			StructValue: StructValue_ToProto(mapCtx, in.StructValue),
-		}
-	}
-	return out
 }
 
-func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
-	if in == nil {
+func Int32Value_ToProto(mapCtx *direct.MapContext, in *krm.Int32Value) *wrapperspb.Int32Value {
+	if in == nil || in.Value == nil {
 		return nil
 	}
-	out := &krm.Value{}
-	switch in.GetKind().(type) {
-	case *structpb.Value_StringValue:
-		value := in.GetStringValue()
-		out.StringValue = &value
-	case *structpb.Value_NumberValue:
-		value := in.GetNumberValue()
-		out.NumberValue = &value
-	case *structpb.Value_NullValue:
-		value := in.GetNullValue().String()
-		out.NullValue = &value
-	case *structpb.Value_BoolValue:
-		value := in.GetBoolValue()
-		out.BoolValue = &value
-	case *structpb.Value_StructValue:
-		out.StructValue = StructValue_FromProto(mapCtx, in.GetStructValue())
+	return &wrapperspb.Int32Value{
+		Value: *in.Value,
 	}
-	return out
-}
-
-func StructValue_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) map[string]string {
-	if in == nil {
-		return nil
-	}
-	out := make(map[string]string)
-	for key, val := range in.Fields {
-		out[key] = val.GetStringValue()
-	}
-	return out
-}
-
-func StructValue_ToProto(mapCtx *direct.MapContext, in map[string]string) *structpb.Struct {
-	if in == nil {
-		return nil
-	}
-	out := &structpb.Struct{}
-	if len(in) > 0 {
-		out.Fields = make(map[string]*structpb.Value)
-	}
-	for key, val := range in {
-		value := &structpb.Value_StringValue{
-			StringValue: val,
-		}
-		out.Fields[key] = &structpb.Value{
-			Kind: value,
-		}
-	}
-	return out
 }
 
 func ExplanationMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata) *krm.ExplanationMetadata {
@@ -264,8 +184,8 @@ func ExplanationMetadata_InputMetadata_FromProto(mapCtx *direct.MapContext, in *
 	out.IndexFeatureMapping = in.GetIndexFeatureMapping()
 	out.FeatureValueDomain = ExplanationMetadata_InputMetadata_FeatureValueDomain_FromProto(mapCtx, in.GetFeatureValueDomain())
 	out.Visualization = ExplanationMetadata_InputMetadata_Visualization_FromProto(mapCtx, in.GetVisualization())
-	out.InputBaselines = direct.Slice_FromProto(mapCtx, in.InputBaselines, Value_FromProto)
-	out.EncodedBaselines = direct.Slice_FromProto(mapCtx, in.EncodedBaselines, Value_FromProto)
+	out.InputBaselines = direct.Slice_FromProto(mapCtx, in.InputBaselines, direct.Value_FromProto)
+	out.EncodedBaselines = direct.Slice_FromProto(mapCtx, in.EncodedBaselines, direct.Value_FromProto)
 	return out
 }
 
@@ -282,11 +202,11 @@ func ExplanationMetadata_InputMetadata_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Encoding = pb.ExplanationMetadata_InputMetadata_Encoding(pb.ExplanationMetadata_InputMetadata_Encoding_value[direct.ValueOf(in.Encoding)])
 	out.Modality = direct.ValueOf(in.Modality)
 	out.IndexFeatureMapping = in.IndexFeatureMapping
-	out.EncodedBaselines = direct.Slice_ToProto(mapCtx, in.EncodedBaselines, Value_ToProto)
+	out.EncodedBaselines = direct.Slice_ToProto(mapCtx, in.EncodedBaselines, direct.Value_ToProto)
 	out.FeatureValueDomain = ExplanationMetadata_InputMetadata_FeatureValueDomain_ToProto(mapCtx, in.FeatureValueDomain)
 	out.Visualization = ExplanationMetadata_InputMetadata_Visualization_ToProto(mapCtx, in.Visualization)
-	out.InputBaselines = direct.Slice_ToProto(mapCtx, in.InputBaselines, Value_ToProto)
-	out.EncodedBaselines = direct.Slice_ToProto(mapCtx, in.EncodedBaselines, Value_ToProto)
+	out.InputBaselines = direct.Slice_ToProto(mapCtx, in.InputBaselines, direct.Value_ToProto)
+	out.EncodedBaselines = direct.Slice_ToProto(mapCtx, in.EncodedBaselines, direct.Value_ToProto)
 	return out
 }
 
@@ -342,7 +262,7 @@ func ExplanationMetadata_OutputMetadata_FromProto(mapCtx *direct.MapContext, in 
 	}
 	out := &krm.ExplanationMetadata_OutputMetadata{}
 	out.DisplayNameMappingKey = DisplayNameMappingKey_FromProto(mapCtx, in.GetDisplayNameMappingKey())
-	out.IndexDisplayNameMapping = IndexDisplayNameMapping_FromProto(mapCtx, in.GetIndexDisplayNameMapping())
+	out.IndexDisplayNameMapping = direct.ValueOf(IndexDisplayNameMapping_FromProto(mapCtx, in.GetIndexDisplayNameMapping()))
 	out.OutputTensorName = direct.LazyPtr(in.GetOutputTensorName())
 	return out
 }
@@ -356,7 +276,7 @@ func ExplanationMetadata_OutputMetadata_ToProto(mapCtx *direct.MapContext, in *k
 	if oneof := DisplayNameMappingKey_ToProto(mapCtx, in.DisplayNameMappingKey); oneof != nil {
 		out.DisplayNameMapping = oneof
 	}
-	if oneof := IndexDisplayNameMapping_ToProto(mapCtx, in.IndexDisplayNameMapping); oneof != nil {
+	if oneof := IndexDisplayNameMapping_ToProto(mapCtx, &in.IndexDisplayNameMapping); oneof != nil {
 		out.DisplayNameMapping = oneof
 	}
 	return out
@@ -380,20 +300,24 @@ func DisplayNameMappingKey_ToProto(mapCtx *direct.MapContext, in *string) *pb.Ex
 	return out
 }
 
-func IndexDisplayNameMapping_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
+func IndexDisplayNameMapping_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *apiextensionsv1.JSON {
 	if in == nil {
 		return nil
 	}
-	out := Value_FromProto(mapCtx, in)
+	out := direct.Value_FromProto(mapCtx, in)
 	return out
 }
 
-func IndexDisplayNameMapping_ToProto(mapCtx *direct.MapContext, in *krm.Value) *pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping {
-	if in == nil {
+func IndexDisplayNameMapping_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) *pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping {
+	if in == nil || in.Raw == nil || len(in.Raw) == 0 || string(in.Raw) == "null" || string(in.Raw) == "{}" {
+		return nil
+	}
+	val := direct.Value_ToProto(mapCtx, in)
+	if val == nil {
 		return nil
 	}
 	out := &pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping{
-		IndexDisplayNameMapping: Value_ToProto(mapCtx, in),
+		IndexDisplayNameMapping: val,
 	}
 	return out
 }

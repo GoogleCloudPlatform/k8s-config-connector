@@ -26,8 +26,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AccessLevelExpr_FromProto(mapCtx *direct.MapContext, in *expr.Expr) acm.AccessLevelExpr {
-	out := acm.AccessLevelExpr{}
+func AccessLevelExpr_FromProto(mapCtx *direct.MapContext, in *expr.Expr) *acm.AccessLevelExpr {
+	if in == nil {
+		return nil
+	}
+	out := &acm.AccessLevelExpr{}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Expression = direct.LazyPtr(in.GetExpression())
 	out.Location = direct.LazyPtr(in.GetLocation())
@@ -35,7 +38,10 @@ func AccessLevelExpr_FromProto(mapCtx *direct.MapContext, in *expr.Expr) acm.Acc
 	return out
 }
 
-func AccessLevelExpr_ToProto(mapCtx *direct.MapContext, in acm.AccessLevelExpr) *expr.Expr {
+func AccessLevelExpr_ToProto(mapCtx *direct.MapContext, in *acm.AccessLevelExpr) *expr.Expr {
+	if in == nil {
+		return nil
+	}
 	out := &expr.Expr{}
 	out.Description = direct.ValueOf(in.Description)
 	out.Expression = direct.ValueOf(in.Expression)

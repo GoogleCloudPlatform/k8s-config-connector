@@ -34,6 +34,7 @@ type AiplatformV1alpha1Interface interface {
 	AIPlatformModelsGetter
 	VertexAIFeatureOnlineStoresGetter
 	VertexAISpecialistPoolsGetter
+	VertexAIStudiesGetter
 }
 
 // AiplatformV1alpha1Client is used to interact with features provided by the aiplatform.cnrm.cloud.google.com group.
@@ -51,6 +52,10 @@ func (c *AiplatformV1alpha1Client) VertexAIFeatureOnlineStores(namespace string)
 
 func (c *AiplatformV1alpha1Client) VertexAISpecialistPools(namespace string) VertexAISpecialistPoolInterface {
 	return newVertexAISpecialistPools(c, namespace)
+}
+
+func (c *AiplatformV1alpha1Client) VertexAIStudies(namespace string) VertexAIStudyInterface {
+	return newVertexAIStudies(c, namespace)
 }
 
 // NewForConfig creates a new AiplatformV1alpha1Client for the given config.

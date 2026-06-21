@@ -457,6 +457,12 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 	}
 
 	fmt.Fprintf(out, "\t// %s=%s\n", KCCProtoFieldAnnotation, field.FullName())
+	fullName := string(field.FullName())
+	if fullName == "google.cloud.aiplatform.v1.StudySpec.ParameterSpec.conditional_parameter_specs" ||
+		fullName == "google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.parameter_spec" {
+		fmt.Fprintf(out, "\t// +kubebuilder:pruning:PreserveUnknownFields\n")
+		fmt.Fprintf(out, "\t// +kubebuilder:validation:Schemaless\n")
+	}
 	fmt.Fprintf(out, "\t%s %s `json:\"%s,omitempty\"`\n",
 		GoFieldName,
 		goType,
