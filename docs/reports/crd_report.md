@@ -141,7 +141,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeBackendBucket                            | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeBackendBucketSignedURLKey                | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeBackendService                           | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeBackendServiceSignedURLKey               | True         | False       | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeBackendServiceSignedURLKey               | True         | False       | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeDiskResourcePolicyAttachment             | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeDisk                                     | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeExternalVPNGateway                       | False        | True        | False  | Terraform  | False       |
