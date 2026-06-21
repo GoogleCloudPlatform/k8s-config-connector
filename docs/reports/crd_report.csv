@@ -452,7 +452,7 @@ oslogin.cnrm.cloud.google.com,OSLoginSSHPublicKey,True,False,False,Terraform,Fal
 parametermanager.cnrm.cloud.google.com,ParameterManagerParameter,True,False,False,Direct,True
 parametermanager.cnrm.cloud.google.com,ParameterManagerParameterVersion,True,False,False,Direct,True
 privateca.cnrm.cloud.google.com,PrivateCACAPool,False,True,False,DCL,True
-privateca.cnrm.cloud.google.com,PrivateCACertificateAuthority,False,True,False,DCL,False
+privateca.cnrm.cloud.google.com,PrivateCACertificateAuthority,False,True,False,DCL,True
 privateca.cnrm.cloud.google.com,PrivateCACertificate,False,True,False,DCL,False
 privateca.cnrm.cloud.google.com,PrivateCACertificateTemplate,False,True,False,DCL,True
 privilegedaccessmanager.cnrm.cloud.google.com,PrivilegedAccessManagerEntitlement,True,True,False,Direct,True

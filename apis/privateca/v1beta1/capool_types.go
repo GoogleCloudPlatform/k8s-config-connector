@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kccscheme"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -103,6 +104,7 @@ type PrivateCACAPoolList struct {
 
 func init() {
 	SchemeBuilder.Register(&PrivateCACAPool{}, &PrivateCACAPoolList{})
+	kccscheme.RegisterType(PrivateCACAPoolGVK, &PrivateCACAPool{})
 }
 
 // +kcc:proto=google.cloud.security.privateca.v1.CaPool.IssuancePolicy

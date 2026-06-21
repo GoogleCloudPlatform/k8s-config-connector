@@ -75,13 +75,22 @@ type ExternalRef interface {
 
 // Normalize is a general-purpose reference resolver that can be used to
 // implement the "Normalize" interface method for most Ref types.
+// Use Normalize when the referenced resource is a direct controller or standard
+// resource where the canonical, fully-resolved GCP resource URI/identifier is
+// guaranteed to be populated inside "status.externalRef".
 func Normalize(ctx context.Context, reader client.Reader, ref Ref, defaultNamespace string) error {
 	return NormalizeWithFallback(ctx, reader, ref, defaultNamespace, nil)
 }
 
 // NormalizeWithFallback extends Normalize by allowing a fallback function to be provided
-// for obtaining the external reference if it is not found in status.externalRef,
-// this is useful for terraform/DCL resources that store the external reference in a different field.
+// for obtaining the external reference if it is not found in status.externalRef.
+//
+// Use NormalizeWithFallback only for older/legacy resources (such as Terraform or DCL resources)
+// that store the resolved external reference in a different status field (e.g., status.id, status.selfLink, or status.observedState).
+//
+// Crucial Guidelines for the Fallback Function:
+// 1. The fallback function MUST ONLY read from status fields (e.g. status.selfLink, status.observedState) to determine if the resource is fully reconciled and ready.
+// 2. The fallback function MUST NOT read from the resource spec (e.g., spec.resourceID, spec.location, spec.projectRef). Reading from spec is unsafe because it would successfully resolve identities for resources that are not yet created or ready in GCP, causing subsequent controller reconciliations to fail or behave incorrectly.
 func NormalizeWithFallback(ctx context.Context, reader client.Reader, ref Ref, defaultNamespace string, fallback func(u *unstructured.Unstructured) string) error {
 	if ref.GetExternal() == "" {
 		key := ref.GetNamespacedName()

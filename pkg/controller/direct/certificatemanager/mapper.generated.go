@@ -27,7 +27,6 @@ import (
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 	krmcertificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
-	krmprivatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -93,16 +92,21 @@ func CertificateIssuanceConfig_CertificateAuthorityConfig_v1alpha1_ToProto(mapCt
 	}
 	return out
 }
+
+/* found existing non-generated mapping function "CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig_v1alpha1_FromProto", skipping
 func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig) *krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig{}
 	if in.GetCaPool() != "" {
-		out.CAPoolRef = &krmprivatecav1beta1.PrivateCACAPoolRef{External: in.GetCaPool()}
+		out.CAPoolRef = &krmprivatecaprivatecarefs.PrivateCACAPoolRef{External: in.GetCaPool()}
 	}
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig_v1alpha1_ToProto", skipping
 func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig) *pb.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig {
 	if in == nil {
 		return nil
@@ -113,6 +117,7 @@ func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthoritySe
 	}
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "CertificateManaged_v1beta1_FromProto", skipping
 func CertificateManaged_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate) *krm.CertificateManaged {
