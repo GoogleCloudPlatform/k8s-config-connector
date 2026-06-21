@@ -72,7 +72,6 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/gkehub/v1beta/metering/*.proto \
 		./apis/mockgcp/cloud/gkehub/v1beta/multiclusteringress/*.proto \
 		./apis/mockgcp/cloud/gkehub/v1beta1/membership.proto \
-		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/pubsublite/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/redis/cluster/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/redis/v1beta1/*.proto \
@@ -94,6 +93,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/metastore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
+		./third_party/googleapis/mockgcp/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
 
 
@@ -105,6 +105,7 @@ generate-grpc-for-google-protos:
 			git clone --depth 1 https://github.com/googleapis/googleapis.git third_party/googleapis; \
 	fi
 	cd third_party/googleapis && (git cat-file -e $(GOOGLEAPI_VERSION)^{commit} 2> /dev/null || git fetch origin $(GOOGLEAPI_VERSION)) && git reset --hard $(GOOGLEAPI_VERSION) && git clean -df . && git status
+	./apply-proto-patches.sh
 	mkdir -p ./generated
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
@@ -118,7 +119,6 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
 		./third_party/googleapis/google/storage/control/v2/*.proto \
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
-		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto
 

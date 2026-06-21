@@ -24,7 +24,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkservices/v1"
 )
 
 func (s *NetworkServicesServer) ListMeshes(ctx context.Context, req *pb.ListMeshesRequest) (*pb.ListMeshesResponse, error) {
