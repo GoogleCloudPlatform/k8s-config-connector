@@ -41,6 +41,7 @@ import (
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1"
 	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1alpha1"
 	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1beta1"
+	appoptimizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appoptimize/v1alpha1"
 	artifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1alpha1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
 	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/asset/v1beta1"
@@ -236,6 +237,7 @@ type Interface interface {
 	AppengineV1alpha1() appenginev1alpha1.AppengineV1alpha1Interface
 	ApphubV1alpha1() apphubv1alpha1.ApphubV1alpha1Interface
 	ApphubV1beta1() apphubv1beta1.ApphubV1beta1Interface
+	AppoptimizeV1alpha1() appoptimizev1alpha1.AppoptimizeV1alpha1Interface
 	ArtifactregistryV1alpha1() artifactregistryv1alpha1.ArtifactregistryV1alpha1Interface
 	ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface
 	AssetV1beta1() assetv1beta1.AssetV1beta1Interface
@@ -429,6 +431,7 @@ type Clientset struct {
 	appengineV1alpha1               *appenginev1alpha1.AppengineV1alpha1Client
 	apphubV1alpha1                  *apphubv1alpha1.ApphubV1alpha1Client
 	apphubV1beta1                   *apphubv1beta1.ApphubV1beta1Client
+	appoptimizeV1alpha1             *appoptimizev1alpha1.AppoptimizeV1alpha1Client
 	artifactregistryV1alpha1        *artifactregistryv1alpha1.ArtifactregistryV1alpha1Client
 	artifactregistryV1beta1         *artifactregistryv1beta1.ArtifactregistryV1beta1Client
 	assetV1beta1                    *assetv1beta1.AssetV1beta1Client
@@ -681,6 +684,11 @@ func (c *Clientset) ApphubV1alpha1() apphubv1alpha1.ApphubV1alpha1Interface {
 // ApphubV1beta1 retrieves the ApphubV1beta1Client
 func (c *Clientset) ApphubV1beta1() apphubv1beta1.ApphubV1beta1Interface {
 	return c.apphubV1beta1
+}
+
+// AppoptimizeV1alpha1 retrieves the AppoptimizeV1alpha1Client
+func (c *Clientset) AppoptimizeV1alpha1() appoptimizev1alpha1.AppoptimizeV1alpha1Interface {
+	return c.appoptimizeV1alpha1
 }
 
 // ArtifactregistryV1alpha1 retrieves the ArtifactregistryV1alpha1Client
@@ -1651,6 +1659,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.appoptimizeV1alpha1, err = appoptimizev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.artifactregistryV1alpha1, err = artifactregistryv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2376,6 +2388,7 @@ func New(c rest.Interface) *Clientset {
 	cs.appengineV1alpha1 = appenginev1alpha1.New(c)
 	cs.apphubV1alpha1 = apphubv1alpha1.New(c)
 	cs.apphubV1beta1 = apphubv1beta1.New(c)
+	cs.appoptimizeV1alpha1 = appoptimizev1alpha1.New(c)
 	cs.artifactregistryV1alpha1 = artifactregistryv1alpha1.New(c)
 	cs.artifactregistryV1beta1 = artifactregistryv1beta1.New(c)
 	cs.assetV1beta1 = assetv1beta1.New(c)

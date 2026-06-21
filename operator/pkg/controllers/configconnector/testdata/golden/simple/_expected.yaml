@@ -2328,6 +2328,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - appoptimize.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - artifactregistry.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4171,6 +4183,14 @@ rules:
   - watch
 - apiGroups:
   - apphub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - appoptimize.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
