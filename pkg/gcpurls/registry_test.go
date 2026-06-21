@@ -125,6 +125,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig":                    true,
 		"//iap.googleapis.com/projects/{}/brands/{}":                                                true,
 		"//serviceusage.googleapis.com/projects/{}/services/{}/identity":                            true,
+		"//compute.googleapis.com/projects/{}/global/backendServices/{}/signedUrlKeys/{}":           true,
 		"//compute.googleapis.com/projects/{}/global/images/family/{}":                              true,
 		"//compute.googleapis.com/global/publicDelegatedPrefixes/{}":                                true,
 		"//compute.googleapis.com/regions/{}/publicDelegatedPrefixes/{}":                            true,
