@@ -95,7 +95,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/metastore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
-		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
+		./third_party/googleapis/mockgcp/cloud/networkservices/v1/*.proto \
+		./third_party/googleapis/devtools/sourcerepo/v1/*.proto
 
 
 .PHONY: generate-grpc-for-google-protos
@@ -106,6 +107,7 @@ generate-grpc-for-google-protos:
 			git clone --depth 1 https://github.com/googleapis/googleapis.git third_party/googleapis; \
 	fi
 	cd third_party/googleapis && (git cat-file -e $(GOOGLEAPI_VERSION)^{commit} 2> /dev/null || git fetch origin $(GOOGLEAPI_VERSION)) && git reset --hard $(GOOGLEAPI_VERSION) && git clean -df . && git status
+	./apply-proto-patches.sh
 	mkdir -p ./generated
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
@@ -119,7 +121,6 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto \
 		./third_party/googleapis/google/storage/control/v2/*.proto \
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
-		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
 		./third_party/googleapis/google/cloud/video/stitcher/v1/*.proto \
 		./third_party/googleapis/google/cloud/dialogflow/v2beta1/*.proto \
