@@ -21,6 +21,8 @@ import (
 
 var BigtableTableGVK = GroupVersion.WithKind("BigtableTable")
 
+var _ *ChangeStreamConfig = nil
+
 // BigtableTableSpec defines the desired state of BigtableTable
 // +kcc:spec:proto=google.bigtable.admin.v2.Table
 type BigtableTableSpec struct {
