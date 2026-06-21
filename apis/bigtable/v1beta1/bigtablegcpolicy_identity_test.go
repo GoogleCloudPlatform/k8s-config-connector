@@ -15,9 +15,13 @@
 package v1beta1
 
 import (
+	"context"
+	"errors"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func TestBigtableGCPolicyIdentity_FromExternal(t *testing.T) {
@@ -72,6 +76,76 @@ func TestBigtableGCPolicyIdentity_FromExternal(t *testing.T) {
 				if gotStr != wantStr {
 					t.Errorf("String() = %v, want %v", gotStr, wantStr)
 				}
+			}
+		})
+	}
+}
+
+type mockReader struct {
+	client.Reader
+	getFunc func(ctx context.Context, key client.ObjectKey, obj client.Object, opts ...client.GetOption) error
+}
+
+func (m *mockReader) Get(ctx context.Context, key client.ObjectKey, obj client.Object, opts ...client.GetOption) error {
+	if m.getFunc != nil {
+		return m.getFunc(ctx, key, obj, opts...)
+	}
+	return nil
+}
+
+func TestGetIdentityFromBigtableGCPolicySpec(t *testing.T) {
+	ctx := context.Background()
+
+	tests := []struct {
+		name        string
+		obj         *BigtableGCPolicy
+		mockGetFunc func(ctx context.Context, key client.ObjectKey, obj client.Object, opts ...client.GetOption) error
+		wantErr     string
+	}{
+		{
+			name: "empty TableRef and ColumnFamily",
+			obj: &BigtableGCPolicy{
+				Spec: BigtableGCPolicySpec{},
+			},
+			mockGetFunc: func(ctx context.Context, key client.ObjectKey, obj client.Object, opts ...client.GetOption) error {
+				return errors.New("not found")
+			},
+			wantErr: "reading referenced",
+		},
+		{
+			name: "empty ColumnFamily but valid TableRef external",
+			obj: &BigtableGCPolicy{
+				Spec: BigtableGCPolicySpec{
+					TableRef: TableRef{
+						External: "projects/my-project/instances/my-instance/tables/my-table",
+					},
+				},
+			},
+			wantErr: "cannot resolve ColumnFamily: empty string",
+		},
+		{
+			name: "both Name and External specified on TableRef",
+			obj: &BigtableGCPolicy{
+				Spec: BigtableGCPolicySpec{
+					TableRef: TableRef{
+						External: "projects/my-project/instances/my-instance/tables/my-table",
+						Name:     "my-table",
+					},
+				},
+			},
+			wantErr: "cannot specify both name and external",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			reader := &mockReader{getFunc: tt.mockGetFunc}
+			got, err := getIdentityFromBigtableGCPolicySpec(ctx, reader, tt.obj)
+			if err == nil {
+				t.Fatalf("getIdentityFromBigtableGCPolicySpec() expected error, got nil identity: %v", got)
+			}
+			if tt.wantErr != "" && !strings.Contains(err.Error(), tt.wantErr) {
+				t.Errorf("getIdentityFromBigtableGCPolicySpec() error = %v, want error containing %q", err, tt.wantErr)
 			}
 		})
 	}
