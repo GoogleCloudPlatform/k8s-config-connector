@@ -63,6 +63,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificate"}:
 		exportURI = resolveCAISURI(h, obj)
 
+	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerDNSAuthorization"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
 		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
 

@@ -28,4 +28,5 @@ status:
   - data: ${uniqueId}
     name: _acme-challenge.${uniqueId}.hashicorptest.com.
     type: CNAME
+  externalRef: projects/${projectId}/locations/us-central1/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}
   observedGeneration: 2

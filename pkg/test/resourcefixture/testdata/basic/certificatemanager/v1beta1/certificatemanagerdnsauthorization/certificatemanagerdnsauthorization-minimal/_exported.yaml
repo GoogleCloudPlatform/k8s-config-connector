@@ -1,0 +1,17 @@
+apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+kind: CertificateManagerDNSAuthorization
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    cnrm-test: "true"
+    label-one: value-one
+    managed-by-cnrm: "true"
+  name: certificatemanagerdnsauthorization-${uniqueId}
+spec:
+  description: Updated sample description
+  domain: ${uniqueId}.hashicorptest.com
+  location: global
+  projectRef:
+    name: ${projectId}
+  resourceID: certificatemanagerdnsauthorization-${uniqueId}
