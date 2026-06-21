@@ -31,6 +31,10 @@ type FakeApigeeV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeApigeeV1alpha1) ApigeeAPIProducts(namespace string) v1alpha1.ApigeeAPIProductInterface {
+	return newFakeApigeeAPIProducts(c, namespace)
+}
+
 func (c *FakeApigeeV1alpha1) ApigeeAddonsConfigs(namespace string) v1alpha1.ApigeeAddonsConfigInterface {
 	return newFakeApigeeAddonsConfigs(c, namespace)
 }
