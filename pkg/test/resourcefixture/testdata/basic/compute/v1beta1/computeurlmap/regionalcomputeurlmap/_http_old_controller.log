@@ -292,7 +292,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -321,10 +321,11 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps?alt=json
 Content-Type: application/json
 
 {
+  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "description": "test regional URLMap",
   "hostRules": [
     {
@@ -337,6 +338,7 @@ Content-Type: application/json
   "name": "${urlMapID}",
   "pathMatchers": [
     {
+      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -367,12 +369,15 @@ Content-Type: application/json
               },
               "delay": {
                 "fixedDelay": {
-                  "nanos": 50000
+                  "nanos": 50000,
+                  "seconds": "0"
                 },
                 "percentage": 7.8
               }
             },
-            "requestMirrorPolicy": {},
+            "requestMirrorPolicy": {
+              "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+            },
             "retryPolicy": {
               "numRetries": 4,
               "perTryTimeout": {
@@ -393,6 +398,7 @@ Content-Type: application/json
             },
             "weightedBackendServices": [
               {
+                "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -422,11 +428,12 @@ Content-Type: application/json
       ]
     }
   ],
-  "region": "us-central1",
+  "region": "projects/${projectId}/global/regions/us-central1",
   "tests": [
     {
       "host": "hi.com",
-      "path": "/home"
+      "path": "/home",
+      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     }
   ]
 }
@@ -459,8 +466,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -491,7 +497,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -506,6 +512,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "description": "test regional URLMap",
   "fingerprint": "abcdef0123A=",
   "hostRules": [
@@ -521,6 +528,7 @@ X-Xss-Protection: 0
   "name": "${urlMapID}",
   "pathMatchers": [
     {
+      "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -551,12 +559,15 @@ X-Xss-Protection: 0
               },
               "delay": {
                 "fixedDelay": {
-                  "nanos": 50000
+                  "nanos": 50000,
+                  "seconds": "0"
                 },
                 "percentage": 7.8
               }
             },
-            "requestMirrorPolicy": {},
+            "requestMirrorPolicy": {
+              "backendService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+            },
             "retryPolicy": {
               "numRetries": 4,
               "perTryTimeout": {
@@ -578,6 +589,7 @@ X-Xss-Protection: 0
             },
             "weightedBackendServices": [
               {
+                "backendService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -613,18 +625,19 @@ X-Xss-Protection: 0
     {
       "description": "",
       "host": "hi.com",
-      "path": "/home"
+      "path": "/home",
+      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     }
   ]
 }
 
 ---
 
-PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
+PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 
 {
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "description": "updated regional URLMap",
   "fingerprint": "abcdef0123A=",
   "hostRules": [
@@ -635,11 +648,10 @@ Content-Type: application/json
       "pathMatcher": "allpaths"
     }
   ],
-  "id": "000000000000000000000",
-  "kind": "compute#urlMap",
   "name": "${urlMapID}",
   "pathMatchers": [
     {
+      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -670,12 +682,15 @@ Content-Type: application/json
               },
               "delay": {
                 "fixedDelay": {
-                  "nanos": 50000
+                  "nanos": 50000,
+                  "seconds": "0"
                 },
                 "percentage": 7.8
               }
             },
-            "requestMirrorPolicy": {},
+            "requestMirrorPolicy": {
+              "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+            },
             "retryPolicy": {
               "numRetries": 4,
               "perTryTimeout": {
@@ -696,6 +711,7 @@ Content-Type: application/json
             },
             "weightedBackendServices": [
               {
+                "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -725,12 +741,12 @@ Content-Type: application/json
       ]
     }
   ],
-  "region": "us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}",
+  "region": "projects/${projectId}/global/regions/us-central1",
   "tests": [
     {
       "host": "hi.com",
-      "path": "/home"
+      "path": "/home",
+      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     }
   ]
 }
@@ -763,8 +779,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -795,7 +810,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -810,6 +825,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "description": "updated regional URLMap",
   "fingerprint": "abcdef0123A=",
   "hostRules": [
@@ -825,6 +841,7 @@ X-Xss-Protection: 0
   "name": "${urlMapID}",
   "pathMatchers": [
     {
+      "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -855,12 +872,15 @@ X-Xss-Protection: 0
               },
               "delay": {
                 "fixedDelay": {
-                  "nanos": 50000
+                  "nanos": 50000,
+                  "seconds": "0"
                 },
                 "percentage": 7.8
               }
             },
-            "requestMirrorPolicy": {},
+            "requestMirrorPolicy": {
+              "backendService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+            },
             "retryPolicy": {
               "numRetries": 4,
               "perTryTimeout": {
@@ -882,6 +902,7 @@ X-Xss-Protection: 0
             },
             "weightedBackendServices": [
               {
+                "backendService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -917,14 +938,15 @@ X-Xss-Protection: 0
     {
       "description": "",
       "host": "hi.com",
-      "path": "/home"
+      "path": "/home",
+      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     }
   ]
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -955,8 +977,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8

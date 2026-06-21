@@ -131,9 +131,13 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargettcpproxy/gl
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargettcpproxy/regionalcomputetargettcpproxy-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetvpngateway
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmap
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmap-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapadditive
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapadditive-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapreducer
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapreducer-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/regionalcomputeurlmap
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/regionalcomputeurlmap-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computevpngateway
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computevpntunnel
 pkg/test/resourcefixture/testdata/externalref/externalwithpartialuri
