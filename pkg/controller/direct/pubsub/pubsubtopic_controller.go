@@ -251,6 +251,23 @@ func (a *pubSubTopicAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	export.SetProjectID(u, a.id.Project)
 	export.SetLabels(u, a.actual.Labels)
 
+	// Maintain compatibility with old export
+	if a.actual.GetMessageRetentionDuration() != nil {
+		seconds := a.actual.GetMessageRetentionDuration().GetSeconds()
+		if err := unstructured.SetNestedField(u.Object, fmt.Sprintf("%ds", seconds), "spec", "messageRetentionDuration"); err != nil {
+			return nil, err
+		}
+	}
+	if obj.Spec.MessageStoragePolicy != nil {
+		enforceInTransit := false
+		if obj.Spec.MessageStoragePolicy.EnforceInTransit != nil {
+			enforceInTransit = *obj.Spec.MessageStoragePolicy.EnforceInTransit
+		}
+		if err := unstructured.SetNestedField(u.Object, enforceInTransit, "spec", "messageStoragePolicy", "enforceInTransit"); err != nil {
+			return nil, err
+		}
+	}
+
 	return u, nil
 }
 

@@ -10,7 +10,7 @@ metadata:
     newkey: newval
   name: pubsubtopic-sample-${uniqueId}
 spec:
-  messageRetentionDuration: 1h0m0s
+  messageRetentionDuration: 3600s
   messageStoragePolicy:
     allowedPersistenceRegions:
     - us-central1

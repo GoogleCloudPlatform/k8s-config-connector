@@ -1,6 +1,2 @@
-13c13
-<   messageRetentionDuration: 3600s
----
->   messageRetentionDuration: 1h0m0s
 16a17
 >     enforceInTransit: false
