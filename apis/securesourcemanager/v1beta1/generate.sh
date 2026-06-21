@@ -26,6 +26,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.securesourcemanager.v1 \
   --api-version securesourcemanager.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output \
   --resource SecureSourceManagerInstance:Instance \
   --resource SecureSourceManagerRepository:Repository
 

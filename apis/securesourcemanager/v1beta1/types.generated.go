@@ -22,9 +22,69 @@
 
 package v1beta1
 
+/* found existing non-generated go type with proto tag "google.cloud.securesourcemanager.v1.Instance", skipping
+
+// +kcc:proto=google.cloud.securesourcemanager.v1.Instance
+type Instance struct {
+	// Optional. A unique identifier for an instance. The name should be of the
+	//  format:
+	//  `projects/{project_number}/locations/{location_id}/instances/{instance_id}`
+	//
+	//  `project_number`: Maps to a unique int64 id assigned to each project.
+	//
+	//  `location_id`: Refers to the region where the instance will be deployed.
+	//  Since Secure Source Manager is a regional service, it must be one of the
+	//  valid GCP regions.
+	//
+	//  `instance_id`: User provided name for the instance, must be unique for a
+	//  project_number and location_id combination.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Labels as key value pairs.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Private settings for private instance.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.private_config
+	PrivateConfig *Instance_PrivateConfig `json:"privateConfig,omitempty"`
+
+	// Optional. Immutable. Customer-managed encryption key name, in the format
+	//  projects/* /locations/* /keyRings/* /cryptoKeys/*.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+
+	// Optional. Configuration for Workforce Identity Federation to support
+	//  third party identity provider. If unset, defaults to the Google OIDC IdP.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.workforce_identity_federation_config
+	WorkforceIdentityFederationConfig *Instance_WorkforceIdentityFederationConfig `json:"workforceIdentityFederationConfig,omitempty"`
+}
+*/
+
 /* unreachable type Instance_HostConfig
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
 type Instance_HostConfig struct {
+}
+*/
+
+/* found existing non-generated go type "Instance_PrivateConfig", skipping
+
+// +kcc:proto=google.cloud.securesourcemanager.v1.Instance.PrivateConfig
+type Instance_PrivateConfig struct {
+	// Required. Immutable. Indicate if it's private instance.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.is_private
+	IsPrivate *bool `json:"isPrivate,omitempty"`
+
+	// Optional. Immutable. CA pool resource, resource must in the format of
+	//  `projects/{project}/locations/{location}/caPools/{ca_pool}`.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.ca_pool
+	CAPool *string `json:"caPool,omitempty"`
+
+	// Optional. Additional allowed projects for setting up PSC connections.
+	//  Instance host project is automatically allowed and does not need to be
+	//  included in this list.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.psc_allowed_projects
+	PSCAllowedProjects []string `json:"pscAllowedProjects,omitempty"`
 }
 */
 
@@ -34,6 +94,42 @@ type Instance_WorkforceIdentityFederationConfig struct {
 	// Optional. Immutable. Whether Workforce Identity Federation is enabled.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.WorkforceIdentityFederationConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.securesourcemanager.v1.Repository", skipping
+
+// +kcc:proto=google.cloud.securesourcemanager.v1.Repository
+type Repository struct {
+	// Optional. A unique identifier for a repository. The name should be of the
+	//  format:
+	//  `projects/{project}/locations/{location_id}/repositories/{repository_id}`
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Description of the repository, which cannot exceed 500
+	//  characters.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The name of the instance in which the repository is hosted,
+	//  formatted as
+	//  `projects/{project_number}/locations/{location_id}/instances/{instance_id}`
+	//  When creating repository via securesourcemanager.googleapis.com, this field
+	//  is used as input. When creating repository via *.sourcemanager.dev, this
+	//  field is output only.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.instance
+	Instance *string `json:"instance,omitempty"`
+
+	// Optional. This checksum is computed by the server based on the value of
+	//  other fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Input only. Initial configurations for the repository.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.initial_config
+	InitialConfig *Repository_InitialConfig `json:"initialConfig,omitempty"`
 }
 */
 
@@ -186,6 +282,37 @@ type Repository_UrIs struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.securesourcemanager.v1.Instance", skipping
+
+// +kcc:observedstate:proto=google.cloud.securesourcemanager.v1.Instance
+type InstanceObservedState struct {
+	// Output only. Create timestamp.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Update timestamp.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. Private settings for private instance.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.private_config
+	PrivateConfig *Instance_PrivateConfigObservedState `json:"privateConfig,omitempty"`
+
+	// Output only. Current state of the instance.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. An optional field providing information about the current
+	//  instance state.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.state_note
+	StateNote *string `json:"stateNote,omitempty"`
+
+	// Output only. A list of hostnames for this instance.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.host_config
+	HostConfig *Instance_HostConfigObservedState `json:"hostConfig,omitempty"`
+}
+*/
+
 // +kcc:observedstate:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
 type Instance_HostConfigObservedState struct {
 	// Output only. HTML hostname.
@@ -204,6 +331,44 @@ type Instance_HostConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.HostConfig.git_ssh
 	GitSSH *string `json:"gitSSH,omitempty"`
 }
+
+/* found existing non-generated go type "Instance_PrivateConfigObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.securesourcemanager.v1.Instance.PrivateConfig
+type Instance_PrivateConfigObservedState struct {
+	// Output only. Service Attachment for HTTP, resource is in the format of
+	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.http_service_attachment
+	HTTPServiceAttachment *string `json:"httpServiceAttachment,omitempty"`
+
+	// Output only. Service Attachment for SSH, resource is in the format of
+	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.ssh_service_attachment
+	SSHServiceAttachment *string `json:"sshServiceAttachment,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.securesourcemanager.v1.Repository", skipping
+
+// +kcc:observedstate:proto=google.cloud.securesourcemanager.v1.Repository
+type RepositoryObservedState struct {
+	// Output only. Unique identifier of the repository.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Create timestamp.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Update timestamp.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. URIs for the repository.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.uris
+	Uris *Repository_UrIsObservedState `json:"uris,omitempty"`
+}
+*/
 
 // +kcc:observedstate:proto=google.cloud.securesourcemanager.v1.Repository.URIs
 type Repository_UrIsObservedState struct {
