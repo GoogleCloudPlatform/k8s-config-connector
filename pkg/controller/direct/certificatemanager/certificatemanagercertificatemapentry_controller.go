@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -102,8 +103,21 @@ func (m *certificateMapEntryModel) AdapterForObject(ctx context.Context, op *dir
 }
 
 func (m *certificateMapEntryModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.CertificateManagerCertificateMapEntryIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &CertificateMapEntryAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type CertificateMapEntryAdapter struct {
@@ -216,14 +230,25 @@ func (a *CertificateMapEntryAdapter) Export(ctx context.Context) (*unstructured.
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.ProjectRef.External = a.id.Project
+	mapID := &krm.CertificateManagerCertificateMapIdentity{
+		Project:        a.id.Project,
+		CertificateMap: a.id.CertificateMap,
+	}
+	obj.Spec.MapRef.External = mapID.String()
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.CertificateMapEntry)
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.CertificateMapEntry)
 	u.SetGroupVersionKind(krm.CertificateManagerCertificateMapEntryGVK)
+
+	export.SetLabels(u, a.actual.Labels)
+
 	return u, nil
 }
 
