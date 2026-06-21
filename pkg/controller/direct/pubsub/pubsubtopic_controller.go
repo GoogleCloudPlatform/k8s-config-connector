@@ -258,15 +258,6 @@ func (a *pubSubTopicAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 			return nil, err
 		}
 	}
-	if obj.Spec.MessageStoragePolicy != nil {
-		enforceInTransit := false
-		if obj.Spec.MessageStoragePolicy.EnforceInTransit != nil {
-			enforceInTransit = *obj.Spec.MessageStoragePolicy.EnforceInTransit
-		}
-		if err := unstructured.SetNestedField(u.Object, enforceInTransit, "spec", "messageStoragePolicy", "enforceInTransit"); err != nil {
-			return nil, err
-		}
-	}
 
 	return u, nil
 }
