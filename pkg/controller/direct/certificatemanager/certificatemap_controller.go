@@ -21,12 +21,14 @@ import (
 	gcp "cloud.google.com/go/certificatemanager/apiv1"
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -102,8 +104,21 @@ func (m *certificateMapModel) AdapterForObject(ctx context.Context, op *directba
 }
 
 func (m *certificateMapModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.CertificateManagerCertificateMapIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &CertificateMapAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type CertificateMapAdapter struct {
@@ -216,14 +231,20 @@ func (a *CertificateMapAdapter) Export(ctx context.Context) (*unstructured.Unstr
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.CertificateMap)
+	obj.Spec.ProjectRef = refs.ProjectRef{External: a.id.Project}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.CertificateMap)
 	u.SetGroupVersionKind(krm.CertificateManagerCertificateMapGVK)
+
+	export.SetLabels(u, a.actual.Labels)
+
 	return u, nil
 }
 
