@@ -117,3 +117,12 @@ Run the target test fixture using:
 WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/e2e -run "TestAllInSeries/.*<test_name>.*"
 ```
 Ensure that `_generated_export_<test_name>.golden` files are created, verified, and correctly captured.
+
+### Alignment & avoiding `_exported_object.diff`
+
+The E2E test harness compares the direct exporter's output (`_exported.yaml`) with the old/legacy exporter's output (`_exported_old_controller.golden.yaml`). If there are differences, an `_exported_object.diff` file will be generated.
+
+We aim to **avoid generating any `_exported_object.diff` files** or at least minimize them to the absolute minimum of unresolvable differences. To achieve perfect alignment and prevent the creation of `_exported_object.diff` files:
+1. **Always use the export helpers:** Call `export.SetProjectID(u, id.Project)` and `export.SetLabels(u, actual.Labels)` in your direct `Export()` method to match the standard annotations/labels exported by the legacy/TF controller.
+2. **Expose immutable fields:** Set the `ResourceID` and other identity fields on the exported Spec so they match the configuration exactly.
+3. If an `_exported_object.diff` is generated during your tests, inspect the diff and modify your direct `Export()` mapping logic to match the output format (such as default values or standard formats) of the legacy controller.
