@@ -423,6 +423,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - connectors.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - contactcenterinsights.cnrm.cloud.google.com
   resources:
   - '*'

@@ -1141,6 +1141,58 @@
 [missing_field] crd=configdeliveryresourcebundles.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=configdeliveryresourcebundles.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=configdeliveryresourcebundles.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.additionalVariables[].boolValue" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.additionalVariables[].intValue" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.additionalVariables[].key" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.additionalVariables[].secretValueRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.additionalVariables[].stringValue" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.authType" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.oauth2ClientCredentials.clientID" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.oauth2ClientCredentials.clientSecretRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.oauth2JwtBearer.clientKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.oauth2JwtBearer.jwtClaims.audience" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.oauth2JwtBearer.jwtClaims.issuer" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.oauth2JwtBearer.jwtClaims.subject" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.sshPublicKey.certType" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.sshPublicKey.sshClientCertPassRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.sshPublicKey.sshClientCertRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.sshPublicKey.username" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.userPassword.secretRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.userPassword.username" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.configVariables[].boolValue" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.configVariables[].intValue" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.configVariables[].key" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.configVariables[].secretValueRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.configVariables[].stringValue" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorVersionRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfigs[].destinations[].host" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfigs[].destinations[].port" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfigs[].destinations[].serviceAttachmentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfigs[].key" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.lockConfig.locked" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.lockConfig.reason" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeConfig.maxNodeCount" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeConfig.minNodeCount" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.additionalVariables[].boolValue" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.additionalVariables[].intValue" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.additionalVariables[].key" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.additionalVariables[].secretValueRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.additionalVariables[].stringValue" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.clientCertType" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.clientCertificateRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.clientPrivateKeyPassRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.clientPrivateKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.privateServerCertificateRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.serverCertType" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.trustModel" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.type" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslConfig.useSSL" is not set in unstructured objects
+[missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.suspended" is not set in unstructured objects
 [missing_field] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.attestation.serializedPayload" is not set in unstructured objects
 [missing_field] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.attestation.signatures[].publicKeyId" is not set in unstructured objects
 [missing_field] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.attestation.signatures[].signature" is not set in unstructured objects
