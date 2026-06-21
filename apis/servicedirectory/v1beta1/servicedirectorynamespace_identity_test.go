@@ -64,6 +64,10 @@ func TestServiceDirectoryNamespaceIdentity_FromExternal(t *testing.T) {
 				if diff := cmp.Diff(tt.want, i); diff != "" {
 					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
 				}
+				expectedParent := "projects/" + tt.want.Project + "/locations/" + tt.want.Location
+				if actualParent := i.ParentString(); actualParent != expectedParent {
+					t.Errorf("ParentString() = %q, want %q", actualParent, expectedParent)
+				}
 			}
 		})
 	}
