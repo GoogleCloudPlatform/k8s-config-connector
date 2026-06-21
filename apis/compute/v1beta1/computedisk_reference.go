@@ -43,7 +43,7 @@ type ComputeDiskRef struct {
 }
 
 func init() {
-	refs.Register(&ComputeDiskRef{})
+	refs.Register(&ComputeDiskRef{}, &ComputeDisk{})
 }
 
 func (r *ComputeDiskRef) GetGVK() schema.GroupVersionKind {

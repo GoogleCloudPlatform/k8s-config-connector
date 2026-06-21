@@ -40,7 +40,7 @@ spec:
   resourceID: computedisk${uniqueId}
   size: 50
   type: pd-ssd
-  zone: us-central1-a
+  location: us-central1-a
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSnapshot
@@ -63,7 +63,7 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  region: us-central1
+  location: us-central1
   replicaZones:
   - us-central1-a
   - us-central1-f

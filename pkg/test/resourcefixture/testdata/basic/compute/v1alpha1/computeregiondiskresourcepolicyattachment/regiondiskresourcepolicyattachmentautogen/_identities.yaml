@@ -6,7 +6,7 @@
   name: computeresourcepolicy-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/zones/us-central1-a/disks/computedisk${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeDisk
   name: computedisk-${uniqueId}
@@ -18,7 +18,7 @@
   name: computesnapshot-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/disks/computedisk${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeDisk
   name: computedisk-${uniqueId}
