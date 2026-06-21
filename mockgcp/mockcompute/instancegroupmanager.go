@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,12 +16,14 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 )
 
 type instanceGroupManagers struct {
@@ -40,10 +42,77 @@ func (s *instanceGroupManagers) Get(ctx context.Context, req *pb.GetInstanceGrou
 
 	obj := &pb.InstanceGroupManager{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
 	return obj, nil
+}
+
+func (s *instanceGroupManagers) Insert(ctx context.Context, req *pb.InsertInstanceGroupManagerRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/instanceGroupManagers/" + req.GetInstanceGroupManagerResource().GetName()
+	name, err := s.parseZonalIGMName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	id := s.generateID()
+
+	obj := proto.Clone(req.GetInstanceGroupManagerResource()).(*pb.InstanceGroupManager)
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
+	obj.CreationTimestamp = PtrTo(s.nowString())
+	obj.Id = &id
+	obj.Kind = PtrTo("compute#instanceGroupManager")
+	obj.Zone = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", name.Project.ID, name.Zone)))
+	obj.Status = &pb.InstanceGroupManagerStatus{
+		IsStable: PtrTo(true),
+	}
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *instanceGroupManagers) Delete(ctx context.Context, req *pb.DeleteInstanceGroupManagerRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/instanceGroupManagers/" + req.GetInstanceGroupManager()
+	name, err := s.parseZonalIGMName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	deleted := &pb.InstanceGroupManager{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type zonalIGMName struct {

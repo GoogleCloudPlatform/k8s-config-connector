@@ -112,6 +112,9 @@ func (s *InstanceTemplatesV1) Get(ctx context.Context, req *pb.GetInstanceTempla
 	fqn := "projects/" + req.GetProject() + "/global/instanceTemplates/" + req.GetInstanceTemplate()
 	obj := &pb.InstanceTemplate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 	return obj, nil
@@ -124,6 +127,9 @@ func (s *InstanceTemplatesV1) Delete(ctx context.Context, req *pb.DeleteInstance
 	fqn := "projects/" + req.GetProject() + "/global/instanceTemplates/" + req.GetInstanceTemplate()
 	deleted := &pb.InstanceTemplate{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

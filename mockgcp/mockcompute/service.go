@@ -133,6 +133,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterInstanceTemplatesServer(grpcServer, &InstanceTemplatesV1{MockService: s})
 
 	pb.RegisterInstanceGroupManagersServer(grpcServer, &instanceGroupManagers{MockService: s})
+	pb.RegisterAutoscalersServer(grpcServer, &AutoscalersV1{MockService: s})
+	pb.RegisterRegionAutoscalersServer(grpcServer, &RegionAutoscalersV1{MockService: s})
 
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
 	pb.RegisterReservationsServer(grpcServer, &ReservationsV1{MockService: s})
@@ -318,6 +320,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterZonesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterAutoscalersHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionAutoscalersHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 

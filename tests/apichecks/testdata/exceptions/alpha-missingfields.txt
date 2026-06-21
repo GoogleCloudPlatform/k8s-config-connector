@@ -918,17 +918,13 @@
 [missing_field] crd=colabruntimetemplates.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.notebookRuntimeType" is not set in unstructured objects
 [missing_field] crd=colabruntimetemplates.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=colabruntimetemplates.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.shieldedVMConfig.enableSecureBoot" is not set in unstructured objects
-[missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.cooldownPeriod" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.cpuUtilization.predictiveMethod" is not set in unstructured objects
-[missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.cpuUtilization.target" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.loadBalancingUtilization.target" is not set in unstructured objects
-[missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.maxReplicas" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.metric[].filter" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.metric[].name" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.metric[].singleInstanceAssignment" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.metric[].target" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.metric[].type" is not set in unstructured objects
-[missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.minReplicas" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.mode" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.scaleDownControl.maxScaledDownReplicas.fixed" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.scaleDownControl.maxScaledDownReplicas.percent" is not set in unstructured objects
@@ -944,9 +940,6 @@
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.scalingSchedules[].schedule" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.scalingSchedules[].timeZone" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.zone" is not set in unstructured objects
 [missing_field] crd=computebackendbucketsignedurlkeys.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.backendBucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computebackendbucketsignedurlkeys.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyValue.value" is not set in unstructured objects
 [missing_field] crd=computebackendbucketsignedurlkeys.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyValue.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
