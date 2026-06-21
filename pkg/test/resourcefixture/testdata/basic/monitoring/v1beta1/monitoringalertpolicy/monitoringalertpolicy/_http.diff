@@ -1,0 +1,416 @@
+262,263c262
+< POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+266,296c265,314
+<   "combiner": "AND_WITH_MATCHING_RESOURCE",
+<   "conditions": [
+<     {
+<       "conditionThreshold": {
+<         "aggregations": [
+<           {
+<             "alignmentPeriod": "60s",
+<             "crossSeriesReducer": "REDUCE_MEAN",
+<             "groupByFields": [
+<               "project",
+<               "resource.label.instance_id",
+<               "resource.label.zone"
+<             ],
+<             "perSeriesAligner": "ALIGN_MAX"
+<           }
+<         ],
+<         "comparison": "COMPARISON_GT",
+<         "duration": "900s",
+<         "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+<         "thresholdValue": 0.9,
+<         "trigger": {
+<           "count": 1
+<         }
+<       },
+<       "displayName": "Very high CPU usage"
+<     }
+<   ],
+<   "displayName": "Test Alert Policy",
+<   "documentation": {
+<     "content": "Introduction to alerting\nAlerting gives timely awareness to problems in your cloud applications so you can resolve the problems quickly.\n\nTo create an alerting policy, you must describe the circumstances under which you want to be alerted and how you want to be notified. This page provides an overview of alerting policies and the concepts behind them.\n\nFor a practical introduction to alerting, try one of these quickstarts:\n\nQuickstart for GCP\nQuickstart for AWS\nFor an alerting policy that monitors usage and alerts you when you approach the threshold for billing, see Alerting on monthly log ingestion and Alerting on monthly trace span ingestion.\n\nHow does alerting work?\nYou can create and manage alerting policies with the Google Cloud Console, the Cloud Monitoring API, and Cloud SDK.\n\nEach alerting policy specifies the following:\n\nConditions that identify when a resource or a group of resources is in a state that requires you to take action. The conditions for an alerting policy are continuously monitored. You cannot configure the conditions to be monitored only for certain time periods.\n\nNotifications that are sent through email, SMS, or other channels to let your support team know when the conditions have been met. Configuring notifications is optional. For information on the available notification channels, see Notification options.\n\nDocumentation that can be included in some types of notifications to help your support team resolve the issue. Configuring documentation is optional.\n\nWhen the conditions of an alerting policy are met, Cloud Monitoring creates and displays an incident in the Google Cloud Console. If you set up notifications, Cloud Monitoring also sends notifications to people or third-party notification services. Responders can acknowledge receipt of the notification, but the incident remains open until the conditions that triggered the incident are no longer true.\n\nFor information and viewing and managing incidents by using the Google Cloud Console, see Incidents and events.",
+<     "mimeType": "text/markdown"
+---
+>   "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+> }
+> 
+> error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
+> 
+> {}
+> 
+> ---
+> 
+> GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
+> 
+> {
+>   "alertPolicy": {
+>     "combiner": "AND_WITH_MATCHING_RESOURCE",
+>     "conditions": [
+>       {
+>         "conditionThreshold": {
+>           "aggregations": [
+>             {
+>               "alignmentPeriod": "60s",
+>               "crossSeriesReducer": "REDUCE_MEAN",
+>               "groupByFields": [
+>                 "project",
+>                 "resource.label.instance_id",
+>                 "resource.label.zone"
+>               ],
+>               "perSeriesAligner": "ALIGN_MAX"
+>             }
+>           ],
+>           "comparison": "COMPARISON_GT",
+>           "duration": "900s",
+>           "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+>           "thresholdValue": 0.9,
+>           "trigger": {
+>             "count": 1
+>           }
+>         },
+>         "displayName": "Very high CPU usage"
+>       }
+>     ],
+>     "displayName": "Test Alert Policy",
+>     "documentation": {
+>       "content": "Introduction to alerting\nAlerting gives timely awareness to problems in your cloud applications so you can resolve the problems quickly.\n\nTo create an alerting policy, you must describe the circumstances under which you want to be alerted and how you want to be notified. This page provides an overview of alerting policies and the concepts behind them.\n\nFor a practical introduction to alerting, try one of these quickstarts:\n\nQuickstart for GCP\nQuickstart for AWS\nFor an alerting policy that monitors usage and alerts you when you approach the threshold for billing, see Alerting on monthly log ingestion and Alerting on monthly trace span ingestion.\n\nHow does alerting work?\nYou can create and manage alerting policies with the Google Cloud Console, the Cloud Monitoring API, and Cloud SDK.\n\nEach alerting policy specifies the following:\n\nConditions that identify when a resource or a group of resources is in a state that requires you to take action. The conditions for an alerting policy are continuously monitored. You cannot configure the conditions to be monitored only for certain time periods.\n\nNotifications that are sent through email, SMS, or other channels to let your support team know when the conditions have been met. Configuring notifications is optional. For information on the available notification channels, see Notification options.\n\nDocumentation that can be included in some types of notifications to help your support team resolve the issue. Configuring documentation is optional.\n\nWhen the conditions of an alerting policy are met, Cloud Monitoring creates and displays an incident in the Google Cloud Console. If you set up notifications, Cloud Monitoring also sends notifications to people or third-party notification services. Responders can acknowledge receipt of the notification, but the incident remains open until the conditions that triggered the incident are no longer true.\n\nFor information and viewing and managing incidents by using the Google Cloud Console, see Incidents and events."
+>     },
+>     "enabled": true,
+>     "notificationChannels": [
+>       "projects/${projectId}/notificationChannels/${notificationChannelID}",
+>       "projects/${projectId}/notificationChannels/${notificationChannelID}"
+>     ],
+>     "severity": "WARNING"
+298,307c316
+<   "enabled": true,
+<   "notificationChannels": [
+<     "projects/${projectId}/notificationChannels/${notificationChannelID}",
+<     "projects/${projectId}/notificationChannels/${notificationChannelID}"
+<   ],
+<   "severity": "WARNING",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}"
+310,318c319
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+355,356c356
+<     "content": "Introduction to alerting\nAlerting gives timely awareness to problems in your cloud applications so you can resolve the problems quickly.\n\nTo create an alerting policy, you must describe the circumstances under which you want to be alerted and how you want to be notified. This page provides an overview of alerting policies and the concepts behind them.\n\nFor a practical introduction to alerting, try one of these quickstarts:\n\nQuickstart for GCP\nQuickstart for AWS\nFor an alerting policy that monitors usage and alerts you when you approach the threshold for billing, see Alerting on monthly log ingestion and Alerting on monthly trace span ingestion.\n\nHow does alerting work?\nYou can create and manage alerting policies with the Google Cloud Console, the Cloud Monitoring API, and Cloud SDK.\n\nEach alerting policy specifies the following:\n\nConditions that identify when a resource or a group of resources is in a state that requires you to take action. The conditions for an alerting policy are continuously monitored. You cannot configure the conditions to be monitored only for certain time periods.\n\nNotifications that are sent through email, SMS, or other channels to let your support team know when the conditions have been met. Configuring notifications is optional. For information on the available notification channels, see Notification options.\n\nDocumentation that can be included in some types of notifications to help your support team resolve the issue. Configuring documentation is optional.\n\nWhen the conditions of an alerting policy are met, Cloud Monitoring creates and displays an incident in the Google Cloud Console. If you set up notifications, Cloud Monitoring also sends notifications to people or third-party notification services. Responders can acknowledge receipt of the notification, but the incident remains open until the conditions that triggered the incident are no longer true.\n\nFor information and viewing and managing incidents by using the Google Cloud Console, see Incidents and events.",
+<     "mimeType": "text/markdown"
+---
+>     "content": "Introduction to alerting\nAlerting gives timely awareness to problems in your cloud applications so you can resolve the problems quickly.\n\nTo create an alerting policy, you must describe the circumstances under which you want to be alerted and how you want to be notified. This page provides an overview of alerting policies and the concepts behind them.\n\nFor a practical introduction to alerting, try one of these quickstarts:\n\nQuickstart for GCP\nQuickstart for AWS\nFor an alerting policy that monitors usage and alerts you when you approach the threshold for billing, see Alerting on monthly log ingestion and Alerting on monthly trace span ingestion.\n\nHow does alerting work?\nYou can create and manage alerting policies with the Google Cloud Console, the Cloud Monitoring API, and Cloud SDK.\n\nEach alerting policy specifies the following:\n\nConditions that identify when a resource or a group of resources is in a state that requires you to take action. The conditions for an alerting policy are continuously monitored. You cannot configure the conditions to be monitored only for certain time periods.\n\nNotifications that are sent through email, SMS, or other channels to let your support team know when the conditions have been met. Configuring notifications is optional. For information on the available notification channels, see Notification options.\n\nDocumentation that can be included in some types of notifications to help your support team resolve the issue. Configuring documentation is optional.\n\nWhen the conditions of an alerting policy are met, Cloud Monitoring creates and displays an incident in the Google Cloud Console. If you set up notifications, Cloud Monitoring also sends notifications to people or third-party notification services. Responders can acknowledge receipt of the notification, but the incident remains open until the conditions that triggered the incident are no longer true.\n\nFor information and viewing and managing incidents by using the Google Cloud Console, see Incidents and events."
+368,372c368
+<   "severity": "WARNING",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "severity": "WARNING"
+377,388c373
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+391,442c376
+<   "combiner": "AND_WITH_MATCHING_RESOURCE",
+<   "conditions": [
+<     {
+<       "conditionThreshold": {
+<         "aggregations": [
+<           {
+<             "alignmentPeriod": "60s",
+<             "crossSeriesReducer": "REDUCE_MEAN",
+<             "groupByFields": [
+<               "project",
+<               "resource.label.instance_id",
+<               "resource.label.zone"
+<             ],
+<             "perSeriesAligner": "ALIGN_MAX"
+<           }
+<         ],
+<         "comparison": "COMPARISON_GT",
+<         "duration": "900s",
+<         "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+<         "thresholdValue": 0.9,
+<         "trigger": {
+<           "count": 1
+<         }
+<       },
+<       "displayName": "Very high CPU usage",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+<     }
+<   ],
+<   "creationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "displayName": "Test Alert Policy",
+<   "documentation": {
+<     "content": "Introduction to alerting\nAlerting gives timely awareness to problems in your cloud applications so you can resolve the problems quickly.\n\nTo create an alerting policy, you must describe the circumstances under which you want to be alerted and how you want to be notified. This page provides an overview of alerting policies and the concepts behind them.\n\nFor a practical introduction to alerting, try one of these quickstarts:\n\nQuickstart for GCP\nQuickstart for AWS\nFor an alerting policy that monitors usage and alerts you when you approach the threshold for billing, see Alerting on monthly log ingestion and Alerting on monthly trace span ingestion.\n\nHow does alerting work?\nYou can create and manage alerting policies with the Google Cloud Console, the Cloud Monitoring API, and Cloud SDK.\n\nEach alerting policy specifies the following:\n\nConditions that identify when a resource or a group of resources is in a state that requires you to take action. The conditions for an alerting policy are continuously monitored. You cannot configure the conditions to be monitored only for certain time periods.\n\nNotifications that are sent through email, SMS, or other channels to let your support team know when the conditions have been met. Configuring notifications is optional. For information on the available notification channels, see Notification options.\n\nDocumentation that can be included in some types of notifications to help your support team resolve the issue. Configuring documentation is optional.\n\nWhen the conditions of an alerting policy are met, Cloud Monitoring creates and displays an incident in the Google Cloud Console. If you set up notifications, Cloud Monitoring also sends notifications to people or third-party notification services. Responders can acknowledge receipt of the notification, but the incident remains open until the conditions that triggered the incident are no longer true.\n\nFor information and viewing and managing incidents by using the Google Cloud Console, see Incidents and events.",
+<     "mimeType": "text/markdown"
+<   },
+<   "enabled": true,
+<   "mutationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+<   "notificationChannels": [
+<     "projects/${projectId}/notificationChannels/${notificationChannelID}",
+<     "projects/${projectId}/notificationChannels/${notificationChannelID}"
+<   ],
+<   "severity": "WARNING",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+444a379,382
+> error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
+> 
+> {}
+> 
+447,448c385
+< PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json&updateMask=displayName%2Ccombiner%2Cenabled%2Cconditions%2CnotificationChannels%2Cdocumentation%2Cseverity
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
+451,482c388,425
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionThreshold": {
+<         "aggregations": [
+<           {
+<             "alignmentPeriod": "60s",
+<             "crossSeriesReducer": "REDUCE_MEAN",
+<             "groupByFields": [
+<               "project",
+<               "resource.label.instance_id",
+<               "resource.label.zone"
+<             ],
+<             "perSeriesAligner": "ALIGN_MAX"
+<           }
+<         ],
+<         "comparison": "COMPARISON_LT",
+<         "duration": "900s",
+<         "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+<         "thresholdValue": 0.1,
+<         "trigger": {
+<           "count": 3
+<         }
+<       },
+<       "displayName": "Very low CPU usage",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+<     }
+<   ],
+<   "displayName": "Updated Test Alert Policy",
+<   "documentation": {
+<     "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”",
+<     "mimeType": "text/markdown"
+---
+>   "alertPolicy": {
+>     "combiner": "OR",
+>     "conditions": [
+>       {
+>         "conditionThreshold": {
+>           "aggregations": [
+>             {
+>               "alignmentPeriod": "60s",
+>               "crossSeriesReducer": "REDUCE_MEAN",
+>               "groupByFields": [
+>                 "project",
+>                 "resource.label.instance_id",
+>                 "resource.label.zone"
+>               ],
+>               "perSeriesAligner": "ALIGN_MAX"
+>             }
+>           ],
+>           "comparison": "COMPARISON_LT",
+>           "duration": "900s",
+>           "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+>           "thresholdValue": 0.1,
+>           "trigger": {
+>             "count": 3
+>           }
+>         },
+>         "displayName": "Very low CPU usage"
+>       }
+>     ],
+>     "displayName": "Updated Test Alert Policy",
+>     "documentation": {
+>       "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”"
+>     },
+>     "enabled": false,
+>     "notificationChannels": [
+>       "projects/${projectId}/notificationChannels/${notificationChannelID}",
+>       "projects/${projectId}/notificationChannels/${notificationChannelID}"
+>     ],
+>     "severity": "ERROR"
+484,493c427
+<   "enabled": false,
+<   "notificationChannels": [
+<     "projects/${projectId}/notificationChannels/${notificationChannelID}",
+<     "projects/${projectId}/notificationChannels/${notificationChannelID}"
+<   ],
+<   "severity": "ERROR",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}"
+496,504c430
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+541,542c467
+<     "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”",
+<     "mimeType": "text/markdown"
+---
+>     "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”"
+544c469
+<   "enabled": false,
+---
+>   "enabled": true,
+554,558c479
+<   "severity": "ERROR",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "severity": "ERROR"
+563,574c484
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+577,628c487
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionThreshold": {
+<         "aggregations": [
+<           {
+<             "alignmentPeriod": "60s",
+<             "crossSeriesReducer": "REDUCE_MEAN",
+<             "groupByFields": [
+<               "project",
+<               "resource.label.instance_id",
+<               "resource.label.zone"
+<             ],
+<             "perSeriesAligner": "ALIGN_MAX"
+<           }
+<         ],
+<         "comparison": "COMPARISON_LT",
+<         "duration": "900s",
+<         "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+<         "thresholdValue": 0.1,
+<         "trigger": {
+<           "count": 3
+<         }
+<       },
+<       "displayName": "Very low CPU usage",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+<     }
+<   ],
+<   "creationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "displayName": "Updated Test Alert Policy",
+<   "documentation": {
+<     "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”",
+<     "mimeType": "text/markdown"
+<   },
+<   "enabled": false,
+<   "mutationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+<   "notificationChannels": [
+<     "projects/${projectId}/notificationChannels/${notificationChannelID}",
+<     "projects/${projectId}/notificationChannels/${notificationChannelID}"
+<   ],
+<   "severity": "ERROR",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+630a490,493
+> error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
+> 
+> {}
+> 
+633,634c496,500
+< DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+> 
+> {
+>   "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+> }
+636,644c502
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found

@@ -4,10 +4,11 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: monitoringalertpolicy-${uniqueId}
@@ -16,24 +17,21 @@ spec:
   combiner: OR
   conditions:
   - conditionSql:
-      booleanTest:
-        column: has_error
-      daily:
-        executionTime:
-          hours: 15
-          minutes: 30
-          nanos: 0
-          seconds: 0
-        periodicity: 2
+      minutes:
+        periodicity: 10
       query: |-
         SELECT
-          timestamp, log_name, severity, (severity = 'ERROR') AS has_error
+          timestamp, log_name, severity
         FROM
           `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`
         LIMIT 20
-    displayName: SQL Log Alert Condition Daily Boolean
-  displayName: Test SQL Alert Policy Daily Boolean
+      rowCountTest:
+        comparison: COMPARISON_GT
+        threshold: 20
+    displayName: SQL Log Alert Condition
+  displayName: Test SQL Alert Policy
   enabled: true
+  resourceID: ${alertPolicyId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -45,4 +43,4 @@ status:
   - mutateTime: "1970-01-01T00:00:00Z"
     mutatedBy: user@google.com
   name: projects/${projectId}/alertPolicies/${alertPolicyId}
-  observedGeneration: 2
+  observedGeneration: 3
