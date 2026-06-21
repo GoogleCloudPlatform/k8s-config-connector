@@ -10,7 +10,7 @@
   name: gcpolicy-dep-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //bigtable.googleapis.com/projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}/columnFamilies/family1
   group: bigtable.cnrm.cloud.google.com
   kind: BigtableGCPolicy
   name: bigtablegcpolicy-${uniqueId}

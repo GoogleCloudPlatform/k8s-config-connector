@@ -110,6 +110,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//logging.googleapis.com/billingAccounts/{}/exclusions/{}":                                 true,
 		"//billingbudgets.googleapis.com/billingAccounts/{}/budgets/{}":                             true,
 		"//bigqueryconnection.googleapis.com/projects/{}/locations/{}/connections/{}":               true,
+		"//bigtable.googleapis.com/projects/{}/instances/{}/tables/{}/columnFamilies/{}":            true,
 		"//privilegedaccessmanager.googleapis.com/projects/{}/locations/{}/entitlements/{}":         true,
 		"//privilegedaccessmanager.googleapis.com/folders/{}/locations/{}/entitlements/{}":          true,
 		"//privilegedaccessmanager.googleapis.com/organizations/{}/locations/{}/entitlements/{}":    true,
