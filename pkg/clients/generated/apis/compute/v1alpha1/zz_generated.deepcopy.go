@@ -5194,7 +5194,7 @@ func (in *RegionautoscalerAutoscalingPolicy) DeepCopyInto(out *RegionautoscalerA
 	*out = *in
 	if in.CooldownPeriod != nil {
 		in, out := &in.CooldownPeriod, &out.CooldownPeriod
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.CpuUtilization != nil {
@@ -5291,12 +5291,12 @@ func (in *RegionautoscalerMaxScaledDownReplicas) DeepCopyInto(out *Regionautosca
 	*out = *in
 	if in.Fixed != nil {
 		in, out := &in.Fixed, &out.Fixed
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Percent != nil {
 		in, out := &in.Percent, &out.Percent
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -5317,12 +5317,12 @@ func (in *RegionautoscalerMaxScaledInReplicas) DeepCopyInto(out *Regionautoscale
 	*out = *in
 	if in.Fixed != nil {
 		in, out := &in.Fixed, &out.Fixed
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Percent != nil {
 		in, out := &in.Percent, &out.Percent
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -5384,7 +5384,7 @@ func (in *RegionautoscalerScaleDownControl) DeepCopyInto(out *RegionautoscalerSc
 	}
 	if in.TimeWindowSec != nil {
 		in, out := &in.TimeWindowSec, &out.TimeWindowSec
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -5410,7 +5410,7 @@ func (in *RegionautoscalerScaleInControl) DeepCopyInto(out *RegionautoscalerScal
 	}
 	if in.TimeWindowSec != nil {
 		in, out := &in.TimeWindowSec, &out.TimeWindowSec
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return

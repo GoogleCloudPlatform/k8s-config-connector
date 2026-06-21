@@ -24,6 +24,7 @@
 // resource: ComputeRegionPerInstanceConfig:PerInstanceConfig
 // resource: ComputeAutoscaler:Autoscaler
 // resource: ComputeBackendServiceSignedURLKey:SignedUrlKey
+// resource: ComputeRegionAutoscaler:Autoscaler
 
 package v1alpha1
 
@@ -103,7 +104,8 @@ type AutoscalerStatusDetails struct {
 }
 */
 
-/* unreachable type AutoscalingPolicy
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicy", skipping
+
 // +kcc:proto=google.cloud.compute.v1.AutoscalingPolicy
 type AutoscalingPolicy struct {
 	// The number of seconds that your application takes to initialize on a VM instance. This is referred to as the [initialization period](/compute/docs/autoscaler#cool_down_period). Specifying an accurate initialization period improves autoscaler decisions. For example, when scaling out, the autoscaler ignores data from VMs that are still initializing because those VMs might not yet represent normal usage of your application. The default initialization period is 60 seconds. Initialization periods might vary because of numerous factors. We recommend that you test how long your application takes to initialize. To do this, create a VM and time your application's startup process.
@@ -143,7 +145,8 @@ type AutoscalingPolicy struct {
 }
 */
 
-/* unreachable type AutoscalingPolicyCPUUtilization
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicyCpuUtilization", skipping
+
 // +kcc:proto=google.cloud.compute.v1.AutoscalingPolicyCpuUtilization
 type AutoscalingPolicyCPUUtilization struct {
 	// Indicates whether predictive autoscaling based on CPU metric is enabled. Valid values are: * NONE (default). No predictive method is used. The autoscaler scales the group to meet current demand based on real-time metrics. * OPTIMIZE_AVAILABILITY. Predictive autoscaling improves availability by monitoring daily and weekly load patterns and scaling out ahead of anticipated demand.
@@ -157,7 +160,8 @@ type AutoscalingPolicyCPUUtilization struct {
 }
 */
 
-/* unreachable type AutoscalingPolicyCustomMetricUtilization
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicyCustomMetricUtilization", skipping
+
 // +kcc:proto=google.cloud.compute.v1.AutoscalingPolicyCustomMetricUtilization
 type AutoscalingPolicyCustomMetricUtilization struct {
 	// A filter string, compatible with a Stackdriver Monitoring filter string for TimeSeries.list API call. This filter is used to select a specific TimeSeries for the purpose of autoscaling and to determine whether the metric is exporting per-instance or per-group data. For the filter to be valid for autoscaling purposes, the following rules apply: - You can only use the AND operator for joining selectors. - You can only use direct equality comparison operator (=) without any functions for each selector. - You can specify the metric in both the filter string and in the metric field. However, if specified in both places, the metric must be identical. - The monitored resource type determines what kind of values are expected for the metric. If it is a gce_instance, the autoscaler expects the metric to include a separate TimeSeries for each instance in a group. In such a case, you cannot filter on resource labels. If the resource type is any other value, the autoscaler expects this metric to contain values that apply to the entire autoscaled instance group and resource label filtering can be performed to point autoscaler at the correct TimeSeries to scale upon. This is called a *per-group metric* for the purpose of autoscaling. If not specified, the type defaults to gce_instance. Try to provide a filter that is selective enough to pick just one TimeSeries for the autoscaled group or for each of the instances (if you are using gce_instance resource type). If multiple TimeSeries are returned upon the query execution, the autoscaler will sum their respective values to obtain its scaling value.
@@ -183,7 +187,8 @@ type AutoscalingPolicyCustomMetricUtilization struct {
 }
 */
 
-/* unreachable type AutoscalingPolicyLoadBalancingUtilization
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicyLoadBalancingUtilization", skipping
+
 // +kcc:proto=google.cloud.compute.v1.AutoscalingPolicyLoadBalancingUtilization
 type AutoscalingPolicyLoadBalancingUtilization struct {
 	// Fraction of backend capacity utilization (set in HTTP(S) load balancing configuration) that the autoscaler maintains. Must be a positive float value. If not defined, the default is 0.8.
@@ -192,7 +197,8 @@ type AutoscalingPolicyLoadBalancingUtilization struct {
 }
 */
 
-/* unreachable type AutoscalingPolicyScaleInControl
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicyScaleInControl", skipping
+
 // +kcc:proto=google.cloud.compute.v1.AutoscalingPolicyScaleInControl
 type AutoscalingPolicyScaleInControl struct {
 	// Maximum allowed number (or %) of VMs that can be deducted from the peak recommendation during the window autoscaler looks at when computing recommendations. Possibly all these VMs can be deleted at once so user service needs to be prepared to lose that many VMs in one step.
@@ -205,7 +211,8 @@ type AutoscalingPolicyScaleInControl struct {
 }
 */
 
-/* unreachable type AutoscalingPolicyScalingSchedule
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicyScalingSchedule", skipping
+
 // +kcc:proto=google.cloud.compute.v1.AutoscalingPolicyScalingSchedule
 type AutoscalingPolicyScalingSchedule struct {
 	// A description of a scaling schedule.
@@ -234,7 +241,8 @@ type AutoscalingPolicyScalingSchedule struct {
 }
 */
 
-/* unreachable type FixedOrPercent
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.FixedOrPercent", skipping
+
 // +kcc:proto=google.cloud.compute.v1.FixedOrPercent
 type FixedOrPercent struct {
 	// [Output Only] Absolute value of VM instances calculated based on the specific mode. - If the value is fixed, then the calculated value is equal to the fixed value. - If the value is a percent, then the calculated value is percent/100 * targetSize. For example, the calculated value of a 80% of a managed instance group with 150 instances would be (80/100 * 150) = 120 VM instances. If there is a remainder, the number is rounded.

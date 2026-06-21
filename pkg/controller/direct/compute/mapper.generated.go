@@ -2366,6 +2366,56 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: StatusMessage
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alpha1_FromProto", skipping
+func ComputeRegionAutoscalerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Autoscaler) *krmcomputev1alpha1.ComputeRegionAutoscalerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeRegionAutoscalerSpec{}
+	out.AutoscalingPolicy = RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto(mapCtx, in.GetAutoscalingPolicy())
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: RecommendedSize
+	out.Region = in.Region
+	// MISSING: ScalingScheduleStatus
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: StatusDetails
+	out.Target = in.Target
+	// MISSING: Zone
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alpha1_ToProto", skipping
+
+	func ComputeRegionAutoscalerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeRegionAutoscalerSpec) *pb.Autoscaler {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Autoscaler{}
+		out.AutoscalingPolicy = RegionautoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx, in.AutoscalingPolicy)
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: Name
+		// MISSING: RecommendedSize
+		out.Region = in.Region
+		// MISSING: ScalingScheduleStatus
+		// MISSING: SelfLink
+		// MISSING: Status
+		// MISSING: StatusDetails
+		out.Target = in.Target
+		// MISSING: Zone
+		return out
+	}
+*/
 func ComputeRegionPerInstanceConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PerInstanceConfig) *krmcomputev1alpha1.ComputeRegionPerInstanceConfigSpec {
 	if in == nil {
 		return nil
@@ -4068,6 +4118,206 @@ func NodeTemplateServerBinding_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Type = in.Type
 	return out
 }
+
+/* found existing non-generated mapping function "RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto", skipping
+func RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krmcomputev1alpha1.RegionautoscalerAutoscalingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerAutoscalingPolicy{}
+	// MISSING: CoolDownPeriodSec
+	// MISSING: CPUUtilization
+	// (near miss): "CPUUtilization" vs "CpuUtilization"
+	// MISSING: CustomMetricUtilizations
+	out.LoadBalancingUtilization = RegionautoscalerLoadBalancingUtilization_v1alpha1_FromProto(mapCtx, in.GetLoadBalancingUtilization())
+	// MISSING: MaxNumReplicas
+	// MISSING: MinNumReplicas
+	out.Mode = in.Mode
+	out.ScaleInControl = RegionautoscalerScaleInControl_v1alpha1_FromProto(mapCtx, in.GetScaleInControl())
+	out.ScalingSchedules = ScalingSchedules_FromProto(mapCtx, in.ScalingSchedules)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerAutoscalingPolicy_v1alpha1_ToProto", skipping
+func RegionautoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerAutoscalingPolicy) *pb.AutoscalingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingPolicy{}
+	// MISSING: CoolDownPeriodSec
+	// MISSING: CPUUtilization
+	// (near miss): "CPUUtilization" vs "CpuUtilization"
+	// MISSING: CustomMetricUtilizations
+	out.LoadBalancingUtilization = RegionautoscalerLoadBalancingUtilization_v1alpha1_ToProto(mapCtx, in.LoadBalancingUtilization)
+	// MISSING: MaxNumReplicas
+	// MISSING: MinNumReplicas
+	out.Mode = in.Mode
+	out.ScaleInControl = RegionautoscalerScaleInControl_v1alpha1_ToProto(mapCtx, in.ScaleInControl)
+	out.ScalingSchedules = ScalingSchedules_ToProto(mapCtx, in.ScalingSchedules)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerCpuUtilization_v1alpha1_FromProto", skipping
+func RegionautoscalerCpuUtilization_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicyCpuUtilization) *krmcomputev1alpha1.RegionautoscalerCpuUtilization {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerCpuUtilization{}
+	out.PredictiveMethod = in.PredictiveMethod
+	// MISSING: UtilizationTarget
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerCpuUtilization_v1alpha1_ToProto", skipping
+func RegionautoscalerCpuUtilization_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerCpuUtilization) *pb.AutoscalingPolicyCpuUtilization {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingPolicyCpuUtilization{}
+	out.PredictiveMethod = in.PredictiveMethod
+	// MISSING: UtilizationTarget
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerFixedOrPercent_v1alpha1_FromProto", skipping
+func RegionautoscalerFixedOrPercent_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FixedOrPercent) *krmcomputev1alpha1.RegionautoscalerFixedOrPercent {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerFixedOrPercent{}
+	// MISSING: Calculated
+	out.Fixed = in.Fixed
+	out.Percent = in.Percent
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerFixedOrPercent_v1alpha1_ToProto", skipping
+func RegionautoscalerFixedOrPercent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerFixedOrPercent) *pb.FixedOrPercent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FixedOrPercent{}
+	// MISSING: Calculated
+	out.Fixed = in.Fixed
+	out.Percent = in.Percent
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerLoadBalancingUtilization_v1alpha1_FromProto", skipping
+func RegionautoscalerLoadBalancingUtilization_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicyLoadBalancingUtilization) *krmcomputev1alpha1.RegionautoscalerLoadBalancingUtilization {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerLoadBalancingUtilization{}
+	// MISSING: UtilizationTarget
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerLoadBalancingUtilization_v1alpha1_ToProto", skipping
+func RegionautoscalerLoadBalancingUtilization_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerLoadBalancingUtilization) *pb.AutoscalingPolicyLoadBalancingUtilization {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingPolicyLoadBalancingUtilization{}
+	// MISSING: UtilizationTarget
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerMetric_v1alpha1_FromProto", skipping
+func RegionautoscalerMetric_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicyCustomMetricUtilization) *krmcomputev1alpha1.RegionautoscalerMetric {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerMetric{}
+	out.Filter = in.Filter
+	// MISSING: Metric
+	out.SingleInstanceAssignment = in.SingleInstanceAssignment
+	// MISSING: UtilizationTarget
+	// MISSING: UtilizationTargetType
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerMetric_v1alpha1_ToProto", skipping
+func RegionautoscalerMetric_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerMetric) *pb.AutoscalingPolicyCustomMetricUtilization {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingPolicyCustomMetricUtilization{}
+	out.Filter = in.Filter
+	// MISSING: Metric
+	out.SingleInstanceAssignment = in.SingleInstanceAssignment
+	// MISSING: UtilizationTarget
+	// MISSING: UtilizationTargetType
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerScaleInControl_v1alpha1_FromProto", skipping
+func RegionautoscalerScaleInControl_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicyScaleInControl) *krmcomputev1alpha1.RegionautoscalerScaleInControl {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerScaleInControl{}
+	out.MaxScaledInReplicas = RegionautoscalerFixedOrPercent_v1alpha1_FromProto(mapCtx, in.GetMaxScaledInReplicas())
+	out.TimeWindowSec = in.TimeWindowSec
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerScaleInControl_v1alpha1_ToProto", skipping
+func RegionautoscalerScaleInControl_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerScaleInControl) *pb.AutoscalingPolicyScaleInControl {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingPolicyScaleInControl{}
+	out.MaxScaledInReplicas = RegionautoscalerFixedOrPercent_v1alpha1_ToProto(mapCtx, in.MaxScaledInReplicas)
+	out.TimeWindowSec = in.TimeWindowSec
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerScalingSchedules_v1alpha1_FromProto", skipping
+func RegionautoscalerScalingSchedules_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicyScalingSchedule) *krmcomputev1alpha1.RegionautoscalerScalingSchedules {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerScalingSchedules{}
+	out.Description = in.Description
+	out.Disabled = in.Disabled
+	out.DurationSec = in.DurationSec
+	out.MinRequiredReplicas = in.MinRequiredReplicas
+	out.Schedule = in.Schedule
+	out.TimeZone = in.TimeZone
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "RegionautoscalerScalingSchedules_v1alpha1_ToProto", skipping
+
+	func RegionautoscalerScalingSchedules_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerScalingSchedules) *pb.AutoscalingPolicyScalingSchedule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AutoscalingPolicyScalingSchedule{}
+		out.Description = in.Description
+		out.Disabled = in.Disabled
+		out.DurationSec = in.DurationSec
+		out.MinRequiredReplicas = in.MinRequiredReplicas
+		out.Schedule = in.Schedule
+		out.TimeZone = in.TimeZone
+		return out
+	}
+*/
 func ReservationGuestAccelerators_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krm.ReservationGuestAccelerators {
 	if in == nil {
 		return nil
