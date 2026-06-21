@@ -46,6 +46,10 @@ func (i *ServiceDirectoryNamespaceIdentity) String() string {
 	return ServiceDirectoryNamespaceIdentityFormat.ToString(*i)
 }
 
+func (i *ServiceDirectoryNamespaceIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *ServiceDirectoryNamespaceIdentity) FromExternal(ref string) error {
 	ref = strings.TrimPrefix(ref, "https://servicedirectory.googleapis.com/v1/")
 	ref = strings.TrimPrefix(ref, "https://servicedirectory.googleapis.com/v1beta1/")

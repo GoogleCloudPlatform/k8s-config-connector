@@ -1,4 +1,4 @@
-GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -21,7 +21,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces?%24alt=json%3Benum-encoding%3Dint&namespaceId=servicedirectory-namespace-${uniqueId}
+POST https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces?alt=json&namespaceId=servicedirectory-namespace-${uniqueId}
 Content-Type: application/json
 
 {
@@ -53,7 +53,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -77,7 +77,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+PATCH https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?alt=json&updateMask=labels
 Content-Type: application/json
 
 {
@@ -85,8 +85,7 @@ Content-Type: application/json
     "cnrm-test": "true",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}"
+  }
 }
 
 200 OK
@@ -110,7 +109,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -134,7 +133,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
