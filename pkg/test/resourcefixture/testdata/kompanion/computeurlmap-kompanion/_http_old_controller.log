@@ -1,141 +1,4 @@
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The specified bucket does not exist.",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The specified bucket does not exist."
-  }
-}
-
----
-
-POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
-Content-Type: application/json
-
-{
-  "iamConfiguration": {
-    "uniformBucketLevelAccess": {
-      "enabled": true
-    }
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycle": {
-    "rule": []
-  },
-  "location": "US",
-  "name": "storagebucket-${uniqueId}",
-  "storageClass": "STANDARD"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -154,31 +17,34 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found",
+        "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found"
+    "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices?alt=json
 Content-Type: application/json
 
 {
-  "checkIntervalSec": 10,
-  "healthyThreshold": 2,
-  "httpHealthCheck": {
-    "port": 80,
-    "proxyHeader": "NONE",
-    "requestPath": "/"
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
   },
-  "name": "${healthCheckID}",
-  "timeoutSec": 5,
-  "type": "HTTP",
-  "unhealthyThreshold": 2
+  "description": "Default Backend Service for computeurlmap-kompanion",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "${backendServiceID}",
+  "protocol": "HTTPS",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
 }
 
 200 OK
@@ -201,8 +67,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
@@ -231,14 +97,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -252,21 +118,26 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "checkIntervalSec": 10,
+  "affinityCookieTtlSec": 0,
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "healthyThreshold": 2,
-  "httpHealthCheck": {
-    "port": 80,
-    "proxyHeader": "NONE",
-    "requestPath": "/"
+  "description": "Default Backend Service for computeurlmap-kompanion",
+  "fingerprint": "abcdef0123A=",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   },
   "id": "000000000000000000000",
-  "kind": "compute#healthCheck",
-  "name": "${healthCheckID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-  "timeoutSec": 5,
-  "type": "HTTP",
-  "unhealthyThreshold": 2
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "${backendServiceID}",
+  "protocol": "HTTPS",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
 }
 
 ---
@@ -307,16 +178,17 @@ Content-Type: application/json
   "connectionDraining": {
     "drainingTimeoutSec": 300
   },
-  "healthChecks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}"
-  ],
+  "description": "Chaosmonkey Backend Service for computeurlmap-kompanion",
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
     "oauth2ClientSecret": ""
   },
-  "loadBalancingScheme": "EXTERNAL_MANAGED",
-  "name": "${backendServiceID}"
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "${backendServiceID}",
+  "protocol": "HTTPS",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
 }
 
 200 OK
@@ -395,11 +267,8 @@ X-Xss-Protection: 0
     "drainingTimeoutSec": 300
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
+  "description": "Chaosmonkey Backend Service for computeurlmap-kompanion",
   "fingerprint": "abcdef0123A=",
-  "healthChecks": [
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/${healthCheckID}"
-  ],
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
@@ -407,8 +276,9 @@ X-Xss-Protection: 0
   },
   "id": "000000000000000000000",
   "kind": "compute#backendService",
-  "loadBalancingScheme": "EXTERNAL_MANAGED",
+  "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "${backendServiceID}",
+  "protocol": "HTTPS",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
   "timeoutSec": 30
@@ -416,7 +286,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -435,23 +305,34 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "BackendBucket \"projects/${projectId}/global/backendBuckets/${backendBucketID}\" not found",
+        "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "BackendBucket \"projects/${projectId}/global/backendBuckets/${backendBucketID}\" not found"
+    "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices?alt=json
 Content-Type: application/json
 
 {
-  "bucketName": "storagebucket-${uniqueId}",
-  "description": "Compute Backend Bucket Sample",
-  "name": "${backendBucketID}"
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
+  "description": "Chaosmonkeymulti Backend Service for computeurlmap-kompanion",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "${backendServiceID}",
+  "protocol": "HTTPS",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
 }
 
 200 OK
@@ -474,8 +355,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${backendBucketID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
@@ -504,14 +385,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${backendBucketID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -525,18 +406,31 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bucketName": "storagebucket-${uniqueId}",
+  "affinityCookieTtlSec": 0,
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Compute Backend Bucket Sample",
+  "description": "Chaosmonkeymulti Backend Service for computeurlmap-kompanion",
+  "fingerprint": "abcdef0123A=",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
   "id": "000000000000000000000",
-  "kind": "compute#backendBucket",
-  "name": "${backendBucketID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}"
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "${backendServiceID}",
+  "protocol": "HTTPS",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -555,55 +449,94 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps?alt=json
 Content-Type: application/json
 
 {
-  "defaultCustomErrorResponsePolicy": {
-    "errorResponseRules": [
-      {
-        "matchResponseCodes": [
-          "5xx"
-        ],
-        "overrideResponseCode": 502,
-        "path": "/5xx.html"
-      }
-    ]
-  },
-  "description": "test global URLMap",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "hostRules": [
     {
       "hosts": [
-        "mysite.com"
+        "svc.gcp.anz"
       ],
-      "pathMatcher": "allpaths"
+      "pathMatcher": "computeurlmap-kompanion-default"
+    },
+    {
+      "description": "Host rule for chaosmonkey.cloudnetworks.x.gcpnp.anz",
+      "hosts": [
+        "chaosmonkey.cloudnetworks.x.gcpnp.anz",
+        "chaosmonkey.cloudnetworks.x.gcpnp.anz:*"
+      ],
+      "pathMatcher": "chaosmonkey-cloudnetworks-x-gcpnp-anz"
+    },
+    {
+      "description": "Host rule for chaosmonkeymulti.cloudnetworks.x.gcpnp.anz",
+      "hosts": [
+        "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*",
+        "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz"
+      ],
+      "pathMatcher": "chaosmonkeymulti-cloudnetworks-x-gcpnp-anz"
     }
   ],
-  "name": "computeurlmap-${uniqueId}",
+  "name": "computeurlmap-kompanion-${uniqueId}",
   "pathMatchers": [
     {
-      "defaultCustomErrorResponsePolicy": {
-        "errorResponseRules": [
-          {
-            "matchResponseCodes": [
-              "4xx"
-            ],
-            "overrideResponseCode": 404,
-            "path": "/4xx.html"
+      "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+      "name": "chaosmonkey-cloudnetworks-x-gcpnp-anz",
+      "routeRules": [
+        {
+          "matchRules": [
+            {
+              "prefixMatch": "/status/*"
+            }
+          ],
+          "priority": 1,
+          "routeAction": {
+            "weightedBackendServices": [
+              {
+                "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+                "weight": 500
+              }
+            ]
           }
-        ]
-      },
-      "name": "allpaths"
+        }
+      ]
+    },
+    {
+      "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+      "name": "chaosmonkeymulti-cloudnetworks-x-gcpnp-anz",
+      "routeRules": [
+        {
+          "matchRules": [
+            {
+              "prefixMatch": "/helloworld"
+            }
+          ],
+          "priority": 1,
+          "routeAction": {
+            "weightedBackendServices": [
+              {
+                "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+                "weight": 500
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+      "name": "computeurlmap-kompanion-default"
     }
   ]
 }
@@ -631,7 +564,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -646,180 +579,90 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultCustomErrorResponsePolicy": {
-    "errorResponseRules": [
-      {
-        "matchResponseCodes": [
-          "5xx"
-        ],
-        "overrideResponseCode": 502,
-        "path": "/5xx.html"
-      }
-    ]
-  },
-  "description": "test global URLMap",
+  "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
   "hostRules": [
     {
       "hosts": [
-        "mysite.com"
+        "svc.gcp.anz"
       ],
-      "pathMatcher": "allpaths"
+      "pathMatcher": "computeurlmap-kompanion-default"
+    },
+    {
+      "description": "Host rule for chaosmonkey.cloudnetworks.x.gcpnp.anz",
+      "hosts": [
+        "chaosmonkey.cloudnetworks.x.gcpnp.anz",
+        "chaosmonkey.cloudnetworks.x.gcpnp.anz:*"
+      ],
+      "pathMatcher": "chaosmonkey-cloudnetworks-x-gcpnp-anz"
+    },
+    {
+      "description": "Host rule for chaosmonkeymulti.cloudnetworks.x.gcpnp.anz",
+      "hosts": [
+        "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*",
+        "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz"
+      ],
+      "pathMatcher": "chaosmonkeymulti-cloudnetworks-x-gcpnp-anz"
     }
   ],
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
-  "name": "computeurlmap-${uniqueId}",
+  "name": "computeurlmap-kompanion-${uniqueId}",
   "pathMatchers": [
     {
-      "defaultCustomErrorResponsePolicy": {
-        "errorResponseRules": [
-          {
-            "matchResponseCodes": [
-              "4xx"
-            ],
-            "overrideResponseCode": 404,
-            "path": "/4xx.html"
+      "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
+      "name": "chaosmonkey-cloudnetworks-x-gcpnp-anz",
+      "routeRules": [
+        {
+          "matchRules": [
+            {
+              "prefixMatch": "/status/*"
+            }
+          ],
+          "priority": 1,
+          "routeAction": {
+            "weightedBackendServices": [
+              {
+                "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+                "weight": 500
+              }
+            ]
           }
-        ]
-      },
-      "name": "allpaths"
+        }
+      ]
+    },
+    {
+      "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
+      "name": "chaosmonkeymulti-cloudnetworks-x-gcpnp-anz",
+      "routeRules": [
+        {
+          "matchRules": [
+            {
+              "prefixMatch": "/helloworld"
+            }
+          ],
+          "priority": 1,
+          "routeAction": {
+            "weightedBackendServices": [
+              {
+                "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+                "weight": 500
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
+      "name": "computeurlmap-kompanion-default"
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}"
 }
 
 ---
 
-PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
-Content-Type: application/json
-
-{
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultCustomErrorResponsePolicy": {
-    "errorResponseRules": [
-      {
-        "matchResponseCodes": [
-          "5xx"
-        ],
-        "overrideResponseCode": 503,
-        "path": "/5xx-updated.html"
-      }
-    ]
-  },
-  "description": "updated test URLMap",
-  "hostRules": [
-    {
-      "hosts": [
-        "mysite.com"
-      ],
-      "pathMatcher": "allpaths"
-    }
-  ],
-  "id": "000000000000000000000",
-  "kind": "compute#urlMap",
-  "name": "computeurlmap-${uniqueId}",
-  "pathMatchers": [
-    {
-      "defaultCustomErrorResponsePolicy": {
-        "errorResponseRules": [
-          {
-            "matchResponseCodes": [
-              "4xx"
-            ],
-            "overrideResponseCode": 403,
-            "path": "/4xx-updated.html"
-          }
-        ]
-      },
-      "name": "allpaths"
-    }
-  ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultCustomErrorResponsePolicy": {
-    "errorResponseRules": [
-      {
-        "matchResponseCodes": [
-          "5xx"
-        ],
-        "overrideResponseCode": 503,
-        "path": "/5xx-updated.html"
-      }
-    ]
-  },
-  "description": "updated test URLMap",
-  "hostRules": [
-    {
-      "hosts": [
-        "mysite.com"
-      ],
-      "pathMatcher": "allpaths"
-    }
-  ],
-  "id": "000000000000000000000",
-  "kind": "compute#urlMap",
-  "name": "computeurlmap-${uniqueId}",
-  "pathMatchers": [
-    {
-      "defaultCustomErrorResponsePolicy": {
-        "errorResponseRules": [
-          {
-            "matchResponseCodes": [
-              "4xx"
-            ],
-            "overrideResponseCode": 403,
-            "path": "/4xx-updated.html"
-          }
-        ]
-      },
-      "name": "allpaths"
-    }
-  ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -841,91 +684,6 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketName": "storagebucket-${uniqueId}",
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Compute Backend Bucket Sample",
-  "id": "000000000000000000000",
-  "kind": "compute#backendBucket",
-  "name": "${backendBucketID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${backendBucketID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${backendBucketID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}",
-  "user": "user@example.com"
 }
 
 ---
@@ -949,11 +707,8 @@ X-Xss-Protection: 0
     "drainingTimeoutSec": 300
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
+  "description": "Chaosmonkeymulti Backend Service for computeurlmap-kompanion",
   "fingerprint": "abcdef0123A=",
-  "healthChecks": [
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/${healthCheckID}"
-  ],
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
@@ -961,8 +716,9 @@ X-Xss-Protection: 0
   },
   "id": "000000000000000000000",
   "kind": "compute#backendService",
-  "loadBalancingScheme": "EXTERNAL_MANAGED",
+  "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "${backendServiceID}",
+  "protocol": "HTTPS",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
   "timeoutSec": 30
@@ -1030,7 +786,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1044,26 +800,31 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "checkIntervalSec": 10,
+  "affinityCookieTtlSec": 0,
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "healthyThreshold": 2,
-  "httpHealthCheck": {
-    "port": 80,
-    "proxyHeader": "NONE",
-    "requestPath": "/"
+  "description": "Chaosmonkey Backend Service for computeurlmap-kompanion",
+  "fingerprint": "abcdef0123A=",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   },
   "id": "000000000000000000000",
-  "kind": "compute#healthCheck",
-  "name": "${healthCheckID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-  "timeoutSec": 5,
-  "type": "HTTP",
-  "unhealthyThreshold": 2
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "${backendServiceID}",
+  "protocol": "HTTPS",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1086,8 +847,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
@@ -1116,82 +877,105 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: UploadServer
+Server: ESF
 Vary: Origin
 Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
+  "affinityCookieTtlSec": 0,
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default Backend Service for computeurlmap-kompanion",
+  "fingerprint": "abcdef0123A=",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   },
   "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "${backendServiceID}",
+  "protocol": "HTTPS",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: UploadServer
+Server: ESF
 Vary: Origin
 Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "kind": "storage#objects",
-  "prefixes": [
-    "testfolder",
-    "testmanagedfolder"
-  ]
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
 }
 
 ---
 
-DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 
-204 No Content
-Content-Type: application/json
-Pragma: no-cache
-Server: UploadServer
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
 Vary: Origin
 Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}

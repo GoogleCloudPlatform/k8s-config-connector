@@ -4,10 +4,11 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: computeurlmap-${uniqueId}
@@ -19,10 +20,6 @@ spec:
       - 5xx
       overrideResponseCode: 502
       path: /5xx.html
-    - matchResponseCodes:
-      - 4xx
-      overrideResponseCode: 404
-      path: /4xx-global.html
     errorServiceRef:
       name: ${backendBucketID}
   defaultService:
@@ -41,16 +38,13 @@ spec:
         - 4xx
         overrideResponseCode: 404
         path: /4xx.html
-      - matchResponseCodes:
-        - 5xx
-        overrideResponseCode: 502
-        path: /5xx-pathmatcher.html
       errorServiceRef:
         name: ${backendBucketID}
     defaultService:
       backendBucketRef:
         name: ${backendBucketID}
     name: allpaths
+  resourceID: computeurlmap-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -60,5 +54,5 @@ status:
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
   mapId: 1111111111111111
-  observedGeneration: 2
+  observedGeneration: 3
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
