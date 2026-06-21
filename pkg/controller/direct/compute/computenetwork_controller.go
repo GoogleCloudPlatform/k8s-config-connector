@@ -169,7 +169,10 @@ func (a *NetworkAdapter) Create(ctx context.Context, createOp *directbase.Create
 		}
 	}
 
-	created, err := a.get(ctx)
+	created, err := a.gcpClient.Get(ctx, &computepb.GetNetworkRequest{
+		Project: a.id.Project,
+		Network: a.id.Network,
+	})
 	if err != nil {
 		return fmt.Errorf("getting ComputeNetwork after creation %s: %w", a.id, err)
 	}
@@ -181,16 +184,7 @@ func (a *NetworkAdapter) deleteDefaultRoutes(ctx context.Context) error {
 	log := klog.FromContext(ctx)
 	log.Info("deleting default routes for ComputeNetwork", "network", a.id.Network)
 
-	networkSelfLink := ""
-	if a.actual != nil {
-		networkSelfLink = *a.actual.SelfLink
-	} else {
-		network, err := a.get(ctx)
-		if err != nil {
-			return fmt.Errorf("getting ComputeNetwork to resolve SelfLink: %w", err)
-		}
-		networkSelfLink = *network.SelfLink
-	}
+	networkSelfLink := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%s", a.id.Project, a.id.Network)
 
 	filter := fmt.Sprintf("(network=\"%s\") AND (destRange=\"0.0.0.0/0\")", networkSelfLink)
 	req := &computepb.ListRoutesRequest{
@@ -255,7 +249,10 @@ func (a *NetworkAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return fmt.Errorf("compute ComputeNetwork %s waiting for update: %w", a.id.String(), err)
 	}
 
-	updated, err := a.get(ctx)
+	updated, err := a.gcpClient.Get(ctx, &computepb.GetNetworkRequest{
+		Project: a.id.Project,
+		Network: a.id.Network,
+	})
 	if err != nil {
 		return fmt.Errorf("getting ComputeNetwork %s: %w", a.id, err)
 	}
@@ -280,10 +277,10 @@ func (a *NetworkAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 		return nil, err
 	}
 
+	u.Object = uObj
 	u.SetName(a.id.String())
 	u.SetGroupVersionKind(krm.ComputeNetworkGVK)
 
-	u.Object = uObj
 	return u, nil
 }
 
@@ -311,14 +308,6 @@ func (a *NetworkAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	return true, nil
 }
 
-func (a *NetworkAdapter) get(ctx context.Context) (*computepb.Network, error) {
-	getReq := &computepb.GetNetworkRequest{
-		Project: a.id.Project,
-		Network: a.id.Network,
-	}
-	return a.gcpClient.Get(ctx, getReq)
-}
-
 func (a *NetworkAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *computepb.Network) error {
 	mapCtx := &direct.MapContext{}
 	status := ComputeNetworkStatus_v1beta1_FromProto(mapCtx, latest)
@@ -335,7 +324,7 @@ func compareNetwork(ctx context.Context, actual, desired *computepb.Network) (*s
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*computepb.Network)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *computepb.Network) {
 		// No defaults need custom mapping, but we define pattern anyway
