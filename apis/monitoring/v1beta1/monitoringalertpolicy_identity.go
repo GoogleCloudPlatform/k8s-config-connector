@@ -27,6 +27,7 @@ import (
 
 var (
 	_ identity.IdentityV2 = &MonitoringAlertPolicyIdentity{}
+	_ identity.Resource   = &MonitoringAlertPolicy{}
 )
 
 var MonitoringAlertPolicyIdentityFormat = gcpurls.Template[MonitoringAlertPolicyIdentity]("monitoring.googleapis.com", "projects/{project}/alertPolicies/{alertpolicy}")
@@ -40,6 +41,14 @@ type MonitoringAlertPolicyIdentity struct {
 
 func (i *MonitoringAlertPolicyIdentity) String() string {
 	return MonitoringAlertPolicyIdentityFormat.ToString(*i)
+}
+
+func (i *MonitoringAlertPolicyIdentity) ParentString() string {
+	return "projects/" + i.Project
+}
+
+func (obj *MonitoringAlertPolicy) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	return getIdentityFromMonitoringAlertPolicySpec(ctx, reader, obj)
 }
 
 func (i *MonitoringAlertPolicyIdentity) FromExternal(ref string) error {

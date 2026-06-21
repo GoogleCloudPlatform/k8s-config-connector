@@ -1,0 +1,290 @@
+169,170c169
+< POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+173,195c172,205
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "hourly": {
+<           "minuteOffset": 30,
+<           "periodicity": 1
+<         },
+<         "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+<         "rowCountTest": {
+<           "comparison": "COMPARISON_GT",
+<           "threshold": 10
+<         }
+<       },
+<       "displayName": "SQL Log Alert Condition Hourly"
+<     }
+<   ],
+<   "displayName": "Test SQL Alert Policy Hourly",
+<   "enabled": true,
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+> }
+> 
+> error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
+> 
+> {}
+> 
+> ---
+> 
+> GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
+> 
+> {
+>   "alertPolicy": {
+>     "combiner": "OR",
+>     "conditions": [
+>       {
+>         "conditionSql": {
+>           "hourly": {
+>             "minuteOffset": 30,
+>             "periodicity": 1
+>           },
+>           "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+>           "rowCountTest": {
+>             "comparison": "COMPARISON_GT",
+>             "threshold": "10"
+>           }
+>         },
+>         "displayName": "SQL Log Alert Condition Hourly"
+>       }
+>     ],
+>     "displayName": "Test SQL Alert Policy Hourly",
+>     "enabled": true
+>   },
+>   "name": "projects/${projectId}"
+198,206c208
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+237,241c239
+<   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+246,257c244
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+260,292c247
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "hourly": {
+<           "minuteOffset": 30,
+<           "periodicity": 1
+<         },
+<         "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+<         "rowCountTest": {
+<           "comparison": "COMPARISON_GT",
+<           "threshold": "10"
+<         }
+<       },
+<       "displayName": "SQL Log Alert Condition Hourly",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+<     }
+<   ],
+<   "creationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "displayName": "Test SQL Alert Policy Hourly",
+<   "enabled": true,
+<   "mutationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+294a250,253
+> error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
+> 
+> {}
+> 
+297,298c256
+< PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json&updateMask=conditions
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
+301,324c259,280
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "hourly": {
+<           "minuteOffset": 45,
+<           "periodicity": 2
+<         },
+<         "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+<         "rowCountTest": {
+<           "comparison": "COMPARISON_GT",
+<           "threshold": 20
+<         }
+<       },
+<       "displayName": "SQL Log Alert Condition Hourly",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+<     }
+<   ],
+<   "displayName": "Test SQL Alert Policy Hourly",
+<   "enabled": true,
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "alertPolicy": {
+>     "combiner": "OR",
+>     "conditions": [
+>       {
+>         "conditionSql": {
+>           "hourly": {
+>             "minuteOffset": 45,
+>             "periodicity": 2
+>           },
+>           "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+>           "rowCountTest": {
+>             "comparison": "COMPARISON_GT",
+>             "threshold": "20"
+>           }
+>         },
+>         "displayName": "SQL Log Alert Condition Hourly"
+>       }
+>     ],
+>     "displayName": "Test SQL Alert Policy Hourly",
+>     "enabled": true
+>   },
+>   "name": "projects/${projectId}"
+327,335c283
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+366,370c314
+<   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+375,386c319
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+389,421c322
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "hourly": {
+<           "minuteOffset": 45,
+<           "periodicity": 2
+<         },
+<         "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+<         "rowCountTest": {
+<           "comparison": "COMPARISON_GT",
+<           "threshold": "20"
+<         }
+<       },
+<       "displayName": "SQL Log Alert Condition Hourly",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+<     }
+<   ],
+<   "creationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "displayName": "Test SQL Alert Policy Hourly",
+<   "enabled": true,
+<   "mutationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+423a325,328
+> error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
+> 
+> {}
+> 
+426,427c331,335
+< DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+> 
+> {
+>   "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+> }
+429,437c337
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found

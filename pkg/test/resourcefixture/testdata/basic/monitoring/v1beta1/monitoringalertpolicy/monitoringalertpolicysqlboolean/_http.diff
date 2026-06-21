@@ -1,0 +1,299 @@
+169,170c169
+< POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+173,182c172,190
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "booleanTest": {
+<           "column": "has_error"
+<         },
+<         "daily": {
+<           "executionTime": {
+<             "hours": 12
+---
+>   "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+> }
+> 
+> error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
+> 
+> {}
+> 
+> ---
+> 
+> GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
+> 
+> {
+>   "alertPolicy": {
+>     "combiner": "OR",
+>     "conditions": [
+>       {
+>         "conditionSql": {
+>           "booleanTest": {
+>             "column": "has_error"
+184c192,198
+<           "periodicity": 1
+---
+>           "daily": {
+>             "executionTime": {
+>               "hours": 12
+>             },
+>             "periodicity": 1
+>           },
+>           "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
+186,196c200,206
+<         "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
+<       },
+<       "displayName": "SQL Log Alert Condition Daily Boolean"
+<     }
+<   ],
+<   "displayName": "Test SQL Alert Policy Daily Boolean",
+<   "enabled": true,
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>         "displayName": "SQL Log Alert Condition Daily Boolean"
+>       }
+>     ],
+>     "displayName": "Test SQL Alert Policy Daily Boolean",
+>     "enabled": true
+>   },
+>   "name": "projects/${projectId}"
+199,207c209
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+239,243c241
+<   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+248,259c246
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+262,295c249
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "booleanTest": {
+<           "column": "has_error"
+<         },
+<         "daily": {
+<           "executionTime": {
+<             "hours": 12
+<           },
+<           "periodicity": 1
+<         },
+<         "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
+<       },
+<       "displayName": "SQL Log Alert Condition Daily Boolean",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+<     }
+<   ],
+<   "creationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "displayName": "Test SQL Alert Policy Daily Boolean",
+<   "enabled": true,
+<   "mutationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+297a252,255
+> error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
+> 
+> {}
+> 
+300,301c258
+< PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json&updateMask=conditions
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
+304,314c261,267
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "booleanTest": {
+<           "column": "has_error"
+<         },
+<         "daily": {
+<           "executionTime": {
+<             "hours": 15,
+<             "minutes": 30
+---
+>   "alertPolicy": {
+>     "combiner": "OR",
+>     "conditions": [
+>       {
+>         "conditionSql": {
+>           "booleanTest": {
+>             "column": "has_error"
+316c269,276
+<           "periodicity": 2
+---
+>           "daily": {
+>             "executionTime": {
+>               "hours": 15,
+>               "minutes": 30
+>             },
+>             "periodicity": 2
+>           },
+>           "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
+318,329c278,284
+<         "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
+<       },
+<       "displayName": "SQL Log Alert Condition Daily Boolean",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+<     }
+<   ],
+<   "displayName": "Test SQL Alert Policy Daily Boolean",
+<   "enabled": true,
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>         "displayName": "SQL Log Alert Condition Daily Boolean"
+>       }
+>     ],
+>     "displayName": "Test SQL Alert Policy Daily Boolean",
+>     "enabled": true
+>   },
+>   "name": "projects/${projectId}"
+332,340c287
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+373,377c320
+<   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+382,393c325
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+396,430c328
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "booleanTest": {
+<           "column": "has_error"
+<         },
+<         "daily": {
+<           "executionTime": {
+<             "hours": 15,
+<             "minutes": 30
+<           },
+<           "periodicity": 2
+<         },
+<         "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
+<       },
+<       "displayName": "SQL Log Alert Condition Daily Boolean",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+<     }
+<   ],
+<   "creationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "displayName": "Test SQL Alert Policy Daily Boolean",
+<   "enabled": true,
+<   "mutationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+432a331,334
+> error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
+> 
+> {}
+> 
+435,436c337,341
+< DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+> 
+> {
+>   "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+> }
+438,446c343
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
