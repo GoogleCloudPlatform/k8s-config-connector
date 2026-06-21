@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	"google.golang.org/api/option"
@@ -98,8 +99,21 @@ func (m *certificateIssuanceConfigModel) AdapterForObject(ctx context.Context, o
 }
 
 func (m *certificateIssuanceConfigModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krmcertificatemanagerv1alpha1.CertificateManagerCertificateIssuanceConfigIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &CertificateIssuanceConfigAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type CertificateIssuanceConfigAdapter struct {
@@ -188,13 +202,18 @@ func (a *CertificateIssuanceConfigAdapter) Export(ctx context.Context) (*unstruc
 
 	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
 	obj.Spec.Location = a.id.Location
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.CertificateIssuanceConfig)
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.CertificateIssuanceConfig)
 	u.SetGroupVersionKind(krmcertificatemanagerv1alpha1.CertificateManagerCertificateIssuanceConfigGVK)
+
+	export.SetLabels(u, a.actual.Labels)
+
 	return u, nil
 }
 
