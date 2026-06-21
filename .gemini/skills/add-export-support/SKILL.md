@@ -51,7 +51,7 @@ func (m *modelArtifactRegistryRepository) AdapterForURL(ctx context.Context, url
 In the Adapter implementation (e.g. `ArtifactRegistryRepositoryAdapter`), implement the `Export(ctx context.Context)` method. This method is responsible for translating the retrieved GCP state (`a.actual`) back to KRM format.
 
 During export, you must:
-1. **Set the project ID annotation:** Use the helper `export.SetProjectID(u, projectID)` from `github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export`.
+1. **Set the project ID annotation (if applicable):** If the resource spec does not have a `projectRef` field, use the helper `export.SetProjectID(u, projectID)` from `github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export` to set the project-id annotation. If `spec.projectRef` is explicitly set on the spec, do not set the `cnrm.cloud.google.com/project-id` annotation since it is redundant.
 2. **Set the labels:** Use the helper `export.SetLabels(u, labels)` from `github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export`.
 3. **Set the identity fields on spec:** In general, fields that are part of the identity (like `location`, `region`, or `resourceID`) are not mapped automatically in the spec by the from-proto mappers, so you must set them manually on the struct before converting to Unstructured.
 4. **Use the short name:** Make sure you use the short name of the resource (e.g. `a.id.Repository`) when calling `u.SetName()`, instead of the full GCP name.
@@ -79,6 +79,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Export(ctx context.Context) (*unstru
 	// Identity fields not mapped from proto must be set manually on the Spec struct.
 	obj.Spec.Location = a.id.Location
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.Repository)
+	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -89,8 +90,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Export(ctx context.Context) (*unstru
 	u.SetName(a.id.Repository)
 	u.SetGroupVersionKind(krm.ArtifactRegistryRepositoryGVK)
 
-	// Set standard metadata such as project-id annotation and labels.
-	export.SetProjectID(u, a.id.Project)
+	// Set standard metadata such as labels (do not set project-id annotation if projectRef is on spec).
 	export.SetLabels(u, a.actual.Labels)
 
 	return u, nil
