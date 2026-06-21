@@ -16,24 +16,25 @@ package aiplatform
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	vertexai "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/genproto/googleapis/type/money"
 )
 
-func Money_FromProto(mapCtx *direct.MapContext, in *money.Money) *krm.Money {
+func Money_FromProto(mapCtx *direct.MapContext, in *money.Money) *vertexai.Money {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Money{}
+	out := &vertexai.Money{}
 	out.CurrencyCode = direct.LazyPtr(in.GetCurrencyCode())
 	out.Units = direct.LazyPtr(in.GetUnits())
 	out.Nanos = direct.LazyPtr(in.GetNanos())
 	return out
 }
 
-func Money_ToProto(mapCtx *direct.MapContext, in *krm.Money) *money.Money {
+func Money_ToProto(mapCtx *direct.MapContext, in *vertexai.Money) *money.Money {
 	if in == nil {
 		return nil
 	}
@@ -44,17 +45,17 @@ func Money_ToProto(mapCtx *direct.MapContext, in *krm.Money) *money.Money {
 	return out
 }
 
-func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.Status {
+func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *common.Status {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Status{}
+	out := &common.Status{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	out.Message = direct.LazyPtr(in.GetMessage())
 	return out
 }
 
-func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *status.Status {
+func Status_ToProto(mapCtx *direct.MapContext, in *common.Status) *status.Status {
 	if in == nil {
 		return nil
 	}
@@ -65,18 +66,18 @@ func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *status.Status {
 }
 
 // VertexAIDataLabelingJob mappings are skipped since it's managed by another controller package.
-func VertexAIDataLabelingJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataLabelingJob) *krm.VertexAIDataLabelingJobObservedState {
+func VertexAIDataLabelingJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataLabelingJob) *vertexai.VertexAIDataLabelingJobObservedState {
 	return nil
 }
 
-func VertexAIDataLabelingJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIDataLabelingJobObservedState) *pb.DataLabelingJob {
+func VertexAIDataLabelingJobObservedState_ToProto(mapCtx *direct.MapContext, in *vertexai.VertexAIDataLabelingJobObservedState) *pb.DataLabelingJob {
 	return nil
 }
 
-func VertexAIDataLabelingJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataLabelingJob) *krm.VertexAIDataLabelingJobSpec {
+func VertexAIDataLabelingJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataLabelingJob) *vertexai.VertexAIDataLabelingJobSpec {
 	return nil
 }
 
-func VertexAIDataLabelingJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIDataLabelingJobSpec) *pb.DataLabelingJob {
+func VertexAIDataLabelingJobSpec_ToProto(mapCtx *direct.MapContext, in *vertexai.VertexAIDataLabelingJobSpec) *pb.DataLabelingJob {
 	return nil
 }

@@ -101,6 +101,12 @@ var (
 		Kind:    reflect.TypeOf(VertexAIIndexEndpoint{}).Name(),
 	}
 
+	VertexAIOnlineEvaluatorGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAIOnlineEvaluator{}).Name(),
+	}
+
 	VertexAITensorboardGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

@@ -415,3 +415,33 @@ func SmoothGradConfig_NoiseSigma_ToProto(mapCtx *direct.MapContext, in *float32)
 	out.NoiseSigma = direct.ValueOf(in)
 	return out
 }
+
+func Examples_FromProto(mapCtx *direct.MapContext, in *pb.Examples) *krm.Examples {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Examples{}
+	out.ExampleGCSSource = Examples_ExampleGcsSource_FromProto(mapCtx, in.GetExampleGcsSource())
+	out.NearestNeighborSearchConfig = Value_FromProto(mapCtx, in.GetNearestNeighborSearchConfig())
+	out.Presets = Presets_FromProto(mapCtx, in.GetPresets())
+	out.NeighborCount = direct.LazyPtr(in.GetNeighborCount())
+	return out
+}
+
+func Examples_ToProto(mapCtx *direct.MapContext, in *krm.Examples) *pb.Examples {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Examples{}
+	if oneof := Examples_ExampleGcsSource_ToProto(mapCtx, in.ExampleGCSSource); oneof != nil {
+		out.Source = &pb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
+	}
+	if oneof := Value_ToProto(mapCtx, in.NearestNeighborSearchConfig); oneof != nil {
+		out.Config = &pb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
+	}
+	if oneof := Presets_ToProto(mapCtx, in.Presets); oneof != nil {
+		out.Config = &pb.Examples_Presets{Presets: oneof}
+	}
+	out.NeighborCount = direct.ValueOf(in.NeighborCount)
+	return out
+}

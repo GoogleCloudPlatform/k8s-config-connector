@@ -113,3 +113,17 @@ type VertexAIExampleStoreList struct {
 func init() {
 	SchemeBuilder.Register(&VertexAIExampleStore{}, &VertexAIExampleStoreList{})
 }
+
+// ExampleStore is a helper struct for the pre-generated direct mapper.
+type ExampleStore struct {
+	Name               *string             `json:"name,omitempty"`
+	DisplayName        *string             `json:"displayName,omitempty"`
+	Description        *string             `json:"description,omitempty"`
+	ExampleStoreConfig *ExampleStoreConfig `json:"exampleStoreConfig,omitempty"`
+}
+
+// ExampleStoreObservedState is a helper struct for the pre-generated direct mapper.
+type ExampleStoreObservedState struct {
+	CreateTime *string `json:"createTime,omitempty"`
+	UpdateTime *string `json:"updateTime,omitempty"`
+}

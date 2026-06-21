@@ -104,7 +104,7 @@ func AIPlatformModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm
 	// MISSING: DefaultCheckpointID
 	out.PredictSchemata = PredictSchemata_FromProto(mapCtx, in.GetPredictSchemata())
 	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
-	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
+	out.Metadata = direct.Value_FromProto(mapCtx, in.GetMetadata())
 	out.PipelineJob = direct.LazyPtr(in.GetPipelineJob())
 	out.ContainerSpec = ModelContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
 	out.ArtifactURI = direct.LazyPtr(in.GetArtifactUri())
@@ -135,7 +135,7 @@ found existing non-generated mapping function "AIPlatformModelSpec_ToProto", ski
 		// MISSING: DefaultCheckpointID
 		out.PredictSchemata = PredictSchemata_ToProto(mapCtx, in.PredictSchemata)
 		out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
-		out.Metadata = Value_ToProto(mapCtx, in.Metadata)
+		out.Metadata = direct.Value_ToProto(mapCtx, in.Metadata)
 		out.PipelineJob = direct.ValueOf(in.PipelineJob)
 		out.ContainerSpec = ModelContainerSpec_ToProto(mapCtx, in.ContainerSpec)
 		out.ArtifactUri = direct.ValueOf(in.ArtifactURI)
@@ -217,34 +217,42 @@ func EnvVar_ToProto(mapCtx *direct.MapContext, in *krm.EnvVar) *pb.EnvVar {
 	out.Value = direct.ValueOf(in.Value)
 	return out
 }
+
+/* found existing non-generated mapping function "Examples_FromProto", skipping
 func Examples_FromProto(mapCtx *direct.MapContext, in *pb.Examples) *krm.Examples {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Examples{}
 	out.ExampleGCSSource = Examples_ExampleGcsSource_FromProto(mapCtx, in.GetExampleGcsSource())
-	out.NearestNeighborSearchConfig = Value_FromProto(mapCtx, in.GetNearestNeighborSearchConfig())
+	out.NearestNeighborSearchConfig = direct.Value_FromProto(mapCtx, in.GetNearestNeighborSearchConfig())
 	out.Presets = Presets_FromProto(mapCtx, in.GetPresets())
 	out.NeighborCount = direct.LazyPtr(in.GetNeighborCount())
 	return out
 }
-func Examples_ToProto(mapCtx *direct.MapContext, in *krm.Examples) *pb.Examples {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "Examples_ToProto", skipping
+
+	func Examples_ToProto(mapCtx *direct.MapContext, in *krm.Examples) *pb.Examples {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Examples{}
+		if oneof := Examples_ExampleGcsSource_ToProto(mapCtx, in.ExampleGCSSource); oneof != nil {
+			out.Source = &pb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
+		}
+		if oneof := direct.Value_ToProto(mapCtx, in.NearestNeighborSearchConfig); oneof != nil {
+			out.Config = &pb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
+		}
+		if oneof := Presets_ToProto(mapCtx, in.Presets); oneof != nil {
+			out.Config = &pb.Examples_Presets{Presets: oneof}
+		}
+		out.NeighborCount = direct.ValueOf(in.NeighborCount)
+		return out
 	}
-	out := &pb.Examples{}
-	if oneof := Examples_ExampleGcsSource_ToProto(mapCtx, in.ExampleGCSSource); oneof != nil {
-		out.Source = &pb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
-	}
-	if oneof := Value_ToProto(mapCtx, in.NearestNeighborSearchConfig); oneof != nil {
-		out.Config = &pb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
-	}
-	if oneof := Presets_ToProto(mapCtx, in.Presets); oneof != nil {
-		out.Config = &pb.Examples_Presets{Presets: oneof}
-	}
-	out.NeighborCount = direct.ValueOf(in.NeighborCount)
-	return out
-}
+*/
 func Examples_ExampleGcsSource_FromProto(mapCtx *direct.MapContext, in *pb.Examples_ExampleGcsSource) *krm.Examples_ExampleGcsSource {
 	if in == nil {
 		return nil

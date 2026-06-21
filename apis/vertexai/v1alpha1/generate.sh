@@ -31,7 +31,18 @@ go run . generate-types \
     --resource VertexAIDeploymentResourcePool:DeploymentResourcePool \
     --resource VertexAIExampleStore:ExampleStore \
     --resource VertexAIFeatureGroup:FeatureGroup \
+    --resource VertexAIOnlineEvaluator:OnlineEvaluator
+
+mv "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/vertexai/v1alpha1/types_v1beta1.generated.go"
+
+# go run . generate-mapper     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1
+
+go run . generate-types \
+    --service google.cloud.aiplatform.v1 \
+    --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
     --resource VertexAIDataLabelingJob:DataLabelingJob
+
+mv "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/vertexai/v1alpha1/types_v1.generated.go"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

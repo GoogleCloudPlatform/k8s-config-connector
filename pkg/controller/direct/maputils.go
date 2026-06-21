@@ -23,11 +23,13 @@ import (
 	"strings"
 	"time"
 
+	aiplatformpb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/googleapis/gax-go/v2/apierror"
 	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 	grpcCode "google.golang.org/grpc/codes"
 	grpcStatus "google.golang.org/grpc/status"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/structpb"
@@ -626,5 +628,87 @@ func Status_ToProto(mapCtx *MapContext, in *common.Status) *statuspb.Status {
 	out := &statuspb.Status{}
 	out.Code = ValueOf(in.Code)
 	out.Message = ValueOf(in.Message)
+	return out
+}
+
+func Value_FromProto(mapCtx *MapContext, in *structpb.Value) *apiextensionsv1.JSON {
+	if in == nil {
+		return nil
+	}
+	b, err := json.Marshal(in.AsInterface())
+	if err != nil {
+		mapCtx.Errorf("marshalling structpb.Value to json: %v", err)
+		return nil
+	}
+	return &apiextensionsv1.JSON{Raw: b}
+}
+
+func Value_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Value {
+	if in == nil {
+		return nil
+	}
+	var val interface{}
+	if err := json.Unmarshal(in.Raw, &val); err != nil {
+		mapCtx.Errorf("unmarshalling json to interface{}: %v", err)
+		return nil
+	}
+	s, err := structpb.NewValue(val)
+	if err != nil {
+		mapCtx.Errorf("error converting interface{} to structpb.Value: %v", err)
+		return nil
+	}
+	return s
+}
+
+func ListValue_FromProto(mapCtx *MapContext, in *structpb.ListValue) *apiextensionsv1.JSON {
+	if in == nil {
+		return nil
+	}
+	b, err := json.Marshal(in.AsSlice())
+	if err != nil {
+		mapCtx.Errorf("marshalling structpb.ListValue to json: %v", err)
+		return nil
+	}
+	return &apiextensionsv1.JSON{Raw: b}
+}
+
+func ListValue_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.ListValue {
+	if in == nil {
+		return nil
+	}
+	var slice []interface{}
+	if err := json.Unmarshal(in.Raw, &slice); err != nil {
+		mapCtx.Errorf("unmarshalling json to []interface{}: %v", err)
+		return nil
+	}
+	s, err := structpb.NewList(slice)
+	if err != nil {
+		mapCtx.Errorf("error converting []interface{} to structpb.ListValue: %v", err)
+		return nil
+	}
+	return s
+}
+
+func Schema_FromProto(mapCtx *MapContext, in *aiplatformpb.Schema) *apiextensionsv1.JSON {
+	if in == nil {
+		return nil
+	}
+	b, err := protojson.Marshal(in)
+	if err != nil {
+		mapCtx.Errorf("marshalling aiplatformpb.Schema to json: %v", err)
+		return nil
+	}
+	return &apiextensionsv1.JSON{Raw: b}
+}
+
+func Schema_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *aiplatformpb.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.Schema{}
+	if err := protojson.Unmarshal(in.Raw, out); err != nil {
+		mapCtx.Errorf("unmarshalling json to aiplatformpb.Schema: %v", err)
+		return nil
+	}
 	return out
 }
