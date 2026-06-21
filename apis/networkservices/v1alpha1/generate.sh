@@ -29,6 +29,8 @@ go run . generate-types \
     --resource NetworkServicesServiceBinding:ServiceBinding \
     --resource NetworkServicesLBRouteExtension:LbRouteExtension \
     --resource NetworkServicesWasmPlugin:WasmPlugin
+# Note: NetworkServicesEdgeCacheService is handcoded under apis/networkservices/v1alpha1/edgecacheservice_types.go
+# because its proto definition is not published in the public googleapis repository.
 
 
 go run . generate-mapper \
