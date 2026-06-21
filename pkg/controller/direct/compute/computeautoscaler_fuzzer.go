@@ -33,6 +33,48 @@ func computeAutoscalerFuzzer() fuzztesting.KRMFuzzer {
 		ComputeAutoscalerStatus_v1alpha1_FromProto, ComputeAutoscalerStatus_v1alpha1_ToProto,
 	)
 
+	// Field comparison: ComputeAutoscaler Spec vs pb.Autoscaler Proto
+	// - Spec.AutoscalingPolicy             maps to proto field .autoscaling_policy
+	//   - CooldownPeriod                   maps to .cool_down_period_sec
+	//   - CpuUtilization                   maps to .cpu_utilization
+	//     - PredictiveMethod               maps to .predictive_method
+	//     - Target                         maps to .utilization_target
+	//   - LoadBalancingUtilization         maps to .load_balancing_utilization
+	//     - Target                         maps to .utilization_target
+	//   - MaxReplicas                      maps to .max_num_replicas
+	//   - Metric                           maps to .custom_metric_utilizations
+	//     - Filter                         maps to .filter
+	//     - Name                           maps to .metric
+	//     - SingleInstanceAssignment       maps to .single_instance_assignment
+	//     - Target                         maps to .utilization_target
+	//     - Type                           maps to .utilization_target_type
+	//   - MinReplicas                      maps to .min_num_replicas
+	//   - Mode                             maps to .mode
+	//   - ScaleDownControl                 maps to .scale_in_control (proto only has scale_in_control)
+	//     - MaxScaledDownReplicas          maps to .max_scaled_in_replicas
+	//       - Fixed                        maps to .fixed
+	//       - Percent                      maps to .percent
+	//     - TimeWindowSec                  maps to .time_window_sec
+	//   - ScaleInControl                   maps to .scale_in_control
+	//     - MaxScaledInReplicas            maps to .max_scaled_in_replicas
+	//       - Fixed                        maps to .fixed
+	//       - Percent                      maps to .percent
+	//     - TimeWindowSec                  maps to .time_window_sec
+	//   - ScalingSchedules                 maps to .scaling_schedules (slice to map)
+	//     - Description                    maps to .description
+	//     - Disabled                       maps to .disabled
+	//     - DurationSec                    maps to .duration_sec
+	//     - MinRequiredReplicas            maps to .min_required_replicas
+	//     - Name                           maps to key in .scaling_schedules
+	//     - Schedule                       maps to .schedule
+	//     - TimeZone                       maps to .time_zone
+	// - Spec.Description                   maps to proto field .description
+	// - Spec.ProjectRef                    is handled via the GCP URI/ID, not mapped to a proto body field directly
+	// - Spec.ResourceID                    maps to proto field .name (handled as Unimplemented_Identity)
+	// - Spec.TargetRef                     maps to proto field .target
+	// - Spec.Zone                          maps to proto field .zone
+	//
+	// Spec fields
 	f.SpecField(".autoscaling_policy")
 	f.SpecField(".description")
 	f.SpecField(".target")
