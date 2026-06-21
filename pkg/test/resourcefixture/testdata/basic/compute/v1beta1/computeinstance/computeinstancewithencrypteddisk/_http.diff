@@ -1,9 +1,9 @@
-263c263,264
+262c262,263
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-291,336c292
+290,335c291
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -52,17 +52,17 @@
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances
-340,341d295
+339,340d294
 <   "canIpForward": false,
 <   "deletionProtection": false,
-344a299
+343a298
 >       "autoDelete": false,
-346,349d300
+345,348d299
 <       "diskEncryptionKey": {
 <         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 <       },
 <       "mode": "READ_WRITE",
-353,359c304
+352,358c303
 <   "labels": {
 <     "cnrm-test": "true",
 <     "env": "test",
@@ -72,28 +72,28 @@
 <   "metadata": {},
 ---
 >   "machineType": "n1-standard-1",
-366d310
+365d309
 <   "params": {},
-369,372d312
+368,371d311
 <     "instanceTerminationAction": "",
 <     "nodeAffinities": [
 <       null
 <     ],
-374,375c314
+373,374c313
 <     "preemptible": true,
 <     "provisioningModel": ""
 ---
 >     "preemptible": true
-377c316
+376c315
 <   "tags": {}
 ---
 >   "zone": "us-west1-a"
-408c347,348
+407c346,347
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-439,533c379,380
+438,532c378,379
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -192,18 +192,18 @@
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-546d392
+545d391
 <   "canIpForward": false,
-548d393
+547d392
 <   "deletionProtection": false,
-551a397
+550a396
 >       "autoDelete": false,
-553,556d398
+552,555d397
 <       "diskEncryptionKey": {
 <         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 <       },
 <       "mode": "READ_WRITE",
-563,569c405
+562,568c404
 <   "labels": {
 <     "cnrm-test": "true",
 <     "env": "test",
@@ -213,16 +213,16 @@
 <   "metadata": {},
 ---
 >   "machineType": "n1-standard-1",
-576d411
+575d410
 <   "params": {},
-579d413
+578d412
 <     "instanceTerminationAction": "",
-581,582c415
+580,581c414
 <     "preemptible": true,
 <     "provisioningModel": ""
 ---
 >     "preemptible": true
-586,621d418
+585,620d417
 <   "tags": {},
 <   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 < }
@@ -259,12 +259,12 @@
 <   "sourceImageId": "2443108620951880213",
 <   "status": "READY",
 <   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
-627c424,425
+626c423,424
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/stop
 > Content-Type: application/json
-640,653d437
+639,652d436
 <   "canIpForward": false,
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 <   "deletionProtection": false,
@@ -279,7 +279,7 @@
 <       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
 <     }
 <   ],
-655,678c439,445
+654,677c438,444
 <   "kind": "compute#instance",
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
@@ -312,25 +312,25 @@
 >   "progress": 0,
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
 >   "startTime": "2024-04-01T12:34:56.123456Z",
-680c447,449
+679c446,448
 <   "tags": {},
 ---
 >   "targetId": "${instanceID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 >   "user": "user@example.com",
-686c455,456
+685c454,455
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-699,702c469
+698,701c468
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 <   "diskEncryptionKey": {
 <     "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 <   },
 ---
 >   "endTime": "2024-04-01T12:34:56.123456Z",
-704,715c471,481
+703,714c470,480
 <   "kind": "compute#disk",
 <   "labels": {
 <     "cnrm-test": "true",
@@ -355,23 +355,23 @@
 >   "targetId": "${instanceID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 >   "user": "user@example.com",
-721c487,488
+720c486,487
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-734d500
+733d499
 <   "canIpForward": false,
-736d501
+735d500
 <   "deletionProtection": false,
-739a505
+738a504
 >       "autoDelete": false,
-741,744d506
+740,743d505
 <       "diskEncryptionKey": {
 <         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 <       },
 <       "mode": "READ_WRITE",
-751,757c513
+750,756c512
 <   "labels": {
 <     "cnrm-test": "true",
 <     "env": "test",
@@ -381,25 +381,25 @@
 <   "metadata": {},
 ---
 >   "machineType": "n1-standard-1",
-764d519
+763d518
 <   "params": {},
-767d521
+766d520
 <     "instanceTerminationAction": "",
-769,770c523
+768,769c522
 <     "preemptible": true,
 <     "provisioningModel": ""
 ---
 >     "preemptible": true
-773,774c526
+772,773c525
 <   "status": "RUNNING",
 <   "tags": {},
 ---
 >   "status": "TERMINATED",
-780c532
+779c531
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setLabels?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType
-784,789c536
+783,788c535
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
 <     "cnrm-test": "true",
@@ -408,20 +408,20 @@
 <   }
 ---
 >   "machineType": "zones/us-west1-a/machineTypes/n1-standard-2"
-807c554
+806c553
 <   "operationType": "setLabels",
 ---
 >   "operationType": "setMachineType",
-820c567,568
+819c566,567
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-838c586
+837c585
 <   "operationType": "setLabels",
 ---
 >   "operationType": "setMachineType",
-851c599,606
+850c598,605
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/stop?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setScheduling
@@ -432,24 +432,24 @@
 >   "onHostMaintenance": "TERMINATE",
 >   "preemptible": true
 > }
-868c623
+867c622
 <   "operationType": "stop",
 ---
 >   "operationType": "setScheduling",
-881c636,637
+880c635,636
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-899c655
+898c654
 <   "operationType": "stop",
 ---
 >   "operationType": "setScheduling",
-912c668
+911c667
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setLabels
-916c672,676
+915c671,675
 <   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2"
 ---
 >   "labelFingerprint": "abcdef0123A=",
@@ -457,20 +457,20 @@
 >     "cnrm-test": "true",
 >     "env": "prod"
 >   }
-934c694
+933c693
 <   "operationType": "setMachineType",
 ---
 >   "operationType": "setLabels",
-947c707,708
+946c706,707
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-965c726
+964c725
 <   "operationType": "setMachineType",
 ---
 >   "operationType": "setLabels",
-978,1037c739
+977,1036c738
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -533,7 +533,7 @@
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/startWithEncryptionKey?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/start
-1040,1071d741
+1039,1070d740
 < {
 <   "disks": [
 <     {
@@ -566,7 +566,7 @@
 < 
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 < 
-1083,1096d752
+1082,1095d751
 <   "canIpForward": false,
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 <   "deletionProtection": false,
@@ -581,7 +581,7 @@
 <       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
 <     }
 <   ],
-1098,1123c754,764
+1097,1122c753,763
 <   "kind": "compute#instance",
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
@@ -620,19 +620,19 @@
 >   "targetId": "${instanceID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 >   "user": "user@example.com",
-1129c770,771
+1128c769,770
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1142,1145c784
+1141,1144c783
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 <   "diskEncryptionKey": {
 <     "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 <   },
 ---
 >   "endTime": "2024-04-01T12:34:56.123456Z",
-1147,1158c786,796
+1146,1157c785,795
 <   "kind": "compute#disk",
 <   "labels": {
 <     "cnrm-test": "true",
@@ -657,42 +657,42 @@
 >   "targetId": "${instanceID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 >   "user": "user@example.com",
-1164c802,803
+1163c801,802
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-1177d815
+1176d814
 <   "canIpForward": false,
-1179d816
+1178d815
 <   "deletionProtection": false,
-1182a820
+1181a819
 >       "autoDelete": false,
-1184,1187d821
+1183,1186d820
 <       "diskEncryptionKey": {
 <         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 <       },
 <       "mode": "READ_WRITE",
-1196,1197c830
+1195,1196c829
 <     "env": "prod",
 <     "managed-by-cnrm": "true"
 ---
 >     "env": "prod"
-1199,1200c832
+1198,1199c831
 <   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
 <   "metadata": {},
 ---
 >   "machineType": "zones/us-west1-a/machineTypes/n1-standard-2",
-1207d838
+1206d837
 <   "params": {},
-1210d840
+1209d839
 <     "instanceTerminationAction": "",
-1212,1213c842
+1211,1212c841
 <     "preemptible": true,
 <     "provisioningModel": ""
 ---
 >     "preemptible": true
-1216,1252c845
+1215,1251c844
 <   "status": "TERMINATED",
 <   "tags": {},
 <   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
@@ -732,12 +732,12 @@
 <   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
 ---
 >   "status": "RUNNING",
-1258c851,852
+1257c850,851
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-1288c882,883
+1287c881,882
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}

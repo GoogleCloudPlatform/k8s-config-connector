@@ -68,12 +68,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "Debian, Debian GNU/Linux, 11 (bullseye), amd64 built on 20231010",
   "family": "debian-11",
   "kind": "compute#image",
   "name": "debian-11-bullseye-v20231010",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-  "status": "UP"
+  "status": "READY"
 }
 
 ---
@@ -406,11 +405,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instanceTemplate \"projects/${projectId}/global/instanceTemplates/${instanceTemplateID}\" not found",
+        "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "instanceTemplate \"projects/${projectId}/global/instanceTemplates/${instanceTemplateID}\" not found"
+    "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found"
   }
 }
 
@@ -529,11 +528,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instanceTemplate \"projects/${projectId}/global/instanceTemplates/${instanceTemplateID}\" not found",
+        "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "instanceTemplate \"projects/${projectId}/global/instanceTemplates/${instanceTemplateID}\" not found"
+    "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found"
   }
 }
 
@@ -975,11 +974,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instanceTemplate \"projects/${projectId}/global/instanceTemplates/${instanceTemplateID}\" not found",
+        "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "instanceTemplate \"projects/${projectId}/global/instanceTemplates/${instanceTemplateID}\" not found"
+    "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found"
   }
 }
 

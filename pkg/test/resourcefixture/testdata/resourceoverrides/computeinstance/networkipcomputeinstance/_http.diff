@@ -3,7 +3,7 @@
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}
 > Content-Type: application/json
-132,228c133
+132,227c133
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -90,12 +90,11 @@
 < X-Xss-Protection: 0
 < 
 < {
-<   "description": "Debian, Debian GNU/Linux, 11 (bullseye), amd64 built on 20231010",
 <   "family": "debian-11",
 <   "kind": "compute#image",
 <   "name": "debian-11-bullseye-v20231010",
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-<   "status": "UP"
+<   "status": "READY"
 < }
 < 
 < ---
@@ -103,18 +102,18 @@
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances
-233d137
+232d137
 <   "deletionProtection": false,
-236d139
+235d139
 <       "autoDelete": true,
-239,241c142,143
+238,240c142,143
 <         "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
 <       },
 <       "mode": "READ_WRITE"
 ---
 >         "sourceImage": "debian-cloud/debian-11"
 >       }
-244,251c146
+243,250c146
 <   "labels": {
 <     "cnrm-test": "true",
 <     "created-from": "image",
@@ -125,11 +124,11 @@
 <   "metadata": {},
 ---
 >   "machineType": "n1-standard-1",
-256a152
+255a152
 >           "name": "External NAT",
-261d156
+260d156
 <       "networkIP": "10.128.0.9",
-265,269c160
+264,268c160
 <   "params": {},
 <   "scheduling": {
 <     "automaticRestart": true
@@ -137,28 +136,28 @@
 <   "tags": {}
 ---
 >   "zone": "us-central1-a"
-300c191,192
+299c191,192
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
 > Content-Type: application/json
-331c223,224
+330c223,224
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}
 > Content-Type: application/json
-346d238
+345d238
 <   "deletionProtection": false,
-349d240
+348d240
 <       "autoDelete": true,
-352,354c243,244
+351,353c243,244
 <         "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
 <       },
 <       "mode": "READ_WRITE"
 ---
 >         "sourceImage": "debian-cloud/debian-11"
 >       }
-360,367c250
+359,366c250
 <   "labels": {
 <     "cnrm-test": "true",
 <     "created-from": "image",
@@ -169,68 +168,68 @@
 <   "metadata": {},
 ---
 >   "machineType": "n1-standard-1",
-372a256
+371a256
 >           "name": "External NAT",
-377d260
+376d260
 <       "networkIP": "10.128.0.9",
-381,384d263
+380,383d263
 <   "params": {},
 <   "scheduling": {
 <     "automaticRestart": true
 <   },
-387d265
+386d265
 <   "tags": {},
-393c271
+392c271
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}/setLabels?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}/setLabels
-401d278
+400d278
 <     "managed-by-cnrm": "true",
-434c311,312
+433c311,312
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
 > Content-Type: application/json
-465c343,344
+464c343,344
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}
 > Content-Type: application/json
-480d358
+479d358
 <   "deletionProtection": false,
-483d360
+482d360
 <       "autoDelete": true,
-486,488c363,364
+485,487c363,364
 <         "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
 <       },
 <       "mode": "READ_WRITE"
 ---
 >         "sourceImage": "debian-cloud/debian-11"
 >       }
-497d372
+496d372
 <     "managed-by-cnrm": "true",
-500,501c375
+499,500c375
 <   "machineType": "projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
 <   "metadata": {},
 ---
 >   "machineType": "n1-standard-1",
-506a381
+505a381
 >           "name": "External NAT",
-511d385
+510d385
 <       "networkIP": "10.128.0.9",
-515,518d388
+514,517d388
 <   "params": {},
 <   "scheduling": {
 <     "automaticRestart": true
 <   },
-521d390
+520d390
 <   "tags": {},
-527c396,397
+526c396,397
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}
 > Content-Type: application/json
-557c427,428
+556c427,428
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
