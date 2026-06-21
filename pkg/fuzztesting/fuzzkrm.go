@@ -162,6 +162,10 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzSpec(t *testing.T, se
 }
 
 func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzStatus(t *testing.T, seed int64) {
+	if f.StatusFromProto == nil {
+		t.Skip("StatusFromProto is nil, skipping status fuzzing")
+		return
+	}
 	fuzzer := NewFuzzTest(f.ProtoType, f.StatusFromProto, f.StatusToProto)
 	fuzzer.IgnoreFields = f.SpecFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
