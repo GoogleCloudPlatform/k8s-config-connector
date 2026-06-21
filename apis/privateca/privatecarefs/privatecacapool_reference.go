@@ -16,10 +16,12 @@ package privatecarefs
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kccscheme"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -90,7 +92,22 @@ func (r *PrivateCACAPoolRef) ParseExternalToIdentity() (identity.Identity, error
 }
 
 func (r *PrivateCACAPoolRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refs.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		resourceID, err := refs.GetResourceID(u)
+		if err != nil {
+			return ""
+		}
+		location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+		if location == "" {
+			return ""
+		}
+		projectID, err := refs.ResolveProjectID(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		return fmt.Sprintf("projects/%s/locations/%s/caPools/%s", projectID, location, resourceID)
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
 
 // StripCAPoolPrefix removes the "//privateca.googleapis.com/" prefix if present.
