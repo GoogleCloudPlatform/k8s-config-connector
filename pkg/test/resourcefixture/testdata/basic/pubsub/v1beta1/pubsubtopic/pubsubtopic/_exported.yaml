@@ -14,7 +14,6 @@ spec:
   messageStoragePolicy:
     allowedPersistenceRegions:
     - us-central1
-    enforceInTransit: false
   resourceID: pubsubtopic-sample-${uniqueId}
   schemaSettings:
     encoding: JSON
