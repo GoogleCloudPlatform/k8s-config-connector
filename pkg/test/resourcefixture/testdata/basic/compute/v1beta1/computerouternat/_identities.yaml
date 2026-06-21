@@ -10,7 +10,7 @@
   name: computesubnetwork-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/addresses/computeaddress-1-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: computeaddress-1-${uniqueId}
@@ -22,13 +22,13 @@
   name: computerouter-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/addresses/computeaddress-2-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: computeaddress-2-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/addresses/computeaddress-3-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: computeaddress-3-${uniqueId}

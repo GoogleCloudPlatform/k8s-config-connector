@@ -4,13 +4,13 @@
   name: default
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/addresses/computeaddress-${uniqueId}-1
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: computeaddress-${uniqueId}-1
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/addresses/computeaddress-${uniqueId}-2
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: computeaddress-${uniqueId}-2

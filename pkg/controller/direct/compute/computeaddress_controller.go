@@ -42,6 +42,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
@@ -105,6 +107,8 @@ func (m *computeAddressModel) AdapterForObject(ctx context.Context, op *directba
 		return nil, mapCtx.Err()
 	}
 
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
+
 	return &ComputeAddressAdapter{
 		gcpClient:       addressesClient,
 		gcpGlobalClient: globalAddressesClient,
@@ -115,7 +119,37 @@ func (m *computeAddressModel) AdapterForObject(ctx context.Context, op *directba
 }
 
 func (m *computeAddressModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krm.ComputeAddressIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
+	}
+
+	var addressesClient *compute.AddressesClient
+	var globalAddressesClient *compute.GlobalAddressesClient
+
+	if id.IsGlobal() {
+		globalAddressesClient, err = gcpClient.newGlobalAddressesClient(ctx)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		addressesClient, err = gcpClient.newAddressesClient(ctx)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &ComputeAddressAdapter{
+		id:              id,
+		gcpClient:       addressesClient,
+		gcpGlobalClient: globalAddressesClient,
+	}, nil
 }
 
 type ComputeAddressAdapter struct {
@@ -220,6 +254,63 @@ func (a *ComputeAddressAdapter) Update(ctx context.Context, updateOp *directbase
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	// Check if only labels changed by comparing actual vs desired without labels
+	actualNoLabels := proto.Clone(a.actual).(*pb.Address)
+	desiredNoLabels := proto.Clone(a.desired).(*pb.Address)
+	actualNoLabels.Labels = nil
+	desiredNoLabels.Labels = nil
+
+	specDiffs, _, err := compareAddress(ctx, actualNoLabels, desiredNoLabels)
+	if err != nil {
+		return err
+	}
+
+	if !specDiffs.HasDiff() {
+		// Only labels changed, so we can update labels!
+		log.V(2).Info("updating ComputeAddress labels", "name", a.id)
+		if a.id.IsGlobal() {
+			req := &pb.SetLabelsGlobalAddressRequest{
+				Project:  a.id.Project,
+				Resource: a.id.Address,
+				GlobalSetLabelsRequestResource: &pb.GlobalSetLabelsRequest{
+					Labels:           a.desired.Labels,
+					LabelFingerprint: a.actual.LabelFingerprint,
+				},
+			}
+			op, err := a.gcpGlobalClient.SetLabels(ctx, req)
+			if err != nil {
+				return fmt.Errorf("updating ComputeGlobalAddress labels %s: %w", a.id, err)
+			}
+			if err = op.Wait(ctx); err != nil {
+				return fmt.Errorf("waiting ComputeGlobalAddress %s labels update: %w", a.id, err)
+			}
+		} else {
+			req := &pb.SetLabelsAddressRequest{
+				Project:  a.id.Project,
+				Region:   a.id.Region,
+				Resource: a.id.Address,
+				RegionSetLabelsRequestResource: &pb.RegionSetLabelsRequest{
+					Labels:           a.desired.Labels,
+					LabelFingerprint: a.actual.LabelFingerprint,
+				},
+			}
+			op, err := a.gcpClient.SetLabels(ctx, req)
+			if err != nil {
+				return fmt.Errorf("updating ComputeRegionalAddress labels %s: %w", a.id, err)
+			}
+			if err = op.Wait(ctx); err != nil {
+				return fmt.Errorf("waiting ComputeRegionalAddress %s labels update: %w", a.id, err)
+			}
+		}
+
+		// Retrieve latest state after update
+		latest, err := a.get(ctx)
+		if err != nil {
+			return fmt.Errorf("getting ComputeAddress %s after labels update: %w", a.id, err)
+		}
+		return a.updateStatus(ctx, updateOp, latest)
+	}
+
 	// Surfacing exact diff back to the user
 	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
@@ -283,8 +374,9 @@ func (a *ComputeAddressAdapter) Export(ctx context.Context) (*unstructured.Unstr
 		return nil, mapCtx.Err()
 	}
 
-	// ComputeAddress requires location
+	// ComputeAddress requires location and resourceID
 	obj.Spec.Location = a.id.Region
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Address)
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -292,8 +384,12 @@ func (a *ComputeAddressAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.GetName())
+	u.SetName(a.id.Address)
 	u.SetGroupVersionKind(krm.ComputeAddressGVK)
+
+	export.SetProjectID(u, a.id.Project)
+	export.SetLabels(u, a.actual.Labels)
+
 	return u, nil
 }
 
@@ -334,6 +430,7 @@ func compareAddress(ctx context.Context, actual, desired *pb.Address) (*structur
 		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
+	maskedActual.Labels = actual.Labels
 
 	clonedDesired := proto.Clone(desired).(*pb.Address)
 

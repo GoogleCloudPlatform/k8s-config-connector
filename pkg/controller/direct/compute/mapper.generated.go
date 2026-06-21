@@ -204,6 +204,8 @@ func ComputeAddressObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Users
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeAddressSpec_v1beta1_FromProto", skipping
 func ComputeAddressSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressSpec {
 	if in == nil {
 		return nil
@@ -235,37 +237,43 @@ func ComputeAddressSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Addr
 	// MISSING: Users
 	return out
 }
-func ComputeAddressSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressSpec) *pb.Address {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ComputeAddressSpec_v1beta1_ToProto", skipping
+
+	func ComputeAddressSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressSpec) *pb.Address {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Address{}
+		out.Address = in.Address
+		out.AddressType = in.AddressType
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: ID
+		out.IpVersion = in.IPVersion
+		out.Ipv6EndpointType = in.IPV6EndpointType
+		// MISSING: Kind
+		// MISSING: LabelFingerprint
+		// MISSING: Labels
+		// MISSING: Name
+		if in.NetworkRef != nil {
+			out.Network = &in.NetworkRef.External
+		}
+		out.NetworkTier = in.NetworkTier
+		out.PrefixLength = in.PrefixLength
+		out.Purpose = in.Purpose
+		// MISSING: Region
+		// MISSING: SelfLink
+		// MISSING: Status
+		if in.SubnetworkRef != nil {
+			out.Subnetwork = &in.SubnetworkRef.External
+		}
+		// MISSING: Users
+		return out
 	}
-	out := &pb.Address{}
-	out.Address = in.Address
-	out.AddressType = in.AddressType
-	// MISSING: CreationTimestamp
-	out.Description = in.Description
-	// MISSING: ID
-	out.IpVersion = in.IPVersion
-	out.Ipv6EndpointType = in.IPV6EndpointType
-	// MISSING: Kind
-	// MISSING: LabelFingerprint
-	// MISSING: Labels
-	// MISSING: Name
-	if in.NetworkRef != nil {
-		out.Network = &in.NetworkRef.External
-	}
-	out.NetworkTier = in.NetworkTier
-	out.PrefixLength = in.PrefixLength
-	out.Purpose = in.Purpose
-	// MISSING: Region
-	// MISSING: SelfLink
-	// MISSING: Status
-	if in.SubnetworkRef != nil {
-		out.Subnetwork = &in.SubnetworkRef.External
-	}
-	// MISSING: Users
-	return out
-}
+*/
 func ComputeAddressStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressStatus {
 	if in == nil {
 		return nil

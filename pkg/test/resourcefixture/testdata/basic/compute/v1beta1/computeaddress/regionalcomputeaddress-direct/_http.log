@@ -93,6 +93,10 @@ Content-Type: application/json
 {
   "addressType": "INTERNAL",
   "description": "a test address",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "${addressID}",
   "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
@@ -178,6 +182,10 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
