@@ -33,21 +33,39 @@ func secureSourceManagerInstanceFuzzer() fuzztesting.KRMFuzzer {
 		SecureSourceManagerInstanceObservedState_FromProto, SecureSourceManagerInstanceObservedState_ToProto,
 	)
 
+	// Identity Field
 	f.IdentityField(".name")
 
-	f.UnimplementedFields.Insert(".create_time") // Output only
-	f.UnimplementedFields.Insert(".update_time") // Output only
-	f.UnimplementedFields.Insert(".labels")      // NOTYET
-	f.UnimplementedFields.Insert(".private_config.ssh_service_attachment")
-	f.UnimplementedFields.Insert(".private_config.http_service_attachment")
+	// Field Comparison Map (KRM Spec -> Proto Field):
+	// - kmsKeyRef                      -> .kms_key
+	// - labels                         -> .labels
+	// - location                       -> [KRM resource path / identifier]
+	// - projectRef                     -> [KRM resource path / identifier]
+	// - resourceID                     -> [KRM resource path / identifier]
+	// - privateConfig.caPoolRef        -> .private_config.ca_pool
+	// - privateConfig.isPrivate        -> .private_config.is_private
+	f.SpecField(".labels")
+	f.SpecField(".kms_key")
+	f.SpecField(".private_config.ca_pool")
+	f.SpecField(".private_config.is_private")
 
-	f.SpecFields.Insert(".private_config")
-	f.SpecFields.Insert(".kms_key")
+	// Field Comparison Map (KRM ObservedState -> Proto Field):
+	// - createTime                              -> .create_time
+	// - updateTime                              -> .update_time
+	// - state                                   -> .state
+	// - stateNote                               -> .state_note
+	// - hostConfig                              -> .host_config
+	// - privateConfig.httpServiceAttachment     -> .private_config.http_service_attachment
+	// - privateConfig.sshServiceAttachment      -> .private_config.ssh_service_attachment
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
+	f.StatusField(".state")
+	f.StatusField(".state_note")
+	f.StatusField(".host_config")
+	f.StatusField(".private_config.http_service_attachment")
+	f.StatusField(".private_config.ssh_service_attachment")
 
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".state_note")
-	f.StatusFields.Insert(".host_config")
-
+	// Unimplemented and Not Yet Triaged fields in GCP proto
 	f.Unimplemented_NotYetTriaged(".private_config.psc_allowed_projects")
 	f.Unimplemented_NotYetTriaged(".workforce_identity_federation_config")
 
