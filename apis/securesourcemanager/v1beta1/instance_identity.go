@@ -32,6 +32,7 @@ var (
 
 var SecureSourceManagerInstanceIdentityFormat = gcpurls.Template[SecureSourceManagerInstanceIdentity]("securesourcemanager.googleapis.com", "projects/{project}/locations/{location}/instances/{instance}")
 
+// SecureSourceManagerInstanceIdentity is the identity of a GCP SecureSourceManagerInstance resource.
 // +k8s:deepcopy-gen=false
 type SecureSourceManagerInstanceIdentity struct {
 	Project  string
@@ -60,7 +61,11 @@ func (i *SecureSourceManagerInstanceIdentity) Host() string {
 	return SecureSourceManagerInstanceIdentityFormat.Host()
 }
 
-func getIdentityFromSecureSourceManagerInstanceSpec(ctx context.Context, reader client.Reader, obj client.Object) (*SecureSourceManagerInstanceIdentity, error) {
+func (i *SecureSourceManagerInstanceIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
+func getIdentityFromSecureSourceManagerInstanceSpec(ctx context.Context, reader client.Reader, obj *SecureSourceManagerInstance) (*SecureSourceManagerInstanceIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")

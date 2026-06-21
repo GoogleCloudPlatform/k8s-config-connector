@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -86,7 +87,11 @@ func (r *SecureSourceManagerInstanceRef) ParseExternalToIdentity() (identity.Ide
 
 func (r *SecureSourceManagerInstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromSecureSourceManagerInstanceSpec(ctx, reader, u)
+		obj, err := common.ToStructuredType[*SecureSourceManagerInstance](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromSecureSourceManagerInstanceSpec(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}
