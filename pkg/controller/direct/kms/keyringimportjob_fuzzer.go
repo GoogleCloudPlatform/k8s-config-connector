@@ -33,16 +33,33 @@ func KMSKeyRingImportJobFuzzer() fuzztesting.KRMFuzzer {
 		KMSKeyRingImportJobStatus_FromProto, KMSKeyRingImportJobStatus_ToProto,
 	)
 
+	// Spec fields mapping:
+	// - importJobId                       -> (part of identity / .name resource ID)
+	// - keyRing                           -> (part of parent path of .name GCP resource identity)
+	// - resourceID                        -> (part of identity / .name resource ID)
+	// - importMethod                      -> .import_method
+	// - protectionLevel                   -> .protection_level
 	f.SpecField(".import_method")
 	f.SpecField(".protection_level")
 
+	// Status fields mapping:
+	// - attestation                       -> .attestation
+	//   - content                         -> .attestation.content (custom Base64-encoded in KRM)
+	//   - format                          -> .attestation.format
+	// - expireTime                        -> .expire_time
+	// - name                              -> .name (Identity)
+	// - publicKey                         -> .public_key
+	//   - pem                             -> .public_key.pem
+	// - state                             -> .state
 	f.StatusField(".expire_time")
 	f.StatusField(".state")
 	f.StatusField(".public_key")
 	f.StatusField(".attestation")
 
+	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
 
+	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_Internal(".create_time")
 	f.Unimplemented_Internal(".generate_time")
 	f.Unimplemented_Internal(".expire_event_time")
