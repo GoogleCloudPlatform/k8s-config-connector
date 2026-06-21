@@ -44,7 +44,7 @@ func Money_ToProto(mapCtx *direct.MapContext, in *krm.Money) *money.Money {
 	return out
 }
 
-func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.Status {
+func SpecialistPool_Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.Status {
 	if in == nil {
 		return nil
 	}
@@ -54,7 +54,7 @@ func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.Status 
 	return out
 }
 
-func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *status.Status {
+func SpecialistPool_Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *status.Status {
 	if in == nil {
 		return nil
 	}

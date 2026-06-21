@@ -64,6 +64,7 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".container_spec.startup_probe.initial_delay_seconds")
 	f.Unimplemented_NotYetTriaged(".explanation_spec.parameters.examples.example_gcs_source.gcs_source")
 	f.Unimplemented_NotYetTriaged(".explanation_spec.parameters.examples.presets.query")
+	f.Unimplemented_NotYetTriaged(".encryption_spec.kms_key_name")
 
 	f.FilterSpec = func(in *pb.Model) {
 		if in.Metadata != nil {

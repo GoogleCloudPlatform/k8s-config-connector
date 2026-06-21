@@ -15,12 +15,15 @@
 package aiplatform
 
 import (
-	"strconv"
+	"encoding/json"
 
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	rpc "google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/protobuf/types/known/structpb"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 func AIPlatformModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AIPlatformModelObservedState {
@@ -126,19 +129,8 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 		}
 	}
 	if in.NullValue != nil {
-		strVal := direct.ValueOf(in.NullValue)
-		var value int
-		if val, ok := structpb.NullValue_value[strVal]; ok {
-			value = int(val)
-		} else {
-			var err error
-			value, err = strconv.Atoi(strVal)
-			if err != nil {
-				mapCtx.Errorf("error converting value %s from string to int", strVal)
-			}
-		}
 		out.Kind = &structpb.Value_NullValue{
-			NullValue: structpb.NullValue(value),
+			NullValue: structpb.NullValue_NULL_VALUE,
 		}
 	}
 	if in.NumberValue != nil {
@@ -151,9 +143,19 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 			StringValue: direct.ValueOf(in.StringValue),
 		}
 	}
-	if in.StructValue != nil {
-		out.Kind = &structpb.Value_StructValue{
-			StructValue: StructValue_ToProto(mapCtx, in.StructValue),
+	if in.StructValue.Raw != nil {
+		var m map[string]interface{}
+		if err := json.Unmarshal(in.StructValue.Raw, &m); err != nil {
+			mapCtx.Errorf("error unmarshalling StructValue: %v", err)
+		} else {
+			st, err := structpb.NewStruct(m)
+			if err != nil {
+				mapCtx.Errorf("error converting StructValue map: %v", err)
+			} else {
+				out.Kind = &structpb.Value_StructValue{
+					StructValue: st,
+				}
+			}
 		}
 	}
 	return out
@@ -178,7 +180,18 @@ func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
 		value := in.GetBoolValue()
 		out.BoolValue = &value
 	case *structpb.Value_StructValue:
-		out.StructValue = StructValue_FromProto(mapCtx, in.GetStructValue())
+		m := in.GetStructValue().AsMap()
+		bytes, err := json.Marshal(m)
+		if err != nil {
+			mapCtx.Errorf("error marshalling StructValue map: %v", err)
+		} else {
+			var j apiextensionsv1.JSON
+			if err := json.Unmarshal(bytes, &j); err != nil {
+				mapCtx.Errorf("error unmarshalling StructValue JSON: %v", err)
+			} else {
+				out.StructValue = j
+			}
+		}
 	}
 	return out
 }
@@ -413,5 +426,144 @@ func SmoothGradConfig_NoiseSigma_ToProto(mapCtx *direct.MapContext, in *float32)
 	}
 	out := &pb.SmoothGradConfig_NoiseSigma{}
 	out.NoiseSigma = direct.ValueOf(in)
+	return out
+}
+
+func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ListValue{}
+	for _, v := range in.GetValues() {
+		if v == nil {
+			continue
+		}
+		bytes, err := json.Marshal(v.AsInterface())
+		if err != nil {
+			mapCtx.Errorf("error marshalling ListValue item: %v", err)
+			continue
+		}
+		var j apiextensionsv1.JSON
+		if err := json.Unmarshal(bytes, &j); err != nil {
+			mapCtx.Errorf("error unmarshalling ListValue item to JSON: %v", err)
+			continue
+		}
+		out.Values = append(out.Values, j)
+	}
+	return out
+}
+
+func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.ListValue{}
+	for _, v := range in.Values {
+		bytes, err := json.Marshal(v)
+		if err != nil {
+			mapCtx.Errorf("error marshalling JSON item to bytes: %v", err)
+			continue
+		}
+		var x interface{}
+		if err := json.Unmarshal(bytes, &x); err != nil {
+			mapCtx.Errorf("error unmarshalling JSON item: %v", err)
+			continue
+		}
+		val, err := structpb.NewValue(x)
+		if err != nil {
+			mapCtx.Errorf("error converting interface to structpb.Value: %v", err)
+			continue
+		}
+		out.Values = append(out.Values, val)
+	}
+	return out
+}
+
+func DriftThresholds_FromProto(mapCtx *direct.MapContext, in map[string]*pb.ThresholdConfig) map[string]krm.ThresholdConfig {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]krm.ThresholdConfig)
+	for k, v := range in {
+		val := ThresholdConfig_FromProto(mapCtx, v)
+		if val != nil {
+			out[k] = *val
+		}
+	}
+	return out
+}
+
+func DriftThresholds_ToProto(mapCtx *direct.MapContext, in map[string]krm.ThresholdConfig) map[string]*pb.ThresholdConfig {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]*pb.ThresholdConfig)
+	for k, v := range in {
+		out[k] = ThresholdConfig_ToProto(mapCtx, &v)
+	}
+	return out
+}
+
+func AttributionScoreDriftThresholds_FromProto(mapCtx *direct.MapContext, in map[string]*pb.ThresholdConfig) map[string]krm.ThresholdConfig {
+	return DriftThresholds_FromProto(mapCtx, in)
+}
+
+func AttributionScoreDriftThresholds_ToProto(mapCtx *direct.MapContext, in map[string]krm.ThresholdConfig) map[string]*pb.ThresholdConfig {
+	return DriftThresholds_ToProto(mapCtx, in)
+}
+
+func SkewThresholds_FromProto(mapCtx *direct.MapContext, in map[string]*pb.ThresholdConfig) map[string]krm.ThresholdConfig {
+	return DriftThresholds_FromProto(mapCtx, in)
+}
+
+func SkewThresholds_ToProto(mapCtx *direct.MapContext, in map[string]krm.ThresholdConfig) map[string]*pb.ThresholdConfig {
+	return DriftThresholds_ToProto(mapCtx, in)
+}
+
+func AttributionScoreSkewThresholds_FromProto(mapCtx *direct.MapContext, in map[string]*pb.ThresholdConfig) map[string]krm.ThresholdConfig {
+	return DriftThresholds_FromProto(mapCtx, in)
+}
+
+func AttributionScoreSkewThresholds_ToProto(mapCtx *direct.MapContext, in map[string]krm.ThresholdConfig) map[string]*pb.ThresholdConfig {
+	return DriftThresholds_ToProto(mapCtx, in)
+}
+
+func Status_FromProto(mapCtx *direct.MapContext, in *rpc.Status) *common.Status {
+	if in == nil {
+		return nil
+	}
+	return &common.Status{
+		Code:    direct.LazyPtr(in.GetCode()),
+		Message: direct.LazyPtr(in.GetMessage()),
+	}
+}
+
+func Status_ToProto(mapCtx *direct.MapContext, in *common.Status) *rpc.Status {
+	if in == nil {
+		return nil
+	}
+	return &rpc.Status{
+		Code:    direct.ValueOf(in.Code),
+		Message: direct.ValueOf(in.Message),
+	}
+}
+
+func ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata) *krm.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata{}
+	out.RunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRunTime())
+	out.Status = Status_FromProto(mapCtx, in.GetStatus())
+	return out
+}
+
+func ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata_ToProto(mapCtx *direct.MapContext, in *krm.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata) *pb.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata{}
+	out.RunTime = direct.StringTimestamp_ToProto(mapCtx, in.RunTime)
+	out.Status = Status_ToProto(mapCtx, in.Status)
 	return out
 }
