@@ -20,6 +20,7 @@ import (
 
 	gcp "cloud.google.com/go/servicedirectory/apiv1beta1"
 	pb "cloud.google.com/go/servicedirectory/apiv1beta1/servicedirectorypb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -27,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -111,8 +113,21 @@ func (m *namespaceModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 }
 
 func (m *namespaceModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.ServiceDirectoryNamespaceIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ServiceDirectoryNamespaceAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type ServiceDirectoryNamespaceAdapter struct {
@@ -219,14 +234,23 @@ func (a *ServiceDirectoryNamespaceAdapter) Export(ctx context.Context) (*unstruc
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.Location = a.id.Location
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Namespace)
+	obj.Spec.ProjectRef = &refs.ProjectRef{
+		External: a.id.Project,
+	}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.Namespace)
 	u.SetGroupVersionKind(krm.ServiceDirectoryNamespaceGVK)
+
+	export.SetLabels(u, a.actual.Labels)
+
 	return u, nil
 }
 
