@@ -14,7 +14,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "A basic organization firewall policy",
   "displayName": "test-acquire-policy",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
@@ -25,7 +24,6 @@ X-Xss-Protection: 0
   "rules": [
     {
       "action": "goto_next",
-      "description": "default egress rule ipv6",
       "direction": "EGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -44,7 +42,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "goto_next",
-      "description": "default ingress rule ipv6",
       "direction": "INGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -63,7 +60,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "goto_next",
-      "description": "default egress rule",
       "direction": "EGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -82,7 +78,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "goto_next",
-      "description": "default ingress rule",
       "direction": "INGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",

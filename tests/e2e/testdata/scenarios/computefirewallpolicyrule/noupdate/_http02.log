@@ -15,7 +15,6 @@ X-Xss-Protection: 0
 
 {
   "action": "deny",
-  "description": "",
   "direction": "INGRESS",
   "kind": "compute#firewallPolicyRule",
   "match": {

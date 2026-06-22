@@ -312,11 +312,14 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		return
 	}
 
-	event.VisitResponseStringValues(func(path string, value string) {
-		if strings.Contains(value, "www.googleapis.com/compute/") {
-			replacements.ReplaceStringValue(value, strings.ReplaceAll(value, "www.googleapis.com/compute/", "compute.googleapis.com/compute/"))
-		}
-	})
+	isInstanceGroupOrTemplate := strings.Contains(event.URL(), "/instanceGroups/") || strings.Contains(event.URL(), "/instanceTemplates/")
+	if isInstanceGroupOrTemplate {
+		event.VisitResponseStringValues(func(path string, value string) {
+			if strings.Contains(value, "www.googleapis.com/compute/") {
+				replacements.ReplaceStringValue(value, strings.ReplaceAll(value, "www.googleapis.com/compute/", "compute.googleapis.com/compute/"))
+			}
+		})
+	}
 
 	kind := ""
 	event.VisitResponseStringValues(func(path string, value string) {

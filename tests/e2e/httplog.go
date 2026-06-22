@@ -138,13 +138,22 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 		return true
 	})
 
-	// Remove GET requests to GCE operations to prevent timing/LRO polling differences
-	events = events.KeepIf(func(e *test.LogEntry) bool {
-		if e.Request.Method == "GET" && strings.Contains(e.Request.URL, "/operations/") && (strings.Contains(e.Request.URL, "/compute/") || strings.Contains(e.Request.URL, "compute.googleapis.com")) {
-			return false
+	// Remove GET requests to GCE operations to prevent timing/LRO polling differences only for ComputeInstanceGroup/Template
+	isComputeInstanceGroupOrTemplate := false
+	for _, e := range events {
+		if strings.Contains(e.Request.URL, "/instanceGroups/") || strings.Contains(e.Request.URL, "/instanceTemplates/") {
+			isComputeInstanceGroupOrTemplate = true
+			break
 		}
-		return true
-	})
+	}
+	if isComputeInstanceGroupOrTemplate {
+		events = events.KeepIf(func(e *test.LogEntry) bool {
+			if e.Request.Method == "GET" && strings.Contains(e.Request.URL, "/operations/") && (strings.Contains(e.Request.URL, "/compute/") || strings.Contains(e.Request.URL, "compute.googleapis.com")) {
+				return false
+			}
+			return true
+		})
+	}
 
 	return events
 }
