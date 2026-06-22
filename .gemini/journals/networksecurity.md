@@ -24,3 +24,9 @@
 - **Problem**: `NetworkSecuritySecurityProfile` contains two references to endpoint groups (`mirroringEndpointGroup` and `interceptEndpointGroup`), which did not have pre-existing reference structs in `apis/refs/v1beta1/networksecurityrefs.go`.
 - **Solution**: Defined `NetworkSecurityMirroringEndpointGroupRef` and `NetworkSecurityInterceptEndpointGroupRef` in `apis/refs/v1beta1/networksecurityrefs.go` to provide structured validation for endpoint group references, and used them in `CustomMirroringProfile` and `CustomInterceptProfile` respectively.
 - **Impact**: Enables strict validation and clean reference resolution for endpoint group fields within a SecurityProfile definition.
+
+### [2026-05-27] Implement NetworkSecurityDnsThreatDetector Types
+- **Context**: Implementing KRM types and Identity for NetworkSecurityDnsThreatDetector (Issue #8723).
+- **Problem**: The proto for `DnsThreatDetector` was not available in KCC's pinned googleapis checkout (731d7f2ab6). It was added in a later googleapis commit (7496288011) and was missing from the KCC source.
+- **Solution**: Fetched the `dns_threat_detector.proto` from the `master` branch of `googleapis` and copied it into `mockgcp/apis/google/cloud/networksecurity/v1beta1/` and `v1/` to allow the generation to succeed. The generator config used `google.cloud.networksecurity.v1` as requested. Also used `IdentityV2` interface and URL template pattern instead of `identity.Identity` for references.
+- **Impact**: When adding new resources, the proto might be missing from KCC's pinned API checkout if it's very recent. Manually pulling it into `mockgcp/apis/` allows KCC generator tooling to process it. Also, primitive types must be pointers in generated types as per invariants.

@@ -2792,6 +2792,8 @@
 [missing_field] crd=networksecuritybackendauthenticationconfigs.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networksecuritybackendauthenticationconfigs.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.trustConfigRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networksecuritybackendauthenticationconfigs.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.wellKnownRoots" is not set in unstructured objects
+[missing_field] crd=networksecuritydnsthreatdetectors.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.excludedNetworks[].external" is not set in unstructured objects
+[missing_field] crd=networksecuritydnsthreatdetectors.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.excludedNetworks[].namespace" is not set in unstructured objects
 [missing_field] crd=networksecurityinterceptdeployments.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=networksecurityinterceptdeployments.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.forwardingRuleRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networksecurityinterceptdeployments.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.interceptDeploymentGroupRef" is not set; neither 'external' nor 'name' are set
