@@ -1083,9 +1083,6 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
-	visitor.removePaths.Insert(".routingConfig")
-	visitor.removePaths.Insert(".enableCDN")
-	visitor.removePaths.Insert(".subnetworks")
 
 	// Common variables
 	visitor.replacePaths[".uid"] = "111111111111111111111"
@@ -1314,6 +1311,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+		if strings.Contains(requestURL, "/backendServices") {
+			removeKeysFromMap(obj, []string{"routingConfig", "enableCDN", "subnetworks"})
+		}
 		// Deprecated: try to move these into mockgcp normalizers
 		if err := visitor.visitMap(obj, ""); err != nil {
 			t.Fatalf("error normalizing response: %v", err)
@@ -1383,4 +1383,19 @@ func isGetOperation(e *test.LogEntry) bool {
 		return true
 	}
 	return false
+}
+
+func removeKeysFromMap(obj any, keys []string) {
+	if m, ok := obj.(map[string]any); ok {
+		for _, key := range keys {
+			delete(m, key)
+		}
+		for _, val := range m {
+			removeKeysFromMap(val, keys)
+		}
+	} else if arr, ok := obj.([]any); ok {
+		for _, val := range arr {
+			removeKeysFromMap(val, keys)
+		}
+	}
 }
