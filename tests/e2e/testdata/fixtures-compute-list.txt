@@ -1,3 +1,4 @@
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computebackendservicesignedurlkey/computebackendservicesignedurlkeybasic
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computediskresourcepolicyattachment/diskresourcepolicyattachmentautogen
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computefuturereservation/basicreservation-duration
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computefuturereservation/basicreservation-duration2
