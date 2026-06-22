@@ -17,14 +17,14 @@ kind: ComputeResourcePolicy
 metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-  name: computeresourcepolicy-${uniqueId}
+  name: computeregiondiskresourcepolicyattachment-${uniqueId}
 spec:
   region: us-central1
-  resourceID: computeresourcepolicy${uniqueId}
+  resourceID: computeregiondiskresourcepolicyattachment${uniqueId}
   snapshotSchedulePolicy:
-  - schedule:
-    - dailySchedule:
-      - daysInCycle: 1
+    schedule:
+      dailySchedule:
+        daysInCycle: 1
         startTime: "04:00"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -32,12 +32,12 @@ kind: ComputeDisk
 metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-  name: computedisk-${uniqueId}
+  name: computedisk-zonal-${uniqueId}
 spec:
   image: debian-cloud/debian-11
   projectRef:
     external: ${projectId}
-  resourceID: computedisk${uniqueId}
+  resourceID: computedisk-zonal-${uniqueId}
   size: 50
   type: pd-ssd
   location: us-central1-a
@@ -51,7 +51,7 @@ metadata:
 spec:
   resourceID: computesnapshot${uniqueId}
   sourceDiskRef:
-    name: computedisk-${uniqueId}
+    name: computedisk-zonal-${uniqueId}
   zone: us-central1-a
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1

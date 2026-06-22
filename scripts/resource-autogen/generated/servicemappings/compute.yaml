@@ -280,7 +280,6 @@ spec:
             kind: ComputeDisk
             version: v1beta1
             group: compute.cnrm.cloud.google.com
-          targetField: name
           parent: true
     - name: google_compute_external_vpn_gateway
       kind: ComputeExternalVpnGateway
@@ -1113,7 +1112,6 @@ spec:
             kind: ComputeDisk
             version: v1beta1
             group: compute.cnrm.cloud.google.com
-          targetField: name
           parent: true
     - name: google_compute_region_health_check
       kind: ComputeRegionHealthCheck

@@ -97,6 +97,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDisksServer(grpcServer, &DisksV1{MockService: s})
 	pb.RegisterRegionDisksServer(grpcServer, &RegionalDisksV1{MockService: s})
 
+	pb.RegisterResourcePoliciesServer(grpcServer, &ResourcePoliciesV1{MockService: s})
+
 	pb.RegisterRegionOperationsServer(grpcServer, &RegionalOperationsV1{MockService: s})
 	pb.RegisterZoneOperationsServer(grpcServer, &ZonalOperationsV1{MockService: s})
 	pb.RegisterGlobalOperationsServer(grpcServer, &GlobalOperationsV1{MockService: s})
@@ -252,6 +254,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterRegionDisksHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterResourcePoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 

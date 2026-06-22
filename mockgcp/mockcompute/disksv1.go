@@ -70,6 +70,7 @@ func (s *DisksV1) Insert(ctx context.Context, req *pb.InsertDiskRequest) (*pb.Op
 	obj.Kind = PtrTo("compute#disk")
 	obj.Zone = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", name.Project.ID, name.Zone)))
 	obj.Status = PtrTo("READY")
+	obj.LabelFingerprint = PtrTo(labelsFingerprint(obj.Labels))
 	if obj.Type != nil {
 		if t := *obj.Type; t != "" && !strings.HasPrefix(t, "http") {
 			obj.Type = PtrTo(BuildComputeSelfLink(ctx, strings.TrimPrefix(t, "/")))
@@ -227,18 +228,39 @@ func (s *DisksV1) AddResourcePolicies(ctx context.Context, req *pb.AddResourcePo
 	fqn := name.String()
 	obj := &pb.Disk{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
-	for _, p := range req.GetDisksAddResourcePoliciesRequestResource().GetResourcePolicies() {
-		obj.ResourcePolicies = append(obj.ResourcePolicies, p)
+	policiesToAdd := req.GetDisksAddResourcePoliciesRequestResource().GetResourcePolicies()
+	for _, policy := range policiesToAdd {
+		found := false
+		for _, existing := range obj.ResourcePolicies {
+			if existing == policy {
+				found = true
+				break
+			}
+		}
+		if !found {
+			obj.ResourcePolicies = append(obj.ResourcePolicies, policy)
+		}
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("addResourcePolicies"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *DisksV1) RemoveResourcePolicies(ctx context.Context, req *pb.RemoveResourcePoliciesDiskRequest) (*pb.Operation, error) {
@@ -251,28 +273,41 @@ func (s *DisksV1) RemoveResourcePolicies(ctx context.Context, req *pb.RemoveReso
 	fqn := name.String()
 	obj := &pb.Disk{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
 	policiesToRemove := req.GetDisksRemoveResourcePoliciesRequestResource().GetResourcePolicies()
-	removeMap := make(map[string]bool)
-	for _, p := range policiesToRemove {
-		removeMap[p] = true
-	}
-
-	var kept []string
-	for _, p := range obj.ResourcePolicies {
-		if !removeMap[p] {
-			kept = append(kept, p)
+	var newPolicies []string
+	for _, existing := range obj.ResourcePolicies {
+		toRemove := false
+		for _, policy := range policiesToRemove {
+			if existing == policy {
+				toRemove = true
+				break
+			}
+		}
+		if !toRemove {
+			newPolicies = append(newPolicies, existing)
 		}
 	}
-	obj.ResourcePolicies = kept
+	obj.ResourcePolicies = newPolicies
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("removeResourcePolicies"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 type zonalDiskName struct {
