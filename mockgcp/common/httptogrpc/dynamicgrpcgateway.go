@@ -26,6 +26,7 @@ import (
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
@@ -160,6 +161,11 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // serveHTTPMethod serves a single HTTP method mapped to a gRPC method.
 func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method *grpcMethod, pathValues map[string]string) {
 	ctx := r.Context()
+	md := metadata.MD{
+		"path": []string{r.URL.Path},
+	}
+	ctx = metadata.NewIncomingContext(ctx, md)
+	ctx = metadata.NewOutgoingContext(ctx, md)
 	log := klog.FromContext(ctx)
 
 	call := &httpMethodCall{
