@@ -79,8 +79,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}":             true,
 		"//storage.googleapis.com/projects/{}/buckets/{}":                                           true,
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                         true,
-		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}":                    true,
-		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/clusters/{}/backups/{}":            true,
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}":   true,
 		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":                       true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/dataTaxonomies/{}":                      true,
@@ -134,8 +132,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//compute.googleapis.com/global/publicDelegatedPrefixes/{}":                                true,
 		"//compute.googleapis.com/regions/{}/publicDelegatedPrefixes/{}":                            true,
 		"//compute.googleapis.com/projects/{}/zones/{}/disks/{}/{}":                                 true,
-		"//securitycenter.googleapis.com/organizations/{}/locations/{}/bigQueryExports/{}":          true,
-		"//securitycenter.googleapis.com/organizations/{}/muteConfigs/{}":                           true,
 		"//dataproc.googleapis.com/v1/projects/{}/regions/{}/clusters/{}":                           true,
 	}
 	for _, tmpl := range templates {
