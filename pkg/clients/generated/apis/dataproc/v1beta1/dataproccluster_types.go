@@ -89,9 +89,9 @@ type ClusterConfig struct {
 	// +optional
 	Accelerators []ClusterAccelerators `json:"accelerators,omitempty"`
 
-	/* Immutable. Optional. The [Customer Managed Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek) used to encrypt the boot disk attached to each node in the node pool. Specify the key using the following format: `projects/KEY_PROJECT_ID/locations/LOCATION/keyRings/RING_NAME/cryptoKeys/KEY_NAME`. */
+	/* Immutable. Optional. The [Customer Managed Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek) used to encrypt the boot disk attached to each node in the node pool. */
 	// +optional
-	BootDiskKmsKey *string `json:"bootDiskKmsKey,omitempty"`
+	BootDiskKMSKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSKeyRef,omitempty"`
 
 	/* Immutable. Optional. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk. */
 	// +optional

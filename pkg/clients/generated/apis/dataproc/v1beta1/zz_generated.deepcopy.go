@@ -269,9 +269,9 @@ func (in *ClusterConfig) DeepCopyInto(out *ClusterConfig) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.BootDiskKmsKey != nil {
-		in, out := &in.BootDiskKmsKey, &out.BootDiskKmsKey
-		*out = new(string)
+	if in.BootDiskKMSKeyRef != nil {
+		in, out := &in.BootDiskKMSKeyRef, &out.BootDiskKMSKeyRef
+		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.EphemeralStorageConfig != nil {
