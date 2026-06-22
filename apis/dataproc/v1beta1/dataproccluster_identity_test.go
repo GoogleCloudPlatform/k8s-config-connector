@@ -81,3 +81,15 @@ func TestDataprocClusterIdentity_FromExternal(t *testing.T) {
 		})
 	}
 }
+
+func TestDataprocClusterIdentity_String(t *testing.T) {
+	identity := &DataprocClusterIdentity{
+		Project: "my-project",
+		Region:  "us-central1",
+		Cluster: "my-cluster",
+	}
+	want := "v1/projects/my-project/regions/us-central1/clusters/my-cluster"
+	if got := identity.String(); got != want {
+		t.Errorf("String() = %v, want %v", got, want)
+	}
+}

@@ -14,3 +14,10 @@
 - Even if a resource is not yet "direct", it may have identity/reference logic in `apis/` if it's referenced by other direct resources.
 - When renaming methods like `NormalizedExternal` to `Normalize`, check for usages in direct controllers of other resources.
 - Always verify the KRM field name for location/region against the CRD, as DCL resources can be inconsistent.
+
+## Update: Addressing Review Feedback (June 2026)
+
+- Updated the primary canonical GCP URL format to include the `/v1/` path segment: `v1/projects/{project}/regions/{region}/clusters/{cluster}` as per the reviewer's feedback and Dataproc's official REST API design.
+- Maintained backwards compatibility with the unversioned format using a fallback template: `projects/{project}/regions/{region}/clusters/{cluster}`.
+- Added a unit test `TestDataprocClusterIdentity_String` to verify that `.String()` generates the versioned URL format.
+- Regenerated the CRD files to propagate the updated documentation for `DataprocClusterRef` comments.

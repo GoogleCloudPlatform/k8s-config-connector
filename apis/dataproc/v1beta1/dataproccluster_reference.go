@@ -32,7 +32,7 @@ var DataprocClusterGVK = GroupVersion.WithKind("DataprocCluster")
 // holds the GCP identifier for the KRM object.
 type DataprocClusterRef struct {
 	// A reference to an externally managed DataprocCluster resource.
-	// Should be in the format "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".
+	// Should be in the format "v1/projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}" or "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DataprocCluster resource.
