@@ -258,7 +258,7 @@
 | dataplex.cnrm.cloud.google.com                | DataplexZone                                    | True         | False       | False  | Direct     | True        |
 | dataproc.cnrm.cloud.google.com                | DataprocAutoscalingPolicy                       | False        | True        | False  | DCL        | True        |
 | dataproc.cnrm.cloud.google.com                | DataprocBatch                                   | True         | False       | False  | Direct     | True        |
-| dataproc.cnrm.cloud.google.com                | DataprocCluster                                 | False        | True        | False  | DCL        | False       |
+| dataproc.cnrm.cloud.google.com                | DataprocCluster                                 | False        | True        | False  | DCL        | True        |
 | dataproc.cnrm.cloud.google.com                | DataprocJob                                     | True         | False       | False  | Direct     | True        |
 | dataproc.cnrm.cloud.google.com                | DataprocNodeGroup                               | True         | False       | False  | Direct     | True        |
 | dataproc.cnrm.cloud.google.com                | DataprocSession                                 | True         | False       | False  | Direct     | True        |
