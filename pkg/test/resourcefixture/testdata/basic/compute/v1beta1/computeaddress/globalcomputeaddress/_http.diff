@@ -1,12 +1,12 @@
-28c28
+27c27
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}
-57c57
+56c56
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses
-63,66c63
+62,65c62
 <   "labels": {
 <     "cnrm-test": "true",
 <     "managed-by-cnrm": "true"
@@ -18,7 +18,7 @@
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-130,198c128
+130,197c128
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 < Content-Type: application/json
 < 
@@ -36,7 +36,6 @@
 <   "address": "8.8.8.8",
 <   "addressType": "INTERNAL",
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "description": "a test global address",
 <   "id": "000000000000000000000",
 <   "kind": "compute#address",
 <   "labelFingerprint": "abcdef0123A=",
@@ -90,14 +89,14 @@
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}
-216a147
+214a146
 >   "ipVersion": "IPV4",
-219,222d149
+217,220d148
 <   "labels": {
 <     "cnrm-test": "true",
 <     "managed-by-cnrm": "true"
 <   },
-232,302c159
+230,299c158
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}/setLabels?alt=json
 < Content-Type: application/json
 < 
@@ -150,7 +149,6 @@
 <   "address": "8.8.8.8",
 <   "addressType": "INTERNAL",
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "description": "a test global address",
 <   "id": "000000000000000000000",
 <   "kind": "compute#address",
 <   "labelFingerprint": "abcdef0123A=",
@@ -171,7 +169,7 @@
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}
-332c189,190
+330c189,190
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}

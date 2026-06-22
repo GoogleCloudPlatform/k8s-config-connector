@@ -118,7 +118,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Initial description",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#networkEdgeSecurityService",
@@ -221,7 +220,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#networkEdgeSecurityService",

@@ -68,12 +68,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "Debian, Debian GNU/Linux, 11 (bullseye), amd64 built on 20231010",
   "family": "debian-11",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-  "status": "UP"
+  "name": "debian-11-bullseye",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye"
 }
 
 ---
@@ -106,15 +104,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${diskID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
   "user": "user@example.com",
@@ -181,8 +180,6 @@ X-Xss-Protection: 0
   "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
-  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-  "sourceImageId": "2443108620951880213",
   "status": "READY",
   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
@@ -206,56 +203,12 @@ X-Xss-Protection: 0
 {
   "autoCreateSubnetworks": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Default network for the project",
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}"
-  ]
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
@@ -293,7 +246,6 @@ POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-we
 Content-Type: application/json
 
 {
-  "description": "an basic instance example",
   "disks": [
     {
       "autoDelete": false,
@@ -327,15 +279,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${instanceID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "user": "user@example.com",
@@ -391,28 +344,19 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "an basic instance example",
   "disks": [
     {
       "autoDelete": false,
-      "boot": true,
-      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+      "boot": true
     }
   ],
   "id": "000000000000000000000",
   "kind": "compute#instance",
   "labelFingerprint": "abcdef0123A=",
-  "machineType": "n1-standard-1",
   "name": "${instanceID}",
-  "networkInterfaces": [
-    {
-      "network": "projects/${projectId}/global/networks/${networkID}"
-    }
-  ],
   "scheduling": {
     "automaticRestart": false,
-    "onHostMaintenance": "TERMINATE",
-    "preemptible": true
+    "onHostMaintenance": "TERMINATE"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "status": "RUNNING",
@@ -499,28 +443,19 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "an basic instance example",
   "disks": [
     {
       "autoDelete": false,
-      "boot": true,
-      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+      "boot": true
     }
   ],
   "id": "000000000000000000000",
   "kind": "compute#instance",
   "labelFingerprint": "abcdef0123A=",
-  "machineType": "n1-standard-1",
   "name": "${instanceID}",
-  "networkInterfaces": [
-    {
-      "network": "projects/${projectId}/global/networks/${networkID}"
-    }
-  ],
   "scheduling": {
     "automaticRestart": false,
-    "onHostMaintenance": "TERMINATE",
-    "preemptible": true
+    "onHostMaintenance": "TERMINATE"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "status": "TERMINATED",
@@ -814,12 +749,10 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "an basic instance example",
   "disks": [
     {
       "autoDelete": false,
-      "boot": true,
-      "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+      "boot": true
     }
   ],
   "id": "000000000000000000000",
@@ -829,17 +762,10 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "env": "prod"
   },
-  "machineType": "zones/us-west1-a/machineTypes/n1-standard-2",
   "name": "${instanceID}",
-  "networkInterfaces": [
-    {
-      "network": "projects/${projectId}/global/networks/${networkID}"
-    }
-  ],
   "scheduling": {
     "automaticRestart": false,
-    "onHostMaintenance": "TERMINATE",
-    "preemptible": true
+    "onHostMaintenance": "TERMINATE"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "status": "RUNNING",
@@ -862,15 +788,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${instanceID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
   "user": "user@example.com",
@@ -938,8 +865,6 @@ X-Xss-Protection: 0
   "name": "${diskID}",
   "physicalBlockSizeBytes": "4096",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
-  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-  "sourceImageId": "2443108620951880213",
   "status": "READY",
   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
@@ -961,15 +886,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${diskID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
   "user": "user@example.com",

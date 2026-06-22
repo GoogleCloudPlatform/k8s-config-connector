@@ -34,7 +34,6 @@ Content-Type: application/json
   "connectionDraining": {
     "drainingTimeoutSec": 300
   },
-  "description": "Default Backend Service for computeurlmap-kompanion",
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
@@ -58,15 +57,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${backendServiceID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"
@@ -123,7 +123,6 @@ X-Xss-Protection: 0
     "drainingTimeoutSec": 300
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Default Backend Service for computeurlmap-kompanion",
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -178,7 +177,6 @@ Content-Type: application/json
   "connectionDraining": {
     "drainingTimeoutSec": 300
   },
-  "description": "Chaosmonkey Backend Service for computeurlmap-kompanion",
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
@@ -202,15 +200,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${backendServiceID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"
@@ -267,7 +266,6 @@ X-Xss-Protection: 0
     "drainingTimeoutSec": 300
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Chaosmonkey Backend Service for computeurlmap-kompanion",
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -322,7 +320,6 @@ Content-Type: application/json
   "connectionDraining": {
     "drainingTimeoutSec": 300
   },
-  "description": "Chaosmonkeymulti Backend Service for computeurlmap-kompanion",
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
@@ -346,15 +343,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${backendServiceID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"
@@ -411,7 +409,6 @@ X-Xss-Protection: 0
     "drainingTimeoutSec": 300
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Chaosmonkeymulti Backend Service for computeurlmap-kompanion",
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -575,7 +572,6 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "hostRules": [
     {
-      "description": "Host rule for chaosmonkey.cloudnetworks.x.gcpnp.anz",
       "hosts": [
         "chaosmonkey.cloudnetworks.x.gcpnp.anz",
         "chaosmonkey.cloudnetworks.x.gcpnp.anz:*"
@@ -583,7 +579,6 @@ X-Xss-Protection: 0
       "pathMatcher": "chaosmonkey-cloudnetworks-x-gcpnp-anz"
     },
     {
-      "description": "Host rule for chaosmonkeymulti.cloudnetworks.x.gcpnp.anz",
       "hosts": [
         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz",
         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*"
@@ -695,7 +690,6 @@ X-Xss-Protection: 0
     "drainingTimeoutSec": 300
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Chaosmonkeymulti Backend Service for computeurlmap-kompanion",
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -728,15 +722,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${backendServiceID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"
@@ -793,7 +788,6 @@ X-Xss-Protection: 0
     "drainingTimeoutSec": 300
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Chaosmonkey Backend Service for computeurlmap-kompanion",
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -826,15 +820,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${backendServiceID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"
@@ -891,7 +886,6 @@ X-Xss-Protection: 0
     "drainingTimeoutSec": 300
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Default Backend Service for computeurlmap-kompanion",
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -924,15 +918,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${backendServiceID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"

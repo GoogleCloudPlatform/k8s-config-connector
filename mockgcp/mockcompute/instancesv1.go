@@ -72,13 +72,53 @@ func (s *InstancesV1) Insert(ctx context.Context, req *pb.InsertInstanceRequest)
 	if obj.LabelFingerprint == nil {
 		obj.LabelFingerprint = PtrTo(computeFingerprint(obj))
 	}
-	for _, disk := range obj.Disks {
+	for i, disk := range obj.Disks {
 		if disk.Source == nil {
 			disk.Source = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/disks/%s", name.Project.ID, name.Zone, obj.GetName())))
+		}
+		if i == 0 {
+			disk.Boot = PtrTo(true)
 		}
 		// Auto-create the disk in storage if it doesn't already exist
 		diskFQN := fmt.Sprintf("projects/%s/zones/%s/disks/%s", name.Project.ID, name.Zone, obj.GetName())
 		diskID := s.generateID()
+
+		var sourceImage *string
+		var sourceImageID *string
+		diskSize := int64(10)
+		diskType := BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/diskTypes/pd-standard", name.Project.ID, name.Zone))
+		var diskLabels map[string]string
+
+		if disk.InitializeParams != nil {
+			if disk.InitializeParams.SourceImage != nil {
+				img := disk.InitializeParams.SourceImage
+				tokens := strings.Split(*img, "/")
+				if len(tokens) == 2 {
+					sourceImage = PtrTo(BuildComputeSelfLink(ctx, "projects/debian-cloud/global/images/debian-11-bullseye-v20231010"))
+					sourceImageID = PtrTo("2443108620951880213")
+				} else if len(tokens) == 6 {
+					sourceImage = PtrTo(BuildComputeSelfLink(ctx, "projects/debian-cloud/global/images/debian-11-bullseye-v20231010"))
+					sourceImageID = PtrTo("2443108620951880213")
+				} else {
+					sourceImage = img
+				}
+			}
+			if disk.InitializeParams.DiskSizeGb != nil {
+				diskSize = *disk.InitializeParams.DiskSizeGb
+			}
+			if disk.InitializeParams.DiskType != nil {
+				dt := disk.InitializeParams.DiskType
+				if !strings.HasPrefix(*dt, "https://") && !strings.Contains(*dt, "/") {
+					diskType = BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/diskTypes/%s", name.Project.ID, name.Zone, *dt))
+				} else {
+					diskType = *dt
+				}
+			}
+			if disk.InitializeParams.Labels != nil {
+				diskLabels = disk.InitializeParams.Labels
+			}
+		}
+
 		mockDisk := &pb.Disk{
 			Id:                     &diskID,
 			Kind:                   PtrTo("compute#disk"),
@@ -87,11 +127,16 @@ func (s *InstancesV1) Insert(ctx context.Context, req *pb.InsertInstanceRequest)
 			CreationTimestamp:      PtrTo(s.nowString()),
 			Zone:                   PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", name.Project.ID, name.Zone))),
 			Status:                 PtrTo("READY"),
-			Type:                   PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/diskTypes/pd-standard", name.Project.ID, name.Zone))),
+			Type:                   PtrTo(diskType),
 			PhysicalBlockSizeBytes: PtrTo(int64(4096)),
-			SizeGb:                 PtrTo(int64(10)),
+			SizeGb:                 PtrTo(diskSize),
+			SourceImage:            sourceImage,
+			SourceImageId:          sourceImageID,
+			Labels:                 diskLabels,
 		}
 		_ = s.storage.Create(ctx, diskFQN, mockDisk)
+		// InitializeParams is only used during insertion and is not preserved in the persistent GET response on real GCP
+		disk.InitializeParams = nil
 	}
 	// if obj.MachineType == nil {
 	// 	machineType := "pd-standard"

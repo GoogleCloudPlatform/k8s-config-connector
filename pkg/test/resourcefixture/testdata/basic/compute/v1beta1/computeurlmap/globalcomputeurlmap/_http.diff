@@ -1,43 +1,43 @@
-539c539
+540c540
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
-568c568
+569c569
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps
-581,582c581
+582,583c582
 <     ],
 <     "errorService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}"
 ---
 >     ]
-584d582
+585d583
 <   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-606,607c604
+607,608c605
 <         ],
 <         "errorService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}"
 ---
 >         ]
-609d605
+610d606
 <       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}",
-638c634
+639c635
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
-662,663c658
+663,664c659
 <     ],
 <     "errorService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}"
 ---
 >     ]
-665d659
-<   "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
+666d660
+<   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
 689,690c683
 <         ],
 <         "errorService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}"
 ---
 >         ]
 692d684
-<       "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendBuckets/${backendBucketID}",
+<       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}",
 701c693
 < PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 ---
@@ -49,42 +49,43 @@
 <     "errorService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}"
 ---
 >     ]
-717d708
+717,718d708
 <   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-726a718,719
+<   "description": "updated test URLMap",
+726a717,718
 >   "id": "000000000000000000000",
 >   "kind": "compute#urlMap",
-739,740c732
+739,740c731
 <         ],
 <         "errorService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}"
 ---
 >         ]
-742d733
+742d732
 <       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}",
-745c736,737
+745c735,736
 <   ]
 ---
 >   ],
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
-771c763
+771c762
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
-795,796c787
+795,796c786
 <     ],
 <     "errorService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}"
 ---
 >     ]
-798d788
-<   "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
-822,823c812
+798d787
+<   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+821,822c810
 <         ],
 <         "errorService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}"
 ---
 >         ]
-825d813
-<       "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendBuckets/${backendBucketID}",
-834c822
+824d811
+<       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}",
+833c820
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}

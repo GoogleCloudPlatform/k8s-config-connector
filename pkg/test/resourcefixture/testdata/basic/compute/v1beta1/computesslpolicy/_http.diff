@@ -6,20 +6,20 @@
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies
-66c66,67
+67c67,68
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-96c97
+97c98
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}
-130c131
+131c132
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}
-134c135,143
+135c136,144
 <   "customFeatures": null,
 ---
 >   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -31,29 +31,29 @@
 >     "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
 >     "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256"
 >   ],
-135a145,146
+136a146,147
 >   "id": "000000000000000000000",
 >   "kind": "compute#sslPolicy",
-137c148,150
+138c149,151
 <   "profile": "MODERN"
 ---
 >   "name": "${sslPolicyID}",
 >   "profile": "MODERN",
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}"
-167c180,181
+168c181,182
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-197c211
+198c212
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}
-235c249
+236c250
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}
-265c279,280
+267c281,282
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}

@@ -1,12 +1,12 @@
-28c28
+27c27
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
-57c57
+56c56
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses
-63,69c63
+62,68c62
 <   "ipCollection": "regions/us-central1/publicDelegatedPrefixes/pdp-${uniqueId}",
 <   "labels": {
 <     "cnrm-test": "true",
@@ -21,7 +21,7 @@
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-131,200c126
+131,199c126
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 < Content-Type: application/json
 < 
@@ -39,7 +39,6 @@
 <   "address": "8.8.8.8",
 <   "addressType": "EXTERNAL",
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "description": "A test address with ipCollection",
 <   "id": "000000000000000000000",
 <   "ipCollection": "regions/us-central1/publicDelegatedPrefixes/pdp-${uniqueId}",
 <   "kind": "compute#address",
@@ -94,18 +93,18 @@
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
-219d144
+217d143
 <   "ipCollection": "regions/us-central1/publicDelegatedPrefixes/pdp-${uniqueId}",
-222,225d146
+220,223d145
 <   "labels": {
 <     "cnrm-test": "true",
 <     "managed-by-cnrm": "true"
 <   },
-235c156
+233c155
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
-266c187,188
+265c187,188
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}

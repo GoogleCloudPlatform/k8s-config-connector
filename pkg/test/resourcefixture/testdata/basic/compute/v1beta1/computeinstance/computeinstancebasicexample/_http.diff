@@ -1,9 +1,9 @@
-881c881,882
+832c832,833
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-909,954c910
+860,884c861
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -17,34 +17,13 @@
 < X-Xss-Protection: 0
 < 
 < {
-<   "availableCpuPlatforms": [
-<     "Ampere Altra",
-<     "Intel Broadwell",
-<     "Intel Cascade Lake",
-<     "Intel Emerald Rapids",
-<     "AMD Genoa",
-<     "NVIDIA Grace",
-<     "Intel Granite Rapids",
-<     "Intel Haswell",
-<     "Intel Ice Lake",
-<     "Intel Ivy Bridge",
-<     "Google Axion",
-<     "AMD Milan",
-<     "AMD Rome",
-<     "Intel Sandy Bridge",
-<     "Intel Sapphire Rapids",
-<     "Intel Skylake",
-<     "AMD Turin"
-<   ],
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "description": "us-west1-a",
 <   "id": "000000000000000000000",
 <   "kind": "compute#zone",
 <   "name": "us-west1-a",
 <   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a",
-<   "status": "UP",
-<   "supportsPzs": false
+<   "status": "UP"
 < }
 < 
 < ---
@@ -52,18 +31,17 @@
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances
-958,959d913
+888d864
 <   "canIpForward": false,
-<   "deletionProtection": false,
-962a917
+890a867
 >       "autoDelete": false,
-964d918
+892d868
 <       "mode": "READ_WRITE",
-968c922
+896c872
 <       "mode": "READ_WRITE",
 ---
 >       "boot": false,
-972,977c926
+900,905c876
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
@@ -72,108 +50,80 @@
 <   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
 ---
 >   "machineType": "n1-standard-1",
-981,984d929
+909,912d879
 <         "key": "bar",
 <         "value": "baz"
 <       },
 <       {
-989,990c934,935
+917,918c884,885
 <         "key": "startup-script",
 <         "value": "echo hi \u003e /test.txt"
 ---
 >         "key": "bar",
 >         "value": "baz"
-999c944,945
+927c894,895
 <           "natIP": "8.8.8.8",
 ---
 >           "name": "External NAT",
 >           "natIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}",
-1004c950
-<       "networkIP": "8.8.8.8"
----
->       "networkIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}"
-1007d952
+935d902
 <   "params": {},
-1010,1013d954
+938,941d904
 <     "instanceTerminationAction": "",
 <     "nodeAffinities": [
 <       null
 <     ],
-1015,1016c956
-<     "preemptible": true,
-<     "provisioningModel": ""
----
->     "preemptible": true
-1022c962
+949c912
 <         "https://www.googleapis.com/auth/cloud-platform"
 ---
 >         "cloud-platform"
-1026c966
+953c916
 <   "tags": {}
 ---
 >   "zone": "us-west1-a"
-1057c997,998
+985c948,949
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1088c1029,1030
+1016,1099c980,981
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
----
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
-> Content-Type: application/json
-1101d1042
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
 <   "canIpForward": false,
-1103d1043
-<   "deletionProtection": false,
-1106a1047
->       "autoDelete": false,
-1108d1048
-<       "mode": "READ_WRITE",
-1112c1052
-<       "mode": "READ_WRITE",
----
->       "boot": false,
-1119,1124c1059
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "disks": [
+<     {
+<       "boot": true,
+<       "mode": "READ_WRITE"
+<     },
+<     {
+<       "mode": "READ_WRITE"
+<     }
+<   ],
+<   "id": "000000000000000000000",
+<   "kind": "compute#instance",
+<   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
----
->   "machineType": "n1-standard-1",
-1128,1131d1062
-<         "key": "bar",
-<         "value": "baz"
-<       },
-<       {
-1136,1249d1066
-<         "key": "startup-script",
-<         "value": "echo hi \u003e /test.txt"
-<       }
-<     ]
-<   },
 <   "name": "${instanceID}",
-<   "networkInterfaces": [
-<     {
-<       "accessConfigs": [
-<         {
-<           "natIP": "8.8.8.8",
-<           "type": "ONE_TO_ONE_NAT"
-<         }
-<       ],
-<       "network": "projects/${projectId}/global/networks/${networkID}",
-<       "networkIP": "8.8.8.8"
-<     }
-<   ],
-<   "params": {},
 <   "scheduling": {
 <     "automaticRestart": false,
 <     "instanceTerminationAction": "",
-<     "onHostMaintenance": "TERMINATE",
-<     "preemptible": true,
-<     "provisioningModel": ""
+<     "onHostMaintenance": "TERMINATE"
 <   },
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 <   "serviceAccounts": [
@@ -185,7 +135,6 @@
 <     }
 <   ],
 <   "status": "RUNNING",
-<   "tags": {},
 <   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 < }
 < 
@@ -214,8 +163,6 @@
 <   "name": "${diskID}",
 <   "physicalBlockSizeBytes": "4096",
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
-<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-<   "sourceImageId": "2443108620951880213",
 <   "status": "READY",
 <   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
 <   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
@@ -224,83 +171,34 @@
 < ---
 < 
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
+> Content-Type: application/json
+1112d993
 <   "canIpForward": false,
-<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "deletionProtection": false,
-<   "description": "an basic instance example",
-<   "disks": [
-<     {
+1116,1117c997,998
 <       "boot": true,
-<       "mode": "READ_WRITE",
-<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
-<     },
-<     {
-<       "mode": "READ_WRITE",
-<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
-<     }
-<   ],
-<   "id": "000000000000000000000",
-<   "kind": "compute#instance",
-<   "labelFingerprint": "abcdef0123A=",
+<       "mode": "READ_WRITE"
+---
+>       "autoDelete": false,
+>       "boot": true
+1120c1001
+<       "mode": "READ_WRITE"
+---
+>       "boot": false
+1126,1130d1006
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
-<   "metadata": {
-<     "items": [
-<       {
-1252,1259d1068
-<       },
-<       {
-<         "key": "foo",
-<         "value": "bar"
-<       },
-<       {
-<         "key": "startup-script",
-<         "value": "echo hi \u003e /test.txt"
-1268c1077,1078
-<           "natIP": "8.8.8.8",
----
->           "name": "External NAT",
->           "natIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}",
-1273c1083
-<       "networkIP": "8.8.8.8"
----
->       "networkIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}"
-1276d1085
-<   "params": {},
-1279d1087
+1134d1009
 <     "instanceTerminationAction": "",
-1281,1282c1089
-<     "preemptible": true,
-<     "provisioningModel": ""
----
->     "preemptible": true
-1289c1096
+1142c1017
 <         "https://www.googleapis.com/auth/cloud-platform"
 ---
 >         "cloud-platform"
-1294,1326d1100
-<   "tags": {},
-<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
-< }
-< 
-< ---
-< 
+1152,1182c1027,1028
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -324,32 +222,30 @@
 <   "name": "${diskID}",
 <   "physicalBlockSizeBytes": "4096",
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
-<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-<   "sourceImageId": "2443108620951880213",
 <   "status": "READY",
 <   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
-1332c1106,1107
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/stop
 > Content-Type: application/json
-1345,1359d1119
+1195,1205d1040
 <   "canIpForward": false,
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "deletionProtection": false,
-<   "description": "an basic instance example",
 <   "disks": [
 <     {
 <       "boot": true,
-<       "mode": "READ_WRITE",
-<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+<       "mode": "READ_WRITE"
 <     },
 <     {
-<       "mode": "READ_WRITE",
-<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+<       "mode": "READ_WRITE"
 <     }
 <   ],
-1361,1414c1121,1127
+1207,1228c1042,1048
 <   "kind": "compute#instance",
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
@@ -357,43 +253,11 @@
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
-<   "metadata": {
-<     "items": [
-<       {
-<         "key": "bar",
-<         "value": "baz"
-<       },
-<       {
-<         "key": "foo",
-<         "value": "bar"
-<       },
-<       {
-<         "key": "startup-script",
-<         "value": "echo hi \u003e /test.txt"
-<       }
-<     ]
-<   },
 <   "name": "${instanceID}",
-<   "networkInterfaces": [
-<     {
-<       "accessConfigs": [
-<         {
-<           "natIP": "8.8.8.8",
-<           "type": "ONE_TO_ONE_NAT"
-<         }
-<       ],
-<       "network": "projects/${projectId}/global/networks/${networkID}",
-<       "networkIP": "8.8.8.8"
-<     }
-<   ],
-<   "params": {},
 <   "scheduling": {
 <     "automaticRestart": false,
 <     "instanceTerminationAction": "",
-<     "onHostMaintenance": "TERMINATE",
-<     "preemptible": true,
-<     "provisioningModel": ""
+<     "onHostMaintenance": "TERMINATE"
 <   },
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 <   "serviceAccounts": [
@@ -412,22 +276,20 @@
 >   "progress": 0,
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
 >   "startTime": "2024-04-01T12:34:56.123456Z",
-1416c1129,1131
-<   "tags": {},
----
+1229a1050,1052
 >   "targetId": "${instanceID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 >   "user": "user@example.com",
-1422c1137,1138
+1235c1058,1059
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1435c1151
+1248c1072
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 ---
 >   "endTime": "2024-04-01T12:34:56.123456Z",
-1437,1448c1153,1163
+1250,1259c1074,1084
 <   "kind": "compute#disk",
 <   "labels": {
 <     "cnrm-test": "true",
@@ -436,8 +298,6 @@
 <   "name": "${diskID}",
 <   "physicalBlockSizeBytes": "4096",
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
-<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-<   "sourceImageId": "2443108620951880213",
 <   "status": "READY",
 <   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
 ---
@@ -452,75 +312,44 @@
 >   "targetId": "${instanceID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 >   "user": "user@example.com",
-1454c1169,1170
+1265c1090,1091
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-1467d1182
+1278d1103
 <   "canIpForward": false,
-1469d1183
-<   "deletionProtection": false,
-1472a1187
->       "autoDelete": false,
-1474d1188
-<       "mode": "READ_WRITE",
-1478c1192
-<       "mode": "READ_WRITE",
+1282,1283c1107,1108
+<       "boot": true,
+<       "mode": "READ_WRITE"
 ---
->       "boot": false,
-1485,1490c1199
+>       "autoDelete": false,
+>       "boot": true
+1286c1111
+<       "mode": "READ_WRITE"
+---
+>       "boot": false
+1292,1296d1116
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
----
->   "machineType": "n1-standard-1",
-1494,1497d1202
-<         "key": "bar",
-<         "value": "baz"
-<       },
-<       {
-1502,1503c1207,1208
-<         "key": "startup-script",
-<         "value": "echo hi \u003e /test.txt"
----
->         "key": "bar",
->         "value": "baz"
-1512c1217,1218
-<           "natIP": "8.8.8.8",
----
->           "name": "External NAT",
->           "natIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}",
-1517c1223
-<       "networkIP": "8.8.8.8"
----
->       "networkIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}"
-1520d1225
-<   "params": {},
-1523d1227
+1300d1119
 <     "instanceTerminationAction": "",
-1525,1526c1229
-<     "preemptible": true,
-<     "provisioningModel": ""
----
->     "preemptible": true
-1533c1236
+1308c1127
 <         "https://www.googleapis.com/auth/cloud-platform"
 ---
 >         "cloud-platform"
-1537,1538c1240
+1312c1131
 <   "status": "RUNNING",
-<   "tags": {},
 ---
 >   "status": "TERMINATED",
-1544c1246
+1318c1137
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setLabels?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType
-1548,1553c1250
+1322,1327c1141
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
 <     "cnrm-test": "true",
@@ -529,20 +358,20 @@
 <   }
 ---
 >   "machineType": "zones/us-west1-a/machineTypes/n1-standard-2"
-1571c1268
+1345c1159
 <   "operationType": "setLabels",
 ---
 >   "operationType": "setMachineType",
-1584c1281,1282
+1358c1172,1173
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1602c1300
+1376c1191
 <   "operationType": "setLabels",
 ---
 >   "operationType": "setMachineType",
-1615c1313,1321
+1389c1204,1212
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/stop?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setServiceAccount
@@ -554,24 +383,24 @@
 >     "compute-ro"
 >   ]
 > }
-1632c1338
+1406c1229
 <   "operationType": "stop",
 ---
 >   "operationType": "setServiceAccount",
-1645c1351,1352
+1419c1242,1243
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1663c1370
+1437c1261
 <   "operationType": "stop",
 ---
 >   "operationType": "setServiceAccount",
-1676c1383
+1450c1274
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMetadata
-1680c1387,1396
+1454c1278,1287
 <   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2"
 ---
 >   "items": [
@@ -584,24 +413,24 @@
 >       "value": "baz"
 >     }
 >   ]
-1698c1414
+1472c1305
 <   "operationType": "setMachineType",
 ---
 >   "operationType": "setMetadata",
-1711c1427,1428
+1485c1318,1319
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1729c1446
+1503c1337
 <   "operationType": "setMachineType",
 ---
 >   "operationType": "setMetadata",
-1742c1459
+1516c1350
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setServiceAccount?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setScheduling
-1746,1749c1463,1465
+1520,1523c1354,1356
 <   "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 <   "scopes": [
 <     "https://www.googleapis.com/auth/compute.readonly"
@@ -610,20 +439,20 @@
 >   "automaticRestart": false,
 >   "onHostMaintenance": "TERMINATE",
 >   "preemptible": true
-1767c1483
+1541c1374
 <   "operationType": "setServiceAccount",
 ---
 >   "operationType": "setScheduling",
-1780c1496,1497
+1554c1387,1388
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1798c1515
+1572c1406
 <   "operationType": "setServiceAccount",
 ---
 >   "operationType": "setScheduling",
-1811,1821c1528,1529
+1585,1595c1419,1420
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -638,65 +467,29 @@
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setLabels
 > Content-Type: application/json
-1824,1840d1531
+1598,1610d1422
 <   "canIpForward": false,
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "deletionProtection": false,
-<   "description": "an basic instance example",
 <   "disks": [
 <     {
 <       "boot": true,
-<       "mode": "READ_WRITE",
-<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+<       "mode": "READ_WRITE"
 <     },
 <     {
-<       "mode": "READ_WRITE",
-<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+<       "mode": "READ_WRITE"
 <     }
 <   ],
 <   "id": "000000000000000000000",
 <   "kind": "compute#instance",
-1844,1896c1535,1536
+1614,1633c1426,1427
 <     "label-one": "value-two",
 <     "managed-by-cnrm": "true"
 <   },
-<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
-<   "metadata": {
-<     "items": [
-<       {
-<         "key": "bar",
-<         "value": "baz"
-<       },
-<       {
-<         "key": "foo",
-<         "value": "bar"
-<       },
-<       {
-<         "key": "startup-script",
-<         "value": "echo hi \u003e /test.txt"
-<       }
-<     ]
-<   },
 <   "name": "${instanceID}",
-<   "networkInterfaces": [
-<     {
-<       "accessConfigs": [
-<         {
-<           "natIP": "8.8.8.8",
-<           "type": "ONE_TO_ONE_NAT"
-<         }
-<       ],
-<       "network": "projects/${projectId}/global/networks/${networkID}",
-<       "networkIP": "8.8.8.8"
-<     }
-<   ],
-<   "params": {},
 <   "scheduling": {
 <     "automaticRestart": false,
 <     "instanceTerminationAction": "",
-<     "onHostMaintenance": "TERMINATE",
-<     "preemptible": true,
-<     "provisioningModel": ""
+<     "onHostMaintenance": "TERMINATE"
 <   },
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 <   "serviceAccounts": [
@@ -708,51 +501,46 @@
 <     }
 <   ],
 <   "status": "TERMINATED",
-<   "tags": {},
 <   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
 ---
 >     "label-one": "value-two"
 >   }
-1899,1902d1538
+1636,1639d1429
 < ---
 < 
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/start?alt=json&prettyPrint=false
 < 
-1918c1554
+1655c1445
 <   "operationType": "start",
 ---
 >   "operationType": "setLabels",
-1931c1567,1568
+1668c1458,1459
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1949c1586
+1686c1477
 <   "operationType": "start",
 ---
 >   "operationType": "setLabels",
-1962c1599,1600
+1699c1490,1491
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/start
 > Content-Type: application/json
-1975,1989d1612
+1712,1722d1503
 <   "canIpForward": false,
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "deletionProtection": false,
-<   "description": "an basic instance example",
 <   "disks": [
 <     {
 <       "boot": true,
-<       "mode": "READ_WRITE",
-<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+<       "mode": "READ_WRITE"
 <     },
 <     {
-<       "mode": "READ_WRITE",
-<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+<       "mode": "READ_WRITE"
 <     }
 <   ],
-1991,2044c1614,1620
+1724,1745c1505,1511
 <   "kind": "compute#instance",
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
@@ -760,43 +548,11 @@
 <     "label-one": "value-two",
 <     "managed-by-cnrm": "true"
 <   },
-<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
-<   "metadata": {
-<     "items": [
-<       {
-<         "key": "bar",
-<         "value": "baz"
-<       },
-<       {
-<         "key": "foo",
-<         "value": "bar"
-<       },
-<       {
-<         "key": "startup-script",
-<         "value": "echo hi \u003e /test.txt"
-<       }
-<     ]
-<   },
 <   "name": "${instanceID}",
-<   "networkInterfaces": [
-<     {
-<       "accessConfigs": [
-<         {
-<           "natIP": "8.8.8.8",
-<           "type": "ONE_TO_ONE_NAT"
-<         }
-<       ],
-<       "network": "projects/${projectId}/global/networks/${networkID}",
-<       "networkIP": "8.8.8.8"
-<     }
-<   ],
-<   "params": {},
 <   "scheduling": {
 <     "automaticRestart": false,
 <     "instanceTerminationAction": "",
-<     "onHostMaintenance": "TERMINATE",
-<     "preemptible": true,
-<     "provisioningModel": ""
+<     "onHostMaintenance": "TERMINATE"
 <   },
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 <   "serviceAccounts": [
@@ -815,22 +571,20 @@
 >   "progress": 0,
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
 >   "startTime": "2024-04-01T12:34:56.123456Z",
-2046c1622,1624
-<   "tags": {},
----
+1746a1513,1515
 >   "targetId": "${instanceID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 >   "user": "user@example.com",
-2052c1630,1631
+1752c1521,1522
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-2065c1644
+1765c1535
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 ---
 >   "endTime": "2024-04-01T12:34:56.123456Z",
-2067,2078c1646,1656
+1767,1776c1537,1547
 <   "kind": "compute#disk",
 <   "labels": {
 <     "cnrm-test": "true",
@@ -839,8 +593,6 @@
 <   "name": "${diskID}",
 <   "physicalBlockSizeBytes": "4096",
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
-<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-<   "sourceImageId": "2443108620951880213",
 <   "status": "READY",
 <   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
 ---
@@ -855,68 +607,35 @@
 >   "targetId": "${instanceID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 >   "user": "user@example.com",
-2084c1662,1663
+1782c1553,1554
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-2097d1675
+1795d1566
 <   "canIpForward": false,
-2099d1676
-<   "deletionProtection": false,
-2102a1680
->       "autoDelete": false,
-2104d1681
-<       "mode": "READ_WRITE",
-2108c1685
-<       "mode": "READ_WRITE",
+1799,1800c1570,1571
+<       "boot": true,
+<       "mode": "READ_WRITE"
 ---
->       "boot": false,
-2117,2118c1694
+>       "autoDelete": false,
+>       "boot": true
+1803c1574
+<       "mode": "READ_WRITE"
+---
+>       "boot": false
+1811,1812c1582
 <     "label-one": "value-two",
 <     "managed-by-cnrm": "true"
 ---
 >     "label-one": "value-two"
-2120c1696
-<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
----
->   "machineType": "zones/us-west1-a/machineTypes/n1-standard-2",
-2124,2127d1699
-<         "key": "bar",
-<         "value": "baz"
-<       },
-<       {
-2132,2133c1704,1705
-<         "key": "startup-script",
-<         "value": "echo hi \u003e /test.txt"
----
->         "key": "bar",
->         "value": "baz"
-2142c1714,1715
-<           "natIP": "8.8.8.8",
----
->           "name": "External NAT",
->           "natIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}",
-2147c1720
-<       "networkIP": "8.8.8.8"
----
->       "networkIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}"
-2150d1722
-<   "params": {},
-2153d1724
+1817d1586
 <     "instanceTerminationAction": "",
-2155,2156c1726
-<     "preemptible": true,
-<     "provisioningModel": ""
----
->     "preemptible": true
-2163c1733
+1825c1594
 <         "https://www.googleapis.com/auth/compute.readonly"
 ---
 >         "compute-ro"
-2168d1737
-<   "tags": {},
-2174,2206c1743,1744
+1835,1865c1604,1605
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -940,8 +659,6 @@
 <   "name": "${diskID}",
 <   "physicalBlockSizeBytes": "4096",
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
-<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-<   "sourceImageId": "2443108620951880213",
 <   "status": "READY",
 <   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
 <   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
@@ -953,7 +670,7 @@
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-2236c1774,1775
+1896c1636,1637
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}

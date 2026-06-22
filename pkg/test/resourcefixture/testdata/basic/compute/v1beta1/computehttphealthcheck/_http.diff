@@ -16,16 +16,16 @@
 <   "requestPath": "/",
 40a43
 >   "type": "HTTP",
-65c68
+66c69
 <   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
 ---
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-71c74,75
+72c75,76
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-101c105
+102c106
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
@@ -81,24 +81,24 @@
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
-219a231,234
+218a230,233
 >   "httpHealthCheck": {
 >     "port": 80,
 >     "requestPath": "/"
 >   },
-221c236
+220c235
 <   "kind": "compute#httpHealthCheck",
 ---
 >   "kind": "compute#healthCheck",
-223,225c238
+222,224c237
 <   "port": 80,
 <   "requestPath": "/",
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
 ---
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-226a240
+225a239
 >   "type": "HTTP",
-232c246
+231c245
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}

@@ -1,63 +1,63 @@
-295c295
+296c296
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
-324c324
+325c325
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps
-328d327
+329d328
 <   "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
-341d339
+342d340
 <       "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
-372,373c370
+373,374c371
 <                   "nanos": 50000,
 <                   "seconds": "0"
 ---
 >                   "nanos": 50000
-378,380c375
+379,381c376
 <             "requestMirrorPolicy": {
 <               "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
 <             },
 ---
 >             "requestMirrorPolicy": {},
-401d395
+402d396
 <                 "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
-431c425
+432c426
 <   "region": "projects/${projectId}/global/regions/us-central1",
 ---
 >   "region": "us-central1",
-435,436c429
+436,437c430
 <       "path": "/home",
 <       "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
 ---
 >       "path": "/home"
-469c462,463
+471c464,465
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-500c494
+502c496
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
-515d508
-<   "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
-531d523
-<       "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
-562,563c554
+517d510
+<   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+532d524
+<       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+563,564c555
 <                   "nanos": 50000,
 <                   "seconds": "0"
 ---
 >                   "nanos": 50000
-568,570c559
+569,571c560
 <             "requestMirrorPolicy": {
-<               "backendService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+<               "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
 <             },
 ---
 >             "requestMirrorPolicy": {},
-592d580
-<                 "backendService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+593d581
+<                 "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
 628,629c616
 <       "path": "/home",
 <       "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
@@ -67,74 +67,75 @@
 < PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 ---
 > PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
-640c627
+640,641c627
 <   "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+<   "description": "updated regional URLMap",
 ---
 >   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-650a638,639
+650a637,638
 >   "id": "000000000000000000000",
 >   "kind": "compute#urlMap",
-654d642
+654d641
 <       "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
-685,686c673
+685,686c672
 <                   "nanos": 50000,
 <                   "seconds": "0"
 ---
 >                   "nanos": 50000
-691,693c678
+691,693c677
 <             "requestMirrorPolicy": {
 <               "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
 <             },
 ---
 >             "requestMirrorPolicy": {},
-714d698
+714d697
 <                 "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
-744c728,729
+744c727,728
 <   "region": "projects/${projectId}/global/regions/us-central1",
 ---
 >   "region": "us-central1",
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}",
-748,749c733
+748,749c732
 <       "path": "/home",
 <       "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
 ---
 >       "path": "/home"
-782c766,767
+782c765,766
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-813c798
+813c797
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
-828d812
-<   "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
-844d827
-<       "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
-875,876c858
+828d811
+<   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+843d825
+<       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+874,875c856
 <                   "nanos": 50000,
 <                   "seconds": "0"
 ---
 >                   "nanos": 50000
-881,883c863
+880,882c861
 <             "requestMirrorPolicy": {
-<               "backendService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+<               "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
 <             },
 ---
 >             "requestMirrorPolicy": {},
-905d884
-<                 "backendService": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
-941,942c920
+904d882
+<                 "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+939,940c917
 <       "path": "/home",
 <       "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
 ---
 >       "path": "/home"
-949c927
+947c924
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
-980c958,959
+979c956,957
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}

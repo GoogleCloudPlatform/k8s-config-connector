@@ -59,15 +59,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${backendServiceID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"
@@ -126,7 +127,6 @@ X-Xss-Protection: 0
     "drainingTimeoutSec": 300
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -377,8 +377,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
-  "description": "test global URLMap",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "hostRules": [
     {
       "hosts": [
@@ -392,7 +391,7 @@ X-Xss-Protection: 0
   "name": "computeurlmap-${uniqueId}",
   "pathMatchers": [
     {
-      "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
+      "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -464,15 +463,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${targetHttpsProxyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "user": "user@example.com"
@@ -527,7 +527,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "target https proxy with certificate manager certificate",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#targetHttpsProxy",
@@ -537,7 +536,7 @@ X-Xss-Protection: 0
   "sslCertificates": [
     "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
   ],
-  "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
 ---
@@ -624,7 +623,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "target https proxy with certificate manager certificate",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#targetHttpsProxy",
@@ -634,7 +632,7 @@ X-Xss-Protection: 0
   "sslCertificates": [
     "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
   ],
-  "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
 ---
@@ -654,15 +652,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${targetHttpsProxyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "user": "user@example.com"
@@ -717,8 +716,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
-  "description": "test global URLMap",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "hostRules": [
     {
       "hosts": [
@@ -732,7 +730,7 @@ X-Xss-Protection: 0
   "name": "computeurlmap-${uniqueId}",
   "pathMatchers": [
     {
-      "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
+      "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -883,7 +881,6 @@ X-Xss-Protection: 0
     "drainingTimeoutSec": 300
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -919,15 +916,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${backendServiceID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "user": "user@example.com"

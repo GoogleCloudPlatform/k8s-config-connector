@@ -84,15 +84,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${securityPolicyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
   "user": "user@example.com"
@@ -158,7 +159,6 @@ X-Xss-Protection: 0
   "rules": [
     {
       "action": "allow",
-      "description": "",
       "headerAction": {},
       "kind": "compute#securityPolicyRule",
       "match": {
@@ -176,7 +176,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "deny(403)",
-      "description": "",
       "headerAction": {},
       "kind": "compute#securityPolicyRule",
       "match": {
@@ -590,7 +589,6 @@ X-Xss-Protection: 0
   "rules": [
     {
       "action": "deny(403)",
-      "description": "",
       "headerAction": {},
       "kind": "compute#securityPolicyRule",
       "match": {
@@ -607,7 +605,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "allow",
-      "description": "",
       "headerAction": {},
       "kind": "compute#securityPolicyRule",
       "match": {
@@ -624,7 +621,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "deny(502)",
-      "description": "",
       "headerAction": {},
       "kind": "compute#securityPolicyRule",
       "match": {
@@ -640,7 +636,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "allow",
-      "description": "",
       "headerAction": {},
       "kind": "compute#securityPolicyRule",
       "match": {
@@ -675,15 +670,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${securityPolicyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
   "user": "user@example.com"

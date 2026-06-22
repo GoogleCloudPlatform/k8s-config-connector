@@ -30,11 +30,11 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -63,11 +63,11 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -95,8 +95,8 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
@@ -132,12 +132,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -166,12 +166,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -200,12 +200,12 @@ X-Xss-Protection: 0
   "ipCidrRange": "10.0.0.0/24",
   "kind": "compute#subnetwork",
   "name": "${subnetworkID}",
-  "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "stackType": "IPV4_ONLY",
   "state": "READY"
 }
@@ -244,12 +244,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -278,12 +278,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -312,13 +312,13 @@ X-Xss-Protection: 0
   "ipCidrRange": "10.129.0.0/23",
   "kind": "compute#subnetwork",
   "name": "${subnetworkID}",
-  "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "REGIONAL_MANAGED_PROXY",
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "role": "ACTIVE",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "stackType": "IPV4_ONLY",
   "state": "READY"
 }
@@ -364,12 +364,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
   "user": "user@example.com"
 }
 
@@ -398,12 +398,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
   "user": "user@example.com"
 }
 
@@ -437,8 +437,8 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#healthCheck",
   "name": "${healthCheckID}",
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
   "timeoutSec": 5,
   "type": "HTTP",
   "unhealthyThreshold": 2
@@ -480,12 +480,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${backendServiceID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
@@ -514,12 +514,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${backendServiceID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
@@ -562,8 +562,8 @@ X-Xss-Protection: 0
   "port": 80,
   "portName": "http",
   "protocol": "HTTP2",
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
   "timeoutSec": 30
 }
@@ -604,12 +604,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${backendServiceID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
@@ -638,12 +638,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${backendServiceID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
@@ -686,8 +686,8 @@ X-Xss-Protection: 0
   "port": 80,
   "portName": "http",
   "protocol": "HTTP2",
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
   "timeoutSec": 30
 }
@@ -723,12 +723,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${urlMapID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}",
   "user": "user@example.com"
 }
 
@@ -757,12 +757,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${urlMapID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}",
   "user": "user@example.com"
 }
 
@@ -790,8 +790,8 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
   "name": "${urlMapID}",
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
 }
 
 ---
@@ -825,12 +825,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetHttpProxyID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}",
   "user": "user@example.com"
 }
 
@@ -859,12 +859,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetHttpProxyID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}",
   "user": "user@example.com"
 }
 
@@ -891,8 +891,8 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#targetHttpProxy",
   "name": "${targetHttpProxyID}",
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}",
   "urlMap": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
 }
 
@@ -930,12 +930,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -964,12 +964,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1000,12 +1000,12 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "${forwardingRuleID}",
-  "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "portRange": "80-80",
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "selfLinkWithId": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "target": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}"
 }
 
@@ -1049,7 +1049,7 @@ Content-Type: application/json
         {
           "authority": "ext1.com",
           "name": "ext1",
-          "service": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+          "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
           "timeout": "0.1s"
         }
       ],
@@ -1060,7 +1060,7 @@ Content-Type: application/json
     }
   ],
   "forwardingRules": [
-    "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
   ],
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}"
@@ -1201,7 +1201,7 @@ Content-Type: application/json
         {
           "authority": "ext1.com",
           "name": "ext1",
-          "service": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+          "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
           "timeout": "0.1s"
         }
       ],
@@ -1212,7 +1212,7 @@ Content-Type: application/json
     }
   ],
   "forwardingRules": [
-    "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
   ],
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}"
@@ -1473,12 +1473,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1507,12 +1507,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1541,12 +1541,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetHttpProxyID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}",
   "user": "user@example.com"
 }
 
@@ -1575,12 +1575,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetHttpProxyID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}",
   "user": "user@example.com"
 }
 
@@ -1609,12 +1609,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${urlMapID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}",
   "user": "user@example.com"
 }
 
@@ -1643,12 +1643,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${urlMapID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}",
   "user": "user@example.com"
 }
 
@@ -1677,12 +1677,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${backendServiceID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
@@ -1711,12 +1711,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${backendServiceID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
@@ -1745,12 +1745,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${backendServiceID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
@@ -1779,12 +1779,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${backendServiceID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
@@ -1813,12 +1813,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
   "user": "user@example.com"
 }
 
@@ -1847,12 +1847,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${healthCheckID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}",
   "user": "user@example.com"
 }
 
@@ -1881,12 +1881,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -1915,12 +1915,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -1949,12 +1949,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -1983,12 +1983,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -2017,11 +2017,11 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -2050,10 +2050,10 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }

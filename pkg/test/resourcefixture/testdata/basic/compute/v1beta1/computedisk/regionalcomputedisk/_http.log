@@ -87,7 +87,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "a sample regional disk",
   "id": "000000000000000000000",
   "kind": "compute#disk",
   "labels": {

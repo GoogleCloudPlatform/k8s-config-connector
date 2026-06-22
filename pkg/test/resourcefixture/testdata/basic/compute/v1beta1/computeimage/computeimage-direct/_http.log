@@ -51,15 +51,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${diskID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
   "user": "user@example.com",
@@ -182,15 +183,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${imageID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
   "user": "user@example.com"
@@ -243,24 +245,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "diskSizeGb": "500",
-  "id": "000000000000000000000",
   "kind": "compute#image",
-  "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "${imageID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "name": "debian-11-bullseye",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye",
   "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
-  "sourceDiskId": "${diskID}",
-  "sourceType": "RAW",
-  "status": "READY",
-  "storageLocations": [
-    "us"
-  ]
+  "sourceDiskId": "${diskID}"
 }
 
 ---
@@ -269,7 +258,6 @@ PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/ima
 Content-Type: application/json
 
 {
-  "diskSizeGb": "500",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -421,60 +409,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "diskSizeGb": "500",
-  "id": "000000000000000000000",
   "kind": "compute#image",
-  "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "${imageID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "name": "debian-11-bullseye",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye",
   "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
-  "sourceDiskId": "${diskID}",
-  "sourceType": "RAW",
-  "status": "READY",
-  "storageLocations": [
-    "us"
-  ]
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "diskSizeGb": "500",
-  "id": "000000000000000000000",
-  "kind": "compute#image",
-  "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one"
-  },
-  "name": "${imageID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
-  "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
-  "sourceDiskId": "${diskID}",
-  "sourceType": "RAW",
-  "status": "READY",
-  "storageLocations": [
-    "us"
-  ]
+  "sourceDiskId": "${diskID}"
 }
 
 ---
@@ -493,15 +432,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${imageID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
   "user": "user@example.com"
@@ -585,15 +525,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${diskID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
   "user": "user@example.com",

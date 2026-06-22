@@ -1,29 +1,27 @@
-133c133
+134c134
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
-162c162
+163c163
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images
-201c201,202
+203c203,204
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-231c232
+233c234
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
-267c268
+256c257
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}/setLabels?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
-271c272
+260d260
 <   "labelFingerprint": "abcdef0123A=",
----
->   "diskSizeGb": "500",
-275a277,347
+264a265,335
 >   },
 >   "name": "${imageID}",
 >   "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}"
@@ -95,7 +93,7 @@
 >   "labels": {
 >     "cnrm-test": "true",
 >     "label-one": "value-one"
-307c379,410
+296c367,398
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
@@ -130,20 +128,11 @@
 > ---
 > 
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
-343c446
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
----
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
-364,365c467
-<     "label-one": "value-one",
-<     "managed-by-cnrm": "true"
----
->     "label-one": "value-one"
-380c482
+319c421
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
-410c512,513
+350c452,453
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}

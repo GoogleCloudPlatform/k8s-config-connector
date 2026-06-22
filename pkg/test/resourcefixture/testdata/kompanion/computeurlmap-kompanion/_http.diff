@@ -1,80 +1,80 @@
-433c433
+430c430
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}
-462c462
+459c459
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps
-466d465
+463d462
 <   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-469,474d467
+466,471d464
 <       "hosts": [
 <         "svc.gcp.anz"
 <       ],
 <       "pathMatcher": "computeurlmap-kompanion-default"
 <     },
 <     {
-485,486c478,479
+482,483c475,476
 <         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*",
 <         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz"
 ---
 >         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz",
 >         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*"
-488a482,487
+485a479,484
 >     },
 >     {
 >       "hosts": [
 >         "svc.gcp.anz"
 >       ],
 >       "pathMatcher": "computeurlmap-kompanion-default"
-494d492
+491d489
 <       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-507d504
+504d501
 <                 "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-516d512
+513d509
 <       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-529d524
+526d521
 <                 "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-538d532
+535d529
 <       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-567c561
+564c558
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}
-582d575
-<   "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
-585,590d577
-<       "hosts": [
+579d572
+<   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+583,588d575
 <         "svc.gcp.anz"
 <       ],
 <       "pathMatcher": "computeurlmap-kompanion-default"
 <     },
 <     {
-601,602c588,589
+<       "hosts": [
+596,597c583,584
 <         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*",
 <         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz"
 ---
 >         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz",
 >         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*"
-604a592,597
+599a587,592
 >     },
 >     {
 >       "hosts": [
 >         "svc.gcp.anz"
 >       ],
 >       "pathMatcher": "computeurlmap-kompanion-default"
-612d604
-<       "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
-625d616
+607d599
+<       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+620d611
 <                 "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-634d624
-<       "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
-647d636
+629d619
+<       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+642d631
 <                 "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-656d644
-<       "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
-665c653
+651d639
+<       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+660c648
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}

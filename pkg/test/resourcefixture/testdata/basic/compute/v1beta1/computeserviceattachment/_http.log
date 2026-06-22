@@ -338,56 +338,12 @@ X-Xss-Protection: 0
 {
   "autoCreateSubnetworks": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Default network for the project",
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
-  "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/africa-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/asia-east1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/asia-east2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/asia-northeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/asia-northeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/asia-northeast3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/asia-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/asia-south2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/asia-southeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/asia-southeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/australia-southeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/australia-southeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-central2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-north1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-north2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-southwest1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-west10/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-west12/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-west2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-west3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-west4/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-west6/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-west8/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/europe-west9/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/me-central1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/me-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/northamerica-northeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/northamerica-northeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/northamerica-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/southamerica-east1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/southamerica-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-east1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-east4/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-east5/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west4/subnetworks/${networkID}"
-  ]
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}"
 }
 
 ---
@@ -456,16 +412,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${backendServiceID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/${backendServiceID}",
   "user": "user@example.com"
@@ -525,7 +482,6 @@ X-Xss-Protection: 0
     "drainingTimeoutSec": 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -604,16 +560,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
@@ -746,16 +703,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
@@ -888,16 +846,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
@@ -1013,7 +972,6 @@ X-Goog-Request-Params: project=example-project-01&region=us-west1
 {
   "allPorts": true,
   "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/${backendServiceID}",
-  "description": "A test forwarding rule with internal load balancing scheme",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -1036,16 +994,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
@@ -1108,7 +1067,6 @@ X-Xss-Protection: 0
   "allPorts": true,
   "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/${backendServiceID}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "A test forwarding rule with internal load balancing scheme",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -1188,7 +1146,6 @@ X-Xss-Protection: 0
   "allPorts": true,
   "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/${backendServiceID}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "A test forwarding rule with internal load balancing scheme",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -1682,16 +1639,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${serviceAttachmentID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}",
   "user": "user@example.com"
@@ -1758,7 +1716,6 @@ X-Xss-Protection: 0
     "project-1-${uniqueId}"
   ],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample service attachment",
   "enableProxyProtocol": false,
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
@@ -1883,7 +1840,6 @@ X-Xss-Protection: 0
     "project-2-${uniqueId}"
   ],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample service attachment",
   "enableProxyProtocol": false,
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
@@ -1913,16 +1869,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${serviceAttachmentID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}",
   "user": "user@example.com"
@@ -2154,7 +2111,6 @@ X-Xss-Protection: 0
   "allPorts": true,
   "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/${backendServiceID}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "A test forwarding rule with internal load balancing scheme",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2191,16 +2147,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
@@ -2294,16 +2251,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
@@ -2395,16 +2353,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
@@ -2496,16 +2455,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
@@ -2565,7 +2525,6 @@ X-Xss-Protection: 0
     "drainingTimeoutSec": 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -2603,16 +2562,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${backendServiceID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/${backendServiceID}",
   "user": "user@example.com"

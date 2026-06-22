@@ -1,35 +1,35 @@
-800c800
+799c799
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
-829c829
+828c828
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules
-845d844
+843d842
 <   "region": "projects/${projectId}/global/regions/us-central1",
-878c877,878
+877c876,877
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-909c909
+908c908
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
-945c945
+943c943
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
-986c986
+984c984
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
-1027c1027
+1024c1024
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setTarget?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
-1031c1031,1036
+1028c1028,1033
 <   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/${targetTcpProxyID}"
 ---
 >   "labelFingerprint": "abcdef0123A=",
@@ -38,19 +38,19 @@
 >     "label-one": "value-two",
 >     "managed-by-cnrm": "true"
 >   }
-1044a1050
+1041a1047
 >   "endTime": "2024-04-01T12:34:56.123456Z",
-1049,1050c1055,1056
+1046,1047c1052,1053
 <   "operationType": "SetTarget",
 <   "progress": 0,
 ---
 >   "operationType": "setLabels",
 >   "progress": 100,
-1054c1060
+1051c1057
 <   "status": "RUNNING",
 ---
 >   "status": "DONE",
-1062c1068,1073
+1059c1065,1070
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setTarget
@@ -59,21 +59,21 @@
 > {
 >   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/${targetTcpProxyID}"
 > }
-1075d1085
+1072d1082
 <   "endTime": "2024-04-01T12:34:56.123456Z",
-1081c1091
+1078c1088
 <   "progress": 100,
 ---
 >   "progress": 0,
-1085c1095
+1082c1092
 <   "status": "DONE",
 ---
 >   "status": "RUNNING",
-1093c1103
+1090c1100
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-1096,1104d1105
+1093,1101d1102
 < {
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
@@ -83,19 +83,19 @@
 <   }
 < }
 < 
-1121c1122
+1118c1119
 <   "operationType": "setLabels",
 ---
 >   "operationType": "SetTarget",
-1134c1135
+1131c1132
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
-1175c1176
+1171c1172
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
-1206c1207,1208
+1203c1204,1205
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}

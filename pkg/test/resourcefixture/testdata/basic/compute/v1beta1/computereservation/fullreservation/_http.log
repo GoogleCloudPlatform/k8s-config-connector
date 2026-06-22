@@ -70,15 +70,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${reservationID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}",
   "user": "user@example.com",
@@ -134,7 +135,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Full compute reservation",
   "id": "000000000000000000000",
   "kind": "compute#reservation",
   "name": "${reservationID}",
@@ -158,7 +158,6 @@ X-Xss-Protection: 0
       ],
       "localSsds": [
         {
-          "diskSizeGb": "375",
           "interface": "NVME"
         }
       ],
@@ -255,7 +254,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Full compute reservation",
   "id": "000000000000000000000",
   "kind": "compute#reservation",
   "name": "${reservationID}",
@@ -279,7 +277,6 @@ X-Xss-Protection: 0
       ],
       "localSsds": [
         {
-          "diskSizeGb": "375",
           "interface": "NVME"
         }
       ],
@@ -308,15 +305,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${reservationID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}",
   "user": "user@example.com",

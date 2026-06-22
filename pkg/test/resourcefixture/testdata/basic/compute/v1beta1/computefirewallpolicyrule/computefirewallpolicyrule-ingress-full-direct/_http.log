@@ -81,7 +81,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "A basic organization firewall policy",
   "displayName": "firewallpolicy-${uniqueId}",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
@@ -92,7 +91,6 @@ X-Xss-Protection: 0
   "rules": [
     {
       "action": "goto_next",
-      "description": "default egress rule ipv6",
       "direction": "EGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -111,7 +109,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "goto_next",
-      "description": "default ingress rule ipv6",
       "direction": "INGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -130,7 +127,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "goto_next",
-      "description": "default egress rule",
       "direction": "EGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -149,7 +145,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "goto_next",
-      "description": "default ingress rule",
       "direction": "INGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -228,15 +223,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${networkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
@@ -296,10 +292,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
@@ -360,15 +352,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${networkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
@@ -428,10 +421,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
@@ -752,7 +741,6 @@ X-Xss-Protection: 0
 
 {
   "action": "deny",
-  "description": "",
   "direction": "INGRESS",
   "kind": "compute#firewallPolicyRule",
   "match": {
@@ -917,7 +905,6 @@ X-Xss-Protection: 0
 
 {
   "action": "allow",
-  "description": "",
   "direction": "INGRESS",
   "kind": "compute#firewallPolicyRule",
   "match": {
@@ -1153,10 +1140,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
@@ -1178,15 +1161,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${networkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
@@ -1246,10 +1230,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
@@ -1271,15 +1251,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${networkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
@@ -1334,7 +1315,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "A basic organization firewall policy",
   "displayName": "firewallpolicy-${uniqueId}",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
@@ -1345,7 +1325,6 @@ X-Xss-Protection: 0
   "rules": [
     {
       "action": "goto_next",
-      "description": "default egress rule ipv6",
       "direction": "EGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -1364,7 +1343,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "goto_next",
-      "description": "default ingress rule ipv6",
       "direction": "INGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -1383,7 +1361,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "goto_next",
-      "description": "default egress rule",
       "direction": "EGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -1402,7 +1379,6 @@ X-Xss-Protection: 0
     },
     {
       "action": "goto_next",
-      "description": "default ingress rule",
       "direction": "INGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",

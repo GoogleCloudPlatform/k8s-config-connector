@@ -185,7 +185,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "A single sole-tenant node in the us-central1-b zone.",
   "id": "000000000000000000000",
   "kind": "compute#nodegroup",
   "maintenancePolicy": "DEFAULT",

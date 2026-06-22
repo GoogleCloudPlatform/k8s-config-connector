@@ -52,12 +52,15 @@ func (s *InstanceTemplatesV1) Insert(ctx context.Context, req *pb.InsertInstance
 	if obj.Properties == nil {
 		obj.Properties = &pb.InstanceProperties{}
 	}
-	for _, disk := range obj.Properties.Disks {
+	for i, disk := range obj.Properties.Disks {
 		if disk.DeviceName == nil {
-			disk.DeviceName = PtrTo("persistent-disk-0")
+			disk.DeviceName = PtrTo(fmt.Sprintf("persistent-disk-%d", i))
 		}
 		if disk.Index == nil {
-			disk.Index = PtrTo(int32(0))
+			disk.Index = PtrTo(int32(i))
+		}
+		if i == 0 {
+			disk.Boot = PtrTo(true)
 		}
 		disk.Kind = PtrTo("compute#attachedDisk")
 	}

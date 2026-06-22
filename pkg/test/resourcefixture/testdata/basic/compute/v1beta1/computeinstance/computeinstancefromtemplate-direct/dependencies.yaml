@@ -57,7 +57,7 @@ spec:
     - sourceImageRef:
         name: computeimage-${uniqueId}
       autoDelete: true
-      boot: false
+      boot: true
   networkInterface:
     - networkRef:
         name: default
