@@ -26,8 +26,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"k8s.io/klog/v2"
 
+	pb "cloud.google.com/go/container/apiv1/containerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
 )
 
 type ClusterManagerV1 struct {
@@ -523,14 +523,6 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		}
 	}
 
-	if controlPlaneEndpointsConfig := obj.ControlPlaneEndpointsConfig; controlPlaneEndpointsConfig != nil {
-		if ipEndpointsConfig := controlPlaneEndpointsConfig.GetIpEndpointsConfig(); ipEndpointsConfig != nil {
-			if ipEndpointsConfig.Enabled != nil && ipEndpointsConfig.GetEnabled() == false {
-				obj.PrivateCluster = true
-			}
-		}
-	}
-
 	// InitialClusterVersion
 	if obj.InitialClusterVersion == "" {
 		obj.InitialClusterVersion = "1.30.5-gke.1014001"
@@ -636,15 +628,6 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		obj.ClusterIpv4Cidr = "10.92.0.0/14"
 	}
 
-	// ClusterTelemetry
-	if obj.ClusterTelemetry == nil {
-		obj.ClusterTelemetry = &pb.ClusterTelemetry{}
-	}
-
-	if obj.ClusterTelemetry.Type == pb.ClusterTelemetry_UNSPECIFIED {
-		obj.ClusterTelemetry.Type = pb.ClusterTelemetry_ENABLED
-	}
-
 	if obj.CurrentMasterVersion == "" {
 		obj.CurrentMasterVersion = obj.InitialClusterVersion
 	}
@@ -744,8 +727,8 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	}
 	ipAllocationPolicy := obj.IpAllocationPolicy
 	{
-		if ipAllocationPolicy.StackType == pb.IPAllocationPolicy_STACK_TYPE_UNSPECIFIED {
-			ipAllocationPolicy.StackType = pb.IPAllocationPolicy_IPV4
+		if ipAllocationPolicy.StackType == pb.StackType_STACK_TYPE_UNSPECIFIED {
+			ipAllocationPolicy.StackType = pb.StackType_IPV4
 		}
 		ipAllocationPolicy.UseIpAliases = true
 		if ipAllocationPolicy.PodCidrOverprovisionConfig == nil {
@@ -993,19 +976,6 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		dnsEndpointConfig.Endpoint = fmt.Sprintf("gke-12345trewq-${projectNumber}.%s.gke.goog", obj.Location)
 	}
 
-	if obj.ProtectConfig == nil {
-		obj.ProtectConfig = &pb.ProtectConfig{}
-	}
-	if obj.ProtectConfig.WorkloadConfig == nil {
-		obj.ProtectConfig.WorkloadConfig = &pb.WorkloadConfig{}
-	}
-	if obj.ProtectConfig.WorkloadConfig.AuditMode == nil {
-		obj.ProtectConfig.WorkloadConfig.AuditMode = PtrTo(pb.WorkloadConfig_BASIC)
-	}
-	if obj.ProtectConfig.WorkloadVulnerabilityMode == nil {
-		obj.ProtectConfig.WorkloadVulnerabilityMode = PtrTo(pb.ProtectConfig_WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED)
-	}
-
 	if obj.RbacBindingConfig == nil {
 		obj.RbacBindingConfig = &pb.RBACBindingConfig{}
 	}
@@ -1069,10 +1039,8 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	// Endpoint reflects the Control plane config
 	if getWithDefault(obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().EnablePublicEndpoint, true) {
 		obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().GetPublicEndpoint()
-		obj.PrivateCluster = false
 	} else {
 		obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().GetPrivateEndpoint()
-		obj.PrivateCluster = true
 	}
 	if obj.Endpoint == "" {
 		obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetDnsEndpointConfig().GetEndpoint()

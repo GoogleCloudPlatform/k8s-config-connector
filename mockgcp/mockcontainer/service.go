@@ -23,12 +23,12 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
+	pb "cloud.google.com/go/container/apiv1/containerpb"
 )
 
 func init() {
@@ -59,20 +59,19 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterClusterManagerHandler)
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	// Terraform uses the /v1beta1/ endpoints, but gcloud uses v1.
+	mux.AddService(pb.NewClusterManagerClient(conn))
+
+	// Terraform uses the /v1beta1/ endpoints, but gcloud/the official pb uses v1.
 	// Rewrite for now (hoping they are compatible enough)
 	rewriteV1ToBeta := func(w http.ResponseWriter, r *http.Request) {
 		u := r.URL
-		if strings.HasPrefix(u.Path, "/v1/") {
-			u2 := *u
-			u2.Path = "/v1beta1/" + strings.TrimPrefix(u.Path, "/v1/")
-			r = httpmux.RewriteRequest(r, &u2)
+		if strings.HasPrefix(u.Path, "/v1beta1/") {
+			u.Path = "/v1/" + strings.TrimPrefix(u.Path, "/v1beta1/")
 		}
 
 		// Intercept Request Body: OS_2022 -> OS_VERSION_LTSC2022
