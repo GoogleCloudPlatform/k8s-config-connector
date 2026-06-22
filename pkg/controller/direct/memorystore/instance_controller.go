@@ -28,6 +28,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 
 	gcp "cloud.google.com/go/memorystore/apiv1"
 
@@ -302,11 +304,12 @@ func (a *InstanceAdapter) updateRemoteInstance(ctx context.Context, instanceName
 			if len(remote.GetCrossInstanceReplicationConfig().GetSecondaryInstances()) != len(desiredConfig.GetSecondaryInstances()) {
 				diff = true
 			} else {
-				for i, sc := range desiredConfig.GetSecondaryInstances() {
-					if sc.GetInstance() != remote.GetCrossInstanceReplicationConfig().GetSecondaryInstances()[i].GetInstance() {
-						diff = true
-						break
-					}
+				sortInstances := func(x, y *memorystorepb.CrossInstanceReplicationConfig_RemoteInstance) bool {
+					return x.GetInstance() < y.GetInstance()
+				}
+				if cmp.Equal(remote.CrossInstanceReplicationConfig.SecondaryInstances, desiredConfig.SecondaryInstances, cmpopts.SortSlices(sortInstances)) {
+					diff = true
+					break
 				}
 			}
 		case memorystorepb.CrossInstanceReplicationConfig_SECONDARY:

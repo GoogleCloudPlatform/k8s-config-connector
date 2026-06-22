@@ -19,6 +19,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
+
 	"google.golang.org/api/option"
 
 	api "cloud.google.com/go/redis/cluster/apiv1"
@@ -491,11 +494,12 @@ func (a *redisClusterAdapter) updateRemoteCluster(ctx context.Context, clusterNa
 			if len(remote.GetCrossClusterReplicationConfig().GetSecondaryClusters()) != len(desiredConfig.GetSecondaryClusters()) {
 				diff = true
 			} else {
-				for i, sc := range desiredConfig.GetSecondaryClusters() {
-					if sc.GetCluster() != remote.GetCrossClusterReplicationConfig().GetSecondaryClusters()[i].GetCluster() {
-						diff = true
-						break
-					}
+				sortClusters := func(x, y *pb.CrossClusterReplicationConfig_RemoteCluster) bool {
+					return x.GetCluster() < y.GetCluster()
+				}
+				if cmp.Equal(remote.CrossClusterReplicationConfig.SecondaryClusters, desiredConfig.SecondaryClusters, cmpopts.SortSlices(sortClusters)) {
+					diff = true
+					break
 				}
 			}
 		case pb.CrossClusterReplicationConfig_SECONDARY:
