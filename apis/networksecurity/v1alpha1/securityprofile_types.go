@@ -69,6 +69,7 @@ type NetworkSecuritySecurityProfileSpec struct {
 	URLFilteringProfile *URLFilteringProfile `json:"urlFilteringProfile,omitempty"`
 }
 
+// +kcc:spec:proto=google.cloud.networksecurity.v1.AntivirusOverride
 type AntivirusOverride struct {
 	// Required. Protocol to match.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.AntivirusOverride.protocol
@@ -80,6 +81,7 @@ type AntivirusOverride struct {
 	Action *string `json:"action,omitempty"`
 }
 
+// +kcc:spec:proto=google.cloud.networksecurity.v1.CustomInterceptProfile
 type CustomInterceptProfile struct {
 	// Required. The target InterceptEndpointGroup.
 	//  When a firewall rule with this security profile attached matches a packet,
@@ -88,6 +90,7 @@ type CustomInterceptProfile struct {
 	InterceptEndpointGroupRef *NetworkSecurityInterceptEndpointGroupRef `json:"interceptEndpointGroupRef,omitempty"`
 }
 
+// +kcc:spec:proto=google.cloud.networksecurity.v1.CustomMirroringProfile
 type CustomMirroringProfile struct {
 	// Required. Immutable. The target MirroringEndpointGroup.
 	//  When a mirroring rule with this security profile attached matches a packet,
@@ -96,6 +99,7 @@ type CustomMirroringProfile struct {
 	MirroringEndpointGroupRef *NetworkSecurityMirroringEndpointGroupRef `json:"mirroringEndpointGroupRef,omitempty"`
 }
 
+// +kcc:spec:proto=google.cloud.networksecurity.v1.SeverityOverride
 type SeverityOverride struct {
 	// Required. Severity level to match.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.SeverityOverride.severity
@@ -106,6 +110,7 @@ type SeverityOverride struct {
 	Action *string `json:"action,omitempty"`
 }
 
+// +kcc:spec:proto=google.cloud.networksecurity.v1.ThreatOverride
 type ThreatOverride struct {
 	// Required. Vendor-specific ID of a threat to override.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.ThreatOverride.threat_id
@@ -117,6 +122,7 @@ type ThreatOverride struct {
 	Action *string `json:"action,omitempty"`
 }
 
+// +kcc:spec:proto=google.cloud.networksecurity.v1.ThreatPreventionProfile
 type ThreatPreventionProfile struct {
 	// Optional. Configuration for overriding threats actions by severity match.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.ThreatPreventionProfile.severity_overrides
@@ -133,6 +139,7 @@ type ThreatPreventionProfile struct {
 	AntivirusOverrides []AntivirusOverride `json:"antivirusOverrides,omitempty"`
 }
 
+// +kcc:spec:proto=google.cloud.networksecurity.v1.UrlFilter
 type URLFilter struct {
 	// Required. The action taken when this filter is applied.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.UrlFilter.filtering_action
@@ -150,6 +157,7 @@ type URLFilter struct {
 	Priority *int32 `json:"priority,omitempty"`
 }
 
+// +kcc:spec:proto=google.cloud.networksecurity.v1.UrlFilteringProfile
 type URLFilteringProfile struct {
 	// Optional. The list of filtering configs in which each config defines an
 	//  action to take for some URL match.
@@ -195,12 +203,14 @@ type NetworkSecuritySecurityProfileObservedState struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.ThreatOverride
 type ThreatOverrideObservedState struct {
 	// Output only. Type of the threat (read only).
 	// +kcc:proto:field=google.cloud.networksecurity.v1.ThreatOverride.type
 	Type *string `json:"type,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.ThreatPreventionProfile
 type ThreatPreventionProfileObservedState struct {
 	// Optional. Configuration for overriding threats actions by threat_id match.
 	//  If a threat is matched both by configuration provided in severity_overrides
