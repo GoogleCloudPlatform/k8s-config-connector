@@ -41,6 +41,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
@@ -101,7 +102,25 @@ func (m *routerModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 }
 
 func (m *routerModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krm.ComputeRouterIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
+	}
+	routersClient, err := gcpClient.newRoutersClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &RouterAdapter{
+		gcpClient: routersClient,
+		id:        id,
+	}, nil
 }
 
 type RouterAdapter struct {
@@ -219,15 +238,25 @@ func (a *RouterAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+
+	obj.Spec.Region = a.id.Region
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Router)
+
+	if obj.Spec.EncryptedInterconnectRouter != nil && !*obj.Spec.EncryptedInterconnectRouter {
+		obj.Spec.EncryptedInterconnectRouter = nil
+	}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.String())
+	u.Object = uObj
+	u.SetName(a.id.Router)
 	u.SetGroupVersionKind(krm.ComputeRouterGVK)
 
-	u.Object = uObj
+	export.SetProjectID(u, a.id.Project)
+
 	return u, nil
 }
 
