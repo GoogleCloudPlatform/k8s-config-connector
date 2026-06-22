@@ -140,7 +140,7 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 
 	// Remove GET requests to GCE operations to prevent timing/LRO polling differences
 	events = events.KeepIf(func(e *test.LogEntry) bool {
-		if e.Request.Method == "GET" && strings.Contains(e.Request.URL, "/operations/") {
+		if e.Request.Method == "GET" && strings.Contains(e.Request.URL, "/operations/") && (strings.Contains(e.Request.URL, "/compute/") || strings.Contains(e.Request.URL, "compute.googleapis.com")) {
 			return false
 		}
 		return true

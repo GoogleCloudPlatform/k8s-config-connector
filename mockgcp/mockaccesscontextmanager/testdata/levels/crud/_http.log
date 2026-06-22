@@ -207,6 +207,46 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://accesscontextmanager.googleapis.com/v1/operations/accessPolicies/${accessPolicyID}/accessLevels/basic_level/update/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/accessLevels/basic_level/update/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessLevel",
+    "basic": {
+      "conditions": [
+        {
+          "ipSubnetworks": [
+            "203.0.113.0/25",
+            "2001:db8::/48"
+          ]
+        }
+      ]
+    },
+    "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level",
+    "title": "test level"
+  }
+}
+
+---
+
 GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?alt=json
 Accept: application/json
 Authorization: (removed)

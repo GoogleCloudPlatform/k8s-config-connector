@@ -37,6 +37,40 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/notebookRuntimes/test-${uniqueId}/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.AssignNotebookRuntimeOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "progressMessage": "NotebookRuntime is ready to use."
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/notebookRuntimes/test-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.NotebookRuntime",
+    "name": "projects/${projectNumber}/locations/us-central1/notebookRuntimes/test-${uniqueId}"
+  }
+}
+
+---
+
 GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/notebookRuntimes/test-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)

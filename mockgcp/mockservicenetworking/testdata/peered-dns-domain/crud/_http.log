@@ -261,6 +261,37 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://servicenetworking.googleapis.com/v1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.servicenetworking.v1.Connection",
+    "network": "projects/${projectNumber}/global/networks/${networkID}",
+    "peering": "servicenetworking-googleapis-com",
+    "reservedPeeringRanges": [
+      "${addressID}"
+    ],
+    "service": "services/servicenetworking.googleapis.com"
+  }
+}
+
+---
+
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json
 Accept: application/json
 Authorization: (removed)
@@ -308,6 +339,33 @@ X-Xss-Protection: 0
 
 {
   "name": "operations/${operationID}"
+}
+
+---
+
+GET https://servicenetworking.googleapis.com/v1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.servicenetworking.v1.PeeredDnsDomain",
+    "dnsSuffix": "test-suffix-${uniqueId}.com.",
+    "name": "test-${uniqueId}"
+  }
 }
 
 ---
@@ -403,4 +461,29 @@ X-Xss-Protection: 0
 
 {
   "name": "operations/${operationID}"
+}
+
+---
+
+GET https://servicenetworking.googleapis.com/v1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }
