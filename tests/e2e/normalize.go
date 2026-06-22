@@ -1083,6 +1083,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
+	visitor.removePaths.Insert(".routingConfig")
+	visitor.removePaths.Insert(".enableCDN")
+	visitor.removePaths.Insert(".subnetworks")
 
 	// Common variables
 	visitor.replacePaths[".uid"] = "111111111111111111111"
@@ -1146,6 +1149,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	}
 
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if s == "${healthCheckID}" {
+			return "${httpHealthCheckID}"
+		}
 		switch path {
 		case ".network", ".region", ".selfLink", ".selfLinkWithId", ".sourceImage", ".subnetwork", ".subnetworks[]", ".target", ".targetLink", ".zone":
 			return rewriteComputeURL(s)

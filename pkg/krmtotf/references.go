@@ -211,7 +211,7 @@ func ResolveReferenceObject(resourceRefValRaw map[string]interface{},
 func resolveTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interface{}, error) {
 	key := text.SnakeCaseToLowerCamelCase(tc.TargetField)
 	switch key {
-	case "":
+	case "", "name":
 		return resolveDefaultTargetFieldValue(r, tc)
 	default:
 		if val, exists, _ := unstructured.NestedString(r.Spec, strings.Split(key, ".")...); exists {
