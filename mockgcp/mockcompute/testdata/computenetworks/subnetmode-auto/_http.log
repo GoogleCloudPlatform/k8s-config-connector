@@ -30,11 +30,11 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -63,11 +63,11 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -95,8 +95,8 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
@@ -141,12 +141,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.218.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -158,12 +158,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.218.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -179,12 +179,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.140.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -196,12 +196,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.140.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -217,12 +217,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.170.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -234,12 +234,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.170.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -255,12 +255,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.146.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -272,12 +272,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.146.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -293,12 +293,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.174.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -310,12 +310,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.174.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -331,12 +331,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.178.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -348,12 +348,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.178.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -369,12 +369,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.160.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -386,12 +386,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.160.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -407,12 +407,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.190.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -424,12 +424,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.190.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -445,12 +445,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.148.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -462,12 +462,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.148.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -483,12 +483,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.184.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -500,12 +500,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.184.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -521,12 +521,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.152.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -538,12 +538,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.152.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -559,12 +559,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.192.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -576,12 +576,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.192.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -597,12 +597,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.186.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -614,12 +614,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.186.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -635,12 +635,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.166.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -652,12 +652,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.166.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -673,12 +673,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.226.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -690,12 +690,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.226.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -711,12 +711,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.204.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -728,12 +728,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.204.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -749,12 +749,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.132.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -766,12 +766,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.132.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -787,12 +787,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.214.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -804,12 +804,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.214.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -825,12 +825,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.210.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -842,12 +842,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.210.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -863,12 +863,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.154.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -880,12 +880,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.154.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -901,12 +901,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.156.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -918,12 +918,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.156.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -939,12 +939,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.164.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -956,12 +956,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.164.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -977,12 +977,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.172.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -994,12 +994,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.172.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1015,12 +1015,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.198.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1032,12 +1032,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.198.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1053,12 +1053,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.200.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1070,12 +1070,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.200.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1091,12 +1091,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.212.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1108,12 +1108,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.212.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1141,12 +1141,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.208.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1158,12 +1158,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.208.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1179,12 +1179,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.162.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1196,12 +1196,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.162.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1217,12 +1217,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.188.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1234,12 +1234,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.188.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1255,12 +1255,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.224.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1272,12 +1272,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.224.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1293,12 +1293,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.158.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1310,12 +1310,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.158.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1331,12 +1331,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.194.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1348,12 +1348,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.194.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1369,12 +1369,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.128.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1386,12 +1386,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.128.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1407,12 +1407,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.142.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1424,12 +1424,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.142.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1445,12 +1445,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.150.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1462,12 +1462,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.150.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1483,12 +1483,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.202.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1500,12 +1500,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.202.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1521,12 +1521,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.206.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1538,12 +1538,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.206.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1559,12 +1559,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.138.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1576,12 +1576,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.138.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1597,12 +1597,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.168.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1614,12 +1614,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.168.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1635,12 +1635,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.180.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1652,12 +1652,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.180.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -1673,12 +1673,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.182.0.0/20",
           "kind": "compute#subnetwork",
           "name": "default",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/default",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/default",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         },
@@ -1690,12 +1690,12 @@ X-Xss-Protection: 0
           "ipCidrRange": "10.182.0.0/20",
           "kind": "compute#subnetwork",
           "name": "${networkID}",
-          "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
           "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
           "purpose": "PRIVATE",
-          "region": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4",
-          "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -3227,7 +3227,7 @@ X-Xss-Protection: 0
     }
   },
   "kind": "compute#subnetworkAggregatedList",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/aggregated/subnetworks"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/aggregated/subnetworks"
 }
 
 ---
@@ -3256,10 +3256,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopGateway": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/gateways/default-internet-gateway",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopGateway": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/gateways/default-internet-gateway",
       "priority": 1000,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3267,10 +3267,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3278,10 +3278,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3289,10 +3289,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3300,10 +3300,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3311,10 +3311,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3322,10 +3322,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3333,10 +3333,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3344,10 +3344,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3355,10 +3355,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3366,10 +3366,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3377,10 +3377,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3388,10 +3388,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3399,10 +3399,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3410,10 +3410,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3421,10 +3421,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3432,10 +3432,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3443,10 +3443,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3454,10 +3454,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3465,10 +3465,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3476,10 +3476,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3487,10 +3487,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3498,10 +3498,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3509,10 +3509,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3520,10 +3520,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3531,10 +3531,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3542,10 +3542,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3553,10 +3553,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3564,10 +3564,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3575,10 +3575,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3586,10 +3586,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3597,10 +3597,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3608,10 +3608,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3619,10 +3619,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3630,10 +3630,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3641,10 +3641,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3652,10 +3652,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3663,10 +3663,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3674,10 +3674,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3685,10 +3685,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3696,10 +3696,10 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     },
     {
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -3707,14 +3707,14 @@ X-Xss-Protection: 0
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
-      "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "nextHopNetwork": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "priority": 0,
-      "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
     }
   ],
   "kind": "compute#routeList",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes"
 }
 
 ---
@@ -3742,11 +3742,11 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -3775,10 +3775,10 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
