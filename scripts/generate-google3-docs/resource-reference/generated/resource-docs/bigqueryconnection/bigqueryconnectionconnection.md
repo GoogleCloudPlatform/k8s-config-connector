@@ -633,7 +633,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed DataprocCluster resource. Should be in the format "v1/projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}" or "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".</p>
+            <p>A reference to an externally managed DataprocCluster resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".</p>
         </td>
     </tr>
     <tr>

@@ -30,8 +30,8 @@ var (
 )
 
 var (
-	DataprocClusterIdentityFormat               = gcpurls.Template[DataprocClusterIdentity]("dataproc.googleapis.com", "v1/projects/{project}/regions/{region}/clusters/{cluster}")
-	DataprocClusterIdentityFormatWithoutVersion = gcpurls.Template[DataprocClusterIdentity]("dataproc.googleapis.com", "projects/{project}/regions/{region}/clusters/{cluster}")
+	DataprocClusterIdentityFormat         = gcpurls.Template[DataprocClusterIdentity]("dataproc.googleapis.com", "v1/projects/{project}/regions/{region}/clusters/{cluster}")
+	DataprocClusterIdentityFormatRelative = gcpurls.Template[DataprocClusterIdentity]("", "projects/{project}/regions/{region}/clusters/{cluster}")
 )
 
 // +k8s:deepcopy-gen=false
@@ -51,12 +51,12 @@ func (i *DataprocClusterIdentity) FromExternal(ref string) error {
 		return fmt.Errorf("format of DataprocCluster external=%q was not known (use %s): %w", ref, DataprocClusterIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		parsed, match, err = DataprocClusterIdentityFormatWithoutVersion.Parse(ref)
+		parsed, match, err = DataprocClusterIdentityFormatRelative.Parse(ref)
 		if err != nil {
 			return fmt.Errorf("format of DataprocCluster external=%q was not known (use %s): %w", ref, DataprocClusterIdentityFormat.CanonicalForm(), err)
 		}
 		if !match {
-			return fmt.Errorf("format of DataprocCluster external=%q was not known (use %s or %s)", ref, DataprocClusterIdentityFormat.CanonicalForm(), DataprocClusterIdentityFormatWithoutVersion.CanonicalForm())
+			return fmt.Errorf("format of DataprocCluster external=%q was not known (use %s or %s)", ref, DataprocClusterIdentityFormat.CanonicalForm(), DataprocClusterIdentityFormatRelative.CanonicalForm())
 		}
 	}
 

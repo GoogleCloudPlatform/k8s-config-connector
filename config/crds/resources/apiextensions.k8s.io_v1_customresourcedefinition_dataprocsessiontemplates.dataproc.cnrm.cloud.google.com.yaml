@@ -251,8 +251,7 @@ spec:
                               external:
                                 description: A reference to an externally managed
                                   DataprocCluster resource. Should be in the format
-                                  "v1/projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}"
-                                  or "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".
+                                  "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".
                                 type: string
                               name:
                                 description: The name of a DataprocCluster resource.

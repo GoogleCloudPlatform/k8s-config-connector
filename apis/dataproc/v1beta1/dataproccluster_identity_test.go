@@ -40,13 +40,9 @@ func TestDataprocClusterIdentity_FromExternal(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "full url unversioned",
-			ref:  "https://dataproc.googleapis.com/projects/my-project/regions/us-central1/clusters/my-cluster",
-			want: &DataprocClusterIdentity{
-				Project: "my-project",
-				Region:  "us-central1",
-				Cluster: "my-cluster",
-			},
+			name:    "full url unversioned",
+			ref:     "https://dataproc.googleapis.com/projects/my-project/regions/us-central1/clusters/my-cluster",
+			wantErr: true,
 		},
 		{
 			name: "full url versioned (v1)",
