@@ -200,7 +200,7 @@ func (a *secureSourceManagerInstanceAdapter) Update(ctx context.Context, updateO
 
 	structuredreporting.ReportDiff(ctx, diffs)
 
-	return fmt.Errorf("SecureSourceManagerInstance resource is immutable and cannot be updated")
+	return fmt.Errorf("SecureSourceManagerInstance resource is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())
 }
 
 func (a *secureSourceManagerInstanceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Instance) error {
@@ -222,7 +222,7 @@ func compareSecureSourceManagerInstance(ctx context.Context, actual, desired *pb
 	}
 	maskedActual.Name = desired.Name // Restore any non-spec identifier fields if needed
 
-	clonedDesired := proto.Clone(desired).(*pb.Instance)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *pb.Instance) {
 		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
