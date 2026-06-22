@@ -151,6 +151,18 @@ func (m *gcpClient) newReservationsClient(ctx context.Context) (*compute.Reserva
 	return client, err
 }
 
+func (m *gcpClient) newBackendServicesClient(ctx context.Context) (*compute.BackendServicesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewBackendServicesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute BackendServices client: %w", err)
+	}
+	return client, err
+}
+
 func (m *gcpClient) newSslPoliciesClient(ctx context.Context) (*compute.SslPoliciesClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
