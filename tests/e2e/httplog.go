@@ -121,6 +121,31 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 		return true
 	})
 
+	// Remove GET requests to instanceTemplates after a DELETE is sent to prevent timing/LRO race differences
+	deletedTemplates := make(map[string]bool)
+	events = events.KeepIf(func(e *test.LogEntry) bool {
+		if e.Request.Method == "DELETE" && strings.Contains(e.Request.URL, "/instanceTemplates/") {
+			templateURL := strings.Split(e.Request.URL, "?")[0]
+			deletedTemplates[templateURL] = true
+			return true
+		}
+		if e.Request.Method == "GET" && strings.Contains(e.Request.URL, "/instanceTemplates/") {
+			templateURL := strings.Split(e.Request.URL, "?")[0]
+			if deletedTemplates[templateURL] {
+				return false
+			}
+		}
+		return true
+	})
+
+	// Remove GET requests to GCE operations to prevent timing/LRO polling differences
+	events = events.KeepIf(func(e *test.LogEntry) bool {
+		if e.Request.Method == "GET" && strings.Contains(e.Request.URL, "/operations/") {
+			return false
+		}
+		return true
+	})
+
 	return events
 }
 
@@ -361,15 +386,15 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		}
 	}
 
-	// TODO: Remove this, it should now be done in normalize in mockcompute
 	// Extract resource IDs / numbers from compute operations.
 	// The number / id is in the targetID field, we infer the type from the targetLink field.
 	for _, event := range events {
-		if !isGetOperation(event) {
-			continue
-		}
 		body := event.Response.ParseBody()
 		if body == nil {
+			continue
+		}
+		kind, _, _ := unstructured.NestedString(body, "kind")
+		if kind != "compute#operation" {
 			continue
 		}
 		targetLink, _, _ := unstructured.NestedString(body, "targetLink")

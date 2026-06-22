@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 	"testing"
@@ -126,11 +127,12 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	}
 
 	for _, event := range events {
-		if !isGetOperation(event) {
-			continue
-		}
 		responseBody := event.Response.ParseBody()
 		if responseBody == nil {
+			continue
+		}
+		kind, _, _ := unstructured.NestedString(responseBody, "kind")
+		if kind != "compute#operation" {
 			continue
 		}
 		if name, _, _ := unstructured.NestedString(responseBody, "response", "name"); name != "" {
@@ -773,16 +775,28 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	events = RemoveExtraEvents(events)
 
 	got := events.FormatHTTP()
+	got = strings.ReplaceAll(got, "compute/beta/", "compute/v1/")
 	normalizers := []func(string) string{}
 	normalizers = append(normalizers, IgnoreComments)
 	normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
 	normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
 	normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
+	type replacement struct {
+		find    string
+		replace string
+	}
+	var replacements []replacement
 	for k, v := range r.PathIDs {
-		normalizers = append(normalizers, ReplaceString(k, v))
+		replacements = append(replacements, replacement{find: k, replace: v})
 	}
 	for k := range r.OperationIDs {
-		normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
+		replacements = append(replacements, replacement{find: k, replace: "${operationID}"})
+	}
+	sort.Slice(replacements, func(i, j int) bool {
+		return len(replacements[i].find) > len(replacements[j].find)
+	})
+	for _, replacement := range replacements {
+		normalizers = append(normalizers, ReplaceString(replacement.find, replacement.replace))
 	}
 
 	return got, normalizers

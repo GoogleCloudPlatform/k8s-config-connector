@@ -23,6 +23,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
@@ -52,7 +54,7 @@ func (s *InstanceTemplatesV1) Insert(ctx context.Context, req *pb.InsertInstance
 	}
 	for _, disk := range obj.Properties.Disks {
 		if disk.DeviceName == nil {
-			disk.DeviceName = PtrTo("boot")
+			disk.DeviceName = PtrTo("persistent-disk-0")
 		}
 		if disk.Index == nil {
 			disk.Index = PtrTo(int32(0))
@@ -64,6 +66,12 @@ func (s *InstanceTemplatesV1) Insert(ctx context.Context, req *pb.InsertInstance
 			networkInterface.Name = PtrTo("nic0")
 		}
 		networkInterface.Kind = PtrTo("compute#networkInterface")
+		if networkInterface.Network != nil {
+			networkInterface.Network = PtrTo(BuildComputeSelfLink(ctx, *networkInterface.Network))
+		}
+		if networkInterface.Subnetwork != nil {
+			networkInterface.Subnetwork = PtrTo(BuildComputeSelfLink(ctx, *networkInterface.Subnetwork))
+		}
 		for _, accessConfig := range networkInterface.AccessConfigs {
 			accessConfig.Kind = PtrTo("compute#accessConfig")
 		}
@@ -112,6 +120,25 @@ func (s *InstanceTemplatesV1) Get(ctx context.Context, req *pb.GetInstanceTempla
 	fqn := "projects/" + req.GetProject() + "/global/instanceTemplates/" + req.GetInstanceTemplate()
 	obj := &pb.InstanceTemplate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			// Try lookup by numeric ID
+			foundByNumericID := false
+			prefix := "projects/" + req.GetProject() + "/global/instanceTemplates/"
+			kind := (&pb.InstanceTemplate{}).ProtoReflect().Descriptor()
+			errList := s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(item proto.Message) error {
+				template := item.(*pb.InstanceTemplate)
+				if fmt.Sprintf("%d", template.GetId()) == req.GetInstanceTemplate() {
+					obj = template
+					foundByNumericID = true
+				}
+				return nil
+			})
+			if errList == nil && foundByNumericID {
+				return obj, nil
+			}
+
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 	return obj, nil
@@ -124,9 +151,28 @@ func (s *InstanceTemplatesV1) Delete(ctx context.Context, req *pb.DeleteInstance
 	fqn := "projects/" + req.GetProject() + "/global/instanceTemplates/" + req.GetInstanceTemplate()
 	deleted := &pb.InstanceTemplate{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			// Try lookup by numeric ID first to find the actual name
+			prefix := "projects/" + req.GetProject() + "/global/instanceTemplates/"
+			kind := (&pb.InstanceTemplate{}).ProtoReflect().Descriptor()
+			var actualFQN string
+			_ = s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(item proto.Message) error {
+				template := item.(*pb.InstanceTemplate)
+				if fmt.Sprintf("%d", template.GetId()) == req.GetInstanceTemplate() {
+					actualFQN = "projects/" + req.GetProject() + "/global/instanceTemplates/" + template.GetName()
+				}
+				return nil
+			})
+			if actualFQN != "" {
+				if err := s.storage.Delete(ctx, actualFQN, deleted); err == nil {
+					goto deletedOK
+				}
+			}
+		}
 		return nil, err
 	}
 
+deletedOK:
 	op := &pb.Operation{
 		// Different than the other CRUD operation, DELETE operation type does not have "compute.instanceTemplates."
 		OperationType: PtrTo("delete"),

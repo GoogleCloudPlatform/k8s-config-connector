@@ -1150,6 +1150,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		case ".network", ".region", ".selfLink", ".selfLinkWithId", ".sourceImage", ".subnetwork", ".subnetworks[]", ".target", ".targetLink", ".zone":
 			return rewriteComputeURL(s)
 		}
+		if strings.HasSuffix(path, ".instance") {
+			return rewriteComputeURL(s)
+		}
 		if strings.HasSuffix(path, ".type") || path == ".sourceDisk" || strings.HasSuffix(path, ".sourceDisk") {
 			return normalizeComputeSelfLink(s)
 		}

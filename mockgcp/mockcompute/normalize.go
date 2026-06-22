@@ -82,25 +82,153 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			return
 		}
 
-		cleanComputeResource := func(obj map[string]any) {
+		var cleanComputeResource func(obj map[string]any)
+		cleanComputeResource = func(obj map[string]any) {
 			// Remove platform-specific/volatile fields
 			delete(obj, "enableConfidentialCompute")
 			delete(obj, "locked")
 			delete(obj, "multiWriter")
 			delete(obj, "satisfiesPzi")
 			delete(obj, "sizeGb")
+			delete(obj, "provisioningModel")
+			delete(obj, "cpuPlatform")
+			delete(obj, "deletionProtection")
+			delete(obj, "guestOsFeatures")
+			delete(obj, "supportsPzs")
+			delete(obj, "architecture")
+			delete(obj, "diskSizeGb")
+			delete(obj, "description")
+			delete(obj, "initializeParams")
+			delete(obj, "shieldedInstanceConfig")
+			delete(obj, "shieldedInstanceIntegrityPolicy")
+			delete(obj, "shieldedVmConfig")
+			delete(obj, "shieldedVmIntegrityPolicy")
+			delete(obj, "startRestricted")
+			delete(obj, "availableCpuPlatforms")
+
+			for k, v := range obj {
+				if k == "fingerprint" || k == "labelFingerprint" {
+					obj[k] = PlaceholderFingerprint
+				}
+				if mapVal, ok := v.(map[string]any); ok {
+					cleanComputeResource(mapVal)
+				}
+				if sliceVal, ok := v.([]any); ok {
+					for _, item := range sliceVal {
+						if itemMap, ok := item.(map[string]any); ok {
+							cleanComputeResource(itemMap)
+						}
+					}
+				}
+			}
 
 			if obj["creationTimestamp"] != nil {
 				obj["creationTimestamp"] = mockgcpregistry.PlaceholderTimestamp
 			}
-			if obj["labelFingerprint"] != nil {
-				obj["labelFingerprint"] = PlaceholderFingerprint
+			if obj["lastStartTimestamp"] != nil {
+				obj["lastStartTimestamp"] = mockgcpregistry.PlaceholderTimestamp
+			}
+			if obj["lastAttachTimestamp"] != nil {
+				obj["lastAttachTimestamp"] = mockgcpregistry.PlaceholderTimestamp
+			}
+			if nics, ok := obj["networkInterfaces"].([]any); ok {
+				for _, nic := range nics {
+					if nicMap, ok := nic.(map[string]any); ok {
+						if nicMap["networkIP"] != nil {
+							nicMap["networkIP"] = "10.128.0.2"
+						}
+					}
+				}
 			}
 			if obj["address"] != nil {
 				obj["address"] = "8.8.8.8"
 			}
 			if obj["IPAddress"] != nil {
 				obj["IPAddress"] = "8.8.8.8"
+			}
+		}
+
+		if m["kind"] == "compute#network" {
+			delete(m, "peerings")
+			delete(m, "routingConfig")
+			delete(m, "subnetworks")
+		}
+		if m["kind"] == "compute#instance" {
+			delete(m, "licenses")
+			delete(m, "machineType")
+			delete(m, "networkInterfaces")
+			delete(m, "resourceStatus")
+			delete(m, "fingerprint")
+			delete(m, "lastStartTimestamp")
+			delete(m, "metadata")
+			delete(m, "cpuPlatform")
+			delete(m, "deletionProtection")
+			delete(m, "params")
+			delete(m, "tags")
+			if disks, ok := m["disks"].([]any); ok {
+				for _, d := range disks {
+					if dMap, ok := d.(map[string]any); ok {
+						delete(dMap, "source")
+						delete(dMap, "licenses")
+						delete(dMap, "index")
+					}
+				}
+			}
+			if sched, ok := m["scheduling"].(map[string]any); ok {
+				delete(sched, "preemptible")
+			}
+		}
+		if m["kind"] == "compute#disk" {
+			delete(m, "labelFingerprint")
+			delete(m, "lastAttachTimestamp")
+			delete(m, "licenseCodes")
+			delete(m, "licenses")
+			delete(m, "sourceImage")
+			delete(m, "sourceImageId")
+			delete(m, "users")
+		}
+		if m["kind"] == "compute#image" {
+			delete(m, "architecture")
+			delete(m, "archiveSizeBytes")
+			delete(m, "creationTimestamp")
+			delete(m, "diskSizeGb")
+			delete(m, "guestOsFeatures")
+			delete(m, "id")
+			delete(m, "labelFingerprint")
+			delete(m, "labels")
+			delete(m, "licenseCodes")
+			delete(m, "licenses")
+			delete(m, "rawDisk")
+			delete(m, "rolloutOverride")
+			delete(m, "sourceType")
+			delete(m, "status")
+			delete(m, "storageLocations")
+			if desc, ok := m["description"].(string); ok && strings.HasPrefix(desc, "Debian, Debian GNU/Linux, 11 (bullseye)") {
+				m["description"] = "Debian, Debian GNU/Linux, 11 (bullseye)"
+			}
+			m["name"] = "debian-11-bullseye"
+			m["selfLink"] = "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye"
+		}
+		if m["kind"] == "compute#operation" {
+			delete(m, "warnings")
+			if opType, ok := m["operationType"].(string); ok && (strings.HasPrefix(opType, "compute.instanceGroups.") || opType == "insert" || opType == "delete") {
+				m["status"] = "DONE"
+				m["progress"] = float64(100)
+				m["endTime"] = mockgcpregistry.PlaceholderTimestamp
+			}
+		}
+		if m["kind"] == "compute#instanceGroup" {
+			delete(m, "fingerprint")
+			delete(m, "subnetwork")
+		}
+		if m["kind"] == "compute#instanceGroupsListInstances" {
+			delete(m, "selfLink")
+			if items, ok := m["items"].([]any); ok {
+				for _, item := range items {
+					if itemMap, ok := item.(map[string]any); ok {
+						delete(itemMap, "namedPorts")
+					}
+				}
 			}
 		}
 
@@ -182,8 +310,14 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	if !isComputeAPI(event) {
 		return
-
 	}
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.Contains(value, "www.googleapis.com/compute/") {
+			replacements.ReplaceStringValue(value, strings.ReplaceAll(value, "www.googleapis.com/compute/", "compute.googleapis.com/compute/"))
+		}
+	})
+
 	kind := ""
 	event.VisitResponseStringValues(func(path string, value string) {
 		if path == ".kind" {

@@ -97,6 +97,34 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 		op = &pb.Operation{}
 	}
 
+	if op.OperationType != nil && (*op.OperationType == "compute.instanceGroups.addInstances" || *op.OperationType == "compute.instanceGroups.removeInstances" || *op.OperationType == "compute.instanceGroups.setNamedPorts") {
+		result, err := callback()
+		op.StartTime = PtrTo(formatTime(now))
+		op.InsertTime = PtrTo(formatTime(now))
+		op.Id = PtrTo(uint64(nanos))
+		op.Progress = PtrTo(int32(100))
+		op.Status = PtrTo(pb.Operation_DONE)
+		op.EndTime = PtrTo(formatTime(now))
+		op.Kind = PtrTo("compute#operation")
+		op.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
+		if err != nil {
+			op.Error = &pb.Error{
+				Errors: []*pb.Errors{
+					{
+						Code:    PtrTo(status.Code(err).String()),
+						Message: PtrTo(status.Convert(err).Message()),
+					},
+				},
+			}
+		}
+		log.Info("storing completed fast-path operation", "fqn", fqn)
+		if err := s.storage.Create(ctx, fqn, op); err != nil {
+			return nil, err
+		}
+		_ = result
+		return op, nil
+	}
+
 	op.StartTime = PtrTo(formatTime(now))
 	op.InsertTime = PtrTo(formatTime(now))
 	op.Id = PtrTo(uint64(nanos))

@@ -72,6 +72,27 @@ func (s *InstancesV1) Insert(ctx context.Context, req *pb.InsertInstanceRequest)
 	if obj.LabelFingerprint == nil {
 		obj.LabelFingerprint = PtrTo(computeFingerprint(obj))
 	}
+	for _, disk := range obj.Disks {
+		if disk.Source == nil {
+			disk.Source = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/disks/%s", name.Project.ID, name.Zone, obj.GetName())))
+		}
+		// Auto-create the disk in storage if it doesn't already exist
+		diskFQN := fmt.Sprintf("projects/%s/zones/%s/disks/%s", name.Project.ID, name.Zone, obj.GetName())
+		diskID := s.generateID()
+		mockDisk := &pb.Disk{
+			Id:                     &diskID,
+			Kind:                   PtrTo("compute#disk"),
+			Name:                   PtrTo(obj.GetName()),
+			SelfLink:               PtrTo(BuildComputeSelfLink(ctx, diskFQN)),
+			CreationTimestamp:      PtrTo(s.nowString()),
+			Zone:                   PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", name.Project.ID, name.Zone))),
+			Status:                 PtrTo("READY"),
+			Type:                   PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/diskTypes/pd-standard", name.Project.ID, name.Zone))),
+			PhysicalBlockSizeBytes: PtrTo(int64(4096)),
+			SizeGb:                 PtrTo(int64(10)),
+		}
+		_ = s.storage.Create(ctx, diskFQN, mockDisk)
+	}
 	// if obj.MachineType == nil {
 	// 	machineType := "pd-standard"
 	// 	obj.MachineType = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/machineTypes/%s", name.Project.ID, name.Zone, machineType)))
@@ -335,6 +356,10 @@ func (s *InstancesV1) Delete(ctx context.Context, req *pb.DeleteInstanceRequest)
 		}
 		return nil, err
 	}
+
+	// Clean up auto-created disk
+	diskFQN := fmt.Sprintf("projects/%s/zones/%s/disks/%s", name.Project.ID, name.Zone, name.Name)
+	_ = s.storage.Delete(ctx, diskFQN, &pb.Disk{})
 
 	op := &pb.Operation{
 		TargetId:      deleted.Id,
