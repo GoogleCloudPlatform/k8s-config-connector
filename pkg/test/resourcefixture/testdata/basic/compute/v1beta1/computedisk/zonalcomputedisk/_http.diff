@@ -6,32 +6,30 @@
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks
-41,43c41,43
-<   "sizeGb": 10,
+41,42c41,42
 <   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
 <   "zone": "projects/${projectId}/global/zones/us-central1-a"
 ---
 >   "physicalBlockSizeBytes": "4096",
->   "sizeGb": "10",
 >   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
-74c74,75
+73c73,74
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
 > Content-Type: application/json
-105c106
+104c105
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-139c140
+137c138
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}/setLabels?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}/setLabels
-174c175
+172c173
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}/resize?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-176a178,187
+174a176,185
 > 200 OK
 > Content-Type: application/json; charset=UTF-8
 > Server: ESF
@@ -42,7 +40,7 @@
 > X-Frame-Options: SAMEORIGIN
 > X-Xss-Protection: 0
 > 
-178c189,214
+176c187,211
 <   "sizeGb": 12
 ---
 >   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -58,7 +56,6 @@
 >   "name": "${diskID}",
 >   "physicalBlockSizeBytes": "4096",
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
->   "sizeGb": "10",
 >   "status": "READY",
 >   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
 >   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
@@ -71,15 +68,15 @@
 > 
 > {
 >   "sizeGb": "12"
-204c240
+202c237
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-239c275
+236c271
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-270c306,307
+267c302,303
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}

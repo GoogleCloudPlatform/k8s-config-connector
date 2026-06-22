@@ -217,6 +217,64 @@ func (s *DisksV1) SetLabels(ctx context.Context, req *pb.SetLabelsDiskRequest) (
 	return s.newLRO(ctx, name.Project.ID)
 }
 
+func (s *DisksV1) AddResourcePolicies(ctx context.Context, req *pb.AddResourcePoliciesDiskRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/disks/" + req.GetDisk()
+	name, err := s.parseZonalDiskName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Disk{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	for _, p := range req.GetDisksAddResourcePoliciesRequestResource().GetResourcePolicies() {
+		obj.ResourcePolicies = append(obj.ResourcePolicies, p)
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.newLRO(ctx, name.Project.ID)
+}
+
+func (s *DisksV1) RemoveResourcePolicies(ctx context.Context, req *pb.RemoveResourcePoliciesDiskRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/disks/" + req.GetDisk()
+	name, err := s.parseZonalDiskName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Disk{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	policiesToRemove := req.GetDisksRemoveResourcePoliciesRequestResource().GetResourcePolicies()
+	removeMap := make(map[string]bool)
+	for _, p := range policiesToRemove {
+		removeMap[p] = true
+	}
+
+	var kept []string
+	for _, p := range obj.ResourcePolicies {
+		if !removeMap[p] {
+			kept = append(kept, p)
+		}
+	}
+	obj.ResourcePolicies = kept
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.newLRO(ctx, name.Project.ID)
+}
+
 type zonalDiskName struct {
 	Project *projects.ProjectData
 	Zone    string

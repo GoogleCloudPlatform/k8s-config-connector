@@ -29,13 +29,12 @@
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks
-174,176c175,177
-<   "sourceDisk": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+173a175
+>   "physicalBlockSizeBytes": "4096",
+175,176c177
 <   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
 <   "zone": "projects/${projectId}/global/zones/us-central1-a"
 ---
->   "physicalBlockSizeBytes": "4096",
->   "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
 >   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
 207c208,209
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
@@ -46,10 +45,6 @@
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-263c265
-<   "sourceDisk": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
----
->   "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
 271c273
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 ---

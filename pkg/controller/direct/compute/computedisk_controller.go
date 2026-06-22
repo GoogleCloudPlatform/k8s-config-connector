@@ -174,7 +174,7 @@ func (a *ComputeDiskAdapter) Find(ctx context.Context) (bool, error) {
 		}
 		a.actual = actual
 		return true, nil
-	} else {
+	} else if a.id.IsRegional() {
 		req := &computepb.GetRegionDiskRequest{
 			Project: a.id.Project,
 			Region:  a.id.Region,
@@ -189,6 +189,8 @@ func (a *ComputeDiskAdapter) Find(ctx context.Context) (bool, error) {
 		}
 		a.actual = actual
 		return true, nil
+	} else {
+		return false, fmt.Errorf("ComputeDisk %s is neither zonal nor regional", a.id)
 	}
 }
 
@@ -210,7 +212,7 @@ func (a *ComputeDiskAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		if err != nil {
 			return fmt.Errorf("compute ComputeDisk %s waiting creation: %w", a.id.String(), err)
 		}
-	} else {
+	} else if a.id.IsRegional() {
 		req := &computepb.InsertRegionDiskRequest{
 			Project:      a.id.Project,
 			Region:       a.id.Region,
@@ -224,6 +226,8 @@ func (a *ComputeDiskAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		if err != nil {
 			return fmt.Errorf("compute ComputeRegionDisk %s waiting creation: %w", a.id.String(), err)
 		}
+	} else {
+		return fmt.Errorf("ComputeDisk %s is neither zonal nor regional", a.id)
 	}
 
 	log.Info("successfully created compute ComputeDisk in gcp", "name", a.id)
@@ -237,12 +241,14 @@ func (a *ComputeDiskAdapter) Create(ctx context.Context, createOp *directbase.Cr
 			Zone:    a.id.Zone,
 			Disk:    a.id.Disk,
 		})
-	} else {
+	} else if a.id.IsRegional() {
 		created, err = a.regionDisksClient.Get(ctx, &computepb.GetRegionDiskRequest{
 			Project: a.id.Project,
 			Region:  a.id.Region,
 			Disk:    a.id.Disk,
 		})
+	} else {
+		return fmt.Errorf("ComputeDisk %s is neither zonal nor regional", a.id)
 	}
 	if err != nil {
 		return fmt.Errorf("getting ComputeDisk %s after creation: %w", a.id, err)
@@ -297,7 +303,7 @@ func (a *ComputeDiskAdapter) Update(ctx context.Context, updateOp *directbase.Up
 				if err = op.Wait(ctx); err != nil {
 					return fmt.Errorf("compute ComputeDisk %s waiting labels update: %w", a.id, err)
 				}
-			} else {
+			} else if a.id.IsRegional() {
 				req := &computepb.SetLabelsRegionDiskRequest{
 					Project:  a.id.Project,
 					Region:   a.id.Region,
@@ -314,6 +320,8 @@ func (a *ComputeDiskAdapter) Update(ctx context.Context, updateOp *directbase.Up
 				if err = op.Wait(ctx); err != nil {
 					return fmt.Errorf("compute ComputeRegionDisk %s waiting labels update: %w", a.id, err)
 				}
+			} else {
+				return fmt.Errorf("ComputeDisk %s is neither zonal nor regional", a.id)
 			}
 		}
 
@@ -336,7 +344,7 @@ func (a *ComputeDiskAdapter) Update(ctx context.Context, updateOp *directbase.Up
 				if err = op.Wait(ctx); err != nil {
 					return fmt.Errorf("compute ComputeDisk %s waiting resize: %w", a.id, err)
 				}
-			} else {
+			} else if a.id.IsRegional() {
 				req := &computepb.ResizeRegionDiskRequest{
 					Project: a.id.Project,
 					Region:  a.id.Region,
@@ -352,6 +360,87 @@ func (a *ComputeDiskAdapter) Update(ctx context.Context, updateOp *directbase.Up
 				if err = op.Wait(ctx); err != nil {
 					return fmt.Errorf("compute ComputeRegionDisk %s waiting resize: %w", a.id, err)
 				}
+			} else {
+				return fmt.Errorf("ComputeDisk %s is neither zonal nor regional", a.id)
+			}
+		}
+
+		// Check if resource policies changed
+		toAdd, toRemove := diffResourcePolicies(a.actual.ResourcePolicies, a.desired.ResourcePolicies)
+		if len(toAdd) > 0 || len(toRemove) > 0 {
+			log.V(2).Info("updating ComputeDisk resource policies", "name", a.id, "toAdd", toAdd, "toRemove", toRemove)
+			if a.id.IsZonal() {
+				if len(toAdd) > 0 {
+					req := &computepb.AddResourcePoliciesDiskRequest{
+						Project: a.id.Project,
+						Zone:    a.id.Zone,
+						Disk:    a.id.Disk,
+						DisksAddResourcePoliciesRequestResource: &computepb.DisksAddResourcePoliciesRequest{
+							ResourcePolicies: toAdd,
+						},
+					}
+					op, err := a.disksClient.AddResourcePolicies(ctx, req)
+					if err != nil {
+						return fmt.Errorf("adding resource policies to ComputeDisk %s: %w", a.id, err)
+					}
+					if err = op.Wait(ctx); err != nil {
+						return fmt.Errorf("compute ComputeDisk %s waiting resource policies add: %w", a.id, err)
+					}
+				}
+				if len(toRemove) > 0 {
+					req := &computepb.RemoveResourcePoliciesDiskRequest{
+						Project: a.id.Project,
+						Zone:    a.id.Zone,
+						Disk:    a.id.Disk,
+						DisksRemoveResourcePoliciesRequestResource: &computepb.DisksRemoveResourcePoliciesRequest{
+							ResourcePolicies: toRemove,
+						},
+					}
+					op, err := a.disksClient.RemoveResourcePolicies(ctx, req)
+					if err != nil {
+						return fmt.Errorf("removing resource policies from ComputeDisk %s: %w", a.id, err)
+					}
+					if err = op.Wait(ctx); err != nil {
+						return fmt.Errorf("compute ComputeDisk %s waiting resource policies remove: %w", a.id, err)
+					}
+				}
+			} else if a.id.IsRegional() {
+				if len(toAdd) > 0 {
+					req := &computepb.AddResourcePoliciesRegionDiskRequest{
+						Project: a.id.Project,
+						Region:  a.id.Region,
+						Disk:    a.id.Disk,
+						RegionDisksAddResourcePoliciesRequestResource: &computepb.RegionDisksAddResourcePoliciesRequest{
+							ResourcePolicies: toAdd,
+						},
+					}
+					op, err := a.regionDisksClient.AddResourcePolicies(ctx, req)
+					if err != nil {
+						return fmt.Errorf("adding resource policies to ComputeRegionDisk %s: %w", a.id, err)
+					}
+					if err = op.Wait(ctx); err != nil {
+						return fmt.Errorf("compute ComputeRegionDisk %s waiting resource policies add: %w", a.id, err)
+					}
+				}
+				if len(toRemove) > 0 {
+					req := &computepb.RemoveResourcePoliciesRegionDiskRequest{
+						Project: a.id.Project,
+						Region:  a.id.Region,
+						Disk:    a.id.Disk,
+						RegionDisksRemoveResourcePoliciesRequestResource: &computepb.RegionDisksRemoveResourcePoliciesRequest{
+							ResourcePolicies: toRemove,
+						},
+					}
+					op, err := a.regionDisksClient.RemoveResourcePolicies(ctx, req)
+					if err != nil {
+						return fmt.Errorf("removing resource policies from ComputeRegionDisk %s: %w", a.id, err)
+					}
+					if err = op.Wait(ctx); err != nil {
+						return fmt.Errorf("compute ComputeRegionDisk %s waiting resource policies remove: %w", a.id, err)
+					}
+				}
+			} else {
+				return fmt.Errorf("ComputeDisk %s is neither zonal nor regional", a.id)
 			}
 		}
 
@@ -363,14 +452,16 @@ func (a *ComputeDiskAdapter) Update(ctx context.Context, updateOp *directbase.Up
 				Zone:    a.id.Zone,
 				Disk:    a.id.Disk,
 			})
-		} else {
+		} else if a.id.IsRegional() {
 			latest, getErr = a.regionDisksClient.Get(ctx, &computepb.GetRegionDiskRequest{
 				Project: a.id.Project,
 				Region:  a.id.Region,
 				Disk:    a.id.Disk,
 			})
+		} else {
+			return fmt.Errorf("ComputeDisk %s is neither zonal nor regional", a.id)
 		}
-		if err != nil {
+		if getErr != nil {
 			return fmt.Errorf("getting ComputeDisk %s after update: %w", a.id, getErr)
 		}
 	}
@@ -394,8 +485,10 @@ func (a *ComputeDiskAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
 	if a.id.IsZonal() {
 		obj.Spec.Location = a.id.Zone
-	} else {
+	} else if a.id.IsRegional() {
 		obj.Spec.Location = a.id.Region
+	} else {
+		return nil, fmt.Errorf("ComputeDisk %s is neither zonal nor regional", a.id)
 	}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
@@ -431,7 +524,7 @@ func (a *ComputeDiskAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 		if err != nil {
 			return false, fmt.Errorf("ComputeDisk %s waiting deletion: %w", a.id, err)
 		}
-	} else {
+	} else if a.id.IsRegional() {
 		req := &computepb.DeleteRegionDiskRequest{
 			Project: a.id.Project,
 			Region:  a.id.Region,
@@ -449,6 +542,8 @@ func (a *ComputeDiskAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 		if err != nil {
 			return false, fmt.Errorf("ComputeRegionDisk %s waiting deletion: %w", a.id, err)
 		}
+	} else {
+		return false, fmt.Errorf("ComputeDisk %s is neither zonal nor regional", a.id)
 	}
 
 	log.V(2).Info("successfully deleted ComputeDisk", "name", a.id)
@@ -524,6 +619,13 @@ func compareComputeDisk(ctx context.Context, actual, desired *computepb.Disk, id
 		obj.SourceDisk = canonicalizeComputeURL(obj.SourceDisk)
 		obj.SourceImage = canonicalizeComputeSourceImage(obj.SourceImage)
 		obj.SourceSnapshot = canonicalizeComputeSnapshot(obj.SourceSnapshot)
+
+		// Canonicalize ResourcePolicies
+		for i, p := range obj.ResourcePolicies {
+			if u := canonicalizeComputeURL(&p); u != nil {
+				obj.ResourcePolicies[i] = *u
+			}
+		}
 	}
 
 	populateDefaults(clonedDesired)
@@ -555,4 +657,32 @@ func canonicalizeComputeSnapshot(t *string) *string {
 	}
 	val := refs.TrimComputeURIPrefix(*t)
 	return &val
+}
+
+func diffResourcePolicies(actual, desired []string) (toAdd, toRemove []string) {
+	actualMap := make(map[string]bool)
+	for _, p := range actual {
+		trimmed := refs.TrimComputeURIPrefix(p)
+		actualMap[trimmed] = true
+	}
+
+	desiredMap := make(map[string]bool)
+	for _, p := range desired {
+		trimmed := refs.TrimComputeURIPrefix(p)
+		desiredMap[trimmed] = true
+	}
+
+	for p := range desiredMap {
+		if !actualMap[p] {
+			toAdd = append(toAdd, p)
+		}
+	}
+
+	for p := range actualMap {
+		if !desiredMap[p] {
+			toRemove = append(toRemove, p)
+		}
+	}
+
+	return toAdd, toRemove
 }
