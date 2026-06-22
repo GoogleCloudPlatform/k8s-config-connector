@@ -436,50 +436,11 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "affinityCookieTtlSec": 0,
-  "connectionDraining": {
-    "drainingTimeoutSec": 300
-  },
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
-  "fingerprint": "abcdef0123A=",
-  "healthChecks": [
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/global/httpHealthChecks/${healthCheckID}"
-  ],
-  "iap": {
-    "enabled": false,
-    "oauth2ClientId": "",
-    "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-  },
-  "id": "000000000000000000000",
-  "kind": "compute#backendService",
-  "loadBalancingScheme": "EXTERNAL",
-  "name": "${backendServiceID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-  "sessionAffinity": "NONE",
-  "timeoutSec": 10
-}
-
----
-
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}/addSignedUrlKey
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}/addSignedUrlKey?alt=json
 Content-Type: application/json
 
 {
+  "backendService": "projects/${projectId}/global/backendServices/${backendServiceID}",
   "keyName": "key-${uniqueId}",
   "keyValue": "MTIzNDU2Nzg5MDEyMzQ1Ng=="
 }
@@ -511,8 +472,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -542,7 +502,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -587,7 +547,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}/deleteSignedUrlKey?keyName=key-${uniqueId}
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}/deleteSignedUrlKey?alt=json&keyName=key-${uniqueId}
 Content-Type: application/json
 
 200 OK
@@ -617,8 +577,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8

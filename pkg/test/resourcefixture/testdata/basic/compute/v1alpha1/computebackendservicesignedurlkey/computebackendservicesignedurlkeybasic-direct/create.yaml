@@ -16,6 +16,8 @@ apiVersion: compute.cnrm.cloud.google.com/v1alpha1
 kind: ComputeBackendServiceSignedURLKey
 metadata:
   name: computebackendservicesignedurlkey-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
   projectRef:
     external: ${projectId}
