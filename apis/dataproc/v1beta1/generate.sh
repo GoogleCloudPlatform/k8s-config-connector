@@ -25,6 +25,7 @@ go run . generate-types \
   --service google.cloud.dataproc.v1 \
   --api-version dataproc.cnrm.cloud.google.com/v1beta1 \
   --resource DataprocAutoscalingPolicy:AutoscalingPolicy \
+  --resource DataprocCluster:Cluster \
   --include-skipped-output
 
 go run . generate-mapper \
