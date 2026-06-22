@@ -52,6 +52,7 @@ OK
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "gcpolicy-dep-${uniqueId}",
@@ -91,6 +92,7 @@ OK
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "gcpolicy-dep-${uniqueId}",
@@ -250,12 +252,10 @@ OK
 {
   "columnFamilies": {
     "family1": {
-      "gcRule": {},
-      "valueType": {}
+      "gcRule": {}
     },
     "family2": {
-      "gcRule": {},
-      "valueType": {}
+      "gcRule": {}
     }
   },
   "granularity": "MILLIS",

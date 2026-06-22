@@ -111,12 +111,6 @@ func (s *tableAdminServer) CreateTable(ctx context.Context, req *pb.CreateTableR
 		obj.Granularity = pb.Table_MILLIS
 	}
 
-	for _, columnFamily := range obj.GetColumnFamilies() {
-		if columnFamily.ValueType == nil {
-			columnFamily.ValueType = &pb.Type{}
-		}
-	}
-
 	if err := s.storage.Create(ctx, tableFQN, obj); err != nil {
 		return nil, err
 	}
@@ -137,6 +131,10 @@ func (s *tableAdminServer) ModifyColumnFamilies(ctx context.Context, req *pb.Mod
 	obj := &pb.Table{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
+	}
+
+	if obj.ColumnFamilies == nil {
+		obj.ColumnFamilies = make(map[string]*pb.ColumnFamily)
 	}
 
 	for _, modReq := range req.GetModifications() {

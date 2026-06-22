@@ -107,6 +107,10 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 	now := time.Now()
 	instanceFQN := name.String()
 
+	if originalRequest.Instance != nil {
+		originalRequest.Instance.Name = instanceFQN
+	}
+
 	obj := proto.CloneOf(req.Instance)
 	obj.Name = instanceFQN
 
