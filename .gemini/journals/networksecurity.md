@@ -24,3 +24,15 @@
 - **Problem**: `NetworkSecuritySecurityProfile` contains two references to endpoint groups (`mirroringEndpointGroup` and `interceptEndpointGroup`), which did not have pre-existing reference structs in `apis/refs/v1beta1/networksecurityrefs.go`.
 - **Solution**: Defined `NetworkSecurityMirroringEndpointGroupRef` and `NetworkSecurityInterceptEndpointGroupRef` in `apis/refs/v1beta1/networksecurityrefs.go` to provide structured validation for endpoint group references, and used them in `CustomMirroringProfile` and `CustomInterceptProfile` respectively.
 - **Impact**: Enables strict validation and clean reference resolution for endpoint group fields within a SecurityProfile definition.
+
+### [2026-05-27] Scaffolded Direct Types for NetworkSecurityAuthzPolicy
+- **Context**: Scaffolding direct KRM types for NetworkSecurityAuthzPolicy.
+- **Problem**: The googleapis pinned commit (731d7f2ab6) was from before authz_policy.proto was added to googleapis. The generate-types script failed to find the proto message google.cloud.networksecurity.v1.AuthzPolicy.
+- **Solution**: Curled authz_policy.proto from the googleapis master branch and placed it in mockgcp/apis/google/cloud/networksecurity/v1/authz_policy.proto. Updated dev/tools/controllerbuilder/generate-proto.sh to include mockgcp/apis/google/cloud/networksecurity/*/*.proto so that protoc could find it when generating .build/googleapis.pb.
+- **Impact**: Any newer resources that are not in the pinned googleapis SHA must be manually added to mockgcp/apis until the pin is advanced.
+
+### [2026-05-27] Empty Spec during generate-types for NetworkSecurityAuthzPolicy
+- **Context**: Running generate-types for NetworkSecurityAuthzPolicy.
+- **Problem**: The generated authzpolicy_types.go had empty Spec and ObservedState, and all fields were dumped to types.generated.go as an unreachable type AuthzPolicy.
+- **Solution**: Manually copied the needed fields from types.generated.go into NetworkSecurityAuthzPolicySpec and NetworkSecurityAuthzPolicyObservedState inside authzpolicy_types.go and reran generate-types. Modified primitive fields (like Location string) to pointers (Location *string) to pass the review invariant check.
+- **Impact**: When scaffolding new direct resources, agents must manually construct the Spec and ObservedState fields by referencing types.generated.go and ensure all Go primitive types are strictly pointers.
