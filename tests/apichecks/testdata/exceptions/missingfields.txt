@@ -1491,6 +1491,7 @@
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.lifecycleConfig.idleDeleteTtl" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.masterConfig.accelerators[].acceleratorCount" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.masterConfig.accelerators[].acceleratorType" is not set in unstructured objects
+[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.masterConfig.accelerators[].gpuPartitionSize" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.masterConfig.diskConfig.bootDiskSizeGb" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.masterConfig.diskConfig.localSsdInterface" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.masterConfig.diskConfig.numLocalSsds" is not set in unstructured objects
@@ -1500,6 +1501,7 @@
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.metastoreConfig.dataprocMetastoreServiceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.accelerators[].acceleratorCount" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.accelerators[].acceleratorType" is not set in unstructured objects
+[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.accelerators[].gpuPartitionSize" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.diskConfig.bootDiskSizeGb" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.diskConfig.bootDiskType" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.diskConfig.localSsdInterface" is not set in unstructured objects
@@ -1529,6 +1531,7 @@
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.tempBucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.accelerators[].acceleratorCount" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.accelerators[].acceleratorType" is not set in unstructured objects
+[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.accelerators[].gpuPartitionSize" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.diskConfig.bootDiskSizeGb" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.diskConfig.bootDiskType" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.diskConfig.localSsdInterface" is not set in unstructured objects
@@ -1544,7 +1547,7 @@
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.accelerators[].acceleratorCount" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.accelerators[].acceleratorType" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.accelerators[].gpuPartitionSize" is not set in unstructured objects
-[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKmsKey" is not set in unstructured objects
+[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKMSKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.ephemeralStorageConfig.localSsdCount" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.localSsdCount" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.machineType" is not set in unstructured objects

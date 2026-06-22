@@ -145,6 +145,7 @@ config:
     accelerators:
     - acceleratorCount: integer
       acceleratorType: string
+      gpuPartitionSize: string
     diskConfig:
       bootDiskSizeGb: integer
       bootDiskType: string
@@ -167,6 +168,7 @@ config:
     accelerators:
     - acceleratorCount: integer
       acceleratorType: string
+      gpuPartitionSize: string
     diskConfig:
       bootDiskSizeGb: integer
       bootDiskType: string
@@ -221,6 +223,7 @@ config:
     accelerators:
     - acceleratorCount: integer
       acceleratorType: string
+      gpuPartitionSize: string
     diskConfig:
       bootDiskSizeGb: integer
       bootDiskType: string
@@ -237,6 +240,7 @@ config:
 location: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -268,7 +272,10 @@ virtualClusterConfig:
             - acceleratorCount: integer
               acceleratorType: string
               gpuPartitionSize: string
-            bootDiskKmsKey: string
+            bootDiskKMSKeyRef:
+              external: string
+              name: string
+              namespace: string
             ephemeralStorageConfig:
               localSsdCount: integer
             localSsdCount: integer
@@ -340,9 +347,7 @@ virtualClusterConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. The autoscaling policy used by the cluster. Only resource names including projectid and location (region) are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]` * `projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]` Note that the policy must be in the same project and Dataproc region.
-
-Allowed value: The Google Cloud resource name of a `DataprocAutoscalingPolicy` resource (format: `projects/{{project}}/locations/{{location}}/autoscalingPolicies/{{name}}`).</p>
+            <p>A reference to an externally managed DataprocAutoscalingPolicy resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/autoscalingPolicies/{{policyID}}".</p>
         </td>
     </tr>
     <tr>
@@ -352,7 +357,7 @@ Allowed value: The Google Cloud resource name of a `DataprocAutoscalingPolicy` r
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a DataprocAutoscalingPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -362,7 +367,7 @@ Allowed value: The Google Cloud resource name of a `DataprocAutoscalingPolicy` r
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a DataprocAutoscalingPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -402,7 +407,7 @@ Allowed value: The Google Cloud resource name of a `DataprocAutoscalingPolicy` r
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Optional. Specify one or more [available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) to collect for the metric course (for the `SPARK` metric source, any [Spark metric] (https://spark.apache.org/docs/latest/monitoring.html#metrics) can be specified). Provide metrics in the following format: `METRIC_SOURCE:INSTANCE:GROUP:METRIC` Use camelcase as appropriate. Examples: ``` yarn:ResourceManager:QueueMetrics:AppsCompleted spark:driver:DAGScheduler:job.allJobs sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed hiveserver2:JVM:Memory:NonHeapMemoryUsage.used ``` Notes: * Only the specified overridden metrics will be collected for the metric source. For example, if one or more `spark:executive` metrics are listed as metric overrides, other `SPARK` metrics will not be collected. The collection of the default metrics for other OSS metric sources is unaffected. For example, if both `SPARK` andd `YARN` metric sources are enabled, and overrides are provided for Spark metrics only, all default YARN metrics will be collected.</p>
+            <p>Immutable. Optional. Specify one or more [available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) to collect for the metric course (for the `SPARK` metric source, any [Spark metric] (https://spark.apache.org/docs/latest/monitoring.html#metrics) can be specified). Provide metrics in the following format: `METRIC_SOURCE:INSTANCE:GROUP:METRIC` Use camelcase as appropriate. Examples: ``` yarn:ResourceManager:QueueMetrics:AppsCompleted spark:driver:DAGScheduler:job.allJobs sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed hiveserver2:JVM:Memory:NonHeapMemoryUsage.used ``` Notes: * Only the specified overridden metrics will be collected for the metric source. For example, if one or more `spark:executive` metrics are listed as metric overrides, other `SPARK` metrics will not be collected. The collection of the default metrics for other OSS metric sources is unaffected. For example, if both `SPARK` and `YARN` metric sources are enabled, and overrides are provided for Spark metrics only, all default YARN metrics will be collected.</p>
         </td>
     </tr>
     <tr>
@@ -432,7 +437,7 @@ Allowed value: The Google Cloud resource name of a `DataprocAutoscalingPolicy` r
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. Encryption settings for the cluster.</p>
+            <p>Immutable. Optional. Encryption config for the cluster.</p>
         </td>
     </tr>
     <tr>
@@ -452,9 +457,7 @@ Allowed value: The Google Cloud resource name of a `DataprocAutoscalingPolicy` r
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. The Cloud KMS key name to use for PD disk encryption for all instances in the cluster.
-
-Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -464,7 +467,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -474,7 +477,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -484,7 +487,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. Port/endpoint configuration for this cluster</p>
+            <p>Immutable. Optional. Port access config for the cluster.</p>
         </td>
     </tr>
     <tr>
@@ -504,7 +507,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. The shared Compute Engine config settings for all instances in a cluster.</p>
+            <p>Immutable. Optional. Compute Engine config settings for a cluster.</p>
         </td>
     </tr>
     <tr>
@@ -564,9 +567,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. The Compute Engine network to be used for machine communications. Cannot be specified with subnetwork_uri. If neither `network_uri` nor `subnetwork_uri` is specified, the "default" network of the project is used, if it exists. Cannot be a "Custom Subnet Network" (see [Using Subnetworks](https://cloud.google.com/compute/docs/subnetworks) for more information). A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/global/default` * `projects/[project_id]/regions/global/default` * `default`
-
-Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -576,7 +577,7 @@ Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -586,7 +587,7 @@ Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -616,9 +617,7 @@ Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The URI of a sole-tenant [node group resource](https://cloud.google.com/compute/docs/reference/rest/v1/nodeGroups) that the cluster will be created on. A full URL, partial URI, or node group name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-central1-a/nodeGroups/node-group-1` * `projects/[project_id]/zones/us-central1-a/nodeGroups/node-group-1` * `node-group-1`
-
-Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.</p>
+            <p>A reference to an externally managed ContainerNodePool resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}/nodePools/{{nodePoolID}}" or "projects/{{projectID}}/zones/{{zone}}/clusters/{{clusterID}}/nodePools/{{nodePoolID}}".</p>
         </td>
     </tr>
     <tr>
@@ -628,7 +627,7 @@ Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ContainerNodePool resource.</p>
         </td>
     </tr>
     <tr>
@@ -638,7 +637,7 @@ Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ContainerNodePool resource.</p>
         </td>
     </tr>
     <tr>
@@ -718,9 +717,7 @@ Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. The [Dataproc service account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc) (also see [VM Data Plane identity](https://cloud.google.com/dataproc/docs/concepts/iam/dataproc-principals#vm_service_account_data_plane_identity)) used by Dataproc cluster VM instances to access Google Cloud Platform services. If not specified, the [Compute Engine default service account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account) is used.
-
-Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -820,9 +817,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. The Compute Engine subnetwork to be used for machine communications. Cannot be specified with network_uri. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/us-east1/subnetworks/sub0` * `projects/[project_id]/regions/us-east1/subnetworks/sub0` * `sub0`
-
-Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -832,7 +827,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -842,7 +837,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -882,7 +877,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Immutable. Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node's `role` metadata to run an executable on a master or worker node, as shown below using `curl` (you can also use `wget`): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ "${ROLE}" == 'Master' ]]; then ... master specific actions ... else ... worker specific actions ... fi</p>
+            <p>Immutable. Optional. Commands to run on each node after the cluster is configured.</p>
         </td>
     </tr>
     <tr>
@@ -922,7 +917,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. Lifecycle setting for the cluster.</p>
+            <p>Immutable. Optional. Lifecycle config for the cluster.</p>
         </td>
     </tr>
     <tr>
@@ -992,7 +987,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. The number of the accelerator cards of this type exposed to this instance.</p>
+            <p>Immutable. The number of accelerator cards exposed to an instance.</p>
         </td>
     </tr>
     <tr>
@@ -1002,7 +997,17 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See [Compute Engine AcceleratorTypes](https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes). Examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `nvidia-tesla-k80` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`.</p>
+            <p>Immutable. The accelerator type resource namename (see GPUs on Compute Engine).</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.masterConfig.accelerators[].gpuPartitionSize</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).</p>
         </td>
     </tr>
     <tr>
@@ -1072,9 +1077,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
-
-Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
+            <p>A reference to an externally managed ComputeImage resource. Should be in the format "projects/{{project}}/global/images/{{name}}" or "projects/{{project}}/global/images/family/{{family}}".</p>
         </td>
     </tr>
     <tr>
@@ -1084,7 +1087,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeImage resource.</p>
         </td>
     </tr>
     <tr>
@@ -1094,7 +1097,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeImage resource.</p>
         </td>
     </tr>
     <tr>
@@ -1144,7 +1147,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. Metastore configuration.</p>
+            <p>Immutable. Optional. Metastore config for the cluster.</p>
         </td>
     </tr>
     <tr>
@@ -1164,7 +1167,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. Resource name of an existing Dataproc Metastore service. Example: * `projects/[project_id]/locations/[dataproc_region]/services/[service-name]`</p>
+            <p>A reference to an externally managed DataprocMetastoreService resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1174,8 +1177,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[WARNING] DataprocMetastoreService not yet supported in Config Connector, use 'external' field to reference existing resources.
-Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a DataprocMetastoreService resource.</p>
         </td>
     </tr>
     <tr>
@@ -1185,7 +1187,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a DataprocMetastoreService resource.</p>
         </td>
     </tr>
     <tr>
@@ -1195,7 +1197,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. The Compute Engine config settings for additional worker instances in a cluster.</p>
+            <p>Immutable. Optional. The Compute Engine config settings for secondary worker instances in a cluster.</p>
         </td>
     </tr>
     <tr>
@@ -1225,7 +1227,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. The number of the accelerator cards of this type exposed to this instance.</p>
+            <p>Immutable. The number of accelerator cards exposed to an instance.</p>
         </td>
     </tr>
     <tr>
@@ -1235,7 +1237,17 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See [Compute Engine AcceleratorTypes](https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes). Examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `nvidia-tesla-k80` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`.</p>
+            <p>Immutable. The accelerator type resource namename (see GPUs on Compute Engine).</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.secondaryWorkerConfig.accelerators[].gpuPartitionSize</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).</p>
         </td>
     </tr>
     <tr>
@@ -1305,9 +1317,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
-
-Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
+            <p>A reference to an externally managed ComputeImage resource. Should be in the format "projects/{{project}}/global/images/{{name}}" or "projects/{{project}}/global/images/family/{{family}}".</p>
         </td>
     </tr>
     <tr>
@@ -1317,7 +1327,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeImage resource.</p>
         </td>
     </tr>
     <tr>
@@ -1327,7 +1337,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeImage resource.</p>
         </td>
     </tr>
     <tr>
@@ -1377,7 +1387,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Optional. Security settings for the cluster.</p>
+            <p>Immutable. Optional. Security config for the cluster.</p>
         </td>
     </tr>
     <tr>
@@ -1517,9 +1527,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. The uri of the KMS key used to encrypt various sensitive files.
-
-Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -1529,7 +1537,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1539,7 +1547,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1599,7 +1607,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. The config settings for software inside the cluster.</p>
+            <p>Immutable. Optional. Software config for the cluster.</p>
         </td>
     </tr>
     <tr>
@@ -1659,9 +1667,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**
-
-Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).</p>
+            <p>A reference to an externally managed StorageBucket resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1671,7 +1677,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a StorageBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -1681,7 +1687,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a StorageBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -1701,9 +1707,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**
-
-Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).</p>
+            <p>A reference to an externally managed StorageBucket resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1713,7 +1717,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a StorageBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -1723,7 +1727,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a StorageBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -1763,7 +1767,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. The number of the accelerator cards of this type exposed to this instance.</p>
+            <p>Immutable. The number of accelerator cards exposed to an instance.</p>
         </td>
     </tr>
     <tr>
@@ -1773,7 +1777,17 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See [Compute Engine AcceleratorTypes](https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes). Examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `nvidia-tesla-k80` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`.</p>
+            <p>Immutable. The accelerator type resource namename (see GPUs on Compute Engine).</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.workerConfig.accelerators[].gpuPartitionSize</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).</p>
         </td>
     </tr>
     <tr>
@@ -1843,9 +1857,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
-
-Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
+            <p>A reference to an externally managed ComputeImage resource. Should be in the format "projects/{{project}}/global/images/{{name}}" or "projects/{{project}}/global/images/family/{{family}}".</p>
         </td>
     </tr>
     <tr>
@@ -1855,7 +1867,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeImage resource.</p>
         </td>
     </tr>
     <tr>
@@ -1865,7 +1877,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeImage resource.</p>
         </td>
     </tr>
     <tr>
@@ -1911,7 +1923,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
     <tr>
         <td>
             <p><code>location</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -1935,9 +1947,17 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The Google Cloud Platform project ID that the cluster belongs to.
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
         </td>
     </tr>
     <tr>
@@ -1947,7 +1967,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1957,7 +1977,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -2017,7 +2037,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. Resource name of an existing Dataproc Metastore service. Example: * `projects/[project_id]/locations/[dataproc_region]/services/[service-name]`</p>
+            <p>A reference to an externally managed DataprocMetastoreService resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".</p>
         </td>
     </tr>
     <tr>
@@ -2027,8 +2047,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[WARNING] DataprocMetastoreService not yet supported in Config Connector, use 'external' field to reference existing resources.
-Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a DataprocMetastoreService resource.</p>
         </td>
     </tr>
     <tr>
@@ -2038,7 +2057,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a DataprocMetastoreService resource.</p>
         </td>
     </tr>
     <tr>
@@ -2068,9 +2087,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. Resource name of an existing Dataproc Cluster to act as a Spark History Server for the workload. Example: * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
-
-Allowed value: The `selfLink` field of a `DataprocCluster` resource.</p>
+            <p>A reference to an externally managed DataprocCluster resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".</p>
         </td>
     </tr>
     <tr>
@@ -2080,7 +2097,7 @@ Allowed value: The `selfLink` field of a `DataprocCluster` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a DataprocCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -2090,7 +2107,7 @@ Allowed value: The `selfLink` field of a `DataprocCluster` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a DataprocCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -2130,9 +2147,7 @@ Allowed value: The `selfLink` field of a `DataprocCluster` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. A target GKE cluster to deploy to. It must be in the same project and region as the Dataproc cluster (the GKE cluster can be zonal or regional). Format: 'projects/{project}/locations/{location}/clusters/{cluster_id}'
-
-Allowed value: The `selfLink` field of a `ContainerCluster` resource.</p>
+            <p>The GKE cluster. Valid formats: `projects/{projectID}/locations/{location}/clusters/{clusterID}` `projects/{projectID}/zones/{zone}/clusters/{clusterID}`</p>
         </td>
     </tr>
     <tr>
@@ -2142,7 +2157,7 @@ Allowed value: The `selfLink` field of a `ContainerCluster` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>Name of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */</p>
         </td>
     </tr>
     <tr>
@@ -2152,7 +2167,7 @@ Allowed value: The `selfLink` field of a `ContainerCluster` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>Namespace of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */</p>
         </td>
     </tr>
     <tr>
@@ -2277,12 +2292,42 @@ Allowed value: The `selfLink` field of a `ContainerCluster` resource.</p>
     </tr>
     <tr>
         <td>
-            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKmsKey</code></p>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKMSKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Immutable. Optional. The [Customer Managed Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek) used to encrypt the boot disk attached to each node in the node pool.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKMSKeyRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The [Customer Managed Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek) used to encrypt the boot disk attached to each node in the node pool. Specify the key using the following format: `projects/KEY_PROJECT_ID/locations/LOCATION/keyRings/RING_NAME/cryptoKeys/KEY_NAME`.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKMSKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKMSKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -2392,9 +2437,7 @@ Allowed value: The `selfLink` field of a `ContainerCluster` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The target GKE node pool. Format: 'projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}'
-
-Allowed value: The `selfLink` field of a `ContainerNodePool` resource.</p>
+            <p>A reference to an externally managed ContainerNodePool resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}/nodePools/{{nodePoolID}}" or "projects/{{projectID}}/zones/{{zone}}/clusters/{{clusterID}}/nodePools/{{nodePoolID}}".</p>
         </td>
     </tr>
     <tr>
@@ -2404,7 +2447,7 @@ Allowed value: The `selfLink` field of a `ContainerNodePool` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ContainerNodePool resource.</p>
         </td>
     </tr>
     <tr>
@@ -2414,7 +2457,7 @@ Allowed value: The `selfLink` field of a `ContainerNodePool` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ContainerNodePool resource.</p>
         </td>
     </tr>
     <tr>
@@ -2494,9 +2537,7 @@ Allowed value: The `selfLink` field of a `ContainerNodePool` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging and temp buckets](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a `gs://...` URI to a Cloud Storage bucket.**
-
-Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).</p>
+            <p>A reference to an externally managed StorageBucket resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>
@@ -2506,7 +2547,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a StorageBucket resource.</p>
         </td>
     </tr>
     <tr>
@@ -2516,7 +2557,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a StorageBucket resource.</p>
         </td>
     </tr>
 </tbody>
@@ -2612,7 +2653,7 @@ statusHistory:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the DataprocCluster's current state.</p>
         </td>
     </tr>
     <tr>

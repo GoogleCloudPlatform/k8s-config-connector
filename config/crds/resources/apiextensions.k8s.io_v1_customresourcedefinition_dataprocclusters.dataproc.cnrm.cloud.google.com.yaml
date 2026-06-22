@@ -124,7 +124,7 @@ spec:
                                 metric overrides, other `SPARK` metrics will not be
                                 collected. The collection of the default metrics for
                                 other OSS metric sources is unaffected. For example,
-                                if both `SPARK` andd `YARN` metric sources are enabled,
+                                if both `SPARK` and `YARN` metric sources are enabled,
                                 and overrides are provided for Spark metrics only,
                                 all default YARN metrics will be collected.'
                               items:
