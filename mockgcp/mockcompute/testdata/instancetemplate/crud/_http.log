@@ -14,12 +14,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "Debian, Debian GNU/Linux, 11 (bullseye), amd64 built on 20231010",
   "family": "debian-11",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-  "status": "UP"
+  "name": "debian-11-bullseye",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye"
 }
 
 ---
@@ -96,7 +94,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "compute.instanceTemplates.insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${instanceTemplateID}",
@@ -129,7 +127,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "compute.instanceTemplates.insert",
   "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${instanceTemplateID}",
@@ -156,7 +154,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "test instance template",
   "id": "000000000000000000000",
   "kind": "compute#instanceTemplate",
   "name": "${instanceTemplateID}",
@@ -166,11 +163,8 @@ X-Xss-Protection: 0
       {
         "autoDelete": true,
         "boot": true,
-        "deviceName": "boot",
+        "deviceName": "persistent-disk-0",
         "index": 0,
-        "initializeParams": {
-          "sourceImage": "https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12"
-        },
         "kind": "compute#attachedDisk",
         "mode": "READ_WRITE",
         "type": "PERSISTENT"
@@ -178,7 +172,7 @@ X-Xss-Protection: 0
     ],
     "machineType": "n1-standard-1",
     "metadata": {
-      "fingerprint": "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "fingerprint": "abcdef0123A=",
       "kind": "compute#metadata"
     },
     "networkInterfaces": [
@@ -236,15 +230,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "progress": 100,
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "DONE",
   "targetId": "${instanceTemplateID}",
   "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "user": "user@example.com"
@@ -275,7 +270,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${instanceTemplateID}",

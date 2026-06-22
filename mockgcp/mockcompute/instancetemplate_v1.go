@@ -67,10 +67,10 @@ func (s *InstanceTemplatesV1) Insert(ctx context.Context, req *pb.InsertInstance
 		}
 		networkInterface.Kind = PtrTo("compute#networkInterface")
 		if networkInterface.Network != nil {
-			networkInterface.Network = PtrTo(BuildComputeSelfLink(ctx, *networkInterface.Network))
+			networkInterface.Network = PtrTo(ExpandComputeLink(ctx, *networkInterface.Network))
 		}
 		if networkInterface.Subnetwork != nil {
-			networkInterface.Subnetwork = PtrTo(BuildComputeSelfLink(ctx, *networkInterface.Subnetwork))
+			networkInterface.Subnetwork = PtrTo(ExpandComputeLink(ctx, *networkInterface.Subnetwork))
 		}
 		for _, accessConfig := range networkInterface.AccessConfigs {
 			accessConfig.Kind = PtrTo("compute#accessConfig")

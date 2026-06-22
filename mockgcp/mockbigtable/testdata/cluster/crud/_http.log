@@ -57,56 +57,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
-    "finishTime": "2024-04-01T12:34:56.123456Z",
-    "originalRequest": {
-      "clusters": {
-        "central1b": {
-          "defaultStorageType": "SSD",
-          "location": "projects/${projectId}/locations/us-central1-b",
-          "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
-          "serveNodes": 1
-        }
-      },
-      "instance": {
-        "displayName": "Test Instance ${uniqueId}",
-        "type": "PRODUCTION"
-      },
-      "instanceId": "test-instance-${uniqueId}",
-      "parent": "projects/${projectId}"
-    },
-    "requestTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
-    "displayName": "Test Instance ${uniqueId}",
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}",
-    "state": "READY",
-    "type": "PRODUCTION"
-  }
-}
-
----
-
 GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
@@ -175,51 +125,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/clusters/central1f/locations/us-central1-f/operations/${operationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateClusterMetadata",
-    "finishTime": "2024-04-01T12:34:56.123456Z",
-    "originalRequest": {
-      "cluster": {
-        "defaultStorageType": "SSD",
-        "location": "projects/${projectId}/locations/us-central1-f",
-        "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
-        "serveNodes": 3
-      },
-      "clusterId": "central1f",
-      "parent": "projects/${projectId}/instances/test-instance-${uniqueId}"
-    },
-    "requestTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/clusters/central1f/locations/us-central1-f/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
-    "defaultStorageType": "SSD",
-    "location": "projects/${projectId}/locations/us-central1-f",
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/clusters/central1f",
-    "serveNodes": 3,
-    "state": "READY"
-  }
-}
-
----
-
 GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/clusters/central1f?alt=json
 Accept: application/json
 Authorization: (removed)
@@ -280,49 +185,6 @@ X-Xss-Protection: 0
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/clusters/central1f/locations/us-central1-f/operations/${operationID}"
-}
-
----
-
-GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/clusters/central1f/locations/us-central1-f/operations/${operationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
-    "finishTime": "2024-04-01T12:34:56.123456Z",
-    "originalRequest": {
-      "cluster": {
-        "name": "projects/${projectId}/instances/test-instance-${uniqueId}/clusters/central1f",
-        "serveNodes": 5
-      },
-      "updateMask": "serveNodes"
-    },
-    "requestTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/clusters/central1f/locations/us-central1-f/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
-    "defaultStorageType": "SSD",
-    "location": "projects/${projectId}/locations/us-central1-f",
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/clusters/central1f",
-    "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
-    "serveNodes": 5,
-    "state": "READY"
-  }
 }
 
 ---

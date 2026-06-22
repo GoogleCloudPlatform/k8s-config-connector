@@ -37,52 +37,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.metastore.v1.Federation",
-    "backendMetastores": {
-      "1": {
-        "metastoreType": "DATAPROC_METASTORE",
-        "name": "projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}"
-      }
-    },
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endpointUri": "thrift://mock-endpoint:9083",
-    "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
-    "state": "ACTIVE",
-    "uid": "111111111111111111111",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "version": "3.1.2"
-  }
-}
-
----
-
 GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/test-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
@@ -161,52 +115,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.metastore.v1.Federation",
-    "backendMetastores": {
-      "1": {
-        "metastoreType": "DATAPROC_METASTORE",
-        "name": "projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}"
-      }
-    },
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endpointUri": "thrift://mock-endpoint:9083",
-    "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
-    "state": "ACTIVE",
-    "uid": "111111111111111111111",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "version": "3.1.2"
-  }
-}
-
----
-
 GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/test-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
@@ -264,37 +172,4 @@ X-Xss-Protection: 0
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
----
-
-GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
 }
