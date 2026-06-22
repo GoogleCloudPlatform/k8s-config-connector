@@ -46,17 +46,14 @@ type ComputeOrganizationSecurityPolicySpec struct {
 	/* Immutable. A textual name of the security policy. */
 	DisplayName string `json:"displayName"`
 
-	/* Immutable. The parent of this OrganizationSecurityPolicy in the Cloud Resource Hierarchy.
-	Format: organizations/{organization_id} or folders/{folder_id}. */
+	/* Immutable. The parent of this OrganizationSecurityPolicy in the Cloud Resource Hierarchy. Format: organizations/{organization_id} or folders/{folder_id}. */
 	Parent string `json:"parent"`
 
 	/* Immutable. Optional. The policyId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The type indicates the intended use of the security policy.
-	For organization security policies, the only supported type
-	is "FIREWALL". Default value: "FIREWALL" Possible values: ["FIREWALL"]. */
+	/* Immutable. The type indicates the intended use of the security policy. For organization security policies, the only supported type is "FIREWALL". Default value: "FIREWALL" Possible values: ["FIREWALL"]. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }
@@ -65,8 +62,7 @@ type ComputeOrganizationSecurityPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeOrganizationSecurityPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Fingerprint of this resource. This field is used internally during
-	updates of this resource. */
+	/* Fingerprint of this resource. This field is used internally during updates of this resource. */
 	// +optional
 	Fingerprint *string `json:"fingerprint,omitempty"`
 

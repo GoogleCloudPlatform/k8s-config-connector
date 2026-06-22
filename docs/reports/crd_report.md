@@ -178,7 +178,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeNetwork                                  | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeNodeGroup                                | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeNodeTemplate                             | False        | True        | False  | Terraform  | True        |
-| compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicy               | True         | False       | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicy               | True         | False       | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicyAssociation    | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicyRule           | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputePacketMirroring                          | False        | True        | False  | DCL        | False       |
