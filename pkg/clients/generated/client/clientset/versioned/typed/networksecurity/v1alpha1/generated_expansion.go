@@ -25,6 +25,8 @@ type NetworkSecurityAddressGroupExpansion interface{}
 
 type NetworkSecurityBackendAuthenticationConfigExpansion interface{}
 
+type NetworkSecurityFirewallEndpointAssociationExpansion interface{}
+
 type NetworkSecurityInterceptDeploymentExpansion interface{}
 
 type NetworkSecurityInterceptEndpointGroupExpansion interface{}
