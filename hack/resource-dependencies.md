@@ -234,7 +234,6 @@ Resources in this list must be created in the order the list is in:
 - DNSResponsePolicy
 - DNSResponsePolicyRule
 - DataformRepository (missing _reference.go only)
-- DataprocAutoscalingPolicy (missing _reference.go only)
 - DatastoreIndex
 - DatastreamStream
 - DeploymentManagerDeployment
