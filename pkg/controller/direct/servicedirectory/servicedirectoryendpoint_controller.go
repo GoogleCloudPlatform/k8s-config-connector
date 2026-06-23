@@ -21,7 +21,6 @@ import (
 	gcp "cloud.google.com/go/servicedirectory/apiv1beta1"
 	pb "cloud.google.com/go/servicedirectory/apiv1beta1/servicedirectorypb"
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/computerefs"
-	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -76,17 +75,6 @@ func (m *endpointModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Resolve ComputeAddressRef to its actual IP address
-	if obj.Spec.AddressRef != nil {
-		ip, err := computerefs.ResolveComputeAddressIP(ctx, reader, m.config, obj, obj.Spec.AddressRef)
-		if err != nil {
-			return nil, err
-		}
-		obj.Spec.AddressRef = &krmcomputev1beta1.ComputeAddressRef{
-			External: ip,
-		}
-	}
-
 	// Always call common.NormalizeReferences to resolve references
 	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
@@ -106,6 +94,19 @@ func (m *endpointModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 	desired := ServiceDirectoryEndpointSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
+	}
+
+	// Resolve ComputeAddressRef to its actual IP address if present and update the proto address field directly.
+	// This ensures we do not mutate the KRM Spec in-place.
+	if obj.Spec.AddressRef != nil {
+		resolver := computerefs.NewComputeAddressResolver(m.config)
+		defer resolver.Close()
+
+		ip, err := resolver.ResolveComputeAddressIP(ctx, reader, obj, obj.Spec.AddressRef)
+		if err != nil {
+			return nil, err
+		}
+		desired.Address = ip
 	}
 
 	// Support labels on Metadata

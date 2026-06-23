@@ -17,6 +17,7 @@ package computerefs
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -30,7 +31,87 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func ResolveComputeAddressIP(ctx context.Context, reader client.Reader, config *config.ControllerConfig, src client.Object, ref *computev1beta1.ComputeAddressRef) (string, error) {
+type ComputeAddressResolver struct {
+	config *config.ControllerConfig
+
+	mu                    sync.Mutex
+	globalAddressesClient *compute.GlobalAddressesClient
+	addressesClient       *compute.AddressesClient
+}
+
+func NewComputeAddressResolver(config *config.ControllerConfig) *ComputeAddressResolver {
+	return &ComputeAddressResolver{
+		config: config,
+	}
+}
+
+func (r *ComputeAddressResolver) Close() error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	var errs []error
+	if r.globalAddressesClient != nil {
+		if err := r.globalAddressesClient.Close(); err != nil {
+			errs = append(errs, err)
+		}
+		r.globalAddressesClient = nil
+	}
+	if r.addressesClient != nil {
+		if err := r.addressesClient.Close(); err != nil {
+			errs = append(errs, err)
+		}
+		r.addressesClient = nil
+	}
+
+	if len(errs) > 0 {
+		return fmt.Errorf("closing resolver clients: %v", errs)
+	}
+	return nil
+}
+
+func (r *ComputeAddressResolver) getGlobalAddressesClient(ctx context.Context) (*compute.GlobalAddressesClient, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	if r.globalAddressesClient != nil {
+		return r.globalAddressesClient, nil
+	}
+
+	opts, err := r.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	client, err := compute.NewGlobalAddressesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building GlobalAddresses client: %w", err)
+	}
+	r.globalAddressesClient = client
+	return client, nil
+}
+
+func (r *ComputeAddressResolver) getAddressesClient(ctx context.Context) (*compute.AddressesClient, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	if r.addressesClient != nil {
+		return r.addressesClient, nil
+	}
+
+	opts, err := r.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	client, err := compute.NewAddressesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building Addresses client: %w", err)
+	}
+	r.addressesClient = client
+	return client, nil
+}
+
+func (r *ComputeAddressResolver) ResolveComputeAddressIP(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeAddressRef) (string, error) {
 	if ref == nil {
 		return "", nil
 	}
@@ -85,17 +166,11 @@ func ResolveComputeAddressIP(ctx context.Context, reader client.Reader, config *
 			return "", err
 		}
 
-		opts, err := config.RESTClientOptions()
-		if err != nil {
-			return "", err
-		}
-
 		if id.IsGlobal() {
-			client, err := compute.NewGlobalAddressesRESTClient(ctx, opts...)
+			client, err := r.getGlobalAddressesClient(ctx)
 			if err != nil {
-				return "", fmt.Errorf("building GlobalAddresses client: %w", err)
+				return "", err
 			}
-			defer client.Close()
 
 			req := &computepb.GetGlobalAddressRequest{
 				Project: id.Project,
@@ -105,13 +180,16 @@ func ResolveComputeAddressIP(ctx context.Context, reader client.Reader, config *
 			if err != nil {
 				return "", fmt.Errorf("getting global address %s/%s from GCP: %w", id.Project, id.Address, err)
 			}
-			return addr.GetAddress(), nil
-		} else {
-			client, err := compute.NewAddressesRESTClient(ctx, opts...)
-			if err != nil {
-				return "", fmt.Errorf("building Addresses client: %w", err)
+			ip := addr.GetAddress()
+			if ip == "" {
+				return "", fmt.Errorf("global address %s/%s address field is empty in response", id.Project, id.Address)
 			}
-			defer client.Close()
+			return ip, nil
+		} else {
+			client, err := r.getAddressesClient(ctx)
+			if err != nil {
+				return "", err
+			}
 
 			req := &computepb.GetAddressRequest{
 				Project: id.Project,
@@ -122,7 +200,11 @@ func ResolveComputeAddressIP(ctx context.Context, reader client.Reader, config *
 			if err != nil {
 				return "", fmt.Errorf("getting regional address %s/%s/%s from GCP: %w", id.Project, id.Region, id.Address, err)
 			}
-			return addr.GetAddress(), nil
+			ip := addr.GetAddress()
+			if ip == "" {
+				return "", fmt.Errorf("regional address %s/%s/%s address field is empty in response", id.Project, id.Region, id.Address)
+			}
+			return ip, nil
 		}
 	}
 
