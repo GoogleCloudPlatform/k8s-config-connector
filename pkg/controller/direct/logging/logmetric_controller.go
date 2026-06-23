@@ -17,22 +17,22 @@ package logging
 import (
 	"context"
 	"fmt"
-	"reflect"
+	"sort"
 	"strings"
 
 	api "google.golang.org/api/logging/v2"
-	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/diffs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
@@ -56,7 +56,7 @@ var _ directbase.Model = &logMetricModel{}
 type logMetricAdapter struct {
 	id *krm.LoggingLogMetricIdentity
 
-	desired         *krm.LoggingLogMetric
+	desired         *api.LogMetric
 	actual          *api.LogMetric
 	logMetricClient *api.ProjectsMetricsService
 }
@@ -91,9 +91,15 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
+	mapCtx := &direct.MapContext{}
+	desired := LoggingLogMetricSpec_ToAPI(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	return &logMetricAdapter{
 		id:              id.(*krm.LoggingLogMetricIdentity),
-		desired:         obj,
+		desired:         desired,
 		logMetricClient: projectMetricsService,
 	}, nil
 }
@@ -171,12 +177,11 @@ func (a *logMetricAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	if a.id.Metric == "" {
 		return fmt.Errorf("resourceID is empty")
 	}
-	filter := a.desired.Spec.Filter
-	if filter == "" {
+	if a.desired.Filter == "" {
 		return fmt.Errorf("filter is empty")
 	}
-	if a.desired.Spec.LoggingLogBucketRef != nil {
-		bucket, err := LogBucketRef_Parse(ctx, a.desired.Spec.LoggingLogBucketRef.External)
+	if a.desired.BucketName != "" {
+		bucket, err := LogBucketRef_Parse(ctx, a.desired.BucketName)
 		if err != nil {
 			return err
 		}
@@ -187,7 +192,7 @@ func (a *logMetricAdapter) Create(ctx context.Context, createOp *directbase.Crea
 		}
 	}
 
-	logMetric := convertKCCtoAPI(&a.desired.Spec)
+	logMetric := a.desired
 	logMetric.Name = a.id.Metric
 
 	createRequest := a.logMetricClient.Create("projects/"+projectID, logMetric)
@@ -204,12 +209,7 @@ func (a *logMetricAdapter) Create(ctx context.Context, createOp *directbase.Crea
 		return fmt.Errorf("setting spec.resourceID: %w", err)
 	}
 
-	status := &krm.LoggingLogMetricStatus{}
-	if err := logMetricStatusToKRM(a.id, created, status); err != nil {
-		return err
-	}
-
-	return setStatus(u, status)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 func logMetricStatusToKRM(id *krm.LoggingLogMetricIdentity, in *api.LogMetric, out *krm.LoggingLogMetricStatus) error {
@@ -222,74 +222,23 @@ func logMetricStatusToKRM(id *krm.LoggingLogMetricIdentity, in *api.LogMetric, o
 }
 
 func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	u := updateOp.GetUnstructured()
-
 	log := klog.FromContext(ctx)
+	log.V(2).Info("updating logMetric", "name", a.id.String())
+
+	u := updateOp.GetUnstructured()
+	diffResults, err := compareLogMetric(ctx, a.actual, a.desired, u)
+	if err != nil {
+		return err
+	}
 
 	latest := a.actual
+	if diffResults.HasDiff() {
+		diffResults.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffResults)
 
-	if a.hasChanges(ctx, u) {
-		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+		update := common.DeepCopy(a.desired)
+		update.Name = a.id.Metric
 
-		update := new(api.LogMetric)
-		*update = *a.actual
-
-		if direct.ValueOf(a.desired.Spec.Description) != a.actual.Description {
-			report.AddField("description", a.actual.Description, direct.ValueOf(a.desired.Spec.Description))
-			update.Description = direct.ValueOf(a.desired.Spec.Description)
-		}
-		if direct.ValueOf(a.desired.Spec.Disabled) != a.actual.Disabled {
-			report.AddField("disabled", a.actual.Disabled, direct.ValueOf(a.desired.Spec.Disabled))
-			update.Disabled = direct.ValueOf(a.desired.Spec.Disabled)
-		}
-		if a.desired.Spec.Filter != a.actual.Filter {
-			// todo acpana: revisit UX, err out if filter of desired is empty
-			if a.desired.Spec.Filter != "" {
-				report.AddField("filter", a.actual.Filter, a.desired.Spec.Filter)
-				update.Filter = a.desired.Spec.Filter
-			} else {
-				// filter is a REQUIRED field
-				update.Filter = a.actual.Filter
-			}
-		}
-
-		desired := convertKCCtoAPI(&a.desired.Spec)
-		if !compareMetricDescriptors(desired.MetricDescriptor, a.actual.MetricDescriptor) {
-			report.AddField("metric_descriptor", a.actual.MetricDescriptor, desired.MetricDescriptor)
-			update.MetricDescriptor = desired.MetricDescriptor
-		}
-
-		if !reflect.DeepEqual(a.desired.Spec.LabelExtractors, a.actual.LabelExtractors) {
-			report.AddField("label_extractors", a.actual.LabelExtractors, a.desired.Spec.LabelExtractors)
-			update.LabelExtractors = a.desired.Spec.LabelExtractors
-		}
-
-		if !compareBucketOptions(a.desired.Spec.BucketOptions, a.actual.BucketOptions) {
-			report.AddField("bucket_options", a.actual.BucketOptions, a.desired.Spec.BucketOptions)
-			update.BucketOptions = convertKCCtoAPIForBucketOptions(a.desired.Spec.BucketOptions)
-		}
-
-		if direct.ValueOf(a.desired.Spec.ValueExtractor) != a.actual.ValueExtractor {
-			report.AddField("value_extractor", a.actual.ValueExtractor, direct.ValueOf(a.desired.Spec.ValueExtractor))
-			update.ValueExtractor = direct.ValueOf(a.desired.Spec.ValueExtractor)
-		}
-		if a.desired.Spec.LoggingLogBucketRef != nil && a.desired.Spec.LoggingLogBucketRef.External != a.actual.BucketName {
-			report.AddField("bucket_name", a.actual.BucketName, a.desired.Spec.LoggingLogBucketRef.External)
-			update.BucketName = a.desired.Spec.LoggingLogBucketRef.External
-		}
-
-		structuredreporting.ReportDiff(ctx, report)
-
-		diffs, err := ListFieldDiffs(a.actual, update)
-		if err != nil {
-			// Don't return an error as we're only logging
-			log.Error(err, "computing changed field paths (for logging)")
-		}
-		log.Info("updating logMetric", "diffs", diffs)
-
-		// DANGER: this is an upsert; it will create the LogMetric if it doesn't exists
-		// but this behavior is consistent with the DCL backed behavior we provide for this resource.
-		// todo acpana: look for / switch to a better method and/or use etags etc
 		updated, err := a.logMetricClient.Update(a.fullyQualifiedName(), update).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("logMetric update failed: %w", err)
@@ -297,6 +246,10 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		latest = updated
 	}
 
+	return a.updateStatus(ctx, updateOp, latest)
+}
+
+func (a *logMetricAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *api.LogMetric) error {
 	status := &krm.LoggingLogMetricStatus{}
 	if err := logMetricStatusToKRM(a.id, latest, status); err != nil {
 		return err
@@ -309,59 +262,7 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		}
 	}
 
-	return setStatus(u, status)
-}
-
-func (a *logMetricAdapter) hasChanges(ctx context.Context, u *unstructured.Unstructured) bool {
-	log := klog.FromContext(ctx)
-
-	if u.GetGeneration() != getObservedGeneration(u) {
-		log.V(2).Info("generation does not match", "generation", u.GetGeneration(), "observedGeneration", getObservedGeneration(u))
-		return true
-	}
-
-	gcpUpdateTime := a.actual.UpdateTime
-	if gcpUpdateTime == "" {
-		log.V(2).Info("updateTime is not set in GCP")
-		return true
-	}
-
-	obj := &krm.LoggingLogMetric{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-		log.Error(err, "error converting from unstructured")
-		return true
-	}
-
-	if obj.Status.UpdateTime == nil {
-		log.V(2).Info("status.updateTime is not set")
-		return true
-	}
-	if gcpUpdateTime != direct.ValueOf(obj.Status.UpdateTime) {
-		log.V(2).Info("status.updateTime does not match gcp updateTime", "status.updateTime", obj.Status.UpdateTime, "gcpUpdateTime", gcpUpdateTime)
-		return true
-	}
-
-	if obj.Status.Conditions != nil {
-		// if there was a previously failing update let's make sure we give
-		// the update a chance to heal or keep marking it as failed
-
-		ready := false
-		for _, condition := range obj.Status.Conditions {
-			if condition.Type == v1alpha1.ReadyConditionType {
-				if condition.Status == corev1.ConditionTrue {
-					ready = true
-				}
-			}
-		}
-
-		if !ready {
-			log.V(2).Info("status.conditions indicates object is not ready yet")
-			return true
-		}
-	}
-
-	log.V(2).Info("status.updateTime matches gcp updateTime", "status.updateTime", obj.Status.UpdateTime, "gcpUpdateTime", gcpUpdateTime)
-	return false
+	return op.UpdateStatus(ctx, status, nil)
 }
 
 func (a *logMetricAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -376,26 +277,26 @@ func (a *logMetricAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 
 	// TODO(acpana): revisit if we want to include mutable but unreadable fields in our export
 	if a.desired != nil {
-		if a.desired.Spec.MetricDescriptor != nil && a.desired.Spec.MetricDescriptor.LaunchStage != nil {
+		if a.desired.MetricDescriptor != nil && a.desired.MetricDescriptor.LaunchStage != "" {
 			if err := unstructured.SetNestedField(un.Object,
-				*a.desired.Spec.MetricDescriptor.LaunchStage,
+				a.desired.MetricDescriptor.LaunchStage,
 				"spec", "metricDescriptor", "launchStage",
 			); err != nil {
 				return nil, fmt.Errorf("could not set metricDescriptor.launchStage mutable but unreadable field %w", err)
 			}
 		}
-		if a.desired.Spec.MetricDescriptor != nil && a.desired.Spec.MetricDescriptor.Metadata != nil {
-			if a.desired.Spec.MetricDescriptor.Metadata.IngestDelay != nil {
+		if a.desired.MetricDescriptor != nil && a.desired.MetricDescriptor.Metadata != nil {
+			if a.desired.MetricDescriptor.Metadata.IngestDelay != "" {
 				if err := unstructured.SetNestedField(un.Object,
-					*a.desired.Spec.MetricDescriptor.Metadata.IngestDelay,
+					a.desired.MetricDescriptor.Metadata.IngestDelay,
 					"spec", "metricDescriptor", "metadata", "ingestDelay",
 				); err != nil {
 					return nil, fmt.Errorf("could not set metricDescriptor.metadata.ingestDelay mutable but unreadable field %w", err)
 				}
 			}
-			if a.desired.Spec.MetricDescriptor.Metadata.SamplePeriod != nil {
+			if a.desired.MetricDescriptor.Metadata.SamplePeriod != "" {
 				if err := unstructured.SetNestedField(un.Object,
-					*a.desired.Spec.MetricDescriptor.Metadata.SamplePeriod,
+					a.desired.MetricDescriptor.Metadata.SamplePeriod,
 					"spec", "metricDescriptor", "metadata", "samplePeriod",
 				); err != nil {
 					return nil, fmt.Errorf("could not set metricDescriptor.metadata.samplePeriod mutable but unreadable field %w", err)
@@ -409,4 +310,107 @@ func (a *logMetricAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 
 func (a *logMetricAdapter) fullyQualifiedName() string {
 	return a.id.String()
+}
+
+func compareLogMetric(ctx context.Context, actual, desired *api.LogMetric, u *unstructured.Unstructured) (*structuredreporting.Diff, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, LoggingLogMetricSpec_FromAPI, LoggingLogMetricSpec_ToAPI)
+	if err != nil {
+		return nil, err
+	}
+
+	clonedDesired := common.DeepCopy(desired)
+
+	populateDefaults := func(obj *api.LogMetric) {
+		if obj.MetricDescriptor != nil {
+			if obj.MetricDescriptor.MetricKind == "" {
+				obj.MetricDescriptor.MetricKind = "DELTA"
+			}
+			if obj.MetricDescriptor.ValueType == "" {
+				obj.MetricDescriptor.ValueType = "INT64"
+			}
+			if obj.MetricDescriptor.Unit == "" {
+				obj.MetricDescriptor.Unit = "1"
+			}
+			sort.Slice(obj.MetricDescriptor.Labels, func(i, j int) bool {
+				return obj.MetricDescriptor.Labels[i].Key < obj.MetricDescriptor.Labels[j].Key
+			})
+			for _, label := range obj.MetricDescriptor.Labels {
+				if label.ValueType == "" {
+					label.ValueType = "STRING"
+				}
+			}
+		}
+	}
+	populateDefaults(maskedActual)
+	populateDefaults(clonedDesired)
+
+	// If the user did not specify MetricDescriptor, we mask it out from actual to avoid comparing server-generated defaults.
+	if desired.MetricDescriptor == nil {
+		maskedActual.MetricDescriptor = nil
+	}
+
+	gcpUpdateTime := actual.UpdateTime
+	updateTimeMatches := false
+	if gcpUpdateTime != "" && u != nil {
+		obj := &krm.LoggingLogMetric{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err == nil {
+			ready := false
+			for _, condition := range obj.Status.Conditions {
+				if condition.Type == "Ready" {
+					if condition.Status == "True" {
+						ready = true
+					}
+				}
+			}
+			if ready && obj.Status.UpdateTime != nil && gcpUpdateTime == *obj.Status.UpdateTime && u.GetGeneration() == getObservedGeneration(u) {
+				updateTimeMatches = true
+			}
+		}
+	}
+
+	if updateTimeMatches {
+		if maskedActual.MetricDescriptor != nil && clonedDesired.MetricDescriptor != nil {
+			// If the updateTime matches and the object is ready, the GCP side matches KRM status.
+			// We can safely assume the unreadable fields (LaunchStage and Metadata) match, so we align them to avoid false diffs.
+			maskedActual.MetricDescriptor.LaunchStage = clonedDesired.MetricDescriptor.LaunchStage
+			maskedActual.MetricDescriptor.Metadata = clonedDesired.MetricDescriptor.Metadata
+		}
+	} else {
+		if maskedActual.MetricDescriptor != nil && clonedDesired.MetricDescriptor != nil {
+			// If updateTime doesn't match (meaning a new update/reconciliation cycle), we cannot
+			// guarantee that mutable-but-unreadable fields are up to date.
+			// Therefore, we force a diff in the metricDescriptor to trigger an update request.
+			maskedActual.MetricDescriptor.LaunchStage = "FORCE_DIFF_UNREADABLE_FIELD"
+		}
+	}
+
+	diffResults, _, err := diffs.GoogleAPI.Diff(ctx, maskedActual, clonedDesired)
+	if err != nil {
+		return nil, err
+	}
+	return diffResults, nil
+}
+
+func LoggingLogMetricSpec_FromAPI(mapCtx *direct.MapContext, in *api.LogMetric) *krm.LoggingLogMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLogMetricSpec{}
+	out.Description = direct.LazyPtr(in.Description)
+	out.Disabled = direct.LazyPtr(in.Disabled)
+	out.Filter = in.Filter
+	out.LabelExtractors = in.LabelExtractors
+	out.MetricDescriptor = convertAPItoKRM_MetricDescriptor(in.MetricDescriptor)
+	out.BucketOptions = convertAPItoKRM_BucketOptions(in.BucketOptions)
+	out.ValueExtractor = direct.LazyPtr(in.ValueExtractor)
+	if in.BucketName != "" {
+		out.LoggingLogBucketRef = &krm.LoggingLogBucketRef{
+			External: in.BucketName,
+		}
+	}
+	return out
+}
+
+func LoggingLogMetricSpec_ToAPI(mapCtx *direct.MapContext, in *krm.LoggingLogMetricSpec) *api.LogMetric {
+	return convertKCCtoAPI(in)
 }
