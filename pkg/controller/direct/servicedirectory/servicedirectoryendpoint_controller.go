@@ -20,6 +20,7 @@ import (
 
 	gcp "cloud.google.com/go/servicedirectory/apiv1beta1"
 	pb "cloud.google.com/go/servicedirectory/apiv1beta1/servicedirectorypb"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/computerefs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -28,7 +29,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -36,13 +36,9 @@ import (
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -82,7 +78,7 @@ func (m *endpointModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 
 	// Resolve ComputeAddressRef to its actual IP address
 	if obj.Spec.AddressRef != nil {
-		ip, err := resolveComputeAddressIP(ctx, reader, obj, obj.Spec.AddressRef)
+		ip, err := computerefs.ResolveComputeAddressIP(ctx, reader, m.config, obj, obj.Spec.AddressRef)
 		if err != nil {
 			return nil, err
 		}
@@ -276,56 +272,4 @@ func compareEndpoint(ctx context.Context, actual, desired *pb.Endpoint) (*struct
 		return nil, nil, err
 	}
 	return diffs, updateMask, nil
-}
-
-func resolveComputeAddressIP(ctx context.Context, reader client.Reader, src client.Object, ref *krmcomputev1beta1.ComputeAddressRef) (string, error) {
-	if ref == nil {
-		return "", nil
-	}
-
-	if ref.External != "" {
-		if ref.Name != "" {
-			return "", fmt.Errorf("cannot specify both name and external on reference")
-		}
-		return ref.External, nil
-	}
-
-	if ref.Name == "" {
-		return "", fmt.Errorf("must specify either name or external on reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	gvk := schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeAddress",
-	}
-
-	computeAddress := &unstructured.Unstructured{}
-	computeAddress.SetGroupVersionKind(gvk)
-	if err := reader.Get(ctx, key, computeAddress); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(gvk, key)
-		}
-		return "", fmt.Errorf("error reading referenced %v %v: %w", gvk.Kind, key, err)
-	}
-
-	// Because `spec.address` field is optional, we can't guarantee it always
-	// exists in a successfully reconciled ComputeAddress CR, so we should use
-	// the `status.address` or `status.observedState.address` instead.
-	address, _, err := unstructured.NestedString(computeAddress.Object, "status", "address")
-	if err != nil || address == "" {
-		address, _, err = unstructured.NestedString(computeAddress.Object, "status", "observedState", "address")
-		if err != nil || address == "" {
-			return "", fmt.Errorf("cannot get address for referenced %s %v (status.address and status.observedState.address are empty)", computeAddress.GetKind(), computeAddress.GetNamespace())
-		}
-	}
-	return address, nil
 }
