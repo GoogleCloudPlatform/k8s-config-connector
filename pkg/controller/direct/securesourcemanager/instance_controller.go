@@ -25,11 +25,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/securesourcemanager/apiv1"
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -177,21 +181,60 @@ func (a *secureSourceManagerInstanceAdapter) Create(ctx context.Context, createO
 	}
 	log.V(2).Info("successfully created Instance", "name", a.id.String())
 
-	status := &krm.SecureSourceManagerInstanceStatus{}
+	return a.updateStatus(ctx, createOp, created)
+}
+
+func (a *secureSourceManagerInstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating SecureSourceManagerInstance", "name", a.id.String())
+
+	diffs, _, err := compareSecureSourceManagerInstance(ctx, a.actual, a.desired)
+	if err != nil {
+		return err
+	}
+
+	if !diffs.HasDiff() {
+		log.V(2).Info("no diff detected for SecureSourceManagerInstance", "name", a.id.String())
+		return a.updateStatus(ctx, updateOp, a.actual)
+	}
+
+	structuredreporting.ReportDiff(ctx, diffs)
+
+	return fmt.Errorf("SecureSourceManagerInstance resource is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())
+}
+
+func (a *secureSourceManagerInstanceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Instance) error {
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = SecureSourceManagerInstanceObservedState_FromProto(mapCtx, created)
+	status := &krm.SecureSourceManagerInstanceStatus{}
+	status.ObservedState = SecureSourceManagerInstanceObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	externalRef := a.id.String()
 	status.ExternalRef = &externalRef
-	return createOp.UpdateStatus(ctx, status, nil)
+	return op.UpdateStatus(ctx, status, nil)
 }
 
-func (a *secureSourceManagerInstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx)
-	log.Info("update of SecureSourceManagerInstance not supported")
-	return nil
+func compareSecureSourceManagerInstance(ctx context.Context, actual, desired *pb.Instance) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, SecureSourceManagerInstanceSpec_FromProto, SecureSourceManagerInstanceSpec_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+	maskedActual.Name = desired.Name // Restore any non-spec identifier fields if needed
+
+	clonedDesired := proto.CloneOf(desired)
+
+	populateDefaults := func(obj *pb.Instance) {
+		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
+	}
+	populateDefaults(maskedActual)
+	populateDefaults(clonedDesired)
+
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
 }
 
 func (a *secureSourceManagerInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
