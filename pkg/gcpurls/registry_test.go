@@ -69,70 +69,138 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	// NOTE ON "WRONG" PATTERNS / MISMATCHES:
 	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
 	ignoredTemplates := map[string]bool{
-		"//networkservices.googleapis.com/projects/{}/locations/global/edgeCacheServices/{}": true,
-		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}":              true,
-		// Add known exceptions here.
-		// Example: "//some.googleapis.com/foo/{}/bar": true,
-		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":                         true,
-		"//notebooks.googleapis.com/projects/{}/locations/{}/environments/{}":                       true,
-		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}":                              true,
-		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}":             true,
-		"//storage.googleapis.com/projects/{}/buckets/{}":                                           true,
-		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                         true,
-		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}":   true,
-		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":                       true,
-		"//dataplex.googleapis.com/projects/{}/locations/{}/dataTaxonomies/{}":                      true,
-		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                         true,
-		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                          true,
-		"//dataplex.googleapis.com/projects/{}/locations/{}/aspectTypes/{}":                         true,
-		"//dataplex.googleapis.com/projects/{}/locations/{}/dataAttributeBindings/{}":               true,
-		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}":                    true,
-		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":        true,
-		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                   true,
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                     true,
-		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":        true,
-		"//networksecurity.googleapis.com/projects/{}/locations/{}/securityProfiles/{}":             true,
-		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}":                           true,
-		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/ruleSets/{}":                    true,
-		"//batch.googleapis.com/projects/{}/locations/{}/resourceAllowances/{}":                     true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":        true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":  true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":       true,
-		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}":                    true,
+		// AI Platform
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}": true,
+
+		// AlloyDB
+		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}": true,
+
+		// Apigee Registry
+		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,
+
+		// Artifact Registry
+		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig": true,
+
+		// AI Streams
+		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}": true,
+
+		// AutoML
+		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}": true,
+
+		// Batch
+		"//batch.googleapis.com/projects/{}/locations/{}/resourceAllowances/{}": true,
+
+		// BigLake
+		"//biglake.googleapis.com/projects/{}/locations/{}/catalogs/{}": true,
+
+		// BigQuery Connection
+		"//bigqueryconnection.googleapis.com/projects/{}/locations/{}/connections/{}": true,
+
+		// Bigtable
+		"//bigtable.googleapis.com/projects/{}/instances/{}/tables/{}/columnFamilies/{}": true,
+
+		// Billing Budgets
+		"//billingbudgets.googleapis.com/billingAccounts/{}/budgets/{}": true,
+
+		// Cloud KMS
+		"//cloudkms.googleapis.com/projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}/ciphertext/{}": true,
+
+		// Compute
+		"//compute.googleapis.com/global/publicDelegatedPrefixes/{}":                      true,
+		"//compute.googleapis.com/projects/{}/global/backendServices/{}/signedUrlKeys/{}": true,
+		"//compute.googleapis.com/projects/{}/global/images/family/{}":                    true,
+		"//compute.googleapis.com/projects/{}/zones/{}/disks/{}/{}":                       true,
+		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":             true,
+		"//compute.googleapis.com/regions/{}/publicDelegatedPrefixes/{}":                  true,
+
+		// Connectors
+		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}": true,
+
+		// Content Warehouse
+		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}": true,
+		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/ruleSets/{}":        true,
+
+		// Data Labeling
+		"//datalabeling.googleapis.com/projects/{}/evaluationJobs/{}": true,
+
+		// Dataplex
+		"//dataplex.googleapis.com/projects/{}/locations/{}/aspectTypes/{}":           true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/dataAttributeBindings/{}": true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/dataTaxonomies/{}":        true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":           true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":            true,
+
+		// Dataproc
+		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}": true,
+		"//dataproc.googleapis.com/v1/projects/{}/regions/{}/clusters/{}":        true,
+
+		// Dialogflow
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":       true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}": true,
+
+		// Discovery Engine
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":      true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}": true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":       true,
+
+		// DLP
+		"//dlp.googleapis.com/projects/{}/locations/{}/connections/{}": true,
+
+		// DNS
+		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}": true,
+		"//dns.googleapis.com/projects/{}/responsePolicies/{}":       true,
+
+		// Firestore
+		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":             true,
+		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":            true,
+		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}": true,
+
+		// IAM
+		"//iam.googleapis.com/policies/{}/denypolicies/{}": true,
+
+		// IAP
+		"//iap.googleapis.com/projects/{}/brands/{}": true,
+
+		// Logging
+		"//logging.googleapis.com/billingAccounts/{}/exclusions/{}": true,
+		"//logging.googleapis.com/folders/{}/exclusions/{}":         true,
+		"//logging.googleapis.com/organizations/{}/exclusions/{}":   true,
+		"//logging.googleapis.com/projects/{}/exclusions/{}":        true,
+
+		// Monitoring
+		"//monitoring.googleapis.com/locations/global/metricsScopes/{}/projects/{}": true,
+		"//monitoring.googleapis.com/projects/{}/groups/{}":                         true,
+		"//monitoring.googleapis.com/projects/{}/metricDescriptors/{}":              true,
+		"//monitoring.googleapis.com/projects/{}/services/{}":                       true,
+
+		// Network Connectivity
+		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}": true,
+
+		// Network Security
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
-		"//datalabeling.googleapis.com/projects/{}/evaluationJobs/{}":                               true,
-		"//iam.googleapis.com/policies/{}/denypolicies/{}":                                          true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/sacRealms/{}":                    true,
-		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":                    true,
-		"//logging.googleapis.com/projects/{}/exclusions/{}":                                        true,
-		"//logging.googleapis.com/folders/{}/exclusions/{}":                                         true,
-		"//logging.googleapis.com/organizations/{}/exclusions/{}":                                   true,
-		"//logging.googleapis.com/billingAccounts/{}/exclusions/{}":                                 true,
-		"//billingbudgets.googleapis.com/billingAccounts/{}/budgets/{}":                             true,
-		"//bigqueryconnection.googleapis.com/projects/{}/locations/{}/connections/{}":               true,
-		"//bigtable.googleapis.com/projects/{}/instances/{}/tables/{}/columnFamilies/{}":            true,
-		"//privilegedaccessmanager.googleapis.com/projects/{}/locations/{}/entitlements/{}":         true,
-		"//privilegedaccessmanager.googleapis.com/folders/{}/locations/{}/entitlements/{}":          true,
-		"//privilegedaccessmanager.googleapis.com/organizations/{}/locations/{}/entitlements/{}":    true,
-		"//biglake.googleapis.com/projects/{}/locations/{}/catalogs/{}":                             true,
-		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":                        true,
-		"//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}":                  true,
-		"//dlp.googleapis.com/projects/{}/locations/{}/connections/{}":                              true,
-		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}":                                true,
-		"//dns.googleapis.com/projects/{}/responsePolicies/{}":                                      true,
-		"//monitoring.googleapis.com/projects/{}/groups/{}":                                         true,
-		"//monitoring.googleapis.com/projects/{}/metricDescriptors/{}":                              true,
-		"//monitoring.googleapis.com/projects/{}/services/{}":                                       true,
-		"//monitoring.googleapis.com/locations/global/metricsScopes/{}/projects/{}":                 true,
-		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig":                    true,
-		"//iap.googleapis.com/projects/{}/brands/{}":                                                true,
-		"//serviceusage.googleapis.com/projects/{}/services/{}/identity":                            true,
-		"//compute.googleapis.com/projects/{}/global/backendServices/{}/signedUrlKeys/{}":           true,
-		"//compute.googleapis.com/projects/{}/global/images/family/{}":                              true,
-		"//compute.googleapis.com/global/publicDelegatedPrefixes/{}":                                true,
-		"//compute.googleapis.com/regions/{}/publicDelegatedPrefixes/{}":                            true,
-		"//compute.googleapis.com/projects/{}/zones/{}/disks/{}/{}":                                 true,
-		"//dataproc.googleapis.com/v1/projects/{}/regions/{}/clusters/{}":                           true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/securityProfiles/{}":             true,
+
+		// Network Services
+		"//networkservices.googleapis.com/projects/{}/locations/global/edgeCacheServices/{}": true,
+
+		// Notebooks
+		"//notebooks.googleapis.com/projects/{}/locations/{}/environments/{}": true,
+		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":   true,
+
+		// Privileged Access Manager
+		"//privilegedaccessmanager.googleapis.com/folders/{}/locations/{}/entitlements/{}":       true,
+		"//privilegedaccessmanager.googleapis.com/organizations/{}/locations/{}/entitlements/{}": true,
+		"//privilegedaccessmanager.googleapis.com/projects/{}/locations/{}/entitlements/{}":      true,
+
+		// Service Usage
+		"//serviceusage.googleapis.com/projects/{}/services/{}/identity": true,
+
+		// Storage
+		"//storage.googleapis.com/projects/{}/buckets/{}": true,
+
+		// Workflow Executions
+		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
