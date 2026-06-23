@@ -2579,6 +2579,90 @@ func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 }
 */
 
+/* found existing non-generated mapping function "ComputeRouterPeerSpec_v1beta1_FromProto", skipping
+func ComputeRouterPeerSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterBgpPeer) *krm.ComputeRouterPeerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterPeerSpec{}
+	out.AdvertiseMode = in.AdvertiseMode
+	out.AdvertisedGroups = in.AdvertisedGroups
+	// MISSING: AdvertisedIPRanges
+	// (near miss): "AdvertisedIPRanges" vs "AdvertisedIpRanges"
+	out.AdvertisedRoutePriority = in.AdvertisedRoutePriority
+	out.Bfd = RouterpeerBfd_v1beta1_FromProto(mapCtx, in.GetBfd())
+	// MISSING: CustomLearnedIPRanges
+	// MISSING: CustomLearnedRoutePriority
+	out.Enable = in.Enable
+	// MISSING: EnableIPV4
+	// MISSING: EnableIPV6
+	// (near miss): "EnableIPV6" vs "EnableIpv6"
+	// MISSING: ExportPolicies
+	// MISSING: ImportPolicies
+	// MISSING: InterfaceName
+	// MISSING: IPAddress
+	// (near miss): "IPAddress" vs "IpAddress"
+	// MISSING: IPV4NexthopAddress
+	// MISSING: IPV6NexthopAddress
+	// (near miss): "IPV6NexthopAddress" vs "Ipv6NexthopAddress"
+	// MISSING: ManagementType
+	// MISSING: Md5AuthenticationKeyName
+	// MISSING: Name
+	out.PeerAsn = in.PeerAsn
+	// MISSING: PeerIPAddress
+	// (near miss): "PeerIPAddress" vs "PeerIpAddress"
+	// MISSING: PeerIPV4NexthopAddress
+	// MISSING: PeerIPV6NexthopAddress
+	// (near miss): "PeerIPV6NexthopAddress" vs "PeerIpv6NexthopAddress"
+	if in.GetRouterApplianceInstance() != "" {
+		out.RouterApplianceInstanceRef = &krm.ComputeRouterPeerRef{External: in.GetRouterApplianceInstance()}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeRouterPeerSpec_v1beta1_ToProto", skipping
+func ComputeRouterPeerSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterPeerSpec) *pb.RouterBgpPeer {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterBgpPeer{}
+	out.AdvertiseMode = in.AdvertiseMode
+	out.AdvertisedGroups = in.AdvertisedGroups
+	// MISSING: AdvertisedIPRanges
+	// (near miss): "AdvertisedIPRanges" vs "AdvertisedIpRanges"
+	out.AdvertisedRoutePriority = in.AdvertisedRoutePriority
+	out.Bfd = RouterpeerBfd_v1beta1_ToProto(mapCtx, in.Bfd)
+	// MISSING: CustomLearnedIPRanges
+	// MISSING: CustomLearnedRoutePriority
+	out.Enable = in.Enable
+	// MISSING: EnableIPV4
+	// MISSING: EnableIPV6
+	// (near miss): "EnableIPV6" vs "EnableIpv6"
+	// MISSING: ExportPolicies
+	// MISSING: ImportPolicies
+	// MISSING: InterfaceName
+	// MISSING: IPAddress
+	// (near miss): "IPAddress" vs "IpAddress"
+	// MISSING: IPV4NexthopAddress
+	// MISSING: IPV6NexthopAddress
+	// (near miss): "IPV6NexthopAddress" vs "Ipv6NexthopAddress"
+	// MISSING: ManagementType
+	// MISSING: Md5AuthenticationKeyName
+	// MISSING: Name
+	out.PeerAsn = in.PeerAsn
+	// MISSING: PeerIPAddress
+	// (near miss): "PeerIPAddress" vs "PeerIpAddress"
+	// MISSING: PeerIPV4NexthopAddress
+	// MISSING: PeerIPV6NexthopAddress
+	// (near miss): "PeerIPV6NexthopAddress" vs "PeerIpv6NexthopAddress"
+	if in.RouterApplianceInstanceRef != nil {
+		out.RouterApplianceInstance = &in.RouterApplianceInstanceRef.External
+	}
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeRouterSpec_v1beta1_FromProto", skipping
 func ComputeRouterSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Router) *krm.ComputeRouterSpec {
 	if in == nil {

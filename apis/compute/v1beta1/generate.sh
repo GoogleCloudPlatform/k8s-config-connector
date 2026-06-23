@@ -40,6 +40,7 @@ go run . generate-types \
   --resource ComputeNodeTemplate:NodeTemplate \
   --resource ComputeReservation:Reservation \
   --resource ComputeRouter:Router \
+  --resource ComputeRouterPeer:RouterBgpPeer \
   --resource ComputeResourcePolicy:ResourcePolicy \
   --resource ComputeSecurityPolicy:SecurityPolicy \
   --resource ComputeSnapshot:Snapshot \
