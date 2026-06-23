@@ -33,11 +33,28 @@ for group in $(rgrep --no-filename '^[ ]*group:' config/crds | sort | uniq | awk
   fi
 
   short=$(echo ${group} | sed s@.cnrm.cloud.google.com@@g)
+  if [[ "${short}" == "blockchainnodeengine" ]]; then
+    echo "Skipping blockchainnodeengine"
+    continue
+  fi
 
-  extra_services=""
+  extra_services="${short}.googleapis.com"
   case ${short} in
-    "memorystore") extra_services="memorystore.googleapis.com" ;;
-    "servicedirectory") extra_services="servicedirectory.googleapis.com" ;;
+    "analytics") extra_services="analyticsadmin.googleapis.com" ;;
+    "bigqueryanalyticshub") extra_services="analyticshub.googleapis.com" ;;
+    "bigquerybiglake") extra_services="biglake.googleapis.com" ;;
+    "certificatemanager") extra_services="certificatemanager.googleapis.com servicedirectory.googleapis.com" ;;
+    "clouddms") extra_services="datamigration.googleapis.com" ;;
+    "cloudfunctions2") extra_services="cloudfunctions.googleapis.com" ;;
+    "cloudids") extra_services="ids.googleapis.com" ;;
+    "containerattached") extra_services="gkemulticloud.googleapis.com" ;;
+    "dialogflowcx") extra_services="dialogflow.googleapis.com" ;;
+    "filestore") extra_services="file.googleapis.com" ;;
+    "kms") extra_services="cloudkms.googleapis.com" ;;
+    "mlengine") extra_services="ml.googleapis.com" ;;
+    "resourcemanager") extra_services="cloudresourcemanager.googleapis.com" ;;
+    "sql") extra_services="sqladmin.googleapis.com" ;;
+    "tags") extra_services="cloudresourcemanager.googleapis.com" ;;
   esac
 
 cat > ${REPO_ROOT}/dev/ci/periodics/e2e-service-${short} <<EOF

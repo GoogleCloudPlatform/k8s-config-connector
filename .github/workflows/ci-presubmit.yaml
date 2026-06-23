@@ -275,6 +275,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-aistreams:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-aistreams"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-aistreams
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-aistreams
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-alloydb:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -355,6 +375,46 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-apigeeregistry:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apigeeregistry"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-apigeeregistry
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-apigeeregistry
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-apihub:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apihub"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-apihub
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-apihub
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-apikeys:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -415,6 +475,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-appoptimize:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-appoptimize"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-appoptimize
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-appoptimize
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-artifactregistry:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -472,6 +552,26 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-assuredworkloads
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-automl:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-automl"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-automl
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-automl
           path: /tmp/artifacts/
 
 
@@ -652,6 +752,26 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigquerydatatransfer
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-bigquerymigration:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerymigration"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-bigquerymigration
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-bigquerymigration
           path: /tmp/artifacts/
 
 
@@ -1115,6 +1235,46 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-connectors:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-connectors"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-connectors
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-connectors
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-contactcenterinsights:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-contactcenterinsights"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-contactcenterinsights
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-contactcenterinsights
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-container:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -1275,6 +1435,46 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-datalabeling:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datalabeling"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-datalabeling
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-datalabeling
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-datalineage:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datalineage"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-datalineage
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-datalineage
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-datamigration:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -1392,6 +1592,46 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-deploymentmanager
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-developerconnect:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-developerconnect"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-developerconnect
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-developerconnect
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-devicestreaming:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-devicestreaming"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-devicestreaming
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-devicestreaming
           path: /tmp/artifacts/
 
 
@@ -1972,6 +2212,26 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-mlengine
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-modelarmor:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-modelarmor"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-modelarmor
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-modelarmor
           path: /tmp/artifacts/
 
 
@@ -2632,6 +2892,26 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-tpu
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-vectorsearch:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-vectorsearch"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-vectorsearch
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-vectorsearch
           path: /tmp/artifacts/
 
 
