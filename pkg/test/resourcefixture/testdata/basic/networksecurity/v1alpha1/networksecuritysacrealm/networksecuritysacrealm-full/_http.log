@@ -101,56 +101,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SSERealmService/GetSACRealm
-
-{
-  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "my-key": "my-val"
-  },
-  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}",
-  "pairingKey": {
-    "expireTime": "2024-04-01T12:34:56.123456Z",
-    "key": "dummy-pairing-key"
-  },
-  "securityService": "PALO_ALTO_PRISMA_ACCESS",
-  "state": "PENDING_PARTNER_ATTACHMENT",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SSERealmService/GetSACRealm
-
-{
-  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "my-key": "my-val"
-  },
-  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-full-${uniqueId}",
-  "pairingKey": {
-    "expireTime": "2024-04-01T12:34:56.123456Z",
-    "key": "dummy-pairing-key"
-  },
-  "securityService": "PALO_ALTO_PRISMA_ACCESS",
-  "state": "PENDING_PARTNER_ATTACHMENT",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.SSERealmService/DeleteSACRealm
 
 {

@@ -256,22 +256,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}"
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
 
 {
@@ -339,52 +323,6 @@ OK
     "startTime": "2024-04-01T12:34:56.123456Z",
     "state": "READY"
   }
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}"
-}
-
-OK
-
-{
-  "backupType": "STANDARD",
-  "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-  },
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "expireTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
-  "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "READY"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}"
-}
-
-OK
-
-{
-  "backupType": "STANDARD",
-  "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-  },
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "expireTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
-  "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "READY"
 }
 
 ---

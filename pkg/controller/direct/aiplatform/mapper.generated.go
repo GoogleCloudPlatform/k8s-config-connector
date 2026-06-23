@@ -936,6 +936,80 @@ func VertexAIFeatureOnlineStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.V
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
+
+/* found existing non-generated mapping function "VertexAIIndexObservedState_FromProto", skipping
+func VertexAIIndexObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.VertexAIIndexObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIIndexObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DeployedIndexes = direct.Slice_FromProto(mapCtx, in.DeployedIndexes, VertexAIDeployedIndexRefObservedState_FromProto)
+	// MISSING: Etag
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.IndexStats = VertexAIIndexStatsObservedState_FromProto(mapCtx, in.GetIndexStats())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "VertexAIIndexObservedState_ToProto", skipping
+func VertexAIIndexObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIIndexObservedState) *pb.Index {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DeployedIndexes = direct.Slice_ToProto(mapCtx, in.DeployedIndexes, VertexAIDeployedIndexRefObservedState_ToProto)
+	// MISSING: Etag
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.IndexStats = VertexAIIndexStatsObservedState_ToProto(mapCtx, in.IndexStats)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "VertexAIIndexSpec_FromProto", skipping
+func VertexAIIndexSpec_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.VertexAIIndexSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIIndexSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
+	out.Metadata = apiextensionsv1.JSON_FromProto(mapCtx, in.GetMetadata())
+	// MISSING: Etag
+	out.Labels = in.Labels
+	out.IndexUpdateMethod = direct.Enum_FromProto(mapCtx, in.GetIndexUpdateMethod())
+	out.EncryptionSpec = VertexAIEncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "VertexAIIndexSpec_ToProto", skipping
+
+	func VertexAIIndexSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIIndexSpec) *pb.Index {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Index{}
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.Description = direct.ValueOf(in.Description)
+		out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
+		out.Metadata = apiextensionsv1.JSON_ToProto(mapCtx, in.Metadata)
+		// MISSING: Etag
+		out.Labels = in.Labels
+		out.IndexUpdateMethod = direct.Enum_ToProto[pb.Index_IndexUpdateMethod](mapCtx, in.IndexUpdateMethod)
+		out.EncryptionSpec = VertexAIEncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+		return out
+	}
+*/
 func VertexAISpecialistPoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.VertexAISpecialistPoolObservedState {
 	if in == nil {
 		return nil

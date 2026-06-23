@@ -182,29 +182,6 @@ OK
 
 ---
 
-GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryGroup
-
-{
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexentrygroup-minimal-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexentrygroup-minimal-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.dataplex.v1.CatalogService/DeleteEntryGroup
 
 {
