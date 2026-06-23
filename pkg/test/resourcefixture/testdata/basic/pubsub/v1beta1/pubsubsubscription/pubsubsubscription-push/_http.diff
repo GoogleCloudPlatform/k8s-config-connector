@@ -64,15 +64,55 @@
 <   "state": "ACTIVE",
 ---
 >   "state": 1,
-511c519
-< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
----
-> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-553c561
-<   "state": "ACTIVE",
----
->   "state": 1,
-559c567
+559c567,615
 < DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 ---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "ackDeadlineSeconds": 300,
+>   "deadLetterPolicy": {
+>     "deadLetterTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
+>     "maxDeliveryAttempts": 50
+>   },
+>   "enableMessageOrdering": true,
+>   "expirationPolicy": {
+>     "ttl": "1296000s"
+>   },
+>   "filter": "attributes.type = \"key\"",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "messageRetentionDuration": "302400s",
+>   "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+>   "pushConfig": {
+>     "noWrapper": {},
+>     "oidcToken": {
+>       "audience": "https://updated.example.com/push-audience",
+>       "serviceAccountEmail": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+>     },
+>     "pushEndpoint": "https://updated.example.com/push"
+>   },
+>   "retryPolicy": {
+>     "maximumBackoff": "300s",
+>     "minimumBackoff": "5s"
+>   },
+>   "state": 1,
+>   "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+> }
+> 
+> ---
+> 
 > DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

@@ -83,23 +83,48 @@
 <   "state": "ACTIVE",
 ---
 >   "state": 1,
-1303c1295
-< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
----
-> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1319,1320c1311,1312
-<     "state": "ACTIVE",
+1320c1312
 <     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable2${uniqueId}"
 ---
->     "state": 1,
 >     "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable2${uniqueId}"
 1330d1321
 <   "messageRetentionDuration": "604800s",
-1333c1324
-<   "state": "ACTIVE",
----
->   "state": 1,
-1339c1330
+1339c1330,1365
 < DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 ---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "ackDeadlineSeconds": 10,
+>   "bigqueryConfig": {
+>     "state": 1,
+>     "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable2${uniqueId}"
+>   },
+>   "expirationPolicy": {
+>     "ttl": "2678400s"
+>   },
+>   "labels": {
+>     "cnrm-test": "true",
+>     "label-one": "value-two",
+>     "managed-by-cnrm": "true"
+>   },
+>   "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+>   "pushConfig": {},
+>   "state": 1,
+>   "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+> }
+> 
+> ---
+> 
 > DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

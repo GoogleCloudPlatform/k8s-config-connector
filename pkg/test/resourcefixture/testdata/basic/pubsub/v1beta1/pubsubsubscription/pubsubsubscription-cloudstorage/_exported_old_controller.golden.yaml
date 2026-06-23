@@ -1,0 +1,34 @@
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  name: pubsubsubscription-${uniqueId}
+spec:
+  ackDeadlineSeconds: 400
+  cloudStorageConfig:
+    bucketRef:
+      external: storagebucket-2-${uniqueId}
+    filenamePrefix: test-prefix-updated
+    filenameSuffix: test-suffix-updated
+    maxBytes: 102400
+    maxDuration: 400s
+    state: ACTIVE
+  deadLetterPolicy:
+    deadLetterTopicRef:
+      external: projects/${projectId}/topics/pubsubtopic-${uniqueId}
+    maxDeliveryAttempts: 50
+  enableMessageOrdering: true
+  expirationPolicy:
+    ttl: 1296000s
+  filter: attributes.type = "key"
+  messageRetentionDuration: 302400s
+  resourceID: pubsubsubscription-${uniqueId}
+  retryPolicy:
+    maximumBackoff: 300s
+    minimumBackoff: 5s
+  topicRef:
+    external: projects/${projectId}/topics/pubsubtopic-${uniqueId}
