@@ -93,7 +93,11 @@ func (s *autoscalingPolicyServiceServer) DeleteAutoscalingPolicy(ctx context.Con
 }
 
 func (s *autoscalingPolicyServiceServer) UpdateAutoscalingPolicy(ctx context.Context, req *pb.UpdateAutoscalingPolicyRequest) (*pb.AutoscalingPolicy, error) {
-	name, err := s.parseAutoscalingPolicyName(req.Policy.Id)
+	reqName := req.GetPolicy().GetName()
+	if reqName == "" {
+		reqName = req.GetPolicy().GetId()
+	}
+	name, err := s.parseAutoscalingPolicyName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -166,21 +170,26 @@ func (s *autoscalingPolicyServiceServer) populateDefaultsForAutoscalingPolicy(ob
 
 type autoscalingPolicyName struct {
 	Project            *projects.ProjectData
+	LocationType       string
 	Region             string
 	AutoscalingPolicy  string
 	AutoscalingPolicy2 string
 }
 
 func (n *autoscalingPolicyName) String() string {
-	return fmt.Sprintf("projects/%s/regions/%s/autoscalingPolicies/%s", n.Project.ID, n.Region, n.AutoscalingPolicy)
+	locationType := n.LocationType
+	if locationType == "" {
+		locationType = "regions"
+	}
+	return fmt.Sprintf("projects/%s/%s/%s/autoscalingPolicies/%s", n.Project.ID, locationType, n.Region, n.AutoscalingPolicy)
 }
 
 // parseAutoscalingPolicyName parses a string into an AutoscalingPolicyName.
-// The expected form is `projects/*/regions/*/autoscalingPolicies/*`.
+// The expected form is `projects/*/regions/*/autoscalingPolicies/*` or `projects/*/locations/*/autoscalingPolicies/*`.
 func (s *MockService) parseAutoscalingPolicyName(name string) (*autoscalingPolicyName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "autoscalingPolicies" {
+	if len(tokens) == 6 && tokens[0] == "projects" && (tokens[2] == "regions" || tokens[2] == "locations") && tokens[4] == "autoscalingPolicies" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
@@ -188,6 +197,7 @@ func (s *MockService) parseAutoscalingPolicyName(name string) (*autoscalingPolic
 
 		name := &autoscalingPolicyName{
 			Project:           project,
+			LocationType:      tokens[2],
 			Region:            tokens[3],
 			AutoscalingPolicy: tokens[5],
 		}
