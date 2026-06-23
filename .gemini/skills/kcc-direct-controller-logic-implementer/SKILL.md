@@ -52,24 +52,6 @@ This skill guides the implementation of the `Adapter` interface and the creation
     - For alpha: `WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`
     - Verify that your "Maximal" test reduces the number of missing fields in the exceptions file.
 
-6.  **Verify and Record against MockGCP**:
-    If a mock implementation for the service exists in `mockgcp/`, you should prioritize running and recording against the mock. This allows for fast, hermetic iteration.
-    
-    **Check for Mock**: Verify if `mockgcp/mock<service_name>` exists.
-    
-    **Run and Record Mock**:
-    ```bash
-    RUN_E2E=1 \
-    E2E_GCP_TARGET=mock \
-    E2E_KUBE_TARGET=envtest \
-    GOLDEN_REQUEST_CHECKS=1 \
-    GOLDEN_OBJECT_CHECKS=1 \
-    WRITE_GOLDEN_OUTPUT=1 \
-    go test -v ./tests/e2e \
-      -timeout 10m \
-      -run TestAllInSeries/fixtures/<resource_lower>-minimal
-    ```
-    *Note: Automated agents should ONLY run against MockGCP if it exists to avoid requiring real GCP credentials.*
 
 ## Journaling
-Append any reconciliation hurdles, GCP SDK quirks, or MockGCP alignment issues to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
+Append any reconciliation hurdles, GCP SDK quirks, or other controller issues to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
