@@ -20,7 +20,6 @@ import (
 	"strconv"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -50,16 +49,24 @@ func (p *FirewallPolicyRuleParent) String() string {
 	return "locations/global/firewallPolicies/" + p.FirewallPolicy
 }
 
+// Deprecated: Use the Ref or Identity types instead.
 func NewFirewallPolicyRuleIdentity(ctx context.Context, reader client.Reader, obj *ComputeFirewallPolicyRule) (*FirewallPolicyRuleIdentity, error) {
 	//Get parent
-	firewallPolicyRef, err := refsv1beta1.ResolveComputeFirewallPolicy(ctx, reader, obj, obj.Spec.FirewallPolicyRef)
-	if err != nil {
+	if obj.Spec.FirewallPolicyRef == nil {
+		return nil, fmt.Errorf("spec.firewallPolicyRef is required")
+	}
+	if err := obj.Spec.FirewallPolicyRef.Normalize(ctx, reader, obj.Namespace); err != nil {
 		return nil, err
 	}
-	firewallPolicy := firewallPolicyRef.External
-	if firewallPolicy == "" {
+	firewallPolicyExternal := obj.Spec.FirewallPolicyRef.External
+	if firewallPolicyExternal == "" {
 		return nil, fmt.Errorf("cannot resolve firewallPolicy")
 	}
+	firewallPolicyID, err := ParseComputeFirewallPolicyExternal(firewallPolicyExternal)
+	if err != nil {
+		return nil, fmt.Errorf("cannot parse resolved firewallPolicyRef external=%q: %w", firewallPolicyExternal, err)
+	}
+	firewallPolicy := firewallPolicyID.FirewallPolicy
 
 	// Get priority. Priority is a required field
 	priority := obj.Spec.Priority

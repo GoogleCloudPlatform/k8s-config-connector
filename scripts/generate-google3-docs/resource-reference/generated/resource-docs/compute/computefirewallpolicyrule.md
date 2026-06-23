@@ -175,7 +175,7 @@ targetServiceAccounts:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed ComputeFirewallPolicy resource. Should be in the format `locations/global/firewallPolicies/{{firewallPolicyID}}`.</p>
+            <p>A reference to an externally managed ComputeFirewallPolicy resource. Should be in the format "locations/global/firewallPolicies/{{firewallPolicyID}}".</p>
         </td>
     </tr>
     <tr>
@@ -185,7 +185,7 @@ targetServiceAccounts:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `ComputeFirewallPolicy` resource.</p>
+            <p>The name of a ComputeFirewallPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -195,7 +195,7 @@ targetServiceAccounts:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` field of a `ComputeFirewallPolicy` resource.</p>
+            <p>The namespace of a ComputeFirewallPolicy resource.</p>
         </td>
     </tr>
     <tr>

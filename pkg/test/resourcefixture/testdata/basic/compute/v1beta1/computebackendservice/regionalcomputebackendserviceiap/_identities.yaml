@@ -16,7 +16,7 @@
   name: iap.googleapis.com
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //iap.googleapis.com/projects/${TEST_DEPENDENT_ORG_PROJECT_ID}/brands/
+- caisURL: unknown
   group: iap.cnrm.cloud.google.com
   kind: IAPBrand
   name: iapbrand-${uniqueId}
