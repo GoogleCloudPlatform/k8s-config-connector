@@ -16,6 +16,7 @@ package mockservicedirectory
 
 import (
 	"context"
+	"net"
 	"strings"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/servicedirectory/v1beta1"
@@ -46,6 +47,10 @@ func (s *RegistrationServiceV1) GetEndpoint(ctx context.Context, req *pb.GetEndp
 }
 
 func (s *RegistrationServiceV1) CreateEndpoint(ctx context.Context, req *pb.CreateEndpointRequest) (*pb.Endpoint, error) {
+	if err := s.validateIP(req.Parent, req.GetEndpointId(), req.GetEndpoint()); err != nil {
+		return nil, err
+	}
+
 	reqName := req.Parent + "/endpoints/" + req.GetEndpointId()
 	name, err := s.parseEndpointName(reqName)
 	if err != nil {
@@ -61,6 +66,21 @@ func (s *RegistrationServiceV1) CreateEndpoint(ctx context.Context, req *pb.Crea
 		return nil, err
 	}
 	return obj, nil
+}
+
+func (s *RegistrationServiceV1) validateIP(parent, endpointID string, endpoint *pb.Endpoint) error {
+	if endpoint == nil {
+		return nil
+	}
+	address := endpoint.GetAddress()
+	if address == "" {
+		return nil
+	}
+	if net.ParseIP(address) != nil {
+		return nil
+	}
+
+	return status.Errorf(codes.InvalidArgument, "IP address invalid. IP must be empty, IPv4 or IPv6")
 }
 
 func (s *RegistrationServiceV1) UpdateEndpoint(ctx context.Context, req *pb.UpdateEndpointRequest) (*pb.Endpoint, error) {
@@ -92,6 +112,10 @@ func (s *RegistrationServiceV1) UpdateEndpoint(ctx context.Context, req *pb.Upda
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported", path)
 		}
+	}
+
+	if err := s.validateIP(name.serviceName.String(), name.EndpointName, obj); err != nil {
+		return nil, err
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {

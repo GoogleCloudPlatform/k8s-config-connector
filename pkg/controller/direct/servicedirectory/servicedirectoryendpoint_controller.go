@@ -20,6 +20,7 @@ import (
 
 	gcp "cloud.google.com/go/servicedirectory/apiv1beta1"
 	pb "cloud.google.com/go/servicedirectory/apiv1beta1/servicedirectorypb"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/computerefs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -93,6 +94,18 @@ func (m *endpointModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 	desired := ServiceDirectoryEndpointSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
+	}
+
+	// Resolve ComputeAddressRef to its actual IP address if present and update the proto address field directly.
+	if obj.Spec.AddressRef != nil {
+		resolver := computerefs.NewComputeAddressResolver(m.config)
+		defer resolver.Close()
+
+		ip, err := resolver.ResolveComputeAddressIP(ctx, reader, obj, obj.Spec.AddressRef)
+		if err != nil {
+			return nil, err
+		}
+		desired.Address = ip
 	}
 
 	// Support labels on Metadata

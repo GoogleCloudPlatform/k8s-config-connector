@@ -429,6 +429,42 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "status": "RESERVED"
+}
+
+---
+
 GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
@@ -456,7 +492,7 @@ POST https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locat
 Content-Type: application/json
 
 {
-  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "address": "8.8.8.8",
   "metadata": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -477,7 +513,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "address": "8.8.8.8",
   "metadata": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -486,6 +522,42 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}",
   "network": "projects/${projectNumber}/global/networks/${networkID}",
   "port": 443
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "status": "RESERVED"
 }
 
 ---
@@ -504,7 +576,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "address": "8.8.8.8",
   "metadata": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -521,7 +593,7 @@ PATCH https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/loca
 Content-Type: application/json
 
 {
-  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "address": "8.8.8.8",
   "metadata": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -544,7 +616,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "address": "8.8.8.8",
   "metadata": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -554,6 +626,42 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}",
   "network": "projects/${projectNumber}/global/networks/${networkID}",
   "port": 80
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "status": "RESERVED"
 }
 
 ---
@@ -572,7 +680,71 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "address": "8.8.8.8",
+  "metadata": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
+  "port": 80
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "status": "RESERVED"
+}
+
+---
+
+GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
   "metadata": {
     "cnrm-test": "true",
     "label-one": "value-one",
