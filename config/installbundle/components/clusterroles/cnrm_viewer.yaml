@@ -711,6 +711,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - geminidataanalytics.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - gkebackup.cnrm.cloud.google.com
   resources:
   - '*'
