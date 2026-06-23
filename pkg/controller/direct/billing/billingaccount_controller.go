@@ -106,8 +106,21 @@ func (m *modelBillingAccount) AdapterForObject(ctx context.Context, op *directba
 }
 
 func (m *modelBillingAccount) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.BillingAccountIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &BillingAccountAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type BillingAccountAdapter struct {
