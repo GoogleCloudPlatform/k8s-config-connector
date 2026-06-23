@@ -138,7 +138,7 @@ func (a *Adapter) normalizeReference(ctx context.Context) error {
 	if obj.Spec.SparkSpec != nil {
 		if obj.Spec.SparkSpec.SparkHistoryServer != nil {
 			if ref := obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef; ref != nil {
-				_, err := ref.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
+				err := ref.Normalize(ctx, a.reader, obj.GetNamespace())
 				if err != nil {
 					return err
 				}
