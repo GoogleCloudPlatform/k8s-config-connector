@@ -16,6 +16,7 @@ package computerefs
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync"
 
@@ -53,18 +54,20 @@ func (r *ComputeAddressResolver) Close() error {
 	if r.globalAddressesClient != nil {
 		if err := r.globalAddressesClient.Close(); err != nil {
 			errs = append(errs, err)
+		} else {
+			r.globalAddressesClient = nil
 		}
-		r.globalAddressesClient = nil
 	}
 	if r.addressesClient != nil {
 		if err := r.addressesClient.Close(); err != nil {
 			errs = append(errs, err)
+		} else {
+			r.addressesClient = nil
 		}
-		r.addressesClient = nil
 	}
 
 	if len(errs) > 0 {
-		return fmt.Errorf("closing resolver clients: %v", errs)
+		return fmt.Errorf("closing resolver clients: %w", errors.Join(errs...))
 	}
 	return nil
 }

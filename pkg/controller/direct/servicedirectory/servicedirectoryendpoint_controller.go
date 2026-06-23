@@ -97,7 +97,6 @@ func (m *endpointModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 	}
 
 	// Resolve ComputeAddressRef to its actual IP address if present and update the proto address field directly.
-	// This ensures we do not mutate the KRM Spec in-place.
 	if obj.Spec.AddressRef != nil {
 		resolver := computerefs.NewComputeAddressResolver(m.config)
 		defer resolver.Close()
