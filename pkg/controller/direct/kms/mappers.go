@@ -21,6 +21,7 @@ import (
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -206,5 +207,75 @@ func CryptokeyversionAttestationStatus_ToProto(mapCtx *direct.MapContext, in *kr
 		out.Content = []byte(*in.Content)
 	}
 	out.CertChains = CryptokeyversionCertChainsStatus_ToProto(mapCtx, in.CertChains)
+	return out
+}
+
+// KMSSecretCiphertextAPI represents the client-side API representation of KMSSecretCiphertext
+// for the KRM fuzzer to round-trip against.
+type KMSSecretCiphertextAPI struct {
+	CryptoKey                   string
+	Plaintext                   string
+	AdditionalAuthenticatedData *string
+	ResourceID                  *string
+	Ciphertext                  *string
+}
+
+// KMSSecretCiphertextSpec_FromAPI maps KMSSecretCiphertextAPI Spec fields to KRM Spec representation.
+func KMSSecretCiphertextSpec_FromAPI(mapCtx *direct.MapContext, in *KMSSecretCiphertextAPI) *krmv1alpha1.KMSSecretCiphertextSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.KMSSecretCiphertextSpec{
+		CryptoKey:  in.CryptoKey,
+		ResourceID: in.ResourceID,
+	}
+	out.Plaintext = secret.Legacy{
+		Value: direct.LazyPtr(in.Plaintext),
+	}
+	if in.AdditionalAuthenticatedData != nil {
+		out.AdditionalAuthenticatedData = &secret.Legacy{
+			Value: in.AdditionalAuthenticatedData,
+		}
+	}
+	return out
+}
+
+// KMSSecretCiphertextSpec_ToAPI maps KRM KMSSecretCiphertextSpec representation to KMSSecretCiphertextAPI.
+func KMSSecretCiphertextSpec_ToAPI(mapCtx *direct.MapContext, in *krmv1alpha1.KMSSecretCiphertextSpec) *KMSSecretCiphertextAPI {
+	if in == nil {
+		return nil
+	}
+	out := &KMSSecretCiphertextAPI{
+		CryptoKey:  in.CryptoKey,
+		ResourceID: in.ResourceID,
+	}
+	if in.Plaintext.Value != nil {
+		out.Plaintext = *in.Plaintext.Value
+	}
+	if in.AdditionalAuthenticatedData != nil && in.AdditionalAuthenticatedData.Value != nil {
+		out.AdditionalAuthenticatedData = in.AdditionalAuthenticatedData.Value
+	}
+	return out
+}
+
+// KMSSecretCiphertextStatus_FromAPI maps KMSSecretCiphertextAPI Status fields to KRM Status representation.
+func KMSSecretCiphertextStatus_FromAPI(mapCtx *direct.MapContext, in *KMSSecretCiphertextAPI) *krmv1alpha1.KMSSecretCiphertextStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.KMSSecretCiphertextStatus{
+		Ciphertext: in.Ciphertext,
+	}
+	return out
+}
+
+// KMSSecretCiphertextStatus_ToAPI maps KRM KMSSecretCiphertextStatus representation to KMSSecretCiphertextAPI.
+func KMSSecretCiphertextStatus_ToAPI(mapCtx *direct.MapContext, in *krmv1alpha1.KMSSecretCiphertextStatus) *KMSSecretCiphertextAPI {
+	if in == nil {
+		return nil
+	}
+	out := &KMSSecretCiphertextAPI{
+		Ciphertext: in.Ciphertext,
+	}
 	return out
 }
