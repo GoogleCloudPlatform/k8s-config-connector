@@ -358,6 +358,11 @@ func compareRedisCluster(ctx context.Context, actual, desired *pb.Cluster) (*str
 	maskedActual = populateDefaults(maskedActual)
 	desired = populateDefaults(proto.CloneOf(desired))
 
+	// If CrossClusterReplicationConfig is unspecified, use the actual value as default
+	if desired.CrossClusterReplicationConfig == nil {
+		desired.CrossClusterReplicationConfig = maskedActual.CrossClusterReplicationConfig
+	}
+
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, err
