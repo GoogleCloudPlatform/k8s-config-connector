@@ -127,34 +127,210 @@ go run . --file ${API_PROTO} --message "TestIamPermissionsRequest" --mode "repla
   repeated string permissions = 2 [json_name="permissions"];
 EOF
 
-go run . --file ${API_PROTO} --service "FoldersServer" --mode "append" <<EOF
-  // Returns permissions that a caller has on the specified project.
-  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
-    option (google.api.http) = {
-      post: "/v1/{resource=folders/*}:testIamPermissions"
-      body: "*"
-    };
-  };
-EOF
-
-go run . --file ${API_PROTO} --service "OrganizationsServer" --mode "append" <<EOF
-  // Returns permissions that a caller has on the specified project.
-  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
-    option (google.api.http) = {
-      post: "/v1/{resource=organizations/*}:testIamPermissions"
-      body: "*"
-    };
-  };
-EOF
-
-go run . --file ${API_PROTO} --service "ProjectsServer" --mode "append" <<EOF
-  // Returns permissions that a caller has on the specified project.
-  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
-    option (google.api.http) = {
-      post: "/v1/{resource=projects/*}:testIamPermissions"
-      body: "*"
-    };
-  };
-EOF
-
 sed -i 's/^syntax = "proto3";/syntax = "proto2";/' ${API_PROTO}
+
+# GKEHub Scope patches
+GKEHUB_SERVICE_PROTO=${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/gkehub/v1/service.proto
+# Add import
+sed -i '/import "google\/cloud\/gkehub\/v1\/membership.proto";/a import "google/cloud/gkehub/v1/scope.proto";' ${GKEHUB_SERVICE_PROTO}
+sed -i '/import "google\/cloud\/gkehub\/v1\/scope.proto";/a import "google/cloud/gkehub/v1/membership_binding.proto";' ${GKEHUB_SERVICE_PROTO}
+
+go run . --file ${GKEHUB_SERVICE_PROTO} --service "GkeHub" --mode "append" <<EOF
+  // Gets details of a single Scope.
+  rpc GetScope(GetScopeRequest) returns (Scope) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/scopes/*}"
+      additional_bindings {
+        get: "/v1beta/{name=projects/*/locations/*/scopes/*}"
+      }
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Adds a new Scope.
+  rpc CreateScope(CreateScopeRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/scopes"
+      body: "resource"
+      additional_bindings {
+        post: "/v1beta/{parent=projects/*/locations/*}/scopes"
+        body: "resource"
+      }
+    };
+    option (google.api.method_signature) = "parent,resource,scope_id";
+    option (google.longrunning.operation_info) = {
+      response_type: "Scope"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Removes a Scope.
+  rpc DeleteScope(DeleteScopeRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/scopes/*}"
+      additional_bindings {
+        delete: "/v1beta/{name=projects/*/locations/*/scopes/*}"
+      }
+    };
+    option (google.api.method_signature) = "name";
+    option (google.longrunning.operation_info) = {
+      response_type: "google.protobuf.Empty"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Updates an existing Scope.
+  rpc UpdateScope(UpdateScopeRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/scopes/*}"
+      body: "resource"
+      additional_bindings {
+        patch: "/v1beta/{name=projects/*/locations/*/scopes/*}"
+        body: "resource"
+      }
+    };
+    option (google.api.method_signature) = "name,resource,update_mask";
+    option (google.longrunning.operation_info) = {
+      response_type: "Scope"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Gets details of a single MembershipBinding.
+  rpc GetMembershipBinding(GetMembershipBindingRequest) returns (MembershipBinding) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/memberships/*/bindings/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Adds a new MembershipBinding.
+  rpc CreateMembershipBinding(CreateMembershipBindingRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/memberships/*}/bindings"
+      body: "resource"
+    };
+    option (google.api.method_signature) = "parent,resource,membership_binding_id";
+    option (google.longrunning.operation_info) = {
+      response_type: "MembershipBinding"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Removes a MembershipBinding.
+  rpc DeleteMembershipBinding(DeleteMembershipBindingRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/memberships/*/bindings/*}"
+    };
+    option (google.api.method_signature) = "name";
+    option (google.longrunning.operation_info) = {
+      response_type: "google.protobuf.Empty"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Updates an existing MembershipBinding.
+  rpc UpdateMembershipBinding(UpdateMembershipBindingRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/memberships/*/bindings/*}"
+      body: "resource"
+    };
+    option (google.api.method_signature) = "name,resource,update_mask";
+    option (google.longrunning.operation_info) = {
+      response_type: "MembershipBinding"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Gets details of a single Namespace.
+  rpc GetNamespace(GetNamespaceRequest) returns (Namespace) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/scopes/*/namespaces/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Adds a new Namespace.
+  rpc CreateNamespace(CreateNamespaceRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/scopes/*}/namespaces"
+      body: "resource"
+    };
+    option (google.api.method_signature) = "parent,resource,scope_namespace_id";
+    option (google.longrunning.operation_info) = {
+      response_type: "Namespace"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Removes a Namespace.
+  rpc DeleteNamespace(DeleteNamespaceRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/scopes/*/namespaces/*}"
+    };
+    option (google.api.method_signature) = "name";
+    option (google.longrunning.operation_info) = {
+      response_type: "google.protobuf.Empty"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Updates an existing Namespace.
+  rpc UpdateNamespace(UpdateNamespaceRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/scopes/*/namespaces/*}"
+      body: "resource"
+    };
+    option (google.api.method_signature) = "name,resource,update_mask";
+    option (google.longrunning.operation_info) = {
+      response_type: "Namespace"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Gets details of a single RBACRoleBinding.
+  rpc GetRBACRoleBinding(GetRBACRoleBindingRequest) returns (RBACRoleBinding) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/scopes/*/rbacrolebindings/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Adds a new RBACRoleBinding.
+  rpc CreateRBACRoleBinding(CreateRBACRoleBindingRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/scopes/*}/rbacrolebindings"
+      body: "resource"
+    };
+    option (google.api.method_signature) = "parent,resource,rbacrolebinding_id";
+    option (google.longrunning.operation_info) = {
+      response_type: "RBACRoleBinding"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Removes a RBACRoleBinding.
+  rpc DeleteRBACRoleBinding(DeleteRBACRoleBindingRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/scopes/*/rbacrolebindings/*}"
+    };
+    option (google.api.method_signature) = "name";
+    option (google.longrunning.operation_info) = {
+      response_type: "google.protobuf.Empty"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  // Updates an existing RBACRoleBinding.
+  rpc UpdateRBACRoleBinding(UpdateRBACRoleBindingRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/scopes/*/rbacrolebindings/*}"
+      body: "resource"
+    };
+    option (google.api.method_signature) = "name,resource,update_mask";
+    option (google.longrunning.operation_info) = {
+      response_type: "RBACRoleBinding"
+      metadata_type: "OperationMetadata"
+    };
+  }
+EOF

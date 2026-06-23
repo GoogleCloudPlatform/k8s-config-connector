@@ -1,0 +1,29 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubNamespace
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: gkh-ns-min-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  namespaceID: gkh-ns-min-${uniqueId}
+  scopeRef:
+    name: gkehubscope-dep-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/scopes/gkehubscope-dep-${uniqueId}/namespaces/gkh-ns-min-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    state: READY
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

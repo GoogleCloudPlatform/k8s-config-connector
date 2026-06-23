@@ -14,7 +14,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}' was not found",
+    "message": "scope \"projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -38,20 +38,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
-    "apiVersion": "v1beta",
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}",
-    "verb": "create"
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/operations/${operationID}?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -67,16 +65,14 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
-    "apiVersion": "v1beta",
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}",
-    "verb": "create"
+    "target": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Scope",
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.Scope",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}",
     "state": {
@@ -135,20 +131,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
-    "apiVersion": "v1beta",
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}",
-    "verb": "update"
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/operations/${operationID}?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -164,16 +158,14 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
-    "apiVersion": "v1beta",
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}",
-    "verb": "update"
+    "target": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Scope",
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.Scope",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}",
     "namespaceLabels": {
@@ -231,20 +223,22 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
+  "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
-    "apiVersion": "v1beta",
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}",
-    "verb": "delete"
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/operations/${operationID}?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -260,14 +254,12 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
-    "apiVersion": "v1beta",
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}",
-    "verb": "delete"
+    "target": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-minimal-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }

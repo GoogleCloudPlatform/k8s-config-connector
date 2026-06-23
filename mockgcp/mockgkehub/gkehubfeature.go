@@ -28,12 +28,12 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta"
 )
 
-type GKEHubFeature struct {
+type GkeHubV1Beta struct {
 	*MockService
 	pb.UnimplementedGkeHubServer
 }
 
-func (s *GKEHubFeature) GetFeature(ctx context.Context, req *pb.GetFeatureRequest) (*pb.Feature, error) {
+func (s *GkeHubV1Beta) GetFeature(ctx context.Context, req *pb.GetFeatureRequest) (*pb.Feature, error) {
 	name, err := s.parseFeatureName(req.Name)
 	if err != nil {
 		return nil, err
@@ -49,7 +49,7 @@ func (s *GKEHubFeature) GetFeature(ctx context.Context, req *pb.GetFeatureReques
 	return obj, nil
 }
 
-func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeatureRequest) (*longrunning.Operation, error) {
+func (s *GkeHubV1Beta) CreateFeature(ctx context.Context, req *pb.CreateFeatureRequest) (*longrunning.Operation, error) {
 	reqName := req.Parent + "/features/" + req.FeatureId
 	name, err := s.parseFeatureName(reqName)
 	if err != nil {
@@ -59,7 +59,7 @@ func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeature
 	fqn := name.String()
 	now := timestamppb.Now()
 
-	obj := proto.CloneOf(req.Resource)
+	obj := proto.Clone(req.Resource).(*pb.Feature)
 	obj.Name = fqn
 
 	// Mimic the GCP API validation logic.
@@ -81,7 +81,7 @@ func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeature
 		EndTime:    now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		result := proto.CloneOf(obj)
+		result := proto.Clone(obj).(*pb.Feature)
 		result.CreateTime = now
 		result.UpdateTime = now
 		result.ResourceState = &pb.FeatureResourceState{State: pb.FeatureResourceState_ACTIVE}
@@ -89,7 +89,7 @@ func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeature
 	})
 }
 
-func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeatureRequest) (*longrunning.Operation, error) {
+func (s *GkeHubV1Beta) UpdateFeature(ctx context.Context, req *pb.UpdateFeatureRequest) (*longrunning.Operation, error) {
 	reqName := req.GetName()
 
 	name, err := s.parseFeatureName(reqName)
@@ -132,7 +132,7 @@ func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeature
 		EndTime:    now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		result := proto.CloneOf(obj)
+		result := proto.Clone(obj).(*pb.Feature)
 		result.UpdateTime = now
 		result.ResourceState = &pb.FeatureResourceState{State: pb.FeatureResourceState_ACTIVE}
 		return result, nil
@@ -149,7 +149,7 @@ func updateMembershipSpecsMap(membershipSpecs, membershipSpecsPatch map[string]*
 	return membershipSpecs
 }
 
-func (s *GKEHubFeature) DeleteFeature(ctx context.Context, req *pb.DeleteFeatureRequest) (*longrunning.Operation, error) {
+func (s *GkeHubV1Beta) DeleteFeature(ctx context.Context, req *pb.DeleteFeatureRequest) (*longrunning.Operation, error) {
 	name, err := s.parseFeatureName(req.Name)
 	if err != nil {
 		return nil, err

@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,25 +22,21 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1"
 )
 
-type GKEHubMembership struct {
-	*MockService
-	pb.UnimplementedGkeHubMembershipServiceServer
-}
-
-func (s *GKEHubMembership) GetMembership(ctx context.Context, req *pb.GetMembershipRequest) (*pb.Membership, error) {
-	name, err := s.parseMembershipName(req.Name)
+func (s *GkeHubV1) GetRBACRoleBinding(ctx context.Context, req *pb.GetRBACRoleBindingRequest) (*pb.RBACRoleBinding, error) {
+	name, err := s.parseScopeRBACRoleBindingName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.Membership{}
+	obj := &pb.RBACRoleBinding{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -48,70 +44,60 @@ func (s *GKEHubMembership) GetMembership(ctx context.Context, req *pb.GetMembers
 	return obj, nil
 }
 
-func (s *GKEHubMembership) CreateMembership(ctx context.Context, req *pb.CreateMembershipRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/memberships/" + req.MembershipId
-	name, err := s.parseMembershipName(reqName)
+func (s *GkeHubV1) CreateRBACRoleBinding(ctx context.Context, req *pb.CreateRBACRoleBindingRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/rbacrolebindings/" + req.RbacrolebindingId
+	name, err := s.parseScopeRBACRoleBindingName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 	now := timestamppb.Now()
-	obj := proto.Clone(req.Resource).(*pb.Membership)
+
+	obj := proto.Clone(req.Resource).(*pb.RBACRoleBinding)
 	obj.Name = fqn
-	// The real gcp generated the values below
-	obj.InfrastructureType = 2
-	obj.ExternalId = "c772f869-1d6c-4d50-a92e-816c48322246"
-	if obj.Authority != nil {
-		obj.Authority.IdentityProvider = obj.Authority.Issuer
-		obj.Authority.WorkloadIdentityPool = "${projectId}.svc.id.goog"
-	}
-	obj.UniqueId = "12345678"
 	obj.CreateTime = now
-	obj.State = &pb.MembershipState{Code: pb.MembershipState_READY}
 	obj.UpdateTime = now
+	obj.State = &pb.RBACRoleBindingLifecycleState{Code: pb.RBACRoleBindingLifecycleState_READY}
+	obj.Uid = "111111111111111111111" // Stable UID for testing
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
 	metadata := &pb.OperationMetadata{
 		Target:     fqn,
 		CreateTime: now,
 		EndTime:    now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Membership)
-		result.CreateTime = now
-		result.UpdateTime = now
-		result.State = &pb.MembershipState{Code: pb.MembershipState_READY}
-		return result, nil
+		return obj, nil
 	})
 }
 
-func (s *GKEHubMembership) UpdateMembership(ctx context.Context, req *pb.UpdateMembershipRequest) (*longrunning.Operation, error) {
+func (s *GkeHubV1) UpdateRBACRoleBinding(ctx context.Context, req *pb.UpdateRBACRoleBindingRequest) (*longrunning.Operation, error) {
 	reqName := req.GetName()
 
-	name, err := s.parseMembershipName(reqName)
+	name, err := s.parseScopeRBACRoleBindingName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := &pb.Membership{}
+	obj := &pb.RBACRoleBinding{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
 	now := timestamppb.Now()
+	obj.UpdateTime = now
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask().GetPaths()
 
-	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
-		case "description":
-			obj.Description = req.Resource.GetDescription()
+		case "labels":
+			obj.Labels = req.Resource.GetLabels()
+		case "role":
+			obj.Role = req.Resource.GetRole()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -127,33 +113,30 @@ func (s *GKEHubMembership) UpdateMembership(ctx context.Context, req *pb.UpdateM
 		EndTime:    now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Membership)
-		result.UpdateTime = now
-		result.State = &pb.MembershipState{Code: pb.MembershipState_READY}
-		return result, nil
+		return obj, nil
 	})
 }
 
-func (s *GKEHubMembership) DeleteMembership(ctx context.Context, req *pb.DeleteMembershipRequest) (*longrunning.Operation, error) {
-	name, err := s.parseMembershipName(req.Name)
+func (s *GkeHubV1) DeleteRBACRoleBinding(ctx context.Context, req *pb.DeleteRBACRoleBindingRequest) (*longrunning.Operation, error) {
+	name, err := s.parseScopeRBACRoleBindingName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 	now := timestamppb.Now()
-	oldObj := &pb.Membership{}
+
+	oldObj := &pb.RBACRoleBinding{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return s.operations.NewLRO(ctx)
 		}
 		return &longrunningpb.Operation{}, err
 	}
-
 	metadata := &pb.OperationMetadata{
 		Target:     fqn,
 		CreateTime: now,
 		EndTime:    now,
 	}
-	return s.operations.DoneLRO(ctx, name.String(), metadata, &pb.Membership{})
+	return s.operations.DoneLRO(ctx, name.String(), metadata, &emptypb.Empty{})
 }
