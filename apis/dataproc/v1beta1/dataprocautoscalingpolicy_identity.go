@@ -44,6 +44,10 @@ func (i *DataprocAutoscalingPolicyIdentity) String() string {
 	return DataprocAutoscalingPolicyIdentityFormat.ToString(*i)
 }
 
+func (i *DataprocAutoscalingPolicyIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/regions/%s", i.Project, i.Region)
+}
+
 func (i *DataprocAutoscalingPolicyIdentity) FromExternal(ref string) error {
 	parsed, match, err := DataprocAutoscalingPolicyIdentityFormat.Parse(ref)
 	if err != nil {
