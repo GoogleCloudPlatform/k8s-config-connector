@@ -3,10 +3,11 @@ kind: DataprocAutoscalingPolicy
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: dataprocautoscalingpolicy-${uniqueId}
@@ -20,6 +21,7 @@ spec:
   location: us-central1
   projectRef:
     external: projects/${projectId}
+  resourceID: dataprocautoscalingpolicy-${uniqueId}
   secondaryWorkerConfig:
     maxInstances: 2
   workerConfig:
@@ -31,5 +33,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}
-  observedGeneration: 2
+  observedGeneration: 3
