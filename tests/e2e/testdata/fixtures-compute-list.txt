@@ -1,4 +1,5 @@
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeautoscaler/computeautoscalerbasic
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeautoscaler/computeautoscalerbasic-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computebackendservicesignedurlkey/computebackendservicesignedurlkeybasic
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computebackendservicesignedurlkey/computebackendservicesignedurlkeybasic-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computediskresourcepolicyattachment/diskresourcepolicyattachmentautogen

@@ -16,6 +16,8 @@ apiVersion: compute.cnrm.cloud.google.com/v1alpha1
 kind: ComputeAutoscaler
 metadata:
   name: computeautoscaler-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
   projectRef:
     external: ${projectId}
