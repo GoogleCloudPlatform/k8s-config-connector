@@ -27,12 +27,6 @@ import (
 
 var _ refsv1beta1.Ref = &ServiceAccountKeyRef{}
 
-var IAMServiceAccountGVK = schema.GroupVersionKind{
-	Group:   "iam.cnrm.cloud.google.com",
-	Version: "v1beta1",
-	Kind:    "IAMServiceAccount",
-}
-
 // ServiceAccountKeyRef is a reference to an IAMServiceAccountKey.
 type ServiceAccountKeyRef struct {
 	// A reference to an externally managed IAMServiceAccountKey resource.

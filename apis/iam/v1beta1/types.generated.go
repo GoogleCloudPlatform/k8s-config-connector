@@ -18,5 +18,140 @@
 // krm.version: v1beta1
 // proto.service: google.iam.admin.v1
 // resource: IAMServiceAccountKey:ServiceAccountKey
+// resource: IAMServiceAccount:ServiceAccount
 
 package v1beta1
+
+/* found existing non-generated go type with proto tag "google.iam.admin.v1.ServiceAccount", skipping
+
+// +kcc:proto=google.iam.admin.v1.ServiceAccount
+type ServiceAccount struct {
+	// The resource name of the service account.
+	//
+	//  Use one of the following formats:
+	//
+	//  * `projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}`
+	//  * `projects/{PROJECT_ID}/serviceAccounts/{UNIQUE_ID}`
+	//
+	//  As an alternative, you can use the `-` wildcard character instead of the
+	//  project ID:
+	//
+	//  * `projects/-/serviceAccounts/{EMAIL_ADDRESS}`
+	//  * `projects/-/serviceAccounts/{UNIQUE_ID}`
+	//
+	//  When possible, avoid using the `-` wildcard character, because it can cause
+	//  response messages to contain misleading error codes. For example, if you
+	//  try to get the service account
+	//  `projects/-/serviceAccounts/fake@example.com`, which does not exist, the
+	//  response contains an HTTP `403 Forbidden` error instead of a `404 Not
+	//  Found` error.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccount.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. A user-specified, human-readable name for the service account. The maximum
+	//  length is 100 UTF-8 bytes.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccount.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Deprecated. Do not use.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccount.etag
+	Etag []byte `json:"etag,omitempty"`
+
+	// Optional. A user-specified, human-readable description of the service account. The
+	//  maximum length is 256 UTF-8 bytes.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccount.description
+	Description *string `json:"description,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.iam.admin.v1.ServiceAccountKey", skipping
+
+// +kcc:proto=google.iam.admin.v1.ServiceAccountKey
+type ServiceAccountKey struct {
+	// The resource name of the service account key in the following format
+	//  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccountKey.name
+	Name *string `json:"name,omitempty"`
+
+	// The output format for the private key.
+	//  Only provided in `CreateServiceAccountKey` responses, not
+	//  in `GetServiceAccountKey` or `ListServiceAccountKey` responses.
+	//
+	//  Google never exposes system-managed private keys, and never retains
+	//  user-managed private keys.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccountKey.private_key_type
+	PrivateKeyType *string `json:"privateKeyType,omitempty"`
+
+	// Specifies the algorithm (and possibly key size) for the key.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccountKey.key_algorithm
+	KeyAlgorithm *string `json:"keyAlgorithm,omitempty"`
+
+	// The private key data. Only provided in `CreateServiceAccountKey`
+	//  responses. Make sure to keep the private key data secure because it
+	//  allows for the assertion of the service account identity.
+	//  When base64 decoded, the private key data can be used to authenticate with
+	//  Google API client libraries and with
+	//  <a href="/sdk/gcloud/reference/auth/activate-service-account">gcloud
+	//  auth activate-service-account</a>.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccountKey.private_key_data
+	PrivateKeyData []byte `json:"privateKeyData,omitempty"`
+
+	// The public key data. Only provided in `GetServiceAccountKey` responses.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccountKey.public_key_data
+	PublicKeyData []byte `json:"publicKeyData,omitempty"`
+
+	// The key can be used after this timestamp.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccountKey.valid_after_time
+	ValidAfterTime *string `json:"validAfterTime,omitempty"`
+
+	// The key can be used before this timestamp.
+	//  For system-managed key pairs, this timestamp is the end time for the
+	//  private key signing operation. The public key could still be used
+	//  for verification for a few hours after this time.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccountKey.valid_before_time
+	ValidBeforeTime *string `json:"validBeforeTime,omitempty"`
+
+	// The key origin.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccountKey.key_origin
+	KeyOrigin *string `json:"keyOrigin,omitempty"`
+
+	// The key type.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccountKey.key_type
+	KeyType *string `json:"keyType,omitempty"`
+
+	// The key status.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccountKey.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.iam.admin.v1.ServiceAccount", skipping
+
+// +kcc:observedstate:proto=google.iam.admin.v1.ServiceAccount
+type ServiceAccountObservedState struct {
+	// Output only. The ID of the project that owns the service account.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccount.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Output only. The unique, stable numeric ID for the service account.
+	//
+	//  Each service account retains its unique ID even if you delete the service
+	//  account. For example, if you delete a service account, then create a new
+	//  service account with the same name, the new service account has a different
+	//  unique ID than the deleted service account.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccount.unique_id
+	UniqueID *string `json:"uniqueID,omitempty"`
+
+	// Output only. The email address of the service account.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccount.email
+	Email *string `json:"email,omitempty"`
+
+	// Output only. The OAuth 2.0 client ID for the service account.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccount.oauth2_client_id
+	OAUTH2ClientID *string `json:"oauth2ClientID,omitempty"`
+
+	// Output only. Whether the service account is disabled.
+	// +kcc:proto:field=google.iam.admin.v1.ServiceAccount.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+*/
