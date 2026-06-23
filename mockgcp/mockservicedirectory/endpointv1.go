@@ -16,6 +16,9 @@ package mockservicedirectory
 
 import (
 	"context"
+	"fmt"
+	"net"
+	"sort"
 	"strings"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/servicedirectory/v1beta1"
@@ -46,6 +49,10 @@ func (s *RegistrationServiceV1) GetEndpoint(ctx context.Context, req *pb.GetEndp
 }
 
 func (s *RegistrationServiceV1) CreateEndpoint(ctx context.Context, req *pb.CreateEndpointRequest) (*pb.Endpoint, error) {
+	if err := s.validateIP(req.Parent, req.GetEndpointId(), req.GetEndpoint()); err != nil {
+		return nil, err
+	}
+
 	reqName := req.Parent + "/endpoints/" + req.GetEndpointId()
 	name, err := s.parseEndpointName(reqName)
 	if err != nil {
@@ -61,6 +68,48 @@ func (s *RegistrationServiceV1) CreateEndpoint(ctx context.Context, req *pb.Crea
 		return nil, err
 	}
 	return obj, nil
+}
+
+func (s *RegistrationServiceV1) validateIP(parent, endpointID string, endpoint *pb.Endpoint) error {
+	if endpoint == nil {
+		return nil
+	}
+	address := endpoint.GetAddress()
+	if address == "" {
+		return nil
+	}
+	if net.ParseIP(address) != nil {
+		return nil
+	}
+
+	// Address is not empty and not a valid IP
+	var metadataStrings []string
+	keys := make([]string, 0, len(endpoint.Metadata))
+	for k := range endpoint.Metadata {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		metadataStrings = append(metadataStrings, fmt.Sprintf("metadata { key: %q value: %q }", k, endpoint.Metadata[k]))
+	}
+
+	endpointParts := []string{}
+	if endpoint.Address != "" {
+		endpointParts = append(endpointParts, fmt.Sprintf("address: %q", endpoint.Address))
+	}
+	if endpoint.Port != 0 {
+		endpointParts = append(endpointParts, fmt.Sprintf("port: %d", endpoint.Port))
+	}
+	if len(metadataStrings) > 0 {
+		endpointParts = append(endpointParts, strings.Join(metadataStrings, " "))
+	}
+	if endpoint.Network != "" {
+		endpointParts = append(endpointParts, fmt.Sprintf("network: %q", endpoint.Network))
+	}
+	endpointStr := strings.Join(endpointParts, " ")
+
+	errMsg := fmt.Sprintf("IP address invalid. IP must be empty, IPv4 or IPv6; request 'go/debugonly   parent: %q endpoint_id: %q endpoint { %s }'", parent, endpointID, endpointStr)
+	return status.Errorf(codes.InvalidArgument, "%s", errMsg)
 }
 
 func (s *RegistrationServiceV1) UpdateEndpoint(ctx context.Context, req *pb.UpdateEndpointRequest) (*pb.Endpoint, error) {
@@ -92,6 +141,10 @@ func (s *RegistrationServiceV1) UpdateEndpoint(ctx context.Context, req *pb.Upda
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported", path)
 		}
+	}
+
+	if err := s.validateIP(name.serviceName.String(), name.EndpointName, obj); err != nil {
+		return nil, err
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {

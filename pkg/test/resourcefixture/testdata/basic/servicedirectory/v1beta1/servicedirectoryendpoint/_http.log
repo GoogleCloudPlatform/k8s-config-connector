@@ -456,7 +456,7 @@ POST https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locat
 Content-Type: application/json
 
 {
-  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "address": "8.8.8.8",
   "metadata": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -477,7 +477,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "address": "8.8.8.8",
   "metadata": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -504,7 +504,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "address": "8.8.8.8",
   "metadata": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -521,7 +521,7 @@ PATCH https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/loca
 Content-Type: application/json
 
 {
-  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "address": "8.8.8.8",
   "metadata": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -544,7 +544,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "address": "8.8.8.8",
   "metadata": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -572,7 +572,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "address": "8.8.8.8",
   "metadata": {
     "cnrm-test": "true",
     "label-one": "value-one",
