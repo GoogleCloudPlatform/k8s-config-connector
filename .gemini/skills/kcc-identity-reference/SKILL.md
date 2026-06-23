@@ -60,6 +60,8 @@ Create or update the file to match the canonical example. Key requirements:
 
 Read the canonical `apis/artifactregistry/v1beta1/artifactregistryrepository_reference.go` to refresh your understanding.
 
+**CRITICAL RULE FOR REFERENCE TYPES:** Whenever a reference type (e.g., `<Kind>Ref` implementing `refsv1beta1.Ref`) is needed, it must **always** be defined and implemented in its own separate file named `<kind>_reference.go` rather than inside `_types.go`. This keeps the API types clean and ensures reference-related types are organized consistently across packages.
+
 Create or update the file to match the canonical example. Key requirements:
 - Use the standard copyright header (Year 2026).
 - Implement `_ refs.Ref = &<Kind>Ref{}`.
