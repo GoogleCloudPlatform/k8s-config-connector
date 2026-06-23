@@ -15,7 +15,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Not found: Autoscaling Policy projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+    "message": "autoscalingPolicy \"projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -59,19 +59,18 @@ X-Xss-Protection: 0
     "yarnConfig": {
       "gracefulDecommissionTimeout": "120s",
       "scaleDownFactor": 0.5,
-      "scaleUpFactor": 0.4
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.4,
+      "scaleUpMinWorkerFraction": 0.5
     }
   },
   "id": "000000000000000000000",
-  "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
   "secondaryWorkerConfig": {
-    "maxInstances": 3,
-    "weight": 1
+    "maxInstances": 3
   },
   "workerConfig": {
-    "maxInstances": 2,
-    "minInstances": 2,
-    "weight": 1
+    "maxInstances": 2
   }
 }
 
@@ -97,19 +96,18 @@ X-Xss-Protection: 0
     "yarnConfig": {
       "gracefulDecommissionTimeout": "120s",
       "scaleDownFactor": 0.5,
-      "scaleUpFactor": 0.4
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.4,
+      "scaleUpMinWorkerFraction": 0.5
     }
   },
   "id": "000000000000000000000",
-  "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
   "secondaryWorkerConfig": {
-    "maxInstances": 3,
-    "weight": 1
+    "maxInstances": 3
   },
   "workerConfig": {
-    "maxInstances": 2,
-    "minInstances": 2,
-    "weight": 1
+    "maxInstances": 2
   }
 }
 
@@ -125,18 +123,17 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "yarnConfig": {
       "gracefulDecommissionTimeout": "60s",
       "scaleDownFactor": 0.5,
-      "scaleUpFactor": 0.5
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.5,
+      "scaleUpMinWorkerFraction": 0.5
     }
   },
   "id": "000000000000000000000",
   "secondaryWorkerConfig": {
-    "maxInstances": 2,
-    "weight": 1
+    "maxInstances": 2
   },
   "workerConfig": {
-    "maxInstances": 2,
-    "minInstances": 2,
-    "weight": 1
+    "maxInstances": 2
   }
 }
 
@@ -156,19 +153,18 @@ X-Xss-Protection: 0
     "yarnConfig": {
       "gracefulDecommissionTimeout": "60s",
       "scaleDownFactor": 0.5,
-      "scaleUpFactor": 0.5
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.5,
+      "scaleUpMinWorkerFraction": 0.5
     }
   },
   "id": "000000000000000000000",
-  "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
   "secondaryWorkerConfig": {
-    "maxInstances": 2,
-    "weight": 1
+    "maxInstances": 2
   },
   "workerConfig": {
-    "maxInstances": 2,
-    "minInstances": 2,
-    "weight": 1
+    "maxInstances": 2
   }
 }
 
@@ -194,19 +190,18 @@ X-Xss-Protection: 0
     "yarnConfig": {
       "gracefulDecommissionTimeout": "60s",
       "scaleDownFactor": 0.5,
-      "scaleUpFactor": 0.5
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.5,
+      "scaleUpMinWorkerFraction": 0.5
     }
   },
   "id": "000000000000000000000",
-  "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
   "secondaryWorkerConfig": {
-    "maxInstances": 2,
-    "weight": 1
+    "maxInstances": 2
   },
   "workerConfig": {
-    "maxInstances": 2,
-    "minInstances": 2,
-    "weight": 1
+    "maxInstances": 2
   }
 }
 
@@ -247,7 +242,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Not found: Autoscaling Policy projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+    "message": "autoscalingPolicy \"projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
