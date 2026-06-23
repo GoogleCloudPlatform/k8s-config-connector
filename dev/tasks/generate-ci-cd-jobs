@@ -33,6 +33,10 @@ for group in $(rgrep --no-filename '^[ ]*group:' config/crds | sort | uniq | awk
   fi
 
   short=$(echo ${group} | sed s@.cnrm.cloud.google.com@@g)
+  if [[ "${short}" == "blockchainnodeengine" ]]; then
+    echo "Skipping blockchainnodeengine"
+    continue
+  fi
 
   extra_services="${short}.googleapis.com"
   case ${short} in
