@@ -26,3 +26,11 @@ go run . generate-types \
     --service google.cloud.geminidataanalytics.v1beta \
     --api-version "geminidataanalytics.cnrm.cloud.google.com/v1alpha1" \
     --resource GeminiDataAnalyticsConversation:Conversation
+
+go run . generate-mapper \
+    --service google.cloud.geminidataanalytics.v1beta \
+    --api-version "geminidataanalytics.cnrm.cloud.google.com/v1alpha1"
+
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
+

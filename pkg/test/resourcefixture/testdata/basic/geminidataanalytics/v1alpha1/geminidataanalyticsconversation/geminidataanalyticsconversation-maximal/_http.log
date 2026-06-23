@@ -1,0 +1,83 @@
+GET https://geminidataanalytics.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/conversations/geminidataanalyticsconversation-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconversations%2Fgeminidataanalyticsconversation-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/conversations/geminidataanalyticsconversation-max-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://geminidataanalytics.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/conversations?%24alt=json%3Benum-encoding%3Dint&conversationId=geminidataanalyticsconversation-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "agents": [
+    "projects/${projectId}/locations/us-central1/dataAgents/dataagent-max-${uniqueId}"
+  ],
+  "labels": {
+    "env": "test",
+    "owner": "devteam"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversations/geminidataanalyticsconversation-max-${uniqueId}",
+  "agents": [
+    "projects/${projectId}/locations/us-central1/dataAgents/dataagent-max-${uniqueId}"
+  ],
+  "labels": {
+    "env": "test",
+    "owner": "devteam"
+  },
+  "createTime": "1970-01-01T00:00:00Z",
+  "lastUsedTime": "1970-01-01T00:00:00Z"
+}
+
+---
+
+GET https://geminidataanalytics.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/conversations/geminidataanalyticsconversation-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconversations%2Fgeminidataanalyticsconversation-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversations/geminidataanalyticsconversation-max-${uniqueId}",
+  "agents": [
+    "projects/${projectId}/locations/us-central1/dataAgents/dataagent-max-${uniqueId}"
+  ],
+  "labels": {
+    "env": "test",
+    "owner": "devteam"
+  },
+  "createTime": "1970-01-01T00:00:00Z",
+  "lastUsedTime": "1970-01-01T00:00:00Z"
+}
+
+---
+
+DELETE https://geminidataanalytics.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/conversations/geminidataanalyticsconversation-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconversations%2Fgeminidataanalyticsconversation-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+
+{}
