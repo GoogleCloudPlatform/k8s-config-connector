@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,22 +16,19 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &TaskRef{}
+var _ refsv1beta1.Ref = &BatchTaskRef{}
 
-// TaskRef is a reference to a BatchTask.
-type TaskRef struct {
+// BatchTaskRef is a reference to a BatchTask.
+type BatchTaskRef struct {
 	// A reference to an externally managed BatchTask resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/tasks/{{taskID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}}/taskGroups/{{taskGroupID}}/tasks/{{taskID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BatchTask resource.
@@ -41,42 +38,44 @@ type TaskRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on BatchTask.
-// If the "External" is given in the other resource's spec.BatchTaskRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual BatchTask object from the cluster.
-func (r *TaskRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", BatchTaskGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseTaskExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func (r *BatchTaskRef) SetExternal(ref string) {
+	r.External = ref
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *BatchTaskRef) ValidateExternal(ref string) error {
+	id := &TaskIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return err
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(BatchTaskGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", BatchTaskGVK, key, err)
+	return nil
+}
+
+func (r *BatchTaskRef) GetGVK() schema.GroupVersionKind {
+	return BatchTaskGVK
+}
+
+func (r *BatchTaskRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+}
+
+func (r *BatchTaskRef) IsExternal() bool {
+	return r.External != ""
+}
+
+func (r *BatchTaskRef) GetExternal() string {
+	return r.External
+}
+
+func (r *BatchTaskRef) String() string {
+	if r.External != "" {
+		return r.External
 	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return r.Name
+}
+
+func (r *BatchTaskRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }

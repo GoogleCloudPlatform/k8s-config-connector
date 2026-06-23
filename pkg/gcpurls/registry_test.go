@@ -95,6 +95,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}":                           true,
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/ruleSets/{}":                    true,
 		"//batch.googleapis.com/projects/{}/locations/{}/resourceAllowances/{}":                     true,
+		"//batch.googleapis.com/projects/{}/locations/{}/jobs/{}/taskGroups/{}/tasks/{}":            true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":        true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":  true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":       true,

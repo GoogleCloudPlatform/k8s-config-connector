@@ -39,7 +39,10 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type BatchTaskSpec struct {
-	/* Immutable. The location where the alloydb cluster should reside. */
+	/* Immutable. The Batch Job that this task belongs to. */
+	JobRef v1alpha1.ResourceRef `json:"jobRef"`
+
+	/* Immutable. The location of the Batch Task. */
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
@@ -48,6 +51,9 @@ type BatchTaskSpec struct {
 	/* The BatchTask name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Immutable. The Task Group that this task belongs to. */
+	TaskGroup string `json:"taskGroup"`
 }
 
 type TaskObservedStateStatus struct {
@@ -130,6 +136,7 @@ type BatchTaskStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpbatchtask;gcpbatchtasks
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

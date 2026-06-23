@@ -1,0 +1,14 @@
+apiVersion: batch.cnrm.cloud.google.com/v1alpha1
+kind: BatchTask
+metadata:
+  annotations:
+    cnrm.cloud.google.com/external-id: "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}/taskGroups/group0/tasks/0"
+  name: batchtask-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west2
+  jobRef:
+    name: batchjob-${uniqueId}
+  taskGroup: group0
+  resourceID: "0"

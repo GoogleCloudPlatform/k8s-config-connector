@@ -1,0 +1,38 @@
+apiVersion: batch.cnrm.cloud.google.com/v1alpha1
+kind: BatchTask
+metadata:
+  annotations:
+    cnrm.cloud.google.com/external-id: projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}/taskGroups/group0/tasks/0
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: batchtask-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  jobRef:
+    name: batchjob-${uniqueId}
+  location: us-west2
+  projectRef:
+    external: ${projectId}
+  resourceID: "0"
+  taskGroup: group0
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}/taskGroups/group0/tasks/0
+  name: projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}/taskGroups/group0/tasks/0
+  observedGeneration: 1
+  observedState:
+    status:
+      state: SUCCEEDED
+      statusEvents:
+      - description: Task state changed to SUCCEEDED
+        taskState: SUCCEEDED
+        type: STATE_CHANGED
