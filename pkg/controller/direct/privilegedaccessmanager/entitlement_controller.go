@@ -111,6 +111,9 @@ func (m *entitlementModel) AdapterForURL(ctx context.Context, url string) (direc
 	return nil, nil
 }
 
+// Adapter implements directbase.Adapter for PrivilegedAccessManagerEntitlement,
+// managing the lifecycle (Create, Read, Update, Delete) of the resource directly
+// through GCP's Privileged Access Manager REST/gRPC API client.
 type Adapter struct {
 	id        *krm.PrivilegedAccessManagerEntitlementIdentity
 	gcpClient *gcp.Client
