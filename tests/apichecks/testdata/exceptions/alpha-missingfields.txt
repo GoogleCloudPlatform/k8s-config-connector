@@ -3045,6 +3045,89 @@
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].substitute.path" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.condition" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.path" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.binaryAuthorization.breakglassJustification" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.binaryAuthorization.useDefault" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.client" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.clientVersion" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.customAudiences[]" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceSplits[].percent" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceSplits[].revision" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceSplits[].type" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.launchStage" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.scaling.manualInstanceCount" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.annotations" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].args[]" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].baseImageURI" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].command[]" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].dependsOn[]" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].env[].name" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].env[].value" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].env[].valueSource.secretKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].env[].valueSource.secretKeyRef.secretRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].env[].valueSource.secretKeyRef.versionRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].image" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].livenessProbe.failureThreshold" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].livenessProbe.grpc.port" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].livenessProbe.grpc.service" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].livenessProbe.httpGet.httpHeaders[].name" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].livenessProbe.httpGet.httpHeaders[].value" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].livenessProbe.httpGet.path" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].livenessProbe.httpGet.port" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].livenessProbe.initialDelaySeconds" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].livenessProbe.periodSeconds" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].livenessProbe.tcpSocket.port" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].livenessProbe.timeoutSeconds" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].name" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].ports[].containerPort" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].ports[].name" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].resources.cpuIdle" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].resources.limits" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].resources.startupCPUBoost" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].startupProbe.failureThreshold" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].startupProbe.grpc.port" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].startupProbe.grpc.service" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].startupProbe.httpGet.httpHeaders[].name" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].startupProbe.httpGet.httpHeaders[].value" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].startupProbe.httpGet.path" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].startupProbe.httpGet.port" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].startupProbe.initialDelaySeconds" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].startupProbe.periodSeconds" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].startupProbe.tcpSocket.port" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].startupProbe.timeoutSeconds" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].volumeMounts[].mountPath" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].volumeMounts[].name" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.containers[].workingDir" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.encryptionKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.encryptionKeyRevocationAction" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.encryptionKeyShutdownDuration" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.nodeSelector.accelerator" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.revision" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.serviceMesh.meshRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].cloudSQLInstance.instanceRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].emptyDir.medium" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].emptyDir.sizeLimit" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].gcs.bucketRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].gcs.mountOptions[]" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].gcs.readOnly" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].name" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].nfs.path" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].nfs.readOnly" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].nfs.server" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].secret.defaultMode" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].secret.items[].mode" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].secret.items[].path" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].secret.items[].versionRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].secret.secretRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.vpcAccess.connectorRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.vpcAccess.egress" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.vpcAccess.networkInterfaces[].networkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.vpcAccess.networkInterfaces[].subnetworkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.vpcAccess.networkInterfaces[].tags[]" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.configId" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
