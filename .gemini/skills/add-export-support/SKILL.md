@@ -99,6 +99,9 @@ func (a *ArtifactRegistryRepositoryAdapter) Export(ctx context.Context) (*unstru
 }
 ```
 
+> **CRITICAL**: When constructing the `unstructured.Unstructured` object, ensure that you assign `u.Object = uObj` **before** calling `u.SetName(...)` and `u.SetGroupVersionKind(...)`. If you assign `u.Object = uObj` after calling those setters, the name, apiVersion, and kind fields will be completely wiped out from the returned unstructured object. This causes downstream export pipeline errors such as `unable to get service mapping: no mapping with name '' found`.
+```
+
 ### Step 3: Register/Integrate with E2E Export Test Harness
 
 To test your exporter, integrate it with the E2E test harness:

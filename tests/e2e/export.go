@@ -123,6 +123,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 		network := resolveNetwork(h, obj)
 		exportURI = fmt.Sprintf("//servicenetworking.googleapis.com/services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/{resourceID}", network.Project, network.Network)
 
+	case schema.GroupKind{Group: "securesourcemanager.cnrm.cloud.google.com", Kind: "SecureSourceManagerInstance"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
 		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
 	}
