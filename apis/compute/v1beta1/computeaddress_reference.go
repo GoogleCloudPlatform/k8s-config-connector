@@ -16,7 +16,6 @@ package v1beta1
 
 import (
 	"context"
-	"net"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -70,9 +69,6 @@ func (r *ComputeAddressRef) SetExternal(ref string) {
 }
 
 func (r *ComputeAddressRef) ValidateExternal(ref string) error {
-	if net.ParseIP(ref) != nil {
-		return nil
-	}
 	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
 	id := &ComputeAddressIdentity{}
 	if err := id.FromExternal(trimmedRef); err != nil {
