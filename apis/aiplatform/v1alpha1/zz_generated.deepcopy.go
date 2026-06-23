@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -413,14 +414,14 @@ func (in *CustomJobSpec) DeepCopyInto(out *CustomJobSpec) {
 		*out = new(Scheduling)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ServiceAccount != nil {
-		in, out := &in.ServiceAccount, &out.ServiceAccount
-		*out = new(string)
+	if in.ServiceAccountRef != nil {
+		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
+		*out = new(v1beta1.IAMServiceAccountRef)
 		**out = **in
 	}
-	if in.Network != nil {
-		in, out := &in.Network, &out.Network
-		*out = new(string)
+	if in.NetworkRef != nil {
+		in, out := &in.NetworkRef, &out.NetworkRef
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.ReservedIPRanges != nil {
@@ -443,9 +444,9 @@ func (in *CustomJobSpec) DeepCopyInto(out *CustomJobSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Tensorboard != nil {
-		in, out := &in.Tensorboard, &out.Tensorboard
-		*out = new(string)
+	if in.TensorboardRef != nil {
+		in, out := &in.TensorboardRef, &out.TensorboardRef
+		*out = new(vertexaiv1alpha1.VertexAITensorboardRef)
 		**out = **in
 	}
 	if in.EnableWebAccess != nil {
@@ -468,9 +469,9 @@ func (in *CustomJobSpec) DeepCopyInto(out *CustomJobSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Models != nil {
-		in, out := &in.Models, &out.Models
-		*out = make([]string, len(*in))
+	if in.ModelRefs != nil {
+		in, out := &in.ModelRefs, &out.ModelRefs
+		*out = make([]AIPlatformModelRef, len(*in))
 		copy(*out, *in)
 	}
 }
@@ -2045,8 +2046,8 @@ func (in *PythonPackageSpec) DeepCopyInto(out *PythonPackageSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.PackageUris != nil {
-		in, out := &in.PackageUris, &out.PackageUris
+	if in.PackageURIs != nil {
+		in, out := &in.PackageURIs, &out.PackageURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -2792,8 +2793,8 @@ func (in *TrialObservedState) DeepCopyInto(out *TrialObservedState) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.WebAccessUris != nil {
-		in, out := &in.WebAccessUris, &out.WebAccessUris
+	if in.WebAccessURIs != nil {
+		in, out := &in.WebAccessURIs, &out.WebAccessURIs
 		*out = make(map[string]string, len(*in))
 		for key, val := range *in {
 			(*out)[key] = val
@@ -3201,6 +3202,11 @@ func (in *VertexAIHyperparameterTuningJobSpec) DeepCopyInto(out *VertexAIHyperpa
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
 		*out = new(v1beta1.ProjectRef)
+		**out = **in
+	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
 		**out = **in
 	}
 	if in.ResourceID != nil {

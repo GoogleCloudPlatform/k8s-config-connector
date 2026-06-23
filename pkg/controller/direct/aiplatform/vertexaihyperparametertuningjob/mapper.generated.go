@@ -24,7 +24,7 @@
 package vertexaihyperparametertuningjob
 
 import (
-	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
+	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -50,52 +50,6 @@ func ContainerSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerSpec) *pb
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
-	return out
-}
-
-func CustomJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomJobSpec) *krm.CustomJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomJobSpec{}
-	out.PersistentResourceID = direct.LazyPtr(in.GetPersistentResourceId())
-	out.WorkerPoolSpecs = direct.Slice_FromProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_FromProto)
-	out.Scheduling = Scheduling_FromProto(mapCtx, in.GetScheduling())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	out.ReservedIPRanges = in.ReservedIpRanges
-	out.PSCInterfaceConfig = PSCInterfaceConfig_FromProto(mapCtx, in.GetPscInterfaceConfig())
-	out.BaseOutputDirectory = GCSDestination_FromProto(mapCtx, in.GetBaseOutputDirectory())
-	out.ProtectedArtifactLocationID = direct.LazyPtr(in.GetProtectedArtifactLocationId())
-	out.Tensorboard = direct.LazyPtr(in.GetTensorboard())
-	out.EnableWebAccess = direct.LazyPtr(in.GetEnableWebAccess())
-	out.EnableDashboardAccess = direct.LazyPtr(in.GetEnableDashboardAccess())
-	out.Experiment = direct.LazyPtr(in.GetExperiment())
-	out.ExperimentRun = direct.LazyPtr(in.GetExperimentRun())
-	out.Models = in.Models
-	return out
-}
-
-func CustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSpec) *pb.CustomJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomJobSpec{}
-	out.PersistentResourceId = direct.ValueOf(in.PersistentResourceID)
-	out.WorkerPoolSpecs = direct.Slice_ToProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_ToProto)
-	out.Scheduling = Scheduling_ToProto(mapCtx, in.Scheduling)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-	out.Network = direct.ValueOf(in.Network)
-	out.ReservedIpRanges = in.ReservedIPRanges
-	out.PscInterfaceConfig = PSCInterfaceConfig_ToProto(mapCtx, in.PSCInterfaceConfig)
-	out.BaseOutputDirectory = GCSDestination_ToProto(mapCtx, in.BaseOutputDirectory)
-	out.ProtectedArtifactLocationId = direct.ValueOf(in.ProtectedArtifactLocationID)
-	out.Tensorboard = direct.ValueOf(in.Tensorboard)
-	out.EnableWebAccess = direct.ValueOf(in.EnableWebAccess)
-	out.EnableDashboardAccess = direct.ValueOf(in.EnableDashboardAccess)
-	out.Experiment = direct.ValueOf(in.Experiment)
-	out.ExperimentRun = direct.ValueOf(in.ExperimentRun)
-	out.Models = in.Models
 	return out
 }
 
@@ -313,7 +267,8 @@ func PythonPackageSpec_FromProto(mapCtx *direct.MapContext, in *pb.PythonPackage
 	}
 	out := &krm.PythonPackageSpec{}
 	out.ExecutorImageURI = direct.LazyPtr(in.GetExecutorImageUri())
-	out.PackageUris = in.PackageUris
+	// MISSING: PackageUris
+	// (near miss): "PackageUris" vs "PackageURIs"
 	out.PythonModule = direct.LazyPtr(in.GetPythonModule())
 	out.Args = in.Args
 	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_FromProto)
@@ -326,7 +281,8 @@ func PythonPackageSpec_ToProto(mapCtx *direct.MapContext, in *krm.PythonPackageS
 	}
 	out := &pb.PythonPackageSpec{}
 	out.ExecutorImageUri = direct.ValueOf(in.ExecutorImageURI)
-	out.PackageUris = in.PackageUris
+	// MISSING: PackageUris
+	// (near miss): "PackageUris" vs "PackageURIs"
 	out.PythonModule = direct.ValueOf(in.PythonModule)
 	out.Args = in.Args
 	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
@@ -803,7 +759,8 @@ func TrialObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Trial) *krm.
 	out.ClientID = direct.LazyPtr(in.GetClientId())
 	out.InfeasibleReason = direct.LazyPtr(in.GetInfeasibleReason())
 	out.CustomJob = direct.LazyPtr(in.GetCustomJob())
-	out.WebAccessUris = in.WebAccessUris
+	// MISSING: WebAccessUris
+	// (near miss): "WebAccessUris" vs "WebAccessURIs"
 	return out
 }
 
@@ -823,7 +780,8 @@ func TrialObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TrialObserved
 	out.ClientId = direct.ValueOf(in.ClientID)
 	out.InfeasibleReason = direct.ValueOf(in.InfeasibleReason)
 	out.CustomJob = direct.ValueOf(in.CustomJob)
-	out.WebAccessUris = in.WebAccessUris
+	// MISSING: WebAccessUris
+	// (near miss): "WebAccessUris" vs "WebAccessURIs"
 	return out
 }
 

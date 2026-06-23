@@ -594,7 +594,7 @@ spec:
                     description: 'Optional. The Experiment Run associated with this
                       job. Format: `projects/{project}/locations/{location}/metadataStores/{metadataStores}/contexts/{experiment-name}-{experiment-run-name}`'
                     type: string
-                  models:
+                  modelRefs:
                     description: |-
                       Optional. The name of the Model resources for which to generate a mapping
                        to artifact URIs. Applicable only to some of the Google-provided custom
@@ -610,9 +610,35 @@ spec:
                        the model, and can be moved to other versions later on. There will be
                        exactly one default version.
                     items:
-                      type: string
+                      description: AIPlatformModelRef is a reference to an AIPlatformModel.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed AIPlatformModel
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/models/{{modelID}}".
+                          type: string
+                        name:
+                          description: The name of an AIPlatformModel resource.
+                          type: string
+                        namespace:
+                          description: The namespace of an AIPlatformModel resource.
+                          type: string
+                      type: object
                     type: array
-                  network:
+                  networkRef:
                     description: |-
                       Optional. The full name of the Compute Engine
                        [network](/compute/docs/networks-and-firewalls#networks) to which the Job
@@ -627,7 +653,32 @@ spec:
                        AI](https://cloud.google.com/vertex-ai/docs/general/vpc-peering).
 
                        If this field is left unspecified, the job is not peered with any network.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ComputeNetwork
+                          resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                        type: string
+                      name:
+                        description: The name of a ComputeNetwork resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeNetwork resource.
+                        type: string
+                    type: object
                   persistentResourceID:
                     description: |-
                       Optional. The ID of the PersistentResource in the same Project and Location
@@ -724,18 +775,67 @@ spec:
                           is 7 days.
                         type: string
                     type: object
-                  serviceAccount:
+                  serviceAccountRef:
                     description: Specifies the service account for workload run-as
                       account. Users submitting jobs must have act-as permission on
                       this run-as account. If unspecified, the [Vertex AI Custom Code
                       Service Agent](https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents)
                       for the CustomJob's project is used.
-                    type: string
-                  tensorboard:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `email` field of an `IAMServiceAccount` resource.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                  tensorboardRef:
                     description: 'Optional. The name of a Vertex AI [Tensorboard][google.cloud.aiplatform.v1.Tensorboard]
                       resource to which this CustomJob will upload Tensorboard logs.
                       Format: `projects/{project}/locations/{location}/tensorboards/{tensorboard}`'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed VertexAITensorboard
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/tensorboards/{{tensorboardID}}".
+                        type: string
+                      name:
+                        description: The name of a VertexAITensorboard resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a VertexAITensorboard resource.
+                        type: string
+                    type: object
                   workerPoolSpecs:
                     description: Required. The spec of the worker pools including
                       machine type and Docker image. All worker pools except the first
@@ -920,7 +1020,7 @@ spec:
                                 for training](https://cloud.google.com/vertex-ai/docs/training/pre-built-containers).
                                 You must use an image from this list.
                               type: string
-                            packageUris:
+                            packageURIs:
                               description: Required. The Google Cloud Storage location
                                 of the Python package files which are the training
                                 program and its dependent packages. The maximum number
@@ -1179,7 +1279,7 @@ spec:
                         state:
                           description: Output only. The detailed state of the Trial.
                           type: string
-                        webAccessUris:
+                        webAccessURIs:
                           additionalProperties:
                             type: string
                           description: |-

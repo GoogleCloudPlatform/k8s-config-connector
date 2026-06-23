@@ -88,9 +88,5 @@
 [refs] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.featurestore" should be a reference
 [refs] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.experiment" should be a reference
 [refs] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.experimentRun" should be a reference
-[refs] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.models" should be a reference
-[refs] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.network" should be a reference
-[refs] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.serviceAccount" should be a reference
-[refs] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.tensorboard" should be a reference
 [refs] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.network" should be a reference
 [refs] crd=vertexaitensorboards.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" should be a reference

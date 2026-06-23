@@ -757,8 +757,6 @@
 [acronyms] crd=vertexaidatasets.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataSchemaUri" should be ".spec.metadataSchemaURI"
 [acronyms] crd=vertexaidatasets.vertexai.cnrm.cloud.google.com version=v1beta1: field ".spec.metadataSchemaUri" should be ".spec.metadataSchemaURI"
 [acronyms] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.offlineStorageTtlDays" should be ".spec.offlineStorageTTLDays"
-[acronyms] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.packageUris" should be ".spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.packageURIs"
-[acronyms] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.trials[].webAccessUris" should be ".status.observedState.trials[].webAccessURIs"
 [acronyms] crd=vertexaiindexes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata.contentsDeltaUri" should be ".spec.metadata.contentsDeltaURI"
 [acronyms] crd=vertexaiindexes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.metadataSchemaUri" should be ".status.observedState.metadataSchemaURI"
 [acronyms] crd=vertexaiindexes.vertexai.cnrm.cloud.google.com version=v1beta1: field ".spec.metadata.contentsDeltaUri" should be ".spec.metadata.contentsDeltaURI"

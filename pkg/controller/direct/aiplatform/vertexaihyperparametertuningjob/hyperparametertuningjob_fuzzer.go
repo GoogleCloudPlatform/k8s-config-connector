@@ -15,7 +15,7 @@
 package vertexaihyperparametertuningjob
 
 import (
-	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
+	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 

@@ -27,10 +27,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/aiplatform/apiv1beta1"
+	gcp "cloud.google.com/go/aiplatform/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	aiplatformpb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
+	aiplatformpb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	"google.golang.org/api/option"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -59,7 +59,7 @@ func (m *modelHyperparameterTuningJob) client(ctx context.Context) (*gcp.JobClie
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewJobRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewJobClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building HyperparameterTuningJob client: %w", err)
 	}
@@ -72,6 +72,10 @@ func (m *modelHyperparameterTuningJob) AdapterForObject(ctx context.Context, op 
 	obj := &krm.VertexAIHyperparameterTuningJob{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	id, err := krm.NewHyperparameterTuningJobIdentity(ctx, reader, obj)
@@ -206,7 +210,7 @@ func (a *HyperparameterTuningJobAdapter) Export(ctx context.Context) (*unstructu
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.Location = direct.LazyPtr(a.id.Parent().Location)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

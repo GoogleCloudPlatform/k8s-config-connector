@@ -3144,8 +3144,8 @@
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.enableWebAccess" is not set in unstructured objects
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.experiment" is not set in unstructured objects
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.experimentRun" is not set in unstructured objects
-[missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.models[]" is not set in unstructured objects
-[missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.network" is not set in unstructured objects
+[missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.modelRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.persistentResourceID" is not set in unstructured objects
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.protectedArtifactLocationID" is not set in unstructured objects
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects
@@ -3158,8 +3158,8 @@
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.scheduling.restartJobOnWorkerRestart" is not set in unstructured objects
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.scheduling.strategy" is not set in unstructured objects
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.scheduling.timeout" is not set in unstructured objects
-[missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.serviceAccount" is not set in unstructured objects
-[missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.tensorboard" is not set in unstructured objects
+[missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.tensorboardRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].containerSpec.args[]" is not set in unstructured objects
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].containerSpec.command[]" is not set in unstructured objects
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].containerSpec.env[].name" is not set in unstructured objects
@@ -3181,7 +3181,7 @@
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.env[].name" is not set in unstructured objects
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.env[].value" is not set in unstructured objects
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.executorImageURI" is not set in unstructured objects
-[missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.packageUris[]" is not set in unstructured objects
+[missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.packageURIs[]" is not set in unstructured objects
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.pythonModule" is not set in unstructured objects
 [missing_field] crd=vertexaihyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].replicaCount" is not set in unstructured objects
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects

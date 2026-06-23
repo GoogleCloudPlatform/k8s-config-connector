@@ -17,13 +17,85 @@ package vertexaihyperparametertuningjob
 import (
 	"strconv"
 
+	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
+
+func CustomJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomJobSpec) *krm.CustomJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomJobSpec{}
+	out.PersistentResourceID = direct.LazyPtr(in.GetPersistentResourceId())
+	out.WorkerPoolSpecs = direct.Slice_FromProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_FromProto)
+	out.Scheduling = Scheduling_FromProto(mapCtx, in.GetScheduling())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.ReservedIPRanges = in.ReservedIpRanges
+	out.PSCInterfaceConfig = PSCInterfaceConfig_FromProto(mapCtx, in.GetPscInterfaceConfig())
+	out.BaseOutputDirectory = GCSDestination_FromProto(mapCtx, in.GetBaseOutputDirectory())
+	out.ProtectedArtifactLocationID = direct.LazyPtr(in.GetProtectedArtifactLocationId())
+	if in.GetTensorboard() != "" {
+		out.TensorboardRef = &vertexaiv1alpha1.VertexAITensorboardRef{External: in.GetTensorboard()}
+	}
+	out.EnableWebAccess = direct.LazyPtr(in.GetEnableWebAccess())
+	out.EnableDashboardAccess = direct.LazyPtr(in.GetEnableDashboardAccess())
+	out.Experiment = direct.LazyPtr(in.GetExperiment())
+	out.ExperimentRun = direct.LazyPtr(in.GetExperimentRun())
+	if len(in.Models) > 0 {
+		out.ModelRefs = make([]krm.AIPlatformModelRef, len(in.Models))
+		for i, m := range in.Models {
+			out.ModelRefs[i] = krm.AIPlatformModelRef{External: m}
+		}
+	}
+	return out
+}
+
+func CustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSpec) *pb.CustomJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomJobSpec{}
+	out.PersistentResourceId = direct.ValueOf(in.PersistentResourceID)
+	out.WorkerPoolSpecs = direct.Slice_ToProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_ToProto)
+	out.Scheduling = Scheduling_ToProto(mapCtx, in.Scheduling)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	out.ReservedIpRanges = in.ReservedIPRanges
+	out.PscInterfaceConfig = PSCInterfaceConfig_ToProto(mapCtx, in.PSCInterfaceConfig)
+	out.BaseOutputDirectory = GCSDestination_ToProto(mapCtx, in.BaseOutputDirectory)
+	out.ProtectedArtifactLocationId = direct.ValueOf(in.ProtectedArtifactLocationID)
+	if in.TensorboardRef != nil {
+		out.Tensorboard = in.TensorboardRef.External
+	}
+	out.EnableWebAccess = direct.ValueOf(in.EnableWebAccess)
+	out.EnableDashboardAccess = direct.ValueOf(in.EnableDashboardAccess)
+	out.Experiment = direct.ValueOf(in.Experiment)
+	out.ExperimentRun = direct.ValueOf(in.ExperimentRun)
+	if len(in.ModelRefs) > 0 {
+		out.Models = make([]string, len(in.ModelRefs))
+		for i, ref := range in.ModelRefs {
+			out.Models[i] = ref.External
+		}
+	}
+	return out
+}
 
 func Int32Value_FromProto(mapCtx *direct.MapContext, in *wrapperspb.Int32Value) *krm.Int32Value {
 	if in == nil {
