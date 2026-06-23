@@ -1,0 +1,6 @@
+15c15
+<       external: ${projectId}.bigquerydataset${uniqueId}.bigquerytable2${uniqueId}
+---
+>       external: projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable2${uniqueId}
+18d17
+<   messageRetentionDuration: 604800s

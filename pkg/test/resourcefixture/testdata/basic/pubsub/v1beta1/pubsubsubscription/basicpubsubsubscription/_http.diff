@@ -50,15 +50,41 @@
 <   "state": "ACTIVE",
 ---
 >   "state": 1,
-259c257
-< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}?alt=json
----
-> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-287c285
-<   "state": "ACTIVE",
----
->   "state": 1,
-293c291
+293c291,325
 < DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}?alt=json
 ---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "ackDeadlineSeconds": 20,
+>   "enableExactlyOnceDelivery": true,
+>   "expirationPolicy": {
+>     "ttl": "2678400s"
+>   },
+>   "labels": {
+>     "cnrm-test": "true",
+>     "label-one": "value-one",
+>     "managed-by-cnrm": "true",
+>     "newkey": "newval"
+>   },
+>   "messageRetentionDuration": "86400s",
+>   "name": "projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}",
+>   "pushConfig": {},
+>   "state": 1,
+>   "topic": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}"
+> }
+> 
+> ---
+> 
 > DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

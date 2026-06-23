@@ -1,0 +1,4 @@
+14c14
+<       external: storagebucket-2-${uniqueId}
+---
+>       external: projects/${projectId}/buckets/storagebucket-2-${uniqueId}

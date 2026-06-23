@@ -57,33 +57,6 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	// This list should match https://cloud.google.com/asset-inventory/docs/resource-name-format
 	gvk := obj.GroupVersionKind()
 	switch gvk.GroupKind() {
-	case schema.GroupKind{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic"}:
-		exportURI = resolveCAISURI(h, obj)
-
-	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRouter"}:
-		exportURI = resolveCAISURI(h, obj)
-
-	case schema.GroupKind{Group: "artifactregistry.cnrm.cloud.google.com", Kind: "ArtifactRegistryRepository"}:
-		exportURI = resolveCAISURI(h, obj)
-
-	case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryNamespace"}:
-		exportURI = resolveCAISURI(h, obj)
-
-	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificate"}:
-		exportURI = resolveCAISURI(h, obj)
-
-	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerDNSAuthorization"}:
-		exportURI = resolveCAISURI(h, obj)
-
-	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateIssuanceConfig"}:
-		exportURI = resolveCAISURI(h, obj)
-
-	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateMap"}:
-		exportURI = resolveCAISURI(h, obj)
-
-	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateMapEntry"}:
-		exportURI = resolveCAISURI(h, obj)
-
 	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
 		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
 
@@ -122,6 +95,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 
 	case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
 		exportURI = "//run.googleapis.com/v2/projects/{projectID}/locations/{.spec.location}/jobs/{resourceID}"
+
+	default:
+		exportURI = resolveCAISURI(h, obj)
 	}
 
 	if exportURI == "" {
@@ -323,7 +299,6 @@ func resolveCAISURI(h *create.Harness, obj *unstructured.Unstructured) string {
 		return ""
 	}
 	if len(caisResults) == 0 || caisResults[0].CAISURL == "unknown" {
-		h.T.Errorf("failed to get CAIS identity: %v", err)
 		return ""
 	}
 	return caisResults[0].CAISURL

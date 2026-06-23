@@ -90,23 +90,61 @@
 <   "state": "ACTIVE",
 ---
 >   "state": 1,
-866c872
-< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
----
-> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 882c888
 <     "bucket": "storagebucket-2-${uniqueId}",
 ---
 >     "bucket": "projects/${projectId}/buckets/storagebucket-2-${uniqueId}",
-887c893
-<     "state": "ACTIVE",
----
->     "state": 1,
-910c916
-<   "state": "ACTIVE",
----
->   "state": 1,
-916c922
+916c922,972
 < DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 ---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "ackDeadlineSeconds": 400,
+>   "cloudStorageConfig": {
+>     "bucket": "projects/${projectId}/buckets/storagebucket-2-${uniqueId}",
+>     "filenamePrefix": "test-prefix-updated",
+>     "filenameSuffix": "test-suffix-updated",
+>     "maxBytes": "102400",
+>     "maxDuration": "400s",
+>     "state": 1,
+>     "textConfig": {}
+>   },
+>   "deadLetterPolicy": {
+>     "deadLetterTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
+>     "maxDeliveryAttempts": 50
+>   },
+>   "enableMessageOrdering": true,
+>   "expirationPolicy": {
+>     "ttl": "1296000s"
+>   },
+>   "filter": "attributes.type = \"key\"",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "messageRetentionDuration": "302400s",
+>   "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+>   "pushConfig": {},
+>   "retryPolicy": {
+>     "maximumBackoff": "300s",
+>     "minimumBackoff": "5s"
+>   },
+>   "state": 1,
+>   "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+> }
+> 
+> ---
+> 
 > DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
