@@ -157,9 +157,7 @@ X-Xss-Protection: 0
 
 {
   "columnFamilies": {
-    "cf1": {
-      "valueType": {}
-    }
+    "cf1": {}
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table"

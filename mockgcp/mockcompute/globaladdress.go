@@ -129,6 +129,7 @@ func (s *GlobalAddressesV1) SetLabels(ctx context.Context, req *pb.SetLabelsGlob
 	}
 
 	obj.Labels = req.GetGlobalSetLabelsRequestResource().GetLabels()
+	obj.LabelFingerprint = PtrTo(labelsFingerprint(obj.Labels))
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

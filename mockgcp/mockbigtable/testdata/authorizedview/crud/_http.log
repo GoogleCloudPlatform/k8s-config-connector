@@ -160,9 +160,7 @@ X-Xss-Protection: 0
 
 {
   "columnFamilies": {
-    "customer": {
-      "valueType": {}
-    }
+    "customer": {}
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table"

@@ -83,3 +83,26 @@ func lastComponent(s string) string {
 	i := strings.LastIndex(s, "/")
 	return s[i+1:]
 }
+
+// ExpandComputeLink converts a relative compute resource path or an absolute compute URL
+// into an absolute compute URL with the correct (current requested) API version.
+func ExpandComputeLink(ctx context.Context, link string) string {
+	if link == "" {
+		return ""
+	}
+	// If it's already an absolute URL, find the part after the API version
+	if strings.HasPrefix(link, "https://www.googleapis.com/compute/") {
+		trimmed := strings.TrimPrefix(link, "https://www.googleapis.com/compute/")
+		// trimmed is "<version>/projects/..."
+		parts := strings.SplitN(trimmed, "/", 2)
+		if len(parts) == 2 {
+			return BuildComputeSelfLink(ctx, parts[1])
+		}
+	}
+	// Otherwise, assume it's a relative path starting with "projects/" or similar
+	trimmed := strings.TrimPrefix(link, "/")
+	if strings.HasPrefix(trimmed, "projects/") {
+		return BuildComputeSelfLink(ctx, trimmed)
+	}
+	return link
+}

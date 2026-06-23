@@ -35,10 +35,6 @@ func (c *FakeBigqueryreservationV1alpha1) BigQueryReservationCapacityCommitments
 	return newFakeBigQueryReservationCapacityCommitments(c, namespace)
 }
 
-func (c *FakeBigqueryreservationV1alpha1) BigQueryReservationReservationGroups(namespace string) v1alpha1.BigQueryReservationReservationGroupInterface {
-	return newFakeBigQueryReservationReservationGroups(c, namespace)
-}
-
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeBigqueryreservationV1alpha1) RESTClient() rest.Interface {

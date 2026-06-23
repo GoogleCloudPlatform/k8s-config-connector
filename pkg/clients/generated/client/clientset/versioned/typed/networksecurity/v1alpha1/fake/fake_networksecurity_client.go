@@ -39,6 +39,10 @@ func (c *FakeNetworksecurityV1alpha1) NetworkSecurityBackendAuthenticationConfig
 	return newFakeNetworkSecurityBackendAuthenticationConfigs(c, namespace)
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityFirewallEndpointAssociations(namespace string) v1alpha1.NetworkSecurityFirewallEndpointAssociationInterface {
+	return newFakeNetworkSecurityFirewallEndpointAssociations(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityInterceptDeployments(namespace string) v1alpha1.NetworkSecurityInterceptDeploymentInterface {
 	return newFakeNetworkSecurityInterceptDeployments(c, namespace)
 }

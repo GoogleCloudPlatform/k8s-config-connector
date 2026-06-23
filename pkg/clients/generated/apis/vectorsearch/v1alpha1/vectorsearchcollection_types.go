@@ -38,26 +38,87 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type BigQueryReservationReservationGroupSpec struct {
+type CollectionDenseVector struct {
+	/* Dimensionality of the vector field. */
+	// +optional
+	Dimensions *int32 `json:"dimensions,omitempty"`
+
+	/* Optional. Configuration for generating embeddings for the vector field. If not specified, the embedding field must be populated in the DataObject. */
+	// +optional
+	VertexEmbeddingConfig *CollectionVertexEmbeddingConfig `json:"vertexEmbeddingConfig,omitempty"`
+}
+
+type CollectionSparseVector struct {
+}
+
+type CollectionVectorSchema struct {
+	/* Dense vector field. */
+	// +optional
+	DenseVector *CollectionDenseVector `json:"denseVector,omitempty"`
+
+	/* Sparse vector field. */
+	// +optional
+	SparseVector *CollectionSparseVector `json:"sparseVector,omitempty"`
+}
+
+type CollectionVertexEmbeddingConfig struct {
+	/* Required. Required: ID of the embedding model to use. See https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models#embeddings-models for the list of supported models. */
+	ModelID string `json:"modelID"`
+
+	/* Required. Required: Task type for the embeddings. */
+	TaskType string `json:"taskType"`
+
+	/* Required. Required: Text template for the input to the model. The template must contain one or more references to fields in the DataObject, e.g.: "Movie Title: {title} ---- Movie Plot: {plot}". */
+	TextTemplate string `json:"textTemplate"`
+}
+
+type VectorSearchCollectionSpec struct {
+	/* Optional. JSON Schema for data. Field names must contain only alphanumeric characters, underscores, and hyphens. */
+	// +optional
+	DataSchema apiextensionsv1.JSON `json:"dataSchema,omitempty"`
+
+	/* Optional. User-specified description of the collection */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Optional. User-specified display name of the collection */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Optional. Labels as key value pairs. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
 	/* The location of this resource. */
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The BigQueryReservationReservationGroup name. If not given, the metadata.name will be used. */
+	/* The VectorSearchCollection name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Optional. Schema for vector fields. Only vector fields in this schema will be searchable. Field names must contain only alphanumeric characters, underscores, and hyphens. */
+	// +optional
+	VectorSchema map[string]CollectionVectorSchema `json:"vectorSchema,omitempty"`
 }
 
-type ReservationgroupObservedStateStatus struct {
+type CollectionObservedStateStatus struct {
+	/* Output only. [Output only] Create time stamp */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. [Output only] Update time stamp */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type BigQueryReservationReservationGroupStatus struct {
+type VectorSearchCollectionStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BigQueryReservationReservationGroup's current state. */
+	   VectorSearchCollection's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BigQueryReservationReservationGroup resource in GCP. */
+	/* A unique specifier for the VectorSearchCollection resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -67,12 +128,12 @@ type BigQueryReservationReservationGroupStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *ReservationgroupObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *CollectionObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryreservationreservationgroup;gcpbigqueryreservationreservationgroups
+// +kubebuilder:resource:categories=gcp,shortName=gcpvectorsearchcollection;gcpvectorsearchcollections
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
@@ -82,25 +143,25 @@ type BigQueryReservationReservationGroupStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// BigQueryReservationReservationGroup is the Schema for the bigqueryreservation API
+// VectorSearchCollection is the Schema for the vectorsearch API
 // +k8s:openapi-gen=true
-type BigQueryReservationReservationGroup struct {
+type VectorSearchCollection struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BigQueryReservationReservationGroupSpec   `json:"spec,omitempty"`
-	Status BigQueryReservationReservationGroupStatus `json:"status,omitempty"`
+	Spec   VectorSearchCollectionSpec   `json:"spec,omitempty"`
+	Status VectorSearchCollectionStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// BigQueryReservationReservationGroupList contains a list of BigQueryReservationReservationGroup
-type BigQueryReservationReservationGroupList struct {
+// VectorSearchCollectionList contains a list of VectorSearchCollection
+type VectorSearchCollectionList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BigQueryReservationReservationGroup `json:"items"`
+	Items           []VectorSearchCollection `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&BigQueryReservationReservationGroup{}, &BigQueryReservationReservationGroupList{})
+	SchemeBuilder.Register(&VectorSearchCollection{}, &VectorSearchCollectionList{})
 }

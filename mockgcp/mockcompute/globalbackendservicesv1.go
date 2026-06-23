@@ -65,7 +65,7 @@ func (s *GlobalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertBack
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#backendService")
 
-	s.populateBackendServiceDefaults(obj)
+	s.populateBackendServiceDefaults(ctx, obj)
 
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
@@ -172,6 +172,104 @@ func (s *GlobalBackendServicesV1) Delete(ctx context.Context, req *pb.DeleteBack
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return &emptypb.Empty{}, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) AddSignedUrlKey(ctx context.Context, req *pb.AddSignedUrlKeyBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendService()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+	}
+
+	keyResource := req.GetSignedUrlKeyResource()
+	if keyResource == nil || keyResource.KeyName == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "SignedUrlKeyResource and KeyName must be specified")
+	}
+	keyName := *keyResource.KeyName
+
+	if obj.CdnPolicy == nil {
+		obj.CdnPolicy = &pb.BackendServiceCdnPolicy{}
+	}
+
+	found := false
+	for _, n := range obj.CdnPolicy.SignedUrlKeyNames {
+		if n == keyName {
+			found = true
+			break
+		}
+	}
+	if !found {
+		obj.CdnPolicy.SignedUrlKeyNames = append(obj.CdnPolicy.SignedUrlKeyNames, keyName)
+	}
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("addSignedUrlKey"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) DeleteSignedUrlKey(ctx context.Context, req *pb.DeleteSignedUrlKeyBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendService()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+	}
+
+	keyName := req.GetKeyName()
+	if keyName == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "KeyName must be specified")
+	}
+
+	if obj.CdnPolicy != nil {
+		var newNames []string
+		for _, n := range obj.CdnPolicy.SignedUrlKeyNames {
+			if n != keyName {
+				newNames = append(newNames, n)
+			}
+		}
+		obj.CdnPolicy.SignedUrlKeyNames = newNames
+	}
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("deleteSignedUrlKey"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
 	})
 }
 

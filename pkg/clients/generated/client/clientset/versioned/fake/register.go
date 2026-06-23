@@ -38,6 +38,7 @@ import (
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/appengine/v1alpha1"
 	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1alpha1"
 	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1beta1"
+	appoptimizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/appoptimize/v1alpha1"
 	artifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1alpha1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1beta1"
 	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/asset/v1beta1"
@@ -88,6 +89,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configcontroller/v1beta1"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configdelivery/v1alpha1"
+	connectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/connectors/v1alpha1"
 	contactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/contactcenterinsights/v1alpha1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/container/v1beta1"
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/containeranalysis/v1alpha1"
@@ -181,6 +183,7 @@ import (
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/recaptchaenterprise/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
+	runv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/run/v1alpha1"
 	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/run/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/secretmanager/v1beta1"
 	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securesourcemanager/v1beta1"
@@ -201,6 +204,7 @@ import (
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1beta1"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
+	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vectorsearch/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1beta1"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1alpha1"
@@ -236,6 +240,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	appenginev1alpha1.AddToScheme,
 	apphubv1alpha1.AddToScheme,
 	apphubv1beta1.AddToScheme,
+	appoptimizev1alpha1.AddToScheme,
 	artifactregistryv1alpha1.AddToScheme,
 	artifactregistryv1beta1.AddToScheme,
 	assetv1beta1.AddToScheme,
@@ -286,6 +291,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	computev1beta1.AddToScheme,
 	configcontrollerv1beta1.AddToScheme,
 	configdeliveryv1alpha1.AddToScheme,
+	connectorsv1alpha1.AddToScheme,
 	contactcenterinsightsv1alpha1.AddToScheme,
 	containerv1beta1.AddToScheme,
 	containeranalysisv1alpha1.AddToScheme,
@@ -379,6 +385,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	recaptchaenterprisev1beta1.AddToScheme,
 	redisv1beta1.AddToScheme,
 	resourcemanagerv1beta1.AddToScheme,
+	runv1alpha1.AddToScheme,
 	runv1beta1.AddToScheme,
 	secretmanagerv1beta1.AddToScheme,
 	securesourcemanagerv1beta1.AddToScheme,
@@ -399,6 +406,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	storagetransferv1beta1.AddToScheme,
 	tagsv1beta1.AddToScheme,
 	tpuv1alpha1.AddToScheme,
+	vectorsearchv1alpha1.AddToScheme,
 	vertexaiv1alpha1.AddToScheme,
 	vertexaiv1beta1.AddToScheme,
 	vmwareenginev1alpha1.AddToScheme,

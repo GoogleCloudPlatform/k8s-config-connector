@@ -39,219 +39,113 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type RegionautoscalerAutoscalingPolicy struct {
-	/* The number of seconds that the autoscaler should wait before it
-	starts collecting information from a new instance. This prevents
-	the autoscaler from collecting information when the instance is
-	initializing, during which the collected usage would not be
-	reliable. The default time autoscaler waits is 60 seconds.
-
-	Virtual machine initialization times might vary because of
-	numerous factors. We recommend that you test how long an
-	instance may take to initialize. To do this, create an instance
-	and time the startup process. */
+	/* The number of seconds that your application takes to initialize on a VM instance. */
 	// +optional
-	CooldownPeriod *int64 `json:"cooldownPeriod,omitempty"`
+	CooldownPeriod *int32 `json:"cooldownPeriod,omitempty"`
 
-	/* Defines the CPU utilization policy that allows the autoscaler to
-	scale based on the average CPU utilization of a managed instance
-	group. */
+	/* Defines the CPU utilization policy that allows the autoscaler to scale based on the average CPU utilization of a managed instance group. */
 	// +optional
 	CpuUtilization *RegionautoscalerCpuUtilization `json:"cpuUtilization,omitempty"`
 
-	/* Configuration parameters of autoscaling based on a load balancer. */
+	/* Configuration parameters of autoscaling based on load balancer. */
 	// +optional
 	LoadBalancingUtilization *RegionautoscalerLoadBalancingUtilization `json:"loadBalancingUtilization,omitempty"`
 
-	/* The maximum number of instances that the autoscaler can scale up
-	to. This is required when creating or updating an autoscaler. The
-	maximum number of replicas should not be lower than minimal number
-	of replicas. */
-	MaxReplicas int64 `json:"maxReplicas"`
+	/* The maximum number of instances that the autoscaler can scale out to. */
+	MaxReplicas int32 `json:"maxReplicas"`
 
 	/* Configuration parameters of autoscaling based on a custom metric. */
 	// +optional
 	Metric []RegionautoscalerMetric `json:"metric,omitempty"`
 
-	/* The minimum number of replicas that the autoscaler can scale down
-	to. This cannot be less than 0. If not provided, autoscaler will
-	choose a default value depending on maximum number of instances
-	allowed. */
-	MinReplicas int64 `json:"minReplicas"`
+	/* The minimum number of replicas that the autoscaler can scale in to. */
+	MinReplicas int32 `json:"minReplicas"`
 
-	/* Defines operating mode for this policy. */
+	/* Defines the operating mode for this policy. */
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
-	/* Defines scale down controls to reduce the risk of response latency
-	and outages due to abrupt scale-in events. */
 	// +optional
 	ScaleDownControl *RegionautoscalerScaleDownControl `json:"scaleDownControl,omitempty"`
 
-	/* Defines scale in controls to reduce the risk of response latency
-	and outages due to abrupt scale-in events. */
 	// +optional
 	ScaleInControl *RegionautoscalerScaleInControl `json:"scaleInControl,omitempty"`
 
-	/* Scaling schedules defined for an autoscaler. Multiple schedules can be set on an autoscaler and they can overlap. */
 	// +optional
 	ScalingSchedules []RegionautoscalerScalingSchedules `json:"scalingSchedules,omitempty"`
 }
 
 type RegionautoscalerCpuUtilization struct {
-	/* Indicates whether predictive autoscaling based on CPU metric is enabled. Valid values are:
-
-	- NONE (default). No predictive method is used. The autoscaler scales the group to meet current demand based on real-time metrics.
-
-	- OPTIMIZE_AVAILABILITY. Predictive autoscaling improves availability by monitoring daily and weekly load patterns and scaling out ahead of anticipated demand. */
+	/* Indicates whether predictive autoscaling based on CPU metric is enabled. */
 	// +optional
 	PredictiveMethod *string `json:"predictiveMethod,omitempty"`
 
-	/* The target CPU utilization that the autoscaler should maintain.
-	Must be a float value in the range (0, 1]. If not specified, the
-	default is 0.6.
-
-	If the CPU level is below the target utilization, the autoscaler
-	scales down the number of instances until it reaches the minimum
-	number of instances you specified or until the average CPU of
-	your instances reaches the target utilization.
-
-	If the average CPU is above the target utilization, the autoscaler
-	scales up until it reaches the maximum number of instances you
-	specified or until the average utilization reaches the target
-	utilization. */
+	/* The target CPU utilization that the autoscaler maintains. */
 	Target float64 `json:"target"`
 }
 
 type RegionautoscalerLoadBalancingUtilization struct {
-	/* Fraction of backend capacity utilization (set in HTTP(s) load
-	balancing configuration) that autoscaler should maintain. Must
-	be a positive float value. If not defined, the default is 0.8. */
+	/* Fraction of backend capacity utilization (set in HTTP(s) load balancing configuration) that the autoscaler maintains. */
 	Target float64 `json:"target"`
 }
 
 type RegionautoscalerMaxScaledDownReplicas struct {
-	/* Specifies a fixed number of VM instances. This must be a positive
-	integer. */
+	/* Specifies a fixed number of VM instances. This must be a positive integer. */
 	// +optional
-	Fixed *int64 `json:"fixed,omitempty"`
+	Fixed *int32 `json:"fixed,omitempty"`
 
-	/* Specifies a percentage of instances between 0 to 100%, inclusive.
-	For example, specify 80 for 80%. */
+	/* Specifies a percentage of instances between 0 to 100%, inclusive. */
 	// +optional
-	Percent *int64 `json:"percent,omitempty"`
+	Percent *int32 `json:"percent,omitempty"`
 }
 
 type RegionautoscalerMaxScaledInReplicas struct {
-	/* Specifies a fixed number of VM instances. This must be a positive
-	integer. */
+	/* Specifies a fixed number of VM instances. This must be a positive integer. */
 	// +optional
-	Fixed *int64 `json:"fixed,omitempty"`
+	Fixed *int32 `json:"fixed,omitempty"`
 
-	/* Specifies a percentage of instances between 0 to 100%, inclusive.
-	For example, specify 80 for 80%. */
+	/* Specifies a percentage of instances between 0 to 100%, inclusive. */
 	// +optional
-	Percent *int64 `json:"percent,omitempty"`
+	Percent *int32 `json:"percent,omitempty"`
 }
 
 type RegionautoscalerMetric struct {
-	/* A filter string to be used as the filter string for
-	a Stackdriver Monitoring TimeSeries.list API call.
-	This filter is used to select a specific TimeSeries for
-	the purpose of autoscaling and to determine whether the metric
-	is exporting per-instance or per-group data.
-
-	You can only use the AND operator for joining selectors.
-	You can only use direct equality comparison operator (=) without
-	any functions for each selector.
-	You can specify the metric in both the filter string and in the
-	metric field. However, if specified in both places, the metric must
-	be identical.
-
-	The monitored resource type determines what kind of values are
-	expected for the metric. If it is a gce_instance, the autoscaler
-	expects the metric to include a separate TimeSeries for each
-	instance in a group. In such a case, you cannot filter on resource
-	labels.
-
-	If the resource type is any other value, the autoscaler expects
-	this metric to contain values that apply to the entire autoscaled
-	instance group and resource label filtering can be performed to
-	point autoscaler at the correct TimeSeries to scale upon.
-	This is called a per-group metric for the purpose of autoscaling.
-
-	If not specified, the type defaults to gce_instance.
-
-	You should provide a filter that is selective enough to pick just
-	one TimeSeries for the autoscaled group or for each of the instances
-	(if you are using gce_instance resource type). If multiple
-	TimeSeries are returned upon the query execution, the autoscaler
-	will sum their respective values to obtain its scaling value. */
+	/* A filter string, compatible with a Stackdriver Monitoring filter string for TimeSeries.list API call. */
 	// +optional
 	Filter *string `json:"filter,omitempty"`
 
-	/* The identifier (type) of the Stackdriver Monitoring metric.
-	The metric cannot have negative values.
-
-	The metric must have a value type of INT64 or DOUBLE. */
+	/* The identifier (type) of the Stackdriver Monitoring metric. */
 	Name string `json:"name"`
 
-	/* If scaling is based on a per-group metric value that represents the
-	total amount of work to be done or resource usage, set this value to
-	an amount assigned for a single instance of the scaled group.
-	The autoscaler will keep the number of instances proportional to the
-	value of this metric, the metric itself should not change value due
-	to group resizing.
-
-	For example, a good metric to use with the target is
-	'pubsub.googleapis.com/subscription/num_undelivered_messages'
-	or a custom metric exporting the total number of requests coming to
-	your instances.
-
-	A bad example would be a metric exporting an average or median
-	latency, since this value can't include a chunk assignable to a
-	single instance, it could be better used with utilization_target
-	instead. */
+	/* If scaling is based on a per-group metric value that represents the total amount of work to be done or resource usage, set this value to an amount assigned for a single instance of the scaled group. */
 	// +optional
 	SingleInstanceAssignment *float64 `json:"singleInstanceAssignment,omitempty"`
 
-	/* The target value of the metric that autoscaler should
-	maintain. This must be a positive value. A utilization
-	metric scales number of virtual machines handling requests
-	to increase or decrease proportionally to the metric.
-
-	For example, a good metric to use as a utilizationTarget is
-	www.googleapis.com/compute/instance/network/received_bytes_count.
-	The autoscaler will work to keep this value constant for each
-	of the instances. */
+	/* The target value of the metric that autoscaler maintains. */
 	// +optional
 	Target *float64 `json:"target,omitempty"`
 
-	/* Defines how target utilization value is expressed for a
-	Stackdriver Monitoring metric. Possible values: ["GAUGE", "DELTA_PER_SECOND", "DELTA_PER_MINUTE"]. */
+	/* Defines how target utilization value is expressed for a Stackdriver Monitoring metric. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }
 
 type RegionautoscalerScaleDownControl struct {
-	/* A nested object resource. */
 	// +optional
 	MaxScaledDownReplicas *RegionautoscalerMaxScaledDownReplicas `json:"maxScaledDownReplicas,omitempty"`
 
-	/* How long back autoscaling should look when computing recommendations
-	to include directives regarding slower scale down, as described above. */
 	// +optional
-	TimeWindowSec *int64 `json:"timeWindowSec,omitempty"`
+	TimeWindowSec *int32 `json:"timeWindowSec,omitempty"`
 }
 
 type RegionautoscalerScaleInControl struct {
-	/* A nested object resource. */
+	/* Maximum allowed number (or %) of VMs that can be deducted from the peak recommendation during the window. */
 	// +optional
 	MaxScaledInReplicas *RegionautoscalerMaxScaledInReplicas `json:"maxScaledInReplicas,omitempty"`
 
-	/* How long back autoscaling should look when computing recommendations
-	to include directives regarding slower scale down, as described above. */
+	/* How far back autoscaling looks when computing recommendations to include directives regarding slower scale in. */
 	// +optional
-	TimeWindowSec *int64 `json:"timeWindowSec,omitempty"`
+	TimeWindowSec *int32 `json:"timeWindowSec,omitempty"`
 }
 
 type RegionautoscalerScalingSchedules struct {
@@ -259,33 +153,28 @@ type RegionautoscalerScalingSchedules struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* A boolean value that specifies if a scaling schedule can influence autoscaler recommendations. If set to true, then a scaling schedule has no effect. */
+	/* A boolean value that specifies whether a scaling schedule can influence autoscaler recommendations. */
 	// +optional
 	Disabled *bool `json:"disabled,omitempty"`
 
-	/* The duration of time intervals (in seconds) for which this scaling schedule will be running. The minimum allowed value is 300. */
-	DurationSec int64 `json:"durationSec"`
+	/* The duration of time intervals, in seconds, for which this scaling schedule is to run. */
+	DurationSec int32 `json:"durationSec"`
 
-	/* Minimum number of VM instances that autoscaler will recommend in time intervals starting according to schedule. */
-	MinRequiredReplicas int64 `json:"minRequiredReplicas"`
+	/* The minimum number of VM instances that the autoscaler will recommend in time intervals starting according to schedule. */
+	MinRequiredReplicas int32 `json:"minRequiredReplicas"`
 
 	Name string `json:"name"`
 
-	/* The start timestamps of time intervals when this scaling schedule should provide a scaling signal. This field uses the extended cron format (with an optional year field). */
+	/* The start timestamps of time intervals when this scaling schedule is to provide a scaling signal. */
 	Schedule string `json:"schedule"`
 
-	/* The time zone to be used when interpreting the schedule. The value of this field must be a time zone name from the tz database: http://en.wikipedia.org/wiki/Tz_database. */
+	/* The time zone to use when interpreting the schedule. */
 	// +optional
 	TimeZone *string `json:"timeZone,omitempty"`
 }
 
 type ComputeRegionAutoscalerSpec struct {
-	/* The configuration parameters for the autoscaling algorithm. You can
-	define one or more of the policies for an autoscaler: cpuUtilization,
-	customMetricUtilizations, and loadBalancingUtilization.
-
-	If none of these are specified, the default will be to autoscale based
-	on cpuUtilization to 0.6 or 60%. */
+	/* The configuration parameters for the autoscaling algorithm. */
 	AutoscalingPolicy RegionautoscalerAutoscalingPolicy `json:"autoscalingPolicy"`
 
 	/* An optional description of this resource. */
@@ -298,7 +187,7 @@ type ComputeRegionAutoscalerSpec struct {
 	/* Immutable. URL of the region where the instance group resides. */
 	Region string `json:"region"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The ComputeRegionAutoscaler name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -318,6 +207,7 @@ type ComputeRegionAutoscalerStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* Server-defined URL for the resource. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 }

@@ -1996,7 +1996,7 @@ func (in *CertificateauthorityCaOptions) DeepCopyInto(out *CertificateauthorityC
 	}
 	if in.MaxIssuerPathLength != nil {
 		in, out := &in.MaxIssuerPathLength, &out.MaxIssuerPathLength
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.ZeroMaxIssuerPathLength != nil {
@@ -3423,6 +3423,11 @@ func (in *PrivateCACAPoolStatus) DeepCopyInto(out *PrivateCACAPoolStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration

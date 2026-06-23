@@ -33,6 +33,7 @@ type DataplexV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	DataplexAspectTypesGetter
 	DataplexDataAttributeBindingsGetter
+	DataplexDataScansGetter
 	DataplexDataTaxonomiesGetter
 	DataplexEntryGroupsGetter
 	DataplexEntryTypesGetter
@@ -53,6 +54,10 @@ func (c *DataplexV1alpha1Client) DataplexAspectTypes(namespace string) DataplexA
 
 func (c *DataplexV1alpha1Client) DataplexDataAttributeBindings(namespace string) DataplexDataAttributeBindingInterface {
 	return newDataplexDataAttributeBindings(c, namespace)
+}
+
+func (c *DataplexV1alpha1Client) DataplexDataScans(namespace string) DataplexDataScanInterface {
+	return newDataplexDataScans(c, namespace)
 }
 
 func (c *DataplexV1alpha1Client) DataplexDataTaxonomies(namespace string) DataplexDataTaxonomyInterface {
