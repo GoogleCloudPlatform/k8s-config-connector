@@ -16,6 +16,8 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeInstanceGroup
 metadata:
   name: computeinstancegroup-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
   instances:
   - name: computeinstance1-${uniqueId}
