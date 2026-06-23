@@ -249,14 +249,8 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {
-      "gcRule": {},
-      "valueType": {}
-    },
-    "family2": {
-      "gcRule": {},
-      "valueType": {}
-    }
+    "family1": {},
+    "family2": {}
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"

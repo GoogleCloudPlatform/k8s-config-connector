@@ -279,14 +279,8 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {
-      "gcRule": {},
-      "valueType": {}
-    },
-    "family2": {
-      "gcRule": {},
-      "valueType": {}
-    }
+    "family1": {},
+    "family2": {}
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
