@@ -33,6 +33,13 @@ func computeFirewallPolicyFuzzer() fuzztesting.KRMFuzzer {
 		ComputeFirewallPolicyStatus_v1beta1_FromProto, ComputeFirewallPolicyStatus_v1beta1_ToProto,
 	)
 
+	// Field comparison: ComputeFirewallPolicy Spec vs pb.FirewallPolicy Proto
+	// - Spec.Description       maps to proto field .description
+	// - Spec.FolderRef         maps to parent URI, not in proto body (proto .parent is Unimplemented_Internal)
+	// - Spec.OrganizationRef   maps to parent URI, not in proto body (proto .parent is Unimplemented_Internal)
+	// - Spec.ResourceID        maps to proto field .name (handled as Unimplemented_Identity)
+	// - Spec.ShortName         maps to proto field .short_name
+	//
 	// Spec fields
 	f.SpecField(".description")
 	f.SpecField(".short_name")
