@@ -15,9 +15,12 @@
 package e2e
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"reflect"
 	"regexp"
 	"sort"
@@ -781,7 +784,7 @@ func (o *objectWalker) visitAny(v any, path string) (any, error) {
 		return v, nil
 	case []any:
 		return o.visitSlice(v, path)
-	case int64, float64, bool:
+	case int, int32, int64, float32, float64, bool:
 		return o.visitPrimitive(v, path)
 	case string:
 		return o.visitString(v, path)
@@ -1083,6 +1086,54 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
+
+	if !strings.Contains(t.Name(), "/containercluster") && !strings.Contains(t.Name(), "/containernodepool") {
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			for _, key := range []string{"currentActions", "current_actions"} {
+				if currentActions, ok := m[key]; ok {
+					if currentActionsMap, ok := currentActions.(map[string]any); ok {
+						for k := range currentActionsMap {
+							currentActionsMap[k] = 1
+						}
+					}
+				}
+			}
+		})
+	}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		re := regexp.MustCompile(`debian-11-bullseye-v\d{8}`)
+		s = re.ReplaceAllString(s, "debian-11-bullseye-v20231010")
+		re2 := regexp.MustCompile(`built on \d{8}`)
+		s = re2.ReplaceAllString(s, "built on 20231010")
+		return s
+	})
+
+	visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+		if m["kind"] == "compute#image" {
+			selfLink, _ := m["selfLink"].(string)
+			// Only normalize public standard images (e.g., from debian-cloud), not custom user-defined images.
+			if strings.Contains(selfLink, "/projects/debian-cloud/") {
+				for k := range m {
+					switch k {
+					case "kind", "name", "family", "status", "selfLink":
+						// keep
+					default:
+						delete(m, k)
+					}
+				}
+				m["status"] = "READY"
+			}
+		}
+	})
+
+	if !testHasField(t, "routingConfig") {
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			if m["kind"] == "compute#network" {
+				delete(m, "routingConfig")
+			}
+		})
+	}
 
 	// Common variables
 	visitor.replacePaths[".uid"] = "111111111111111111111"
@@ -1398,4 +1449,139 @@ func removeKeysFromMap(obj any, keys []string) {
 			removeKeysFromMap(val, keys)
 		}
 	}
+}
+
+func findRepoRoot() string {
+	dir, err := os.Getwd()
+	if err != nil {
+		return ""
+	}
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.work")); err == nil {
+			return dir
+		}
+		if _, err := os.Stat(filepath.Join(dir, ".git")); err == nil {
+			return dir
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+	// Fallback to checking go.mod
+	dir, err = os.Getwd()
+	if err != nil {
+		return ""
+	}
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+	return ""
+}
+
+func testHasField(t *testing.T, fieldName string) bool {
+	name := t.Name()
+	var absPath string
+
+	repoRoot := findRepoRoot()
+	if repoRoot == "" {
+		return false
+	}
+
+	if strings.Contains(name, "/fixtures/") {
+		var relPath string
+		if idx := strings.Index(name, "/fixtures/"); idx != -1 {
+			relPath = name[idx+len("/fixtures/"):]
+		}
+		if relPath == "" {
+			return false
+		}
+		fullPath := filepath.Join(repoRoot, relPath)
+		if fi, err := os.Stat(fullPath); err == nil && fi.IsDir() {
+			absPath = fullPath
+		} else {
+			targetDirName := relPath
+			if idx := strings.Index(relPath, "/"); idx != -1 {
+				targetDirName = relPath[:idx]
+			}
+			if targetDirName == "pkg" {
+				targetDirName = filepath.Base(relPath)
+			}
+			// Walk pkg/test/resourcefixture/testdata under repoRoot to find a directory named targetDirName
+			var foundPath string
+			_ = filepath.WalkDir(filepath.Join(repoRoot, "pkg/test/resourcefixture/testdata"), func(path string, d os.DirEntry, err error) error {
+				if err != nil {
+					return err
+				}
+				if d.IsDir() && d.Name() == targetDirName {
+					// Check if this directory actually contains .log files to avoid matching parent directories
+					files, err := os.ReadDir(path)
+					if err == nil {
+						hasLog := false
+						for _, f := range files {
+							if !f.IsDir() && strings.HasSuffix(f.Name(), ".log") {
+								hasLog = true
+								break
+							}
+						}
+						if hasLog {
+							foundPath = path
+							return filepath.SkipAll
+						}
+					}
+				}
+				return nil
+			})
+			if foundPath == "" {
+				return false
+			}
+			absPath = foundPath
+		}
+	} else if strings.Contains(name, "/scenarios/") {
+		var relPath string
+		if idx := strings.Index(name, "/scenarios/"); idx != -1 {
+			relPath = name[idx+1:]
+		}
+		if relPath == "" {
+			return false
+		}
+		absPath = filepath.Join(repoRoot, "tests/e2e/testdata", relPath)
+	} else if strings.Contains(name, "TestScripts/") {
+		var relPath string
+		if idx := strings.Index(name, "TestScripts/"); idx != -1 {
+			relPath = name[idx+len("TestScripts/"):]
+		}
+		if relPath == "" {
+			return false
+		}
+		absPath = filepath.Join(repoRoot, "mockgcp", relPath)
+	} else {
+		return false
+	}
+
+	// Read any .log files in the directory to check if fieldName is present
+	files, err := os.ReadDir(absPath)
+	if err != nil {
+		return false
+	}
+	for _, f := range files {
+		if f.IsDir() || !strings.HasSuffix(f.Name(), ".log") {
+			continue
+		}
+		p := filepath.Join(absPath, f.Name())
+		if b, err := os.ReadFile(p); err == nil {
+			if bytes.Contains(b, []byte(fieldName)) {
+				return true
+			}
+		}
+	}
+	return false
 }

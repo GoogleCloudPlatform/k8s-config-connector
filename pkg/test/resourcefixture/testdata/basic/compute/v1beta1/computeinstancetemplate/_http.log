@@ -564,11 +564,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instanceTemplate \"projects/${projectId}/global/instanceTemplates/${instanceTemplateID}\" not found",
+        "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "instanceTemplate \"projects/${projectId}/global/instanceTemplates/${instanceTemplateID}\" not found"
+    "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found"
   }
 }
 
@@ -709,11 +709,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instanceTemplate \"projects/${projectId}/global/instanceTemplates/${instanceTemplateID}\" not found",
+        "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "instanceTemplate \"projects/${projectId}/global/instanceTemplates/${instanceTemplateID}\" not found"
+    "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found"
   }
 }
 
@@ -823,11 +823,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instanceTemplate \"projects/${projectId}/global/instanceTemplates/${instanceTemplateID}\" not found",
+        "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "instanceTemplate \"projects/${projectId}/global/instanceTemplates/${instanceTemplateID}\" not found"
+    "message": "The resource 'projects/${projectId}/global/instanceTemplates/${instanceTemplateID}' was not found"
   }
 }
 
