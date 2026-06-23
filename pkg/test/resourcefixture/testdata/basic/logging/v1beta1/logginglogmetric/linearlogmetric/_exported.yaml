@@ -33,4 +33,5 @@ spec:
     valueType: DISTRIBUTION
   projectRef:
     external: ${projectId}
+  resourceID: linearlogmetric-${uniqueId}
   valueExtractor: EXTRACT(jsonPayload.response)

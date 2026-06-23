@@ -19,4 +19,5 @@ spec:
     valueType: DISTRIBUTION
   projectRef:
     external: ${projectId}
+  resourceID: logginglogmetric-${uniqueId}
   valueExtractor: EXTRACT(jsonPayload.request)

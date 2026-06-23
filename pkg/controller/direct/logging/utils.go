@@ -83,6 +83,7 @@ func convertAPItoKRM_LoggingLogMetric(projectID string, in *api.LogMetric) (*uns
 	lm.Spec.ProjectRef = refs.ProjectRef{
 		External: projectID,
 	}
+	lm.Spec.ResourceID = direct.LazyPtr(in.Name)
 
 	u := &unstructured.Unstructured{}
 	if err := util.Marshal(lm, u); err != nil {

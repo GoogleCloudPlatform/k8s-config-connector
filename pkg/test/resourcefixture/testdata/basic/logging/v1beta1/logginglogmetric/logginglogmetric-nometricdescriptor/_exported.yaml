@@ -18,4 +18,5 @@ spec:
     valueType: INT64
   projectRef:
     external: ${projectId}
+  resourceID: logginglogmetric-metricdescriptor-${uniqueId}
   valueExtractor: ""
