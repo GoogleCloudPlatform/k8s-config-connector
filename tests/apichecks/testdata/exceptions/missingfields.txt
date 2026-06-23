@@ -521,7 +521,6 @@
 [missing_field] crd=computedisks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.resourcePolicies[].external" is not set in unstructured objects
 [missing_field] crd=computedisks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.resourcePolicies[].name" is not set in unstructured objects
 [missing_field] crd=computedisks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.resourcePolicies[].namespace" is not set in unstructured objects
-[missing_field] crd=computedisks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.size" is not set in unstructured objects
 [missing_field] crd=computedisks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.snapshotRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computedisks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceImageEncryptionKey.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computedisks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceImageEncryptionKey.kmsKeyServiceAccountRef" is not set; neither 'external' nor 'name' are set

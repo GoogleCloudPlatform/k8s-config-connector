@@ -320,3 +320,27 @@ func (m *gcpClient) newRoutesClient(ctx context.Context) (*compute.RoutesClient,
 	}
 	return client, err
 }
+
+func (m *gcpClient) newDisksClient(ctx context.Context) (*compute.DisksClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewDisksRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeDisks client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newRegionDisksClient(ctx context.Context) (*compute.RegionDisksClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewRegionDisksRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeRegionDisks client: %w", err)
+	}
+	return client, err
+}

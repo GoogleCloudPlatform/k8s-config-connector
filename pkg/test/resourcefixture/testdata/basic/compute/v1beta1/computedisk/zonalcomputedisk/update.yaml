@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,9 @@ kind: ComputeDisk
 metadata:
   name: computedisk-${uniqueId}
   labels:
-    label-one: "value-one"
+    label-one: "value-one-updated"
+    label-two: "value-two"
 spec:
   description: an example disk without reference
   location: us-central1-a
-  size: 10
+  size: 12

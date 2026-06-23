@@ -44,6 +44,24 @@ type ComputeDiskIdentity struct {
 	Disk    string
 }
 
+func (i *ComputeDiskIdentity) IsZonal() bool {
+	return i.Zone != ""
+}
+
+func (i *ComputeDiskIdentity) IsRegional() bool {
+	return i.Region != ""
+}
+
+func (i *ComputeDiskIdentity) Validate() error {
+	if i.Zone == "" && i.Region == "" {
+		return fmt.Errorf("ComputeDisk identity must have either a Zone or a Region")
+	}
+	if i.Zone != "" && i.Region != "" {
+		return fmt.Errorf("ComputeDisk identity cannot have both a Zone and a Region")
+	}
+	return nil
+}
+
 func (i *ComputeDiskIdentity) String() string {
 	if i.Zone != "" {
 		return ZonalComputeDiskIdentityFormat.ToString(*i)

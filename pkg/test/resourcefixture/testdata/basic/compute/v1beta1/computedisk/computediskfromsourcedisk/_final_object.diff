@@ -1,0 +1,13 @@
+6,7d5
+<     cnrm.cloud.google.com/observed-secret-versions: (removed)
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c9
+<   generation: 2
+---
+>   generation: 1
+21d18
+<   resourceID: ${diskID}
+32c29
+<   observedGeneration: 2
+---
+>   observedGeneration: 1
