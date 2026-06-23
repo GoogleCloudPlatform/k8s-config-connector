@@ -6,31 +6,36 @@
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks
-41c41
+41d40
 <   "region": "projects/${projectId}/global/regions/us-central1",
----
->   "physicalBlockSizeBytes": "4096",
-43,44c43,44
+43,46c42,44
 <     "projects/${projectId}/global/zones/us-central1-a",
 <     "projects/${projectId}/global/zones/us-central1-f"
+<   ],
+<   "type": "projects/${projectId}/regions/us-central1/diskTypes/pd-standard"
 ---
 >     "us-central1-a",
 >     "us-central1-f"
-72c72
+>   ]
+72c70
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}
-99,100c99,100
+99,100c97,98
 <     "projects/${projectId}/global/zones/us-central1-a",
 <     "projects/${projectId}/global/zones/us-central1-f"
 ---
 >     "us-central1-a",
 >     "us-central1-f"
-109c109
+104c102
+<   "type": "projects/${projectId}/regions/us-central1/diskTypes/pd-standard"
+---
+>   "type": "projects/${projectId}/regions/us-central1/regiondiskTypes/pd-standard"
+109c107
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}
-130a131,159
+130a129,157
 > }
 > 
 > ---

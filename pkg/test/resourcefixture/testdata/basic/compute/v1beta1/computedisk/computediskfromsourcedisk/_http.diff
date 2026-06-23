@@ -6,63 +6,62 @@
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks
-40,41c40,41
+39,41c39
+<   "name": "${diskID}",
 <   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
 <   "zone": "projects/${projectId}/global/zones/us-central1-a"
 ---
->   "physicalBlockSizeBytes": "4096",
->   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
-72c72,73
+>   "name": "${diskID}"
+72c70,71
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
 > Content-Type: application/json
-103c104
+103c102
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-135c136
+135c134
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-164c165
+164c163
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks
-173a175
->   "physicalBlockSizeBytes": "4096",
-175,176c177
+174,176c173
+<   "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
 <   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
 <   "zone": "projects/${projectId}/global/zones/us-central1-a"
 ---
->   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
-207c208,209
+>   "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}"
+207c204,205
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
 > Content-Type: application/json
-238c240
+238c236
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-271c273
+271c269
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-302c304,305
+302c300,301
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
 > Content-Type: application/json
-333c336
+333c332
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-365c368
+365c364
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
-396c399,400
+396c395,396
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}

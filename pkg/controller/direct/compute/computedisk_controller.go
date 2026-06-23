@@ -108,19 +108,8 @@ func (m *computeDiskModel) AdapterForObject(ctx context.Context, op *directbase.
 	desired.Name = direct.LazyPtr(diskId.Disk)
 	desired.Labels = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
 
-	// Populate physical_block_size_bytes default
-	if desired.PhysicalBlockSizeBytes == nil {
-		desired.PhysicalBlockSizeBytes = direct.PtrTo(int64(4096))
-	}
-
-	// Populate type default
-	if desired.Type == nil {
-		if diskId.IsZonal() {
-			desired.Type = direct.PtrTo(fmt.Sprintf("projects/%s/zones/%s/diskTypes/pd-standard", diskId.Project, diskId.Zone))
-		} else {
-			desired.Type = direct.PtrTo(fmt.Sprintf("projects/%s/regions/%s/diskTypes/pd-standard", diskId.Project, diskId.Region))
-		}
-	} else {
+	// Normalize Type if specified by the user to be fully qualified projects/...
+	if desired.Type != nil {
 		val := *desired.Type
 		if !strings.Contains(val, "/") {
 			if diskId.IsZonal() {

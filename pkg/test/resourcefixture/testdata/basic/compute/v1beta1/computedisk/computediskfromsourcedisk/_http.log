@@ -36,9 +36,7 @@ Content-Type: application/json
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${diskID}",
-  "physicalBlockSizeBytes": "4096",
-  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
+  "name": "${diskID}"
 }
 
 200 OK
@@ -172,9 +170,7 @@ Content-Type: application/json
     "managed-by-cnrm": "true"
   },
   "name": "${diskID}",
-  "physicalBlockSizeBytes": "4096",
-  "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
-  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
+  "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}"
 }
 
 200 OK

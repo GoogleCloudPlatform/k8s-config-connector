@@ -38,8 +38,7 @@ Content-Type: application/json
     "managed-by-cnrm": "true"
   },
   "name": "${diskID}",
-  "physicalBlockSizeBytes": "4096",
-  "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
+  "sizeGb": "10"
 }
 
 200 OK
