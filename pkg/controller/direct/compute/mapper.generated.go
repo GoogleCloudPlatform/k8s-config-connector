@@ -2367,6 +2367,60 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	return out
 }
 
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicySpec_v1alpha1_FromProto", skipping
+func ComputeOrganizationSecurityPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicySpec{}
+	// MISSING: AdaptiveProtectionConfig
+	// MISSING: AdvancedOptionsConfig
+	// MISSING: CreationTimestamp
+	// MISSING: DdosProtectionConfig
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: RecaptchaOptionsConfig
+	// MISSING: Region
+	// MISSING: Rules
+	// MISSING: SelfLink
+	out.Type = in.Type
+	// MISSING: UserDefinedFields
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicySpec_v1alpha1_ToProto", skipping
+func ComputeOrganizationSecurityPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicySpec) *pb.SecurityPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicy{}
+	// MISSING: AdaptiveProtectionConfig
+	// MISSING: AdvancedOptionsConfig
+	// MISSING: CreationTimestamp
+	// MISSING: DdosProtectionConfig
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: RecaptchaOptionsConfig
+	// MISSING: Region
+	// MISSING: Rules
+	// MISSING: SelfLink
+	out.Type = in.Type
+	// MISSING: UserDefinedFields
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alpha1_FromProto", skipping
 func ComputeRegionAutoscalerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Autoscaler) *krmcomputev1alpha1.ComputeRegionAutoscalerSpec {
 	if in == nil {

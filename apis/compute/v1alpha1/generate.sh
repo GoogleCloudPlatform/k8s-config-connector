@@ -34,6 +34,7 @@ go run . generate-types \
   --resource ComputeAutoscaler:Autoscaler \
   --resource ComputeBackendServiceSignedURLKey:SignedUrlKey \
   --resource ComputeRegionAutoscaler:Autoscaler \
+  --resource ComputeOrganizationSecurityPolicy:SecurityPolicy \
   --include-skipped-output
 
 cd ${REPO_ROOT}
