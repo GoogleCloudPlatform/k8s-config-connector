@@ -11,16 +11,16 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: computedisk-1-${uniqueId}
+  name: ${diskID}
   namespace: ${uniqueId}
 spec:
   description: an example disk from source disk
   location: us-central1-a
   projectRef:
     external: ${projectId}
-  resourceID: computedisk-1-${uniqueId}
+  resourceID: ${diskID}
   sourceDiskRef:
-    name: computedisk-2-${uniqueId}
+    name: ${diskID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -30,4 +30,4 @@ status:
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
   observedGeneration: 2
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/computedisk-1-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}

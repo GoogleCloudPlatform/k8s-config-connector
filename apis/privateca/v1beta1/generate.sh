@@ -28,7 +28,8 @@ go run . generate-types \
   --service google.cloud.security.privateca.v1 \
   --api-version privateca.cnrm.cloud.google.com/v1beta1  \
   --include-skipped-output \
-  --resource PrivateCACAPool:CaPool
+  --resource PrivateCACAPool:CaPool \
+  --resource PrivateCACertificateAuthority:CertificateAuthority
 
 go run . generate-mapper \
   --service google.cloud.security.privateca.v1 \

@@ -59,5 +59,26 @@ func monitoringAlertPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Internal(".alert_strategy.notification_prompts")
 	f.Unimplemented_Internal(".conditions[].condition_prometheus_query_language.disable_metric_validation")
 
+	// Unimplemented SQL conditions nested fields
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.query")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.minutes")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.minutes.periodicity")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.hourly")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.hourly.periodicity")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.hourly.minute_offset")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.daily")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.daily.periodicity")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.daily.execution_time")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.daily.execution_time.hours")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.daily.execution_time.minutes")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.daily.execution_time.seconds")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.daily.execution_time.nanos")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.boolean_test")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.boolean_test.column")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.row_count_test")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.row_count_test.comparison")
+	f.Unimplemented_NotYetTriaged(".conditions[].condition_sql.row_count_test.threshold")
+
 	return f
 }

@@ -1,0 +1,21 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c10
+<   generation: 2
+---
+>   generation: 1
+26d24
+<   resourceID: ${addressID}
+30,32c28,31
+<     message: The resource is up to date
+<     reason: UpToDate
+<     status: "True"
+---
+>     message: 'Update call failed: error updating: ComputeAddress is immutable and
+>       cannot be updated'
+>     reason: UpdateFailed
+>     status: "False"
+36c35
+<   observedGeneration: 2
+---
+>   observedGeneration: 1

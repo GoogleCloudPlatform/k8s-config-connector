@@ -2328,6 +2328,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - appoptimize.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - artifactregistry.cnrm.cloud.google.com
   resources:
   - '*'
@@ -2785,6 +2797,18 @@ rules:
   - delete
 - apiGroups:
   - configdelivery.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - connectors.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -3769,6 +3793,18 @@ rules:
   - delete
 - apiGroups:
   - tpu.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - vectorsearch.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -4166,6 +4202,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - appoptimize.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - artifactregistry.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4471,6 +4515,14 @@ rules:
   - watch
 - apiGroups:
   - configdelivery.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - connectors.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -5127,6 +5179,14 @@ rules:
   - watch
 - apiGroups:
   - tpu.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - vectorsearch.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

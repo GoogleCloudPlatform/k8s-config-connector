@@ -230,6 +230,9 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			field := msg.Fields().Get(i)
 			if field.Message() != nil {
 				name := field.Message().FullName()
+				if name == "google.cloud.connectors.v1.Secret" {
+					out.addImport("secretmanagerv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1")
+				}
 				if name == "google.rpc.Status" {
 					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
 					break
@@ -288,6 +291,9 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		for _, field := range msgDetails.OutputFields {
 			if field.Message() != nil {
 				name := field.Message().FullName()
+				if name == "google.cloud.connectors.v1.Secret" {
+					out.addImport("secretmanagerv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1")
+				}
 				if name == "google.rpc.Status" {
 					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
 					break

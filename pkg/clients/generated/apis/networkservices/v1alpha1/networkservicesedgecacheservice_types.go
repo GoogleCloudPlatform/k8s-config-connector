@@ -338,8 +338,7 @@ type EdgecacheserviceHeaderMatch struct {
 	/* The header name to match on. */
 	HeaderName string `json:"headerName"`
 
-	/* If set to false (default), the headerMatch is considered a match if the match criteria above are met.
-	If set to true, the headerMatch is considered a match if the match criteria above are NOT met. */
+	/* If set to false (default), the headerMatch is considered a match if the match criteria above are met. If set to true, the headerMatch is considered a match if the match criteria above are NOT met. */
 	// +optional
 	InvertMatch *bool `json:"invertMatch,omitempty"`
 
@@ -515,8 +514,7 @@ type EdgecacheserviceRouteRule struct {
 	// +optional
 	HeaderAction *EdgecacheserviceHeaderAction `json:"headerAction,omitempty"`
 
-	/* The list of criteria for matching attributes of a request to this routeRule. This list has OR semantics: the request matches this routeRule when any of the matchRules are satisfied. However predicates
-	within a given matchRule have AND semantics. All predicates within a matchRule must match for the request to match the rule. */
+	/* The list of criteria for matching attributes of a request to this routeRule. This list has OR semantics: the request matches this routeRule when any of the matchRules are satisfied. However predicates within a given matchRule have AND semantics. All predicates within a matchRule must match for the request to match the rule. */
 	MatchRule []EdgecacheserviceMatchRule `json:"matchRule"`
 
 	/* The Origin resource that requests to this route should fetch from when a matching response is not in cache. Origins can be defined as short names ("my-origin") or fully-qualified resource URLs - e.g. "networkservices.googleapis.com/projects/my-project/global/edgecacheorigins/my-origin"

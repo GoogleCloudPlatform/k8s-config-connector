@@ -15,10 +15,12 @@
 package mockcompute
 
 import (
+	"context"
+
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
-func (s *MockService) populateBackendServiceDefaults(obj *pb.BackendService) {
+func (s *MockService) populateBackendServiceDefaults(ctx context.Context, obj *pb.BackendService) {
 	if obj.AffinityCookieTtlSec == nil {
 		obj.AffinityCookieTtlSec = PtrTo(int32(0))
 	}
@@ -55,5 +57,21 @@ func (s *MockService) populateBackendServiceDefaults(obj *pb.BackendService) {
 
 	if obj.TimeoutSec == nil {
 		obj.TimeoutSec = PtrTo(int32(30))
+	}
+
+	if obj.Iap == nil {
+		obj.Iap = &pb.BackendServiceIAP{}
+	}
+	if obj.Iap.Enabled == nil {
+		obj.Iap.Enabled = PtrTo(false)
+	}
+	if obj.Iap.Oauth2ClientId == nil {
+		obj.Iap.Oauth2ClientId = PtrTo("")
+	}
+	obj.Iap.Oauth2ClientSecret = nil
+	obj.Iap.Oauth2ClientSecretSha256 = PtrTo("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+
+	for i, hc := range obj.HealthChecks {
+		obj.HealthChecks[i] = ExpandComputeLink(ctx, hc)
 	}
 }

@@ -19,70 +19,44 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var (
-	_ identity.IdentityV2 = &PrivateCACAPoolIdentity{}
-	_ identity.Resource   = &PrivateCACAPool{}
-)
+var PrivateCACAPoolIdentityFormat = privatecarefs.PrivateCACAPoolIdentityFormat
 
-var PrivateCACAPoolIdentityFormat = gcpurls.Template[PrivateCACAPoolIdentity]("privateca.googleapis.com", "projects/{project}/locations/{location}/caPools/{caPool}")
-
-// +k8s:deepcopy-gen=false
-type PrivateCACAPoolIdentity struct {
-	Project  string
-	Location string
-	CAPool   string
-}
-
-func (i *PrivateCACAPoolIdentity) String() string {
-	return PrivateCACAPoolIdentityFormat.ToString(*i)
-}
-
-func (i *PrivateCACAPoolIdentity) FromExternal(ref string) error {
-	parsed, match, err := PrivateCACAPoolIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of PrivateCACAPool external=%q was not known (use %s): %w", ref, PrivateCACAPoolIdentityFormat.CanonicalForm(), err)
-	}
-	if !match {
-		return fmt.Errorf("format of PrivateCACAPool external=%q was not known (use %s)", ref, PrivateCACAPoolIdentityFormat.CanonicalForm())
-	}
-
-	*i = *parsed
-	return nil
-}
-
-func (i *PrivateCACAPoolIdentity) Host() string {
-	return PrivateCACAPoolIdentityFormat.Host()
-}
-
-func getIdentityFromPrivateCACAPoolSpec(ctx context.Context, reader client.Reader, obj client.Object) (*PrivateCACAPoolIdentity, error) {
-	resourceID, err := refsv1beta1.GetResourceID(obj)
+func (obj *PrivateCACAPool) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	location, err := refsv1beta1.GetLocation(obj)
+	location, err := refs.GetLocation(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve location")
 	}
 
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	identity := &PrivateCACAPoolIdentity{
+	identity := &privatecarefs.PrivateCACAPoolIdentity{
 		Project:  projectID,
 		Location: location,
 		CAPool:   resourceID,
 	}
-	return identity, nil
-}
 
-func (obj *PrivateCACAPool) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	return getIdentityFromPrivateCACAPoolSpec(ctx, reader, obj)
+	// Cross-check that if the identity is set in status, it matches the identity in spec.
+	if obj.Status.ExternalRef != nil && *obj.Status.ExternalRef != "" {
+		statusIdentity := &privatecarefs.PrivateCACAPoolIdentity{}
+		if err := statusIdentity.FromExternal(*obj.Status.ExternalRef); err == nil {
+			if *statusIdentity != *identity {
+				return nil, fmt.Errorf("identity from spec %v does not match identity from status %v", identity, statusIdentity)
+			}
+		}
+	}
+
+	return identity, nil
 }

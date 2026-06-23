@@ -268,6 +268,7 @@ func comparePrivateCACAPool(ctx context.Context, actual, desired *pb.CaPool) (*s
 		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
+	maskedActual.Labels = actual.Labels
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
@@ -277,6 +278,7 @@ func comparePrivateCACAPool(ctx context.Context, actual, desired *pb.CaPool) (*s
 
 func (a *caPoolAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.CaPool) error {
 	status := &krm.PrivateCACAPoolStatus{}
+	status.ExternalRef = direct.LazyPtr(fmt.Sprintf("//privateca.googleapis.com/%s", a.fullyQualifiedName()))
 	return op.UpdateStatus(ctx, status, nil)
 }
 

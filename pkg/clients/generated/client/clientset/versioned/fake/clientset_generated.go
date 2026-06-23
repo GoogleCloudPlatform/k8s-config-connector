@@ -55,6 +55,8 @@ import (
 	fakeapphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1alpha1/fake"
 	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1beta1"
 	fakeapphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1beta1/fake"
+	appoptimizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appoptimize/v1alpha1"
+	fakeappoptimizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appoptimize/v1alpha1/fake"
 	artifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1alpha1"
 	fakeartifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1alpha1/fake"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
@@ -155,6 +157,8 @@ import (
 	fakeconfigcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1/fake"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1"
 	fakeconfigdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1/fake"
+	connectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/connectors/v1alpha1"
+	fakeconnectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/connectors/v1alpha1/fake"
 	contactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contactcenterinsights/v1alpha1"
 	fakecontactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contactcenterinsights/v1alpha1/fake"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1"
@@ -381,6 +385,8 @@ import (
 	faketagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1/fake"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
 	faketpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1/fake"
+	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vectorsearch/v1alpha1"
+	fakevectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vectorsearch/v1alpha1/fake"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
 	fakevertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1/fake"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1"
@@ -548,6 +554,11 @@ func (c *Clientset) ApphubV1alpha1() apphubv1alpha1.ApphubV1alpha1Interface {
 // ApphubV1beta1 retrieves the ApphubV1beta1Client
 func (c *Clientset) ApphubV1beta1() apphubv1beta1.ApphubV1beta1Interface {
 	return &fakeapphubv1beta1.FakeApphubV1beta1{Fake: &c.Fake}
+}
+
+// AppoptimizeV1alpha1 retrieves the AppoptimizeV1alpha1Client
+func (c *Clientset) AppoptimizeV1alpha1() appoptimizev1alpha1.AppoptimizeV1alpha1Interface {
+	return &fakeappoptimizev1alpha1.FakeAppoptimizeV1alpha1{Fake: &c.Fake}
 }
 
 // ArtifactregistryV1alpha1 retrieves the ArtifactregistryV1alpha1Client
@@ -798,6 +809,11 @@ func (c *Clientset) ConfigcontrollerV1beta1() configcontrollerv1beta1.Configcont
 // ConfigdeliveryV1alpha1 retrieves the ConfigdeliveryV1alpha1Client
 func (c *Clientset) ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface {
 	return &fakeconfigdeliveryv1alpha1.FakeConfigdeliveryV1alpha1{Fake: &c.Fake}
+}
+
+// ConnectorsV1alpha1 retrieves the ConnectorsV1alpha1Client
+func (c *Clientset) ConnectorsV1alpha1() connectorsv1alpha1.ConnectorsV1alpha1Interface {
+	return &fakeconnectorsv1alpha1.FakeConnectorsV1alpha1{Fake: &c.Fake}
 }
 
 // ContactcenterinsightsV1alpha1 retrieves the ContactcenterinsightsV1alpha1Client
@@ -1363,6 +1379,11 @@ func (c *Clientset) TagsV1beta1() tagsv1beta1.TagsV1beta1Interface {
 // TpuV1alpha1 retrieves the TpuV1alpha1Client
 func (c *Clientset) TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface {
 	return &faketpuv1alpha1.FakeTpuV1alpha1{Fake: &c.Fake}
+}
+
+// VectorsearchV1alpha1 retrieves the VectorsearchV1alpha1Client
+func (c *Clientset) VectorsearchV1alpha1() vectorsearchv1alpha1.VectorsearchV1alpha1Interface {
+	return &fakevectorsearchv1alpha1.FakeVectorsearchV1alpha1{Fake: &c.Fake}
 }
 
 // VertexaiV1alpha1 retrieves the VertexaiV1alpha1Client

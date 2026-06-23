@@ -57,10 +57,28 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	// This list should match https://cloud.google.com/asset-inventory/docs/resource-name-format
 	gvk := obj.GroupVersionKind()
 	switch gvk.GroupKind() {
+	case schema.GroupKind{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "artifactregistry.cnrm.cloud.google.com", Kind: "ArtifactRegistryRepository"}:
 		exportURI = resolveCAISURI(h, obj)
 
+	case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryNamespace"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificate"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerDNSAuthorization"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateIssuanceConfig"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateMap"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateMapEntry"}:
 		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:

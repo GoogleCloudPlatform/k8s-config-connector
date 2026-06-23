@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
@@ -27,6 +29,8 @@ import (
 type ImagesV1 struct {
 	*MockService
 	pb.UnimplementedImagesServer
+
+	pendingLabels map[string]*pb.Image
 }
 
 func (s *ImagesV1) GetFromFamily(ctx context.Context, req *pb.GetFromFamilyImageRequest) (*pb.Image, error) {
@@ -46,7 +50,8 @@ func (s *ImagesV1) GetFromFamily(ctx context.Context, req *pb.GetFromFamilyImage
 func (s *ImagesV1) Get(ctx context.Context, req *pb.GetImageRequest) (*pb.Image, error) {
 	// Get from family
 	if req.GetProject() == "debian-cloud" && req.GetImage() == "debian-11" {
-		return nil, status.Errorf(codes.NotFound, "image not found")
+		fqn := "projects/debian-cloud/global/images/debian-11"
+		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
 	}
 
 	name, err := s.parseImageName(req.GetProject(), req.GetImage())
@@ -58,7 +63,18 @@ func (s *ImagesV1) Get(ctx context.Context, req *pb.GetImageRequest) (*pb.Image,
 
 	obj := &pb.Image{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
+	}
+
+	// Eventually consistent labels support
+	if s.pendingLabels != nil {
+		if oldObj, exists := s.pendingLabels[fqn]; exists {
+			delete(s.pendingLabels, fqn)
+			return oldObj, nil
+		}
 	}
 
 	return obj, nil
@@ -79,6 +95,36 @@ func (s *ImagesV1) Insert(ctx context.Context, req *pb.InsertImageRequest) (*pb.
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#image")
+	obj.EnableConfidentialCompute = PtrTo(false)
+	obj.SourceType = PtrTo("RAW")
+	obj.Status = PtrTo("READY")
+	obj.StorageLocations = []string{"us"}
+	obj.LabelFingerprint = PtrTo(labelsFingerprint(obj.GetLabels()))
+
+	sourceDisk := obj.GetSourceDisk()
+	if sourceDisk != "" {
+		// Convert relative or absolute URL to relative path starting with "projects/"
+		u := sourceDisk
+		if idx := strings.Index(u, "projects/"); idx != -1 {
+			u = u[idx:]
+		}
+		if diskName, err := s.parseZonalDiskName(u); err == nil {
+			diskFQN := diskName.String()
+			diskObj := &pb.Disk{}
+			if err := s.storage.Get(ctx, diskFQN, diskObj); err == nil {
+				// Disk exists! Let's get its ID and size
+				obj.SourceDiskId = PtrTo(fmt.Sprintf("%d", diskObj.GetId()))
+				if diskObj.SizeGb != nil {
+					obj.DiskSizeGb = diskObj.SizeGb
+				}
+			} else {
+				obj.SourceDiskId = PtrTo("1234567890123456789")
+			}
+		}
+		if !strings.HasPrefix(sourceDisk, "http") {
+			obj.SourceDisk = PtrTo(BuildComputeSelfLink(ctx, strings.TrimPrefix(sourceDisk, "/")))
+		}
+	}
 
 	if obj.DiskSizeGb == nil {
 		obj.DiskSizeGb = PtrTo(int64(500))
@@ -88,7 +134,15 @@ func (s *ImagesV1) Insert(ctx context.Context, req *pb.InsertImageRequest) (*pb.
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *ImagesV1) Patch(ctx context.Context, req *pb.PatchImageRequest) (*pb.Operation, error) {
@@ -100,6 +154,9 @@ func (s *ImagesV1) Patch(ctx context.Context, req *pb.PatchImageRequest) (*pb.Op
 	fqn := name.String()
 	obj := &pb.Image{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -107,11 +164,21 @@ func (s *ImagesV1) Patch(ctx context.Context, req *pb.PatchImageRequest) (*pb.Op
 		obj.DiskSizeGb = PtrTo(int64(500))
 	}
 
+	obj.LabelFingerprint = PtrTo(labelsFingerprint(obj.GetLabels()))
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *ImagesV1) SetLabels(ctx context.Context, req *pb.SetLabelsImageRequest) (*pb.Operation, error) {
@@ -123,16 +190,36 @@ func (s *ImagesV1) SetLabels(ctx context.Context, req *pb.SetLabelsImageRequest)
 	fqn := name.String()
 	obj := &pb.Image{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
+	if s.pendingLabels == nil {
+		s.pendingLabels = make(map[string]*pb.Image)
+	}
+	s.pendingLabels[fqn] = proto.Clone(obj).(*pb.Image)
+
 	obj.Labels = req.GetGlobalSetLabelsRequestResource().GetLabels()
+	obj.LabelFingerprint = PtrTo(labelsFingerprint(obj.GetLabels()))
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setLabels"),
+		User:          PtrTo("user@example.com"),
+		Status:        PtrTo(pb.Operation_DONE),
+		Progress:      PtrTo(int32(100)),
+		EndTime:       PtrTo(s.nowString()),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *ImagesV1) Delete(ctx context.Context, req *pb.DeleteImageRequest) (*pb.Operation, error) {
@@ -145,10 +232,21 @@ func (s *ImagesV1) Delete(ctx context.Context, req *pb.DeleteImageRequest) (*pb.
 
 	deleted := &pb.Image{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type ImageName struct {

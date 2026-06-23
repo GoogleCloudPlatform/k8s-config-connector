@@ -9,6 +9,7 @@
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the_license.
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
@@ -98,16 +99,15 @@ func PrivateCACertificateTemplateFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".predefined_values.additional_extensions.critical")
 	f.SpecField(".predefined_values.additional_extensions.value")
 
-	// Status fields
-	f.StatusField(".create_time")
-	f.StatusField(".update_time")
-
 	// Identity/unimplemented fields
 	f.Unimplemented_Identity(".name")
 
 	f.Unimplemented_NotYetTriaged(".maximum_lifetime")
 	f.Unimplemented_NotYetTriaged(".predefined_values.name_constraints")
 	f.Unimplemented_NotYetTriaged(".labels")
+
+	f.Unimplemented_NotYetTriaged(".create_time")
+	f.Unimplemented_NotYetTriaged(".update_time")
 
 	return f
 }

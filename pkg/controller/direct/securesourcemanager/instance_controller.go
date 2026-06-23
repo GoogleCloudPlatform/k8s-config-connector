@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"strings"
 
-	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -85,12 +84,10 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 		obj.Spec.KMSKeyRef = kmsKeyRef
 	}
 
-	if obj.Spec.PrivateConfig != nil {
-		caPoolRef, err := privatecav1beta1.ResolvePrivateCACAPoolRef(ctx, reader, u, obj.Spec.PrivateConfig.CAPoolRef)
-		if err != nil {
+	if obj.Spec.PrivateConfig != nil && obj.Spec.PrivateConfig.CAPoolRef != nil {
+		if err := obj.Spec.PrivateConfig.CAPoolRef.Normalize(ctx, reader, u.GetNamespace()); err != nil {
 			return nil, err
 		}
-		obj.Spec.PrivateConfig.CAPoolRef = caPoolRef
 	}
 	mapCtx := &direct.MapContext{}
 	desired := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)

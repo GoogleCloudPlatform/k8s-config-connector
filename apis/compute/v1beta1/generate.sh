@@ -47,6 +47,7 @@ go run . generate-types \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
+  --resource ComputeURLMap:UrlMap \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 

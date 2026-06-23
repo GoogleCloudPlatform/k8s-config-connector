@@ -1093,6 +1093,10 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".response.uid"] = "111111111111111111111"
 	visitor.replacePaths[".response.startTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".response.endTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".labelFingerprint"] = "abcdef0123A="
+	visitor.replacePaths[".items[].labelFingerprint"] = "abcdef0123A="
+	visitor.replacePaths[".gatewayAddress"] = "10.0.0.1"
+	visitor.replacePaths[".items[].gatewayAddress"] = "10.0.0.1"
 
 	// Misc Operations
 	visitor.replacePaths[".insertTime"] = mockgcpregistry.PlaceholderTimestamp
@@ -1126,10 +1130,31 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		event.Request.URL = normalizeEtagsInURL(event.Request.URL)
 	}
 
+	normalizeComputeSelfLink := func(u string) string {
+		u = rewriteComputeURL(u)
+		for _, prefix := range []string{
+			"https://compute.googleapis.com/compute/v1/",
+			"https://compute.googleapis.com/compute/beta/",
+			"https://www.googleapis.com/compute/v1/",
+			"https://www.googleapis.com/compute/beta/",
+		} {
+			if strings.HasPrefix(u, prefix) {
+				return strings.TrimPrefix(u, prefix)
+			}
+		}
+		return u
+	}
+
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if s == "${healthCheckID}" {
+			return "${httpHealthCheckID}"
+		}
 		switch path {
-		case ".network", ".region", ".selfLink", ".selfLinkWithId", ".sourceImage", ".subnetworks[]", ".target", ".targetLink", ".zone":
+		case ".network", ".region", ".selfLink", ".selfLinkWithId", ".sourceImage", ".subnetwork", ".subnetworks[]", ".target", ".targetLink", ".zone":
 			return rewriteComputeURL(s)
+		}
+		if strings.HasSuffix(path, ".type") || path == ".sourceDisk" || strings.HasSuffix(path, ".sourceDisk") {
+			return normalizeComputeSelfLink(s)
 		}
 		return s
 	})
@@ -1286,6 +1311,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+		if strings.Contains(requestURL, "/backendServices") {
+			removeKeysFromMap(obj, []string{"routingConfig", "enableCDN", "subnetworks"})
+		}
 		// Deprecated: try to move these into mockgcp normalizers
 		if err := visitor.visitMap(obj, ""); err != nil {
 			t.Fatalf("error normalizing response: %v", err)
@@ -1355,4 +1383,19 @@ func isGetOperation(e *test.LogEntry) bool {
 		return true
 	}
 	return false
+}
+
+func removeKeysFromMap(obj any, keys []string) {
+	if m, ok := obj.(map[string]any); ok {
+		for _, key := range keys {
+			delete(m, key)
+		}
+		for _, val := range m {
+			removeKeysFromMap(val, keys)
+		}
+	} else if arr, ok := obj.([]any); ok {
+		for _, val := range arr {
+			removeKeysFromMap(val, keys)
+		}
+	}
 }

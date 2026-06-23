@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeDisk
   name: computedisk-${uniqueId}

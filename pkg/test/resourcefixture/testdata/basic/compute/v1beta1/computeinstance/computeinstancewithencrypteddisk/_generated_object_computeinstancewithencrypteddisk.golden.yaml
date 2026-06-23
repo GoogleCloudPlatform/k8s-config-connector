@@ -4,17 +4,15 @@ metadata:
   annotations:
     cnrm.cloud.google.com/allow-stopping-for-update: "true"
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     env: prod
-  name: computeinstance-${uniqueId}
+  name: ${instanceID}
   namespace: ${uniqueId}
 spec:
   bootDisk:
@@ -22,13 +20,12 @@ spec:
     diskEncryptionKeyRaw:
       value: SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=
     sourceDiskRef:
-      name: computedisk-${uniqueId}
+      name: ${diskID}
   description: an basic instance example
   machineType: n1-standard-2
   networkInterface:
   - networkRef:
       name: default
-  resourceID: computeinstance-${uniqueId}
   scheduling:
     automaticRestart: false
     onHostMaintenance: TERMINATE
@@ -41,8 +38,8 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  currentStatus: TERMINATED
+  currentStatus: RUNNING
   instanceId: "1111111111111111"
   labelFingerprint: abcdef0123A=
-  observedGeneration: 3
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}
+  observedGeneration: 2
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}

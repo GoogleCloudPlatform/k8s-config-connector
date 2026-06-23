@@ -19,7 +19,7 @@
 package v1alpha1
 
 import (
-	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -50,7 +50,7 @@ func (in *CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthor
 	*out = *in
 	if in.CAPoolRef != nil {
 		in, out := &in.CAPoolRef, &out.CAPoolRef
-		*out = new(privatecav1beta1.PrivateCACAPoolRef)
+		*out = new(privatecarefs.PrivateCACAPoolRef)
 		**out = **in
 	}
 }

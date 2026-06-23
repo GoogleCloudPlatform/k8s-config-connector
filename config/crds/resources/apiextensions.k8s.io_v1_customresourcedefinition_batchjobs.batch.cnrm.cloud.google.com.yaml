@@ -188,7 +188,8 @@ spec:
                                     external:
                                       description: A reference to an externally managed
                                         ComputeImage resource. Should be in the format
-                                        "projects/{{project}}/global/images/{{name}}".
+                                        "projects/{{project}}/global/images/{{name}}"
+                                        or "projects/{{project}}/global/images/family/{{family}}".
                                       type: string
                                     name:
                                       description: The name of a ComputeImage resource.
@@ -293,7 +294,8 @@ spec:
                                           external:
                                             description: A reference to an externally
                                               managed ComputeImage resource. Should
-                                              be in the format "projects/{{project}}/global/images/{{name}}".
+                                              be in the format "projects/{{project}}/global/images/{{name}}"
+                                              or "projects/{{project}}/global/images/family/{{family}}".
                                             type: string
                                           name:
                                             description: The name of a ComputeImage

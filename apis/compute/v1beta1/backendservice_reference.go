@@ -75,9 +75,25 @@ func (r *ComputeBackendServiceRef) NormalizedExternal(ctx context.Context, reade
 	// See compute servicemappings for details
 	// todo(yuhou): use externalRef for resource that managed by direct controller
 	selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
-	if err != nil || selfLink == "" {
-		return "", fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", u.GetKind(), u.GetNamespace())
+	if err == nil && selfLink != "" {
+		r.External = selfLink
+		return r.External, nil
 	}
-	r.External = selfLink
+
+	// Fallback to manual construction of the selfLink (e.g. for offline CAIS powertools tests)
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+	if err != nil {
+		return "", fmt.Errorf("cannot resolve project ID for referenced %s %v: %w", u.GetKind(), key, err)
+	}
+	location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+	if location == "" {
+		location = "global"
+	}
+	name := u.GetName()
+	if location == "global" {
+		r.External = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/backendServices/%s", projectID, name)
+	} else {
+		r.External = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/backendServices/%s", projectID, location, name)
+	}
 	return r.External, nil
 }

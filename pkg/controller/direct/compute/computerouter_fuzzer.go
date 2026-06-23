@@ -33,10 +33,24 @@ func computeRouterFuzzer() fuzztesting.KRMFuzzer {
 		ComputeRouterStatus_v1beta1_FromProto, ComputeRouterStatus_v1beta1_ToProto,
 	)
 
-	// Spec fields
+	// Spec fields mapping:
+	// - bgp                                -> .bgp
+	//   - advertiseMode                    -> .bgp.advertise_mode
+	//   - advertisedGroups                 -> .bgp.advertised_groups
+	//   - advertisedIpRanges               -> .bgp.advertised_ip_ranges
+	//     - description                    -> .bgp.advertised_ip_ranges[].description
+	//     - range                          -> .bgp.advertised_ip_ranges[].range
+	//   - asn                              -> .bgp.asn
+	//   - keepaliveInterval                -> .bgp.keepalive_interval
+	// - description                        -> .description
+	// - encryptedInterconnectRouter        -> .encrypted_interconnect_router
+	// - networkRef                         -> .network
+	// - region                             -> .region
 	f.SpecField(".bgp.advertise_mode")
 	f.SpecField(".bgp.advertised_groups")
 	f.SpecField(".bgp.advertised_ip_ranges")
+	f.SpecField(".bgp.advertised_ip_ranges[].description")
+	f.SpecField(".bgp.advertised_ip_ranges[].range")
 	f.SpecField(".bgp.asn")
 	f.SpecField(".bgp.keepalive_interval")
 	f.SpecField(".description")
@@ -44,7 +58,9 @@ func computeRouterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".network")
 	f.SpecField(".region")
 
-	// Status fields
+	// Status fields mapping:
+	// - creationTimestamp                 -> .creation_timestamp
+	// - selfLink                          -> .self_link
 	f.StatusField(".creation_timestamp")
 	f.StatusField(".self_link")
 

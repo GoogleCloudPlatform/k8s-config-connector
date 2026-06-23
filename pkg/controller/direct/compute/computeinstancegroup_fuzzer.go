@@ -33,6 +33,20 @@ func computeInstanceGroupFuzzer() fuzztesting.KRMFuzzer {
 		ComputeInstanceGroupStatus_v1beta1_FromProto, ComputeInstanceGroupStatus_v1beta1_ToProto,
 	)
 
+	// Field comparison: ComputeInstanceGroupSpec vs pb.InstanceGroup Proto
+	// - Spec.Description                 maps to proto field .description
+	// - Spec.Instances                   not represented in pb.InstanceGroup (managed separately)
+	// - Spec.NamedPorts                  maps to proto field .named_ports
+	// - Spec.NetworkRef                  maps to proto field .network
+	// - Spec.ResourceID                  maps to proto field .name (via Identity)
+	// - Spec.Zone                        maps to proto field .zone
+
+	// Field comparison: ComputeInstanceGroupStatus vs pb.InstanceGroup Proto
+	// - Status.Conditions                not represented in pb.InstanceGroup
+	// - Status.ObservedGeneration        not represented in pb.InstanceGroup
+	// - Status.SelfLink                  maps to proto field .self_link
+	// - Status.Size                      maps to proto field .size
+
 	// Spec fields
 	f.SpecField(".description")
 	f.SpecField(".named_ports")

@@ -94,6 +94,11 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "",
   "fingerprint": "abcdef0123A=",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
   "id": "000000000000000000000",
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL",
@@ -124,6 +129,11 @@ Content-Type: application/json
   "customResponseHeaders": [],
   "description": "updated description",
   "fingerprint": "abcdef0123A=",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
   "id": "000000000000000000000",
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL",
@@ -219,6 +229,11 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "updated description",
   "fingerprint": "abcdef0123A=",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
   "id": "000000000000000000000",
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL",

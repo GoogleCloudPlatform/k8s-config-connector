@@ -55,10 +55,10 @@ type BackendservicesignedurlkeyValueFrom struct {
 }
 
 type ComputeBackendServiceSignedURLKeySpec struct {
+	/* ComputeBackendServiceRef is a reference to a ComputeBackendService. */
 	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef"`
 
-	/* Immutable. 128-bit key value used for signing the URL. The key value must be a
-	valid RFC 4648 Section 5 base64url encoded string. */
+	/* Immutable. 128-bit key value used for signing the URL. The key value must be a valid RFC 4648 Section 5 base64url encoded string. */
 	KeyValue BackendservicesignedurlkeyKeyValue `json:"keyValue"`
 
 	/* The project that this resource belongs to. */

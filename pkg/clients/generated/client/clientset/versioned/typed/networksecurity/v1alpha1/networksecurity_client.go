@@ -33,6 +33,7 @@ type NetworksecurityV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	NetworkSecurityAddressGroupsGetter
 	NetworkSecurityBackendAuthenticationConfigsGetter
+	NetworkSecurityFirewallEndpointAssociationsGetter
 	NetworkSecurityInterceptDeploymentsGetter
 	NetworkSecurityInterceptEndpointGroupsGetter
 	NetworkSecurityMirroringDeploymentsGetter
@@ -53,6 +54,10 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecurityAddressGroups(namespace s
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityBackendAuthenticationConfigs(namespace string) NetworkSecurityBackendAuthenticationConfigInterface {
 	return newNetworkSecurityBackendAuthenticationConfigs(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityFirewallEndpointAssociations(namespace string) NetworkSecurityFirewallEndpointAssociationInterface {
+	return newNetworkSecurityFirewallEndpointAssociations(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptDeployments(namespace string) NetworkSecurityInterceptDeploymentInterface {

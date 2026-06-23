@@ -52,9 +52,7 @@ type AutoscalerAutoscalingPolicy struct {
 	// +optional
 	CooldownPeriod *int64 `json:"cooldownPeriod,omitempty"`
 
-	/* Defines the CPU utilization policy that allows the autoscaler to
-	scale based on the average CPU utilization of a managed instance
-	group. */
+	/* Defines the CPU utilization policy that allows the autoscaler to scale based on the average CPU utilization of a managed instance group. */
 	// +optional
 	CpuUtilization *AutoscalerCpuUtilization `json:"cpuUtilization,omitempty"`
 
@@ -62,33 +60,25 @@ type AutoscalerAutoscalingPolicy struct {
 	// +optional
 	LoadBalancingUtilization *AutoscalerLoadBalancingUtilization `json:"loadBalancingUtilization,omitempty"`
 
-	/* The maximum number of instances that the autoscaler can scale up
-	to. This is required when creating or updating an autoscaler. The
-	maximum number of replicas should not be lower than minimal number
-	of replicas. */
+	/* The maximum number of instances that the autoscaler can scale up to. This is required when creating or updating an autoscaler. The maximum number of replicas should not be lower than minimal number of replicas. */
 	MaxReplicas int64 `json:"maxReplicas"`
 
 	/* Configuration parameters of autoscaling based on a custom metric. */
 	// +optional
 	Metric []AutoscalerMetric `json:"metric,omitempty"`
 
-	/* The minimum number of replicas that the autoscaler can scale down
-	to. This cannot be less than 0. If not provided, autoscaler will
-	choose a default value depending on maximum number of instances
-	allowed. */
+	/* The minimum number of replicas that the autoscaler can scale down to. This cannot be less than 0. If not provided, autoscaler will choose a default value depending on maximum number of instances allowed. */
 	MinReplicas int64 `json:"minReplicas"`
 
 	/* Defines operating mode for this policy. */
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
-	/* Defines scale down controls to reduce the risk of response latency
-	and outages due to abrupt scale-in events. */
+	/* Defines scale down controls to reduce the risk of response latency and outages due to abrupt scale-in events. */
 	// +optional
 	ScaleDownControl *AutoscalerScaleDownControl `json:"scaleDownControl,omitempty"`
 
-	/* Defines scale in controls to reduce the risk of response latency
-	and outages due to abrupt scale-in events. */
+	/* Defines scale in controls to reduce the risk of response latency and outages due to abrupt scale-in events. */
 	// +optional
 	ScaleInControl *AutoscalerScaleInControl `json:"scaleInControl,omitempty"`
 
@@ -123,32 +113,26 @@ type AutoscalerCpuUtilization struct {
 }
 
 type AutoscalerLoadBalancingUtilization struct {
-	/* Fraction of backend capacity utilization (set in HTTP(s) load
-	balancing configuration) that autoscaler should maintain. Must
-	be a positive float value. If not defined, the default is 0.8. */
+	/* Fraction of backend capacity utilization (set in HTTP(s) load balancing configuration) that autoscaler should maintain. Must be a positive float value. If not defined, the default is 0.8. */
 	Target float64 `json:"target"`
 }
 
 type AutoscalerMaxScaledDownReplicas struct {
-	/* Specifies a fixed number of VM instances. This must be a positive
-	integer. */
+	/* Specifies a fixed number of VM instances. This must be a positive integer. */
 	// +optional
 	Fixed *int64 `json:"fixed,omitempty"`
 
-	/* Specifies a percentage of instances between 0 to 100%, inclusive.
-	For example, specify 80 for 80%. */
+	/* Specifies a percentage of instances between 0 to 100%, inclusive. For example, specify 80 for 80%. */
 	// +optional
 	Percent *int64 `json:"percent,omitempty"`
 }
 
 type AutoscalerMaxScaledInReplicas struct {
-	/* Specifies a fixed number of VM instances. This must be a positive
-	integer. */
+	/* Specifies a fixed number of VM instances. This must be a positive integer. */
 	// +optional
 	Fixed *int64 `json:"fixed,omitempty"`
 
-	/* Specifies a percentage of instances between 0 to 100%, inclusive.
-	For example, specify 80 for 80%. */
+	/* Specifies a percentage of instances between 0 to 100%, inclusive. For example, specify 80 for 80%. */
 	// +optional
 	Percent *int64 `json:"percent,omitempty"`
 }
@@ -226,8 +210,7 @@ type AutoscalerMetric struct {
 	// +optional
 	Target *float64 `json:"target,omitempty"`
 
-	/* Defines how target utilization value is expressed for a
-	Stackdriver Monitoring metric. Possible values: ["GAUGE", "DELTA_PER_SECOND", "DELTA_PER_MINUTE"]. */
+	/* Defines how target utilization value is expressed for a Stackdriver Monitoring metric. Possible values: ["GAUGE", "DELTA_PER_SECOND", "DELTA_PER_MINUTE"]. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }
@@ -237,8 +220,7 @@ type AutoscalerScaleDownControl struct {
 	// +optional
 	MaxScaledDownReplicas *AutoscalerMaxScaledDownReplicas `json:"maxScaledDownReplicas,omitempty"`
 
-	/* How long back autoscaling should look when computing recommendations
-	to include directives regarding slower scale down, as described above. */
+	/* How long back autoscaling should look when computing recommendations to include directives regarding slower scale down, as described above. */
 	// +optional
 	TimeWindowSec *int64 `json:"timeWindowSec,omitempty"`
 }
@@ -248,8 +230,7 @@ type AutoscalerScaleInControl struct {
 	// +optional
 	MaxScaledInReplicas *AutoscalerMaxScaledInReplicas `json:"maxScaledInReplicas,omitempty"`
 
-	/* How long back autoscaling should look when computing recommendations
-	to include directives regarding slower scale down, as described above. */
+	/* How long back autoscaling should look when computing recommendations to include directives regarding slower scale down, as described above. */
 	// +optional
 	TimeWindowSec *int64 `json:"timeWindowSec,omitempty"`
 }

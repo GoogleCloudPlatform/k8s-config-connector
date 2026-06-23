@@ -240,4 +240,5 @@ func init() {
 	Handler.Register(GetIAMCustomRoleResourceOverrides())
 
 	Handler.Register(GetCloudIDSEndpointResourceOverrides())
+	Handler.Register(GetPrivateCACAPoolResourceOverrides())
 }

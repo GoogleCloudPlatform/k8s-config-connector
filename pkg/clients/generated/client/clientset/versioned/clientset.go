@@ -41,6 +41,7 @@ import (
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1"
 	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1alpha1"
 	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1beta1"
+	appoptimizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appoptimize/v1alpha1"
 	artifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1alpha1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
 	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/asset/v1beta1"
@@ -91,6 +92,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1"
+	connectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/connectors/v1alpha1"
 	contactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contactcenterinsights/v1alpha1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1"
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1alpha1"
@@ -204,6 +206,7 @@ import (
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1beta1"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
+	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vectorsearch/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
@@ -235,6 +238,7 @@ type Interface interface {
 	AppengineV1alpha1() appenginev1alpha1.AppengineV1alpha1Interface
 	ApphubV1alpha1() apphubv1alpha1.ApphubV1alpha1Interface
 	ApphubV1beta1() apphubv1beta1.ApphubV1beta1Interface
+	AppoptimizeV1alpha1() appoptimizev1alpha1.AppoptimizeV1alpha1Interface
 	ArtifactregistryV1alpha1() artifactregistryv1alpha1.ArtifactregistryV1alpha1Interface
 	ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface
 	AssetV1beta1() assetv1beta1.AssetV1beta1Interface
@@ -285,6 +289,7 @@ type Interface interface {
 	ComputeV1beta1() computev1beta1.ComputeV1beta1Interface
 	ConfigcontrollerV1beta1() configcontrollerv1beta1.ConfigcontrollerV1beta1Interface
 	ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface
+	ConnectorsV1alpha1() connectorsv1alpha1.ConnectorsV1alpha1Interface
 	ContactcenterinsightsV1alpha1() contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Interface
 	ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface
 	ContaineranalysisV1alpha1() containeranalysisv1alpha1.ContaineranalysisV1alpha1Interface
@@ -398,6 +403,7 @@ type Interface interface {
 	StoragetransferV1beta1() storagetransferv1beta1.StoragetransferV1beta1Interface
 	TagsV1beta1() tagsv1beta1.TagsV1beta1Interface
 	TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface
+	VectorsearchV1alpha1() vectorsearchv1alpha1.VectorsearchV1alpha1Interface
 	VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interface
 	VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface
 	VmwareengineV1alpha1() vmwareenginev1alpha1.VmwareengineV1alpha1Interface
@@ -427,6 +433,7 @@ type Clientset struct {
 	appengineV1alpha1               *appenginev1alpha1.AppengineV1alpha1Client
 	apphubV1alpha1                  *apphubv1alpha1.ApphubV1alpha1Client
 	apphubV1beta1                   *apphubv1beta1.ApphubV1beta1Client
+	appoptimizeV1alpha1             *appoptimizev1alpha1.AppoptimizeV1alpha1Client
 	artifactregistryV1alpha1        *artifactregistryv1alpha1.ArtifactregistryV1alpha1Client
 	artifactregistryV1beta1         *artifactregistryv1beta1.ArtifactregistryV1beta1Client
 	assetV1beta1                    *assetv1beta1.AssetV1beta1Client
@@ -477,6 +484,7 @@ type Clientset struct {
 	computeV1beta1                  *computev1beta1.ComputeV1beta1Client
 	configcontrollerV1beta1         *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
 	configdeliveryV1alpha1          *configdeliveryv1alpha1.ConfigdeliveryV1alpha1Client
+	connectorsV1alpha1              *connectorsv1alpha1.ConnectorsV1alpha1Client
 	contactcenterinsightsV1alpha1   *contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Client
 	containerV1beta1                *containerv1beta1.ContainerV1beta1Client
 	containeranalysisV1alpha1       *containeranalysisv1alpha1.ContaineranalysisV1alpha1Client
@@ -590,6 +598,7 @@ type Clientset struct {
 	storagetransferV1beta1          *storagetransferv1beta1.StoragetransferV1beta1Client
 	tagsV1beta1                     *tagsv1beta1.TagsV1beta1Client
 	tpuV1alpha1                     *tpuv1alpha1.TpuV1alpha1Client
+	vectorsearchV1alpha1            *vectorsearchv1alpha1.VectorsearchV1alpha1Client
 	vertexaiV1alpha1                *vertexaiv1alpha1.VertexaiV1alpha1Client
 	vertexaiV1beta1                 *vertexaiv1beta1.VertexaiV1beta1Client
 	vmwareengineV1alpha1            *vmwareenginev1alpha1.VmwareengineV1alpha1Client
@@ -678,6 +687,11 @@ func (c *Clientset) ApphubV1alpha1() apphubv1alpha1.ApphubV1alpha1Interface {
 // ApphubV1beta1 retrieves the ApphubV1beta1Client
 func (c *Clientset) ApphubV1beta1() apphubv1beta1.ApphubV1beta1Interface {
 	return c.apphubV1beta1
+}
+
+// AppoptimizeV1alpha1 retrieves the AppoptimizeV1alpha1Client
+func (c *Clientset) AppoptimizeV1alpha1() appoptimizev1alpha1.AppoptimizeV1alpha1Interface {
+	return c.appoptimizeV1alpha1
 }
 
 // ArtifactregistryV1alpha1 retrieves the ArtifactregistryV1alpha1Client
@@ -928,6 +942,11 @@ func (c *Clientset) ConfigcontrollerV1beta1() configcontrollerv1beta1.Configcont
 // ConfigdeliveryV1alpha1 retrieves the ConfigdeliveryV1alpha1Client
 func (c *Clientset) ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface {
 	return c.configdeliveryV1alpha1
+}
+
+// ConnectorsV1alpha1 retrieves the ConnectorsV1alpha1Client
+func (c *Clientset) ConnectorsV1alpha1() connectorsv1alpha1.ConnectorsV1alpha1Interface {
+	return c.connectorsV1alpha1
 }
 
 // ContactcenterinsightsV1alpha1 retrieves the ContactcenterinsightsV1alpha1Client
@@ -1495,6 +1514,11 @@ func (c *Clientset) TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface {
 	return c.tpuV1alpha1
 }
 
+// VectorsearchV1alpha1 retrieves the VectorsearchV1alpha1Client
+func (c *Clientset) VectorsearchV1alpha1() vectorsearchv1alpha1.VectorsearchV1alpha1Interface {
+	return c.vectorsearchV1alpha1
+}
+
 // VertexaiV1alpha1 retrieves the VertexaiV1alpha1Client
 func (c *Clientset) VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interface {
 	return c.vertexaiV1alpha1
@@ -1640,6 +1664,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.apphubV1beta1, err = apphubv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.appoptimizeV1alpha1, err = appoptimizev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1840,6 +1868,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.configdeliveryV1alpha1, err = configdeliveryv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.connectorsV1alpha1, err = connectorsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2295,6 +2327,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.vectorsearchV1alpha1, err = vectorsearchv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.vertexaiV1alpha1, err = vertexaiv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2364,6 +2400,7 @@ func New(c rest.Interface) *Clientset {
 	cs.appengineV1alpha1 = appenginev1alpha1.New(c)
 	cs.apphubV1alpha1 = apphubv1alpha1.New(c)
 	cs.apphubV1beta1 = apphubv1beta1.New(c)
+	cs.appoptimizeV1alpha1 = appoptimizev1alpha1.New(c)
 	cs.artifactregistryV1alpha1 = artifactregistryv1alpha1.New(c)
 	cs.artifactregistryV1beta1 = artifactregistryv1beta1.New(c)
 	cs.assetV1beta1 = assetv1beta1.New(c)
@@ -2414,6 +2451,7 @@ func New(c rest.Interface) *Clientset {
 	cs.computeV1beta1 = computev1beta1.New(c)
 	cs.configcontrollerV1beta1 = configcontrollerv1beta1.New(c)
 	cs.configdeliveryV1alpha1 = configdeliveryv1alpha1.New(c)
+	cs.connectorsV1alpha1 = connectorsv1alpha1.New(c)
 	cs.contactcenterinsightsV1alpha1 = contactcenterinsightsv1alpha1.New(c)
 	cs.containerV1beta1 = containerv1beta1.New(c)
 	cs.containeranalysisV1alpha1 = containeranalysisv1alpha1.New(c)
@@ -2527,6 +2565,7 @@ func New(c rest.Interface) *Clientset {
 	cs.storagetransferV1beta1 = storagetransferv1beta1.New(c)
 	cs.tagsV1beta1 = tagsv1beta1.New(c)
 	cs.tpuV1alpha1 = tpuv1alpha1.New(c)
+	cs.vectorsearchV1alpha1 = vectorsearchv1alpha1.New(c)
 	cs.vertexaiV1alpha1 = vertexaiv1alpha1.New(c)
 	cs.vertexaiV1beta1 = vertexaiv1beta1.New(c)
 	cs.vmwareengineV1alpha1 = vmwareenginev1alpha1.New(c)
