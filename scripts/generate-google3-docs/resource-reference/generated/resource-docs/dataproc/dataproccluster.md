@@ -145,7 +145,6 @@ config:
     accelerators:
     - acceleratorCount: integer
       acceleratorType: string
-      gpuPartitionSize: string
     diskConfig:
       bootDiskSizeGb: integer
       bootDiskType: string
@@ -168,7 +167,6 @@ config:
     accelerators:
     - acceleratorCount: integer
       acceleratorType: string
-      gpuPartitionSize: string
     diskConfig:
       bootDiskSizeGb: integer
       bootDiskType: string
@@ -223,7 +221,6 @@ config:
     accelerators:
     - acceleratorCount: integer
       acceleratorType: string
-      gpuPartitionSize: string
     diskConfig:
       bootDiskSizeGb: integer
       bootDiskType: string
@@ -240,7 +237,6 @@ config:
 location: string
 projectRef:
   external: string
-  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -272,10 +268,7 @@ virtualClusterConfig:
             - acceleratorCount: integer
               acceleratorType: string
               gpuPartitionSize: string
-            bootDiskKMSKeyRef:
-              external: string
-              name: string
-              namespace: string
+            bootDiskKmsKey: string
             ephemeralStorageConfig:
               localSsdCount: integer
             localSsdCount: integer
@@ -1002,16 +995,6 @@ virtualClusterConfig:
     </tr>
     <tr>
         <td>
-            <p><code>config.masterConfig.accelerators[].gpuPartitionSize</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
             <p><code>config.masterConfig.diskConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1238,16 +1221,6 @@ virtualClusterConfig:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. The accelerator type resource namename (see GPUs on Compute Engine).</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>config.secondaryWorkerConfig.accelerators[].gpuPartitionSize</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).</p>
         </td>
     </tr>
     <tr>
@@ -1782,16 +1755,6 @@ virtualClusterConfig:
     </tr>
     <tr>
         <td>
-            <p><code>config.workerConfig.accelerators[].gpuPartitionSize</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
             <p><code>config.workerConfig.diskConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1923,7 +1886,7 @@ virtualClusterConfig:
     <tr>
         <td>
             <p><code>location</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -1948,16 +1911,6 @@ virtualClusterConfig:
         <td>
             <p><code class="apitype">string</code></p>
             <p>The `projectID` field of a project, when not managed by Config Connector.</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>projectRef.kind</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
         </td>
     </tr>
     <tr>
@@ -2292,42 +2245,12 @@ virtualClusterConfig:
     </tr>
     <tr>
         <td>
-            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKMSKeyRef</code></p>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKmsKey</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">object</code></p>
+            <p><code class="apitype">string</code></p>
             <p>Immutable. Optional. The [Customer Managed Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek) used to encrypt the boot disk attached to each node in the node pool.</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKMSKeyRef.external</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKMSKeyRef.name</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>The `name` of a `KMSCryptoKey` resource.</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKMSKeyRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>

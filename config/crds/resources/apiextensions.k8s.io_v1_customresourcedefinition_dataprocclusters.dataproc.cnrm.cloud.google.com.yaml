@@ -470,11 +470,6 @@ spec:
                               description: Immutable. The accelerator type resource
                                 namename (see GPUs on Compute Engine).
                               type: string
-                            gpuPartitionSize:
-                              description: Immutable. Size of partitions to create
-                                on the GPU. Valid values are described in the NVIDIA
-                                [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).
-                              type: string
                           type: object
                         type: array
                       diskConfig:
@@ -621,11 +616,6 @@ spec:
                             acceleratorType:
                               description: Immutable. The accelerator type resource
                                 namename (see GPUs on Compute Engine).
-                              type: string
-                            gpuPartitionSize:
-                              description: Immutable. Size of partitions to create
-                                on the GPU. Valid values are described in the NVIDIA
-                                [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).
                               type: string
                           type: object
                         type: array
@@ -949,11 +939,6 @@ spec:
                               description: Immutable. The accelerator type resource
                                 namename (see GPUs on Compute Engine).
                               type: string
-                            gpuPartitionSize:
-                              description: Immutable. Size of partitions to create
-                                on the GPU. Valid values are described in the NVIDIA
-                                [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).
-                              type: string
                           type: object
                         type: array
                       diskConfig:
@@ -1073,10 +1058,6 @@ spec:
                   external:
                     description: The `projectID` field of a project, when not managed
                       by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
                     type: string
                   name:
                     description: The `name` field of a `Project` resource.
@@ -1289,40 +1270,12 @@ spec:
                                                 type: string
                                             type: object
                                           type: array
-                                        bootDiskKMSKeyRef:
+                                        bootDiskKmsKey:
                                           description: Immutable. Optional. The [Customer
                                             Managed Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek)
                                             used to encrypt the boot disk attached
                                             to each node in the node pool.
-                                          oneOf:
-                                          - not:
-                                              required:
-                                              - external
-                                            required:
-                                            - name
-                                          - not:
-                                              anyOf:
-                                              - required:
-                                                - name
-                                              - required:
-                                                - namespace
-                                            required:
-                                            - external
-                                          properties:
-                                            external:
-                                              description: A reference to an externally
-                                                managed KMSCryptoKey. Should be in
-                                                the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
-                                              type: string
-                                            name:
-                                              description: The `name` of a `KMSCryptoKey`
-                                                resource.
-                                              type: string
-                                            namespace:
-                                              description: The `namespace` of a `KMSCryptoKey`
-                                                resource.
-                                              type: string
-                                          type: object
+                                          type: string
                                         ephemeralStorageConfig:
                                           description: Immutable. Optional. Parameters
                                             for the ephemeral storage filesystem.
@@ -1793,6 +1746,8 @@ spec:
                   type: object
                 type: array
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true

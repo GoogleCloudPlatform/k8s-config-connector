@@ -19,6 +19,7 @@ import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
@@ -29,6 +30,16 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ClusterAccelerators struct {
+	/* Immutable. The number of accelerator cards exposed to an instance. */
+	// +optional
+	AcceleratorCount *int64 `json:"acceleratorCount,omitempty"`
+
+	/* Immutable. The accelerator type resource namename (see GPUs on Compute Engine). */
+	// +optional
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+}
+
+type ClusterGkeNodePoolAccelerators struct {
 	/* Immutable. The number of accelerator cards exposed to an instance. */
 	// +optional
 	AcceleratorCount *int64 `json:"acceleratorCount,omitempty"`
@@ -77,11 +88,11 @@ type ClusterConfidentialInstanceConfig struct {
 type ClusterGkeNodeConfig struct {
 	/* Immutable. Optional. A list of [hardware accelerators](https://cloud.google.com/compute/docs/gpus) to attach to each node. */
 	// +optional
-	Accelerators []ClusterAccelerators `json:"accelerators,omitempty"`
+	Accelerators []ClusterGkeNodePoolAccelerators `json:"accelerators,omitempty"`
 
 	/* Immutable. Optional. The [Customer Managed Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek) used to encrypt the boot disk attached to each node in the node pool. */
 	// +optional
-	BootDiskKMSKeyRef *refs.KMSCryptoKeyRef `json:"bootDiskKMSKeyRef,omitempty"`
+	BootDiskKmsKey *string `json:"bootDiskKmsKey,omitempty"`
 
 	/* Immutable. Optional. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk. */
 	// +optional
@@ -543,7 +554,7 @@ type DataprocClusterSpec struct {
 
 	/* Immutable. The Project that this resource belongs to. */
 	// +optional
-	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
+	ProjectRef *parent.ProjectRef `json:"projectRef,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -823,7 +834,8 @@ type DataprocCluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DataprocClusterSpec   `json:"spec,omitempty"`
+	// +required
+	Spec   DataprocClusterSpec   `json:"spec"`
 	Status DataprocClusterStatus `json:"status,omitempty"`
 }
 
