@@ -87,6 +87,7 @@ X-Xss-Protection: 0
   "description": "a sample regional disk",
   "id": "000000000000000000000",
   "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
