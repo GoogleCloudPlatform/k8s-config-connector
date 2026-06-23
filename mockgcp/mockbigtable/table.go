@@ -159,11 +159,26 @@ func (s *tableAdminServer) ModifyColumnFamilies(ctx context.Context, req *pb.Mod
 			delete(obj.ColumnFamilies, id)
 		case *pb.ModifyColumnFamiliesRequest_Modification_Update:
 			// Fail if does not exist
-			_, exists := obj.ColumnFamilies[id]
+			existing, exists := obj.ColumnFamilies[id]
 			if !exists {
 				return nil, status.Errorf(codes.NotFound, "column family %q not found", id)
 			}
-			obj.ColumnFamilies[id] = mod.Update
+			updateMask := modReq.GetUpdateMask()
+			if updateMask == nil || len(updateMask.Paths) == 0 {
+				existing.GcRule = mod.Update.GcRule
+			} else {
+				for _, path := range updateMask.Paths {
+					switch path {
+					case "gc_rule", "gcRule":
+						existing.GcRule = mod.Update.GcRule
+					case "value_type", "valueType":
+						existing.ValueType = mod.Update.ValueType
+					default:
+						return nil, status.Errorf(codes.InvalidArgument, "unsupported update_mask path %q", path)
+					}
+				}
+			}
+			obj.ColumnFamilies[id] = existing
 		default:
 			return nil, fmt.Errorf("modified type %T not implemented by mock", mod)
 		}
