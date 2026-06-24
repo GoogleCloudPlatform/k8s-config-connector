@@ -1343,6 +1343,10 @@ type ContainerClusterSpec struct {
 	// +kcc:proto:field=google.container.v1.Cluster.confidential_nodes
 	ConfidentialNodes *ConfidentialNodes `json:"confidentialNodes,omitempty"`
 
+	/* Immutable. The name of the Customer Managed Encryption Key used to encrypt the control plane's boot disk. */
+	// +kcc:proto:field=google.container.v1.Cluster.control_plane_disk_encryption_key
+	ControlPlaneDiskEncryptionKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"controlPlaneDiskEncryptionKeyRef,omitempty"`
+
 	/* Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disable IP endpoint. Other IP endpoint configurations are available in private_cluster_config. */
 	// +kcc:proto:field=google.container.v1.Cluster.control_plane_endpoints_config
 	ControlPlaneEndpointsConfig *ControlPlaneEndpointsConfig `json:"controlPlaneEndpointsConfig,omitempty"`

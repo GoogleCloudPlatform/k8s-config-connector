@@ -481,6 +481,35 @@ spec:
                 required:
                 - enabled
                 type: object
+              controlPlaneDiskEncryptionKeyRef:
+                description: Immutable. The name of the Customer Managed Encryption
+                  Key used to encrypt the control plane's boot disk.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               controlPlaneEndpointsConfig:
                 description: Configuration for all of the cluster's control plane
                   endpoints. Currently supports only DNS endpoint configuration and
