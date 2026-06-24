@@ -1,0 +1,15 @@
+apiVersion: backupdr.cnrm.cloud.google.com/v1beta1
+kind: BackupDRBackupPlanAssociation
+metadata:
+  name: backupdrbackupplanassociation-sqlinstance-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "Initial description"
+  backupPlanRef:
+    name: backupdrbackupplan-sqlinstance-${uniqueId}
+  resourceType: sqladmin.googleapis.com/Instance
+  resource:
+    sqlInstanceRef:
+      name: sqlinstance-minimal-${uniqueId}

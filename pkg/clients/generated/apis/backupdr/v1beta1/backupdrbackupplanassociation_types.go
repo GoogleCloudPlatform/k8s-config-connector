@@ -42,6 +42,9 @@ type BackupplanassociationResource struct {
 	/* InstanceRef is a reference to a ComputeInstance. */
 	// +optional
 	ComputeInstanceRef *v1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
+
+	// +optional
+	SqlInstanceRef *v1alpha1.ResourceRef `json:"sqlInstanceRef,omitempty"`
 }
 
 type BackupDRBackupPlanAssociationSpec struct {

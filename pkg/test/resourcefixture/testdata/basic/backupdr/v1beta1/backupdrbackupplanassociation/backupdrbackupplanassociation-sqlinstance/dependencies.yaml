@@ -1,0 +1,55 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-minimal-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+spec:
+  region: us-central1
+  databaseVersion: MYSQL_5_7
+  instanceType: CLOUD_SQL_INSTANCE
+  settings:
+    diskAutoresize: false
+    diskSize: 10
+    locationPreference:
+      zone: us-central1-b
+    tier: db-n1-standard-1
+---
+apiVersion: backupdr.cnrm.cloud.google.com/v1alpha1
+kind: BackupDRBackupVault
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: backupdrbackupvault-sqlinstance-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "test dependency backup vault"
+  backupMinimumEnforcedRetentionDuration: "100000s"
+  ignoreInactiveDatasources: true
+---
+apiVersion: backupdr.cnrm.cloud.google.com/v1alpha1
+kind: BackupDRBackupPlan
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: backupdrbackupplan-sqlinstance-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "test dependency backup plan"
+  resourceType: "sqladmin.googleapis.com/Instance"
+  backupVaultRef:
+    name: backupdrbackupvault-sqlinstance-${uniqueId}
+  backupRules:
+    - ruleID: rule-1
+      backupRetentionDays: 5
+      standardSchedule:
+        recurrenceType: HOURLY
+        hourlyFrequency: 6
+        timeZone: UTC
+        backupWindow:
+          startHourOfDay: 1
+          endHourOfDay: 23

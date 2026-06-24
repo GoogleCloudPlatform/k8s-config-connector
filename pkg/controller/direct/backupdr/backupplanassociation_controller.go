@@ -272,6 +272,13 @@ func (a *BackupPlanAssociationAdapter) normalizeReferenceFields(ctx context.Cont
 				return err
 			}
 		}
+		if obj.Spec.Resource.SQLInstanceRef != nil {
+			instance, err := refs.ResolveSQLInstanceRef(ctx, a.reader, obj, obj.Spec.Resource.SQLInstanceRef)
+			if err != nil {
+				return err
+			}
+			obj.Spec.Resource.SQLInstanceRef.External = instance.String()
+		}
 	}
 
 	return nil
