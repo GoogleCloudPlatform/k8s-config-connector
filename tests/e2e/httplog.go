@@ -43,6 +43,14 @@ func NewNormalizer(uniqueID string, project testgcp.GCPProject) *Normalizer {
 // RemoveExtraEvents removes events that are not as relevant to our golden logs
 // In particular, we remove repeated GET requests and LRO polling operations (and things that look like LROs)
 func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
+	// Remove temporary Dataproc cluster creation permission errors (due to IAM propagation delay)
+	events = events.KeepIf(func(e *test.LogEntry) bool {
+		if e.Request.Method == "POST" && strings.Contains(e.Request.URL, "dataproc.googleapis.com/") && strings.Contains(e.Request.URL, "/clusters") && e.Response.Status == "400 Bad Request" {
+			return false
+		}
+		return true
+	})
+
 	// Remove repeated GET requests (after normalization)
 	var previous *test.LogEntry
 	events = events.KeepIf(func(e *test.LogEntry) bool {
