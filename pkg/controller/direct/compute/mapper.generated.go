@@ -2633,6 +2633,90 @@ func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 }
 */
 
+/* found existing non-generated mapping function "ComputeRouteSpec_v1beta1_FromProto", skipping
+func ComputeRouteSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Route) *krm.ComputeRouteSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouteSpec{}
+	// MISSING: AsPaths
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DestRange = in.DestRange
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.NextHopGateway = in.NextHopGateway
+	// MISSING: NextHopHub
+	// MISSING: NextHopIlb
+	if in.GetNextHopInstance() != "" {
+		out.NextHopInstanceRef = &krm.InstanceRef{External: in.GetNextHopInstance()}
+	}
+	// MISSING: NextHopInterRegionCost
+	out.NextHopIP = in.NextHopIp
+	// MISSING: NextHopMed
+	// MISSING: NextHopNetwork
+	// MISSING: NextHopOrigin
+	// MISSING: NextHopPeering
+	if in.GetNextHopVpnTunnel() != "" {
+		out.NextHopVPNTunnelRef = &krm.ComputeVPNTunnelRef{External: in.GetNextHopVpnTunnel()}
+	}
+	// MISSING: Params
+	out.Priority = in.Priority
+	// MISSING: RouteStatus
+	// MISSING: RouteType
+	// MISSING: SelfLink
+	out.Tags = in.Tags
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeRouteSpec_v1beta1_ToProto", skipping
+func ComputeRouteSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouteSpec) *pb.Route {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Route{}
+	// MISSING: AsPaths
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DestRange = in.DestRange
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.NextHopGateway = in.NextHopGateway
+	// MISSING: NextHopHub
+	// MISSING: NextHopIlb
+	if in.NextHopInstanceRef != nil {
+		out.NextHopInstance = &in.NextHopInstanceRef.External
+	}
+	// MISSING: NextHopInterRegionCost
+	out.NextHopIp = in.NextHopIP
+	// MISSING: NextHopMed
+	// MISSING: NextHopNetwork
+	// MISSING: NextHopOrigin
+	// MISSING: NextHopPeering
+	if in.NextHopVPNTunnelRef != nil {
+		out.NextHopVpnTunnel = &in.NextHopVPNTunnelRef.External
+	}
+	// MISSING: Params
+	out.Priority = in.Priority
+	// MISSING: RouteStatus
+	// MISSING: RouteType
+	// MISSING: SelfLink
+	out.Tags = in.Tags
+	// MISSING: Warnings
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeRouterInterfaceSpec_v1beta1_FromProto", skipping
 func ComputeRouterInterfaceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterInterface) *krm.ComputeRouterInterfaceSpec {
 	if in == nil {
