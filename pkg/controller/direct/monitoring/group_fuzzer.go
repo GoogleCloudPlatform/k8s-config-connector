@@ -25,10 +25,10 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(monitoringGroupFuzzer())
+	fuzztesting.RegisterKRMSpecFuzzer(groupFuzzer())
 }
 
-func monitoringGroupFuzzer() fuzztesting.KRMFuzzer {
+func groupFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer[*pb.Group, krm.MonitoringGroupSpec, krm.MonitoringGroupStatus](&pb.Group{},
 		MonitoringGroupSpec_FromProto, MonitoringGroupSpec_ToProto,
 		nil, nil,
