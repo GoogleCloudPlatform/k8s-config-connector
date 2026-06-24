@@ -123,7 +123,33 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}?alt=json
+POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/alloydb.googleapis.com:generateServiceIdentity?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
+    "email": "service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com",
+    "uniqueId": "12345678"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -140,19 +166,22 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}' was not found",
+    "message": "Resource 'projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters?alt=json&clusterId=alloydbcluster-${uniqueId}
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/clusters?alt=json&clusterId=alloydbcluster${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "clusterType": "PRIMARY",
+  "initialUser": {
+    "password": "alloydb-pg"
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -177,15 +206,15 @@ X-Xss-Protection: 0
     "apiVersion": "v1beta",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+  "name": "projects/${projectId}/locations/europe-west10/operations/${operationID}"
 }
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -207,16 +236,16 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "name": "projects/${projectId}/locations/europe-west10/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Cluster",
     "automatedBackupPolicy": {
       "backupWindow": "3600s",
       "enabled": false,
-      "location": "europe-west4",
+      "location": "europe-west10",
       "timeBasedRetention": {
         "retentionPeriod": "1209600s"
       },
@@ -267,7 +296,7 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
+    "name": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}",
     "network": "projects/${projectNumber}/global/networks/${networkID}",
     "networkConfig": {
       "network": "projects/${projectNumber}/global/networks/${networkID}"
@@ -282,7 +311,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -300,7 +329,7 @@ X-Xss-Protection: 0
   "automatedBackupPolicy": {
     "backupWindow": "3600s",
     "enabled": false,
-    "location": "europe-west4",
+    "location": "europe-west10",
     "timeBasedRetention": {
       "retentionPeriod": "1209600s"
     },
@@ -351,7 +380,7 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
+  "name": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}",
   "network": "projects/${projectNumber}/global/networks/${networkID}",
   "networkConfig": {
     "network": "projects/${projectNumber}/global/networks/${networkID}"
@@ -739,10 +768,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west10%2Fclusters%2Falloydbcluster${uniqueId}%2Finstances%2Falloydbinstance${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -757,17 +786,17 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}' was not found",
+    "message": "Resource 'projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=alloydbinstance-${uniqueId}
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=alloydbinstance${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Falloydbcluster-${uniqueId}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west10%2Fclusters%2Falloydbcluster${uniqueId}
 
 {
   "instanceType": 1,
@@ -797,18 +826,18 @@ X-Xss-Protection: 0
     "apiVersion": "v1beta",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "target": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+  "name": "projects/${projectId}/locations/europe-west10/operations/${operationID}"
 }
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west10%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -828,10 +857,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "target": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "name": "projects/${projectId}/locations/europe-west10/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Instance",
     "availabilityType": "REGIONAL",
@@ -851,10 +880,10 @@ X-Xss-Protection: 0
     "machineConfig": {
       "cpuCount": 2
     },
-    "name": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "name": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}",
     "nodes": [
       {
-        "zoneId": "europe-west4-c"
+        "zoneId": "europe-west10-c"
       }
     ],
     "observabilityConfig": {
@@ -880,17 +909,16 @@ X-Xss-Protection: 0
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "writableNode": {
-      "zoneId": "europe-west4-b"
+      "zoneId": "europe-west10-b"
     }
   }
 }
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fbackups%2Falloydbbackup-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -905,20 +933,309 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}' was not found",
+    "message": "KeyRing projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId} not found.",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/backups?%24alt=json%3Benum-encoding%3Dint&backupId=alloydbbackup-${uniqueId}
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west4
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "clusterName": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "CryptoKey projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "purpose": "ENCRYPT_DECRYPT"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudkms.cryptoKeyEncrypterDecrypterViaDelegation"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+      }
+    ],
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypterViaDelegation"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypterViaDelegation"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/backups/alloydbbackup${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west10%2Fbackups%2Falloydbbackup${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/europe-west10/backups/alloydbbackup${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/backups?%24alt=json%3Benum-encoding%3Dint&backupId=alloydbbackup${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west10
+
+{
+  "clusterName": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}",
+  "encryptionConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -942,18 +1259,18 @@ X-Xss-Protection: 0
     "apiVersion": "v1beta",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
+    "target": "projects/${projectId}/locations/europe-west10/backups/alloydbbackup${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+  "name": "projects/${projectId}/locations/europe-west10/operations/${operationID}"
 }
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west10%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -973,14 +1290,15 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
+    "target": "projects/${projectId}/locations/europe-west10/backups/alloydbbackup${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "name": "projects/${projectId}/locations/europe-west10/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Backup",
-    "clusterName": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
+    "clusterName": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionConfig": {},
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -988,7 +1306,7 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
+    "name": "projects/${projectId}/locations/europe-west10/backups/alloydbbackup${uniqueId}",
     "reconciling": false,
     "state": "READY",
     "uid": "111111111111111111111",
@@ -998,53 +1316,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/restored-alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/backups/alloydbbackup${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Frestored-alloydbcluster-${uniqueId}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/europe-west4/clusters/restored-alloydbcluster-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters:restore?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west4
-
-{
-  "backupSource": {
-    "backupName": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}"
-  },
-  "cluster": {
-    "clusterType": 1,
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
-    "networkConfig": {
-      "network": "projects/${projectId}/global/networks/${networkID}"
-    }
-  },
-  "clusterId": "restored-alloydbcluster-${uniqueId}",
-  "parent": "projects/${projectId}/locations/europe-west4"
-}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west10%2Fbackups%2Falloydbbackup${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1057,291 +1332,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
-    "apiVersion": "v1beta",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/clusters/restored-alloydbcluster-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
-}
-
----
-
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Foperations%2F${operationID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
-    "apiVersion": "v1beta",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/clusters/restored-alloydbcluster-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Cluster",
-    "automatedBackupPolicy": {
-      "backupWindow": "3600s",
-      "enabled": false,
-      "location": "europe-west4",
-      "timeBasedRetention": {
-        "retentionPeriod": "1209600s"
-      },
-      "weeklySchedule": {
-        "daysOfWeek": [
-          "MONDAY",
-          "TUESDAY",
-          "WEDNESDAY",
-          "THURSDAY",
-          "FRIDAY",
-          "SATURDAY",
-          "SUNDAY"
-        ],
-        "startTimes": [
-          {
-            "hours": 23
-          }
-        ]
-      }
-    },
-    "backupSource": {
-      "backupName": "projects/${projectNumber}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
-      "backupUid": "1a1a1a-222b-3cc3-d444-e555ee555555"
-    },
-    "clusterType": "PRIMARY",
-    "continuousBackupConfig": {
-      "enabled": true,
-      "recoveryWindowDays": 14
-    },
-    "continuousBackupInfo": {
-      "enabledTime": "2024-04-01T12:34:56.123456Z",
-      "encryptionInfo": {
-        "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-      },
-      "schedule": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
-      ]
-    },
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_16",
-    "encryptionInfo": {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-    },
-    "geminiConfig": {},
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
-    "name": "projects/${projectId}/locations/europe-west4/clusters/restored-alloydbcluster-${uniqueId}",
-    "network": "projects/${projectNumber}/global/networks/${networkID}",
-    "networkConfig": {
-      "network": "projects/${projectNumber}/global/networks/${networkID}"
-    },
-    "reconciling": false,
-    "state": "READY",
-    "subscriptionType": "STANDARD",
-    "uid": "111111111111111111111",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/restored-alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Frestored-alloydbcluster-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "automatedBackupPolicy": {
-    "backupWindow": "3600s",
-    "enabled": false,
-    "location": "europe-west4",
-    "timeBasedRetention": {
-      "retentionPeriod": "1209600s"
-    },
-    "weeklySchedule": {
-      "daysOfWeek": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
-      ],
-      "startTimes": [
-        {
-          "hours": 23
-        }
-      ]
-    }
-  },
-  "backupSource": {
-    "backupName": "projects/${projectNumber}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
-    "backupUid": "1a1a1a-222b-3cc3-d444-e555ee555555"
-  },
-  "clusterType": 1,
-  "continuousBackupConfig": {
-    "enabled": true,
-    "recoveryWindowDays": 14
-  },
-  "continuousBackupInfo": {
-    "enabledTime": "2024-04-01T12:34:56.123456Z",
-    "encryptionInfo": {
-      "encryptionType": 1
-    },
-    "schedule": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7
-    ]
-  },
+  "clusterName": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
-  "encryptionInfo": {
-    "encryptionType": 1
-  },
-  "geminiConfig": {},
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/europe-west4/clusters/restored-alloydbcluster-${uniqueId}",
-  "network": "projects/${projectNumber}/global/networks/${networkID}",
-  "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/${networkID}"
-  },
-  "state": 1,
-  "subscriptionType": 1,
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/restored-alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Frestored-alloydbcluster-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": false,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
-    "apiVersion": "v1beta",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/clusters/restored-alloydbcluster-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
-}
-
----
-
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Foperations%2F${operationID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
-    "apiVersion": "v1beta",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/clusters/restored-alloydbcluster-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
-}
-
----
-
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fbackups%2Falloydbbackup-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "clusterName": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
-  "createTime": "2024-04-01T12:34:56.123456Z",
+  "encryptionConfig": {},
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -1349,7 +1342,7 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
+  "name": "projects/${projectId}/locations/europe-west10/backups/alloydbbackup${uniqueId}",
   "reconciling": false,
   "state": 1,
   "uid": "111111111111111111111",
@@ -1358,10 +1351,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/backups/alloydbbackup${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fbackups%2Falloydbbackup-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west10%2Fbackups%2Falloydbbackup${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1380,18 +1373,18 @@ X-Xss-Protection: 0
     "apiVersion": "v1beta",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
+    "target": "projects/${projectId}/locations/europe-west10/backups/alloydbbackup${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+  "name": "projects/${projectId}/locations/europe-west10/operations/${operationID}"
 }
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west10%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1411,10 +1404,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
+    "target": "projects/${projectId}/locations/europe-west10/backups/alloydbbackup${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "name": "projects/${projectId}/locations/europe-west10/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
@@ -1422,10 +1415,190 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypterViaDelegation"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cryptoKeyVersions": [
+    {
+      "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "generateTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+      "protectionLevel": "SOFTWARE",
+      "state": "ENABLED"
+    }
+  ],
+  "totalSize": 1
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+  "protectionLevel": "SOFTWARE",
+  "state": "DESTROY_SCHEDULED"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/europe-west10/keyRings/kmskeyring-${uniqueId}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west10%2Fclusters%2Falloydbcluster${uniqueId}%2Finstances%2Falloydbinstance${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1455,10 +1628,10 @@ X-Xss-Protection: 0
   "machineConfig": {
     "cpuCount": 2
   },
-  "name": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+  "name": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}",
   "nodes": [
     {
-      "zoneId": "europe-west4-c"
+      "zoneId": "europe-west10-c"
     }
   ],
   "observabilityConfig": {
@@ -1484,16 +1657,16 @@ X-Xss-Protection: 0
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "writableNode": {
-    "zoneId": "europe-west4-b"
+    "zoneId": "europe-west10-b"
   }
 }
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west10%2Fclusters%2Falloydbcluster${uniqueId}%2Finstances%2Falloydbinstance${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1512,18 +1685,18 @@ X-Xss-Protection: 0
     "apiVersion": "v1beta",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "target": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+  "name": "projects/${projectId}/locations/europe-west10/operations/${operationID}"
 }
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west10%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1543,10 +1716,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "target": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "name": "projects/${projectId}/locations/europe-west10/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
@@ -1780,7 +1953,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1798,7 +1971,7 @@ X-Xss-Protection: 0
   "automatedBackupPolicy": {
     "backupWindow": "3600s",
     "enabled": false,
-    "location": "europe-west4",
+    "location": "europe-west10",
     "timeBasedRetention": {
       "retentionPeriod": "1209600s"
     },
@@ -1849,7 +2022,7 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
+  "name": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}",
   "network": "projects/${projectNumber}/global/networks/${networkID}",
   "networkConfig": {
     "network": "projects/${projectNumber}/global/networks/${networkID}"
@@ -1863,7 +2036,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}?alt=json
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1884,15 +2057,15 @@ X-Xss-Protection: 0
     "apiVersion": "v1beta",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+  "name": "projects/${projectId}/locations/europe-west10/operations/${operationID}"
 }
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west10/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1914,10 +2087,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/europe-west10/clusters/alloydbcluster${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "name": "projects/${projectId}/locations/europe-west10/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }

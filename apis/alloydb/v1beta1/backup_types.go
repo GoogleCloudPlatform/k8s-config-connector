@@ -106,6 +106,7 @@ type AlloyDBBackupObservedState struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/default-controller=direct"
 // +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
@@ -135,7 +136,6 @@ func init() {
 	SchemeBuilder.Register(&AlloyDBBackup{}, &AlloyDBBackupList{})
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.EncryptionConfig
 type BackupEncryptionConfig struct {
 	/* Immutable. The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]. */
 	// +optional

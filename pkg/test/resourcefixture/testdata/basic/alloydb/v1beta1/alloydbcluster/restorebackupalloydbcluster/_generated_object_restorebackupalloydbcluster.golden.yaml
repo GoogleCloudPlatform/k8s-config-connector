@@ -17,7 +17,7 @@ spec:
   location: europe-west4
   networkConfig:
     networkRef:
-      name: computenetwork-${uniqueId}
+      name: ${networkID}
   projectRef:
     external: ${projectId}
   restoreBackupSource:

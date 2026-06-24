@@ -465,24 +465,6 @@ func AutomatedBackupPolicy_TimeBasedRetention_ToProto(mapCtx *direct.MapContext,
 	out.RetentionPeriod = direct.StringDuration_ToProto(mapCtx, in.RetentionPeriod)
 	return out
 }
-func BackupEncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.BackupEncryptionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BackupEncryptionConfig{}
-	// MISSING: KMSKeyName
-	// (near miss): "KMSKeyName" vs "KmsKeyName"
-	return out
-}
-func BackupEncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.BackupEncryptionConfig) *pb.EncryptionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionConfig{}
-	// MISSING: KMSKeyName
-	// (near miss): "KMSKeyName" vs "KmsKeyName"
-	return out
-}
 func BackupSource_FromProto(mapCtx *direct.MapContext, in *pb.BackupSource) *krm.BackupSource {
 	if in == nil {
 		return nil
