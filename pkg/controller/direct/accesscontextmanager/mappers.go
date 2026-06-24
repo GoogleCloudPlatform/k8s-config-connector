@@ -18,7 +18,7 @@
 package accesscontextmanager
 
 import (
-	//pb "cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb"
+	pb "cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb"
 	"google.golang.org/genproto/googleapis/type/expr"
 
 	acm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1beta1"
@@ -121,5 +121,225 @@ func Condition_Members_ToProto(mapCtx *direct.MapContext, in []acm.Member) []str
 		*/
 		out[index] = element
 	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterConfig_Resources_FromProto(mapCtx *direct.MapContext, in []string) []acm.AccessContextManagerServicePerimeterResource {
+	if in == nil {
+		return nil
+	}
+	out := make([]acm.AccessContextManagerServicePerimeterResource, len(in))
+	for index, item := range in {
+		out[index] = acm.AccessContextManagerServicePerimeterResource{
+			ProjectRef: &acm.ServicePerimeterProjectRef{
+				External: item,
+			},
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterConfig_Resources_ToProto(mapCtx *direct.MapContext, in []acm.AccessContextManagerServicePerimeterResource) []string {
+	if in == nil {
+		return nil
+	}
+	out := make([]string, len(in))
+	for index, item := range in {
+		if item.ProjectRef != nil {
+			out[index] = item.ProjectRef.External
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterConfig_AccessLevels_FromProto(mapCtx *direct.MapContext, in []string) []acm.AccessLevelRef {
+	if in == nil {
+		return nil
+	}
+	out := make([]acm.AccessLevelRef, len(in))
+	for index, item := range in {
+		out[index] = acm.AccessLevelRef{
+			External: direct.LazyPtr(item),
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterConfig_AccessLevels_ToProto(mapCtx *direct.MapContext, in []acm.AccessLevelRef) []string {
+	if in == nil {
+		return nil
+	}
+	out := make([]string, len(in))
+	for index, item := range in {
+		out[index] = direct.ValueOf(item.External)
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterEgressFrom_Identities_FromProto(mapCtx *direct.MapContext, in []string) []acm.AccessContextManagerServicePerimeterIdentity {
+	if in == nil {
+		return nil
+	}
+	out := make([]acm.AccessContextManagerServicePerimeterIdentity, len(in))
+	for index, item := range in {
+		out[index] = acm.AccessContextManagerServicePerimeterIdentity{
+			User: direct.LazyPtr(item),
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterEgressFrom_Identities_ToProto(mapCtx *direct.MapContext, in []acm.AccessContextManagerServicePerimeterIdentity) []string {
+	if in == nil {
+		return nil
+	}
+	out := make([]string, len(in))
+	for index, item := range in {
+		if item.ServiceAccountRef != nil && item.ServiceAccountRef.External != "" {
+			out[index] = item.ServiceAccountRef.External
+		} else {
+			out[index] = direct.ValueOf(item.User)
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterIngressFrom_Identities_FromProto(mapCtx *direct.MapContext, in []string) []acm.AccessContextManagerServicePerimeterIdentity {
+	if in == nil {
+		return nil
+	}
+	out := make([]acm.AccessContextManagerServicePerimeterIdentity, len(in))
+	for index, item := range in {
+		out[index] = acm.AccessContextManagerServicePerimeterIdentity{
+			User: direct.LazyPtr(item),
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterIngressFrom_Identities_ToProto(mapCtx *direct.MapContext, in []acm.AccessContextManagerServicePerimeterIdentity) []string {
+	if in == nil {
+		return nil
+	}
+	out := make([]string, len(in))
+	for index, item := range in {
+		if item.ServiceAccountRef != nil && item.ServiceAccountRef.External != "" {
+			out[index] = item.ServiceAccountRef.External
+		} else {
+			out[index] = direct.ValueOf(item.User)
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterEgressTo_Resources_FromProto(mapCtx *direct.MapContext, in []string) []acm.AccessContextManagerServicePerimeterEgressResource {
+	if in == nil {
+		return nil
+	}
+	out := make([]acm.AccessContextManagerServicePerimeterEgressResource, len(in))
+	for index, item := range in {
+		out[index] = acm.AccessContextManagerServicePerimeterEgressResource{
+			ProjectRef: &acm.ServicePerimeterProjectRef{
+				External: item,
+			},
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterEgressTo_Resources_ToProto(mapCtx *direct.MapContext, in []acm.AccessContextManagerServicePerimeterEgressResource) []string {
+	if in == nil {
+		return nil
+	}
+	out := make([]string, len(in))
+	for index, item := range in {
+		if item.ProjectRef != nil {
+			out[index] = item.ProjectRef.External
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterIngressTo_Resources_FromProto(mapCtx *direct.MapContext, in []string) []acm.AccessContextManagerServicePerimeterIngressResource {
+	if in == nil {
+		return nil
+	}
+	out := make([]acm.AccessContextManagerServicePerimeterIngressResource, len(in))
+	for index, item := range in {
+		out[index] = acm.AccessContextManagerServicePerimeterIngressResource{
+			ProjectRef: &acm.ServicePerimeterProjectRef{
+				External: item,
+			},
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterIngressTo_Resources_ToProto(mapCtx *direct.MapContext, in []acm.AccessContextManagerServicePerimeterIngressResource) []string {
+	if in == nil {
+		return nil
+	}
+	out := make([]string, len(in))
+	for index, item := range in {
+		if item.ProjectRef != nil {
+			out[index] = item.ProjectRef.External
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterIngressSource_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig_IngressSource) *acm.AccessContextManagerServicePerimeterIngressSource {
+	if in == nil {
+		return nil
+	}
+	out := &acm.AccessContextManagerServicePerimeterIngressSource{}
+	if in.GetAccessLevel() != "" {
+		out.AccessLevelRef = &acm.AccessLevelRef{
+			External: direct.LazyPtr(in.GetAccessLevel()),
+		}
+	}
+	if in.GetResource() != "" {
+		out.ProjectRef = &acm.ServicePerimeterProjectRef{
+			External: in.GetResource(),
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterIngressSource_ToProto(mapCtx *direct.MapContext, in *acm.AccessContextManagerServicePerimeterIngressSource) *pb.ServicePerimeterConfig_IngressSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeterConfig_IngressSource{}
+	if in.AccessLevelRef != nil && direct.ValueOf(in.AccessLevelRef.External) != "" {
+		out.Source = &pb.ServicePerimeterConfig_IngressSource_AccessLevel{
+			AccessLevel: direct.ValueOf(in.AccessLevelRef.External),
+		}
+	}
+	if in.ProjectRef != nil && in.ProjectRef.External != "" {
+		out.Source = &pb.ServicePerimeterConfig_IngressSource_Resource{
+			Resource: in.ProjectRef.External,
+		}
+	}
+	return out
+}
+
+func AccessContextManagerServicePerimeterStatus_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeter) *acm.AccessContextManagerServicePerimeterStatus {
+	if in == nil {
+		return nil
+	}
+	out := &acm.AccessContextManagerServicePerimeterStatus{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func AccessContextManagerServicePerimeterStatus_ToProto(mapCtx *direct.MapContext, in *acm.AccessContextManagerServicePerimeterStatus) *pb.ServicePerimeter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeter{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
