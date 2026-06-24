@@ -37,6 +37,8 @@ go run . generate-types \
   --resource ComputeOrganizationSecurityPolicy:SecurityPolicy \
   --include-skipped-output
 
+rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
