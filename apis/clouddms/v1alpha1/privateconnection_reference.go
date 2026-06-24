@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,22 +16,21 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &PrivateConnectionRef{}
+var _ refs.Ref = &PrivateConnectionRef{}
 
 // PrivateConnectionRef is a reference to a CloudDMSPrivateConnection.
 type PrivateConnectionRef struct {
 	// A reference to an externally managed CloudDMSPrivateConnection resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/privateconnections/{{privateconnectionID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/privateConnections/{{privateconnectionID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a CloudDMSPrivateConnection resource.
@@ -41,42 +40,52 @@ type PrivateConnectionRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on CloudDMSPrivateConnection.
-// If the "External" is given in the other resource's spec.CloudDMSPrivateConnectionRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual CloudDMSPrivateConnection object from the cluster.
-func (r *PrivateConnectionRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", CloudDMSPrivateConnectionGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParsePrivateConnectionExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func init() {
+	refs.Register(&PrivateConnectionRef{})
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *PrivateConnectionRef) GetGVK() schema.GroupVersionKind {
+	return CloudDMSPrivateConnectionGVK
+}
+
+func (r *PrivateConnectionRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(CloudDMSPrivateConnectionGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+}
+
+func (r *PrivateConnectionRef) GetExternal() string {
+	return r.External
+}
+
+func (r *PrivateConnectionRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *PrivateConnectionRef) ValidateExternal(ref string) error {
+	id := &CloudDMSPrivateConnectionIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *PrivateConnectionRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &CloudDMSPrivateConnectionIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *PrivateConnectionRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromCloudDMSPrivateConnectionSpec(ctx, reader, u)
+		if err != nil {
+			return ""
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", CloudDMSPrivateConnectionGVK, key, err)
+		return identity.String()
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

@@ -791,12 +791,6 @@
 [missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.staticIPConnectivity" is not set in unstructured objects
 [missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcPeeringConnectivity.vpcRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=clouddmsprivateconnections.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=clouddmsprivateconnections.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=clouddmsprivateconnections.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=clouddmsprivateconnections.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=clouddmsprivateconnections.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcPeeringConfig.subnet" is not set in unstructured objects
-[missing_field] crd=clouddmsprivateconnections.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcPeeringConfig.vpcNameRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.buildConfig.build" is not set in unstructured objects
 [missing_field] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.buildConfig.dockerRepository" is not set in unstructured objects
 [missing_field] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.buildConfig.entryPoint" is not set in unstructured objects
