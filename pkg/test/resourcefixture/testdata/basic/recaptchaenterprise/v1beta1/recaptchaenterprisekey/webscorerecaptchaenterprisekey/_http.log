@@ -1,0 +1,194 @@
+POST https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "displayName": "display-name-one",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "allowAmpTraffic": false,
+    "integrationType": "SCORE"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-one",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GET https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/${keyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-one",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+PATCH https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/${keyID}?alt=json&updateMask=displayName%2Clabels%2CwebSettings.allowAllDomains%2CwebSettings.allowAmpTraffic%2CwebSettings.allowedDomains
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "displayName": "display-name-two",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "webSettings": {
+    "allowAllDomains": false,
+    "allowAmpTraffic": true,
+    "allowedDomains": [
+      "subdomain.example.com"
+    ],
+    "integrationType": "SCORE"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-two",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAmpTraffic": true,
+    "allowedDomains": [
+      "subdomain.example.com"
+    ],
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GET https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/${keyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-two",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAmpTraffic": true,
+    "allowedDomains": [
+      "subdomain.example.com"
+    ],
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+DELETE https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/${keyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
