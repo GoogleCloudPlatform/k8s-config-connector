@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -107,8 +108,25 @@ func (m *modelBackupVault) AdapterForObject(ctx context.Context, op *directbase.
 }
 
 func (m *modelBackupVault) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.BackupVaultIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := newGCPClient(ctx, &m.config)
+	if err != nil {
+		return nil, err
+	}
+	backupDRClient, err := gcpClient.newBackupDRClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &BackupVaultAdapter{
+		id:        id,
+		gcpClient: backupDRClient,
+	}, nil
 }
 
 type BackupVaultAdapter struct {
@@ -240,17 +258,21 @@ func (a *BackupVaultAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Location
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.BackupVault)
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.actual.Name)
-	u.SetGroupVersionKind(krm.BackupDRBackupVaultGVK)
-
 	u.Object = uObj
+	u.SetGroupVersionKind(krm.BackupDRBackupVaultGVK)
+	u.SetName(a.id.BackupVault)
+
+	export.SetLabels(u, a.actual.Labels)
+
 	return u, nil
 }
 
