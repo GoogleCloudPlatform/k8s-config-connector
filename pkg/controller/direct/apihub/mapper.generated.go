@@ -76,6 +76,52 @@ func APIHubExternalAPIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.A
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+func APIHubInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiHubInstance) *krm.APIHubInstanceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubInstanceObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
+	return out
+}
+func APIHubInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubInstanceObservedState) *pb.ApiHubInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiHubInstance{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.ApiHubInstance_State](mapCtx, in.State)
+	out.StateMessage = direct.ValueOf(in.StateMessage)
+	return out
+}
+func APIHubInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.ApiHubInstance) *krm.APIHubInstanceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubInstanceSpec{}
+	// MISSING: Name
+	out.Config = APIHubInstance_Config_FromProto(mapCtx, in.GetConfig())
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func APIHubInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubInstanceSpec) *pb.ApiHubInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiHubInstance{}
+	// MISSING: Name
+	out.Config = APIHubInstance_Config_ToProto(mapCtx, in.Config)
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 func APIHubPluginObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.APIHubPluginObservedState {
 	if in == nil {
 		return nil
