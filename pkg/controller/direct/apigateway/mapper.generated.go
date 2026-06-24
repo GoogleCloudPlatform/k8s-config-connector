@@ -18,29 +18,148 @@
 
 // +generated:mapper
 // krm.group: apigateway.cnrm.cloud.google.com
-// krm.version: v1beta1
+// krm.version: v1alpha1
 // proto.service: google.cloud.apigateway.v1
 
 package apigateway
 
 import (
 	pb "cloud.google.com/go/apigateway/apiv1/apigatewaypb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigateway/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigateway/v1alpha1"
+	krmapigatewayv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigateway/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func APIGatewayAPIObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIGatewayAPIObservedState {
+func APIGatewayAPIConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ApiConfig) *krm.APIGatewayAPIConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.APIGatewayAPIObservedState{}
+	out := &krm.APIGatewayAPIConfigObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: GatewayServiceAccount
+	// MISSING: ServiceConfigID
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func APIGatewayAPIConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPIConfigObservedState) *pb.ApiConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiConfig{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: GatewayServiceAccount
+	// MISSING: ServiceConfigID
+	out.State = direct.Enum_ToProto[pb.ApiConfig_State](mapCtx, in.State)
+	return out
+}
+func APIGatewayAPIConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ApiConfig) *krm.APIGatewayAPIConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIGatewayAPIConfigSpec{}
+	// MISSING: Name
+	// MISSING: Labels
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: GatewayServiceAccount
+	// MISSING: ServiceConfigID
+	out.OpenapiDocuments = direct.Slice_FromProto(mapCtx, in.OpenapiDocuments, APIGatewayAPIConfig_OpenApiDocument_v1alpha1_FromProto)
+	out.GrpcServices = direct.Slice_FromProto(mapCtx, in.GrpcServices, APIGatewayAPIConfig_GrpcServiceDefinition_v1alpha1_FromProto)
+	out.ManagedServiceConfigs = direct.Slice_FromProto(mapCtx, in.ManagedServiceConfigs, APIGatewayAPIConfig_File_v1alpha1_FromProto)
+	return out
+}
+func APIGatewayAPIConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPIConfigSpec) *pb.ApiConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiConfig{}
+	// MISSING: Name
+	// MISSING: Labels
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: GatewayServiceAccount
+	// MISSING: ServiceConfigID
+	out.OpenapiDocuments = direct.Slice_ToProto(mapCtx, in.OpenapiDocuments, APIGatewayAPIConfig_OpenApiDocument_v1alpha1_ToProto)
+	out.GrpcServices = direct.Slice_ToProto(mapCtx, in.GrpcServices, APIGatewayAPIConfig_GrpcServiceDefinition_v1alpha1_ToProto)
+	out.ManagedServiceConfigs = direct.Slice_ToProto(mapCtx, in.ManagedServiceConfigs, APIGatewayAPIConfig_File_v1alpha1_ToProto)
+	return out
+}
+
+/* found existing non-generated mapping function "APIGatewayAPIConfig_File_v1alpha1_FromProto", skipping
+func APIGatewayAPIConfig_File_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ApiConfig_File) *krm.APIGatewayAPIConfig_File {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIGatewayAPIConfig_File{}
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.Contents = direct.LazyPtr(in.GetContents())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "APIGatewayAPIConfig_File_v1alpha1_ToProto", skipping
+
+	func APIGatewayAPIConfig_File_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPIConfig_File) *pb.ApiConfig_File {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ApiConfig_File{}
+		out.Path = direct.ValueOf(in.Path)
+		out.Contents = in.Contents
+		return out
+	}
+*/
+func APIGatewayAPIConfig_GrpcServiceDefinition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ApiConfig_GrpcServiceDefinition) *krm.APIGatewayAPIConfig_GrpcServiceDefinition {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIGatewayAPIConfig_GrpcServiceDefinition{}
+	out.FileDescriptorSet = APIGatewayAPIConfig_File_v1alpha1_FromProto(mapCtx, in.GetFileDescriptorSet())
+	out.Source = direct.Slice_FromProto(mapCtx, in.Source, APIGatewayAPIConfig_File_v1alpha1_FromProto)
+	return out
+}
+func APIGatewayAPIConfig_GrpcServiceDefinition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPIConfig_GrpcServiceDefinition) *pb.ApiConfig_GrpcServiceDefinition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiConfig_GrpcServiceDefinition{}
+	out.FileDescriptorSet = APIGatewayAPIConfig_File_v1alpha1_ToProto(mapCtx, in.FileDescriptorSet)
+	out.Source = direct.Slice_ToProto(mapCtx, in.Source, APIGatewayAPIConfig_File_v1alpha1_ToProto)
+	return out
+}
+func APIGatewayAPIConfig_OpenApiDocument_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ApiConfig_OpenApiDocument) *krm.APIGatewayAPIConfig_OpenApiDocument {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIGatewayAPIConfig_OpenApiDocument{}
+	out.Document = APIGatewayAPIConfig_File_v1alpha1_FromProto(mapCtx, in.GetDocument())
+	return out
+}
+func APIGatewayAPIConfig_OpenApiDocument_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPIConfig_OpenApiDocument) *pb.ApiConfig_OpenApiDocument {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiConfig_OpenApiDocument{}
+	out.Document = APIGatewayAPIConfig_File_v1alpha1_ToProto(mapCtx, in.Document)
+	return out
+}
+func APIGatewayAPIObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krmapigatewayv1beta1.APIGatewayAPIObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmapigatewayv1beta1.APIGatewayAPIObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
-func APIGatewayAPIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPIObservedState) *pb.Api {
+func APIGatewayAPIObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmapigatewayv1beta1.APIGatewayAPIObservedState) *pb.Api {
 	if in == nil {
 		return nil
 	}
@@ -51,17 +170,17 @@ func APIGatewayAPIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIGa
 	out.State = direct.Enum_ToProto[pb.Api_State](mapCtx, in.State)
 	return out
 }
-func APIGatewayAPISpec_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIGatewayAPISpec {
+func APIGatewayAPISpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krmapigatewayv1beta1.APIGatewayAPISpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.APIGatewayAPISpec{}
+	out := &krmapigatewayv1beta1.APIGatewayAPISpec{}
 	out.Labels = in.Labels
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.ManagedService = direct.LazyPtr(in.GetManagedService())
 	return out
 }
-func APIGatewayAPISpec_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPISpec) *pb.Api {
+func APIGatewayAPISpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmapigatewayv1beta1.APIGatewayAPISpec) *pb.Api {
 	if in == nil {
 		return nil
 	}

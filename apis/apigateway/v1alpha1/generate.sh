@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,31 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -o errexit
 set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
-./generate-proto.sh
 
 go run . generate-types \
   --service google.cloud.apigateway.v1 \
-  --api-version apigateway.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output \
-  --resource APIGatewayAPI:Api
-
-go run . generate-mapper \
-  --service google.cloud.apigateway.v1 \
-  --api-version apigateway.cnrm.cloud.google.com/v1beta1 \
   --api-version apigateway.cnrm.cloud.google.com/v1alpha1 \
-  --multiversion \
-  --include-skipped-output
+  --resource APIGatewayAPIConfig:ApiConfig \
+   
 
-cd ${REPO_ROOT}
-dev/tasks/generate-crds
-
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/apigateway/

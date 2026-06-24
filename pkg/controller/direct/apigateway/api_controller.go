@@ -132,7 +132,7 @@ func (a *apiAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 
 	desired := a.desired.DeepCopy()
 
-	resource := APIGatewayAPISpec_ToProto(mapCtx, &desired.Spec)
+	resource := APIGatewayAPISpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -153,7 +153,7 @@ func (a *apiAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	log.V(2).Info("successfully created apigateway api in gcp", "name", a.id)
 
 	status := &krm.APIGatewayAPIStatus{}
-	status.ObservedState = APIGatewayAPIObservedState_FromProto(mapCtx, created)
+	status.ObservedState = APIGatewayAPIObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -168,7 +168,7 @@ func (a *apiAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := APIGatewayAPISpec_ToProto(mapCtx, &desired.Spec)
+	resource := APIGatewayAPISpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -209,7 +209,7 @@ func (a *apiAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	}
 
 	status := &krm.APIGatewayAPIStatus{}
-	status.ObservedState = APIGatewayAPIObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = APIGatewayAPIObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -225,7 +225,7 @@ func (a *apiAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 
 	obj := &krm.APIGatewayAPI{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(APIGatewayAPISpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(APIGatewayAPISpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
