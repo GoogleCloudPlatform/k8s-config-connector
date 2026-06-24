@@ -33,11 +33,25 @@ func backupDRBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 		BackupDRBackupPlanObservedState_v1beta1_FromProto, BackupDRBackupPlanObservedState_v1beta1_ToProto,
 	)
 
+	// Documented Field Comparison (KRM Spec -> Proto):
+	// - resourceID -> Unimplemented_Identity (".name" / part of name in CreateBackupPlanRequest)
+	// - parent -> Unimplemented_Identity (part of parent in CreateBackupPlanRequest)
+	// - description -> pb.BackupPlan.description (f.SpecField)
+	// - backupRules -> pb.BackupPlan.backup_rules (f.SpecField)
+	// - resourceType -> pb.BackupPlan.resource_type (f.SpecField)
+	// - backupVaultRef -> pb.BackupPlan.backup_vault (f.SpecField)
+	// - labels (commented out in KRM) -> f.Unimplemented_LabelsAnnotations(".labels")
+	// - etag (commented out in KRM) -> f.Unimplemented_Etag()
 	f.SpecField(".description")
 	f.SpecField(".backup_rules")
 	f.SpecField(".resource_type")
 	f.SpecField(".backup_vault")
 
+	// Documented Field Comparison (KRM Status/ObservedState -> Proto):
+	// - createTime -> pb.BackupPlan.create_time (f.StatusField)
+	// - updateTime -> pb.BackupPlan.update_time (f.StatusField)
+	// - state -> pb.BackupPlan.state (f.StatusField)
+	// - backupVaultServiceAccount -> pb.BackupPlan.backup_vault_service_account (f.StatusField)
 	f.StatusField(".create_time")
 	f.StatusField(".update_time")
 	f.StatusField(".state")
