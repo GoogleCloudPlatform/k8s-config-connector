@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -29,6 +30,9 @@ type PrivateConnectionIdentity struct {
 	parent *PrivateConnectionParent
 	id     string
 }
+
+// Ensure PrivateConnectionIdentity implements the Identity interface.
+var _ identity.Identity = &PrivateConnectionIdentity{}
 
 func (i *PrivateConnectionIdentity) String() string {
 	return i.parent.String() + "/privateConnections/" + i.id
@@ -40,6 +44,16 @@ func (i *PrivateConnectionIdentity) ID() string {
 
 func (i *PrivateConnectionIdentity) Parent() *PrivateConnectionParent {
 	return i.parent
+}
+
+func (i *PrivateConnectionIdentity) FromExternal(external string) error {
+	parent, id, err := ParsePrivateConnectionExternal(external)
+	if err != nil {
+		return err
+	}
+	i.parent = parent
+	i.id = id
+	return nil
 }
 
 type PrivateConnectionParent struct {
