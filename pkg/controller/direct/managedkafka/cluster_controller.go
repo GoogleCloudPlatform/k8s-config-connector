@@ -27,6 +27,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
+	iam "cloud.google.com/go/iam/apiv1"
+	"cloud.google.com/go/iam/apiv1/iampb"
 	gcp "cloud.google.com/go/managedkafka/apiv1"
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
 	"google.golang.org/api/option"
@@ -66,6 +68,20 @@ func (m *modelCluster) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
+func (m *modelCluster) iamClient(ctx context.Context) (*iam.IamPolicyClient, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	opts = append(opts, option.WithEndpoint("https://managedkafka.googleapis.com"))
+	iamClient, err := iam.NewIamPolicyRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building iam client: %w", err)
+	}
+	return iamClient, err
+}
+
 func (m *modelCluster) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
@@ -84,9 +100,14 @@ func (m *modelCluster) AdapterForObject(ctx context.Context, op *directbase.Adap
 	if err != nil {
 		return nil, err
 	}
+	iamClient, err := m.iamClient(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &ClusterAdapter{
 		id:        id,
 		gcpClient: gcpClient,
+		iamClient: iamClient,
 		desired:   obj,
 		reader:    reader,
 	}, nil
@@ -100,6 +121,7 @@ func (m *modelCluster) AdapterForURL(ctx context.Context, url string) (directbas
 type ClusterAdapter struct {
 	id        *krm.ClusterIdentity
 	gcpClient *gcp.Client
+	iamClient *iam.IamPolicyClient
 	desired   *krm.ManagedKafkaCluster
 	actual    *pb.Cluster
 	reader    client.Reader
@@ -276,6 +298,39 @@ func (a *ClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 		return false, fmt.Errorf("waiting delete Cluster %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *ClusterAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil || a.id.String() == "" {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *ClusterAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil || a.id.String() == "" {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }
 
 func (a *ClusterAdapter) normalizeReference(ctx context.Context) error {

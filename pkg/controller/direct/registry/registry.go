@@ -137,6 +137,8 @@ func IsIAMDirect(groupKind schema.GroupKind) bool {
 
 	// TODO: Move to registration somehow?
 	switch groupKind {
+	case schema.GroupKind{Group: "managedkafka.cnrm.cloud.google.com", Kind: "ManagedKafkaCluster"}:
+		return true
 	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
 		return true
 	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubScope"}:

@@ -30,6 +30,112 @@ type IAMAdapter interface {
 	SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error)
 }
 
+func GetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return nil, fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return nil, fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	policy, err := iamAdapter.GetIAMPolicy(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy: %w", err)
+	}
+
+	actual := &v1beta1.IAMPolicy{}
+	actual.ObjectMeta = want.ObjectMeta
+	actual.Spec = v1beta1.IAMPolicySpec{
+		ResourceReference: want.Spec.ResourceReference,
+	}
+
+	for _, binding := range policy.Bindings {
+		actualBinding := v1beta1.IAMPolicyBinding{
+			Role:    binding.Role,
+			Members: make([]v1beta1.Member, len(binding.Members)),
+		}
+		for i, member := range binding.Members {
+			actualBinding.Members[i] = v1beta1.Member(member)
+		}
+		actual.Spec.Bindings = append(actual.Spec.Bindings, actualBinding)
+	}
+	actual.Spec.Etag = string(policy.Etag)
+
+	return actual, nil
+}
+
+func SetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return nil, fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return nil, fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	policy := &iampb.Policy{}
+	for _, binding := range want.Spec.Bindings {
+		actualBinding := &iampb.Binding{
+			Role:    binding.Role,
+			Members: make([]string, len(binding.Members)),
+		}
+		for i, member := range binding.Members {
+			actualBinding.Members[i] = string(member)
+		}
+		policy.Bindings = append(policy.Bindings, actualBinding)
+	}
+	policy.Etag = []byte(want.Spec.Etag)
+
+	newPolicy, err := iamAdapter.SetIAMPolicy(ctx, policy)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy: %w", err)
+	}
+
+	actual := &v1beta1.IAMPolicy{}
+	actual.ObjectMeta = want.ObjectMeta
+	actual.Spec = v1beta1.IAMPolicySpec{
+		ResourceReference: want.Spec.ResourceReference,
+	}
+
+	for _, binding := range newPolicy.Bindings {
+		actualBinding := v1beta1.IAMPolicyBinding{
+			Role:    binding.Role,
+			Members: make([]v1beta1.Member, len(binding.Members)),
+		}
+		for i, member := range binding.Members {
+			actualBinding.Members[i] = v1beta1.Member(member)
+		}
+		actual.Spec.Bindings = append(actual.Spec.Bindings, actualBinding)
+	}
+	actual.Spec.Etag = string(newPolicy.Etag)
+
+	return actual, nil
+}
+
+func DeleteIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) error {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	// For IAMPolicy, "delete" typically means resetting it to empty or a default state.
+	// KCC's IAMPolicy controller usually handles this by setting an empty policy.
+	policy := &iampb.Policy{}
+	_, err = iamAdapter.SetIAMPolicy(ctx, policy)
+	if err != nil {
+		return fmt.Errorf("resetting IAM policy: %w", err)
+	}
+
+	return nil
+}
+
 // GetIAMPolicyMember returns the actual IAMPolicyMember for the specified member and referenced resource.
 func GetIAMPolicyMember(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicyMember, memberID v1beta1.Member) (*v1beta1.IAMPolicyMember, error) {
 	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
