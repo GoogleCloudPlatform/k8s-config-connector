@@ -23,7 +23,6 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
@@ -99,10 +98,9 @@ func (m *modelJob) AdapterForObject(ctx context.Context, op *directbase.AdapterF
 		return nil, err
 	}
 	return &JobAdapter{
-		id:                 id,
-		gcpClient:          gcpClient,
-		desired:            desired,
-		lastModifiedCookie: obj.Status.LastModifiedCookie,
+		id:        id,
+		gcpClient: gcpClient,
+		desired:   desired,
 	}, nil
 }
 
@@ -131,11 +129,10 @@ func (m *modelJob) AdapterForURL(ctx context.Context, url string) (directbase.Ad
 }
 
 type JobAdapter struct {
-	id                 *krm.JobIdentity
-	gcpClient          *gcp.JobsClient
-	desired            *runpb.Job
-	actual             *runpb.Job
-	lastModifiedCookie *string
+	id        *krm.JobIdentity
+	gcpClient *gcp.JobsClient
+	desired   *runpb.Job
+	actual    *runpb.Job
 }
 
 var _ directbase.Adapter = &JobAdapter{}
@@ -186,13 +183,9 @@ func (a *JobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	newCookie, err := common.NewLegacyCookie(a.desired, created)
-	if err != nil {
-		return fmt.Errorf("composing cookie: %w", err)
+	if err := createOp.SetLastModifiedCookie(ctx, a.desired, created); err != nil {
+		return err
 	}
-	log.V(2).Info("Job cookie added", "name", a.id, "new-cookie", newCookie.String())
-	status.LastModifiedCookie = direct.LazyPtr(newCookie.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -201,11 +194,7 @@ func (a *JobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Job", "name", a.id)
 
-	currentCookie, err := common.NewLegacyCookie(a.desired, a.actual)
-	if err != nil {
-		return err
-	}
-	if currentCookie.Equal(a.lastModifiedCookie) {
+	if upToDate, err := updateOp.CompareLastModifiedCookie(a.desired, a.actual); err == nil && upToDate {
 		log.V(2).Info("resource is up to date", "name", a.id)
 		return a.updateStatus(ctx, a.actual, updateOp)
 	}
@@ -226,29 +215,20 @@ func (a *JobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 		return fmt.Errorf("Job %s waiting update: %w", a.id, err)
 	}
 	log.Info("successfully updated Job", "name", a.id)
+	if err := updateOp.SetLastModifiedCookie(ctx, a.desired, updated); err != nil {
+		return err
+	}
 	return a.updateStatus(ctx, updated, updateOp)
 }
 
 func (a *JobAdapter) updateStatus(ctx context.Context, updated *pb.Job, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx)
 	status := &krm.RunJobStatus{}
 	mapCtx := &direct.MapContext{}
 	status.ObservedState = RunJobObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	updatedCookie, err := common.NewLegacyCookie(a.desired, updated)
-	if err != nil {
-		return err
-	}
-	status.LastModifiedCookie = direct.LazyPtr(updatedCookie.String())
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-
-	if !updatedCookie.Equal(a.lastModifiedCookie) {
-		log.Info("Job cookie updated", "name", a.id, "old-cookie", direct.ValueOf(a.lastModifiedCookie),
-			"new-cookie", updatedCookie.String())
-	}
-
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
