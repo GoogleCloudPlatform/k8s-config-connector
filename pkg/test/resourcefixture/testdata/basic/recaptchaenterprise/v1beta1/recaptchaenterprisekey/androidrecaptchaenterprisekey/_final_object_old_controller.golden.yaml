@@ -3,6 +3,7 @@ kind: RecaptchaEnterpriseKey
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -14,16 +15,16 @@ metadata:
   name: recaptchaenterprisekey-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  androidSettings:
+    allowAllPackageNames: false
+    allowedPackageNames:
+    - com.android.application
   displayName: display-name-two
-  iosSettings:
-    allowAllBundleIds: false
-    allowedBundleIds:
-    - com.companyname.appname
   projectRef:
     external: projects/kcc-recaptcha-enterprise
   resourceID: ${keyID}
   testingOptions:
-    testingScore: 1
+    testingScore: 0.8
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

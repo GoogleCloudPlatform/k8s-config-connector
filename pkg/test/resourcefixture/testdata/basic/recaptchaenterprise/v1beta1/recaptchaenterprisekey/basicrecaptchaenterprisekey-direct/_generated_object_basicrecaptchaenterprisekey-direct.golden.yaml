@@ -2,6 +2,7 @@ apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1beta1
 kind: RecaptchaEnterpriseKey
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -9,21 +10,19 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-    label-one: value-one
-    label-two: value-two
   name: recaptchaenterprisekey-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  displayName: display-name-two
-  iosSettings:
-    allowAllBundleIds: false
-    allowedBundleIds:
-    - com.companyname.appname
+  displayName: updated-display-name-${uniqueId}
   projectRef:
-    external: projects/kcc-recaptcha-enterprise
+    external: ${projectId}
   resourceID: ${keyID}
   testingOptions:
-    testingScore: 1
+    testingScore: 0.5
+  webSettings:
+    allowAllDomains: true
+    allowAmpTraffic: false
+    integrationType: SCORE
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

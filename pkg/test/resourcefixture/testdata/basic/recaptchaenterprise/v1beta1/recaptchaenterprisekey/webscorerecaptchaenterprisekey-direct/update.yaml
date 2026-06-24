@@ -16,6 +16,8 @@ apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1beta1
 kind: RecaptchaEnterpriseKey
 metadata:
   name: recaptchaenterprisekey-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
   labels:
     label-two: value-two
 spec:

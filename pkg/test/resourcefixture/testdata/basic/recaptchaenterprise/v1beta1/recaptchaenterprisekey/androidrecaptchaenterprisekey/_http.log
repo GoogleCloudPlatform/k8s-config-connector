@@ -1,31 +1,19 @@
-POST https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateKey
 
 {
-  "androidSettings": {
-    "allowAllPackageNames": true
+  "key": {
+    "androidSettings": {
+      "allowAllPackageNames": true
+    },
+    "displayName": "display-name-one",
+    "testingOptions": {
+      "testingScore": 0.8
+    }
   },
-  "displayName": "display-name-one",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "testingOptions": {
-    "testingScore": 0.8
-  }
+  "parent": "projects/kcc-recaptcha-enterprise"
 }
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+OK
 
 {
   "androidSettings": {
@@ -33,11 +21,6 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "display-name-one",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
   "name": "projects/1935411576/keys/${keyID}",
   "testingOptions": {
     "testingScore": 0.8
@@ -46,19 +29,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/${keyID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
 
 {
   "androidSettings": {
@@ -66,11 +43,6 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "display-name-one",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
   "name": "projects/1935411576/keys/${keyID}",
   "testingOptions": {
     "testingScore": 0.8
@@ -79,35 +51,47 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/${keyID}?alt=json&updateMask=androidSettings.allowAllPackageNames%2CandroidSettings.allowedPackageNames%2CdisplayName%2Clabels
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
 
 {
   "androidSettings": {
-    "allowAllPackageNames": false,
-    "allowedPackageNames": [
-      "com.android.application"
-    ]
+    "allowAllPackageNames": true
   },
-  "displayName": "display-name-two",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "label-two": "value-two",
-    "managed-by-cnrm": "true"
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-one",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.8
   }
 }
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateKey
+
+{
+  "key": {
+    "androidSettings": {
+      "allowedPackageNames": [
+        "com.android.application"
+      ]
+    },
+    "displayName": "display-name-two",
+    "name": "projects/1935411576/keys/${keyID}",
+    "testingOptions": {
+      "testingScore": 0.8
+    }
+  },
+  "updateMask": "androidSettings.allowAllPackageNames,androidSettings.allowedPackageNames,displayName"
+}
+
+OK
 
 {
   "androidSettings": {
@@ -117,12 +101,6 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "display-name-two",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "label-two": "value-two",
-    "managed-by-cnrm": "true"
-  },
   "name": "projects/1935411576/keys/${keyID}",
   "testingOptions": {
     "testingScore": 0.8
@@ -131,19 +109,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/${keyID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
 
 {
   "androidSettings": {
@@ -153,12 +125,6 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "display-name-two",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "label-two": "value-two",
-    "managed-by-cnrm": "true"
-  },
   "name": "projects/1935411576/keys/${keyID}",
   "testingOptions": {
     "testingScore": 0.8
@@ -167,18 +133,36 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/${keyID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "androidSettings": {
+    "allowedPackageNames": [
+      "com.android.application"
+    ]
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-two",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.8
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/DeleteKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
 
 {}
