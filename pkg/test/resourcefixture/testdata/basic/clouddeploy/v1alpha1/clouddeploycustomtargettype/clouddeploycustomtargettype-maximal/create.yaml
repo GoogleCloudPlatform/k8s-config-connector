@@ -1,0 +1,18 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
+kind: CloudDeployCustomTargetType
+metadata:
+  name: clouddeploycustomtargettype-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "Maximal Custom Target Type"
+  customActions:
+    renderAction: "custom-render"
+    deployAction: "custom-deploy"
+    includeSkaffoldModules:
+      - configs:
+          - "module1"
+        googleCloudStorage:
+          source: "gs://my-bucket/dir/configs/*"
+          path: "skaffold.yaml"

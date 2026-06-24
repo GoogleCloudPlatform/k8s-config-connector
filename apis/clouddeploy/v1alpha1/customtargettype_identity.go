@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,12 +17,48 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var (
+	_ identity.IdentityV2 = &CloudDeployCustomTargetTypeIdentity{}
+	_ identity.Resource   = &CloudDeployCustomTargetType{}
+)
+
+var CloudDeployCustomTargetTypeIdentityFormat = gcpurls.Template[CloudDeployCustomTargetTypeIdentity]("clouddeploy.googleapis.com", "projects/{project}/locations/{location}/customTargetTypes/{customTargetType}")
+
+// +k8s:deepcopy-gen=false
+type CloudDeployCustomTargetTypeIdentity struct {
+	Project          string
+	Location         string
+	CustomTargetType string
+}
+
+func (i *CloudDeployCustomTargetTypeIdentity) String() string {
+	return CloudDeployCustomTargetTypeIdentityFormat.ToString(*i)
+}
+
+func (i *CloudDeployCustomTargetTypeIdentity) FromExternal(ref string) error {
+	parsed, match, err := CloudDeployCustomTargetTypeIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of CloudDeployCustomTargetType external=%q was not known (use %s): %w", ref, CloudDeployCustomTargetTypeIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of CloudDeployCustomTargetType external=%q was not known (use %s)", ref, CloudDeployCustomTargetTypeIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *CloudDeployCustomTargetTypeIdentity) Host() string {
+	return CloudDeployCustomTargetTypeIdentityFormat.Host()
+}
 
 // CustomTargetTypeIdentity is the identity of a CloudDeployCustomTargetType.
 type CustomTargetTypeIdentity struct {
@@ -42,6 +78,7 @@ func (i *CustomTargetTypeIdentity) Parent() *CustomTargetTypeParent {
 	return i.parent
 }
 
+// CustomTargetTypeParent defines the parent project/location
 type CustomTargetTypeParent struct {
 	ProjectID string
 	Location  string
@@ -51,11 +88,19 @@ func (p *CustomTargetTypeParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a CustomTargetTypeIdentity from the Config Connector CustomTargetType object.
-func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj *CloudDeployCustomTargetType) (*CustomTargetTypeIdentity, error) {
+func ParseCustomTargetTypeExternal(external string) (parent *CustomTargetTypeParent, resourceID string, err error) {
+	i := &CloudDeployCustomTargetTypeIdentity{}
+	if err := i.FromExternal(external); err != nil {
+		return nil, "", err
+	}
+	return &CustomTargetTypeParent{
+		ProjectID: i.Project,
+		Location:  i.Location,
+	}, i.CustomTargetType, nil
+}
 
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj *CloudDeployCustomTargetType) (*CustomTargetTypeIdentity, error) {
+	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +110,6 @@ func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj 
 	}
 	location := obj.Spec.Location
 
-	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -74,10 +118,8 @@ func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj 
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
 		actualParent, actualResourceID, err := ParseCustomTargetTypeExternal(externalRef)
 		if err != nil {
 			return nil, err
@@ -102,15 +144,47 @@ func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj 
 	}, nil
 }
 
-func ParseCustomTargetTypeExternal(external string) (parent *CustomTargetTypeParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "customTargetTypes" {
-		return nil, "", fmt.Errorf("format of CloudDeployCustomTargetType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/customTargetTypes/{{customtargettypeID}})", external)
+func getIdentityFromCloudDeployCustomTargetTypeSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CloudDeployCustomTargetTypeIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
-	parent = &CustomTargetTypeParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location: %w", err)
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	identity := &CloudDeployCustomTargetTypeIdentity{
+		Project:          projectID,
+		Location:         location,
+		CustomTargetType: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *CloudDeployCustomTargetType) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromCloudDeployCustomTargetTypeSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		statusIdentity := &CloudDeployCustomTargetTypeIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change CloudDeployCustomTargetType identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
 }
