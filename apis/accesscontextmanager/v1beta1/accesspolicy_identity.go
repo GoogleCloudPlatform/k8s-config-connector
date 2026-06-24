@@ -52,7 +52,7 @@ func NewAccessPolicyIdentity(ctx context.Context, reader client.Reader, obj *Acc
 func ParseAccessPolicyExternal(external string) (resourceID string, err error) {
 	// pattern: "accessPolicies/{access_policy}"
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 2 || tokens[0] != "accesspolicys" {
+	if len(tokens) != 2 || tokens[0] != "accessPolicies" {
 		return "", fmt.Errorf("format of AccessContextManagerAccessPolicy external=%q was not known (use accessPolicies/{{access_policy}})", external)
 	}
 	resourceID = tokens[1]
