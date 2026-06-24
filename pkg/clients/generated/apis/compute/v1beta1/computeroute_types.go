@@ -39,31 +39,21 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ComputeRouteSpec struct {
-	/* Immutable. An optional description of this resource. Provide this property
-	when you create the resource. */
+	/* Immutable. An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. The destination range of outgoing packets that this route applies to.
-	Only IPv4 is supported. */
+	/* Immutable. The destination range of outgoing packets that this route applies to. Only IPv4 is supported. */
 	DestRange string `json:"destRange"`
 
 	/* The network that this route applies to. */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-	/* Immutable. URL to a gateway that should handle matching packets.
-	Currently, you can only specify the internet gateway, using a full or
-	partial valid URL:
-	* 'https://www.googleapis.com/compute/v1/projects/project/global/gateways/default-internet-gateway'
-	* 'projects/project/global/gateways/default-internet-gateway'
-	* 'global/gateways/default-internet-gateway'
-	* The string 'default-internet-gateway'. */
+	/* Immutable. URL to a gateway that should handle matching packets. Currently, you can only specify the internet gateway, using a full or partial valid URL: * 'https://www.googleapis.com/compute/v1/projects/project/global/gateways/default-internet-gateway' * 'projects/project/global/gateways/default-internet-gateway' * 'global/gateways/default-internet-gateway' * The string 'default-internet-gateway'. */
 	// +optional
 	NextHopGateway *string `json:"nextHopGateway,omitempty"`
 
-	/* A forwarding rule of type loadBalancingScheme=INTERNAL that should
-	handle matching packets.  Note that this can only be used when the
-	destinationRange is a public (non-RFC 1918) IP CIDR range. */
+	/* A forwarding rule of type loadBalancingScheme=INTERNAL that should handle matching packets.  Note that this can only be used when the destinationRange is a public (non-RFC 1918) IP CIDR range. */
 	// +optional
 	NextHopILBRef *v1alpha1.ResourceRef `json:"nextHopILBRef,omitempty"`
 
@@ -87,7 +77,7 @@ type ComputeRouteSpec struct {
 
 	Default value is 1000. Valid range is 0 through 65535. */
 	// +optional
-	Priority *int64 `json:"priority,omitempty"`
+	Priority *int32 `json:"priority,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
