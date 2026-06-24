@@ -22,6 +22,8 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
+
 go run . generate-types \
   --service google.cloud.apihub.v1 \
   --api-version apihub.cnrm.cloud.google.com/v1alpha1 \
@@ -30,9 +32,12 @@ go run . generate-types \
   --resource APIHubRuntimeProjectAttachment:RuntimeProjectAttachment \
   --resource APIHubPlugin:Plugin \
   --resource APIHubExternalAPI:ExternalApi \
+  --resource APIHubDependency:Dependency \
   --prune-unused-types=false
 
-go run . generate-mapper --service google.cloud.apihub.v1 --api-version apihub.cnrm.cloud.google.com/v1alpha1
+go run . generate-mapper \
+  --service google.cloud.apihub.v1 \
+  --api-version apihub.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

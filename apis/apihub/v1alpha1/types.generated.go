@@ -22,6 +22,7 @@
 // resource: APIHubRuntimeProjectAttachment:RuntimeProjectAttachment
 // resource: APIHubPlugin:Plugin
 // resource: APIHubExternalAPI:ExternalApi
+// resource: APIHubDependency:Dependency
 
 package v1alpha1
 
@@ -52,24 +53,6 @@ type Attribute_AllowedValue struct {
 	//  deleted by the user. It can only be true for System defined attributes.
 	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.immutable
 	Immutable *bool `json:"immutable,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.AttributeValues
-type AttributeValues struct {
-	// The attribute values associated with a resource in case attribute data
-	//  type is enum.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.enum_values
-	EnumValues *AttributeValues_EnumAttributeValues `json:"enumValues,omitempty"`
-
-	// The attribute values associated with a resource in case attribute data
-	//  type is string.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.string_values
-	StringValues *AttributeValues_StringAttributeValues `json:"stringValues,omitempty"`
-
-	// The attribute values associated with a resource in case attribute data
-	//  type is JSON.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.json_values
-	JsonValues *AttributeValues_StringAttributeValues `json:"jsonValues,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues
@@ -103,12 +86,4 @@ type Owner struct {
 	// Required. The email of the owner.
 	// +kcc:proto:field=google.cloud.apihub.v1.Owner.email
 	Email *string `json:"email,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.apihub.v1.AttributeValues
-type AttributeValuesObservedState struct {
-	// Output only. The name of the attribute.
-	//  Format: projects/{project}/locations/{location}/attributes/{attribute}
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.attribute
-	Attribute *string `json:"attribute,omitempty"`
 }

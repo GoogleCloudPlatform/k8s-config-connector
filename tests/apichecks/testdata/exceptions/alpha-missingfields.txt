@@ -209,6 +209,20 @@
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.selectedVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetUserRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.teamRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributes[].attributeRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributes[].values.enumValues.values[].description" is not set in unstructured objects
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributes[].values.enumValues.values[].displayName" is not set in unstructured objects
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributes[].values.enumValues.values[].id" is not set in unstructured objects
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributes[].values.enumValues.values[].immutable" is not set in unstructured objects
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributes[].values.jsonValues.values[]" is not set in unstructured objects
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributes[].values.stringValues.values[]" is not set in unstructured objects
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumer.externalAPIRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumer.operationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.supplier.externalAPIRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=apihubdependencies.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.supplier.operationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubdeployments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentTypeRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubdeployments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=apihubdeployments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects

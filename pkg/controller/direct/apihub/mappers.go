@@ -20,6 +20,44 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func Documentation_FromProto(mapCtx *direct.MapContext, in *pb.Documentation) *krm.Documentation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Documentation{}
+	out.ExternalURI = direct.LazyPtr(in.GetExternalUri())
+	return out
+}
+
+func Documentation_ToProto(mapCtx *direct.MapContext, in *krm.Documentation) *pb.Documentation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Documentation{}
+	out.ExternalUri = direct.ValueOf(in.ExternalURI)
+	return out
+}
+
+func Owner_FromProto(mapCtx *direct.MapContext, in *pb.Owner) *krm.Owner {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Owner{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Email = direct.LazyPtr(in.GetEmail())
+	return out
+}
+
+func Owner_ToProto(mapCtx *direct.MapContext, in *krm.Owner) *pb.Owner {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Owner{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Email = direct.ValueOf(in.Email)
+	return out
+}
+
 func Attribute_AllowedValue_FromProto(mapCtx *direct.MapContext, in *pb.Attribute_AllowedValue) *krm.Attribute_AllowedValue {
 	if in == nil {
 		return nil
@@ -41,6 +79,42 @@ func Attribute_AllowedValue_ToProto(mapCtx *direct.MapContext, in *krm.Attribute
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Immutable = direct.ValueOf(in.Immutable)
+	return out
+}
+
+func AttributeValues_EnumAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_EnumAttributeValues) *krm.AttributeValues_EnumAttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttributeValues_EnumAttributeValues{}
+	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Attribute_AllowedValue_FromProto)
+	return out
+}
+
+func AttributeValues_EnumAttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_EnumAttributeValues) *pb.AttributeValues_EnumAttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttributeValues_EnumAttributeValues{}
+	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Attribute_AllowedValue_ToProto)
+	return out
+}
+
+func AttributeValues_StringAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_StringAttributeValues) *krm.AttributeValues_StringAttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttributeValues_StringAttributeValues{}
+	out.Values = in.Values
+	return out
+}
+
+func AttributeValues_StringAttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_StringAttributeValues) *pb.AttributeValues_StringAttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttributeValues_StringAttributeValues{}
+	out.Values = in.Values
 	return out
 }
 
@@ -299,5 +373,79 @@ func APIHubExternalAPISpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubExte
 	out.Paths = in.Paths
 	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
 	out.Attributes = Attributes_ToProto(mapCtx, in.AttributeRefs)
+	return out
+}
+
+func DependencyEntityReference_FromProto(mapCtx *direct.MapContext, in *pb.DependencyEntityReference) *krm.DependencyEntityReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DependencyEntityReference{}
+	if in.GetOperationResourceName() != "" {
+		out.OperationRef = &krm.APIHubOperationRef{External: in.GetOperationResourceName()}
+	}
+	if in.GetExternalApiResourceName() != "" {
+		out.ExternalAPIRef = &krm.APIHubExternalAPIRef{External: in.GetExternalApiResourceName()}
+	}
+	return out
+}
+
+func DependencyEntityReference_ToProto(mapCtx *direct.MapContext, in *krm.DependencyEntityReference) *pb.DependencyEntityReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DependencyEntityReference{}
+	if in.OperationRef != nil && in.OperationRef.External != "" {
+		out.Identifier = &pb.DependencyEntityReference_OperationResourceName{OperationResourceName: in.OperationRef.External}
+	} else if in.ExternalAPIRef != nil && in.ExternalAPIRef.External != "" {
+		out.Identifier = &pb.DependencyEntityReference_ExternalApiResourceName{ExternalApiResourceName: in.ExternalAPIRef.External}
+	}
+	return out
+}
+
+func APIHubDependencySpec_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krm.APIHubDependencySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubDependencySpec{}
+	out.Consumer = DependencyEntityReference_FromProto(mapCtx, in.GetConsumer())
+	out.Supplier = DependencyEntityReference_FromProto(mapCtx, in.GetSupplier())
+	out.Description = direct.LazyPtr(in.GetDescription())
+
+	if len(in.Attributes) > 0 {
+		out.Attributes = make([]krm.DependencyAttribute, 0, len(in.Attributes))
+		for k, v := range in.Attributes {
+			attr := krm.DependencyAttribute{
+				AttributeRef: krm.APIHubAttributeRef{External: k},
+			}
+			if v != nil {
+				attrVals := AttributeValues_FromProto(mapCtx, v)
+				if attrVals != nil {
+					attr.Values = attrVals
+				}
+			}
+			out.Attributes = append(out.Attributes, attr)
+		}
+	}
+	return out
+}
+
+func APIHubDependencySpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubDependencySpec) *pb.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dependency{}
+	out.Consumer = DependencyEntityReference_ToProto(mapCtx, in.Consumer)
+	out.Supplier = DependencyEntityReference_ToProto(mapCtx, in.Supplier)
+	out.Description = direct.ValueOf(in.Description)
+
+	if len(in.Attributes) > 0 {
+		out.Attributes = make(map[string]*pb.AttributeValues)
+		for _, attr := range in.Attributes {
+			if attr.AttributeRef.External != "" {
+				out.Attributes[attr.AttributeRef.External] = AttributeValues_ToProto(mapCtx, attr.Values)
+			}
+		}
+	}
 	return out
 }
