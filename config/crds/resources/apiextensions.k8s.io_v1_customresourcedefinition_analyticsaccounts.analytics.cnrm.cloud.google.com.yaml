@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: analyticsaccounts.analytics.cnrm.cloud.google.com
 spec:
@@ -64,10 +65,6 @@ spec:
               displayName:
                 description: Required. Human-readable display name for this account.
                 type: string
-              redirectURI:
-                description: Redirect URI where the user will be sent after accepting
-                  Terms of Service.
-                type: string
               regionCode:
                 description: Country of business. Must be a Unicode CLDR region code.
                 type: string
@@ -78,7 +75,6 @@ spec:
                 type: string
             required:
             - displayName
-            - redirectURI
             - regionCode
             type: object
           status:

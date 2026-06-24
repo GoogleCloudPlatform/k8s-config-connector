@@ -46,7 +46,20 @@ func (s *analyticsAdminServer) GetAccount(ctx context.Context, req *pb.GetAccoun
 	obj := &pb.Account{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "%v not found", name)
+			// For MockGCP test execution, since AnalyticsAccount cannot be created programmatically on real GCP,
+			// we auto-create/pre-populate any requested account on the fly in the mock server.
+			now := time.Now()
+			obj = &pb.Account{
+				Name:        fqn,
+				DisplayName: "Default Test Account",
+				RegionCode:  "US",
+				CreateTime:  timestamppb.New(now),
+				UpdateTime:  timestamppb.New(now),
+			}
+			if err := s.storage.Create(ctx, fqn, obj); err != nil {
+				return nil, err
+			}
+			return obj, nil
 		}
 		return nil, err
 	}
@@ -106,8 +119,10 @@ func (s *analyticsAdminServer) UpdateAccount(ctx context.Context, req *pb.Update
 
 	for _, path := range paths {
 		switch path {
-		case "display_name":
+		case "display_name", "displayName":
 			updated.DisplayName = req.GetAccount().GetDisplayName()
+		case "region_code", "regionCode":
+			updated.RegionCode = req.GetAccount().GetRegionCode()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -129,7 +144,7 @@ func (s *analyticsAdminServer) ProvisionAccountTicket(ctx context.Context, req *
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+	if err := s.storage.Create(ctx, obj.Name, obj); err != nil {
 		return nil, err
 	}
 	return &pb.ProvisionAccountTicketResponse{AccountTicketId: "ASDFGHJKL123456"}, nil

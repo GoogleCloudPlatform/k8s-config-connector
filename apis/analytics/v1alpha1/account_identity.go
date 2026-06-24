@@ -20,59 +20,93 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AccountIdentity is the identity of an AnalyticsAccount.
+var (
+	_ identity.IdentityV2 = &AccountIdentity{}
+	_ identity.Resource   = &AnalyticsAccount{}
+)
+
+// +k8s:deepcopy-gen=false
 type AccountIdentity struct {
-	id string
+	Account string
 }
 
 func (i *AccountIdentity) String() string {
-	return "accounts/" + i.id
+	if i.Account == "" {
+		return ""
+	}
+	if strings.HasPrefix(i.Account, "accounts/") {
+		return i.Account
+	}
+	return "accounts/" + i.Account
+}
+
+func (i *AccountIdentity) FromExternal(ref string) error {
+	if !strings.HasPrefix(ref, "accounts/") {
+		return fmt.Errorf("format of AnalyticsAccount external=%q was not known (use accounts/{{accountID}})", ref)
+	}
+	tokens := strings.Split(ref, "/")
+	if len(tokens) != 2 || tokens[0] != "accounts" || tokens[1] == "" {
+		return fmt.Errorf("format of AnalyticsAccount external=%q was not known (use accounts/{{accountID}})", ref)
+	}
+
+	i.Account = tokens[1]
+	return nil
+}
+
+func (i *AccountIdentity) Host() string {
+	return "analyticsadmin.googleapis.com"
+}
+
+func (i *AccountIdentity) ExternalIdentifier() *string {
+	return &i.Account
 }
 
 func (i *AccountIdentity) ID() string {
-	return i.id
+	return i.Account
 }
 
 func (i *AccountIdentity) SetID(id string) {
-	i.id = id
-	return
+	i.Account = id
 }
 
-// New builds an AccountIdentity from the Config Connector Account object.
-func NewAccountIdentity(ctx context.Context, reader client.Reader, obj *AnalyticsAccount) (*AccountIdentity, error) {
-	// Attempt to get the service-generated resource ID.
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" && obj.Status.ExternalRef != nil { // Reconciliation after creation is completed.
-		savedResourceID, err := ParseAccountExternal(common.ValueOf(obj.Status.ExternalRef))
-		if err != nil {
-			return nil, err
-		}
-		resourceID = savedResourceID
+func getIdentityFromAnalyticsAccountSpec(ctx context.Context, reader client.Reader, obj *AnalyticsAccount) (*AccountIdentity, error) {
+	resourceID, err := refsv1beta1.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	id := &AccountIdentity{
-		id: resourceID,
+	identity := &AccountIdentity{
+		Account: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *AnalyticsAccount) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromAnalyticsAccountSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
 	}
 
-	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		if id.String() != externalRef {
-			return nil, fmt.Errorf("cannot update AnalyticsAccount identity (old=%q, new=%q): identity is immutable", externalRef, id.String())
+		// Validate desired with actual
+		statusIdentity := &AccountIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
 		}
+
+		// Account IDs are service-generated, so we only validate if the spec has an explicit resourceID.
+		if obj.Spec.ResourceID != nil && statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change AnalyticsAccount identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+		return statusIdentity, nil
 	}
 
-	return id, nil
-}
-
-func ParseAccountExternal(external string) (resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 2 || tokens[0] != "accounts" {
-		return "", fmt.Errorf("format of AnalyticsAccount external=%q was not known (use accounts/{{accountID}})", external)
-	}
-	resourceID = tokens[1]
-	return resourceID, nil
+	return specIdentity, nil
 }

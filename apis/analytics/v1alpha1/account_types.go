@@ -37,14 +37,6 @@ type AnalyticsAccountSpec struct {
 	// +kcc:proto:field=google.analytics.admin.v1beta.Account.region_code
 	// +required
 	RegionCode *string `json:"regionCode,omitempty"`
-
-	// Got the following error if 'redirect_uri' field is empty when provisioning the ticket for account creation:
-	// rpc error: code = InvalidArgument desc = The value for the 'redirect_uri' field was empty, but must be provided.
-
-	// Redirect URI where the user will be sent after accepting Terms of Service.
-	// +kcc:proto:field=google.analytics.admin.v1beta.ProvisionAccountTicketRequest.redirect_uri
-	// +required
-	RedirectURI *string `json:"redirectURI,omitempty"`
 }
 
 // AnalyticsAccountStatus defines the config connector machine state of AnalyticsAccount
@@ -106,6 +98,7 @@ type AnalyticsAccountObservedState struct {
 
 // AnalyticsAccount is the Schema for the AnalyticsAccount API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 type AnalyticsAccount struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

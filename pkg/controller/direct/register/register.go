@@ -19,6 +19,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform/vertexaifeatureonlinestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aistreams"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/analytics"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigateway"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
