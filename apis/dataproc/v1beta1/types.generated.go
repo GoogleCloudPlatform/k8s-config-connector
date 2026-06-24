@@ -22,7 +22,8 @@
 
 package v1beta1
 
-/* unreachable type AcceleratorConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.AcceleratorConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.AcceleratorConfig
 type AcceleratorConfig struct {
 	// Full URL, partial URI, or short name of the accelerator type resource to
@@ -50,7 +51,8 @@ type AcceleratorConfig struct {
 }
 */
 
-/* unreachable type AutoscalingConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.AutoscalingConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.AutoscalingConfig
 type AutoscalingConfig struct {
 	// Optional. The autoscaling policy used by the cluster.
@@ -119,7 +121,8 @@ type AuxiliaryNodeGroup struct {
 }
 */
 
-/* unreachable type AuxiliaryServicesConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.AuxiliaryServicesConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.AuxiliaryServicesConfig
 type AuxiliaryServicesConfig struct {
 	// Optional. The Hive Metastore configuration for this workload.
@@ -210,7 +213,8 @@ type BasicYarnAutoscalingConfig struct {
 }
 */
 
-/* unreachable type Cluster
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Cluster", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.Cluster
 type Cluster struct {
 	// Required. The Google Cloud Platform project ID that the cluster belongs to.
@@ -381,13 +385,15 @@ type ClusterMetrics struct {
 }
 */
 
-/* unreachable type ClusterStatus
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ClusterStatus", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.ClusterStatus
 type ClusterStatus struct {
 }
 */
 
-/* unreachable type ConfidentialInstanceConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ConfidentialInstanceConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.ConfidentialInstanceConfig
 type ConfidentialInstanceConfig struct {
 	// Optional. Defines whether the instance should have confidential compute
@@ -397,7 +403,8 @@ type ConfidentialInstanceConfig struct {
 }
 */
 
-/* unreachable type DataprocMetricConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.DataprocMetricConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.DataprocMetricConfig
 type DataprocMetricConfig struct {
 	// Required. Metrics sources to enable.
@@ -406,7 +413,8 @@ type DataprocMetricConfig struct {
 }
 */
 
-/* unreachable type DataprocMetricConfig_Metric
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.DataprocMetricConfig.Metric", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.DataprocMetricConfig.Metric
 type DataprocMetricConfig_Metric struct {
 	// Required. A standard set of metrics is collected unless `metricOverrides`
@@ -450,7 +458,8 @@ type DataprocMetricConfig_Metric struct {
 }
 */
 
-/* unreachable type DiskConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.DiskConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.DiskConfig
 type DiskConfig struct {
 	// Optional. Type of the boot disk (default is "pd-standard").
@@ -500,7 +509,8 @@ type DiskConfig struct {
 }
 */
 
-/* unreachable type EncryptionConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.EncryptionConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.EncryptionConfig
 type EncryptionConfig struct {
 	// Optional. The Cloud KMS key resource name to use for persistent disk
@@ -542,7 +552,8 @@ type EncryptionConfig struct {
 }
 */
 
-/* unreachable type EndpointConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.EndpointConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.EndpointConfig
 type EndpointConfig struct {
 
@@ -553,7 +564,8 @@ type EndpointConfig struct {
 }
 */
 
-/* unreachable type GCEClusterConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GceClusterConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.GceClusterConfig
 type GCEClusterConfig struct {
 	// Optional. The Compute Engine zone where the Dataproc cluster will be
@@ -680,7 +692,8 @@ type GCEClusterConfig struct {
 }
 */
 
-/* unreachable type GKEClusterConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GkeClusterConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.GkeClusterConfig
 type GKEClusterConfig struct {
 	// Optional. A target GKE cluster to deploy to. It must be in the same project
@@ -701,7 +714,8 @@ type GKEClusterConfig struct {
 }
 */
 
-/* unreachable type GKENodePoolConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GkeNodePoolConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolConfig
 type GKENodePoolConfig struct {
 	// Optional. The node pool configuration.
@@ -729,7 +743,8 @@ type GKENodePoolConfig struct {
 }
 */
 
-/* unreachable type GKENodePoolConfig_GKENodeConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodeConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodeConfig
 type GKENodePoolConfig_GKENodeConfig struct {
 	// Optional. The name of a Compute Engine [machine
@@ -793,7 +808,8 @@ type GKENodePoolConfig_GKENodeConfig struct {
 }
 */
 
-/* unreachable type GKENodePoolConfig_GKENodePoolAcceleratorConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodePoolAcceleratorConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodePoolAcceleratorConfig
 type GKENodePoolConfig_GKENodePoolAcceleratorConfig struct {
 	// The number of accelerator cards exposed to an instance.
@@ -812,7 +828,8 @@ type GKENodePoolConfig_GKENodePoolAcceleratorConfig struct {
 }
 */
 
-/* unreachable type GKENodePoolConfig_GKENodePoolAutoscalingConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodePoolAutoscalingConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodePoolAutoscalingConfig
 type GKENodePoolConfig_GKENodePoolAutoscalingConfig struct {
 	// The minimum number of nodes in the node pool. Must be >= 0 and <=
@@ -828,7 +845,8 @@ type GKENodePoolConfig_GKENodePoolAutoscalingConfig struct {
 }
 */
 
-/* unreachable type GKENodePoolTarget
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GkeNodePoolTarget", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolTarget
 type GKENodePoolTarget struct {
 	// Required. The target GKE node pool.
@@ -858,7 +876,8 @@ type GKENodePoolTarget struct {
 }
 */
 
-/* unreachable type IdentityConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.IdentityConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.IdentityConfig
 type IdentityConfig struct {
 	// Required. Map of user to service account.
@@ -973,7 +992,8 @@ type InstanceGroupAutoscalingPolicyConfig struct {
 }
 */
 
-/* unreachable type InstanceGroupConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.InstanceGroupConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfig struct {
 	// Optional. The number of VM instances in the instance group.
@@ -1076,7 +1096,8 @@ type InstanceGroupConfig struct {
 }
 */
 
-/* unreachable type InstanceReference
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.InstanceReference", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.InstanceReference
 type InstanceReference struct {
 	// The user-friendly name of the Compute Engine instance.
@@ -1097,7 +1118,8 @@ type InstanceReference struct {
 }
 */
 
-/* unreachable type KerberosConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.KerberosConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.KerberosConfig
 type KerberosConfig struct {
 	// Optional. Flag to indicate whether to Kerberize the cluster (default:
@@ -1184,7 +1206,8 @@ type KerberosConfig struct {
 }
 */
 
-/* unreachable type KubernetesClusterConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.KubernetesClusterConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.KubernetesClusterConfig
 type KubernetesClusterConfig struct {
 	// Optional. A namespace within the Kubernetes cluster to deploy into. If this
@@ -1205,7 +1228,8 @@ type KubernetesClusterConfig struct {
 }
 */
 
-/* unreachable type KubernetesSoftwareConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.KubernetesSoftwareConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.KubernetesSoftwareConfig
 type KubernetesSoftwareConfig struct {
 	// The components that should be installed in this Dataproc cluster. The key
@@ -1230,7 +1254,8 @@ type KubernetesSoftwareConfig struct {
 }
 */
 
-/* unreachable type LifecycleConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.LifecycleConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.LifecycleConfig
 type LifecycleConfig struct {
 	// Optional. The duration to keep the cluster alive while idling (when no jobs
@@ -1256,13 +1281,15 @@ type LifecycleConfig struct {
 }
 */
 
-/* unreachable type ManagedGroupConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ManagedGroupConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfig struct {
 }
 */
 
-/* unreachable type MetastoreConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.MetastoreConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.MetastoreConfig
 type MetastoreConfig struct {
 	// Required. Resource name of an existing Dataproc Metastore service.
@@ -1303,7 +1330,8 @@ type NodeGroup struct {
 }
 */
 
-/* unreachable type NodeGroupAffinity
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.NodeGroupAffinity", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.NodeGroupAffinity
 type NodeGroupAffinity struct {
 	// Required. The URI of a
@@ -1321,7 +1349,8 @@ type NodeGroupAffinity struct {
 }
 */
 
-/* unreachable type NodeInitializationAction
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.NodeInitializationAction", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.NodeInitializationAction
 type NodeInitializationAction struct {
 	// Required. Cloud Storage URI of executable file.
@@ -1340,7 +1369,8 @@ type NodeInitializationAction struct {
 }
 */
 
-/* unreachable type ReservationAffinity
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ReservationAffinity", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.ReservationAffinity
 type ReservationAffinity struct {
 	// Optional. Type of reservation to consume
@@ -1357,7 +1387,8 @@ type ReservationAffinity struct {
 }
 */
 
-/* unreachable type SecurityConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.SecurityConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.SecurityConfig
 type SecurityConfig struct {
 	// Optional. Kerberos related configuration.
@@ -1371,7 +1402,8 @@ type SecurityConfig struct {
 }
 */
 
-/* unreachable type ShieldedInstanceConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ShieldedInstanceConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.ShieldedInstanceConfig
 type ShieldedInstanceConfig struct {
 	// Optional. Defines whether instances have Secure Boot enabled.
@@ -1388,7 +1420,8 @@ type ShieldedInstanceConfig struct {
 }
 */
 
-/* unreachable type SoftwareConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.SoftwareConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.SoftwareConfig
 type SoftwareConfig struct {
 	// Optional. The version of software inside the cluster. It must be one of the
@@ -1428,7 +1461,8 @@ type SoftwareConfig struct {
 }
 */
 
-/* unreachable type SparkHistoryServerConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.SparkHistoryServerConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.SparkHistoryServerConfig
 type SparkHistoryServerConfig struct {
 	// Optional. Resource name of an existing Dataproc Cluster to act as a Spark
@@ -1456,7 +1490,8 @@ type StartupConfig struct {
 }
 */
 
-/* unreachable type VirtualClusterConfig
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.VirtualClusterConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.VirtualClusterConfig
 type VirtualClusterConfig struct {
 	// Optional. A Cloud Storage bucket used to stage job
@@ -1512,7 +1547,8 @@ type AuxiliaryNodeGroupObservedState struct {
 }
 */
 
-/* unreachable type ClusterObservedState
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Cluster", skipping
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.Cluster
 type ClusterObservedState struct {
 	// Optional. The cluster config for a cluster of Compute Engine Instances.
@@ -1545,7 +1581,8 @@ type ClusterObservedState struct {
 }
 */
 
-/* unreachable type ClusterConfigObservedState
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ClusterConfig", skipping
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.ClusterConfig
 type ClusterConfigObservedState struct {
 	// Optional. The Compute Engine config settings for
@@ -1577,7 +1614,8 @@ type ClusterConfigObservedState struct {
 }
 */
 
-/* unreachable type ClusterStatusObservedState
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ClusterStatus", skipping
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.ClusterStatus
 type ClusterStatusObservedState struct {
 	// Output only. The cluster's state.
@@ -1600,7 +1638,8 @@ type ClusterStatusObservedState struct {
 }
 */
 
-/* unreachable type EndpointConfigObservedState
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.EndpointConfig", skipping
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.EndpointConfig
 type EndpointConfigObservedState struct {
 	// Output only. The map of port descriptions to URLs. Will only be populated
@@ -1632,7 +1671,8 @@ type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 }
 */
 
-/* unreachable type InstanceGroupConfigObservedState
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.InstanceGroupConfig", skipping
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfigObservedState struct {
 	// Output only. The list of instance names. Dataproc derives the names
@@ -1662,7 +1702,8 @@ type InstanceGroupConfigObservedState struct {
 }
 */
 
-/* unreachable type LifecycleConfigObservedState
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.LifecycleConfig", skipping
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.LifecycleConfig
 type LifecycleConfigObservedState struct {
 	// Output only. The time when cluster became idle (most recent job finished)
@@ -1674,7 +1715,8 @@ type LifecycleConfigObservedState struct {
 }
 */
 
-/* unreachable type ManagedGroupConfigObservedState
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ManagedGroupConfig", skipping
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfigObservedState struct {
 	// Output only. The name of the Instance Template used for the Managed

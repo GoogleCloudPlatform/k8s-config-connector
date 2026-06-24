@@ -27,6 +27,8 @@ import (
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	krmdataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -156,17 +158,1315 @@ func Batch_StateHistoryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContex
 }
 */
 
-/*
-found existing non-generated mapping function "Batch_StateHistoryObservedState_v1alpha1_ToProto", skipping
+/* found existing non-generated mapping function "Batch_StateHistoryObservedState_v1alpha1_ToProto", skipping
+func Batch_StateHistoryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Batch_StateHistoryObservedState) *pb.Batch_StateHistory {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Batch_StateHistory{}
+	out.State = direct.Enum_ToProto[pb.Batch_State](mapCtx, in.State)
+	out.StateMessage = direct.ValueOf(in.StateMessage)
+	out.StateStartTime = direct.StringTimestamp_ToProto(mapCtx, in.StateStartTime)
+	return out
+}
+*/
 
-	func Batch_StateHistoryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Batch_StateHistoryObservedState) *pb.Batch_StateHistory {
+/* found existing non-generated mapping function "ClusterAccelerators_v1beta1_FromProto", skipping
+func ClusterAccelerators_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krm.ClusterAccelerators {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterAccelerators{}
+	// MISSING: AcceleratorTypeURI
+	out.AcceleratorCount = direct.LazyPtr(in.GetAcceleratorCount())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterAccelerators_v1beta1_ToProto", skipping
+func ClusterAccelerators_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterAccelerators) *pb.AcceleratorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AcceleratorConfig{}
+	// MISSING: AcceleratorTypeURI
+	out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterAutoscaling_v1beta1_FromProto", skipping
+func ClusterAutoscaling_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GkeNodePoolConfig_GkeNodePoolAutoscalingConfig) *krm.ClusterAutoscaling {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterAutoscaling{}
+	out.MinNodeCount = direct.LazyPtr(in.GetMinNodeCount())
+	out.MaxNodeCount = direct.LazyPtr(in.GetMaxNodeCount())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ClusterAutoscaling_v1beta1_ToProto", skipping
+
+	func ClusterAutoscaling_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterAutoscaling) *pb.GkeNodePoolConfig_GkeNodePoolAutoscalingConfig {
 		if in == nil {
 			return nil
 		}
-		out := &pb.Batch_StateHistory{}
-		out.State = direct.Enum_ToProto[pb.Batch_State](mapCtx, in.State)
-		out.StateMessage = direct.ValueOf(in.StateMessage)
-		out.StateStartTime = direct.StringTimestamp_ToProto(mapCtx, in.StateStartTime)
+		out := &pb.GkeNodePoolConfig_GkeNodePoolAutoscalingConfig{}
+		out.MinNodeCount = direct.ValueOf(in.MinNodeCount)
+		out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
+		return out
+	}
+*/
+func ClusterAutoscalingConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingConfig) *krm.ClusterAutoscalingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterAutoscalingConfig{}
+	// MISSING: PolicyURI
+	return out
+}
+func ClusterAutoscalingConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterAutoscalingConfig) *pb.AutoscalingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingConfig{}
+	// MISSING: PolicyURI
+	return out
+}
+func ClusterAuxiliaryServicesConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AuxiliaryServicesConfig) *krm.ClusterAuxiliaryServicesConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterAuxiliaryServicesConfig{}
+	out.MetastoreConfig = ClusterMetastoreConfig_v1beta1_FromProto(mapCtx, in.GetMetastoreConfig())
+	out.SparkHistoryServerConfig = ClusterSparkHistoryServerConfig_v1beta1_FromProto(mapCtx, in.GetSparkHistoryServerConfig())
+	return out
+}
+func ClusterAuxiliaryServicesConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterAuxiliaryServicesConfig) *pb.AuxiliaryServicesConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuxiliaryServicesConfig{}
+	out.MetastoreConfig = ClusterMetastoreConfig_v1beta1_ToProto(mapCtx, in.MetastoreConfig)
+	out.SparkHistoryServerConfig = ClusterSparkHistoryServerConfig_v1beta1_ToProto(mapCtx, in.SparkHistoryServerConfig)
+	return out
+}
+func ClusterConfidentialInstanceConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ConfidentialInstanceConfig) *krm.ClusterConfidentialInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterConfidentialInstanceConfig{}
+	out.EnableConfidentialCompute = direct.LazyPtr(in.GetEnableConfidentialCompute())
+	return out
+}
+func ClusterConfidentialInstanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterConfidentialInstanceConfig) *pb.ConfidentialInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConfidentialInstanceConfig{}
+	out.EnableConfidentialCompute = direct.ValueOf(in.EnableConfidentialCompute)
+	return out
+}
+func ClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ClusterConfig) *krm.ClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterConfig{}
+	// MISSING: ClusterTier
+	// MISSING: ConfigBucket
+	if in.GetTempBucket() != "" {
+		out.TempBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetTempBucket()}
+	}
+	// MISSING: GCEClusterConfig
+	// (near miss): "GCEClusterConfig" vs "GceClusterConfig"
+	out.MasterConfig = ClusterMasterConfig_v1beta1_FromProto(mapCtx, in.GetMasterConfig())
+	out.WorkerConfig = ClusterWorkerConfig_v1beta1_FromProto(mapCtx, in.GetWorkerConfig())
+	out.SecondaryWorkerConfig = ClusterSecondaryWorkerConfig_v1beta1_FromProto(mapCtx, in.GetSecondaryWorkerConfig())
+	out.SoftwareConfig = ClusterSoftwareConfig_v1beta1_FromProto(mapCtx, in.GetSoftwareConfig())
+	out.InitializationActions = direct.Slice_FromProto(mapCtx, in.InitializationActions, ClusterInitializationActions_v1beta1_FromProto)
+	out.EncryptionConfig = ClusterEncryptionConfig_v1beta1_FromProto(mapCtx, in.GetEncryptionConfig())
+	out.AutoscalingConfig = ClusterAutoscalingConfig_v1beta1_FromProto(mapCtx, in.GetAutoscalingConfig())
+	out.SecurityConfig = ClusterSecurityConfig_v1beta1_FromProto(mapCtx, in.GetSecurityConfig())
+	out.LifecycleConfig = ClusterLifecycleConfig_v1beta1_FromProto(mapCtx, in.GetLifecycleConfig())
+	out.EndpointConfig = ClusterEndpointConfig_v1beta1_FromProto(mapCtx, in.GetEndpointConfig())
+	out.MetastoreConfig = ClusterMetastoreConfig_v1beta1_FromProto(mapCtx, in.GetMetastoreConfig())
+	out.DataprocMetricConfig = ClusterDataprocMetricConfig_v1beta1_FromProto(mapCtx, in.GetDataprocMetricConfig())
+	// MISSING: AuxiliaryNodeGroups
+	return out
+}
+func ClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterConfig) *pb.ClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClusterConfig{}
+	// MISSING: ClusterTier
+	// MISSING: ConfigBucket
+	if in.TempBucketRef != nil {
+		out.TempBucket = in.TempBucketRef.External
+	}
+	// MISSING: GCEClusterConfig
+	// (near miss): "GCEClusterConfig" vs "GceClusterConfig"
+	out.MasterConfig = ClusterMasterConfig_v1beta1_ToProto(mapCtx, in.MasterConfig)
+	out.WorkerConfig = ClusterWorkerConfig_v1beta1_ToProto(mapCtx, in.WorkerConfig)
+	out.SecondaryWorkerConfig = ClusterSecondaryWorkerConfig_v1beta1_ToProto(mapCtx, in.SecondaryWorkerConfig)
+	out.SoftwareConfig = ClusterSoftwareConfig_v1beta1_ToProto(mapCtx, in.SoftwareConfig)
+	out.InitializationActions = direct.Slice_ToProto(mapCtx, in.InitializationActions, ClusterInitializationActions_v1beta1_ToProto)
+	out.EncryptionConfig = ClusterEncryptionConfig_v1beta1_ToProto(mapCtx, in.EncryptionConfig)
+	out.AutoscalingConfig = ClusterAutoscalingConfig_v1beta1_ToProto(mapCtx, in.AutoscalingConfig)
+	out.SecurityConfig = ClusterSecurityConfig_v1beta1_ToProto(mapCtx, in.SecurityConfig)
+	out.LifecycleConfig = ClusterLifecycleConfig_v1beta1_ToProto(mapCtx, in.LifecycleConfig)
+	out.EndpointConfig = ClusterEndpointConfig_v1beta1_ToProto(mapCtx, in.EndpointConfig)
+	out.MetastoreConfig = ClusterMetastoreConfig_v1beta1_ToProto(mapCtx, in.MetastoreConfig)
+	out.DataprocMetricConfig = ClusterDataprocMetricConfig_v1beta1_ToProto(mapCtx, in.DataprocMetricConfig)
+	// MISSING: AuxiliaryNodeGroups
+	return out
+}
+func ClusterConfigStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ClusterConfig) *krm.ClusterConfigStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterConfigStatus{}
+	// MISSING: ClusterTier
+	// MISSING: ConfigBucket
+	// MISSING: TempBucket
+	// MISSING: GCEClusterConfig
+	out.MasterConfig = ClusterMasterConfigStatus_v1beta1_FromProto(mapCtx, in.GetMasterConfig())
+	out.WorkerConfig = ClusterWorkerConfigStatus_v1beta1_FromProto(mapCtx, in.GetWorkerConfig())
+	out.SecondaryWorkerConfig = ClusterSecondaryWorkerConfigStatus_v1beta1_FromProto(mapCtx, in.GetSecondaryWorkerConfig())
+	// MISSING: SoftwareConfig
+	// MISSING: InitializationActions
+	// MISSING: EncryptionConfig
+	// MISSING: AutoscalingConfig
+	// MISSING: SecurityConfig
+	out.LifecycleConfig = ClusterLifecycleConfigStatus_v1beta1_FromProto(mapCtx, in.GetLifecycleConfig())
+	out.EndpointConfig = ClusterEndpointConfigStatus_v1beta1_FromProto(mapCtx, in.GetEndpointConfig())
+	// MISSING: MetastoreConfig
+	// MISSING: DataprocMetricConfig
+	// MISSING: AuxiliaryNodeGroups
+	return out
+}
+func ClusterConfigStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterConfigStatus) *pb.ClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClusterConfig{}
+	// MISSING: ClusterTier
+	// MISSING: ConfigBucket
+	// MISSING: TempBucket
+	// MISSING: GCEClusterConfig
+	out.MasterConfig = ClusterMasterConfigStatus_v1beta1_ToProto(mapCtx, in.MasterConfig)
+	out.WorkerConfig = ClusterWorkerConfigStatus_v1beta1_ToProto(mapCtx, in.WorkerConfig)
+	out.SecondaryWorkerConfig = ClusterSecondaryWorkerConfigStatus_v1beta1_ToProto(mapCtx, in.SecondaryWorkerConfig)
+	// MISSING: SoftwareConfig
+	// MISSING: InitializationActions
+	// MISSING: EncryptionConfig
+	// MISSING: AutoscalingConfig
+	// MISSING: SecurityConfig
+	out.LifecycleConfig = ClusterLifecycleConfigStatus_v1beta1_ToProto(mapCtx, in.LifecycleConfig)
+	out.EndpointConfig = ClusterEndpointConfigStatus_v1beta1_ToProto(mapCtx, in.EndpointConfig)
+	// MISSING: MetastoreConfig
+	// MISSING: DataprocMetricConfig
+	// MISSING: AuxiliaryNodeGroups
+	return out
+}
+func ClusterDataprocMetricConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DataprocMetricConfig) *krm.ClusterDataprocMetricConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterDataprocMetricConfig{}
+	out.Metrics = direct.Slice_FromProto(mapCtx, in.Metrics, ClusterMetrics_v1beta1_FromProto)
+	return out
+}
+func ClusterDataprocMetricConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterDataprocMetricConfig) *pb.DataprocMetricConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataprocMetricConfig{}
+	out.Metrics = direct.Slice_ToProto(mapCtx, in.Metrics, ClusterMetrics_v1beta1_ToProto)
+	return out
+}
+
+/* found existing non-generated mapping function "ClusterDiskConfig_v1beta1_FromProto", skipping
+func ClusterDiskConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DiskConfig) *krm.ClusterDiskConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterDiskConfig{}
+	out.BootDiskType = direct.LazyPtr(in.GetBootDiskType())
+	// MISSING: BootDiskSizeGB
+	// (near miss): "BootDiskSizeGB" vs "BootDiskSizeGb"
+	out.NumLocalSsds = direct.LazyPtr(in.GetNumLocalSsds())
+	out.LocalSsdInterface = direct.LazyPtr(in.GetLocalSsdInterface())
+	// MISSING: BootDiskProvisionedIops
+	// MISSING: BootDiskProvisionedThroughput
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ClusterDiskConfig_v1beta1_ToProto", skipping
+
+	func ClusterDiskConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterDiskConfig) *pb.DiskConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.DiskConfig{}
+		out.BootDiskType = direct.ValueOf(in.BootDiskType)
+		// MISSING: BootDiskSizeGB
+		// (near miss): "BootDiskSizeGB" vs "BootDiskSizeGb"
+		out.NumLocalSsds = direct.ValueOf(in.NumLocalSsds)
+		out.LocalSsdInterface = direct.ValueOf(in.LocalSsdInterface)
+		// MISSING: BootDiskProvisionedIops
+		// MISSING: BootDiskProvisionedThroughput
+		return out
+	}
+*/
+func ClusterEncryptionConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.ClusterEncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterEncryptionConfig{}
+	// MISSING: GCEPDKMSKeyName
+	// MISSING: KMSKey
+	return out
+}
+func ClusterEncryptionConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterEncryptionConfig) *pb.EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionConfig{}
+	// MISSING: GCEPDKMSKeyName
+	// MISSING: KMSKey
+	return out
+}
+func ClusterEndpointConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EndpointConfig) *krm.ClusterEndpointConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterEndpointConfig{}
+	// MISSING: HTTPPorts
+	// MISSING: EnableHTTPPortAccess
+	// (near miss): "EnableHTTPPortAccess" vs "EnableHttpPortAccess"
+	return out
+}
+func ClusterEndpointConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterEndpointConfig) *pb.EndpointConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EndpointConfig{}
+	// MISSING: HTTPPorts
+	// MISSING: EnableHTTPPortAccess
+	// (near miss): "EnableHTTPPortAccess" vs "EnableHttpPortAccess"
+	return out
+}
+func ClusterEndpointConfigStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EndpointConfig) *krm.ClusterEndpointConfigStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterEndpointConfigStatus{}
+	// MISSING: HTTPPorts
+	// (near miss): "HTTPPorts" vs "HttpPorts"
+	// MISSING: EnableHTTPPortAccess
+	return out
+}
+func ClusterEndpointConfigStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterEndpointConfigStatus) *pb.EndpointConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EndpointConfig{}
+	// MISSING: HTTPPorts
+	// (near miss): "HTTPPorts" vs "HttpPorts"
+	// MISSING: EnableHTTPPortAccess
+	return out
+}
+func ClusterGceClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GceClusterConfig) *krm.ClusterGceClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterGceClusterConfig{}
+	// MISSING: ZoneURI
+	// MISSING: NetworkURI
+	// MISSING: SubnetworkURI
+	out.InternalIPOnly = in.InternalIpOnly
+	// MISSING: PrivateIPV6GoogleAccess
+	// (near miss): "PrivateIPV6GoogleAccess" vs "PrivateIPv6GoogleAccess"
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.ServiceAccountScopes = in.ServiceAccountScopes
+	out.Tags = in.Tags
+	out.Metadata = in.Metadata
+	out.ReservationAffinity = ClusterReservationAffinity_v1beta1_FromProto(mapCtx, in.GetReservationAffinity())
+	out.NodeGroupAffinity = ClusterNodeGroupAffinity_v1beta1_FromProto(mapCtx, in.GetNodeGroupAffinity())
+	out.ShieldedInstanceConfig = ClusterShieldedInstanceConfig_v1beta1_FromProto(mapCtx, in.GetShieldedInstanceConfig())
+	out.ConfidentialInstanceConfig = ClusterConfidentialInstanceConfig_v1beta1_FromProto(mapCtx, in.GetConfidentialInstanceConfig())
+	return out
+}
+func ClusterGceClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterGceClusterConfig) *pb.GceClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GceClusterConfig{}
+	// MISSING: ZoneURI
+	// MISSING: NetworkURI
+	// MISSING: SubnetworkURI
+	out.InternalIpOnly = in.InternalIPOnly
+	// MISSING: PrivateIPV6GoogleAccess
+	// (near miss): "PrivateIPV6GoogleAccess" vs "PrivateIPv6GoogleAccess"
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.ServiceAccountScopes = in.ServiceAccountScopes
+	out.Tags = in.Tags
+	out.Metadata = in.Metadata
+	out.ReservationAffinity = ClusterReservationAffinity_v1beta1_ToProto(mapCtx, in.ReservationAffinity)
+	out.NodeGroupAffinity = ClusterNodeGroupAffinity_v1beta1_ToProto(mapCtx, in.NodeGroupAffinity)
+	out.ShieldedInstanceConfig = ClusterShieldedInstanceConfig_v1beta1_ToProto(mapCtx, in.ShieldedInstanceConfig)
+	out.ConfidentialInstanceConfig = ClusterConfidentialInstanceConfig_v1beta1_ToProto(mapCtx, in.ConfidentialInstanceConfig)
+	return out
+}
+
+/* found existing non-generated mapping function "ClusterGkeClusterConfig_v1beta1_FromProto", skipping
+func ClusterGkeClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GkeClusterConfig) *krm.ClusterGkeClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterGkeClusterConfig{}
+	// MISSING: GKEClusterTarget
+	out.NodePoolTarget = direct.Slice_FromProto(mapCtx, in.NodePoolTarget, ClusterNodePoolTarget_v1beta1_FromProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterGkeClusterConfig_v1beta1_ToProto", skipping
+func ClusterGkeClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterGkeClusterConfig) *pb.GkeClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GkeClusterConfig{}
+	// MISSING: GKEClusterTarget
+	out.NodePoolTarget = direct.Slice_ToProto(mapCtx, in.NodePoolTarget, ClusterNodePoolTarget_v1beta1_ToProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterGkeNodeConfig_v1beta1_FromProto", skipping
+func ClusterGkeNodeConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GkeNodePoolConfig_GkeNodeConfig) *krm.ClusterGkeNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterGkeNodeConfig{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
+	out.Preemptible = direct.LazyPtr(in.GetPreemptible())
+	out.Accelerators = direct.Slice_FromProto(mapCtx, in.Accelerators, ClusterGkeNodePoolAccelerators_v1beta1_FromProto)
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	// MISSING: BootDiskKMSKey
+	// (near miss): "BootDiskKMSKey" vs "BootDiskKmsKey"
+	out.Spot = direct.LazyPtr(in.GetSpot())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterGkeNodeConfig_v1beta1_ToProto", skipping
+func ClusterGkeNodeConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterGkeNodeConfig) *pb.GkeNodePoolConfig_GkeNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GkeNodePoolConfig_GkeNodeConfig{}
+	out.MachineType = direct.ValueOf(in.MachineType)
+	out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
+	out.Preemptible = direct.ValueOf(in.Preemptible)
+	out.Accelerators = direct.Slice_ToProto(mapCtx, in.Accelerators, ClusterGkeNodePoolAccelerators_v1beta1_ToProto)
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	// MISSING: BootDiskKMSKey
+	// (near miss): "BootDiskKMSKey" vs "BootDiskKmsKey"
+	out.Spot = direct.ValueOf(in.Spot)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterGkeNodePoolAccelerators_v1beta1_FromProto", skipping
+func ClusterGkeNodePoolAccelerators_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GkeNodePoolConfig_GkeNodePoolAcceleratorConfig) *krm.ClusterGkeNodePoolAccelerators {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterGkeNodePoolAccelerators{}
+	out.AcceleratorCount = direct.LazyPtr(in.GetAcceleratorCount())
+	out.AcceleratorType = direct.LazyPtr(in.GetAcceleratorType())
+	out.GpuPartitionSize = direct.LazyPtr(in.GetGpuPartitionSize())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ClusterGkeNodePoolAccelerators_v1beta1_ToProto", skipping
+
+	func ClusterGkeNodePoolAccelerators_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterGkeNodePoolAccelerators) *pb.GkeNodePoolConfig_GkeNodePoolAcceleratorConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.GkeNodePoolConfig_GkeNodePoolAcceleratorConfig{}
+		out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
+		out.AcceleratorType = direct.ValueOf(in.AcceleratorType)
+		out.GpuPartitionSize = direct.ValueOf(in.GpuPartitionSize)
+		return out
+	}
+*/
+func ClusterIdentityConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.IdentityConfig) *krm.ClusterIdentityConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterIdentityConfig{}
+	out.UserServiceAccountMapping = in.UserServiceAccountMapping
+	return out
+}
+func ClusterIdentityConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterIdentityConfig) *pb.IdentityConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IdentityConfig{}
+	out.UserServiceAccountMapping = in.UserServiceAccountMapping
+	return out
+}
+
+/* found existing non-generated mapping function "ClusterInitializationActions_v1beta1_FromProto", skipping
+func ClusterInitializationActions_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeInitializationAction) *krm.ClusterInitializationActions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterInitializationActions{}
+	out.ExecutableFile = in.GetExecutableFile()
+	out.ExecutionTimeout = direct.StringDuration_FromProto(mapCtx, in.GetExecutionTimeout())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ClusterInitializationActions_v1beta1_ToProto", skipping
+
+	func ClusterInitializationActions_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterInitializationActions) *pb.NodeInitializationAction {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NodeInitializationAction{}
+		out.ExecutableFile = ClusterInitializationActions_ExecutableFile_ToProto(mapCtx, in.ExecutableFile)
+		out.ExecutionTimeout = direct.StringDuration_ToProto(mapCtx, in.ExecutionTimeout)
+		return out
+	}
+*/
+func ClusterInstanceReferencesStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceReference) *krm.ClusterInstanceReferencesStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterInstanceReferencesStatus{}
+	out.InstanceName = direct.LazyPtr(in.GetInstanceName())
+	// MISSING: InstanceID
+	// (near miss): "InstanceID" vs "InstanceId"
+	out.PublicKey = direct.LazyPtr(in.GetPublicKey())
+	out.PublicEciesKey = direct.LazyPtr(in.GetPublicEciesKey())
+	return out
+}
+func ClusterInstanceReferencesStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterInstanceReferencesStatus) *pb.InstanceReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceReference{}
+	out.InstanceName = direct.ValueOf(in.InstanceName)
+	// MISSING: InstanceID
+	// (near miss): "InstanceID" vs "InstanceId"
+	out.PublicKey = direct.ValueOf(in.PublicKey)
+	out.PublicEciesKey = direct.ValueOf(in.PublicEciesKey)
+	return out
+}
+
+/* found existing non-generated mapping function "ClusterKerberosConfig_v1beta1_FromProto", skipping
+func ClusterKerberosConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KerberosConfig) *krm.ClusterKerberosConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterKerberosConfig{}
+	out.EnableKerberos = direct.LazyPtr(in.GetEnableKerberos())
+	// MISSING: RootPrincipalPasswordURI
+	// MISSING: KMSKeyURI
+	// MISSING: KeystoreURI
+	// MISSING: TruststoreURI
+	// MISSING: KeystorePasswordURI
+	// MISSING: KeyPasswordURI
+	// MISSING: TruststorePasswordURI
+	out.CrossRealmTrustRealm = direct.LazyPtr(in.GetCrossRealmTrustRealm())
+	out.CrossRealmTrustKdc = direct.LazyPtr(in.GetCrossRealmTrustKdc())
+	out.CrossRealmTrustAdminServer = direct.LazyPtr(in.GetCrossRealmTrustAdminServer())
+	// MISSING: CrossRealmTrustSharedPasswordURI
+	// MISSING: KdcDbKeyURI
+	out.TgtLifetimeHours = direct.LazyPtr(in.GetTgtLifetimeHours())
+	out.Realm = direct.LazyPtr(in.GetRealm())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterKerberosConfig_v1beta1_ToProto", skipping
+func ClusterKerberosConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterKerberosConfig) *pb.KerberosConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KerberosConfig{}
+	out.EnableKerberos = direct.ValueOf(in.EnableKerberos)
+	// MISSING: RootPrincipalPasswordURI
+	// MISSING: KMSKeyURI
+	// MISSING: KeystoreURI
+	// MISSING: TruststoreURI
+	// MISSING: KeystorePasswordURI
+	// MISSING: KeyPasswordURI
+	// MISSING: TruststorePasswordURI
+	out.CrossRealmTrustRealm = direct.ValueOf(in.CrossRealmTrustRealm)
+	out.CrossRealmTrustKdc = direct.ValueOf(in.CrossRealmTrustKdc)
+	out.CrossRealmTrustAdminServer = direct.ValueOf(in.CrossRealmTrustAdminServer)
+	// MISSING: CrossRealmTrustSharedPasswordURI
+	// MISSING: KdcDbKeyURI
+	out.TgtLifetimeHours = direct.ValueOf(in.TgtLifetimeHours)
+	out.Realm = direct.ValueOf(in.Realm)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterKubernetesClusterConfig_v1beta1_FromProto", skipping
+func ClusterKubernetesClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesClusterConfig) *krm.ClusterKubernetesClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterKubernetesClusterConfig{}
+	out.KubernetesNamespace = direct.LazyPtr(in.GetKubernetesNamespace())
+	// MISSING: GKEClusterConfig
+	// (near miss): "GKEClusterConfig" vs "GkeClusterConfig"
+	out.KubernetesSoftwareConfig = ClusterKubernetesSoftwareConfig_v1beta1_FromProto(mapCtx, in.GetKubernetesSoftwareConfig())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ClusterKubernetesClusterConfig_v1beta1_ToProto", skipping
+
+	func ClusterKubernetesClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterKubernetesClusterConfig) *pb.KubernetesClusterConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.KubernetesClusterConfig{}
+		out.KubernetesNamespace = direct.ValueOf(in.KubernetesNamespace)
+		// MISSING: GKEClusterConfig
+		// (near miss): "GKEClusterConfig" vs "GkeClusterConfig"
+		out.KubernetesSoftwareConfig = ClusterKubernetesSoftwareConfig_v1beta1_ToProto(mapCtx, in.KubernetesSoftwareConfig)
+		return out
+	}
+*/
+func ClusterKubernetesSoftwareConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesSoftwareConfig) *krm.ClusterKubernetesSoftwareConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterKubernetesSoftwareConfig{}
+	out.ComponentVersion = in.ComponentVersion
+	out.Properties = in.Properties
+	return out
+}
+func ClusterKubernetesSoftwareConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterKubernetesSoftwareConfig) *pb.KubernetesSoftwareConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KubernetesSoftwareConfig{}
+	out.ComponentVersion = in.ComponentVersion
+	out.Properties = in.Properties
+	return out
+}
+func ClusterLifecycleConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.LifecycleConfig) *krm.ClusterLifecycleConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterLifecycleConfig{}
+	// MISSING: IdleDeleteTTL
+	// (near miss): "IdleDeleteTTL" vs "IdleDeleteTtl"
+	out.AutoDeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetAutoDeleteTime())
+	// MISSING: AutoDeleteTTL
+	// (near miss): "AutoDeleteTTL" vs "AutoDeleteTtl"
+	// MISSING: IdleStartTime
+	return out
+}
+func ClusterLifecycleConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterLifecycleConfig) *pb.LifecycleConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LifecycleConfig{}
+	// MISSING: IdleDeleteTTL
+	// (near miss): "IdleDeleteTTL" vs "IdleDeleteTtl"
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.AutoDeleteTime); oneof != nil {
+		out.Ttl = &pb.LifecycleConfig_AutoDeleteTime{AutoDeleteTime: oneof}
+	}
+	// MISSING: AutoDeleteTTL
+	// (near miss): "AutoDeleteTTL" vs "AutoDeleteTtl"
+	// MISSING: IdleStartTime
+	return out
+}
+func ClusterLifecycleConfigStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.LifecycleConfig) *krm.ClusterLifecycleConfigStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterLifecycleConfigStatus{}
+	// MISSING: IdleDeleteTTL
+	// MISSING: AutoDeleteTime
+	// MISSING: AutoDeleteTTL
+	out.IdleStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetIdleStartTime())
+	return out
+}
+func ClusterLifecycleConfigStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterLifecycleConfigStatus) *pb.LifecycleConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LifecycleConfig{}
+	// MISSING: IdleDeleteTTL
+	// MISSING: AutoDeleteTime
+	// MISSING: AutoDeleteTTL
+	out.IdleStartTime = direct.StringTimestamp_ToProto(mapCtx, in.IdleStartTime)
+	return out
+}
+func ClusterManagedGroupConfigStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ManagedGroupConfig) *krm.ClusterManagedGroupConfigStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterManagedGroupConfigStatus{}
+	out.InstanceTemplateName = direct.LazyPtr(in.GetInstanceTemplateName())
+	out.InstanceGroupManagerName = direct.LazyPtr(in.GetInstanceGroupManagerName())
+	// MISSING: InstanceGroupManagerURI
+	return out
+}
+func ClusterManagedGroupConfigStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterManagedGroupConfigStatus) *pb.ManagedGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManagedGroupConfig{}
+	out.InstanceTemplateName = direct.ValueOf(in.InstanceTemplateName)
+	out.InstanceGroupManagerName = direct.ValueOf(in.InstanceGroupManagerName)
+	// MISSING: InstanceGroupManagerURI
+	return out
+}
+
+/* found existing non-generated mapping function "ClusterMasterConfig_v1beta1_FromProto", skipping
+func ClusterMasterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupConfig) *krm.ClusterMasterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterMasterConfig{}
+	out.NumInstances = direct.LazyPtr(in.GetNumInstances())
+	// MISSING: InstanceNames
+	// MISSING: InstanceReferences
+	// MISSING: ImageURI
+	// MISSING: MachineTypeURI
+	out.DiskConfig = ClusterDiskConfig_v1beta1_FromProto(mapCtx, in.GetDiskConfig())
+	// MISSING: IsPreemptible
+	out.Preemptibility = direct.Enum_FromProto(mapCtx, in.GetPreemptibility())
+	// MISSING: ManagedGroupConfig
+	out.Accelerators = direct.Slice_FromProto(mapCtx, in.Accelerators, ClusterAccelerators_v1beta1_FromProto)
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	// MISSING: MinNumInstances
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: StartupConfig
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterMasterConfig_v1beta1_ToProto", skipping
+func ClusterMasterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterMasterConfig) *pb.InstanceGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupConfig{}
+	out.NumInstances = direct.ValueOf(in.NumInstances)
+	// MISSING: InstanceNames
+	// MISSING: InstanceReferences
+	// MISSING: ImageURI
+	// MISSING: MachineTypeURI
+	out.DiskConfig = ClusterDiskConfig_v1beta1_ToProto(mapCtx, in.DiskConfig)
+	// MISSING: IsPreemptible
+	out.Preemptibility = direct.Enum_ToProto[pb.InstanceGroupConfig_Preemptibility](mapCtx, in.Preemptibility)
+	// MISSING: ManagedGroupConfig
+	out.Accelerators = direct.Slice_ToProto(mapCtx, in.Accelerators, ClusterAccelerators_v1beta1_ToProto)
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	// MISSING: MinNumInstances
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: StartupConfig
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterMasterConfigStatus_v1beta1_FromProto", skipping
+func ClusterMasterConfigStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupConfig) *krm.ClusterMasterConfigStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterMasterConfigStatus{}
+	// MISSING: NumInstances
+	out.InstanceNames = in.InstanceNames
+	out.InstanceReferences = direct.Slice_FromProto(mapCtx, in.InstanceReferences, ClusterInstanceReferencesStatus_v1beta1_FromProto)
+	// MISSING: ImageURI
+	// MISSING: MachineTypeURI
+	// MISSING: DiskConfig
+	out.IsPreemptible = direct.LazyPtr(in.GetIsPreemptible())
+	// MISSING: Preemptibility
+	out.ManagedGroupConfig = ClusterManagedGroupConfigStatus_v1beta1_FromProto(mapCtx, in.GetManagedGroupConfig())
+	// MISSING: Accelerators
+	// MISSING: MinCPUPlatform
+	// MISSING: MinNumInstances
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: StartupConfig
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterMasterConfigStatus_v1beta1_ToProto", skipping
+func ClusterMasterConfigStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterMasterConfigStatus) *pb.InstanceGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupConfig{}
+	// MISSING: NumInstances
+	out.InstanceNames = in.InstanceNames
+	out.InstanceReferences = direct.Slice_ToProto(mapCtx, in.InstanceReferences, ClusterInstanceReferencesStatus_v1beta1_ToProto)
+	// MISSING: ImageURI
+	// MISSING: MachineTypeURI
+	// MISSING: DiskConfig
+	out.IsPreemptible = direct.ValueOf(in.IsPreemptible)
+	// MISSING: Preemptibility
+	out.ManagedGroupConfig = ClusterManagedGroupConfigStatus_v1beta1_ToProto(mapCtx, in.ManagedGroupConfig)
+	// MISSING: Accelerators
+	// MISSING: MinCPUPlatform
+	// MISSING: MinNumInstances
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: StartupConfig
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterMetastoreConfig_v1beta1_FromProto", skipping
+func ClusterMetastoreConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetastoreConfig) *krm.ClusterMetastoreConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterMetastoreConfig{}
+	if in.GetDataprocMetastoreService() != "" {
+		out.DataprocMetastoreServiceRef = &refs.DataprocMetastoreServiceRef{External: in.GetDataprocMetastoreService()}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterMetastoreConfig_v1beta1_ToProto", skipping
+func ClusterMetastoreConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterMetastoreConfig) *pb.MetastoreConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetastoreConfig{}
+	if in.DataprocMetastoreServiceRef != nil {
+		out.DataprocMetastoreService = in.DataprocMetastoreServiceRef.External
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterMetrics_v1beta1_FromProto", skipping
+func ClusterMetrics_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DataprocMetricConfig_Metric) *krm.ClusterMetrics {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterMetrics{}
+	out.MetricSource = direct.Enum_FromProto(mapCtx, in.GetMetricSource())
+	out.MetricOverrides = in.MetricOverrides
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterMetrics_v1beta1_ToProto", skipping
+func ClusterMetrics_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterMetrics) *pb.DataprocMetricConfig_Metric {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataprocMetricConfig_Metric{}
+	out.MetricSource = direct.Enum_ToProto[pb.DataprocMetricConfig_MetricSource](mapCtx, in.MetricSource)
+	out.MetricOverrides = in.MetricOverrides
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterMetricsStatus_v1beta1_FromProto", skipping
+func ClusterMetricsStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ClusterMetrics) *krm.ClusterMetricsStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterMetricsStatus{}
+	out.HdfsMetrics = in.HdfsMetrics
+	out.YarnMetrics = in.YarnMetrics
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ClusterMetricsStatus_v1beta1_ToProto", skipping
+
+	func ClusterMetricsStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterMetricsStatus) *pb.ClusterMetrics {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ClusterMetrics{}
+		out.HdfsMetrics = in.HdfsMetrics
+		out.YarnMetrics = in.YarnMetrics
+		return out
+	}
+*/
+func ClusterNodeGroupAffinity_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroupAffinity) *krm.ClusterNodeGroupAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterNodeGroupAffinity{}
+	// MISSING: NodeGroupURI
+	return out
+}
+func ClusterNodeGroupAffinity_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterNodeGroupAffinity) *pb.NodeGroupAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeGroupAffinity{}
+	// MISSING: NodeGroupURI
+	return out
+}
+func ClusterNodePoolConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GkeNodePoolConfig) *krm.ClusterNodePoolConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterNodePoolConfig{}
+	out.Config = ClusterGkeNodeConfig_v1beta1_FromProto(mapCtx, in.GetConfig())
+	out.Locations = in.Locations
+	out.Autoscaling = ClusterAutoscaling_v1beta1_FromProto(mapCtx, in.GetAutoscaling())
+	return out
+}
+func ClusterNodePoolConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterNodePoolConfig) *pb.GkeNodePoolConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GkeNodePoolConfig{}
+	out.Config = ClusterGkeNodeConfig_v1beta1_ToProto(mapCtx, in.Config)
+	out.Locations = in.Locations
+	out.Autoscaling = ClusterAutoscaling_v1beta1_ToProto(mapCtx, in.Autoscaling)
+	return out
+}
+
+/* found existing non-generated mapping function "ClusterNodePoolTarget_v1beta1_FromProto", skipping
+func ClusterNodePoolTarget_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GkeNodePoolTarget) *krm.ClusterNodePoolTarget {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterNodePoolTarget{}
+	if in.GetNodePool() != "" {
+		out.NodePoolRef = &krmcontainerv1beta1.ContainerNodePoolRef{External: in.GetNodePool()}
+	}
+	out.Roles = direct.EnumSlice_FromProto(mapCtx, in.Roles)
+	out.NodePoolConfig = ClusterNodePoolConfig_v1beta1_FromProto(mapCtx, in.GetNodePoolConfig())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ClusterNodePoolTarget_v1beta1_ToProto", skipping
+
+	func ClusterNodePoolTarget_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterNodePoolTarget) *pb.GkeNodePoolTarget {
+		if in == nil {
+			return nil
+		}
+		out := &pb.GkeNodePoolTarget{}
+		if in.NodePoolRef != nil {
+			out.NodePool = in.NodePoolRef.External
+		}
+		out.Roles = direct.EnumSlice_ToProto[pb.GkeNodePoolTarget_Role](mapCtx, in.Roles)
+		out.NodePoolConfig = ClusterNodePoolConfig_v1beta1_ToProto(mapCtx, in.NodePoolConfig)
+		return out
+	}
+*/
+func ClusterReservationAffinity_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ClusterReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterReservationAffinity{}
+	out.ConsumeReservationType = direct.Enum_FromProto(mapCtx, in.GetConsumeReservationType())
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Values = in.Values
+	return out
+}
+func ClusterReservationAffinity_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterReservationAffinity) *pb.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationAffinity{}
+	out.ConsumeReservationType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ConsumeReservationType)
+	out.Key = direct.ValueOf(in.Key)
+	out.Values = in.Values
+	return out
+}
+
+/* found existing non-generated mapping function "ClusterSecondaryWorkerConfig_v1beta1_FromProto", skipping
+func ClusterSecondaryWorkerConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupConfig) *krm.ClusterSecondaryWorkerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterSecondaryWorkerConfig{}
+	out.NumInstances = direct.LazyPtr(in.GetNumInstances())
+	// MISSING: InstanceNames
+	// MISSING: InstanceReferences
+	// MISSING: ImageURI
+	// MISSING: MachineTypeURI
+	out.DiskConfig = ClusterDiskConfig_v1beta1_FromProto(mapCtx, in.GetDiskConfig())
+	// MISSING: IsPreemptible
+	out.Preemptibility = direct.Enum_FromProto(mapCtx, in.GetPreemptibility())
+	// MISSING: ManagedGroupConfig
+	out.Accelerators = direct.Slice_FromProto(mapCtx, in.Accelerators, ClusterAccelerators_v1beta1_FromProto)
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	// MISSING: MinNumInstances
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: StartupConfig
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterSecondaryWorkerConfig_v1beta1_ToProto", skipping
+func ClusterSecondaryWorkerConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterSecondaryWorkerConfig) *pb.InstanceGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupConfig{}
+	out.NumInstances = direct.ValueOf(in.NumInstances)
+	// MISSING: InstanceNames
+	// MISSING: InstanceReferences
+	// MISSING: ImageURI
+	// MISSING: MachineTypeURI
+	out.DiskConfig = ClusterDiskConfig_v1beta1_ToProto(mapCtx, in.DiskConfig)
+	// MISSING: IsPreemptible
+	out.Preemptibility = direct.Enum_ToProto[pb.InstanceGroupConfig_Preemptibility](mapCtx, in.Preemptibility)
+	// MISSING: ManagedGroupConfig
+	out.Accelerators = direct.Slice_ToProto(mapCtx, in.Accelerators, ClusterAccelerators_v1beta1_ToProto)
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	// MISSING: MinNumInstances
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: StartupConfig
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterSecondaryWorkerConfigStatus_v1beta1_FromProto", skipping
+func ClusterSecondaryWorkerConfigStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupConfig) *krm.ClusterSecondaryWorkerConfigStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterSecondaryWorkerConfigStatus{}
+	// MISSING: NumInstances
+	out.InstanceNames = in.InstanceNames
+	out.InstanceReferences = direct.Slice_FromProto(mapCtx, in.InstanceReferences, ClusterInstanceReferencesStatus_v1beta1_FromProto)
+	// MISSING: ImageURI
+	// MISSING: MachineTypeURI
+	// MISSING: DiskConfig
+	out.IsPreemptible = direct.LazyPtr(in.GetIsPreemptible())
+	// MISSING: Preemptibility
+	out.ManagedGroupConfig = ClusterManagedGroupConfigStatus_v1beta1_FromProto(mapCtx, in.GetManagedGroupConfig())
+	// MISSING: Accelerators
+	// MISSING: MinCPUPlatform
+	// MISSING: MinNumInstances
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: StartupConfig
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ClusterSecondaryWorkerConfigStatus_v1beta1_ToProto", skipping
+
+	func ClusterSecondaryWorkerConfigStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterSecondaryWorkerConfigStatus) *pb.InstanceGroupConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.InstanceGroupConfig{}
+		// MISSING: NumInstances
+		out.InstanceNames = in.InstanceNames
+		out.InstanceReferences = direct.Slice_ToProto(mapCtx, in.InstanceReferences, ClusterInstanceReferencesStatus_v1beta1_ToProto)
+		// MISSING: ImageURI
+		// MISSING: MachineTypeURI
+		// MISSING: DiskConfig
+		out.IsPreemptible = direct.ValueOf(in.IsPreemptible)
+		// MISSING: Preemptibility
+		out.ManagedGroupConfig = ClusterManagedGroupConfigStatus_v1beta1_ToProto(mapCtx, in.ManagedGroupConfig)
+		// MISSING: Accelerators
+		// MISSING: MinCPUPlatform
+		// MISSING: MinNumInstances
+		// MISSING: InstanceFlexibilityPolicy
+		// MISSING: StartupConfig
+		return out
+	}
+*/
+func ClusterSecurityConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityConfig) *krm.ClusterSecurityConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterSecurityConfig{}
+	out.KerberosConfig = ClusterKerberosConfig_v1beta1_FromProto(mapCtx, in.GetKerberosConfig())
+	out.IdentityConfig = ClusterIdentityConfig_v1beta1_FromProto(mapCtx, in.GetIdentityConfig())
+	return out
+}
+func ClusterSecurityConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterSecurityConfig) *pb.SecurityConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityConfig{}
+	out.KerberosConfig = ClusterKerberosConfig_v1beta1_ToProto(mapCtx, in.KerberosConfig)
+	out.IdentityConfig = ClusterIdentityConfig_v1beta1_ToProto(mapCtx, in.IdentityConfig)
+	return out
+}
+func ClusterShieldedInstanceConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShieldedInstanceConfig) *krm.ClusterShieldedInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterShieldedInstanceConfig{}
+	out.EnableSecureBoot = in.EnableSecureBoot
+	// MISSING: EnableVTPM
+	// (near miss): "EnableVTPM" vs "EnableVtpm"
+	out.EnableIntegrityMonitoring = in.EnableIntegrityMonitoring
+	return out
+}
+func ClusterShieldedInstanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterShieldedInstanceConfig) *pb.ShieldedInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShieldedInstanceConfig{}
+	out.EnableSecureBoot = in.EnableSecureBoot
+	// MISSING: EnableVTPM
+	// (near miss): "EnableVTPM" vs "EnableVtpm"
+	out.EnableIntegrityMonitoring = in.EnableIntegrityMonitoring
+	return out
+}
+func ClusterSoftwareConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SoftwareConfig) *krm.ClusterSoftwareConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterSoftwareConfig{}
+	out.ImageVersion = direct.LazyPtr(in.GetImageVersion())
+	out.Properties = in.Properties
+	out.OptionalComponents = direct.EnumSlice_FromProto(mapCtx, in.OptionalComponents)
+	return out
+}
+func ClusterSoftwareConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterSoftwareConfig) *pb.SoftwareConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SoftwareConfig{}
+	out.ImageVersion = direct.ValueOf(in.ImageVersion)
+	out.Properties = in.Properties
+	out.OptionalComponents = direct.EnumSlice_ToProto[pb.Component](mapCtx, in.OptionalComponents)
+	return out
+}
+func ClusterSparkHistoryServerConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SparkHistoryServerConfig) *krm.ClusterSparkHistoryServerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterSparkHistoryServerConfig{}
+	if in.GetDataprocCluster() != "" {
+		out.DataprocClusterRef = &krm.DataprocClusterRef{External: in.GetDataprocCluster()}
+	}
+	return out
+}
+func ClusterSparkHistoryServerConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterSparkHistoryServerConfig) *pb.SparkHistoryServerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SparkHistoryServerConfig{}
+	if in.DataprocClusterRef != nil {
+		out.DataprocCluster = in.DataprocClusterRef.External
+	}
+	return out
+}
+func ClusterStatusHistoryStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ClusterStatus) *krm.ClusterStatusHistoryStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterStatusHistoryStatus{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Detail = direct.LazyPtr(in.GetDetail())
+	out.StateStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStateStartTime())
+	out.Substate = direct.Enum_FromProto(mapCtx, in.GetSubstate())
+	return out
+}
+func ClusterStatusHistoryStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterStatusHistoryStatus) *pb.ClusterStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClusterStatus{}
+	out.State = direct.Enum_ToProto[pb.ClusterStatus_State](mapCtx, in.State)
+	out.Detail = direct.ValueOf(in.Detail)
+	out.StateStartTime = direct.StringTimestamp_ToProto(mapCtx, in.StateStartTime)
+	out.Substate = direct.Enum_ToProto[pb.ClusterStatus_Substate](mapCtx, in.Substate)
+	return out
+}
+func ClusterStatusStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ClusterStatus) *krm.ClusterStatusStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterStatusStatus{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Detail = direct.LazyPtr(in.GetDetail())
+	out.StateStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStateStartTime())
+	out.Substate = direct.Enum_FromProto(mapCtx, in.GetSubstate())
+	return out
+}
+func ClusterStatusStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterStatusStatus) *pb.ClusterStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClusterStatus{}
+	out.State = direct.Enum_ToProto[pb.ClusterStatus_State](mapCtx, in.State)
+	out.Detail = direct.ValueOf(in.Detail)
+	out.StateStartTime = direct.StringTimestamp_ToProto(mapCtx, in.StateStartTime)
+	out.Substate = direct.Enum_ToProto[pb.ClusterStatus_Substate](mapCtx, in.Substate)
+	return out
+}
+
+/* found existing non-generated mapping function "ClusterVirtualClusterConfig_v1beta1_FromProto", skipping
+func ClusterVirtualClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VirtualClusterConfig) *krm.ClusterVirtualClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterVirtualClusterConfig{}
+	if in.GetStagingBucket() != "" {
+		out.StagingBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetStagingBucket()}
+	}
+	out.KubernetesClusterConfig = ClusterKubernetesClusterConfig_v1beta1_FromProto(mapCtx, in.GetKubernetesClusterConfig())
+	out.AuxiliaryServicesConfig = ClusterAuxiliaryServicesConfig_v1beta1_FromProto(mapCtx, in.GetAuxiliaryServicesConfig())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterVirtualClusterConfig_v1beta1_ToProto", skipping
+func ClusterVirtualClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterVirtualClusterConfig) *pb.VirtualClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VirtualClusterConfig{}
+	if in.StagingBucketRef != nil {
+		out.StagingBucket = in.StagingBucketRef.External
+	}
+	if oneof := ClusterKubernetesClusterConfig_v1beta1_ToProto(mapCtx, in.KubernetesClusterConfig); oneof != nil {
+		out.InfrastructureConfig = &pb.VirtualClusterConfig_KubernetesClusterConfig{KubernetesClusterConfig: oneof}
+	}
+	out.AuxiliaryServicesConfig = ClusterAuxiliaryServicesConfig_v1beta1_ToProto(mapCtx, in.AuxiliaryServicesConfig)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterWorkerConfig_v1beta1_FromProto", skipping
+func ClusterWorkerConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupConfig) *krm.ClusterWorkerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterWorkerConfig{}
+	out.NumInstances = direct.LazyPtr(in.GetNumInstances())
+	// MISSING: InstanceNames
+	// MISSING: InstanceReferences
+	// MISSING: ImageURI
+	// MISSING: MachineTypeURI
+	out.DiskConfig = ClusterDiskConfig_v1beta1_FromProto(mapCtx, in.GetDiskConfig())
+	// MISSING: IsPreemptible
+	out.Preemptibility = direct.Enum_FromProto(mapCtx, in.GetPreemptibility())
+	// MISSING: ManagedGroupConfig
+	out.Accelerators = direct.Slice_FromProto(mapCtx, in.Accelerators, ClusterAccelerators_v1beta1_FromProto)
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	// MISSING: MinNumInstances
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: StartupConfig
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterWorkerConfig_v1beta1_ToProto", skipping
+func ClusterWorkerConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterWorkerConfig) *pb.InstanceGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupConfig{}
+	out.NumInstances = direct.ValueOf(in.NumInstances)
+	// MISSING: InstanceNames
+	// MISSING: InstanceReferences
+	// MISSING: ImageURI
+	// MISSING: MachineTypeURI
+	out.DiskConfig = ClusterDiskConfig_v1beta1_ToProto(mapCtx, in.DiskConfig)
+	// MISSING: IsPreemptible
+	out.Preemptibility = direct.Enum_ToProto[pb.InstanceGroupConfig_Preemptibility](mapCtx, in.Preemptibility)
+	// MISSING: ManagedGroupConfig
+	out.Accelerators = direct.Slice_ToProto(mapCtx, in.Accelerators, ClusterAccelerators_v1beta1_ToProto)
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	// MISSING: MinNumInstances
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: StartupConfig
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ClusterWorkerConfigStatus_v1beta1_FromProto", skipping
+func ClusterWorkerConfigStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupConfig) *krm.ClusterWorkerConfigStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterWorkerConfigStatus{}
+	// MISSING: NumInstances
+	out.InstanceNames = in.InstanceNames
+	out.InstanceReferences = direct.Slice_FromProto(mapCtx, in.InstanceReferences, ClusterInstanceReferencesStatus_v1beta1_FromProto)
+	// MISSING: ImageURI
+	// MISSING: MachineTypeURI
+	// MISSING: DiskConfig
+	out.IsPreemptible = direct.LazyPtr(in.GetIsPreemptible())
+	// MISSING: Preemptibility
+	out.ManagedGroupConfig = ClusterManagedGroupConfigStatus_v1beta1_FromProto(mapCtx, in.GetManagedGroupConfig())
+	// MISSING: Accelerators
+	// MISSING: MinCPUPlatform
+	// MISSING: MinNumInstances
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: StartupConfig
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ClusterWorkerConfigStatus_v1beta1_ToProto", skipping
+
+	func ClusterWorkerConfigStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterWorkerConfigStatus) *pb.InstanceGroupConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.InstanceGroupConfig{}
+		// MISSING: NumInstances
+		out.InstanceNames = in.InstanceNames
+		out.InstanceReferences = direct.Slice_ToProto(mapCtx, in.InstanceReferences, ClusterInstanceReferencesStatus_v1beta1_ToProto)
+		// MISSING: ImageURI
+		// MISSING: MachineTypeURI
+		// MISSING: DiskConfig
+		out.IsPreemptible = direct.ValueOf(in.IsPreemptible)
+		// MISSING: Preemptibility
+		out.ManagedGroupConfig = ClusterManagedGroupConfigStatus_v1beta1_ToProto(mapCtx, in.ManagedGroupConfig)
+		// MISSING: Accelerators
+		// MISSING: MinCPUPlatform
+		// MISSING: MinNumInstances
+		// MISSING: InstanceFlexibilityPolicy
+		// MISSING: StartupConfig
 		return out
 	}
 */
@@ -257,31 +1557,97 @@ func DataprocBatchSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Batc
 }
 */
 
-/* found existing non-generated mapping function "DataprocBatchSpec_v1alpha1_ToProto", skipping
-func DataprocBatchSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocBatchSpec) *pb.Batch {
+/*
+found existing non-generated mapping function "DataprocBatchSpec_v1alpha1_ToProto", skipping
+
+	func DataprocBatchSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocBatchSpec) *pb.Batch {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Batch{}
+		// MISSING: Name
+		if oneof := PySparkBatch_v1alpha1_ToProto(mapCtx, in.PysparkBatch); oneof != nil {
+			out.BatchConfig = &pb.Batch_PysparkBatch{PysparkBatch: oneof}
+		}
+		if oneof := SparkBatch_v1alpha1_ToProto(mapCtx, in.SparkBatch); oneof != nil {
+			out.BatchConfig = &pb.Batch_SparkBatch{SparkBatch: oneof}
+		}
+		if oneof := SparkRBatch_v1alpha1_ToProto(mapCtx, in.SparkRBatch); oneof != nil {
+			out.BatchConfig = &pb.Batch_SparkRBatch{SparkRBatch: oneof}
+		}
+		if oneof := SparkSQLBatch_v1alpha1_ToProto(mapCtx, in.SparkSQLBatch); oneof != nil {
+			out.BatchConfig = &pb.Batch_SparkSqlBatch{SparkSqlBatch: oneof}
+		}
+		out.Labels = in.Labels
+		out.RuntimeConfig = RuntimeConfig_v1alpha1_ToProto(mapCtx, in.RuntimeConfig)
+		out.EnvironmentConfig = EnvironmentConfig_v1alpha1_ToProto(mapCtx, in.EnvironmentConfig)
+		return out
+	}
+*/
+func DataprocClusterSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.DataprocClusterSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Batch{}
-	// MISSING: Name
-	if oneof := PySparkBatch_v1alpha1_ToProto(mapCtx, in.PysparkBatch); oneof != nil {
-		out.BatchConfig = &pb.Batch_PysparkBatch{PysparkBatch: oneof}
-	}
-	if oneof := SparkBatch_v1alpha1_ToProto(mapCtx, in.SparkBatch); oneof != nil {
-		out.BatchConfig = &pb.Batch_SparkBatch{SparkBatch: oneof}
-	}
-	if oneof := SparkRBatch_v1alpha1_ToProto(mapCtx, in.SparkRBatch); oneof != nil {
-		out.BatchConfig = &pb.Batch_SparkRBatch{SparkRBatch: oneof}
-	}
-	if oneof := SparkSQLBatch_v1alpha1_ToProto(mapCtx, in.SparkSQLBatch); oneof != nil {
-		out.BatchConfig = &pb.Batch_SparkSqlBatch{SparkSqlBatch: oneof}
-	}
-	out.Labels = in.Labels
-	out.RuntimeConfig = RuntimeConfig_v1alpha1_ToProto(mapCtx, in.RuntimeConfig)
-	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_ToProto(mapCtx, in.EnvironmentConfig)
+	out := &krm.DataprocClusterSpec{}
+	// MISSING: ProjectID
+	// MISSING: ClusterName
+	out.Config = ClusterConfig_v1beta1_FromProto(mapCtx, in.GetConfig())
+	out.VirtualClusterConfig = ClusterVirtualClusterConfig_v1beta1_FromProto(mapCtx, in.GetVirtualClusterConfig())
+	// MISSING: Labels
+	// MISSING: Status
+	// MISSING: StatusHistory
+	// MISSING: ClusterUuid
+	// MISSING: Metrics
 	return out
 }
-*/
+func DataprocClusterSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataprocClusterSpec) *pb.Cluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster{}
+	// MISSING: ProjectID
+	// MISSING: ClusterName
+	out.Config = ClusterConfig_v1beta1_ToProto(mapCtx, in.Config)
+	out.VirtualClusterConfig = ClusterVirtualClusterConfig_v1beta1_ToProto(mapCtx, in.VirtualClusterConfig)
+	// MISSING: Labels
+	// MISSING: Status
+	// MISSING: StatusHistory
+	// MISSING: ClusterUuid
+	// MISSING: Metrics
+	return out
+}
+func DataprocClusterStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.DataprocClusterStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataprocClusterStatus{}
+	// MISSING: ProjectID
+	// MISSING: ClusterName
+	out.Config = ClusterConfigStatus_v1beta1_FromProto(mapCtx, in.GetConfig())
+	// MISSING: VirtualClusterConfig
+	// MISSING: Labels
+	out.Status = ClusterStatusStatus_v1beta1_FromProto(mapCtx, in.GetStatus())
+	out.StatusHistory = direct.Slice_FromProto(mapCtx, in.StatusHistory, ClusterStatusHistoryStatus_v1beta1_FromProto)
+	out.ClusterUuid = direct.LazyPtr(in.GetClusterUuid())
+	out.Metrics = ClusterMetricsStatus_v1beta1_FromProto(mapCtx, in.GetMetrics())
+	return out
+}
+func DataprocClusterStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataprocClusterStatus) *pb.Cluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster{}
+	// MISSING: ProjectID
+	// MISSING: ClusterName
+	out.Config = ClusterConfigStatus_v1beta1_ToProto(mapCtx, in.Config)
+	// MISSING: VirtualClusterConfig
+	// MISSING: Labels
+	out.Status = ClusterStatusStatus_v1beta1_ToProto(mapCtx, in.Status)
+	out.StatusHistory = direct.Slice_ToProto(mapCtx, in.StatusHistory, ClusterStatusHistoryStatus_v1beta1_ToProto)
+	out.ClusterUuid = direct.ValueOf(in.ClusterUuid)
+	out.Metrics = ClusterMetricsStatus_v1beta1_ToProto(mapCtx, in.Metrics)
+	return out
+}
 
 /* found existing non-generated mapping function "DataprocJobObservedState_v1alpha1_FromProto", skipping
 func DataprocJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krmdataprocv1alpha1.DataprocJobObservedState {

@@ -29,6 +29,7 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+// +kcc:proto=google.cloud.dataproc.v1.AcceleratorConfig
 type ClusterAccelerators struct {
 	/* Immutable. The number of accelerator cards exposed to an instance. */
 	// +optional
@@ -39,6 +40,7 @@ type ClusterAccelerators struct {
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodePoolAcceleratorConfig
 type ClusterGkeNodePoolAccelerators struct {
 	/* Immutable. The number of accelerator cards exposed to an instance. */
 	// +optional
@@ -53,6 +55,7 @@ type ClusterGkeNodePoolAccelerators struct {
 	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodePoolAutoscalingConfig
 type ClusterAutoscaling struct {
 	/* Immutable. The maximum number of nodes in the node pool. Must be >= min_node_count, and must be > 0. **Note:** Quota must be sufficient to scale up the cluster. */
 	// +optional
@@ -63,12 +66,14 @@ type ClusterAutoscaling struct {
 	MinNodeCount *int64 `json:"minNodeCount,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.AutoscalingConfig
 type ClusterAutoscalingConfig struct {
 	/* Immutable. */
 	// +optional
 	PolicyRef *DataprocAutoscalingPolicyRef `json:"policyRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.AuxiliaryServicesConfig
 type ClusterAuxiliaryServicesConfig struct {
 	/* Immutable. Optional. The Hive Metastore configuration for this workload. */
 	// +optional
@@ -79,12 +84,14 @@ type ClusterAuxiliaryServicesConfig struct {
 	SparkHistoryServerConfig *ClusterSparkHistoryServerConfig `json:"sparkHistoryServerConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.ConfidentialInstanceConfig
 type ClusterConfidentialInstanceConfig struct {
 	/* Immutable. Optional. Defines whether the instance should have confidential compute enabled. */
 	// +optional
 	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodeConfig
 type ClusterGkeNodeConfig struct {
 	/* Immutable. Optional. A list of [hardware accelerators](https://cloud.google.com/compute/docs/gpus) to attach to each node. */
 	// +optional
@@ -119,11 +126,13 @@ type ClusterGkeNodeConfig struct {
 	Spot *bool `json:"spot,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.DataprocMetricConfig
 type ClusterDataprocMetricConfig struct {
 	/* Immutable. Required. Metrics sources to enable. */
 	Metrics []ClusterMetrics `json:"metrics"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.DiskConfig
 type ClusterDiskConfig struct {
 	/* Immutable. Optional. Size in GB of the boot disk (default is 500GB). */
 	// +optional
@@ -142,12 +151,14 @@ type ClusterDiskConfig struct {
 	NumLocalSsds *int64 `json:"numLocalSsds,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.EncryptionConfig
 type ClusterEncryptionConfig struct {
 	/* Immutable. */
 	// +optional
 	GcePdKmsKeyRef *refs.KMSCryptoKeyRef `json:"gcePdKmsKeyRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.EndpointConfig
 type ClusterEndpointConfig struct {
 	/* Immutable. Optional. If true, enable http access to specific ports on the cluster from external sources. Defaults to false. */
 	// +optional
@@ -160,6 +171,7 @@ type ClusterEphemeralStorageConfig struct {
 	LocalSsdCount *int64 `json:"localSsdCount,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.GceClusterConfig
 type ClusterGceClusterConfig struct {
 	/* Immutable. Optional. Confidential Instance Config for clusters using [Confidential VMs](https://cloud.google.com/compute/confidential-vm/docs). */
 	// +optional
@@ -214,6 +226,7 @@ type ClusterGceClusterConfig struct {
 	Zone *string `json:"zone,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.GkeClusterConfig
 type ClusterGkeClusterConfig struct {
 	/* Immutable. */
 	// +optional
@@ -224,11 +237,13 @@ type ClusterGkeClusterConfig struct {
 	NodePoolTarget []ClusterNodePoolTarget `json:"nodePoolTarget,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.IdentityConfig
 type ClusterIdentityConfig struct {
 	/* Required. Map of user to service account. */
 	UserServiceAccountMapping map[string]string `json:"userServiceAccountMapping"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.NodeInitializationAction
 type ClusterInitializationActions struct {
 	/* Immutable. Required. Cloud Storage URI of executable file. */
 	ExecutableFile string `json:"executableFile"`
@@ -238,6 +253,7 @@ type ClusterInitializationActions struct {
 	ExecutionTimeout *string `json:"executionTimeout,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.KerberosConfig
 type ClusterKerberosConfig struct {
 	/* Immutable. Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship. */
 	// +optional
@@ -300,6 +316,7 @@ type ClusterKerberosConfig struct {
 	TruststorePassword *string `json:"truststorePassword,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.KubernetesClusterConfig
 type ClusterKubernetesClusterConfig struct {
 	/* Immutable. Required. The configuration for running the Dataproc cluster on GKE. */
 	GkeClusterConfig ClusterGkeClusterConfig `json:"gkeClusterConfig"`
@@ -313,6 +330,7 @@ type ClusterKubernetesClusterConfig struct {
 	KubernetesSoftwareConfig *ClusterKubernetesSoftwareConfig `json:"kubernetesSoftwareConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.KubernetesSoftwareConfig
 type ClusterKubernetesSoftwareConfig struct {
 	/* Immutable. The components that should be installed in this Dataproc cluster. The key must be a string from the KubernetesComponent enumeration. The value is the version of the software to be installed. At least one entry must be specified. */
 	// +optional
@@ -323,6 +341,7 @@ type ClusterKubernetesSoftwareConfig struct {
 	Properties map[string]string `json:"properties,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.LifecycleConfig
 type ClusterLifecycleConfig struct {
 	/* Immutable. Optional. The time when cluster will be auto-deleted (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	// +optional
@@ -338,6 +357,7 @@ type ClusterLifecycleConfig struct {
 	IdleDeleteTtl *string `json:"idleDeleteTtl,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type ClusterMasterConfig struct {
 	/* Immutable. Optional. The Compute Engine accelerator configuration for these instances. */
 	// +optional
@@ -368,11 +388,13 @@ type ClusterMasterConfig struct {
 	Preemptibility *string `json:"preemptibility,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.MetastoreConfig
 type ClusterMetastoreConfig struct {
 	/* Immutable. */
 	DataprocMetastoreServiceRef apirefs.DataprocMetastoreServiceRef `json:"dataprocMetastoreServiceRef"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.DataprocMetricConfig.Metric
 type ClusterMetrics struct {
 	/* Immutable. Optional. Specify one or more [available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) to collect for the metric course (for the `SPARK` metric source, any [Spark metric] (https://spark.apache.org/docs/latest/monitoring.html#metrics) can be specified). Provide metrics in the following format: `METRIC_SOURCE:INSTANCE:GROUP:METRIC` Use camelcase as appropriate. Examples: ``` yarn:ResourceManager:QueueMetrics:AppsCompleted spark:driver:DAGScheduler:job.allJobs sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed hiveserver2:JVM:Memory:NonHeapMemoryUsage.used ``` Notes: * Only the specified overridden metrics will be collected for the metric source. For example, if one or more `spark:executive` metrics are listed as metric overrides, other `SPARK` metrics will not be collected. The collection of the default metrics for other OSS metric sources is unaffected. For example, if both `SPARK` and `YARN` metric sources are enabled, and overrides are provided for Spark metrics only, all default YARN metrics will be collected. */
 	// +optional
@@ -382,11 +404,13 @@ type ClusterMetrics struct {
 	MetricSource string `json:"metricSource"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.NodeGroupAffinity
 type ClusterNodeGroupAffinity struct {
 	/* Immutable. */
 	NodeGroupRef containerv1beta1.ContainerNodePoolRef `json:"nodeGroupRef"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolConfig
 type ClusterNodePoolConfig struct {
 	/* Immutable. Optional. The autoscaler configuration for this node pool. The autoscaler is enabled only when a valid configuration is present. */
 	// +optional
@@ -401,6 +425,7 @@ type ClusterNodePoolConfig struct {
 	Locations []string `json:"locations,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolTarget
 type ClusterNodePoolTarget struct {
 	/* Immutable. Input only. The configuration for the GKE node pool. If specified, Dataproc attempts to create a node pool with the specified shape. If one with the same name already exists, it is verified against all specified fields. If a field differs, the virtual cluster creation will fail. If omitted, any node pool with the specified name is used. If a node pool with the specified name does not exist, Dataproc create a node pool with default values. This is an input only field. It will not be returned by the API. */
 	// +optional
@@ -413,6 +438,7 @@ type ClusterNodePoolTarget struct {
 	Roles []string `json:"roles"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.ReservationAffinity
 type ClusterReservationAffinity struct {
 	/* Immutable. Optional. Type of reservation to consume Possible values: TYPE_UNSPECIFIED, NO_RESERVATION, ANY_RESERVATION, SPECIFIC_RESERVATION */
 	// +optional
@@ -427,6 +453,7 @@ type ClusterReservationAffinity struct {
 	Values []string `json:"values,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type ClusterSecondaryWorkerConfig struct {
 	/* Immutable. Optional. The Compute Engine accelerator configuration for these instances. */
 	// +optional
@@ -457,6 +484,7 @@ type ClusterSecondaryWorkerConfig struct {
 	Preemptibility *string `json:"preemptibility,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.SecurityConfig
 type ClusterSecurityConfig struct {
 	/* Optional. Identity related configuration, including service account based secure multi-tenancy user mappings. */
 	// +optional
@@ -467,6 +495,7 @@ type ClusterSecurityConfig struct {
 	KerberosConfig *ClusterKerberosConfig `json:"kerberosConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.ShieldedInstanceConfig
 type ClusterShieldedInstanceConfig struct {
 	/* Immutable. Optional. Defines whether instances have integrity monitoring enabled. */
 	// +optional
@@ -481,6 +510,7 @@ type ClusterShieldedInstanceConfig struct {
 	EnableVtpm *bool `json:"enableVtpm,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.SoftwareConfig
 type ClusterSoftwareConfig struct {
 	/* Immutable. Optional. The version of software inside the cluster. It must be one of the supported [Dataproc Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as "1.2" (including a subminor version, such as "1.2.29"), or the ["preview" version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version. */
 	// +optional
@@ -495,12 +525,14 @@ type ClusterSoftwareConfig struct {
 	Properties map[string]string `json:"properties,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.SparkHistoryServerConfig
 type ClusterSparkHistoryServerConfig struct {
 	/* Immutable. */
 	// +optional
 	DataprocClusterRef *DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.VirtualClusterConfig
 type ClusterVirtualClusterConfig struct {
 	/* Immutable. Optional. Configuration of auxiliary services used by this cluster. */
 	// +optional
@@ -514,6 +546,7 @@ type ClusterVirtualClusterConfig struct {
 	StagingBucketRef *storagev1beta1.StorageBucketRef `json:"stagingBucketRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type ClusterWorkerConfig struct {
 	/* Immutable. Optional. The Compute Engine accelerator configuration for these instances. */
 	// +optional
@@ -544,6 +577,7 @@ type ClusterWorkerConfig struct {
 	Preemptibility *string `json:"preemptibility,omitempty"`
 }
 
+// +kcc:spec:proto=google.cloud.dataproc.v1.Cluster
 type DataprocClusterSpec struct {
 	/* The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated. */
 	// +optional
@@ -565,6 +599,7 @@ type DataprocClusterSpec struct {
 	VirtualClusterConfig *ClusterVirtualClusterConfig `json:"virtualClusterConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.ClusterConfig
 type ClusterConfigStatus struct {
 	// +optional
 	EndpointConfig *ClusterEndpointConfigStatus `json:"endpointConfig,omitempty"`
@@ -582,12 +617,14 @@ type ClusterConfigStatus struct {
 	WorkerConfig *ClusterWorkerConfigStatus `json:"workerConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.EndpointConfig
 type ClusterEndpointConfigStatus struct {
 	/* Output only. The map of port descriptions to URLs. Will only be populated if enable_http_port_access is true. */
 	// +optional
 	HttpPorts map[string]string `json:"httpPorts,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.InstanceReference
 type ClusterInstanceReferencesStatus struct {
 	/* The unique identifier of the Compute Engine instance. */
 	// +optional
@@ -606,6 +643,7 @@ type ClusterInstanceReferencesStatus struct {
 	PublicKey *string `json:"publicKey,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.LifecycleConfig
 type ClusterLifecycleConfigStatus struct {
 	/* Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	// +optional
@@ -613,6 +651,7 @@ type ClusterLifecycleConfigStatus struct {
 	IdleStartTime *string `json:"idleStartTime,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ClusterManagedGroupConfigStatus struct {
 	/* Output only. The name of the Instance Group Manager for this group. */
 	// +optional
@@ -623,6 +662,7 @@ type ClusterManagedGroupConfigStatus struct {
 	InstanceTemplateName *string `json:"instanceTemplateName,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type ClusterMasterConfigStatus struct {
 	/* Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group. */
 	// +optional
@@ -641,6 +681,7 @@ type ClusterMasterConfigStatus struct {
 	ManagedGroupConfig *ClusterManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.ClusterMetrics
 type ClusterMetricsStatus struct {
 	/* The HDFS metrics. */
 	// +optional
@@ -651,6 +692,7 @@ type ClusterMetricsStatus struct {
 	YarnMetrics map[string]string `json:"yarnMetrics,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type ClusterSecondaryWorkerConfigStatus struct {
 	/* Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group. */
 	// +optional
@@ -669,6 +711,7 @@ type ClusterSecondaryWorkerConfigStatus struct {
 	ManagedGroupConfig *ClusterManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.ClusterStatus
 type ClusterStatusHistoryStatus struct {
 	/* Optional. Output only. Details of cluster's state. */
 	// +optional
@@ -688,6 +731,7 @@ type ClusterStatusHistoryStatus struct {
 	Substate *string `json:"substate,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.ClusterStatus
 type ClusterStatusStatus struct {
 	/* Optional. Output only. Details of cluster's state. */
 	// +optional
@@ -707,6 +751,7 @@ type ClusterStatusStatus struct {
 	Substate *string `json:"substate,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type ClusterWorkerConfigStatus struct {
 	/* Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group. */
 	// +optional
@@ -725,6 +770,7 @@ type ClusterWorkerConfigStatus struct {
 	ManagedGroupConfig *ClusterManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.Cluster
 type DataprocClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataprocCluster's current state. */
@@ -753,6 +799,7 @@ type DataprocClusterStatus struct {
 	StatusHistory []ClusterStatusHistoryStatus `json:"statusHistory,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataproc.v1.ClusterConfig
 type ClusterConfig struct {
 	/* Immutable. Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset. */
 	// +optional
