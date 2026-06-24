@@ -96,3 +96,7 @@ func (r *BigQueryBigLakeCatalogRef) Normalize(ctx context.Context, reader client
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
+
+func (r *BigQueryBigLakeCatalogRef) GetExternalFromCustomFields() []string {
+	return nil
+}

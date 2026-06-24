@@ -96,3 +96,7 @@ func (r *BillingAccountRef) Normalize(ctx context.Context, reader client.Reader,
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
+
+func (r *BillingAccountRef) GetExternalFromCustomFields() []string {
+	return nil
+}
