@@ -20,8 +20,99 @@
 // krm.group: storage.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.storage.v1
+// proto.service: google.storage.control.v2
 
 package storage
+
+import (
+	controlpb "cloud.google.com/go/storage/control/apiv2/controlpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
+	krmstoragecontrolv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storagecontrol/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func PendingRenameInfo_FromProto(mapCtx *direct.MapContext, in *controlpb.PendingRenameInfo) *krmstoragecontrolv1alpha1.PendingRenameInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmstoragecontrolv1alpha1.PendingRenameInfo{}
+	// MISSING: Operation
+	return out
+}
+func PendingRenameInfo_ToProto(mapCtx *direct.MapContext, in *krmstoragecontrolv1alpha1.PendingRenameInfo) *controlpb.PendingRenameInfo {
+	if in == nil {
+		return nil
+	}
+	out := &controlpb.PendingRenameInfo{}
+	// MISSING: Operation
+	return out
+}
+func PendingRenameInfoObservedState_FromProto(mapCtx *direct.MapContext, in *controlpb.PendingRenameInfo) *krmstoragecontrolv1alpha1.PendingRenameInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmstoragecontrolv1alpha1.PendingRenameInfoObservedState{}
+	out.Operation = direct.LazyPtr(in.GetOperation())
+	return out
+}
+func PendingRenameInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krmstoragecontrolv1alpha1.PendingRenameInfoObservedState) *controlpb.PendingRenameInfo {
+	if in == nil {
+		return nil
+	}
+	out := &controlpb.PendingRenameInfo{}
+	out.Operation = direct.ValueOf(in.Operation)
+	return out
+}
+func StorageAnywhereCacheObservedState_FromProto(mapCtx *direct.MapContext, in *controlpb.AnywhereCache) *krm.StorageAnywhereCacheObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageAnywhereCacheObservedState{}
+	// MISSING: Name
+	// MISSING: TTL
+	out.State = direct.LazyPtr(in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.PendingUpdate = direct.LazyPtr(in.GetPendingUpdate())
+	return out
+}
+func StorageAnywhereCacheObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageAnywhereCacheObservedState) *controlpb.AnywhereCache {
+	if in == nil {
+		return nil
+	}
+	out := &controlpb.AnywhereCache{}
+	// MISSING: Name
+	// MISSING: TTL
+	out.State = direct.ValueOf(in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.PendingUpdate = direct.ValueOf(in.PendingUpdate)
+	return out
+}
+func StorageAnywhereCacheSpec_FromProto(mapCtx *direct.MapContext, in *controlpb.AnywhereCache) *krm.StorageAnywhereCacheSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageAnywhereCacheSpec{}
+	// MISSING: Name
+	out.Zone = direct.LazyPtr(in.GetZone())
+	// MISSING: TTL
+	// (near miss): "TTL" vs "Ttl"
+	out.AdmissionPolicy = direct.LazyPtr(in.GetAdmissionPolicy())
+	return out
+}
+func StorageAnywhereCacheSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageAnywhereCacheSpec) *controlpb.AnywhereCache {
+	if in == nil {
+		return nil
+	}
+	out := &controlpb.AnywhereCache{}
+	// MISSING: Name
+	out.Zone = direct.ValueOf(in.Zone)
+	// MISSING: TTL
+	// (near miss): "TTL" vs "Ttl"
+	out.AdmissionPolicy = direct.ValueOf(in.AdmissionPolicy)
+	return out
+}
 
 /* found existing non-generated mapping function "StorageBucketSpec_FromProto", skipping
 func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.Bucket) *krm.StorageBucketSpec {
@@ -60,39 +151,119 @@ func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.Bucket) *krm.
 }
 */
 
-/* found existing non-generated mapping function "StorageBucketSpec_ToProto", skipping
-func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketSpec) *pb.Bucket {
+/*
+found existing non-generated mapping function "StorageBucketSpec_ToProto", skipping
+
+	func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketSpec) *pb.Bucket {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Bucket{}
+		// MISSING: Acl
+		// MISSING: DefaultObjectAcl
+		// MISSING: Lifecycle
+		// MISSING: TimeCreated
+		// MISSING: ID
+		// MISSING: Name
+		// MISSING: ProjectNumber
+		// MISSING: Metageneration
+		out.Cors = direct.Slice_ToProto(mapCtx, in.Cors, StorageBucketCors_ToProto)
+		out.Location = direct.ValueOf(in.Location)
+		out.StorageClass = direct.ValueOf(in.StorageClass)
+		// MISSING: Etag
+		// MISSING: Updated
+		out.DefaultEventBasedHold = direct.ValueOf(in.DefaultEventBasedHold)
+		// MISSING: Labels
+		out.Website = StorageBucketWebsite_ToProto(mapCtx, in.Website)
+		out.Versioning = StorageBucketVersioning_ToProto(mapCtx, in.Versioning)
+		out.Logging = StorageBucketLogging_ToProto(mapCtx, in.Logging)
+		// MISSING: Owner
+		out.Encryption = StorageBucketEncryption_ToProto(mapCtx, in.Encryption)
+		// MISSING: Billing
+		out.RetentionPolicy = StorageBucketRetentionPolicy_ToProto(mapCtx, in.RetentionPolicy)
+		// MISSING: LocationType
+		// MISSING: IAMConfiguration
+		// MISSING: ZoneAffinity
+		// MISSING: SatisfiesPzs
+		out.Autoclass = StorageBucketAutoclass_ToProto(mapCtx, in.Autoclass)
+		return out
+	}
+*/
+func StorageFolderObservedState_FromProto(mapCtx *direct.MapContext, in *controlpb.Folder) *krmstoragecontrolv1alpha1.StorageFolderObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Bucket{}
-	// MISSING: Acl
-	// MISSING: DefaultObjectAcl
-	// MISSING: Lifecycle
-	// MISSING: TimeCreated
-	// MISSING: ID
+	out := &krmstoragecontrolv1alpha1.StorageFolderObservedState{}
 	// MISSING: Name
-	// MISSING: ProjectNumber
-	// MISSING: Metageneration
-	out.Cors = direct.Slice_ToProto(mapCtx, in.Cors, StorageBucketCors_ToProto)
-	out.Location = direct.ValueOf(in.Location)
-	out.StorageClass = direct.ValueOf(in.StorageClass)
-	// MISSING: Etag
-	// MISSING: Updated
-	out.DefaultEventBasedHold = direct.ValueOf(in.DefaultEventBasedHold)
-	// MISSING: Labels
-	out.Website = StorageBucketWebsite_ToProto(mapCtx, in.Website)
-	out.Versioning = StorageBucketVersioning_ToProto(mapCtx, in.Versioning)
-	out.Logging = StorageBucketLogging_ToProto(mapCtx, in.Logging)
-	// MISSING: Owner
-	out.Encryption = StorageBucketEncryption_ToProto(mapCtx, in.Encryption)
-	// MISSING: Billing
-	out.RetentionPolicy = StorageBucketRetentionPolicy_ToProto(mapCtx, in.RetentionPolicy)
-	// MISSING: LocationType
-	// MISSING: IAMConfiguration
-	// MISSING: ZoneAffinity
-	// MISSING: SatisfiesPzs
-	out.Autoclass = StorageBucketAutoclass_ToProto(mapCtx, in.Autoclass)
+	out.Metageneration = direct.LazyPtr(in.GetMetageneration())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.PendingRenameInfo = PendingRenameInfoObservedState_FromProto(mapCtx, in.GetPendingRenameInfo())
 	return out
 }
-*/
+func StorageFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krmstoragecontrolv1alpha1.StorageFolderObservedState) *controlpb.Folder {
+	if in == nil {
+		return nil
+	}
+	out := &controlpb.Folder{}
+	// MISSING: Name
+	out.Metageneration = direct.ValueOf(in.Metageneration)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.PendingRenameInfo = PendingRenameInfoObservedState_ToProto(mapCtx, in.PendingRenameInfo)
+	return out
+}
+func StorageFolderSpec_FromProto(mapCtx *direct.MapContext, in *controlpb.Folder) *krmstoragecontrolv1alpha1.StorageFolderSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmstoragecontrolv1alpha1.StorageFolderSpec{}
+	// MISSING: Name
+	return out
+}
+func StorageFolderSpec_ToProto(mapCtx *direct.MapContext, in *krmstoragecontrolv1alpha1.StorageFolderSpec) *controlpb.Folder {
+	if in == nil {
+		return nil
+	}
+	out := &controlpb.Folder{}
+	// MISSING: Name
+	return out
+}
+func StorageManagedFolderObservedState_FromProto(mapCtx *direct.MapContext, in *controlpb.ManagedFolder) *krmstoragecontrolv1alpha1.StorageManagedFolderObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmstoragecontrolv1alpha1.StorageManagedFolderObservedState{}
+	// MISSING: Name
+	out.Metageneration = direct.LazyPtr(in.GetMetageneration())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func StorageManagedFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krmstoragecontrolv1alpha1.StorageManagedFolderObservedState) *controlpb.ManagedFolder {
+	if in == nil {
+		return nil
+	}
+	out := &controlpb.ManagedFolder{}
+	// MISSING: Name
+	out.Metageneration = direct.ValueOf(in.Metageneration)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func StorageManagedFolderSpec_FromProto(mapCtx *direct.MapContext, in *controlpb.ManagedFolder) *krmstoragecontrolv1alpha1.StorageManagedFolderSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmstoragecontrolv1alpha1.StorageManagedFolderSpec{}
+	// MISSING: Name
+	return out
+}
+func StorageManagedFolderSpec_ToProto(mapCtx *direct.MapContext, in *krmstoragecontrolv1alpha1.StorageManagedFolderSpec) *controlpb.ManagedFolder {
+	if in == nil {
+		return nil
+	}
+	out := &controlpb.ManagedFolder{}
+	// MISSING: Name
+	return out
+}

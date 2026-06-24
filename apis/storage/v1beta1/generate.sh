@@ -28,7 +28,7 @@ go run . generate-types \
   --include-skipped-output
 
 go run . generate-mapper \
-  --service google.storage.v1 \
+  --service google.storage.v1,google.storage.control.v2 \
   --api-version storage.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 

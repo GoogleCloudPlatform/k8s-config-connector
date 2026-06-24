@@ -33,17 +33,17 @@ func StorageAnywhereCacheFuzzer() fuzztesting.KRMFuzzer {
 		StorageAnywhereCacheObservedState_FromProto, StorageAnywhereCacheObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".zone")
-	f.SpecFields.Insert(".ttl")
-	f.SpecFields.Insert(".admission_policy")
-	f.SpecFields.Insert(".desired_state")
+	f.SpecField(".zone")
+	f.SpecField(".ttl")
+	f.SpecField(".admission_policy")
+	f.SpecField(".desired_state")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".pending_update")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
+	f.StatusField(".state")
+	f.StatusField(".pending_update")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.Unimplemented_Identity(".name") // special field
 
 	return f
 }
