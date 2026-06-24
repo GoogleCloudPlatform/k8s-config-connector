@@ -2266,6 +2266,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].logsPanel.resourceNames[].kind" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].logsPanel.resourceNames[].name" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].logsPanel.resourceNames[].namespace" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.crossSeriesReducer" is not set in unstructured objects
@@ -2303,6 +2305,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].scorecard.thresholds[].label" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].scorecard.thresholds[].targetAxis" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].scorecard.thresholds[].value" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].scorecard.timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].scorecard.timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].scorecard.timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].scorecard.timeSeriesQuery.timeSeriesFilter.aggregation.crossSeriesReducer" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].scorecard.timeSeriesQuery.timeSeriesFilter.aggregation.groupByFields[]" is not set in unstructured objects
@@ -2340,6 +2344,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].timeSeriesTable.dataSets[].minAlignmentPeriod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].timeSeriesTable.dataSets[].tableDisplayOptions.shownColumns[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].timeSeriesTable.dataSets[].tableTemplate" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.crossSeriesReducer" is not set in unstructured objects
@@ -2373,6 +2379,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].xyChart.chartOptions.mode" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].xyChart.dataSets[].legendTemplate" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].xyChart.dataSets[].minAlignmentPeriod" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].xyChart.dataSets[].timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].xyChart.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.columnLayout.columns[].widgets[].xyChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
@@ -2419,6 +2427,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].pieChart.chartType" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].pieChart.dataSets[].minAlignmentPeriod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].pieChart.dataSets[].sliceNameTemplate" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
@@ -2463,6 +2473,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].scorecard.thresholds[].label" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].scorecard.thresholds[].targetAxis" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].scorecard.thresholds[].value" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].scorecard.timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].scorecard.timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].scorecard.timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].scorecard.timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].scorecard.timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
@@ -2513,6 +2525,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].timeSeriesTable.dataSets[].minAlignmentPeriod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].timeSeriesTable.dataSets[].tableDisplayOptions.shownColumns[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].timeSeriesTable.dataSets[].tableTemplate" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
@@ -2552,6 +2566,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].xyChart.dataSets[].minAlignmentPeriod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].xyChart.dataSets[].plotType" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].xyChart.dataSets[].targetAxis" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].xyChart.dataSets[].timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].xyChart.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].xyChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
@@ -2606,6 +2622,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.pieChart.chartType" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.pieChart.dataSets[].minAlignmentPeriod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.pieChart.dataSets[].sliceNameTemplate" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
@@ -2650,6 +2668,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.scorecard.thresholds[].label" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.scorecard.thresholds[].targetAxis" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.scorecard.thresholds[].value" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.scorecard.timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.scorecard.timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.scorecard.timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.scorecard.timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.scorecard.timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
@@ -2695,6 +2715,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.columnSettings[].visible" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].tableDisplayOptions.shownColumns[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].tableTemplate" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.groupByFields[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.alignmentPeriod" is not set in unstructured objects
@@ -2725,6 +2747,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.xyChart.dataSets[].minAlignmentPeriod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.xyChart.dataSets[].plotType" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.xyChart.dataSets[].targetAxis" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.xyChart.dataSets[].timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.xyChart.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.xyChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
@@ -2789,6 +2813,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].pieChart.chartType" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].pieChart.dataSets[].minAlignmentPeriod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].pieChart.dataSets[].sliceNameTemplate" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
@@ -2833,6 +2859,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].scorecard.thresholds[].label" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].scorecard.thresholds[].targetAxis" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].scorecard.thresholds[].value" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].scorecard.timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].scorecard.timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].scorecard.timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].scorecard.timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].scorecard.timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
@@ -2883,6 +2911,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].timeSeriesTable.dataSets[].minAlignmentPeriod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].timeSeriesTable.dataSets[].tableDisplayOptions.shownColumns[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].timeSeriesTable.dataSets[].tableTemplate" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
@@ -2923,6 +2953,8 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].xyChart.dataSets[].minAlignmentPeriod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].xyChart.dataSets[].plotType" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].xyChart.dataSets[].targetAxis" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.unitOverride" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].xyChart.dataSets[].timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].xyChart.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].xyChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects

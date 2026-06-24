@@ -233,6 +233,16 @@ type DashboardNumerator struct {
 	Filter string `json:"filter"`
 }
 
+type DashboardOpsAnalyticsQuery struct {
+	/* A log analytics SQL query, which will be executed to fetch data for the chart. */
+	// +optional
+	Sql *string `json:"sql,omitempty"`
+
+	/* The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`. */
+	// +optional
+	UnitOverride *string `json:"unitOverride,omitempty"`
+}
+
 type DashboardPickTimeSeriesFilter struct {
 	/* How to use the ranking to select time series that pass through the filter. */
 	// +optional
@@ -502,6 +512,10 @@ type DashboardTimeSeriesFilterRatio struct {
 }
 
 type DashboardTimeSeriesQuery struct {
+	/* A query used to fetch time series with Log Analytics. */
+	// +optional
+	OpsAnalyticsQuery *DashboardOpsAnalyticsQuery `json:"opsAnalyticsQuery,omitempty"`
+
 	/* Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value. */
 	// +optional
 	OutputFullDuration *bool `json:"outputFullDuration,omitempty"`
