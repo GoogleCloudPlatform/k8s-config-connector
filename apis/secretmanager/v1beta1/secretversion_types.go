@@ -112,7 +112,7 @@ type SecretManagerSecretVersionObservedState struct {
 
 	// The replication status of the
 	// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
-	ReplicationStatus *ReplicationStatus `json:"replicationStatus,omitempty"`
+	ReplicationStatus *ReplicationStatusObservedState `json:"replicationStatus,omitempty"`
 
 	// Optional. Output only. Scheduled destroy time for secret version.
 	// This is a part of the Delayed secret version destroy feature. For a
