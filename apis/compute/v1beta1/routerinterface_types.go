@@ -49,20 +49,6 @@ type ComputeVPNTunnelRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type ComputeRouterInterfaceRef struct {
-	/* Allowed value: The `name` field of a `ComputeRouterInterface` resource. */
-	// +optional
-	External string `json:"external,omitempty"`
-
-	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
-	// +optional
-	Name string `json:"name,omitempty"`
-
-	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
-	// +optional
-	Namespace string `json:"namespace,omitempty"`
-}
-
 // ComputeRouterInterfaceSpec defines the desired state of ComputeRouterInterface
 // +kcc:spec:proto=google.cloud.compute.v1.RouterInterface
 type ComputeRouterInterfaceSpec struct {

@@ -144,14 +144,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `ComputeRouterInterface`
-                      resource.'
+                    description: A reference to an externally managed ComputeRouterInterface
+                      resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/routers/{{routerID}}/interfaces/{{interfaceID}}".
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a ComputeRouterInterface resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a ComputeRouterInterface resource.
                     type: string
                 type: object
               region:

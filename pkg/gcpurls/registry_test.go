@@ -112,6 +112,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//compute.googleapis.com/projects/{}/zones/{}/disks/{}/{}":                       true,
 		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":             true,
 		"//compute.googleapis.com/regions/{}/publicDelegatedPrefixes/{}":                  true,
+		"//compute.googleapis.com/projects/{}/regions/{}/routers/{}/interfaces/{}":        true,
 
 		// Connectors
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}": true,
