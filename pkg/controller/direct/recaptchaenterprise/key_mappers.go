@@ -100,3 +100,21 @@ func KeyWebSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyWebSettings) *
 	out.ChallengeSecurityPreference = direct.Enum_ToProto[pb.WebKeySettings_ChallengeSecurityPreference](mapCtx, in.ChallengeSecurityPreference)
 	return out
 }
+
+func RecaptchaEnterpriseKeyStatus_FromProto(mapCtx *direct.MapContext, in *pb.Key) *krm.RecaptchaEnterpriseKeyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RecaptchaEnterpriseKeyStatus{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+
+func RecaptchaEnterpriseKeyStatus_ToProto(mapCtx *direct.MapContext, in *krm.RecaptchaEnterpriseKeyStatus) *pb.Key {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Key{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
