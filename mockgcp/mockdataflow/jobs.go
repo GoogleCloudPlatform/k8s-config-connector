@@ -17,6 +17,7 @@ package mockdataflow
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 	"time"
 
@@ -124,9 +125,12 @@ func (r *jobsServer) UpdateJob(ctx context.Context, req *pb.UpdateJobRequest) (*
 
 	// This method returns only a few fields
 	ret := &pb.Job{
-		// Doesn't seem to return the actual job type, seems to always return JOB_TYPE_BATCH
-		// Type: obj.Type,
-		Type: pb.JobType_JOB_TYPE_BATCH,
+		Id:             obj.Id,
+		ProjectId:      obj.ProjectId,
+		Name:           obj.Name,
+		Type:           obj.Type,
+		CurrentState:   obj.CurrentState,
+		RequestedState: obj.RequestedState,
 	}
 	return ret, nil
 }
@@ -162,4 +166,63 @@ func (r *jobsServer) parseJobName(name string) (*jobName, error) {
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+func (r *jobsServer) ListJobs(ctx context.Context, req *pb.ListJobsRequest) (*pb.ListJobsResponse, error) {
+	// The prefix is projects/<projectId>/
+	prefix := fmt.Sprintf("projects/%s/", req.GetProjectId())
+	var jobs []*pb.Job
+
+	findKind := (&pb.Job{}).ProtoReflect().Descriptor()
+	if err := r.storage.List(ctx, findKind, storage.ListOptions{
+		Prefix: prefix,
+	}, func(obj proto.Message) error {
+		job := obj.(*pb.Job)
+
+		// Filter by state/status
+		if req.GetFilter() == pb.ListJobsRequest_ACTIVE {
+			if !isJobActive(job.CurrentState) {
+				return nil
+			}
+		} else if req.GetFilter() == pb.ListJobsRequest_TERMINATED {
+			if isJobActive(job.CurrentState) {
+				return nil
+			}
+		}
+
+		// Filter by location if specified
+		if req.GetLocation() != "" && job.Location != req.GetLocation() {
+			return nil
+		}
+
+		jobs = append(jobs, job)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	sort.Slice(jobs, func(i, j int) bool {
+		return jobs[i].CreateTime.AsTime().After(jobs[j].CreateTime.AsTime())
+	})
+
+	return &pb.ListJobsResponse{
+		Jobs: jobs,
+	}, nil
+}
+
+func (r *jobsServer) AggregatedListJobs(ctx context.Context, req *pb.ListJobsRequest) (*pb.ListJobsResponse, error) {
+	return r.ListJobs(ctx, req)
+}
+
+func isJobActive(state pb.JobState) bool {
+	switch state {
+	case pb.JobState_JOB_STATE_DONE,
+		pb.JobState_JOB_STATE_FAILED,
+		pb.JobState_JOB_STATE_CANCELLED,
+		pb.JobState_JOB_STATE_UPDATED,
+		pb.JobState_JOB_STATE_DRAINED:
+		return false
+	default:
+		return true
+	}
 }

@@ -146,36 +146,42 @@
 ---
 >   "requestedState": 5
 705c772
-<   "type": "JOB_TYPE_BATCH"
----
->   "type": 1
-710c777,778
-< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
----
-> GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
-> Content-Type: application/json
-724c792
 <   "currentState": "JOB_STATE_CANCELLING",
 ---
 >   "currentState": 10,
-902c970
+709,710c776,777
 <   "requestedState": "JOB_STATE_CANCELLED",
----
->   "requestedState": 5,
-906c974
 <   "type": "JOB_TYPE_STREAMING"
 ---
+>   "requestedState": 5,
 >   "type": 2
-911c979,980
+715c782,783
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
 ---
 > GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 > Content-Type: application/json
-925c994
+729c797
+<   "currentState": "JOB_STATE_CANCELLING",
+---
+>   "currentState": 10,
+907c975
+<   "requestedState": "JOB_STATE_CANCELLED",
+---
+>   "requestedState": 5,
+911c979
+<   "type": "JOB_TYPE_STREAMING"
+---
+>   "type": 2
+916c984,985
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
+---
+> GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+> Content-Type: application/json
+930c999
 <   "currentState": "JOB_STATE_CANCELLED",
 ---
 >   "currentState": 5,
-1106c1175
+1111c1180
 <   "type": "JOB_TYPE_STREAMING"
 ---
 >   "type": 2

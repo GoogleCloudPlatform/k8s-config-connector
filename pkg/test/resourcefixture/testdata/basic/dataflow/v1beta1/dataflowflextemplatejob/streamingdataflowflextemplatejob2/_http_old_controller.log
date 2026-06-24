@@ -221,7 +221,7 @@ X-Xss-Protection: 0
 {
   "job": {
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "currentStateTime": "1970-01-01T00:00:00Z",
+    "currentStateTime": "2024-04-01T12:34:56.123456Z",
     "id": "${jobID}",
     "location": "us-central1",
     "name": "streamingdataflowflextemplatejob2-${uniqueId}",
@@ -473,7 +473,7 @@ X-Xss-Protection: 0
 {
   "job": {
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "currentStateTime": "1970-01-01T00:00:00Z",
+    "currentStateTime": "2024-04-01T12:34:56.123456Z",
     "id": "${jobID}",
     "location": "us-central1",
     "name": "streamingdataflowflextemplatejob2-${uniqueId}",
@@ -702,7 +702,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "type": "JOB_TYPE_BATCH"
+  "currentState": "JOB_STATE_CANCELLING",
+  "id": "000000000000000000000",
+  "name": "streamingdataflowflextemplatejob2-${uniqueId}",
+  "projectId": "${projectId}",
+  "requestedState": "JOB_STATE_CANCELLED",
+  "type": "JOB_TYPE_STREAMING"
 }
 
 ---
