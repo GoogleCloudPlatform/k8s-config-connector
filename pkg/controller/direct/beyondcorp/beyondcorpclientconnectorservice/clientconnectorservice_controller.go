@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -164,7 +165,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	updateReq := proto.Clone(a.desired).(*pb.ClientConnectorService)
 	updateReq.Name = a.actual.Name
 
-	paths, err := common.CompareProtoMessage(updateReq, a.actual, common.BasicDiff)
+	paths, report, err := common.CompareProtoMessageStructuredDiff(updateReq, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -176,6 +177,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	report.Object = updateOp.GetUnstructured()
+	structuredreporting.ReportDiff(ctx, report)
+
+	updateOp.RecordUpdatingEvent()
 
 	req := &pb.UpdateClientConnectorServiceRequest{
 		ClientConnectorService: updateReq,
