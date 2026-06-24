@@ -96,6 +96,9 @@ func propsToDescription(props apiextensions.JSONSchemaProps, parent FieldDescrip
 		if props.XPreserveUnknownFields != nil && *props.XPreserveUnknownFields {
 			return schemalessToDescription(props, parent, name, required)
 		}
+		if props.Type == "" {
+			return schemalessToDescription(props, parent, name, required)
+		}
 		panic(fmt.Sprintf("unhandled type: %v", props.Type))
 	}
 }

@@ -416,6 +416,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - ces.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudasset.cnrm.cloud.google.com
   resources:
   - '*'

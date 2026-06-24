@@ -922,6 +922,9 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 		if gvk.Group == "dlp.cnrm.cloud.google.com" && gvk.Kind == "DLPConnection" {
 			t.Skip("skipping DLPConnection as the controller is not implemented yet")
 		}
+		if gvk.Group == "ces.cnrm.cloud.google.com" && gvk.Kind == "CESApp" {
+			t.Skip("skipping CESApp as the controller is not implemented yet")
+		}
 	}
 
 	// Note: we don't have the harness yet, we have to look to the env var
