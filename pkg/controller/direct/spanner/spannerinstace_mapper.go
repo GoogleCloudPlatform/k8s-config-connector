@@ -15,8 +15,6 @@
 package spanner
 
 import (
-	"strings"
-
 	pb "cloud.google.com/go/spanner/admin/instance/apiv1/instancepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -70,12 +68,12 @@ func State_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *string {
 	return direct.Enum_FromProto(mapCtx, in.GetState())
 }
 
-func SpannerInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance, configPrefix string) *krm.SpannerInstanceSpec {
+func SpannerInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.SpannerInstanceSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.SpannerInstanceSpec{}
-	out.Config = strings.TrimPrefix(in.GetConfig(), configPrefix)
+	out.Config = in.GetConfig()
 	out.DisplayName = in.GetDisplayName()
 	out.Labels = in.Labels
 	out.ProcessingUnits = direct.LazyPtr(in.GetProcessingUnits())
@@ -86,12 +84,12 @@ func SpannerInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance, c
 	return out
 }
 
-func SpannerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpannerInstanceSpec, configPrefix string) *pb.Instance {
+func SpannerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpannerInstanceSpec) *pb.Instance {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Instance{}
-	out.Config = configPrefix + in.Config
+	out.Config = in.Config
 	out.DisplayName = in.DisplayName
 	out.NodeCount = direct.ValueOf(in.NumNodes)
 	out.ProcessingUnits = direct.ValueOf(in.ProcessingUnits)
