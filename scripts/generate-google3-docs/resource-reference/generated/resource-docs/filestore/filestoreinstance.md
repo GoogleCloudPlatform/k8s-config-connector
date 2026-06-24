@@ -461,6 +461,7 @@ conditions:
   type: string
 createTime: string
 etag: string
+externalRef: string
 observedGeneration: integer
 state: string
 statusMessage: string
@@ -534,6 +535,13 @@ statusMessage: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>Server-specified ETag for the instance resource to prevent simultaneous updates from overwriting each other.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A unique specifier for the FilestoreInstance resource in GCP.</p>
         </td>
     </tr>
     <tr>
