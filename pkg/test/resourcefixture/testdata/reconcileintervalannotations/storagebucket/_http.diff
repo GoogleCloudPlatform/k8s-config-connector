@@ -1,0 +1,63 @@
+30,34d29
+<   "iamConfiguration": {
+<     "uniformBucketLevelAccess": {
+<       "enabled": false
+<     }
+<   },
+53d47
+<   "storageClass": "STANDARD",
+180,181c174,176
+<   "lifecycle": {
+<     "rule": []
+---
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+182a178,179
+>   "location": "US",
+>   "name": "storagebucket-sample-${uniqueId}",
+285a283,294
+>   "lifecycle": {
+>     "rule": [
+>       {
+>         "action": {
+>           "type": "Delete"
+>         },
+>         "condition": {
+>           "age": 7
+>         }
+>       }
+>     ]
+>   },
+335a345,356
+>   "lifecycle": {
+>     "rule": [
+>       {
+>         "action": {
+>           "type": "Delete"
+>         },
+>         "condition": {
+>           "age": 7
+>         }
+>       }
+>     ]
+>   },
+353,370d373
+< }
+< 
+< ---
+< 
+< GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: UploadServer
+< Vary: Origin
+< Vary: X-Origin
+< 
+< {
+<   "kind": "storage#objects",
+<   "prefixes": [
+<     "testfolder",
+<     "testmanagedfolder"
+<   ]

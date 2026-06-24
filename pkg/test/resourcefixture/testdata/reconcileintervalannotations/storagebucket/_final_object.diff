@@ -1,0 +1,12 @@
+8d7
+<     cnrm.cloud.google.com/state-into-spec: absent
+12c11
+<   generation: 3
+---
+>   generation: 2
+20d18
+<   resourceID: storagebucket-sample-${uniqueId}
+30c28
+<   observedGeneration: 3
+---
+>   observedGeneration: 2

@@ -34,7 +34,6 @@ Content-Type: application/json
   },
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "lifecycle": {
@@ -80,7 +79,6 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "lifecycle": {
@@ -140,7 +138,6 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "lifecycle": {
@@ -180,12 +177,6 @@ PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueI
 Content-Type: application/json
 
 {
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true",
-    "newkey": "newval"
-  },
   "lifecycle": {
     "rule": []
   },
@@ -290,9 +281,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true",
-    "newkey": "newval"
+    "managed-by-cnrm": "true"
   },
   "location": "US",
   "locationType": "multi-region",
@@ -342,9 +331,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true",
-    "newkey": "newval"
+    "managed-by-cnrm": "true"
   },
   "location": "US",
   "locationType": "multi-region",
