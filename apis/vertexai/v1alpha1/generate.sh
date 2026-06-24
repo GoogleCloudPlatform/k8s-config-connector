@@ -23,6 +23,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
+# Run first with v1beta1 types
 go run . generate-types \
     --service google.cloud.aiplatform.v1beta1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
@@ -32,6 +33,14 @@ go run . generate-types \
     --resource VertexAIExampleStore:ExampleStore \
     --resource VertexAIFeatureGroup:FeatureGroup \
     --resource VertexAIDataLabelingJob:DataLabelingJob
+
+mv ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go ${REPO_ROOT}/apis/vertexai/v1alpha1/types_v1beta1.generated.go
+
+# Run second with v1 types for NotebookExecutionJob
+go run . generate-types \
+    --service google.cloud.aiplatform.v1 \
+    --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
+    --resource VertexAINotebookExecutionJob:NotebookExecutionJob
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
