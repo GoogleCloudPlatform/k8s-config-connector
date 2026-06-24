@@ -291,6 +291,11 @@ func (in *MemorystoreInstanceEndpointStatus) DeepCopyInto(out *MemorystoreInstan
 		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
 		*out = new(int64)

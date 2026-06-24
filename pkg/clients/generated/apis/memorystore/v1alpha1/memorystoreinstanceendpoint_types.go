@@ -108,6 +108,10 @@ type MemorystoreInstanceEndpointStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MemorystoreInstanceEndpoint's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ExternalRef is a reference to the GCP resource. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

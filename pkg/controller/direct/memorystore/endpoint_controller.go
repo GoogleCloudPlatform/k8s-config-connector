@@ -80,10 +80,7 @@ func (m *modelEndpoint) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if obj.Spec.InstanceRef == nil {
-		return nil, fmt.Errorf("spec.instanceRef is required")
-	}
-	err := obj.Spec.InstanceRef.Normalize(ctx, reader, obj.GetNamespace())
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +91,7 @@ func (m *modelEndpoint) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, err
 	}
 	return &EndpointAdapter{
-		id:        obj.Spec.InstanceRef.GetExternal(),
+		id:        identity.String(),
 		gcpClient: gcpClient,
 		cmpClient: cmpClient,
 		reader:    reader,
@@ -177,6 +174,7 @@ func (a *EndpointAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	mapCtx := &direct.MapContext{}
 	status := &krm.MemorystoreInstanceEndpointStatus{}
 	status.ObservedState = MemorystoreInstanceEndpointObservedState_FromProto(mapCtx, actual)
+	status.ExternalRef = &a.id
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -200,6 +198,7 @@ func (a *EndpointAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	mapCtx := &direct.MapContext{}
 	status := &krm.MemorystoreInstanceEndpointStatus{}
 	status.ObservedState = MemorystoreInstanceEndpointObservedState_FromProto(mapCtx, actual)
+	status.ExternalRef = &a.id
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

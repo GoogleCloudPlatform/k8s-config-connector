@@ -190,6 +190,9 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: ExternalRef is a reference to the GCP resource.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
