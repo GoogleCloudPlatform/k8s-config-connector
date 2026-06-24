@@ -1,6 +1,5 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -30,7 +29,6 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "autoCreateSubnetworks": true,
@@ -67,7 +65,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -99,7 +96,6 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -127,7 +123,6 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -157,7 +152,6 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "bgp": {
@@ -209,7 +203,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -242,7 +235,6 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -283,7 +275,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -325,7 +316,6 @@ X-Xss-Protection: 0
 
 PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "interfaces": [
@@ -365,7 +355,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -397,7 +386,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -446,7 +434,6 @@ X-Xss-Protection: 0
 
 PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "interfaces": []
@@ -481,7 +468,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -514,7 +500,6 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -563,7 +548,6 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -594,7 +578,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -627,7 +610,6 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -655,7 +637,6 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -685,7 +666,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

@@ -4,10 +4,11 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
   name: computerouterinterface-${uniqueId}
@@ -15,6 +16,7 @@ metadata:
 spec:
   ipRange: 169.254.1.1/30
   region: us-west1
+  resourceID: computerouterinterface-${uniqueId}
   routerRef:
     name: ${routerID}
 status:
@@ -24,4 +26,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 1
+  observedGeneration: 2
