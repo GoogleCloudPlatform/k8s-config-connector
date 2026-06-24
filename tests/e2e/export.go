@@ -104,6 +104,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDocument"}:
 		exportURI = "//firestore.googleapis.com/projects/{projectID}/databases/{.spec.databaseRef}/documents/{.spec.collection}/{resourceID}"
 
+	case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSCryptoKey"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		exportURI = "//logging.googleapis.com/projects/" + projectID + "/metrics/" + resourceID
 

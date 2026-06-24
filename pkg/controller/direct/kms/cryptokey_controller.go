@@ -43,6 +43,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -115,7 +116,21 @@ func (m *kmsCryptoKeyModel) AdapterForObject(ctx context.Context, op *directbase
 }
 
 func (m *kmsCryptoKeyModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krm.KMSCryptoKeyIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &kmsCryptoKeyAdapter{
+		gcpClient: gcpClient,
+		id:        id,
+	}, nil
 }
 
 type kmsCryptoKeyAdapter struct {
@@ -212,10 +227,7 @@ func (a *kmsCryptoKeyAdapter) Export(ctx context.Context) (*unstructured.Unstruc
 
 	keyRingExternal := fmt.Sprintf("projects/%s/locations/%s/keyRings/%s", a.id.Project, a.id.Location, a.id.KeyRing)
 	obj.Spec.KeyRingRef = krm.KMSKeyRingRef{External: keyRingExternal}
-
-	if len(a.actual.Labels) > 0 {
-		obj.SetLabels(a.actual.Labels)
-	}
+	obj.Spec.ResourceID = direct.PtrTo(a.id.CryptoKey)
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -225,6 +237,9 @@ func (a *kmsCryptoKeyAdapter) Export(ctx context.Context) (*unstructured.Unstruc
 	u := &unstructured.Unstructured{Object: uObj}
 	u.SetName(a.id.CryptoKey)
 	u.SetGroupVersionKind(krm.KMSCryptoKeyGVK)
+
+	export.SetProjectID(u, a.id.Project)
+	export.SetLabels(u, a.actual.Labels)
 
 	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())
 	return u, nil
