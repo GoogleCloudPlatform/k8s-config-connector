@@ -26,7 +26,7 @@ import (
 
 type SecretVersionIdentity struct {
 	id                      string
-	parent                  *SecretVersionParent
+	parent                  *SecretIdentity
 	serviceGeneratedIDKnown *bool
 }
 
@@ -41,21 +41,12 @@ func (i *SecretVersionIdentity) String() string {
 	return i.parent.String() + "/versions/" + i.id
 }
 
-func (r *SecretVersionIdentity) Parent() *SecretVersionParent {
+func (r *SecretVersionIdentity) Parent() *SecretIdentity {
 	return r.parent
 }
 
 func (r *SecretVersionIdentity) ID() string {
 	return r.id
-}
-
-type SecretVersionParent struct {
-	ProjectID string
-	SecretID  string
-}
-
-func (p *SecretVersionParent) String() string {
-	return "projects/" + p.ProjectID + "/secrets/" + p.SecretID
 }
 
 func NewSecretVersionIdentity(ctx context.Context, reader client.Reader, obj *SecretManagerSecretVersion, u *unstructured.Unstructured) (*SecretVersionIdentity, error) {
@@ -73,6 +64,7 @@ func NewSecretVersionIdentity(ctx context.Context, reader client.Reader, obj *Se
 		return nil, err
 	}
 	secretID := secretIdentity.ID()
+	location := secretIdentity.Location()
 
 	// If `spec.resourceID` is not empty, it means user wants to acquire the object.
 	desiredVersionID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,11 +75,14 @@ func NewSecretVersionIdentity(ctx context.Context, reader client.Reader, obj *Se
 		if err != nil {
 			return nil, err
 		}
-		if actualIdentity.parent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.parent.ProjectID, projectID)
+		if actualIdentity.parent.ProjectID() != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.parent.ProjectID(), projectID)
 		}
-		if actualIdentity.parent.SecretID != secretID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.parent.ProjectID, projectID)
+		if actualIdentity.parent.ID() != secretID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.parent.ID(), projectID)
+		}
+		if actualIdentity.parent.Location() != location {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.parent.Location(), projectID)
 		}
 		if desiredVersionID != "" && actualIdentity.id != desiredVersionID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -104,10 +99,7 @@ func NewSecretVersionIdentity(ctx context.Context, reader client.Reader, obj *Se
 		known = true
 	}
 	return &SecretVersionIdentity{
-		parent: &SecretVersionParent{
-			ProjectID: projectID,
-			SecretID:  secretID,
-		},
+		parent:                  secretIdentity,
 		id:                      desiredVersionID,
 		serviceGeneratedIDKnown: &known,
 	}, nil
