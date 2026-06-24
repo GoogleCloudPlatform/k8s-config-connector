@@ -99,6 +99,10 @@ func NormalizeDynamicIDs(s string) string {
 		if idx := strings.Index(line, "/notificationChannels/"); idx != -1 {
 			lines[i] = line[:idx+len("/notificationChannels/")]
 		}
+		// Normalize reCAPTCHA Enterprise Key IDs: projects/.../keys/<keyId>
+		if idx := strings.Index(line, "/keys/"); idx != -1 && strings.Contains(line, "recaptchaenterprise") {
+			lines[i] = line[:idx+len("/keys/")] + "${keyID}"
+		}
 		// Normalize Folder IDs: folders/<folderId>
 		if idx := strings.Index(line, "/folders/"); idx != -1 {
 			start := idx + len("/folders/")

@@ -1022,6 +1022,10 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-folder-"), "@gcp-sa-logging.iam.gserviceaccount.com")
 				replacement.PathIDs[id] = "${folderID}"
 			}
+		case ".spec.resourceID":
+			if u.GetKind() == "RecaptchaEnterpriseKey" {
+				replacement.PathIDs[s] = "${keyID}"
+			}
 		}
 		return s
 	})
@@ -1049,6 +1053,26 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	// Find any URLs
 	for _, event := range events {
 		findLinksInEvent(t, normalizer.Replacements, event)
+	}
+
+	// Find recaptchaenterprise key IDs in URL or Body and add to PathIDs
+	keyIDRegex := regexp.MustCompile(`/keys/([a-zA-Z0-9_-]+)`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "recaptchaenterprise.googleapis.com") {
+			continue
+		}
+		if matches := keyIDRegex.FindStringSubmatch(event.Request.URL); len(matches) > 1 {
+			normalizer.Replacements.PathIDs[matches[1]] = "${keyID}"
+		}
+		if event.Response.Body != "" {
+			if matches := keyIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${keyID}"
+					}
+				}
+			}
+		}
 	}
 
 	// Remove idempotency tokens

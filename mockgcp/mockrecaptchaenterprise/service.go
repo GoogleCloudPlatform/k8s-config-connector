@@ -53,7 +53,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"public-preview-recaptchaenterprise.googleapis.com"}
+	return []string{"recaptchaenterprise.googleapis.com", "public-preview-recaptchaenterprise.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
