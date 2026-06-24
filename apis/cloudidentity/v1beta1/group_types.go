@@ -21,7 +21,7 @@ import (
 
 var CloudIdentityGroupGVK = GroupVersion.WithKind("CloudIdentityGroup")
 
-// +kcc:proto=google.apps.cloudidentity.groups.v1beta1.EntityKey
+// +kcc:proto=google.apps.cloudidentity.v1beta1.EntityKey
 type EntityKey struct {
 	// Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`.
 	// +required
@@ -32,7 +32,7 @@ type EntityKey struct {
 }
 
 // CloudIdentityGroupSpec defines the desired state of CloudIdentityGroup
-// +kcc:spec:proto=google.apps.cloudidentity.groups.v1beta1.Group
+// +kcc:spec:proto=google.apps.cloudidentity.v1beta1.Group
 type CloudIdentityGroupSpec struct {
 	// An extended description to help users determine the purpose of a `Group`. Must not be longer than 4,096 characters.
 	Description *string `json:"description,omitempty"`
@@ -62,20 +62,20 @@ type CloudIdentityGroupSpec struct {
 }
 
 // CloudIdentityGroupStatus defines the config connector machine state of CloudIdentityGroup
-// +kcc:status:proto=google.apps.cloudidentity.groups.v1beta1.Group
+// +kcc:status:proto=google.apps.cloudidentity.v1beta1.Group
 type CloudIdentityGroupStatus struct {
 	commonv1alpha1.CommonStatus `json:",inline"`
 
 	// The time when the `Group` was created.
-	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Group.create_time
+	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.Group.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// The [resource name](https://cloud.google.com/apis/design/resource_names) of the `Group`. Shall be of the form `groups/{group_id}`.
-	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Group.name
+	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.Group.name
 	Name *string `json:"name,omitempty"`
 
 	// The time when the `Group` was last updated.
-	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Group.update_time
+	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.Group.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
@@ -83,7 +83,7 @@ type CloudIdentityGroupStatus struct {
 }
 
 // CloudIdentityGroupObservedState is the state of the CloudIdentityGroup resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.apps.cloudidentity.groups.v1beta1.Group
+// +kcc:observedstate:proto=google.apps.cloudidentity.v1beta1.Group
 type CloudIdentityGroupObservedState struct {
 	// Additional group keys associated with the Group.
 	AdditionalGroupKeys []EntityKey `json:"additionalGroupKeys,omitempty"`
