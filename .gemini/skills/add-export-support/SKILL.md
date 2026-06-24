@@ -57,6 +57,7 @@ During export, you must:
 2. **Set the labels:** Use the helper `export.SetLabels(u, labels)` from `github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export`.
 3. **Set the identity fields on spec:** In general, fields that are part of the identity (like `location`, `region`, or `resourceID`) are not mapped automatically in the spec by the from-proto mappers, so you must set them manually on the struct before converting to Unstructured.
 4. **Use the short name:** Make sure you use the short name of the resource (e.g. `a.id.Repository`) when calling `u.SetName()`, instead of the full GCP name.
+5. **Assign `u.Object` first:** You MUST assign `u.Object = uObj` *before* calling `u.SetName()` or `u.SetGroupVersionKind()`. Assigning `u.Object` replaces the entire underlying map, which will overwrite and discard the GVK or Name if set beforehand.
 
 **Example Implementation (for a reference-bound resource):**
 ```go
