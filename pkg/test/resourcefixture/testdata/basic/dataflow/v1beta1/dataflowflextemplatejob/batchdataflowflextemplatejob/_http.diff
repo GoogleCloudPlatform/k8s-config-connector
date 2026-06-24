@@ -78,44 +78,50 @@
 ---
 >   "requestedState": 5
 370c408
-<   "type": "JOB_TYPE_BATCH"
----
->   "type": 1
-375c413,414
-< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
----
-> GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
-> Content-Type: application/json
-389c428
 <   "currentState": "JOB_STATE_CANCELLING",
 ---
 >   "currentState": 10,
-518c557
-<     "shuffleMode": "SERVICE_BASED",
----
->     "shuffleMode": 2,
-542c581
+374,375c412,413
 <   "requestedState": "JOB_STATE_CANCELLED",
----
->   "requestedState": 5,
-546c585
 <   "type": "JOB_TYPE_BATCH"
 ---
+>   "requestedState": 5,
 >   "type": 1
-551c590,591
+380c418,419
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
 ---
 > GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 > Content-Type: application/json
-565c605
-<   "currentState": "JOB_STATE_CANCELLED",
+394c433
+<   "currentState": "JOB_STATE_CANCELLING",
 ---
->   "currentState": 5,
-694c734
+>   "currentState": 10,
+523c562
 <     "shuffleMode": "SERVICE_BASED",
 ---
 >     "shuffleMode": 2,
-721c761
+547c586
+<   "requestedState": "JOB_STATE_CANCELLED",
+---
+>   "requestedState": 5,
+551c590
+<   "type": "JOB_TYPE_BATCH"
+---
+>   "type": 1
+556c595,596
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
+---
+> GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+> Content-Type: application/json
+570c610
+<   "currentState": "JOB_STATE_CANCELLED",
+---
+>   "currentState": 5,
+699c739
+<     "shuffleMode": "SERVICE_BASED",
+---
+>     "shuffleMode": 2,
+726c766
 <   "type": "JOB_TYPE_BATCH"
 ---
 >   "type": 1
