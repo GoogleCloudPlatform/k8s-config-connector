@@ -17,96 +17,134 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ identity.Identity = &ParameterVersionIdentity{}
+var (
+	_ identity.IdentityV2 = &ParameterManagerParameterVersionIdentity{}
+	_ identity.Resource   = &ParameterManagerParameterVersion{}
+)
 
-// ParameterVersionIdentity is the identity of a ParameterVersion.
-type ParameterVersionIdentity struct {
-	parent *ParameterIdentity
-	id     string
+var ParameterManagerParameterVersionIdentityFormat = gcpurls.Template[ParameterManagerParameterVersionIdentity]("parametermanager.googleapis.com", "projects/{project}/locations/{location}/parameters/{parameter}/versions/{version}")
+
+// +k8s:deepcopy-gen=false
+type ParameterManagerParameterVersionIdentity struct {
+	Project   string
+	Location  string
+	Parameter string
+	Version   string
 }
 
-func (i *ParameterVersionIdentity) String() string {
-	return i.parent.String() + "/versions/" + i.id
+func (i *ParameterManagerParameterVersionIdentity) String() string {
+	return ParameterManagerParameterVersionIdentityFormat.ToString(*i)
 }
 
-func (i *ParameterVersionIdentity) ID() string {
-	return i.id
-}
-
-func (i *ParameterVersionIdentity) Parent() *ParameterIdentity {
-	return i.parent
-}
-
-func (i *ParameterVersionIdentity) FromExternal(ref string) error {
-	tokens := strings.Split(ref, "/versions/")
-	if len(tokens) != 2 {
-		return fmt.Errorf("format of parameter versions external=%q was not known (use projects/{{projectID}}/locations/{{location}}/parameters/{{parameterID}}/versions/{{versionID}})", ref)
+func (i *ParameterManagerParameterVersionIdentity) FromExternal(ref string) error {
+	parsed, match, err := ParameterManagerParameterVersionIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of ParameterManagerParameterVersion external=%q was not known (use %s): %w", ref, ParameterManagerParameterVersionIdentityFormat.CanonicalForm(), err)
 	}
-	i.parent = &ParameterIdentity{}
-	if err := i.parent.FromExternal(tokens[0]); err != nil {
-		return err
+	if !match {
+		return fmt.Errorf("format of ParameterManagerParameterVersion external=%q was not known (use %s)", ref, ParameterManagerParameterVersionIdentityFormat.CanonicalForm())
 	}
-	i.id = tokens[1]
-	if i.id == "" {
-		return fmt.Errorf("versionID was empty in external=%q", ref)
-	}
+
+	*i = *parsed
 	return nil
 }
 
-var _ identity.Resource = &ParameterManagerParameterVersion{}
+func (i *ParameterManagerParameterVersionIdentity) Host() string {
+	return ParameterManagerParameterVersionIdentityFormat.Host()
+}
 
-func (obj *ParameterManagerParameterVersion) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	// Get parent ID
-	parentID, err := obj.GetParentIdentity(ctx, reader)
-	if err != nil {
-		return nil, err
+func getIdentityFromParameterManagerParameterVersionSpec(ctx context.Context, reader client.Reader, obj client.Object) (*ParameterManagerParameterVersionIdentity, error) {
+	var parameterRef *ParameterRef
+	var resourceID *string
+	var namespace string
+
+	if typed, ok := obj.(*ParameterManagerParameterVersion); ok {
+		parameterRef = typed.Spec.ParameterRef
+		resourceID = typed.Spec.ResourceID
+		namespace = typed.GetNamespace()
+	} else if u, ok := obj.(*unstructured.Unstructured); ok {
+		namespace = u.GetNamespace()
+
+		rawParameterRef, found, err := unstructured.NestedMap(u.Object, "spec", "parameterRef")
+		if err != nil || !found {
+			return nil, fmt.Errorf("cannot find spec.parameterRef")
+		}
+
+		parameterRef = &ParameterRef{}
+		if val, ok := rawParameterRef["external"].(string); ok {
+			parameterRef.External = val
+		}
+		if val, ok := rawParameterRef["name"].(string); ok {
+			parameterRef.Name = val
+		}
+		if val, ok := rawParameterRef["namespace"].(string); ok {
+			parameterRef.Namespace = val
+		}
+
+		if val, found, err := unstructured.NestedString(u.Object, "spec", "resourceID"); err == nil && found {
+			resourceID = &val
+		}
+	} else {
+		return nil, fmt.Errorf("unsupported object type: %T", obj)
 	}
 
-	// Get resource ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
+	if parameterRef == nil {
+		return nil, fmt.Errorf("parameterRef is required")
 	}
-	if resourceID == "" {
+
+	// Normalize parent reference
+	if err := parameterRef.Normalize(ctx, reader, namespace); err != nil {
+		return nil, fmt.Errorf("failed to normalize parameterRef: %w", err)
+	}
+
+	// Resolve parent identity
+	parentID := &ParameterIdentity{}
+	if err := parentID.FromExternal(parameterRef.External); err != nil {
+		return nil, fmt.Errorf("failed to parse parent externalRef %q: %w", parameterRef.External, err)
+	}
+
+	idVal := common.ValueOf(resourceID)
+	if idVal == "" {
+		idVal = obj.GetName()
+	}
+	if idVal == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	parameterVersion := &ParameterVersionIdentity{
-		parent: parentID.(*ParameterIdentity),
-		id:     resourceID,
+	identity := &ParameterManagerParameterVersionIdentity{
+		Project:   parentID.Parent().ProjectID,
+		Location:  parentID.Parent().Location,
+		Parameter: parentID.ID(),
+		Version:   idVal,
+	}
+	return identity, nil
+}
+
+func (obj *ParameterManagerParameterVersion) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromParameterManagerParameterVersionSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
 	}
 
 	// Validate against the ID stored in status.externalRef, if any
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		statusIdentity := &ParameterVersionIdentity{}
+		statusIdentity := &ParameterManagerParameterVersionIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
 		}
-		if statusIdentity.String() != parameterVersion.String() {
-			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, parameterVersion.String())
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, specIdentity.String())
 		}
 	}
 
-	return parameterVersion, nil
-}
-
-func (obj *ParameterManagerParameterVersion) GetParentIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	// Normalize parent reference
-	if err := obj.Spec.ParameterRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
-		return nil, err
-	}
-	// Get parent identity
-	parentID := &ParameterIdentity{}
-	if err := parentID.FromExternal(obj.Spec.ParameterRef.External); err != nil {
-		return nil, err
-	}
-	return parentID, nil
+	return specIdentity, nil
 }
