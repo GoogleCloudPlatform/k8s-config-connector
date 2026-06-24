@@ -45,7 +45,7 @@ type KMSKeyHandleRef struct {
 }
 
 func init() {
-	refs.Register(&KMSKeyHandleRef{})
+	refs.Register(&KMSKeyHandleRef{}, &KMSKeyHandle{})
 }
 
 func (r *KMSKeyHandleRef) GetGVK() schema.GroupVersionKind {

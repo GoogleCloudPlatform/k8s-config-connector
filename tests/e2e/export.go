@@ -118,6 +118,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSCryptoKey"}:
 		exportURI = resolveCAISURI(h, obj)
 
+	case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSKeyHandle"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		exportURI = "//logging.googleapis.com/projects/" + projectID + "/metrics/" + resourceID
 
@@ -346,7 +349,11 @@ func resolveCAISURI(h *create.Harness, obj *unstructured.Unstructured) string {
 		return ""
 	}
 	if len(caisResults) == 0 || caisResults[0].CAISURL == "unknown" {
-		h.T.Errorf("failed to get CAIS identity: %v", err)
+		if len(caisResults) > 0 {
+			h.T.Errorf("failed to get CAIS identity: %s (result: %+v)", caisResults[0].Error, caisResults[0])
+		} else {
+			h.T.Errorf("failed to get CAIS identity: no results")
+		}
 		return ""
 	}
 	return caisResults[0].CAISURL
