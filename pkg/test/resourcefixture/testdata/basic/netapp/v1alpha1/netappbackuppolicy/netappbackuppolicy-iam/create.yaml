@@ -1,0 +1,13 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-${uniqueId}
+spec:
+  memberFrom:
+    serviceAccountRef:
+      name: netapp-sa-${uniqueId}
+  role: roles/netapp.viewer
+  resourceRef:
+    apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+    kind: NetAppBackupPolicy
+    name: netappbackuppolicy-${uniqueId}

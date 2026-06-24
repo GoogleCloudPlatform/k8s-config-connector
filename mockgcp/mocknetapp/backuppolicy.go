@@ -30,12 +30,76 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	pb "cloud.google.com/go/netapp/apiv1/netapppb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
 )
+
+func (s *backupVaultsService) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	name, err := s.parseBackupPolicyName(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	// Check if resource exists
+	if err := s.storage.Get(ctx, fqn, &pb.BackupPolicy{}); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%v' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	policy := &iampb.Policy{}
+	if err := s.storage.Get(ctx, fqn+"/iam", policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			// GCP returns an empty policy (but with an etag) if it hasn't been set
+			policy = &iampb.Policy{
+				Etag: []byte("etag"),
+			}
+			return policy, nil
+		}
+		return nil, err
+	}
+
+	return policy, nil
+}
+
+func (s *backupVaultsService) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	name, err := s.parseBackupPolicyName(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	// Check if resource exists
+	if err := s.storage.Get(ctx, fqn, &pb.BackupPolicy{}); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%v' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	policy := proto.Clone(req.Policy).(*iampb.Policy)
+	policy.Etag = []byte("etag") // TODO: Compute real etag
+
+	if err := s.storage.Update(ctx, fqn+"/iam", policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			if err := s.storage.Create(ctx, fqn+"/iam", policy); err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
+	}
+
+	return policy, nil
+}
 
 func (s *backupVaultsService) GetBackupPolicy(ctx context.Context, req *pb.GetBackupPolicyRequest) (*pb.BackupPolicy, error) {
 	name, err := s.parseBackupPolicyName(req.Name)

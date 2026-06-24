@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	pb "cloud.google.com/go/netapp/apiv1/netapppb"
 )
 
@@ -56,6 +57,7 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetAppServer(grpcServer, &backupVaultsService{MockService: s})
+	iampb.RegisterIAMPolicyServer(grpcServer, &backupVaultsService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -65,6 +67,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	grpcMux.AddService(pb.NewNetAppClient(conn))
+	grpcMux.AddService(iampb.NewIAMPolicyClient(conn))
 
 	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
@@ -74,4 +77,5 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 type backupVaultsService struct {
 	*MockService
 	pb.UnimplementedNetAppServer
+	iampb.UnimplementedIAMPolicyServer
 }

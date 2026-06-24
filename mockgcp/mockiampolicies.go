@@ -16,6 +16,7 @@ package mockgcp
 
 import (
 	"bytes"
+	"context"
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
@@ -23,10 +24,13 @@ import (
 	"net/http"
 
 	"cloud.google.com/go/iam/apiv1/iampb"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 )
 
 type mockIAMPolicies struct {
+	iampb.UnimplementedIAMPolicyServer
 	policies map[string]*iampb.Policy
 }
 
@@ -34,6 +38,45 @@ func newMockIAMPolicies() *mockIAMPolicies {
 	return &mockIAMPolicies{
 		policies: make(map[string]*iampb.Policy),
 	}
+}
+
+func (m *mockIAMPolicies) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	return m.getIAMPolicy(req.Resource)
+}
+
+func (m *mockIAMPolicies) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	oldPolicy, err := m.getIAMPolicy(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	if req.Policy.Etag != nil && !bytes.Equal(req.Policy.Etag, oldPolicy.Etag) {
+		return nil, status.Errorf(codes.Aborted, "etag mismatch")
+	}
+
+	policy := proto.Clone(req.Policy).(*iampb.Policy)
+
+	// conditional role bindings must specify version 3
+	hasConditions := false
+	for _, binding := range policy.Bindings {
+		if binding.Condition != nil {
+			hasConditions = true
+			break
+		}
+	}
+	// GCP returns the version as 1 if there are no conditions
+	if !hasConditions {
+		policy.Version = 1
+	}
+
+	policy.Etag = computeEtag(policy)
+	m.policies[req.Resource] = policy
+
+	return policy, nil
+}
+
+func (m *mockIAMPolicies) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
 }
 
 func (m *mockIAMPolicies) buildResponse(obj any) (*http.Response, error) {
