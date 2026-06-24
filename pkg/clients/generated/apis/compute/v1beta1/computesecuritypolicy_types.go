@@ -233,6 +233,7 @@ type SecuritypolicyRateLimitThreshold struct {
 }
 
 type SecuritypolicyRecaptchaOptionsConfig struct {
+	/* RecaptchaEnterpriseKeyRef is a reference to a GCP RecaptchaEnterpriseKey. */
 	RedirectSiteKeyRef v1alpha1.ResourceRef `json:"redirectSiteKeyRef"`
 }
 

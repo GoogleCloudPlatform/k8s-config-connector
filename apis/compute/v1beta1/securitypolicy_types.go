@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recaptchaenterprise/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -124,18 +125,7 @@ type SecurityPolicyAdvancedOptionsConfigJsonCustomConfig struct {
 type SecurityPolicyRecaptchaOptionsConfig struct {
 	// +required
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRecaptchaOptionsConfig.redirect_site_key
-	RedirectSiteKeyRef *RecaptchaEnterpriseKeyRef `json:"redirectSiteKeyRef,omitempty"`
-}
-
-type RecaptchaEnterpriseKeyRef struct {
-	/* The value of an externally managed RecaptchaEnterpriseKey resource. */
-	External string `json:"external,omitempty"`
-
-	/* The name of a RecaptchaEnterpriseKey resource. */
-	Name string `json:"name,omitempty"`
-
-	/* The namespace of a RecaptchaEnterpriseKey resource. */
-	Namespace string `json:"namespace,omitempty"`
+	RedirectSiteKeyRef *recaptchaenterprisev1beta1.RecaptchaEnterpriseKeyRef `json:"redirectSiteKeyRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRule
