@@ -46,6 +46,7 @@ require (
 	cloud.google.com/go/edgecontainer v1.4.4
 	cloud.google.com/go/essentialcontacts v1.7.7
 	cloud.google.com/go/eventarc v1.18.0
+	cloud.google.com/go/filestore v1.10.3
 	cloud.google.com/go/firestore v1.22.0
 	cloud.google.com/go/geminidataanalytics v1.3.0
 	cloud.google.com/go/gkebackup v1.8.1

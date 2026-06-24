@@ -324,7 +324,7 @@
 | eventarc.cnrm.cloud.google.com                | EventarcGoogleChannelConfig                     | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcTrigger                                 | False        | True        | False  | DCL        | False       |
 | filestore.cnrm.cloud.google.com               | FilestoreBackup                                 | False        | True        | False  | DCL        | False       |
-| filestore.cnrm.cloud.google.com               | FilestoreInstance                               | False        | True        | False  | DCL        | False       |
+| filestore.cnrm.cloud.google.com               | FilestoreInstance                               | False        | True        | False  | DCL        | True        |
 | filestore.cnrm.cloud.google.com               | FilestoreSnapshot                               | True         | False       | False  | Terraform  | False       |
 | firebase.cnrm.cloud.google.com                | FirebaseAndroidApp                              | True         | False       | False  | Terraform  | False       |
 | firebasedatabase.cnrm.cloud.google.com        | FirebaseDatabaseInstance                        | True         | False       | False  | Terraform  | False       |
