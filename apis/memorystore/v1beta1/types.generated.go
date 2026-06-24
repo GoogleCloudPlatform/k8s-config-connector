@@ -77,8 +77,7 @@ type CrossInstanceReplicationConfig struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership", skipping
-
+/* unreachable type CrossInstanceReplicationConfig_Membership
 // +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership
 type CrossInstanceReplicationConfig_Membership struct {
 }
@@ -487,8 +486,6 @@ type CrossInstanceReplicationConfigObservedState struct {
 }
 */
 
-/* found existing non-generated go type "CrossInstanceReplicationConfig_MembershipObservedState", skipping
-
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership
 type CrossInstanceReplicationConfig_MembershipObservedState struct {
 	// Output only. The primary instance that acts as the source of replication
@@ -501,7 +498,6 @@ type CrossInstanceReplicationConfig_MembershipObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership.secondary_instances
 	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"secondaryInstances,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "CrossInstanceReplicationConfig_RemoteInstanceObservedState", skipping
 

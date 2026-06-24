@@ -227,7 +227,7 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 		out.fileAnnotation = v.generatedFileAnnotation
 
 		{
-			out.addImport("refs", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
+			out.addImport("refsv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
 			out.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
 		}
 
@@ -358,7 +358,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			}
 
 			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]") && krmField.Type != "[]byte"
-								isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
+			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
 			if isProtoFieldSlice && !isKRMFieldSlice && !protoField.IsMap() { // proto slice -> krm single
 				var fromProtoElemFunc string
 				switch protoField.Kind() {
@@ -645,7 +645,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			}
 
 			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]") && krmField.Type != "[]byte"
-								isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
+			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
 			if !isProtoFieldSlice && isKRMFieldSlice { // proto single <- krm slice
 				krmElemType := strings.TrimPrefix(krmField.Type, "[]")
 				krmElemTypeName := strings.TrimPrefix(krmElemType, "*")
@@ -1221,6 +1221,9 @@ func (o *MapperGenerator) getGoImportAlias(goPackage string) string {
 	// Disambiguate in a way that preserves compatibility with the existing code
 	if strings.Contains(goPackage, "k8s-config-connector/apis/refs/") {
 		importAlias = "refs" + importAlias
+	} else if strings.HasSuffix(goPackage, "k8s-config-connector/apis/refs") {
+		// for _reference.go files under apis/refs and not apis/refs/v1beta1
+		// do nothing, use `refs` as import alias
 	} else if _, suffix, found := strings.Cut(goPackage, "k8s-config-connector/apis/"); found {
 		tokens := strings.Split(suffix, "/")
 		if len(tokens) == 2 {

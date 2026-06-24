@@ -28,6 +28,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 
 	gcp "cloud.google.com/go/memorystore/apiv1"
 
@@ -171,6 +173,8 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 		Instance:   desired,
 		InstanceId: a.id.Instance,
 	}
+	a.normalizeReplicationConfig(req.Instance.CrossInstanceReplicationConfig)
+
 	op, err := a.gcpClient.CreateInstance(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating Instance %s: %w", a.id, err)
@@ -181,11 +185,165 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	}
 	log.V(2).Info("successfully created Instance", "name", a.id)
 
+	if err := a.syncCrossInstanceReplication(ctx); err != nil {
+		return fmt.Errorf("syncing cross instance replication: %w", err)
+	}
+
 	if err := createOp.SetLastModifiedCookie(ctx, a.desired, created); err != nil {
 		return err
 	}
 
 	return a.updateStatus(ctx, createOp, created)
+}
+
+func (a *InstanceAdapter) normalizeReplicationConfig(config *memorystorepb.CrossInstanceReplicationConfig) {
+	if config == nil {
+		return
+	}
+	// The Memorystore API is strict:
+	// - PRIMARY instances must NOT have primary_instance set.
+	// - SECONDARY instances must NOT have secondary_instances set.
+	// - NONE instances must NOT have either set.
+	role := config.GetInstanceRole()
+	switch role {
+	case memorystorepb.CrossInstanceReplicationConfig_PRIMARY:
+		config.PrimaryInstance = nil
+	case memorystorepb.CrossInstanceReplicationConfig_SECONDARY:
+		config.SecondaryInstances = nil
+	case memorystorepb.CrossInstanceReplicationConfig_NONE, memorystorepb.CrossInstanceReplicationConfig_INSTANCE_ROLE_UNSPECIFIED:
+		config.PrimaryInstance = nil
+		config.SecondaryInstances = nil
+	default:
+		// do nothing, keep existing configs
+	}
+}
+
+func (a *InstanceAdapter) syncCrossInstanceReplication(ctx context.Context) error {
+	if a.desired.CrossInstanceReplicationConfig == nil {
+		return nil
+	}
+
+	role := a.desired.GetCrossInstanceReplicationConfig().GetInstanceRole()
+	switch role {
+	case memorystorepb.CrossInstanceReplicationConfig_PRIMARY:
+		// Ensure all secondary instances have this instance as primary
+		for _, sc := range a.desired.GetCrossInstanceReplicationConfig().GetSecondaryInstances() {
+			if sc.GetInstance() == "" {
+				continue
+			}
+			// Update secondary instance to be SECONDARY with current instance as primary
+			remoteConfig := &memorystorepb.CrossInstanceReplicationConfig{
+				InstanceRole:    memorystorepb.CrossInstanceReplicationConfig_SECONDARY,
+				PrimaryInstance: &memorystorepb.CrossInstanceReplicationConfig_RemoteInstance{Instance: a.id.String()},
+			}
+			if err := a.updateRemoteInstance(ctx, sc.GetInstance(), remoteConfig); err != nil {
+				return err
+			}
+		}
+	case memorystorepb.CrossInstanceReplicationConfig_SECONDARY:
+		// Ensure primary instance has this instance as secondary
+		pc := a.desired.GetCrossInstanceReplicationConfig().GetPrimaryInstance()
+		if pc.GetInstance() == "" {
+			return nil
+		}
+		// Get primary instance
+		primary, err := a.gcpClient.GetInstance(ctx, &memorystorepb.GetInstanceRequest{Name: pc.GetInstance()})
+		if err != nil {
+			if direct.IsNotFound(err) {
+				log := klog.FromContext(ctx)
+				log.V(0).Info("primary instance not found, skipping sync", "primary", pc.GetInstance())
+				return nil
+			}
+			return fmt.Errorf("getting primary instance %s: %w", pc.GetInstance(), err)
+		}
+		// Add current instance to secondary_instances if not already there
+		found := false
+		for _, sc := range primary.GetCrossInstanceReplicationConfig().GetSecondaryInstances() {
+			if sc.GetInstance() == a.id.String() {
+				found = true
+				break
+			}
+		}
+		if !found {
+			newConfig := primary.GetCrossInstanceReplicationConfig()
+			if newConfig == nil {
+				newConfig = &memorystorepb.CrossInstanceReplicationConfig{
+					InstanceRole: memorystorepb.CrossInstanceReplicationConfig_PRIMARY,
+				}
+			} else {
+				newConfig = proto.Clone(newConfig).(*memorystorepb.CrossInstanceReplicationConfig)
+				newConfig.InstanceRole = memorystorepb.CrossInstanceReplicationConfig_PRIMARY
+			}
+			newConfig.PrimaryInstance = nil // PRIMARY should not have PrimaryInstance set
+			newConfig.SecondaryInstances = append(newConfig.SecondaryInstances, &memorystorepb.CrossInstanceReplicationConfig_RemoteInstance{
+				Instance: a.id.String(),
+			})
+			if err := a.updateRemoteInstance(ctx, pc.GetInstance(), newConfig); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func (a *InstanceAdapter) updateRemoteInstance(ctx context.Context, instanceName string, desiredConfig *memorystorepb.CrossInstanceReplicationConfig) error {
+	log := klog.FromContext(ctx)
+
+	remote, err := a.gcpClient.GetInstance(ctx, &memorystorepb.GetInstanceRequest{Name: instanceName})
+	if err != nil {
+		return fmt.Errorf("getting remote instance %s: %w", instanceName, err)
+	}
+
+	// Only update if there is a difference in role or primary/secondary config
+	diff := false
+	if remote.GetCrossInstanceReplicationConfig().GetInstanceRole() != desiredConfig.GetInstanceRole() {
+		diff = true
+	} else {
+		switch desiredConfig.GetInstanceRole() {
+		case memorystorepb.CrossInstanceReplicationConfig_PRIMARY:
+			if len(remote.GetCrossInstanceReplicationConfig().GetSecondaryInstances()) != len(desiredConfig.GetSecondaryInstances()) {
+				diff = true
+			} else {
+				sortInstances := func(x, y *memorystorepb.CrossInstanceReplicationConfig_RemoteInstance) bool {
+					return x.GetInstance() < y.GetInstance()
+				}
+				if cmp.Equal(remote.CrossInstanceReplicationConfig.SecondaryInstances, desiredConfig.SecondaryInstances, cmpopts.SortSlices(sortInstances)) {
+					diff = true
+					break
+				}
+			}
+		case memorystorepb.CrossInstanceReplicationConfig_SECONDARY:
+			if remote.GetCrossInstanceReplicationConfig().GetPrimaryInstance().GetInstance() != desiredConfig.GetPrimaryInstance().GetInstance() {
+				diff = true
+			}
+		}
+	}
+
+	if !diff {
+		return nil
+	}
+
+	normalizedConfig := proto.Clone(desiredConfig).(*memorystorepb.CrossInstanceReplicationConfig)
+	a.normalizeReplicationConfig(normalizedConfig)
+
+	req := &memorystorepb.UpdateInstanceRequest{
+		Instance: &memorystorepb.Instance{
+			Name:                           instanceName,
+			CrossInstanceReplicationConfig: normalizedConfig,
+		},
+		UpdateMask: &fieldmaskpb.FieldMask{
+			Paths: []string{"cross_instance_replication_config"},
+		},
+	}
+	log.V(0).Info("making remote memorystore UpdateInstance call", "request", req)
+	op, err := a.gcpClient.UpdateInstance(ctx, req)
+	if err != nil {
+		return fmt.Errorf("updating remote instance %s: %w", instanceName, err)
+	}
+	if _, err := op.Wait(ctx); err != nil {
+		return fmt.Errorf("waiting for remote instance update %s: %w", instanceName, err)
+	}
+	return nil
 }
 
 func (a *InstanceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *memorystorepb.Instance) error {
@@ -244,6 +402,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 				Instance:   desired,
 			}
 			req.Instance.Name = a.id.String()
+			a.normalizeReplicationConfig(req.Instance.CrossInstanceReplicationConfig)
 
 			log.Info("updating memorystore instance", "path", path, "name", a.id)
 
@@ -256,6 +415,10 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 				return fmt.Errorf("instance %s waiting update: %w", a.id, err)
 			}
 			latest = updated
+		}
+
+		if err := a.syncCrossInstanceReplication(ctx); err != nil {
+			return fmt.Errorf("syncing cross instance replication: %w", err)
 		}
 
 		log.V(2).Info("successfully updated Instance", "name", a.id)
