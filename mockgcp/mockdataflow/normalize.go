@@ -21,7 +21,17 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	// No-op for now
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".currentStateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath(".jobs[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".jobs[].currentStateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".jobs[].startTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath(".job.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".job.currentStateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".job.startTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
