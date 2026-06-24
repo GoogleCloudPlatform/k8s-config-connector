@@ -18,6 +18,7 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	gax "github.com/googleapis/gax-go/v2"
 	gomock "go.uber.org/mock/gomock"
+	unstructured "k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 // MockAnywhereCacheAPI is a mock of AnywhereCacheAPI interface.
@@ -231,4 +232,18 @@ func (m *MockDirectBaseUpdateOperation) UpdateStatus(ctx context.Context, typedS
 func (mr *MockDirectBaseUpdateOperationMockRecorder) UpdateStatus(ctx, typedStatus, readyCondition any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockDirectBaseUpdateOperation)(nil).UpdateStatus), ctx, typedStatus, readyCondition)
+}
+
+// GetUnstructured mocks base method.
+func (m *MockDirectBaseUpdateOperation) GetUnstructured() *unstructured.Unstructured {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUnstructured")
+	ret0, _ := ret[0].(*unstructured.Unstructured)
+	return ret0
+}
+
+// GetUnstructured indicates an expected call of GetUnstructured.
+func (mr *MockDirectBaseUpdateOperationMockRecorder) GetUnstructured() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUnstructured", reflect.TypeOf((*MockDirectBaseUpdateOperation)(nil).GetUnstructured))
 }

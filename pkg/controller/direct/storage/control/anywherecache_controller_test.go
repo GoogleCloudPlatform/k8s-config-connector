@@ -29,6 +29,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	v1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 type ProtoMatcher struct {
@@ -215,6 +216,7 @@ func TestAnywhereCacheAdapter_Update(t *testing.T) {
 		}
 		mockClient.EXPECT().UpdateAnywhereCache(ctx, ProtoEq(expectedUpdateReq), gomock.Any()).Return(nil, nil).Times(1)
 		mockClient.EXPECT().GetAnywhereCache(ctx, ProtoEq(&pb.GetAnywhereCacheRequest{Name: anywhereCacheName}), gomock.Any()).Return(getActualPB(mapCtx, anywhereCacheStateRunning, "admit-on-first-miss", "86400s", true), nil).Times(1)
+		mockUpdateOp.EXPECT().GetUnstructured().Return(&unstructured.Unstructured{}).Times(1)
 		mockUpdateOp.EXPECT().UpdateStatus(ctx, gomock.Any(), getReadyCondition(v1.ConditionFalse, k8s.Updating, k8s.UpdatingMessage)).Return(nil).Times(1)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error setting mocks: %v", mapCtx.Err())

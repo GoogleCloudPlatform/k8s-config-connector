@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	v1 "k8s.io/api/core/v1"
@@ -327,6 +328,12 @@ func (a *AnywhereCacheAdapter) UpdateCache(ctx context.Context, updateOp DirectB
 
 	// At this point, cache is in "running" state, with no previous updates pending, and metadata changes are required.
 	log.Info(fmt.Sprintf("Metadata fields needing update: %v", sets.List(paths)))
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for _, path := range sets.List(paths) {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
 	}

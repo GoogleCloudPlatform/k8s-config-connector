@@ -21,6 +21,7 @@ import (
 	controlpb "cloud.google.com/go/storage/control/apiv2/controlpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/googleapis/gax-go/v2"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 type AnywhereCacheAPI interface {
@@ -36,4 +37,5 @@ type AnywhereCacheAPI interface {
 type DirectBaseUpdateOperation interface {
 	UpdateStatus(ctx context.Context, typedStatus any, readyCondition *v1alpha1.Condition) error
 	RequestRequeue()
+	GetUnstructured() *unstructured.Unstructured
 }
