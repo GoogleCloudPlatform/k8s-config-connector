@@ -54,6 +54,10 @@ func (m *modelApigeeEndpointAttachment) AdapterForObject(ctx context.Context, op
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := ResolveApigeeEndpointAttachmentRefs(ctx, reader, obj); err != nil {
+		return nil, err
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -65,6 +69,7 @@ func (m *modelApigeeEndpointAttachment) AdapterForObject(ctx context.Context, op
 	if err != nil {
 		return nil, err
 	}
+
 	return &ApigeeEndpointAttachmentAdapter{
 		id:                id,
 		k8sClient:         reader,
