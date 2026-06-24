@@ -127,6 +127,7 @@ import (
 	edgecontainerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgecontainer/v1alpha1"
 	edgecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgecontainer/v1beta1"
 	edgenetworkv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgenetwork/v1beta1"
+	enterpriseknowledgegraphv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/enterpriseknowledgegraph/v1alpha1"
 	essentialcontactsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/essentialcontacts/v1beta1"
 	eventarcv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/eventarc/v1alpha1"
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/eventarc/v1beta1"
@@ -347,6 +348,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	edgecontainerv1alpha1.AddToScheme,
 	edgecontainerv1beta1.AddToScheme,
 	edgenetworkv1beta1.AddToScheme,
+	enterpriseknowledgegraphv1alpha1.AddToScheme,
 	essentialcontactsv1beta1.AddToScheme,
 	eventarcv1alpha1.AddToScheme,
 	eventarcv1beta1.AddToScheme,

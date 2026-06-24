@@ -106,7 +106,7 @@ func main() {
 			}
 		}
 	}
-	makeStructNamesUniquePerKind(registerKinds)
+	makeStructNamesUniquePerKind(resources)
 
 	// clear out all generated types files
 	typesDir := repo.GetTypesGeneratedApisPath()
@@ -178,29 +178,64 @@ func main() {
 	}
 }
 
-func makeStructNamesUniquePerKind(kindMap map[string]*svkMap) {
-	for _, m := range kindMap { // Loop through each service/version entry
-		for _, r := range m.Defs { // Loop through each resource kind entry
-			// Because we will be modifying the nestedFields map, we need to decouple
-			// the existing field names from the map pointer so that fields aren't
-			// being renamed multiple times
-			nestedSpecFields := getArrayOfNestedFieldKeys(r.SpecNestedStructs)
-			nestedStatusFields := getArrayOfNestedFieldKeys(r.StatusNestedStructs)
+func makeStructNamesUniquePerKind(resources []*resourceDefinition) {
+	for _, r := range resources { // Loop through each resource kind entry
+		// Because we will be modifying the nestedFields map, we need to decouple
+		// the existing field names from the map pointer so that fields aren't
+		// being renamed multiple times
+		nestedSpecFields := getArrayOfNestedFieldKeys(r.SpecNestedStructs)
+		nestedStatusFields := getArrayOfNestedFieldKeys(r.StatusNestedStructs)
 
-			// Remove Service from Kind because Kinds will be unique in each service's packages
-			resourceKind := strings.TrimPrefix(r.Kind, r.Service)
+		// Remove Service from Kind because Kinds will be unique in each service's packages
+		resourceKind := strings.TrimPrefix(r.Kind, r.Service)
 
-			for _, s := range nestedSpecFields {
-				newStructName := fmt.Sprintf("%v%v", strings.Title(resourceKind), strings.Title(s))
-				findAndReplaceInStructField(s, newStructName, r.SpecFields)
-				findAndReplaceInNestedFields(s, newStructName, r.SpecNestedStructs)
-			}
-			for _, s := range nestedStatusFields {
-				newStructName := fmt.Sprintf("%v%v%v", strings.Title(resourceKind), strings.Title(s), "Status")
-				findAndReplaceInStructField(s, newStructName, r.StatusFields)
-				findAndReplaceInNestedFields(s, newStructName, r.StatusNestedStructs)
+		// 1. Rename all type references inside SpecNestedStructs values and SpecFields
+		specMapping := make(map[string]string)
+		for _, s := range nestedSpecFields {
+			newStructName := fmt.Sprintf("%v%v", strings.Title(resourceKind), strings.Title(s))
+			specMapping[s] = newStructName
+			findAndReplaceInStructField(s, newStructName, r.SpecFields)
+			// Rename within nested structs children lists
+			for _, children := range r.SpecNestedStructs {
+				findAndReplaceInStructField(s, newStructName, children)
 			}
 		}
+
+		// 2. Re-key SpecNestedStructs using the mapping
+		newSpecNestedStructs := make(map[string][]*fieldProperties)
+		for oldKey, children := range r.SpecNestedStructs {
+			newKey, ok := specMapping[oldKey]
+			if ok {
+				newSpecNestedStructs[newKey] = children
+			} else {
+				newSpecNestedStructs[oldKey] = children
+			}
+		}
+		r.SpecNestedStructs = newSpecNestedStructs
+
+		// 3. Rename all type references inside StatusNestedStructs values and StatusFields
+		statusMapping := make(map[string]string)
+		for _, s := range nestedStatusFields {
+			newStructName := fmt.Sprintf("%v%v%v", strings.Title(resourceKind), strings.Title(s), "Status")
+			statusMapping[s] = newStructName
+			findAndReplaceInStructField(s, newStructName, r.StatusFields)
+			// Rename within nested structs children lists
+			for _, children := range r.StatusNestedStructs {
+				findAndReplaceInStructField(s, newStructName, children)
+			}
+		}
+
+		// 4. Re-key StatusNestedStructs using the mapping
+		newStatusNestedStructs := make(map[string][]*fieldProperties)
+		for oldKey, children := range r.StatusNestedStructs {
+			newKey, ok := statusMapping[oldKey]
+			if ok {
+				newStatusNestedStructs[newKey] = children
+			} else {
+				newStatusNestedStructs[oldKey] = children
+			}
+		}
+		r.StatusNestedStructs = newStatusNestedStructs
 	}
 }
 
@@ -229,19 +264,6 @@ func findAndReplaceInStructField(old, new string, fields []*fieldProperties) {
 			}
 		}
 		fields[i] = f
-	}
-}
-
-func findAndReplaceInNestedFields(old, new string, fieldMap map[string][]*fieldProperties) {
-	for name, children := range fieldMap {
-		if name == old {
-			fieldMap[new] = children
-			if old != new {
-				delete(fieldMap, old)
-			}
-		}
-		// Replace in field type in nested struct
-		findAndReplaceInStructField(old, new, children)
 	}
 }
 
