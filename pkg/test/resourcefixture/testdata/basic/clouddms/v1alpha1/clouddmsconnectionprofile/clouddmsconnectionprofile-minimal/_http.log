@@ -1,0 +1,265 @@
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConnectionProfile
+
+{
+  "name": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = ConnectionProfile "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/CreateConnectionProfile
+
+{
+  "connectionProfile": {
+    "displayName": "Minimal MySQL connection profile",
+    "mysql": {
+      "host": "1.2.3.4",
+      "password": "my-password",
+      "port": 3306,
+      "username": "my-username"
+    },
+    "name": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}"
+  },
+  "connectionProfileId": "clouddmsconnectionprofile-min-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.ConnectionProfile",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Minimal MySQL connection profile",
+    "mysql": {
+      "host": "1.2.3.4",
+      "passwordSet": true,
+      "port": 3306,
+      "username": "my-username"
+    },
+    "name": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}",
+    "state": "READY",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConnectionProfile
+
+{
+  "name": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal MySQL connection profile",
+  "mysql": {
+    "host": "1.2.3.4",
+    "passwordSet": true,
+    "port": 3306,
+    "username": "my-username"
+  },
+  "name": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}",
+  "state": "READY",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/UpdateConnectionProfile
+
+{
+  "connectionProfile": {
+    "displayName": "Updated Minimal MySQL connection profile",
+    "mysql": {
+      "host": "1.2.3.4",
+      "password": "my-password",
+      "port": 3306,
+      "username": "my-username"
+    },
+    "name": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}"
+  },
+  "updateMask": "displayName,mysql.password"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.ConnectionProfile",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Updated Minimal MySQL connection profile",
+    "mysql": {
+      "host": "1.2.3.4",
+      "passwordSet": true,
+      "port": 3306,
+      "username": "my-username"
+    },
+    "name": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}",
+    "state": "READY",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConnectionProfile
+
+{
+  "name": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Updated Minimal MySQL connection profile",
+  "mysql": {
+    "host": "1.2.3.4",
+    "passwordSet": true,
+    "port": 3306,
+    "username": "my-username"
+  },
+  "name": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}",
+  "state": "READY",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConnectionProfile
+
+{
+  "name": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Updated Minimal MySQL connection profile",
+  "mysql": {
+    "host": "1.2.3.4",
+    "passwordSet": true,
+    "port": 3306,
+    "username": "my-username"
+  },
+  "name": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}",
+  "state": "READY",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/DeleteConnectionProfile
+
+{
+  "name": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/connectionProfiles/clouddmsconnectionprofile-min-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

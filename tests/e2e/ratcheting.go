@@ -139,6 +139,7 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "cloudbuild.cnrm.cloud.google.com", Kind: "CloudBuildWorkerPool"}:
 	case schema.GroupKind{Group: "clouddeploy.cnrm.cloud.google.com", Kind: "CloudDeployDeliveryPipeline"}:
 	case schema.GroupKind{Group: "clouddeploy.cnrm.cloud.google.com", Kind: "CloudDeployDeployPolicy"}:
+	case schema.GroupKind{Group: "clouddms.cnrm.cloud.google.com", Kind: "CloudDMSConnectionProfile"}:
 	case schema.GroupKind{Group: "clouddms.cnrm.cloud.google.com", Kind: "CloudDMSConversionWorkspace"}:
 	case schema.GroupKind{Group: "clouddms.cnrm.cloud.google.com", Kind: "CloudDMSPrivateConnection"}:
 	case schema.GroupKind{Group: "cloudfunctions2.cnrm.cloud.google.com", Kind: "CloudFunctions2Function"}:

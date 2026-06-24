@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,17 +17,24 @@ package v1alpha1
 import (
 	"context"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &CloudDMSConnectionProfileRef{}
+var CloudDMSConnectionProfileGVK = schema.GroupVersionKind{
+	Group:   "clouddms.cnrm.cloud.google.com",
+	Version: "v1alpha1",
+	Kind:    "CloudDMSConnectionProfile",
+}
 
-var CloudDMSConnectionProfileGVK = GroupVersion.WithKind("CloudDMSConnectionProfile")
+var _ refs.Ref = &CloudDMSConnectionProfileRef{}
 
-// CloudDMSConnectionProfileRef is a reference to a CloudDMSConnectionProfile resource.
+// CloudDMSConnectionProfileRef defines the resource reference to CloudDMSConnectionProfile, which "External" field
+// holds the GCP identifier for the KRM object.
 type CloudDMSConnectionProfileRef struct {
 	// A reference to an externally managed CloudDMSConnectionProfile resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/connectionProfiles/{{connectionProfileID}}".
@@ -38,6 +45,10 @@ type CloudDMSConnectionProfileRef struct {
 
 	// The namespace of a CloudDMSConnectionProfile resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&CloudDMSConnectionProfileRef{})
 }
 
 func (r *CloudDMSConnectionProfileRef) GetGVK() schema.GroupVersionKind {
@@ -62,13 +73,28 @@ func (r *CloudDMSConnectionProfileRef) SetExternal(ref string) {
 }
 
 func (r *CloudDMSConnectionProfileRef) ValidateExternal(ref string) error {
-	id := &ConnectionProfileIdentity{}
-	if err := id.FromExternal(r.GetExternal()); err != nil {
+	id := &CloudDMSConnectionProfileIdentity{}
+	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
+func (r *CloudDMSConnectionProfileRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &CloudDMSConnectionProfileIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
 func (r *CloudDMSConnectionProfileRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromCloudDMSConnectionProfileSpec(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

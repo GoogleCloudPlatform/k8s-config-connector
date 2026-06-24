@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type CloudDMSConnectionProfileExpansion interface{}
+
 type CloudDMSConversionWorkspaceExpansion interface{}
 
 type CloudDMSMigrationJobExpansion interface{}

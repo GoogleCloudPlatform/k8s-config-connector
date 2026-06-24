@@ -31,6 +31,10 @@ type FakeClouddmsV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeClouddmsV1alpha1) CloudDMSConnectionProfiles(namespace string) v1alpha1.CloudDMSConnectionProfileInterface {
+	return newFakeCloudDMSConnectionProfiles(c, namespace)
+}
+
 func (c *FakeClouddmsV1alpha1) CloudDMSConversionWorkspaces(namespace string) v1alpha1.CloudDMSConversionWorkspaceInterface {
 	return newFakeCloudDMSConversionWorkspaces(c, namespace)
 }

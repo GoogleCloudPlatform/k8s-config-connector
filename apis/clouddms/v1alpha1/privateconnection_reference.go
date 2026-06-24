@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -79,4 +80,44 @@ func (r *PrivateConnectionRef) NormalizedExternal(ctx context.Context, reader cl
 	}
 	r.External = actualExternalRef
 	return r.External, nil
+}
+
+func (r *PrivateConnectionRef) GetGVK() schema.GroupVersionKind {
+	return CloudDMSPrivateConnectionGVK
+}
+
+func (r *PrivateConnectionRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+}
+
+func (r *PrivateConnectionRef) GetExternal() string {
+	return r.External
+}
+
+func (r *PrivateConnectionRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *PrivateConnectionRef) ValidateExternal(ref string) error {
+	_, _, err := ParsePrivateConnectionExternal(ref)
+	return err
+}
+
+func (r *PrivateConnectionRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r == nil {
+		return nil
+	}
+	if r.Name == "" && r.External == "" {
+		return fmt.Errorf("must specify either name or external on %s reference", CloudDMSPrivateConnectionGVK.Kind)
+	}
+	if r.External != "" && r.Name != "" {
+		return fmt.Errorf("cannot specify both name and external")
+	}
+
+	ext, err := r.NormalizedExternal(ctx, reader, defaultNamespace)
+	if err != nil {
+		return err
+	}
+	r.External = ext
+	return nil
 }

@@ -1,0 +1,14 @@
+apiVersion: clouddms.cnrm.cloud.google.com/v1alpha1
+kind: CloudDMSConnectionProfile
+metadata:
+  name: clouddmsconnectionprofile-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Updated Minimal MySQL connection profile"
+  mysql:
+    host: "1.2.3.4"
+    port: 3306
+    username: "my-username"
+    password: "my-password"

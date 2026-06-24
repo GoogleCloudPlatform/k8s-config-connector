@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,41 +15,99 @@
 package v1alpha1
 
 import (
+	"context"
 	"fmt"
-	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const (
-	ConnectionProfileIDURL = parent.ProjectAndLocationURL + "/connectionProfiles/{{connectionProfileID}}"
+var (
+	_ identity.IdentityV2 = &CloudDMSConnectionProfileIdentity{}
+	_ identity.Resource   = &CloudDMSConnectionProfile{}
 )
 
-type ConnectionProfileIdentity struct {
-	parent *parent.ProjectAndLocationParent
-	id     string
+var CloudDMSConnectionProfileIdentityFormat = gcpurls.Template[CloudDMSConnectionProfileIdentity]("datamigration.googleapis.com", "projects/{project}/locations/{location}/connectionProfiles/{connectionProfile}")
+
+// +k8s:deepcopy-gen=false
+type CloudDMSConnectionProfileIdentity struct {
+	Project           string
+	Location          string
+	ConnectionProfile string
 }
 
-func (i *ConnectionProfileIdentity) String() string {
-	return i.parent.String() + "/connectionProfiles/" + i.id
+func (i *CloudDMSConnectionProfileIdentity) String() string {
+	return CloudDMSConnectionProfileIdentityFormat.ToString(*i)
 }
 
-func (i *ConnectionProfileIdentity) Parent() *parent.ProjectAndLocationParent {
-	return i.parent
-}
+func (i *CloudDMSConnectionProfileIdentity) FromExternal(ref string) error {
+	parsed, match, err := CloudDMSConnectionProfileIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of CloudDMSConnectionProfile external=%q was not known (use %s): %w", ref, CloudDMSConnectionProfileIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of CloudDMSConnectionProfile external=%q was not known (use %s)", ref, CloudDMSConnectionProfileIdentityFormat.CanonicalForm())
+	}
 
-func (i *ConnectionProfileIdentity) FromExternal(external string) error {
-	tokens := strings.Split(external, "/connectionProfiles/")
-	if len(tokens) != 2 {
-		return fmt.Errorf("format of ConnectionProfile external=%q was not known (use %s)", external, ConnectionProfileIDURL)
-	}
-	i.parent = &parent.ProjectAndLocationParent{}
-	if err := i.parent.FromExternal(tokens[0]); err != nil {
-		return err
-	}
-	i.id = tokens[1]
-	if i.id == "" {
-		return fmt.Errorf("catalogID was empty in external=%q", external)
-	}
+	*i = *parsed
 	return nil
+}
+
+func (i *CloudDMSConnectionProfileIdentity) Host() string {
+	return CloudDMSConnectionProfileIdentityFormat.Host()
+}
+
+func getIdentityFromCloudDMSConnectionProfileSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CloudDMSConnectionProfileIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &CloudDMSConnectionProfileIdentity{
+		Project:           projectID,
+		Location:          location,
+		ConnectionProfile: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *CloudDMSConnectionProfile) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromCloudDMSConnectionProfileSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		statusIdentity := &CloudDMSConnectionProfileIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change CloudDMSConnectionProfile identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
+}
+
+// ExternalIdentifier implements identity.Resource
+func (obj *CloudDMSConnectionProfile) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
 }
