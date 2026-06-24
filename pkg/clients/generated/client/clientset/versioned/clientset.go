@@ -130,6 +130,7 @@ import (
 	edgecontainerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgecontainer/v1alpha1"
 	edgecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgecontainer/v1beta1"
 	edgenetworkv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgenetwork/v1beta1"
+	enterpriseknowledgegraphv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/enterpriseknowledgegraph/v1alpha1"
 	essentialcontactsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/essentialcontacts/v1beta1"
 	eventarcv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1alpha1"
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1"
@@ -351,6 +352,7 @@ type Interface interface {
 	EdgecontainerV1alpha1() edgecontainerv1alpha1.EdgecontainerV1alpha1Interface
 	EdgecontainerV1beta1() edgecontainerv1beta1.EdgecontainerV1beta1Interface
 	EdgenetworkV1beta1() edgenetworkv1beta1.EdgenetworkV1beta1Interface
+	EnterpriseknowledgegraphV1alpha1() enterpriseknowledgegraphv1alpha1.EnterpriseknowledgegraphV1alpha1Interface
 	EssentialcontactsV1beta1() essentialcontactsv1beta1.EssentialcontactsV1beta1Interface
 	EventarcV1alpha1() eventarcv1alpha1.EventarcV1alpha1Interface
 	EventarcV1beta1() eventarcv1beta1.EventarcV1beta1Interface
@@ -570,6 +572,7 @@ type Clientset struct {
 	edgecontainerV1alpha1            *edgecontainerv1alpha1.EdgecontainerV1alpha1Client
 	edgecontainerV1beta1             *edgecontainerv1beta1.EdgecontainerV1beta1Client
 	edgenetworkV1beta1               *edgenetworkv1beta1.EdgenetworkV1beta1Client
+	enterpriseknowledgegraphV1alpha1 *enterpriseknowledgegraphv1alpha1.EnterpriseknowledgegraphV1alpha1Client
 	essentialcontactsV1beta1         *essentialcontactsv1beta1.EssentialcontactsV1beta1Client
 	eventarcV1alpha1                 *eventarcv1alpha1.EventarcV1alpha1Client
 	eventarcV1beta1                  *eventarcv1beta1.EventarcV1beta1Client
@@ -1204,6 +1207,11 @@ func (c *Clientset) EdgecontainerV1beta1() edgecontainerv1beta1.EdgecontainerV1b
 // EdgenetworkV1beta1 retrieves the EdgenetworkV1beta1Client
 func (c *Clientset) EdgenetworkV1beta1() edgenetworkv1beta1.EdgenetworkV1beta1Interface {
 	return c.edgenetworkV1beta1
+}
+
+// EnterpriseknowledgegraphV1alpha1 retrieves the EnterpriseknowledgegraphV1alpha1Client
+func (c *Clientset) EnterpriseknowledgegraphV1alpha1() enterpriseknowledgegraphv1alpha1.EnterpriseknowledgegraphV1alpha1Interface {
+	return c.enterpriseknowledgegraphV1alpha1
 }
 
 // EssentialcontactsV1beta1 retrieves the EssentialcontactsV1beta1Client
@@ -2215,6 +2223,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.enterpriseknowledgegraphV1alpha1, err = enterpriseknowledgegraphv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.essentialcontactsV1beta1, err = essentialcontactsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2777,6 +2789,7 @@ func New(c rest.Interface) *Clientset {
 	cs.edgecontainerV1alpha1 = edgecontainerv1alpha1.New(c)
 	cs.edgecontainerV1beta1 = edgecontainerv1beta1.New(c)
 	cs.edgenetworkV1beta1 = edgenetworkv1beta1.New(c)
+	cs.enterpriseknowledgegraphV1alpha1 = enterpriseknowledgegraphv1alpha1.New(c)
 	cs.essentialcontactsV1beta1 = essentialcontactsv1beta1.New(c)
 	cs.eventarcV1alpha1 = eventarcv1alpha1.New(c)
 	cs.eventarcV1beta1 = eventarcv1beta1.New(c)
