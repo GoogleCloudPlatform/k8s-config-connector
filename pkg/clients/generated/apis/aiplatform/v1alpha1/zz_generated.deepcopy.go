@@ -3466,8 +3466,8 @@ func (in *VertexaihyperparametertuningjobPythonPackageSpec) DeepCopyInto(out *Ve
 		*out = new(string)
 		**out = **in
 	}
-	if in.PackageUris != nil {
-		in, out := &in.PackageUris, &out.PackageUris
+	if in.PackageURIs != nil {
+		in, out := &in.PackageURIs, &out.PackageURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -3731,14 +3731,14 @@ func (in *VertexaihyperparametertuningjobTrialJobSpec) DeepCopyInto(out *Vertexa
 		*out = new(string)
 		**out = **in
 	}
-	if in.Models != nil {
-		in, out := &in.Models, &out.Models
-		*out = make([]string, len(*in))
+	if in.ModelRefs != nil {
+		in, out := &in.ModelRefs, &out.ModelRefs
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
-	if in.Network != nil {
-		in, out := &in.Network, &out.Network
-		*out = new(string)
+	if in.NetworkRef != nil {
+		in, out := &in.NetworkRef, &out.NetworkRef
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.PersistentResourceID != nil {
@@ -3766,14 +3766,14 @@ func (in *VertexaihyperparametertuningjobTrialJobSpec) DeepCopyInto(out *Vertexa
 		*out = new(VertexaihyperparametertuningjobScheduling)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ServiceAccount != nil {
-		in, out := &in.ServiceAccount, &out.ServiceAccount
-		*out = new(string)
+	if in.ServiceAccountRef != nil {
+		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
-	if in.Tensorboard != nil {
-		in, out := &in.Tensorboard, &out.Tensorboard
-		*out = new(string)
+	if in.TensorboardRef != nil {
+		in, out := &in.TensorboardRef, &out.TensorboardRef
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.WorkerPoolSpecs != nil {
@@ -3858,8 +3858,8 @@ func (in *VertexaihyperparametertuningjobTrialsStatus) DeepCopyInto(out *Vertexa
 		*out = new(string)
 		**out = **in
 	}
-	if in.WebAccessUris != nil {
-		in, out := &in.WebAccessUris, &out.WebAccessUris
+	if in.WebAccessURIs != nil {
+		in, out := &in.WebAccessURIs, &out.WebAccessURIs
 		*out = make(map[string]string, len(*in))
 		for key, val := range *in {
 			(*out)[key] = val

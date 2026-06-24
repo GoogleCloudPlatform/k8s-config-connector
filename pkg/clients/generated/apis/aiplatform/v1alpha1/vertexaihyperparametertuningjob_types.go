@@ -403,7 +403,7 @@ type VertexaihyperparametertuningjobPythonPackageSpec struct {
 
 	/* Required. The Google Cloud Storage location of the Python package files which are the training program and its dependent packages. The maximum number of package URIs is 100. */
 	// +optional
-	PackageUris []string `json:"packageUris,omitempty"`
+	PackageURIs []string `json:"packageURIs,omitempty"`
 
 	/* Required. The Python module name to run after installing the packages. */
 	// +optional
@@ -609,7 +609,7 @@ type VertexaihyperparametertuningjobTrialJobSpec struct {
 	the model, and can be moved to other versions later on. There will be
 	exactly one default version. */
 	// +optional
-	Models []string `json:"models,omitempty"`
+	ModelRefs []v1alpha1.ResourceRef `json:"modelRefs,omitempty"`
 
 	/* Optional. The full name of the Compute Engine
 	[network](/compute/docs/networks-and-firewalls#networks) to which the Job
@@ -625,7 +625,7 @@ type VertexaihyperparametertuningjobTrialJobSpec struct {
 
 	If this field is left unspecified, the job is not peered with any network. */
 	// +optional
-	Network *string `json:"network,omitempty"`
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Optional. The ID of the PersistentResource in the same Project and Location
 	which to run
@@ -662,11 +662,11 @@ type VertexaihyperparametertuningjobTrialJobSpec struct {
 
 	/* Specifies the service account for workload run-as account. Users submitting jobs must have act-as permission on this run-as account. If unspecified, the [Vertex AI Custom Code Service Agent](https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents) for the CustomJob's project is used. */
 	// +optional
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Optional. The name of a Vertex AI [Tensorboard][google.cloud.aiplatform.v1.Tensorboard] resource to which this CustomJob will upload Tensorboard logs. Format: `projects/{project}/locations/{location}/tensorboards/{tensorboard}` */
 	// +optional
-	Tensorboard *string `json:"tensorboard,omitempty"`
+	TensorboardRef *v1alpha1.ResourceRef `json:"tensorboardRef,omitempty"`
 
 	/* Required. The spec of the worker pools including machine type and Docker image. All worker pools except the first one are optional and can be skipped by providing an empty value. */
 	// +optional
@@ -905,7 +905,7 @@ type VertexaihyperparametertuningjobTrialsStatus struct {
 
 	The values are the URIs for each node's interactive shell. */
 	// +optional
-	WebAccessUris map[string]string `json:"webAccessUris,omitempty"`
+	WebAccessURIs map[string]string `json:"webAccessURIs,omitempty"`
 }
 
 type VertexaihyperparametertuningjobValueStatus struct {
