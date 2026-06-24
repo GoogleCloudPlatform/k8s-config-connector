@@ -355,7 +355,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>RecaptchaEnterpriseKeyRef is a reference to a GCP RecaptchaEnterpriseKey.</p>
         </td>
     </tr>
     <tr>
@@ -365,7 +365,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed RecaptchaEnterpriseKey resource.</p>
+            <p>A reference to an externally managed RecaptchaEnterpriseKey resource. Should be in the format "projects/{{projectID}}/keys/{{keyID}}".</p>
         </td>
     </tr>
     <tr>
