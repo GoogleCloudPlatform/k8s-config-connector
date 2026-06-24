@@ -73,3 +73,23 @@ func ComputeRouteSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Compute
 	out.Tags = in.Tags
 	return out
 }
+
+func ComputeRouteStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Route) *krm.ComputeRouteStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouteStatus{}
+	out.NextHopNetwork = in.NextHopNetwork
+	out.SelfLink = in.SelfLink
+	return out
+}
+
+func ComputeRouteStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouteStatus) *pb.Route {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Route{}
+	out.NextHopNetwork = in.NextHopNetwork
+	out.SelfLink = in.SelfLink
+	return out
+}
