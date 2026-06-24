@@ -42,4 +42,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/example-project-01/locations/us-west1/memberships/gkehubmembership-basic-poco-${uniqueId}/features/policycontroller
   observedGeneration: 2

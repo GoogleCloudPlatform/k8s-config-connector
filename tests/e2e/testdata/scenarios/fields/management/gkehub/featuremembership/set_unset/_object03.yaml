@@ -28,4 +28,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}/features/configmanagement
   observedGeneration: 1

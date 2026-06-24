@@ -39,4 +39,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}/features/configmanagement
   observedGeneration: 2

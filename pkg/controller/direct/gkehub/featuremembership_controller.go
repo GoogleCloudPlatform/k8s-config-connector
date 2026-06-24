@@ -27,7 +27,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -57,6 +56,8 @@ type gkeHubModel struct {
 var _ directbase.Model = &gkeHubModel{}
 
 type gkeHubAdapter struct {
+	identity *krm.GKEHubFeatureMembershipIdentity
+
 	membershipID string
 	featureID    string
 	projectID    string
@@ -86,35 +87,22 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
-	projectRef := &refs.ProjectRef{
-		Name:      obj.Spec.ProjectRef.Name,
-		Namespace: obj.Spec.ProjectRef.Namespace,
-		External:  obj.Spec.ProjectRef.External,
-	}
-	project, err := refs.ResolveProject(ctx, reader, u.GetNamespace(), projectRef)
+
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
-	projectID := project.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	membership, err := resolveMembershipRef(ctx, reader, obj, projectID)
-	if err != nil {
-		return nil, err
-	}
-	feature, err := resolveFeatureRef(ctx, reader, obj, projectID)
-	if err != nil {
-		return nil, err
-	}
+	identityV2 := id.(*krm.GKEHubFeatureMembershipIdentity)
+
 	if err := resolveIAMReferences(ctx, reader, obj); err != nil {
 		return nil, err
 	}
 	return &gkeHubAdapter{
-		membershipID: membership.id,
-		featureID:    feature.id,
-		projectID:    projectID,
-		location:     obj.Spec.Location,
+		identity:     identityV2,
+		membershipID: fmt.Sprintf("projects/%s/locations/%s/memberships/%s", identityV2.Project, identityV2.Location, identityV2.Membership),
+		featureID:    fmt.Sprintf("projects/%s/locations/%s/features/%s", identityV2.Project, identityV2.FeatureLocation, identityV2.Feature),
+		projectID:    identityV2.Project,
+		location:     identityV2.FeatureLocation,
 		desired:      obj,
 		hubClient:    hubClient,
 	}, nil
@@ -247,8 +235,10 @@ func (a *gkeHubAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 		return fmt.Errorf("failed to patch the MembershipSpec; %w", err)
 	}
 	log.V(2).Info("successfully created gkehubfeaturemembership")
-	// no need to set the status from the api response for the  &krm.GKEHubFeatureMembershipStatus{} as the it only has generic status.
-	return nil
+	status := &krm.GKEHubFeatureMembershipStatus{
+		ExternalRef: direct.PtrTo(a.identity.String()),
+	}
+	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *gkeHubAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -271,8 +261,10 @@ func (a *gkeHubAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	} else {
 		log.V(2).Info("no diff, skipping updating gkehubfeaturemembership")
 	}
-	// no need to set the status from the api response for &krm.GKEHubFeatureMembershipStatus{} as the it only has generic status.
-	return nil
+	status := &krm.GKEHubFeatureMembershipStatus{
+		ExternalRef: direct.PtrTo(a.identity.String()),
+	}
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *gkeHubAdapter) Export(context.Context) (*unstructured.Unstructured, error) {
