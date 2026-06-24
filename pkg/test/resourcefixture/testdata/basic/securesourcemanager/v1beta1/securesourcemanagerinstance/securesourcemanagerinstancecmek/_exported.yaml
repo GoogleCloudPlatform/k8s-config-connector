@@ -1,0 +1,11 @@
+apiVersion: securesourcemanager.cnrm.cloud.google.com/v1beta1
+kind: SecureSourceManagerInstance
+metadata:
+  name: ssminstance-${uniqueId}
+spec:
+  kmsKeyRef:
+    external: projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceID: ssminstance-${uniqueId}
