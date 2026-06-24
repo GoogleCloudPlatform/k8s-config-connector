@@ -19,9 +19,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
-
 	"google.golang.org/api/option"
 
 	api "cloud.google.com/go/redis/cluster/apiv1"
@@ -253,10 +250,6 @@ func (a *redisClusterAdapter) Create(ctx context.Context, createOp *directbase.C
 		return fmt.Errorf("waiting for redisCluster create %s: %w", a.id.String(), err)
 	}
 
-	if err := a.syncCrossClusterReplication(ctx); err != nil {
-		return fmt.Errorf("syncing cross cluster replication: %w", err)
-	}
-
 	log.V(0).Info("created redisCluster", "redisCluster", created)
 
 	// Set externalRef
@@ -358,6 +351,11 @@ func compareRedisCluster(ctx context.Context, actual, desired *pb.Cluster) (*str
 	maskedActual = populateDefaults(maskedActual)
 	desired = populateDefaults(proto.CloneOf(desired))
 
+	// If CrossClusterReplicationConfig is unspecified, use the actual value as default
+	if desired.CrossClusterReplicationConfig == nil {
+		desired.CrossClusterReplicationConfig = maskedActual.CrossClusterReplicationConfig
+	}
+
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, err
@@ -406,132 +404,4 @@ func populateDefaults(cluster *pb.Cluster) *pb.Cluster {
 	}
 
 	return cluster
-}
-
-func (a *redisClusterAdapter) syncCrossClusterReplication(ctx context.Context) error {
-	if a.desired.CrossClusterReplicationConfig == nil {
-		return nil
-	}
-
-	role := a.desired.GetCrossClusterReplicationConfig().GetClusterRole()
-	switch role {
-	case pb.CrossClusterReplicationConfig_PRIMARY:
-		// Ensure all secondary clusters have this cluster as primary
-		for _, sc := range a.desired.GetCrossClusterReplicationConfig().GetSecondaryClusters() {
-			if sc.GetCluster() == "" {
-				continue
-			}
-			// Update secondary cluster to be SECONDARY with current cluster as primary
-			remoteConfig := &pb.CrossClusterReplicationConfig{
-				ClusterRole:    pb.CrossClusterReplicationConfig_SECONDARY,
-				PrimaryCluster: &pb.CrossClusterReplicationConfig_RemoteCluster{Cluster: a.id.String()},
-			}
-			if err := a.updateRemoteCluster(ctx, sc.GetCluster(), remoteConfig); err != nil {
-				return err
-			}
-		}
-	case pb.CrossClusterReplicationConfig_SECONDARY:
-		// Ensure primary cluster has this cluster as secondary
-		pc := a.desired.GetCrossClusterReplicationConfig().GetPrimaryCluster()
-		if pc.GetCluster() == "" {
-			return nil
-		}
-		// Get primary cluster
-		primary, err := a.clustersClient.GetCluster(ctx, &pb.GetClusterRequest{Name: pc.GetCluster()})
-		if err != nil {
-			if direct.IsNotFound(err) {
-				log := klog.FromContext(ctx)
-				log.V(0).Info("primary cluster not found, skipping sync", "primary", pc.GetCluster())
-				return nil
-			}
-			return fmt.Errorf("getting primary cluster %s: %w", pc.GetCluster(), err)
-		}
-		// Add current cluster to secondary_clusters if not already there
-		found := false
-		for _, sc := range primary.GetCrossClusterReplicationConfig().GetSecondaryClusters() {
-			if sc.GetCluster() == a.id.String() {
-				found = true
-				break
-			}
-		}
-		if !found {
-			newConfig := primary.GetCrossClusterReplicationConfig()
-			if newConfig == nil {
-				newConfig = &pb.CrossClusterReplicationConfig{
-					ClusterRole: pb.CrossClusterReplicationConfig_PRIMARY,
-				}
-			} else {
-				newConfig = proto.Clone(newConfig).(*pb.CrossClusterReplicationConfig)
-				newConfig.ClusterRole = pb.CrossClusterReplicationConfig_PRIMARY
-			}
-			newConfig.PrimaryCluster = nil // PRIMARY should not have PrimaryCluster set
-			newConfig.SecondaryClusters = append(newConfig.SecondaryClusters, &pb.CrossClusterReplicationConfig_RemoteCluster{
-				Cluster: a.id.String(),
-			})
-			if err := a.updateRemoteCluster(ctx, pc.GetCluster(), newConfig); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
-
-func (a *redisClusterAdapter) updateRemoteCluster(ctx context.Context, clusterName string, desiredConfig *pb.CrossClusterReplicationConfig) error {
-	log := klog.FromContext(ctx)
-
-	remote, err := a.clustersClient.GetCluster(ctx, &pb.GetClusterRequest{Name: clusterName})
-	if err != nil {
-		return fmt.Errorf("getting remote cluster %s: %w", clusterName, err)
-	}
-
-	// Only update if there is a difference in role or primary/secondary config
-	diff := false
-	if remote.GetCrossClusterReplicationConfig().GetClusterRole() != desiredConfig.GetClusterRole() {
-		diff = true
-	} else {
-		switch desiredConfig.GetClusterRole() {
-		case pb.CrossClusterReplicationConfig_PRIMARY:
-			if len(remote.GetCrossClusterReplicationConfig().GetSecondaryClusters()) != len(desiredConfig.GetSecondaryClusters()) {
-				diff = true
-			} else {
-				sortClusters := func(x, y *pb.CrossClusterReplicationConfig_RemoteCluster) bool {
-					return x.GetCluster() < y.GetCluster()
-				}
-				if cmp.Equal(remote.CrossClusterReplicationConfig.SecondaryClusters, desiredConfig.SecondaryClusters, cmpopts.SortSlices(sortClusters)) {
-					diff = true
-					break
-				}
-			}
-		case pb.CrossClusterReplicationConfig_SECONDARY:
-			if remote.GetCrossClusterReplicationConfig().GetPrimaryCluster().GetCluster() != desiredConfig.GetPrimaryCluster().GetCluster() {
-				diff = true
-			}
-		}
-	}
-
-	if !diff {
-		return nil
-	}
-
-	normalizedConfig := proto.Clone(desiredConfig).(*pb.CrossClusterReplicationConfig)
-	a.normalizeReplicationConfig(normalizedConfig)
-
-	req := &pb.UpdateClusterRequest{
-		Cluster: &pb.Cluster{
-			Name:                          clusterName,
-			CrossClusterReplicationConfig: normalizedConfig,
-		},
-		UpdateMask: &fieldmaskpb.FieldMask{
-			Paths: []string{"cross_cluster_replication_config"},
-		},
-	}
-	log.V(0).Info("making remote redis UpdateCluster call", "request", req)
-	op, err := a.clustersClient.UpdateCluster(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating remote cluster %s: %w", clusterName, err)
-	}
-	if _, err := op.Wait(ctx); err != nil {
-		return fmt.Errorf("waiting for remote cluster update %s: %w", clusterName, err)
-	}
-	return nil
 }
