@@ -31,6 +31,10 @@ type FakeAiplatformV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeAiplatformV1alpha1) AIPlatformBatchPredictionJobs(namespace string) v1alpha1.AIPlatformBatchPredictionJobInterface {
+	return newFakeAIPlatformBatchPredictionJobs(c, namespace)
+}
+
 func (c *FakeAiplatformV1alpha1) AIPlatformModels(namespace string) v1alpha1.AIPlatformModelInterface {
 	return newFakeAIPlatformModels(c, namespace)
 }
