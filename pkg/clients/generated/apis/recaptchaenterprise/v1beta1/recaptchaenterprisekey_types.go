@@ -109,10 +109,10 @@ type RecaptchaEnterpriseKeySpec struct {
 	// +optional
 	IosSettings *KeyIosSettings `json:"iosSettings,omitempty"`
 
-	/* Immutable. The Project that this resource belongs to. */
+	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* The RecaptchaEnterpriseKey name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
