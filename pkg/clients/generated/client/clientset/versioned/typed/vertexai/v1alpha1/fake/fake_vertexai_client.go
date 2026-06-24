@@ -63,6 +63,10 @@ func (c *FakeVertexaiV1alpha1) VertexAIIndexEndpoints(namespace string) v1alpha1
 	return newFakeVertexAIIndexEndpoints(c, namespace)
 }
 
+func (c *FakeVertexaiV1alpha1) VertexAIReasoningEngines(namespace string) v1alpha1.VertexAIReasoningEngineInterface {
+	return newFakeVertexAIReasoningEngines(c, namespace)
+}
+
 func (c *FakeVertexaiV1alpha1) VertexAITensorboards(namespace string) v1alpha1.VertexAITensorboardInterface {
 	return newFakeVertexAITensorboards(c, namespace)
 }
