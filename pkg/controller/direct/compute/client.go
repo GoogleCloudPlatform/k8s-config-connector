@@ -25,6 +25,7 @@
 // proto.service: google.cloud.compute.v1.RegionUrlMaps
 // proto.service: google.cloud.compute.v1.Networks
 // proto.service: google.cloud.compute.v1.Routes
+// proto.service: google.cloud.compute.v1.Autoscalers
 
 package compute
 
@@ -353,6 +354,18 @@ func (m *gcpClient) newRegionDisksClient(ctx context.Context) (*compute.RegionDi
 	client, err := compute.NewRegionDisksRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building ComputeRegionDisks client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newAutoscalersClient(ctx context.Context) (*compute.AutoscalersClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewAutoscalersRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeAutoscalers client: %w", err)
 	}
 	return client, err
 }
