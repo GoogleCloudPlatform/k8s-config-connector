@@ -30,6 +30,13 @@ func dnsResponsePolicyRuleFuzzer() fuzztesting.KRMFuzzer_NoProto {
 		DNSResponsePolicyRuleStatus_FromAPI, DNSResponsePolicyRuleStatus_ToAPI,
 	)
 
+	// Document Field Comparison:
+	// - Behavior (KRM Spec.Behavior) -> maps to api.ResponsePolicyRule.Behavior
+	// - DnsName (KRM Spec.DnsName) -> maps to api.ResponsePolicyRule.DnsName
+	// - LocalData (KRM Spec.LocalData) -> maps to api.ResponsePolicyRule.LocalData
+	// - ProjectRef (KRM Spec.ProjectRef) -> handled by GCP controller/client as project context (not mapped to api.ResponsePolicyRule)
+	// - ResourceID (KRM Spec.ResourceID) -> maps to api.ResponsePolicyRule.RuleName (handled via resource ID/identity)
+	// - ResponsePolicy (KRM Spec.ResponsePolicy) -> handled by GCP controller/client as parent policy path context (not mapped to api.ResponsePolicyRule)
 	f.SpecField(".Behavior")
 	f.SpecField(".DnsName")
 	f.SpecField(".LocalData")
