@@ -17,7 +17,7 @@
 // krm.group: networkmanagement.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.networkmanagement.v1
-// resource: NetworkManagementConnectivityTestSpec:ConnectivityTest
+// resource: NetworkManagementConnectivityTest:ConnectivityTest
 
 package v1alpha1
 
