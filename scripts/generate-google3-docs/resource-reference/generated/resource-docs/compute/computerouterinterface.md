@@ -213,7 +213,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `ComputeRouterInterface` resource.</p>
+            <p>A reference to an externally managed ComputeRouterInterface resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/routers/{{routerID}}/interfaces/{{interfaceID}}".</p>
         </td>
     </tr>
     <tr>
@@ -223,7 +223,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeRouterInterface resource.</p>
         </td>
     </tr>
     <tr>
@@ -233,7 +233,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeRouterInterface resource.</p>
         </td>
     </tr>
     <tr>
