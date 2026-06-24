@@ -2633,6 +2633,56 @@ func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 }
 */
 
+/* found existing non-generated mapping function "ComputeRouterInterfaceSpec_v1beta1_FromProto", skipping
+func ComputeRouterInterfaceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterInterface) *krm.ComputeRouterInterfaceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterInterfaceSpec{}
+	out.IPRange = in.IpRange
+	// MISSING: IPVersion
+	// MISSING: LinkedInterconnectAttachment
+	// MISSING: LinkedVPNTunnel
+	// MISSING: ManagementType
+	// MISSING: Name
+	if in.GetPrivateIpAddress() != "" {
+		out.PrivateIPAddressRef = &krm.ComputeAddressRef{External: in.GetPrivateIpAddress()}
+	}
+	if in.GetRedundantInterface() != "" {
+		out.RedundantInterfaceRef = &krm.ComputeRouterInterfaceRef{External: in.GetRedundantInterface()}
+	}
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krm.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeRouterInterfaceSpec_v1beta1_ToProto", skipping
+func ComputeRouterInterfaceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterInterfaceSpec) *pb.RouterInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterInterface{}
+	out.IpRange = in.IPRange
+	// MISSING: IPVersion
+	// MISSING: LinkedInterconnectAttachment
+	// MISSING: LinkedVPNTunnel
+	// MISSING: ManagementType
+	// MISSING: Name
+	if in.PrivateIPAddressRef != nil {
+		out.PrivateIpAddress = &in.PrivateIPAddressRef.External
+	}
+	if in.RedundantInterfaceRef != nil {
+		out.RedundantInterface = &in.RedundantInterfaceRef.External
+	}
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = &in.SubnetworkRef.External
+	}
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeRouterSpec_v1beta1_FromProto", skipping
 func ComputeRouterSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Router) *krm.ComputeRouterSpec {
 	if in == nil {

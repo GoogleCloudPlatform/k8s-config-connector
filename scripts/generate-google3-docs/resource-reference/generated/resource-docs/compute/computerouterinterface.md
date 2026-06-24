@@ -113,7 +113,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The InterconnectAttachment this interface belongs to.</p>
         </td>
     </tr>
     <tr>
@@ -163,7 +163,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The private IP address assigned to this interface.</p>
         </td>
     </tr>
     <tr>
@@ -173,7 +173,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `address` field of a `ComputeAddress` resource.</p>
+            <p>A reference to an externally managed ComputeAddress resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}" or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".</p>
         </td>
     </tr>
     <tr>
@@ -183,7 +183,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -193,7 +193,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -263,7 +263,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The router this interface belongs to.</p>
         </td>
     </tr>
     <tr>
@@ -273,7 +273,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `ComputeRouter` resource.</p>
+            <p>A reference to an externally managed ComputeRouter resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/routers/{{routerID}}".</p>
         </td>
     </tr>
     <tr>
@@ -283,7 +283,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeRouter resource.</p>
         </td>
     </tr>
     <tr>
@@ -293,7 +293,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeRouter resource.</p>
         </td>
     </tr>
     <tr>
@@ -303,7 +303,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The subnetwork this interface belongs to.</p>
         </td>
     </tr>
     <tr>
@@ -313,7 +313,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -323,7 +323,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -333,7 +333,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -343,7 +343,7 @@ vpnTunnelRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The VPNTunnel this interface belongs to.</p>
         </td>
     </tr>
     <tr>
@@ -402,7 +402,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
