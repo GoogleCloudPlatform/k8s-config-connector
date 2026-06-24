@@ -87,6 +87,8 @@ func (s *RoutersV1) Insert(ctx context.Context, req *pb.InsertRouterRequest) (*p
 	// output only fields
 	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
 
+	s.populateRouter(obj)
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -120,7 +122,19 @@ func (s *RoutersV1) Patch(ctx context.Context, req *pb.PatchRouterRequest) (*pb.
 		return nil, err
 	}
 
+	hasInterfaces := req.GetRouterResource().Interfaces != nil
+	hasBgpPeers := req.GetRouterResource().BgpPeers != nil
+
 	proto.Merge(obj, req.GetRouterResource())
+
+	if hasInterfaces {
+		obj.Interfaces = req.GetRouterResource().Interfaces
+	}
+	if hasBgpPeers {
+		obj.BgpPeers = req.GetRouterResource().BgpPeers
+	}
+
+	s.populateRouter(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -190,5 +204,13 @@ func (s *MockService) parseRouterName(name string) (*routerName, error) {
 		return name, nil
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+func (s *RoutersV1) populateRouter(obj *pb.Router) {
+	for _, iface := range obj.Interfaces {
+		if iface.IpVersion == nil {
+			iface.IpVersion = PtrTo("IPV4")
+		}
 	}
 }

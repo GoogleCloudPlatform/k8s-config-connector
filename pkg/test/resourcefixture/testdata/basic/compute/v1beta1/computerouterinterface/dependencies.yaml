@@ -17,11 +17,9 @@ kind: ComputeNetwork
 metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-    cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
-    cnrm.cloud.google.com/deletion-policy: "abandon"
-  name: default
+  name: computenetwork-${uniqueId}
 spec:
-  description: Default network for the project
+  description: Test network for the project
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeRouter
@@ -31,7 +29,7 @@ metadata:
   name: computerouter-${uniqueId}
 spec:
   networkRef:
-    name: default
+    name: computenetwork-${uniqueId}
   description: example router description
   region: us-west1
   bgp:

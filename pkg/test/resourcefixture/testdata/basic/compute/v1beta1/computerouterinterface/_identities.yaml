@@ -1,7 +1,7 @@
-- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/default
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/computenetwork-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeNetwork
-  name: default
+  name: computenetwork-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
 - caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-west1/routers/computerouter-${uniqueId}
