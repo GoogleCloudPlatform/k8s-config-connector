@@ -16,7 +16,9 @@ package register
 
 import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/accesscontextmanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform/vertexaifeatureonlinestore"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform/vertexaihyperparametertuningjob"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aistreams"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigateway"

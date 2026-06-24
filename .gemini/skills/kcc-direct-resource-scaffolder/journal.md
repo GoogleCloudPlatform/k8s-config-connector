@@ -21,3 +21,17 @@
 - **Problem**: Running generate-mapper without --api-dir processes all packages under apis/ that match the --service flag (e.g., both aiplatform/v1alpha1 and vertexai/v1alpha1 for google.cloud.aiplatform.v1), causing type pollution in mapper.generated.go. Passing --api-dir but not --api-go-package-path causes the generator to miscalculate the import alias (resulting in apis instead of krm or krmv1alpha1), breaking the mapper compilation.
 - **Solution**: When generating mappers for a specific package that shares a --service with other packages, you must pass BOTH --api-dir and --api-go-package-path.
 - **Impact**: Prevents broken imports and polluted mapper files when multiple API packages share the same underlying proto service.
+### [2026-05-19] `generate-types` Overwrites Existing Types in Same Directory
+- **Context**: Running `generate-types` for `VertexAIHyperparameterTuningJob` in `apis/aiplatform/v1alpha1`.
+- **Problem**: Passing only `--resource VertexAIHyperparameterTuningJob:HyperparameterTuningJob` overwrote `types.generated.go` and deleted all `Model` structures that existed before.
+- **Solution**: Always inspect the directory for existing KRM types and pass all of them to `--resource` when running `generate.sh` so `generate-types` regenerates all of them.
+
+### [2026-05-19] Empty Structs for Output-Only Messages
+- **Context**: Implementing `Trials []Trial` in `HyperparameterTuningJobObservedState`.
+- **Problem**: `generate-types` skipped the fields of `Trial` because they were `Output only`. Thus, `Trial` was generated as an empty struct, and `TrialObservedState` was generated with fields but marked unreachable.
+- **Solution**: For lists of output-only subresources in `ObservedState`, use the `ObservedState` struct explicitly (e.g., `Trials []TrialObservedState`) so that `prunetypes` keeps the struct.
+
+### [2026-05-19] `fielddesc` Panic on `apiextensionsv1.JSON`
+- **Context**: Using `apiextensionsv1.JSON` for `google.protobuf.Value`'s `struct_value`.
+- **Problem**: `k8s-config-connector/pkg/crd/fielddesc` crashes with `unhandled type: ` when it parses the generated YAML CRD because `apiextensionsv1.JSON` yields an empty type string and `x-kubernetes-preserve-unknown-fields: true`.
+- **Solution**: Use `map[string]string` instead of `apiextensionsv1.JSON` for structured values when manually adjusting `types.generated.go` to prevent CRD parsing panics during client generation.

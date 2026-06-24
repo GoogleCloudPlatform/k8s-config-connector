@@ -265,8 +265,7 @@ type AIPlatformModelObservedState struct {
 	// Output only. The formats in which this Model may be exported. If empty,
 	//  this Model is not available for export.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.supported_export_formats
-	SupportedExportFormats []Model_ExportFormat `json:"supportedExportFormats,omitempty"`
-
+	SupportedExportFormats []Model_ExportFormatObservedState `json:"supportedExportFormats,omitempty"`
 	// Output only. The resource name of the TrainingPipeline that uploaded this
 	//  Model, if any.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.training_pipeline
@@ -404,8 +403,7 @@ type AIPlatformModelObservedState struct {
 	// Output only. If this Model is a copy of another Model, this contains info
 	//  about the original.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.original_model_info
-	OriginalModelInfo *Model_OriginalModelInfo `json:"originalModelInfo,omitempty"`
-
+	OriginalModelInfo *Model_OriginalModelInfoObservedState `json:"originalModelInfo,omitempty"`
 	// Output only. The resource name of the Artifact that was created in
 	//  MetadataStore when creating the Model. The Artifact resource name pattern
 	//  is

@@ -65,6 +65,12 @@ var (
 		Kind:    reflect.TypeOf(VertexAIFeatureOnlineStore{}).Name(),
 	}
 
+	VertexAIHyperparameterTuningJobGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAIHyperparameterTuningJob{}).Name(),
+	}
+
 	VertexAISpecialistPoolGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
