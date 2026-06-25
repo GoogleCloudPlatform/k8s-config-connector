@@ -2540,6 +2540,7 @@ config:
     managedGroupConfig:
       instanceGroupManagerName: string
       instanceTemplateName: string
+externalRef: string
 metrics:
   hdfsMetrics:
     string: string
@@ -2927,6 +2928,13 @@ statusHistory:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Output only. The name of the Instance Template used for the Managed Instance Group.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A unique specifier for the DataprocCluster resource in GCP.</p>
         </td>
     </tr>
     <tr>

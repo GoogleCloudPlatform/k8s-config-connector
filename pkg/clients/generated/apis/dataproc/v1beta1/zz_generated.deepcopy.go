@@ -1817,6 +1817,11 @@ func (in *DataprocClusterStatus) DeepCopyInto(out *DataprocClusterStatus) {
 		*out = new(ClusterConfigStatus)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.Metrics != nil {
 		in, out := &in.Metrics, &out.Metrics
 		*out = new(ClusterMetricsStatus)

@@ -2,28 +2,35 @@ apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
 kind: DataprocCluster
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
-    label-one: new-value
   name: dataproccluster-${uniqueId}
   namespace: ${uniqueId}
 spec:
   config:
-    autoscalingConfig:
-      policyRef:
-        name: dataprocautoscalingpolicy-${uniqueId}
     gceClusterConfig:
-      internalIPOnly: false
+      zone: us-central1-a
     masterConfig:
-      diskConfig:
-        bootDiskType: pd-standard
       machineType: n2-standard-2
       numInstances: 1
+    securityConfig:
+      identityConfig:
+        userServiceAccountMapping:
+          user1@example.com: usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com
+          user2@example.com: usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com
+    softwareConfig:
+      imageVersion: 2.2.81-debian12
+      properties:
+        dataproc:dataproc.dynamic.multi.tenancy.enabled: "true"
+    workerConfig:
+      machineType: n2-standard-2
+      numInstances: 2
   location: us-central1
   projectRef:
     external: projects/${projectId}
@@ -88,7 +95,7 @@ status:
       yarn-vcores-pending: "0"
       yarn-vcores-reserved: "0"
       yarn-vcores-total: "8"
-  observedGeneration: 1
+  observedGeneration: 2
   status:
     state: RUNNING
     stateStartTime: "2024-04-01T12:34:56.123456Z"

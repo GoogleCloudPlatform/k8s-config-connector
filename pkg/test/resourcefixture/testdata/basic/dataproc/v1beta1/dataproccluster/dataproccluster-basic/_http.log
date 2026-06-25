@@ -1,6 +1,5 @@
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -26,7 +25,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -52,7 +50,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -78,7 +75,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -123,7 +119,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -158,7 +153,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -193,7 +187,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -228,7 +221,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -263,7 +255,6 @@ X-Xss-Protection: 0
 
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -287,7 +278,6 @@ X-Xss-Protection: 0
 
 POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "basicAlgorithm": {
@@ -341,7 +331,6 @@ X-Xss-Protection: 0
 
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -376,9 +365,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -400,19 +388,13 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?alt=json
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "clusterName": "dataproccluster-${uniqueId}",
   "config": {
-    "autoscalingConfig": {
-      "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
-    },
-    "gceClusterConfig": {
-      "internalIpOnly": false
-    },
+    "autoscalingConfig": {},
     "masterConfig": {
       "diskConfig": {
         "bootDiskType": "pd-standard"
@@ -421,11 +403,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "numInstances": 1
     }
   },
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  }
+  "projectId": "${projectId}"
 }
 
 200 OK
@@ -447,7 +425,7 @@ X-Xss-Protection: 0
     "operationType": "CREATE",
     "status": {
       "innerState": "PENDING",
-      "state": "PENDING",
+      "state": 1,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     "warnings": [
@@ -461,9 +439,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -510,13 +487,11 @@ X-Xss-Protection: 0
     "clusterName": "dataproccluster-${uniqueId}",
     "clusterUuid": "${dataStoreClusterUUID}",
     "config": {
-      "autoscalingConfig": {
-        "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
-      },
+      "autoscalingConfig": {},
       "configBucket": "${dataStoreConfigBucketPath}",
       "endpointConfig": {},
       "gceClusterConfig": {
-        "internalIpOnly": false,
+        "internalIpOnly": true,
         "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
         "serviceAccountScopes": [
           "https://www.googleapis.com/auth/cloud-platform"
@@ -618,14 +593,11 @@ X-Xss-Protection: 0
       }
     },
     "labels": {
-      "cnrm-test": "true",
       "goog-dataproc-autozone": "enabled",
       "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-      "goog-dataproc-location": "us-central1",
-      "label-one": "value-one",
-      "managed-by-cnrm": "true"
+      "goog-dataproc-location": "us-central1"
     },
     "projectId": "${projectId}"
   }
@@ -633,9 +605,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -651,13 +622,11 @@ X-Xss-Protection: 0
   "clusterName": "dataproccluster-${uniqueId}",
   "clusterUuid": "${dataStoreClusterUUID}",
   "config": {
-    "autoscalingConfig": {
-      "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
-    },
+    "autoscalingConfig": {},
     "configBucket": "${dataStoreConfigBucketPath}",
     "endpointConfig": {},
     "gceClusterConfig": {
-      "internalIpOnly": false,
+      "internalIpOnly": true,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
       "serviceAccountScopes": [
         "https://www.googleapis.com/auth/cloud-platform"
@@ -681,7 +650,7 @@ X-Xss-Protection: 0
       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
-      "preemptibility": "NON_PREEMPTIBLE"
+      "preemptibility": 1
     },
     "softwareConfig": {
       "imageVersion": "2.2.63-debian12",
@@ -762,27 +731,24 @@ X-Xss-Protection: 0
       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
-      "preemptibility": "NON_PREEMPTIBLE"
+      "preemptibility": 1
     }
   },
   "labels": {
-    "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-    "goog-dataproc-location": "us-central1",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "goog-dataproc-location": "us-central1"
   },
   "projectId": "${projectId}",
   "status": {
-    "state": "RUNNING",
+    "state": 2,
     "stateStartTime": "2024-04-01T12:34:56.123456Z"
   },
   "statusHistory": [
     {
-      "state": "CREATING",
+      "state": 1,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
@@ -790,19 +756,22 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=labels
+PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
+  "clusterName": "dataproccluster-${uniqueId}",
+  "clusterUuid": "${dataStoreClusterUUID}",
   "config": {
-    "autoscalingConfig": {
-      "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
-    },
+    "autoscalingConfig": {},
     "configBucket": "${dataStoreConfigBucketPath}",
+    "endpointConfig": {},
     "gceClusterConfig": {
-      "internalIpOnly": false,
+      "internalIpOnly": true,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+      "serviceAccountScopes": [
+        "https://www.googleapis.com/auth/cloud-platform"
+      ],
       "shieldedInstanceConfig": {
         "enableIntegrityMonitoring": true,
         "enableSecureBoot": true,
@@ -810,22 +779,22 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       },
       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
     },
-    "initializationActions": [],
     "masterConfig": {
-      "accelerators": [],
       "diskConfig": {
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
       "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "machineTypeUri": "n2-standard-2",
+      "instanceNames": [
+        "dataproccluster-${uniqueId}-m"
+      ],
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
-      "preemptibility": "NON_PREEMPTIBLE"
+      "preemptibility": 1
     },
     "softwareConfig": {
       "imageVersion": "2.2.63-debian12",
-      "optionalComponents": [],
       "properties": {
         "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
         "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
@@ -891,23 +860,32 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     },
     "tempBucket": "${dataStoreTempBucketPath}",
     "workerConfig": {
-      "accelerators": [],
       "diskConfig": {
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
       "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+      "instanceNames": [
+        "dataproccluster-${uniqueId}-w-0",
+        "dataproccluster-${uniqueId}-w-1"
+      ],
       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
-      "preemptibility": "NON_PREEMPTIBLE"
+      "preemptibility": 1
     }
   },
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "new-value",
-    "managed-by-cnrm": "true"
-  }
+  "projectId": "${projectId}",
+  "status": {
+    "state": 2,
+    "stateStartTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "statusHistory": [
+    {
+      "state": 1,
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
 }
 
 200 OK
@@ -928,7 +906,7 @@ X-Xss-Protection: 0
     "operationType": "UPDATE",
     "status": {
       "innerState": "PENDING",
-      "state": "PENDING",
+      "state": 1,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   },
@@ -937,9 +915,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -980,13 +957,11 @@ X-Xss-Protection: 0
     "clusterName": "dataproccluster-${uniqueId}",
     "clusterUuid": "${dataStoreClusterUUID}",
     "config": {
-      "autoscalingConfig": {
-        "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
-      },
+      "autoscalingConfig": {},
       "configBucket": "${dataStoreConfigBucketPath}",
       "endpointConfig": {},
       "gceClusterConfig": {
-        "internalIpOnly": false,
+        "internalIpOnly": true,
         "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
         "serviceAccountScopes": [
           "https://www.googleapis.com/auth/cloud-platform"
@@ -1088,14 +1063,11 @@ X-Xss-Protection: 0
       }
     },
     "labels": {
-      "cnrm-test": "true",
       "goog-dataproc-autozone": "enabled",
       "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-      "goog-dataproc-location": "us-central1",
-      "label-one": "new-value",
-      "managed-by-cnrm": "true"
+      "goog-dataproc-location": "us-central1"
     },
     "projectId": "${projectId}"
   }
@@ -1103,9 +1075,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1121,13 +1092,11 @@ X-Xss-Protection: 0
   "clusterName": "dataproccluster-${uniqueId}",
   "clusterUuid": "${dataStoreClusterUUID}",
   "config": {
-    "autoscalingConfig": {
-      "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
-    },
+    "autoscalingConfig": {},
     "configBucket": "${dataStoreConfigBucketPath}",
     "endpointConfig": {},
     "gceClusterConfig": {
-      "internalIpOnly": false,
+      "internalIpOnly": true,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
       "serviceAccountScopes": [
         "https://www.googleapis.com/auth/cloud-platform"
@@ -1151,7 +1120,7 @@ X-Xss-Protection: 0
       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
-      "preemptibility": "NON_PREEMPTIBLE"
+      "preemptibility": 1
     },
     "softwareConfig": {
       "imageVersion": "2.2.63-debian12",
@@ -1232,18 +1201,15 @@ X-Xss-Protection: 0
       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
-      "preemptibility": "NON_PREEMPTIBLE"
+      "preemptibility": 1
     }
   },
   "labels": {
-    "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-    "goog-dataproc-location": "us-central1",
-    "label-one": "new-value",
-    "managed-by-cnrm": "true"
+    "goog-dataproc-location": "us-central1"
   },
   "metrics": {
     "hdfsMetrics": {
@@ -1293,20 +1259,20 @@ X-Xss-Protection: 0
   },
   "projectId": "${projectId}",
   "status": {
-    "state": "RUNNING",
+    "state": 2,
     "stateStartTime": "2024-04-01T12:34:56.123456Z"
   },
   "statusHistory": [
     {
-      "state": "CREATING",
+      "state": 1,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     {
-      "state": "RUNNING",
+      "state": 2,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     {
-      "state": "UPDATING",
+      "state": 5,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
@@ -1314,9 +1280,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1337,7 +1302,7 @@ X-Xss-Protection: 0
     "operationType": "DELETE",
     "status": {
       "innerState": "PENDING",
-      "state": "PENDING",
+      "state": 1,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   },
@@ -1346,9 +1311,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1392,33 +1356,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1455,7 +1394,6 @@ X-Xss-Protection: 0
 
 DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1473,7 +1411,6 @@ X-Xss-Protection: 0
 
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -1497,7 +1434,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1532,7 +1468,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1567,7 +1502,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -1596,7 +1530,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1623,7 +1556,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1650,7 +1582,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1677,7 +1608,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {

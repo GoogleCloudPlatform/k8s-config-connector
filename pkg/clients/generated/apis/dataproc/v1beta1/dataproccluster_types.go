@@ -731,6 +731,10 @@ type DataprocClusterStatus struct {
 	// +optional
 	Config *ClusterConfigStatus `json:"config,omitempty"`
 
+	/* A unique specifier for the DataprocCluster resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* Output only. Contains cluster daemon metrics such as HDFS and YARN stats. **Beta Feature**: This report is available for testing purposes only. It may be changed before final release. */
 	// +optional
 	Metrics *ClusterMetricsStatus `json:"metrics,omitempty"`

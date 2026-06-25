@@ -3,12 +3,10 @@ kind: DataprocCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     label-one: new-value
@@ -29,7 +27,6 @@ spec:
   location: us-central1
   projectRef:
     external: projects/${projectId}
-  resourceID: dataproccluster-${uniqueId}
 status:
   clusterUuid: ${clusterUuid}
   conditions:
@@ -39,6 +36,7 @@ status:
     status: "True"
     type: Ready
   config:
+    endpointConfig: {}
     masterConfig:
       instanceNames:
       - dataproccluster-${uniqueId}-m
@@ -46,6 +44,7 @@ status:
       instanceNames:
       - dataproccluster-${uniqueId}-w-0
       - dataproccluster-${uniqueId}-w-1
+  externalRef: projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}
   metrics:
     hdfsMetrics:
       dfs-blocks-corrupt: "0"
@@ -89,7 +88,7 @@ status:
       yarn-vcores-pending: "0"
       yarn-vcores-reserved: "0"
       yarn-vcores-total: "8"
-  observedGeneration: 3
+  observedGeneration: 2
   status:
     state: RUNNING
     stateStartTime: "2024-04-01T12:34:56.123456Z"

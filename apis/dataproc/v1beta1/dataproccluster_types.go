@@ -797,6 +797,10 @@ type DataprocClusterStatus struct {
 	/* Output only. The previous cluster status. */
 	// +optional
 	StatusHistory []ClusterStatusHistoryStatus `json:"statusHistory,omitempty"`
+
+	// A unique specifier for the DataprocCluster resource in GCP.
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.ClusterConfig

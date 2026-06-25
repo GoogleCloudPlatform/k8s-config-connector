@@ -1,0 +1,260 @@
+426c426
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+449c449
+< POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?alt=json
+---
+> POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint
+455,457d454
+<     "gceClusterConfig": {
+<       "zoneUri": "us-central1-a"
+<     },
+480,483c477
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "projectId": "${projectId}"
+505c499
+<       "state": "PENDING",
+---
+>       "state": 1,
+519c513
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+580c574
+<         "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+---
+>         "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+588c582
+<         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+---
+>         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+613c607
+<         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+---
+>         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+620d613
+<       "cnrm-test": "true",
+625,626c618
+<       "goog-dataproc-location": "us-central1",
+<       "managed-by-cnrm": "true"
+---
+>       "goog-dataproc-location": "us-central1"
+634c626
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+664c656
+<       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+---
+>       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+675c667
+<       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+---
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+678c670
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+704c696
+<       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+---
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+707c699
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+711d702
+<     "cnrm-test": "true",
+716,717c707
+<     "goog-dataproc-location": "us-central1",
+<     "managed-by-cnrm": "true"
+---
+>     "goog-dataproc-location": "us-central1"
+721c711
+<     "state": "RUNNING",
+---
+>     "state": 2,
+726c716
+<       "state": "CREATING",
+---
+>       "state": 1,
+734c724
+< PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=config.securityConfig.identityConfig.userServiceAccountMapping
+---
+> PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.securityConfig.identityConfig.userServiceAccountMapping%2Clabels
+737a728,729
+>   "clusterName": "dataproccluster-${uniqueId}",
+>   "clusterUuid": "${dataStoreClusterUUID}",
+739a732
+>     "endpointConfig": {},
+742a736,738
+>       "serviceAccountScopes": [
+>         "https://www.googleapis.com/auth/cloud-platform"
+>       ],
+748c744
+<       "zoneUri": "us-central1-a"
+---
+>       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+750d745
+<     "initializationActions": [],
+752d746
+<       "accelerators": [],
+758c752,755
+<       "machineTypeUri": "n2-standard-2",
+---
+>       "instanceNames": [
+>         "dataproccluster-${uniqueId}-m"
+>       ],
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+761c758
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+773d769
+<       "optionalComponents": [],
+780d775
+<       "accelerators": [],
+786c781,785
+<       "machineTypeUri": "n2-standard-2",
+---
+>       "instanceNames": [
+>         "dataproccluster-${uniqueId}-w-0",
+>         "dataproccluster-${uniqueId}-w-1"
+>       ],
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+789c788
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+792,795c791,801
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "projectId": "${projectId}",
+>   "status": {
+>     "state": 2,
+>     "stateStartTime": "2024-04-01T12:34:56.123456Z"
+>   },
+>   "statusHistory": [
+>     {
+>       "state": 1,
+>       "stateStartTime": "2024-04-01T12:34:56.123456Z"
+>     }
+>   ]
+816c822
+<       "state": "PENDING",
+---
+>       "state": 1,
+825c831
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+880c886
+<         "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+---
+>         "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+888c894
+<         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+---
+>         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+914c920
+<         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+---
+>         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+921d926
+<       "cnrm-test": "true",
+926,927c931
+<       "goog-dataproc-location": "us-central1",
+<       "managed-by-cnrm": "true"
+---
+>       "goog-dataproc-location": "us-central1"
+935c939
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+965c969
+<       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+---
+>       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+976c980
+<       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+---
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+979c983
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+1006c1010
+<       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+---
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+1009c1013
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+1013d1016
+<     "cnrm-test": "true",
+1018,1019c1021
+<     "goog-dataproc-location": "us-central1",
+<     "managed-by-cnrm": "true"
+---
+>     "goog-dataproc-location": "us-central1"
+1069c1071
+<     "state": "RUNNING",
+---
+>     "state": 2,
+1074c1076
+<       "state": "CREATING",
+---
+>       "state": 1,
+1078c1080
+<       "state": "RUNNING",
+---
+>       "state": 2,
+1082c1084
+<       "state": "UPDATING",
+---
+>       "state": 5,
+1090c1092
+< DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+---
+> DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1112c1114
+<       "state": "PENDING",
+---
+>       "state": 1,
+1121c1123
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+1161,1183d1162
+<   }
+< }
+< 
+< ---
+< 
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
+<     "status": "NOT_FOUND"

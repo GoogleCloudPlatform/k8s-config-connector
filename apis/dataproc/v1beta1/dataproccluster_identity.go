@@ -45,6 +45,10 @@ func (i *DataprocClusterIdentity) String() string {
 	return DataprocClusterIdentityFormat.ToString(*i)
 }
 
+func (i *DataprocClusterIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/regions/%s", i.Project, i.Region)
+}
+
 func (i *DataprocClusterIdentity) FromExternal(ref string) error {
 	parsed, match, err := DataprocClusterIdentityFormat.Parse(ref)
 	if err != nil {
