@@ -1,0 +1,302 @@
+1,2c1
+< POST https://monitoring.googleapis.com/v3/projects/${projectId}/groups?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.GroupService/GetGroup
+5,6c4
+<   "displayName": "MonitoringGroup",
+<   "filter": "resource.metadata.region=europe-west2"
+---
+>   "name": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+9,17c7
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-${uniqueId}'.
+19,23c9
+< {
+<   "displayName": "MonitoringGroup",
+<   "filter": "resource.metadata.region=europe-west2",
+<   "name": "projects/${projectId}/groups/${groupID}"
+< }
+---
+> {}
+27,28c13
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.GroupService/CreateGroup
+30,38c15,23
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> {
+>   "group": {
+>     "displayName": "MonitoringGroup",
+>     "filter": "resource.metadata.region=europe-west2"
+>   },
+>   "name": "projects/${projectId}"
+> }
+> 
+> OK
+48,49c33
+< POST https://monitoring.googleapis.com/v3/projects/${projectId}/groups?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.GroupService/GetGroup
+52,54c36
+<   "displayName": "MonitoringSubGroup",
+<   "filter": "resource.metadata.region=europe-west2",
+<   "parentName": "projects/${projectId}/groups/${groupID}"
+---
+>   "name": "projects/${projectId}/groups/monitoringgroup-subgroup-${uniqueId}"
+57,65c39
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-subgroup-${uniqueId}'.
+67,72c41
+< {
+<   "displayName": "MonitoringSubGroup",
+<   "filter": "resource.metadata.region=europe-west2",
+<   "name": "projects/${projectId}/groups/${groupID}",
+<   "parentName": "projects/${projectId}/groups/${groupID}"
+< }
+---
+> {}
+76,77c45
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.GroupService/CreateGroup
+79,87c47,56
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> {
+>   "group": {
+>     "displayName": "MonitoringSubGroup",
+>     "filter": "resource.metadata.region=europe-west2",
+>     "parentName": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+>   },
+>   "name": "projects/${projectId}"
+> }
+> 
+> OK
+93c62
+<   "parentName": "projects/${projectId}/groups/${groupID}"
+---
+>   "parentName": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+98,99c67
+< PUT https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.GroupService/GetGroup
+102,104c70
+<   "displayName": "MonitoringSubGroup2",
+<   "filter": "resource.metadata.region=europe-west2",
+<   "parentName": "projects/${projectId}/groups/${groupID}"
+---
+>   "name": "projects/${projectId}/groups/monitoringgroup-subgroup-${uniqueId}"
+107,115c73
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-subgroup-${uniqueId}'.
+117,122c75
+< {
+<   "displayName": "MonitoringSubGroup2",
+<   "filter": "resource.metadata.region=europe-west2",
+<   "name": "projects/${projectId}/groups/${groupID}",
+<   "parentName": "projects/${projectId}/groups/${groupID}"
+< }
+---
+> {}
+126,127c79
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.GroupService/CreateGroup
+129,137c81,90
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> {
+>   "group": {
+>     "displayName": "MonitoringSubGroup2",
+>     "filter": "resource.metadata.region=europe-west2",
+>     "parentName": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+>   },
+>   "name": "projects/${projectId}"
+> }
+> 
+> OK
+143c96
+<   "parentName": "projects/${projectId}/groups/${groupID}"
+---
+>   "parentName": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+148,149c101
+< DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.GroupService/GetGroup
+151,159c103,107
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> {
+>   "name": "projects/${projectId}/groups/monitoringgroup-subgroup-${uniqueId}"
+> }
+> 
+> error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-subgroup-${uniqueId}'.
+165,176c113
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> GRPC /google.monitoring.v3.GroupService/GetGroup
+179,183c116
+<   "error": {
+<     "code": 404,
+<     "message": "Could not find group definition for '${groupID}'.",
+<     "status": "NOT_FOUND"
+<   }
+---
+>   "name": "projects/${projectId}/groups/monitoringgroup-subgroup-${uniqueId}"
+186c119
+< ---
+---
+> error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-subgroup-${uniqueId}'.
+188,189c121
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+< Content-Type: application/json
+---
+> {}
+191,199c123,125
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> ---
+> 
+> GRPC /google.monitoring.v3.GroupService/GetGroup
+202,204c128
+<   "displayName": "MonitoringGroup",
+<   "filter": "resource.metadata.region=europe-west2",
+<   "name": "projects/${projectId}/groups/${groupID}"
+---
+>   "name": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+207,220c131
+< ---
+< 
+< DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-${uniqueId}'.
+226,245c137,145
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Could not find group definition for '${groupID}'.",
+<     "status": "NOT_FOUND"
+<   }
+< }
+\ No newline at end of file
+---
+> GRPC /google.monitoring.v3.GroupService/GetGroup
+> 
+> {
+>   "name": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+> }
+> 
+> error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-${uniqueId}'.
+> 
+> {}
+\ No newline at end of file

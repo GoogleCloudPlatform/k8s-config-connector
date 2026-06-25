@@ -21,6 +21,7 @@ import (
 	"context"
 	"fmt"
 
+	monitoring "cloud.google.com/go/monitoring/apiv3/v2"
 	api "cloud.google.com/go/monitoring/dashboard/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 )
@@ -44,6 +45,18 @@ func (m *gcpClient) newDashboardsClient(ctx context.Context) (*api.DashboardsCli
 	client, err := api.NewDashboardsRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building dashboard client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newGroupsClient(ctx context.Context) (*monitoring.GroupClient, error) {
+	opts, err := m.config.GRPCClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := monitoring.NewGroupClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building groups client: %w", err)
 	}
 	return client, err
 }
