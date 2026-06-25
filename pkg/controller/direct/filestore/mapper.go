@@ -106,3 +106,27 @@ func InstanceNfsExportOptions_ToProto(mapCtx *direct.MapContext, in *krm.Instanc
 	out.AnonGid = direct.ValueOf(in.AnonGid)
 	return out
 }
+
+func FilestoreInstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.FilestoreInstanceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FilestoreInstanceStatus{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StatusMessage = direct.LazyPtr(in.GetStatusMessage())
+	return out
+}
+
+func FilestoreInstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.FilestoreInstanceStatus) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
+	out.StatusMessage = direct.ValueOf(in.StatusMessage)
+	return out
+}
