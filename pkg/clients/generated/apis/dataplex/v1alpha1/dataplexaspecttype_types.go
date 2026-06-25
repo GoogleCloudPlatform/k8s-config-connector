@@ -73,7 +73,7 @@ type AspecttypeArrayItems struct {
 }
 
 type AspecttypeAuthorization struct {
-	/* Immutable. The IAM permission grantable on the EntryGroup to allow access to instantiate Aspects of Dataplex owned AspectTypes, only settable for Dataplex owned Types. */
+	/* Immutable. The IAM permission grantable on the EntryGroup to allow access to instantiate Aspects of Dataplex Universal Catalog owned AspectTypes, only settable for Dataplex Universal Catalog owned Types. */
 	// +optional
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }
@@ -139,8 +139,8 @@ type AspecttypeMetadataTemplate struct {
 	Primitive types:
 
 	* string
-	* integer
-	* boolean
+	* int
+	* bool
 	* double
 	* datetime. Must be of the format RFC3339 UTC "Zulu" (Examples:
 	"2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z").

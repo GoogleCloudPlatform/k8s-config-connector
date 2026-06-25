@@ -17,6 +17,8 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+export GODEBUG=gotypesalias=0
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
@@ -27,7 +29,7 @@ fi
 
 # Run controller-gen to generate CRDs (including deepcopy)
 cd ${REPO_ROOT}/apis
-go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 \
+go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.17.2 \
   object:headerFile=${REPO_ROOT}/hack/boilerplate.go.txt \
   crd:crdVersions=v1,allowDangerousTypes=true,ignoreUnexportedFields=true \
   output:crd:artifacts:config=config/crd/ \

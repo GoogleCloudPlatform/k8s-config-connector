@@ -140,6 +140,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dataplex.googleapis.com/projects/{}/locations/{}/dataTaxonomies/{}":        true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":           true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":            true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/metadataFeeds/{}":         true,
 
 		// Dataproc
 		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}": true,

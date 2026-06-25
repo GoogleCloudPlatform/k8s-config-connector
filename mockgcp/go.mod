@@ -27,7 +27,7 @@ require (
 	cloud.google.com/go/clouddms v1.13.0
 	cloud.google.com/go/cloudquotas v1.11.0
 	cloud.google.com/go/compute v1.63.0
-	cloud.google.com/go/dataplex v1.34.0
+	cloud.google.com/go/dataplex v1.35.0
 	cloud.google.com/go/dataproc/v2 v2.22.0
 	cloud.google.com/go/datastream v1.20.0
 	cloud.google.com/go/deploy v1.32.0

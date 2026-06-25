@@ -65,6 +65,17 @@ fi
 # Reset to the desired version
 git reset --hard ${GOOGLEAPI_VERSION}
 
+# Patch for DataplexMetadataFeed: check out catalog.proto from a newer master commit if needed
+if [ -f "google/cloud/dataplex/v1/catalog.proto" ]; then
+    if ! grep -q "MetadataFeed" google/cloud/dataplex/v1/catalog.proto; then
+        echo "Patching google/cloud/dataplex/v1/catalog.proto with MetadataFeed definitions"
+        git fetch origin e57bae6efbd075a925978a79bb9b997beb4ecc19
+        git checkout e57bae6efbd075a925978a79bb9b997beb4ecc19 -- google/cloud/dataplex/v1/catalog.proto
+        # Remove cached .pb files to force re-compilation with the patched catalog.proto
+        rm -f "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+    fi
+fi
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"

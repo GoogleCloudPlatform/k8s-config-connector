@@ -360,7 +360,7 @@ config-connector-manifests-autopilot: build-operator-manifests
 
 .PHONY: build-operator-manifests
 build-operator-manifests:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.17.2 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
 	make -C operator docker-build GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 
 .PHONY: push-operator-manifest
