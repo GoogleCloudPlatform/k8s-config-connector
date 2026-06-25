@@ -19,551 +19,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
-      ],
-      "role": "roles/agentgateway.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
-      ],
-      "role": "roles/alloydb.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
-      ],
-      "role": "roles/apigee.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-gae-service.iam.gserviceaccount.com"
-      ],
-      "role": "roles/appengine.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigqueryconnection.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigquerydatatransfer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-      ],
-      "role": "roles/binaryauthorization.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudasset.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudasset.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.builds.builder"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudfunctions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.admin"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.autokeyUser"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gs-project-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudscheduler.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.ServiceAgentV2Ext"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:gsa-cbwguhpyvhhenia@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-ir7zgtbtne3kmyy@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-o5mm5kot7ita5ai@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/compute.futureReservationUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.orgFirewallPolicyAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.storageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.defaultNodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerregistry.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataflow.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/dataplex.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataplex.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentai.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentaicore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainercluster.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.clusterServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:gsa-nvujpctp2qjt7aqz7a7a@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-waq4m5xsz26evt34kzyq@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-eventarc.iam.gserviceaccount.com"
-      ],
-      "role": "roles/eventarc.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/firestore.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkehub.editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.containerServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkemulticloud.viewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkeonprem.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.securityAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/iap.settingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
-      ],
-      "role": "roles/logging.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memcache.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-memorystore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memorystore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-metastore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.floorSettingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
-      ],
-      "role": "roles/modelarmor.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
-      ],
-      "role": "roles/monitoring.notificationServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkactions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networksecurity.authzServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
-      ],
-      "role": "roles/notebooks.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/orgpolicy.policyViewer"
-    },
-    {
-      "members": [
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/cnrm-system/sa/cnrm-controller-manager",
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/default/sa/yuhou-0521-ksa",
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.organizationAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.projectIamAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sourcemanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/securesourcemanager.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
-      ],
-      "role": "roles/serviceextensions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/serviceusage.serviceUsageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-spanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/spanner.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/storage.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
-      ],
-      "role": "roles/storageinsights.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
-      ],
-      "role": "roles/vpcaccess.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/websecurityscanner.serviceAgent"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -589,551 +45,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
-      ],
-      "role": "roles/agentgateway.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
-      ],
-      "role": "roles/alloydb.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
-      ],
-      "role": "roles/apigee.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-gae-service.iam.gserviceaccount.com"
-      ],
-      "role": "roles/appengine.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigqueryconnection.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigquerydatatransfer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-      ],
-      "role": "roles/binaryauthorization.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudasset.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudasset.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.builds.builder"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudfunctions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.admin"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.autokeyUser"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gs-project-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudscheduler.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.ServiceAgentV2Ext"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:gsa-cbwguhpyvhhenia@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-ir7zgtbtne3kmyy@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-o5mm5kot7ita5ai@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/compute.futureReservationUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.orgFirewallPolicyAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.storageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.defaultNodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerregistry.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataflow.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/dataplex.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataplex.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentai.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentaicore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainercluster.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.clusterServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:gsa-nvujpctp2qjt7aqz7a7a@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-waq4m5xsz26evt34kzyq@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-eventarc.iam.gserviceaccount.com"
-      ],
-      "role": "roles/eventarc.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/firestore.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkehub.editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.containerServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkemulticloud.viewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkeonprem.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.securityAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/iap.settingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
-      ],
-      "role": "roles/logging.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memcache.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-memorystore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memorystore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-metastore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.floorSettingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
-      ],
-      "role": "roles/modelarmor.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
-      ],
-      "role": "roles/monitoring.notificationServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkactions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networksecurity.authzServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
-      ],
-      "role": "roles/notebooks.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/orgpolicy.policyViewer"
-    },
-    {
-      "members": [
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/cnrm-system/sa/cnrm-controller-manager",
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/default/sa/yuhou-0521-ksa",
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.organizationAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.projectIamAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sourcemanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/securesourcemanager.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
-      ],
-      "role": "roles/serviceextensions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/serviceusage.serviceUsageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-spanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/spanner.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/storage.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
-      ],
-      "role": "roles/storageinsights.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
-      ],
-      "role": "roles/vpcaccess.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/websecurityscanner.serviceAgent"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -1159,551 +71,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
-      ],
-      "role": "roles/agentgateway.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
-      ],
-      "role": "roles/alloydb.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
-      ],
-      "role": "roles/apigee.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-gae-service.iam.gserviceaccount.com"
-      ],
-      "role": "roles/appengine.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigqueryconnection.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigquerydatatransfer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-      ],
-      "role": "roles/binaryauthorization.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudasset.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudasset.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.builds.builder"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudfunctions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.admin"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.autokeyUser"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gs-project-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudscheduler.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.ServiceAgentV2Ext"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:gsa-cbwguhpyvhhenia@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-ir7zgtbtne3kmyy@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-o5mm5kot7ita5ai@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/compute.futureReservationUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.orgFirewallPolicyAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.storageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.defaultNodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerregistry.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataflow.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/dataplex.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataplex.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentai.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentaicore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainercluster.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.clusterServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:gsa-nvujpctp2qjt7aqz7a7a@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-waq4m5xsz26evt34kzyq@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-eventarc.iam.gserviceaccount.com"
-      ],
-      "role": "roles/eventarc.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/firestore.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkehub.editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.containerServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkemulticloud.viewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkeonprem.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.securityAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/iap.settingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
-      ],
-      "role": "roles/logging.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memcache.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-memorystore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memorystore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-metastore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.floorSettingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
-      ],
-      "role": "roles/modelarmor.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
-      ],
-      "role": "roles/monitoring.notificationServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkactions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networksecurity.authzServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
-      ],
-      "role": "roles/notebooks.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/orgpolicy.policyViewer"
-    },
-    {
-      "members": [
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/cnrm-system/sa/cnrm-controller-manager",
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/default/sa/yuhou-0521-ksa",
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.organizationAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.projectIamAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sourcemanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/securesourcemanager.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
-      ],
-      "role": "roles/serviceextensions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/serviceusage.serviceUsageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-spanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/spanner.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/storage.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
-      ],
-      "role": "roles/storageinsights.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
-      ],
-      "role": "roles/vpcaccess.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/websecurityscanner.serviceAgent"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -1717,550 +85,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "bindings": [
       {
         "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
-        ],
-        "role": "roles/agentgateway.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
-        ],
-        "role": "roles/alloydb.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-        ],
-        "role": "roles/anthosconfigmanagement.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
-        ],
-        "role": "roles/apigee.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-gae-service.iam.gserviceaccount.com"
-        ],
-        "role": "roles/appengine.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-        ],
-        "role": "roles/artifactregistry.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
-        ],
-        "role": "roles/bigqueryconnection.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com"
-        ],
-        "role": "roles/bigquerydatatransfer.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-        ],
-        "role": "roles/binaryauthorization.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-cloudasset.iam.gserviceaccount.com"
-        ],
-        "role": "roles/cloudasset.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
-        ],
-        "role": "roles/cloudbuild.builds.builder"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-        ],
-        "role": "roles/cloudbuild.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
-        ],
-        "role": "roles/cloudfunctions.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com",
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/cloudkms.admin"
-      },
-      {
-        "members": [
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/cloudkms.autokeyUser"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@gs-project-accounts.iam.gserviceaccount.com"
-        ],
-        "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
-        ],
-        "role": "roles/cloudkms.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
-        ],
-        "role": "roles/cloudscheduler.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-        ],
-        "role": "roles/composer.ServiceAgentV2Ext"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-        ],
-        "role": "roles/composer.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:gsa-cbwguhpyvhhenia@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:gsa-ir7zgtbtne3kmyy@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:gsa-o5mm5kot7ita5ai@${projectId}.iam.gserviceaccount.com"
-        ],
-        "role": "roles/composer.worker"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-        ],
-        "role": "roles/compute.futureReservationUser"
-      },
-      {
-        "members": [
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/compute.orgFirewallPolicyAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-        ],
-        "role": "roles/compute.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/compute.storageAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-        ],
-        "role": "roles/container.defaultNodeServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-        ],
-        "role": "roles/container.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-        ],
-        "role": "roles/containeranalysis.ServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
-        ],
-        "role": "roles/containerregistry.ServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
-        ],
-        "role": "roles/dataflow.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/dataplex.admin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com"
-        ],
-        "role": "roles/dataplex.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
-        ],
-        "role": "roles/dataproc.serviceAgent"
-      },
-      {
-        "members": [
           "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
         ],
         "role": "roles/dataproc.worker"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-        ],
-        "role": "roles/documentai.admin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-        ],
-        "role": "roles/documentaicore.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainercluster.iam.gserviceaccount.com"
-        ],
-        "role": "roles/edgecontainer.clusterServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainer.iam.gserviceaccount.com"
-        ],
-        "role": "roles/edgecontainer.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-          "serviceAccount:gsa-nvujpctp2qjt7aqz7a7a@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:gsa-waq4m5xsz26evt34kzyq@${projectId}.iam.gserviceaccount.com"
-        ],
-        "role": "roles/editor"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-eventarc.iam.gserviceaccount.com"
-        ],
-        "role": "roles/eventarc.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
-        ],
-        "role": "roles/firestore.serviceAgent"
-      },
-      {
-        "members": [
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/gkehub.editor"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-        ],
-        "role": "roles/gkehub.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-        ],
-        "role": "roles/gkemulticloud.admin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
-        ],
-        "role": "roles/gkemulticloud.containerServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
-        ],
-        "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
-        ],
-        "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
-        ],
-        "role": "roles/gkemulticloud.serviceAgent"
-      },
-      {
-        "members": [
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/gkemulticloud.viewer"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
-        ],
-        "role": "roles/gkeonprem.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-        ],
-        "role": "roles/iam.securityAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-        ],
-        "role": "roles/iam.serviceAccountAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-        ],
-        "role": "roles/iam.serviceAccountUser"
-      },
-      {
-        "members": [
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/iap.settingsAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
-        ],
-        "role": "roles/logging.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
-        ],
-        "role": "roles/memcache.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-memorystore.iam.gserviceaccount.com"
-        ],
-        "role": "roles/memorystore.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-        ],
-        "role": "roles/metastore.admin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-metastore.iam.gserviceaccount.com"
-        ],
-        "role": "roles/metastore.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/modelarmor.admin"
-      },
-      {
-        "members": [
-          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/modelarmor.floorSettingsAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
-        ],
-        "role": "roles/modelarmor.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
-        ],
-        "role": "roles/monitoring.notificationServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-        ],
-        "role": "roles/multiclustermetering.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
-        ],
-        "role": "roles/networkactions.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-        ],
-        "role": "roles/networkconnectivity.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
-        ],
-        "role": "roles/networksecurity.authzServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
-        ],
-        "role": "roles/notebooks.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-        ],
-        "role": "roles/orgpolicy.policyViewer"
-      },
-      {
-        "members": [
-          "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/cnrm-system/sa/cnrm-controller-manager",
-          "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/default/sa/yuhou-0521-ksa",
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/owner"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
-        ],
-        "role": "roles/pubsub.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-        ],
-        "role": "roles/redis.serviceAgent"
-      },
-      {
-        "members": [
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/resourcemanager.organizationAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/resourcemanager.projectIamAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-        ],
-        "role": "roles/run.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-sourcemanager.iam.gserviceaccount.com"
-        ],
-        "role": "roles/securesourcemanager.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
-        ],
-        "role": "roles/serviceextensions.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-        ],
-        "role": "roles/servicenetworking.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/serviceusage.serviceUsageAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-        ],
-        "role": "roles/sourcerepo.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-spanner.iam.gserviceaccount.com"
-        ],
-        "role": "roles/spanner.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-          "user:yuhou@google.com"
-        ],
-        "role": "roles/storage.admin"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-        ],
-        "role": "roles/storage.objectAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-        ],
-        "role": "roles/storage.objectViewer"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
-        ],
-        "role": "roles/storageinsights.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
-        ],
-        "role": "roles/vpcaccess.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
-        ],
-        "role": "roles/websecurityscanner.serviceAgent"
       }
     ],
     "etag": "abcdef0123A=",
@@ -2283,550 +110,9 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
-      ],
-      "role": "roles/agentgateway.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
-      ],
-      "role": "roles/alloydb.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
-      ],
-      "role": "roles/apigee.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-gae-service.iam.gserviceaccount.com"
-      ],
-      "role": "roles/appengine.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigqueryconnection.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigquerydatatransfer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-      ],
-      "role": "roles/binaryauthorization.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudasset.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudasset.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.builds.builder"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudfunctions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.admin"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.autokeyUser"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gs-project-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudscheduler.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.ServiceAgentV2Ext"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:gsa-cbwguhpyvhhenia@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-ir7zgtbtne3kmyy@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-o5mm5kot7ita5ai@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/compute.futureReservationUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.orgFirewallPolicyAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.storageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.defaultNodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerregistry.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataflow.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/dataplex.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataplex.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.serviceAgent"
-    },
-    {
-      "members": [
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/dataproc.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentai.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentaicore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainercluster.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.clusterServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:gsa-nvujpctp2qjt7aqz7a7a@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-waq4m5xsz26evt34kzyq@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-eventarc.iam.gserviceaccount.com"
-      ],
-      "role": "roles/eventarc.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/firestore.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkehub.editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.containerServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkemulticloud.viewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkeonprem.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.securityAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/iap.settingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
-      ],
-      "role": "roles/logging.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memcache.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-memorystore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memorystore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-metastore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.floorSettingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
-      ],
-      "role": "roles/modelarmor.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
-      ],
-      "role": "roles/monitoring.notificationServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkactions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networksecurity.authzServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
-      ],
-      "role": "roles/notebooks.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/orgpolicy.policyViewer"
-    },
-    {
-      "members": [
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/cnrm-system/sa/cnrm-controller-manager",
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/default/sa/yuhou-0521-ksa",
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.organizationAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.projectIamAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sourcemanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/securesourcemanager.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
-      ],
-      "role": "roles/serviceextensions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/serviceusage.serviceUsageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-spanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/spanner.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/storage.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
-      ],
-      "role": "roles/storageinsights.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
-      ],
-      "role": "roles/vpcaccess.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/websecurityscanner.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -2859,550 +145,9 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
-      ],
-      "role": "roles/agentgateway.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
-      ],
-      "role": "roles/alloydb.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
-      ],
-      "role": "roles/apigee.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-gae-service.iam.gserviceaccount.com"
-      ],
-      "role": "roles/appengine.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigqueryconnection.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigquerydatatransfer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-      ],
-      "role": "roles/binaryauthorization.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudasset.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudasset.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.builds.builder"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudfunctions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.admin"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.autokeyUser"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gs-project-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudscheduler.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.ServiceAgentV2Ext"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:gsa-cbwguhpyvhhenia@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-ir7zgtbtne3kmyy@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-o5mm5kot7ita5ai@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/compute.futureReservationUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.orgFirewallPolicyAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.storageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.defaultNodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerregistry.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataflow.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/dataplex.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataplex.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.serviceAgent"
-    },
-    {
-      "members": [
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/dataproc.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentai.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentaicore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainercluster.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.clusterServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:gsa-nvujpctp2qjt7aqz7a7a@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-waq4m5xsz26evt34kzyq@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-eventarc.iam.gserviceaccount.com"
-      ],
-      "role": "roles/eventarc.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/firestore.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkehub.editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.containerServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkemulticloud.viewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkeonprem.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.securityAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/iap.settingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
-      ],
-      "role": "roles/logging.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memcache.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-memorystore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memorystore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-metastore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.floorSettingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
-      ],
-      "role": "roles/modelarmor.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
-      ],
-      "role": "roles/monitoring.notificationServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkactions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networksecurity.authzServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
-      ],
-      "role": "roles/notebooks.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/orgpolicy.policyViewer"
-    },
-    {
-      "members": [
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/cnrm-system/sa/cnrm-controller-manager",
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/default/sa/yuhou-0521-ksa",
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.organizationAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.projectIamAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sourcemanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/securesourcemanager.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
-      ],
-      "role": "roles/serviceextensions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/serviceusage.serviceUsageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-spanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/spanner.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/storage.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
-      ],
-      "role": "roles/storageinsights.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
-      ],
-      "role": "roles/vpcaccess.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/websecurityscanner.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -3435,550 +180,9 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
-      ],
-      "role": "roles/agentgateway.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
-      ],
-      "role": "roles/alloydb.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
-      ],
-      "role": "roles/apigee.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-gae-service.iam.gserviceaccount.com"
-      ],
-      "role": "roles/appengine.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigqueryconnection.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigquerydatatransfer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-      ],
-      "role": "roles/binaryauthorization.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudasset.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudasset.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.builds.builder"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudfunctions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.admin"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.autokeyUser"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gs-project-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudscheduler.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.ServiceAgentV2Ext"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:gsa-cbwguhpyvhhenia@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-ir7zgtbtne3kmyy@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-o5mm5kot7ita5ai@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/compute.futureReservationUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.orgFirewallPolicyAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.storageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.defaultNodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerregistry.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataflow.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/dataplex.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataplex.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.serviceAgent"
-    },
-    {
-      "members": [
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/dataproc.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentai.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentaicore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainercluster.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.clusterServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:gsa-nvujpctp2qjt7aqz7a7a@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-waq4m5xsz26evt34kzyq@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-eventarc.iam.gserviceaccount.com"
-      ],
-      "role": "roles/eventarc.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/firestore.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkehub.editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.containerServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkemulticloud.viewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkeonprem.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.securityAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/iap.settingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
-      ],
-      "role": "roles/logging.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memcache.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-memorystore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memorystore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-metastore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.floorSettingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
-      ],
-      "role": "roles/modelarmor.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
-      ],
-      "role": "roles/monitoring.notificationServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkactions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networksecurity.authzServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
-      ],
-      "role": "roles/notebooks.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/orgpolicy.policyViewer"
-    },
-    {
-      "members": [
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/cnrm-system/sa/cnrm-controller-manager",
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/default/sa/yuhou-0521-ksa",
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.organizationAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.projectIamAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sourcemanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/securesourcemanager.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
-      ],
-      "role": "roles/serviceextensions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/serviceusage.serviceUsageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-spanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/spanner.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/storage.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
-      ],
-      "role": "roles/storageinsights.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
-      ],
-      "role": "roles/vpcaccess.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/websecurityscanner.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -4011,550 +215,9 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
-      ],
-      "role": "roles/agentgateway.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
-      ],
-      "role": "roles/alloydb.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
-      ],
-      "role": "roles/apigee.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-gae-service.iam.gserviceaccount.com"
-      ],
-      "role": "roles/appengine.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigqueryconnection.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigquerydatatransfer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-      ],
-      "role": "roles/binaryauthorization.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudasset.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudasset.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.builds.builder"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudfunctions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.admin"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.autokeyUser"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gs-project-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudscheduler.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.ServiceAgentV2Ext"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:gsa-cbwguhpyvhhenia@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-ir7zgtbtne3kmyy@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-o5mm5kot7ita5ai@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/compute.futureReservationUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.orgFirewallPolicyAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.storageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.defaultNodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerregistry.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataflow.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/dataplex.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataplex.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.serviceAgent"
-    },
-    {
-      "members": [
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/dataproc.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentai.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentaicore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainercluster.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.clusterServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:gsa-nvujpctp2qjt7aqz7a7a@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-waq4m5xsz26evt34kzyq@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-eventarc.iam.gserviceaccount.com"
-      ],
-      "role": "roles/eventarc.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/firestore.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkehub.editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.containerServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkemulticloud.viewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkeonprem.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.securityAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/iap.settingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
-      ],
-      "role": "roles/logging.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memcache.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-memorystore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memorystore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-metastore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.floorSettingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
-      ],
-      "role": "roles/modelarmor.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
-      ],
-      "role": "roles/monitoring.notificationServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkactions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networksecurity.authzServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
-      ],
-      "role": "roles/notebooks.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/orgpolicy.policyViewer"
-    },
-    {
-      "members": [
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/cnrm-system/sa/cnrm-controller-manager",
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/default/sa/yuhou-0521-ksa",
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.organizationAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.projectIamAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sourcemanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/securesourcemanager.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
-      ],
-      "role": "roles/serviceextensions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/serviceusage.serviceUsageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-spanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/spanner.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/storage.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
-      ],
-      "role": "roles/storageinsights.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
-      ],
-      "role": "roles/vpcaccess.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/websecurityscanner.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -4587,550 +250,9 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
-      ],
-      "role": "roles/agentgateway.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
-      ],
-      "role": "roles/alloydb.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
-      ],
-      "role": "roles/apigee.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-gae-service.iam.gserviceaccount.com"
-      ],
-      "role": "roles/appengine.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigqueryconnection.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigquerydatatransfer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-      ],
-      "role": "roles/binaryauthorization.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudasset.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudasset.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.builds.builder"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudfunctions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.admin"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/cloudkms.autokeyUser"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gs-project-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudscheduler.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.ServiceAgentV2Ext"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:gsa-cbwguhpyvhhenia@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-ir7zgtbtne3kmyy@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-o5mm5kot7ita5ai@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/composer.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/compute.futureReservationUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.orgFirewallPolicyAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/compute.storageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.defaultNodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerregistry.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataflow.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/dataplex.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataplex.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.serviceAgent"
-    },
-    {
-      "members": [
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/dataproc.worker"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentai.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-      ],
-      "role": "roles/documentaicore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainercluster.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.clusterServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-edgecontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/edgecontainer.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:gsa-nvujpctp2qjt7aqz7a7a@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:gsa-waq4m5xsz26evt34kzyq@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-eventarc.iam.gserviceaccount.com"
-      ],
-      "role": "roles/eventarc.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/firestore.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkehub.editor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.containerServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkemulticloud.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/gkemulticloud.viewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkeonprem.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.securityAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/iam.serviceAccountUser"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/iap.settingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
-      ],
-      "role": "roles/logging.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memcache.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-memorystore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/memorystore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-metastore.iam.gserviceaccount.com"
-      ],
-      "role": "roles/metastore.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/modelarmor.floorSettingsAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
-      ],
-      "role": "roles/modelarmor.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
-      ],
-      "role": "roles/monitoring.notificationServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkactions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networksecurity.authzServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
-      ],
-      "role": "roles/notebooks.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/orgpolicy.policyViewer"
-    },
-    {
-      "members": [
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/cnrm-system/sa/cnrm-controller-manager",
-        "principal://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${projectId}.svc.id.goog/subject/ns/default/sa/yuhou-0521-ksa",
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.organizationAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/resourcemanager.projectIamAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sourcemanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/securesourcemanager.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
-      ],
-      "role": "roles/serviceextensions.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/serviceusage.serviceUsageAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-spanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/spanner.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
-        "user:yuhou@google.com"
-      ],
-      "role": "roles/storage.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/storage.objectViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
-      ],
-      "role": "roles/storageinsights.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
-      ],
-      "role": "roles/vpcaccess.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
-      ],
-      "role": "roles/websecurityscanner.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -5211,6 +333,7 @@ X-Xss-Protection: 0
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     "warnings": [
+      "The firewall rules for specified network or subnetwork would allow ingress traffic from 0.0.0.0/0, which could be a security risk.",
       "The specified custom staging bucket '${dataStoreConfigBucketPath}' is not using uniform bucket level access IAM configuration. It is recommended to update bucket to enable the same. See https://cloud.google.com/storage/docs/uniform-bucket-level-access.",
       "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time."
     ]
@@ -5243,7 +366,7 @@ X-Xss-Protection: 0
     "description": "Create cluster with 2 workers",
     "operationType": "CREATE",
     "status": {
-      "innerState": "AWAIT_PRE_DONE_TASKS_COMPLETION",
+      "innerState": "DONE",
       "state": "DONE",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -5258,6 +381,7 @@ X-Xss-Protection: 0
       }
     ],
     "warnings": [
+      "The firewall rules for specified network or subnetwork would allow ingress traffic from 0.0.0.0/0, which could be a security risk.",
       "The specified custom staging bucket '${dataStoreConfigBucketPath}' is not using uniform bucket level access IAM configuration. It is recommended to update bucket to enable the same. See https://cloud.google.com/storage/docs/uniform-bucket-level-access.",
       "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time."
     ]
@@ -5281,27 +405,26 @@ X-Xss-Protection: 0
           "enableSecureBoot": true,
           "enableVtpm": true
         },
-        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
       },
       "masterConfig": {
         "diskConfig": {
           "bootDiskSizeGb": 1000,
           "bootDiskType": "pd-standard"
         },
-        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20260424-064834-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
       },
       "softwareConfig": {
-        "imageVersion": "2.2.81-debian12",
+        "imageVersion": "2.2.63-debian12",
         "properties": {
           "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
           "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
           "core:fs.gs.block.size": "134217728",
           "core:fs.gs.metadata.cache.enable": "false",
-          "core:fs.gs.operation.move.enable": "true",
           "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
           "distcp:mapreduce.map.java.opts": "-Xmx768m",
           "distcp:mapreduce.map.memory.mb": "1024",
@@ -5366,8 +489,8 @@ X-Xss-Protection: 0
           "bootDiskSizeGb": 1000,
           "bootDiskType": "pd-standard"
         },
-        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20260424-064834-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-4",
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 2,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -5376,7 +499,6 @@ X-Xss-Protection: 0
     "labels": {
       "cnrm-test": "true",
       "goog-dataproc-autozone": "enabled",
-      "goog-dataproc-cluster-create-timestamp": "1782344229",
       "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
@@ -5421,30 +543,29 @@ X-Xss-Protection: 0
         "enableSecureBoot": true,
         "enableVtpm": true
       },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
     },
     "masterConfig": {
       "diskConfig": {
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20260424-064834-rc01",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": "NON_PREEMPTIBLE"
     },
     "softwareConfig": {
-      "imageVersion": "2.2.81-debian12",
+      "imageVersion": "2.2.63-debian12",
       "properties": {
         "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
         "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
         "core:fs.gs.block.size": "134217728",
         "core:fs.gs.metadata.cache.enable": "false",
-        "core:fs.gs.operation.move.enable": "true",
         "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
         "distcp:mapreduce.map.java.opts": "-Xmx768m",
         "distcp:mapreduce.map.memory.mb": "1024",
@@ -5509,12 +630,12 @@ X-Xss-Protection: 0
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20260424-064834-rc01",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
       "instanceNames": [
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-4",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
       "preemptibility": "NON_PREEMPTIBLE"
@@ -5523,7 +644,6 @@ X-Xss-Protection: 0
   "labels": {
     "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
-    "goog-dataproc-cluster-create-timestamp": "1782344229",
     "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
@@ -5561,7 +681,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "enableSecureBoot": true,
         "enableVtpm": true
       },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
     },
     "initializationActions": [],
     "masterConfig": {
@@ -5570,21 +690,20 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20260424-064834-rc01",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
       "machineTypeUri": "n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": "NON_PREEMPTIBLE"
     },
     "softwareConfig": {
-      "imageVersion": "2.2.81-debian12",
+      "imageVersion": "2.2.63-debian12",
       "optionalComponents": [],
       "properties": {
         "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
         "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
         "core:fs.gs.block.size": "134217728",
         "core:fs.gs.metadata.cache.enable": "false",
-        "core:fs.gs.operation.move.enable": "true",
         "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
         "distcp:mapreduce.map.java.opts": "-Xmx768m",
         "distcp:mapreduce.map.memory.mb": "1024",
@@ -5650,7 +769,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20260424-064834-rc01",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
       "machineTypeUri": "n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
@@ -5713,7 +832,7 @@ X-Xss-Protection: 0
     "clusterUuid": "${dataStoreClusterUUID}",
     "operationType": "UPDATE",
     "status": {
-      "innerState": "DISPATCH_PRE_DONE_TASKS",
+      "innerState": "DONE",
       "state": "DONE",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -5747,27 +866,26 @@ X-Xss-Protection: 0
           "enableSecureBoot": true,
           "enableVtpm": true
         },
-        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
       },
       "masterConfig": {
         "diskConfig": {
           "bootDiskSizeGb": 1000,
           "bootDiskType": "pd-standard"
         },
-        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20260424-064834-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
       },
       "softwareConfig": {
-        "imageVersion": "2.2.81-debian12",
+        "imageVersion": "2.2.63-debian12",
         "properties": {
           "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
           "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
           "core:fs.gs.block.size": "134217728",
           "core:fs.gs.metadata.cache.enable": "false",
-          "core:fs.gs.operation.move.enable": "true",
           "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
           "distcp:mapreduce.map.java.opts": "-Xmx768m",
           "distcp:mapreduce.map.memory.mb": "1024",
@@ -5832,8 +950,8 @@ X-Xss-Protection: 0
           "bootDiskSizeGb": 1000,
           "bootDiskType": "pd-standard"
         },
-        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20260424-064834-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-4",
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 2,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -5842,7 +960,6 @@ X-Xss-Protection: 0
     "labels": {
       "cnrm-test": "true",
       "goog-dataproc-autozone": "enabled",
-      "goog-dataproc-cluster-create-timestamp": "1782344229",
       "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
@@ -5887,30 +1004,29 @@ X-Xss-Protection: 0
         "enableSecureBoot": true,
         "enableVtpm": true
       },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
     },
     "masterConfig": {
       "diskConfig": {
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20260424-064834-rc01",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": "NON_PREEMPTIBLE"
     },
     "softwareConfig": {
-      "imageVersion": "2.2.81-debian12",
+      "imageVersion": "2.2.63-debian12",
       "properties": {
         "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
         "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
         "core:fs.gs.block.size": "134217728",
         "core:fs.gs.metadata.cache.enable": "false",
-        "core:fs.gs.operation.move.enable": "true",
         "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
         "distcp:mapreduce.map.java.opts": "-Xmx768m",
         "distcp:mapreduce.map.memory.mb": "1024",
@@ -5975,12 +1091,12 @@ X-Xss-Protection: 0
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20260424-064834-rc01",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
       "instanceNames": [
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-4",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
       "preemptibility": "NON_PREEMPTIBLE"
@@ -5989,7 +1105,6 @@ X-Xss-Protection: 0
   "labels": {
     "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
-    "goog-dataproc-cluster-create-timestamp": "1782344229",
     "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
@@ -6164,4 +1279,211 @@ X-Xss-Protection: 0
     "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
     "status": "NOT_FOUND"
   }
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "etag": "abcdef0123A=",
+    "version": 1
+  },
+  "updateMask": "bindings,etag,auditConfigs"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
 }

@@ -48,24 +48,10 @@ status:
     masterConfig:
       instanceNames:
       - dataproccluster-${uniqueId}-m
-      instanceReferences:
-      - instanceId: "3853478853235296975"
-        instanceName: dataproccluster-${uniqueId}-m
-      managedGroupConfig:
-        instanceGroupManagerName: dataproc-goog-reserved-auto-master-cpa6qzsut5uzw
-        instanceTemplateName: dataproc-goog-reserved-auto-master-cpa6qzsut5uzw
     workerConfig:
       instanceNames:
       - dataproccluster-${uniqueId}-w-0
       - dataproccluster-${uniqueId}-w-1
-      instanceReferences:
-      - instanceId: "8261420591032158961"
-        instanceName: dataproccluster-${uniqueId}-w-0
-      - instanceId: "140930734848330481"
-        instanceName: dataproccluster-${uniqueId}-w-1
-      managedGroupConfig:
-        instanceGroupManagerName: dataproc-goog-reserved-auto-primary-mjhorn4hasjom
-        instanceTemplateName: dataproc-goog-reserved-auto-primary-mjhorn4hasjom
   metrics:
     hdfsMetrics:
       dfs-blocks-corrupt: "0"
@@ -92,10 +78,10 @@ status:
       yarn-containers-pending: "0"
       yarn-containers-reserved: "0"
       yarn-memory-mb-allocated: "0"
-      yarn-memory-mb-available: "13108"
+      yarn-memory-mb-available: "27088"
       yarn-memory-mb-pending: "0"
       yarn-memory-mb-reserved: "0"
-      yarn-memory-mb-total: "13108"
+      yarn-memory-mb-total: "27088"
       yarn-nodes-active: "2"
       yarn-nodes-decommissioned: "0"
       yarn-nodes-decommissioning: "0"
@@ -105,10 +91,10 @@ status:
       yarn-nodes-shutdown: "0"
       yarn-nodes-unhealthy: "0"
       yarn-vcores-allocated: "0"
-      yarn-vcores-available: "4"
+      yarn-vcores-available: "8"
       yarn-vcores-pending: "0"
       yarn-vcores-reserved: "0"
-      yarn-vcores-total: "4"
+      yarn-vcores-total: "8"
   observedGeneration: 3
   status:
     state: RUNNING
