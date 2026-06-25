@@ -19,35 +19,40 @@
 // +generated:mapper
 // krm.group: networksecurity.cnrm.cloud.google.com
 // krm.version: v1beta1
+// proto.service: google.cloud.networksecurity.v1
 // proto.service: google.cloud.networksecurity.v1beta1
 
 package networksecurity
 
 import (
-	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
+	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
+	networksecuritypb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	krmnetworksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AuthorizationPolicy_Rule_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule) *krm.AuthorizationPolicy_Rule {
+func AuthorizationPolicy_Rule_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.AuthorizationPolicy_Rule) *krm.AuthorizationPolicy_Rule {
 	if in == nil {
 		return nil
 	}
 	out := &krm.AuthorizationPolicy_Rule{}
-	out.Sources = direct.Slice_FromProto(mapCtx, in.Sources, AuthorizationPolicy_Rule_Source_FromProto)
-	out.Destinations = direct.Slice_FromProto(mapCtx, in.Destinations, AuthorizationPolicy_Rule_Destination_FromProto)
+	out.Sources = direct.Slice_FromProto(mapCtx, in.Sources, AuthorizationPolicy_Rule_Source_v1beta1_FromProto)
+	out.Destinations = direct.Slice_FromProto(mapCtx, in.Destinations, AuthorizationPolicy_Rule_Destination_v1beta1_FromProto)
 	return out
 }
-func AuthorizationPolicy_Rule_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy_Rule) *pb.AuthorizationPolicy_Rule {
+func AuthorizationPolicy_Rule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy_Rule) *networksecuritypb.AuthorizationPolicy_Rule {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AuthorizationPolicy_Rule{}
-	out.Sources = direct.Slice_ToProto(mapCtx, in.Sources, AuthorizationPolicy_Rule_Source_ToProto)
-	out.Destinations = direct.Slice_ToProto(mapCtx, in.Destinations, AuthorizationPolicy_Rule_Destination_ToProto)
+	out := &networksecuritypb.AuthorizationPolicy_Rule{}
+	out.Sources = direct.Slice_ToProto(mapCtx, in.Sources, AuthorizationPolicy_Rule_Source_v1beta1_ToProto)
+	out.Destinations = direct.Slice_ToProto(mapCtx, in.Destinations, AuthorizationPolicy_Rule_Destination_v1beta1_ToProto)
 	return out
 }
-func AuthorizationPolicy_Rule_Destination_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule_Destination) *krm.AuthorizationPolicy_Rule_Destination {
+func AuthorizationPolicy_Rule_Destination_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.AuthorizationPolicy_Rule_Destination) *krm.AuthorizationPolicy_Rule_Destination {
 	if in == nil {
 		return nil
 	}
@@ -55,21 +60,21 @@ func AuthorizationPolicy_Rule_Destination_FromProto(mapCtx *direct.MapContext, i
 	out.Hosts = in.Hosts
 	out.Ports = in.Ports
 	out.Methods = in.Methods
-	out.HTTPHeaderMatch = AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_FromProto(mapCtx, in.GetHttpHeaderMatch())
+	out.HTTPHeaderMatch = AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_v1beta1_FromProto(mapCtx, in.GetHttpHeaderMatch())
 	return out
 }
-func AuthorizationPolicy_Rule_Destination_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy_Rule_Destination) *pb.AuthorizationPolicy_Rule_Destination {
+func AuthorizationPolicy_Rule_Destination_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy_Rule_Destination) *networksecuritypb.AuthorizationPolicy_Rule_Destination {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AuthorizationPolicy_Rule_Destination{}
+	out := &networksecuritypb.AuthorizationPolicy_Rule_Destination{}
 	out.Hosts = in.Hosts
 	out.Ports = in.Ports
 	out.Methods = in.Methods
-	out.HttpHeaderMatch = AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_ToProto(mapCtx, in.HTTPHeaderMatch)
+	out.HttpHeaderMatch = AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_v1beta1_ToProto(mapCtx, in.HTTPHeaderMatch)
 	return out
 }
-func AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch) *krm.AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch {
+func AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch) *krm.AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch {
 	if in == nil {
 		return nil
 	}
@@ -78,18 +83,24 @@ func AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_FromProto(mapCtx *dire
 	out.HeaderName = direct.LazyPtr(in.GetHeaderName())
 	return out
 }
-func AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch) *pb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch {
+func AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch) *networksecuritypb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch{}
+	out := &networksecuritypb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch{}
 	if oneof := AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_RegexMatch_ToProto(mapCtx, in.RegexMatch); oneof != nil {
 		out.Type = oneof
 	}
 	out.HeaderName = direct.ValueOf(in.HeaderName)
 	return out
 }
-func AuthorizationPolicy_Rule_Source_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule_Source) *krm.AuthorizationPolicy_Rule_Source {
+func AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_RegexMatch_ToProto(mapCtx *direct.MapContext, in *string) *networksecuritypb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch_RegexMatch {
+	if in == nil {
+		return nil
+	}
+	return &networksecuritypb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch_RegexMatch{RegexMatch: *in}
+}
+func AuthorizationPolicy_Rule_Source_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.AuthorizationPolicy_Rule_Source) *krm.AuthorizationPolicy_Rule_Source {
 	if in == nil {
 		return nil
 	}
@@ -98,38 +109,372 @@ func AuthorizationPolicy_Rule_Source_FromProto(mapCtx *direct.MapContext, in *pb
 	out.IPBlocks = in.IpBlocks
 	return out
 }
-func AuthorizationPolicy_Rule_Source_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy_Rule_Source) *pb.AuthorizationPolicy_Rule_Source {
+func AuthorizationPolicy_Rule_Source_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy_Rule_Source) *networksecuritypb.AuthorizationPolicy_Rule_Source {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AuthorizationPolicy_Rule_Source{}
+	out := &networksecuritypb.AuthorizationPolicy_Rule_Source{}
 	out.Principals = in.Principals
 	out.IpBlocks = in.IPBlocks
 	return out
 }
-func CertificateProvider_FromProto(mapCtx *direct.MapContext, in *pb.CertificateProvider) *krm.CertificateProvider {
+func AuthzPolicy_AuthzRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule{}
+	out.From = AuthzPolicy_AuthzRule_From_v1alpha1_FromProto(mapCtx, in.GetFrom())
+	out.To = AuthzPolicy_AuthzRule_To_v1alpha1_FromProto(mapCtx, in.GetTo())
+	out.When = direct.LazyPtr(in.GetWhen())
+	return out
+}
+func AuthzPolicy_AuthzRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule) *pb.AuthzPolicy_AuthzRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule{}
+	out.From = AuthzPolicy_AuthzRule_From_v1alpha1_ToProto(mapCtx, in.From)
+	out.To = AuthzPolicy_AuthzRule_To_v1alpha1_ToProto(mapCtx, in.To)
+	out.When = direct.ValueOf(in.When)
+	return out
+}
+func AuthzPolicy_AuthzRule_From_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule_From) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_From {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_From{}
+	out.Sources = direct.Slice_FromProto(mapCtx, in.Sources, AuthzPolicy_AuthzRule_From_RequestSource_v1alpha1_FromProto)
+	out.NotSources = direct.Slice_FromProto(mapCtx, in.NotSources, AuthzPolicy_AuthzRule_From_RequestSource_v1alpha1_FromProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_From_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_From) *pb.AuthzPolicy_AuthzRule_From {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule_From{}
+	out.Sources = direct.Slice_ToProto(mapCtx, in.Sources, AuthzPolicy_AuthzRule_From_RequestSource_v1alpha1_ToProto)
+	out.NotSources = direct.Slice_ToProto(mapCtx, in.NotSources, AuthzPolicy_AuthzRule_From_RequestSource_v1alpha1_ToProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_From_RequestSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule_From_RequestSource) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_From_RequestSource {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_From_RequestSource{}
+	out.Principals = direct.Slice_FromProto(mapCtx, in.Principals, AuthzPolicy_AuthzRule_Principal_v1alpha1_FromProto)
+	out.IPBlocks = direct.Slice_FromProto(mapCtx, in.IpBlocks, AuthzPolicy_AuthzRule_IPBlock_v1alpha1_FromProto)
+	out.Resources = direct.Slice_FromProto(mapCtx, in.Resources, AuthzPolicy_AuthzRule_RequestResource_v1alpha1_FromProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_From_RequestSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_From_RequestSource) *pb.AuthzPolicy_AuthzRule_From_RequestSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule_From_RequestSource{}
+	out.Principals = direct.Slice_ToProto(mapCtx, in.Principals, AuthzPolicy_AuthzRule_Principal_v1alpha1_ToProto)
+	out.IpBlocks = direct.Slice_ToProto(mapCtx, in.IPBlocks, AuthzPolicy_AuthzRule_IPBlock_v1alpha1_ToProto)
+	out.Resources = direct.Slice_ToProto(mapCtx, in.Resources, AuthzPolicy_AuthzRule_RequestResource_v1alpha1_ToProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_HeaderMatch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule_HeaderMatch) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_HeaderMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_HeaderMatch{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Value = AuthzPolicy_AuthzRule_StringMatch_v1alpha1_FromProto(mapCtx, in.GetValue())
+	return out
+}
+func AuthzPolicy_AuthzRule_HeaderMatch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_HeaderMatch) *pb.AuthzPolicy_AuthzRule_HeaderMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule_HeaderMatch{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Value = AuthzPolicy_AuthzRule_StringMatch_v1alpha1_ToProto(mapCtx, in.Value)
+	return out
+}
+func AuthzPolicy_AuthzRule_IPBlock_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule_IpBlock) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_IPBlock {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_IPBlock{}
+	out.Prefix = direct.LazyPtr(in.GetPrefix())
+	out.Length = direct.LazyPtr(in.GetLength())
+	return out
+}
+func AuthzPolicy_AuthzRule_IPBlock_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_IPBlock) *pb.AuthzPolicy_AuthzRule_IpBlock {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule_IpBlock{}
+	out.Prefix = direct.ValueOf(in.Prefix)
+	out.Length = direct.ValueOf(in.Length)
+	return out
+}
+func AuthzPolicy_AuthzRule_Principal_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule_Principal) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_Principal {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_Principal{}
+	out.PrincipalSelector = direct.Enum_FromProto(mapCtx, in.GetPrincipalSelector())
+	out.Principal = AuthzPolicy_AuthzRule_StringMatch_v1alpha1_FromProto(mapCtx, in.GetPrincipal())
+	return out
+}
+func AuthzPolicy_AuthzRule_Principal_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_Principal) *pb.AuthzPolicy_AuthzRule_Principal {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule_Principal{}
+	out.PrincipalSelector = direct.Enum_ToProto[pb.AuthzPolicy_AuthzRule_Principal_PrincipalSelector](mapCtx, in.PrincipalSelector)
+	out.Principal = AuthzPolicy_AuthzRule_StringMatch_v1alpha1_ToProto(mapCtx, in.Principal)
+	return out
+}
+func AuthzPolicy_AuthzRule_RequestResource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule_RequestResource) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_RequestResource {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_RequestResource{}
+	out.TagValueIDSet = AuthzPolicy_AuthzRule_RequestResource_TagValueIDSet_v1alpha1_FromProto(mapCtx, in.GetTagValueIdSet())
+	out.IAMServiceAccount = AuthzPolicy_AuthzRule_StringMatch_v1alpha1_FromProto(mapCtx, in.GetIamServiceAccount())
+	return out
+}
+func AuthzPolicy_AuthzRule_RequestResource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_RequestResource) *pb.AuthzPolicy_AuthzRule_RequestResource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule_RequestResource{}
+	out.TagValueIdSet = AuthzPolicy_AuthzRule_RequestResource_TagValueIDSet_v1alpha1_ToProto(mapCtx, in.TagValueIDSet)
+	out.IamServiceAccount = AuthzPolicy_AuthzRule_StringMatch_v1alpha1_ToProto(mapCtx, in.IAMServiceAccount)
+	return out
+}
+func AuthzPolicy_AuthzRule_StringMatch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule_StringMatch) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_StringMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_StringMatch{}
+	out.Exact = direct.LazyPtr(in.GetExact())
+	out.Prefix = direct.LazyPtr(in.GetPrefix())
+	out.Suffix = direct.LazyPtr(in.GetSuffix())
+	out.Contains = direct.LazyPtr(in.GetContains())
+	out.IgnoreCase = direct.LazyPtr(in.GetIgnoreCase())
+	return out
+}
+func AuthzPolicy_AuthzRule_StringMatch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_StringMatch) *pb.AuthzPolicy_AuthzRule_StringMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule_StringMatch{}
+	if oneof := AuthzPolicy_AuthzRule_StringMatch_Exact_ToProto(mapCtx, in.Exact); oneof != nil {
+		out.MatchPattern = oneof
+	}
+	if oneof := AuthzPolicy_AuthzRule_StringMatch_Prefix_ToProto(mapCtx, in.Prefix); oneof != nil {
+		out.MatchPattern = oneof
+	}
+	if oneof := AuthzPolicy_AuthzRule_StringMatch_Suffix_ToProto(mapCtx, in.Suffix); oneof != nil {
+		out.MatchPattern = oneof
+	}
+	if oneof := AuthzPolicy_AuthzRule_StringMatch_Contains_ToProto(mapCtx, in.Contains); oneof != nil {
+		out.MatchPattern = oneof
+	}
+	out.IgnoreCase = direct.ValueOf(in.IgnoreCase)
+	return out
+}
+func AuthzPolicy_AuthzRule_StringMatch_Exact_ToProto(mapCtx *direct.MapContext, in *string) *pb.AuthzPolicy_AuthzRule_StringMatch_Exact {
+	if in == nil {
+		return nil
+	}
+	return &pb.AuthzPolicy_AuthzRule_StringMatch_Exact{Exact: *in}
+}
+func AuthzPolicy_AuthzRule_StringMatch_Prefix_ToProto(mapCtx *direct.MapContext, in *string) *pb.AuthzPolicy_AuthzRule_StringMatch_Prefix {
+	if in == nil {
+		return nil
+	}
+	return &pb.AuthzPolicy_AuthzRule_StringMatch_Prefix{Prefix: *in}
+}
+func AuthzPolicy_AuthzRule_StringMatch_Suffix_ToProto(mapCtx *direct.MapContext, in *string) *pb.AuthzPolicy_AuthzRule_StringMatch_Suffix {
+	if in == nil {
+		return nil
+	}
+	return &pb.AuthzPolicy_AuthzRule_StringMatch_Suffix{Suffix: *in}
+}
+func AuthzPolicy_AuthzRule_StringMatch_Contains_ToProto(mapCtx *direct.MapContext, in *string) *pb.AuthzPolicy_AuthzRule_StringMatch_Contains {
+	if in == nil {
+		return nil
+	}
+	return &pb.AuthzPolicy_AuthzRule_StringMatch_Contains{Contains: *in}
+}
+func AuthzPolicy_AuthzRule_To_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule_To) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To{}
+	out.Operations = direct.Slice_FromProto(mapCtx, in.Operations, AuthzPolicy_AuthzRule_To_RequestOperation_v1alpha1_FromProto)
+	out.NotOperations = direct.Slice_FromProto(mapCtx, in.NotOperations, AuthzPolicy_AuthzRule_To_RequestOperation_v1alpha1_FromProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_To_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To) *pb.AuthzPolicy_AuthzRule_To {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule_To{}
+	out.Operations = direct.Slice_ToProto(mapCtx, in.Operations, AuthzPolicy_AuthzRule_To_RequestOperation_v1alpha1_ToProto)
+	out.NotOperations = direct.Slice_ToProto(mapCtx, in.NotOperations, AuthzPolicy_AuthzRule_To_RequestOperation_v1alpha1_ToProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_To_RequestOperation_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule_To_RequestOperation) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To_RequestOperation {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To_RequestOperation{}
+	out.HeaderSet = AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet_v1alpha1_FromProto(mapCtx, in.GetHeaderSet())
+	out.Hosts = direct.Slice_FromProto(mapCtx, in.Hosts, AuthzPolicy_AuthzRule_StringMatch_v1alpha1_FromProto)
+	out.Paths = direct.Slice_FromProto(mapCtx, in.Paths, AuthzPolicy_AuthzRule_StringMatch_v1alpha1_FromProto)
+	out.Methods = in.Methods
+	out.Mcp = AuthzPolicy_AuthzRule_To_RequestOperation_Mcp_v1alpha1_FromProto(mapCtx, in.GetMcp())
+	out.Snis = direct.Slice_FromProto(mapCtx, in.Snis, AuthzPolicy_AuthzRule_StringMatch_v1alpha1_FromProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_To_RequestOperation_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To_RequestOperation) *pb.AuthzPolicy_AuthzRule_To_RequestOperation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule_To_RequestOperation{}
+	out.HeaderSet = AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet_v1alpha1_ToProto(mapCtx, in.HeaderSet)
+	out.Hosts = direct.Slice_ToProto(mapCtx, in.Hosts, AuthzPolicy_AuthzRule_StringMatch_v1alpha1_ToProto)
+	out.Paths = direct.Slice_ToProto(mapCtx, in.Paths, AuthzPolicy_AuthzRule_StringMatch_v1alpha1_ToProto)
+	out.Methods = in.Methods
+	out.Mcp = AuthzPolicy_AuthzRule_To_RequestOperation_Mcp_v1alpha1_ToProto(mapCtx, in.Mcp)
+	out.Snis = direct.Slice_ToProto(mapCtx, in.Snis, AuthzPolicy_AuthzRule_StringMatch_v1alpha1_ToProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet{}
+	out.Headers = direct.Slice_FromProto(mapCtx, in.Headers, AuthzPolicy_AuthzRule_HeaderMatch_v1alpha1_FromProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet) *pb.AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet{}
+	out.Headers = direct.Slice_ToProto(mapCtx, in.Headers, AuthzPolicy_AuthzRule_HeaderMatch_v1alpha1_ToProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_To_RequestOperation_Mcp_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule_To_RequestOperation_MCP) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To_RequestOperation_Mcp {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To_RequestOperation_Mcp{}
+	out.BaseProtocolMethodsOption = direct.Enum_FromProto(mapCtx, in.GetBaseProtocolMethodsOption())
+	out.Methods = direct.Slice_FromProto(mapCtx, in.Methods, AuthzPolicy_AuthzRule_To_RequestOperation_McpMethod_v1alpha1_FromProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_To_RequestOperation_Mcp_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To_RequestOperation_Mcp) *pb.AuthzPolicy_AuthzRule_To_RequestOperation_MCP {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule_To_RequestOperation_MCP{}
+	out.BaseProtocolMethodsOption = direct.Enum_ToProto[pb.AuthzPolicy_AuthzRule_To_RequestOperation_BaseProtocolMethodsOption](mapCtx, in.BaseProtocolMethodsOption)
+	out.Methods = direct.Slice_ToProto(mapCtx, in.Methods, AuthzPolicy_AuthzRule_To_RequestOperation_McpMethod_v1alpha1_ToProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_To_RequestOperation_McpMethod_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_AuthzRule_To_RequestOperation_MCPMethod) *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To_RequestOperation_McpMethod {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To_RequestOperation_McpMethod{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Params = direct.Slice_FromProto(mapCtx, in.Params, AuthzPolicy_AuthzRule_StringMatch_v1alpha1_FromProto)
+	return out
+}
+func AuthzPolicy_AuthzRule_To_RequestOperation_McpMethod_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_AuthzRule_To_RequestOperation_McpMethod) *pb.AuthzPolicy_AuthzRule_To_RequestOperation_MCPMethod {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_AuthzRule_To_RequestOperation_MCPMethod{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Params = direct.Slice_ToProto(mapCtx, in.Params, AuthzPolicy_AuthzRule_StringMatch_v1alpha1_ToProto)
+	return out
+}
+func AuthzPolicy_CustomProvider_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_CustomProvider) *krmnetworksecurityv1alpha1.AuthzPolicy_CustomProvider {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_CustomProvider{}
+	out.CloudIAP = AuthzPolicy_CustomProvider_CloudIAP_v1alpha1_FromProto(mapCtx, in.GetCloudIap())
+	out.AuthzExtension = AuthzPolicy_CustomProvider_AuthzExtension_v1alpha1_FromProto(mapCtx, in.GetAuthzExtension())
+	return out
+}
+func AuthzPolicy_CustomProvider_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_CustomProvider) *pb.AuthzPolicy_CustomProvider {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_CustomProvider{}
+	out.CloudIap = AuthzPolicy_CustomProvider_CloudIAP_v1alpha1_ToProto(mapCtx, in.CloudIAP)
+	out.AuthzExtension = AuthzPolicy_CustomProvider_AuthzExtension_v1alpha1_ToProto(mapCtx, in.AuthzExtension)
+	return out
+}
+func AuthzPolicy_CustomProvider_AuthzExtension_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_CustomProvider_AuthzExtension) *krmnetworksecurityv1alpha1.AuthzPolicy_CustomProvider_AuthzExtension {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_CustomProvider_AuthzExtension{}
+	out.Resources = in.Resources
+	return out
+}
+func AuthzPolicy_CustomProvider_AuthzExtension_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_CustomProvider_AuthzExtension) *pb.AuthzPolicy_CustomProvider_AuthzExtension {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_CustomProvider_AuthzExtension{}
+	out.Resources = in.Resources
+	return out
+}
+func AuthzPolicy_Target_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy_Target) *krmnetworksecurityv1alpha1.AuthzPolicy_Target {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AuthzPolicy_Target{}
+	out.LoadBalancingScheme = direct.Enum_FromProto(mapCtx, in.GetLoadBalancingScheme())
+	out.Resources = AuthzPolicy_Target_Resources_FromProto(mapCtx, in.Resources)
+	return out
+}
+func AuthzPolicy_Target_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AuthzPolicy_Target) *pb.AuthzPolicy_Target {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy_Target{}
+	out.LoadBalancingScheme = direct.Enum_ToProto[pb.AuthzPolicy_LoadBalancingScheme](mapCtx, in.LoadBalancingScheme)
+	out.Resources = AuthzPolicy_Target_Resources_ToProto(mapCtx, in.Resources)
+	return out
+}
+func CertificateProvider_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.CertificateProvider) *krm.CertificateProvider {
 	if in == nil {
 		return nil
 	}
 	out := &krm.CertificateProvider{}
-	out.GrpcEndpoint = GrpcEndpoint_FromProto(mapCtx, in.GetGrpcEndpoint())
-	out.CertificateProviderInstance = CertificateProviderInstance_FromProto(mapCtx, in.GetCertificateProviderInstance())
+	out.GrpcEndpoint = GrpcEndpoint_v1beta1_FromProto(mapCtx, in.GetGrpcEndpoint())
+	out.CertificateProviderInstance = CertificateProviderInstance_v1beta1_FromProto(mapCtx, in.GetCertificateProviderInstance())
 	return out
 }
-func CertificateProvider_ToProto(mapCtx *direct.MapContext, in *krm.CertificateProvider) *pb.CertificateProvider {
+func CertificateProvider_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CertificateProvider) *networksecuritypb.CertificateProvider {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CertificateProvider{}
-	if oneof := GrpcEndpoint_ToProto(mapCtx, in.GrpcEndpoint); oneof != nil {
-		out.Type = &pb.CertificateProvider_GrpcEndpoint{GrpcEndpoint: oneof}
+	out := &networksecuritypb.CertificateProvider{}
+	if oneof := GrpcEndpoint_v1beta1_ToProto(mapCtx, in.GrpcEndpoint); oneof != nil {
+		out.Type = &networksecuritypb.CertificateProvider_GrpcEndpoint{GrpcEndpoint: oneof}
 	}
-	if oneof := CertificateProviderInstance_ToProto(mapCtx, in.CertificateProviderInstance); oneof != nil {
-		out.Type = &pb.CertificateProvider_CertificateProviderInstance{CertificateProviderInstance: oneof}
+	if oneof := CertificateProviderInstance_v1beta1_ToProto(mapCtx, in.CertificateProviderInstance); oneof != nil {
+		out.Type = &networksecuritypb.CertificateProvider_CertificateProviderInstance{CertificateProviderInstance: oneof}
 	}
 	return out
 }
-func CertificateProviderInstance_FromProto(mapCtx *direct.MapContext, in *pb.CertificateProviderInstance) *krm.CertificateProviderInstance {
+func CertificateProviderInstance_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.CertificateProviderInstance) *krm.CertificateProviderInstance {
 	if in == nil {
 		return nil
 	}
@@ -137,15 +482,15 @@ func CertificateProviderInstance_FromProto(mapCtx *direct.MapContext, in *pb.Cer
 	out.PluginInstance = direct.LazyPtr(in.GetPluginInstance())
 	return out
 }
-func CertificateProviderInstance_ToProto(mapCtx *direct.MapContext, in *krm.CertificateProviderInstance) *pb.CertificateProviderInstance {
+func CertificateProviderInstance_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CertificateProviderInstance) *networksecuritypb.CertificateProviderInstance {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CertificateProviderInstance{}
+	out := &networksecuritypb.CertificateProviderInstance{}
 	out.PluginInstance = direct.ValueOf(in.PluginInstance)
 	return out
 }
-func GrpcEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.GrpcEndpoint) *krm.GrpcEndpoint {
+func GrpcEndpoint_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.GrpcEndpoint) *krm.GrpcEndpoint {
 	if in == nil {
 		return nil
 	}
@@ -153,15 +498,177 @@ func GrpcEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.GrpcEndpoint) *krm
 	out.TargetURI = direct.LazyPtr(in.GetTargetUri())
 	return out
 }
-func GrpcEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.GrpcEndpoint) *pb.GrpcEndpoint {
+func GrpcEndpoint_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.GrpcEndpoint) *networksecuritypb.GrpcEndpoint {
 	if in == nil {
 		return nil
 	}
-	out := &pb.GrpcEndpoint{}
+	out := &networksecuritypb.GrpcEndpoint{}
 	out.TargetUri = direct.ValueOf(in.TargetURI)
 	return out
 }
-func NetworkSecurityAuthorizationPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.NetworkSecurityAuthorizationPolicySpec {
+func InterceptEndpointGroup_AssociationDetailsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptEndpointGroup_AssociationDetails) *krmnetworksecurityv1alpha1.InterceptEndpointGroup_AssociationDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.InterceptEndpointGroup_AssociationDetailsObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func InterceptEndpointGroup_AssociationDetailsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.InterceptEndpointGroup_AssociationDetailsObservedState) *pb.InterceptEndpointGroup_AssociationDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptEndpointGroup_AssociationDetails{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Network = direct.ValueOf(in.Network)
+	out.State = direct.Enum_ToProto[pb.InterceptEndpointGroupAssociation_State](mapCtx, in.State)
+	return out
+}
+func InterceptEndpointGroup_ConnectedDeploymentGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptEndpointGroup_ConnectedDeploymentGroup) *krmnetworksecurityv1alpha1.InterceptEndpointGroup_ConnectedDeploymentGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.InterceptEndpointGroup_ConnectedDeploymentGroupObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Locations = direct.Slice_FromProto(mapCtx, in.Locations, InterceptLocationObservedState_v1alpha1_FromProto)
+	return out
+}
+func InterceptEndpointGroup_ConnectedDeploymentGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.InterceptEndpointGroup_ConnectedDeploymentGroupObservedState) *pb.InterceptEndpointGroup_ConnectedDeploymentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptEndpointGroup_ConnectedDeploymentGroup{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Locations = direct.Slice_ToProto(mapCtx, in.Locations, InterceptLocationObservedState_v1alpha1_ToProto)
+	return out
+}
+func InterceptLocationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptLocation) *krmnetworksecurityv1alpha1.InterceptLocationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.InterceptLocationObservedState{}
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func InterceptLocationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.InterceptLocationObservedState) *pb.InterceptLocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptLocation{}
+	out.Location = direct.ValueOf(in.Location)
+	out.State = direct.Enum_ToProto[pb.InterceptLocation_State](mapCtx, in.State)
+	return out
+}
+func MirroringEndpointGroup_AssociationDetailsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringEndpointGroup_AssociationDetails) *krmnetworksecurityv1alpha1.MirroringEndpointGroup_AssociationDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.MirroringEndpointGroup_AssociationDetailsObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func MirroringEndpointGroup_AssociationDetailsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.MirroringEndpointGroup_AssociationDetailsObservedState) *pb.MirroringEndpointGroup_AssociationDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringEndpointGroup_AssociationDetails{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Network = direct.ValueOf(in.Network)
+	out.State = direct.Enum_ToProto[pb.MirroringEndpointGroupAssociation_State](mapCtx, in.State)
+	return out
+}
+func MirroringEndpointGroup_ConnectedDeploymentGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringEndpointGroup_ConnectedDeploymentGroup) *krmnetworksecurityv1alpha1.MirroringEndpointGroup_ConnectedDeploymentGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.MirroringEndpointGroup_ConnectedDeploymentGroupObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Locations = direct.Slice_FromProto(mapCtx, in.Locations, MirroringLocationObservedState_v1alpha1_FromProto)
+	return out
+}
+func MirroringEndpointGroup_ConnectedDeploymentGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.MirroringEndpointGroup_ConnectedDeploymentGroupObservedState) *pb.MirroringEndpointGroup_ConnectedDeploymentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringEndpointGroup_ConnectedDeploymentGroup{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Locations = direct.Slice_ToProto(mapCtx, in.Locations, MirroringLocationObservedState_v1alpha1_ToProto)
+	return out
+}
+func MirroringLocationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringLocation) *krmnetworksecurityv1alpha1.MirroringLocationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.MirroringLocationObservedState{}
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func MirroringLocationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.MirroringLocationObservedState) *pb.MirroringLocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringLocation{}
+	out.Location = direct.ValueOf(in.Location)
+	out.State = direct.Enum_ToProto[pb.MirroringLocation_State](mapCtx, in.State)
+	return out
+}
+func NetworkSecurityAddressGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AddressGroup) *krmnetworksecurityv1alpha1.NetworkSecurityAddressGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityAddressGroupObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.SelfLink = direct.LazyPtr(in.GetSelfLink())
+	return out
+}
+func NetworkSecurityAddressGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityAddressGroupObservedState) *pb.AddressGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AddressGroup{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.SelfLink = direct.ValueOf(in.SelfLink)
+	return out
+}
+func NetworkSecurityAddressGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AddressGroup) *krmnetworksecurityv1alpha1.NetworkSecurityAddressGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityAddressGroupSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Items = in.Items
+	out.Capacity = direct.LazyPtr(in.GetCapacity())
+	out.Purpose = direct.EnumSlice_FromProto(mapCtx, in.Purpose)
+	return out
+}
+func NetworkSecurityAddressGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityAddressGroupSpec) *pb.AddressGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AddressGroup{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.Type = direct.Enum_ToProto[pb.AddressGroup_Type](mapCtx, in.Type)
+	out.Items = in.Items
+	out.Capacity = direct.ValueOf(in.Capacity)
+	out.Purpose = direct.EnumSlice_ToProto[pb.AddressGroup_Purpose](mapCtx, in.Purpose)
+	return out
+}
+func NetworkSecurityAuthorizationPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.AuthorizationPolicy) *krm.NetworkSecurityAuthorizationPolicySpec {
 	if in == nil {
 		return nil
 	}
@@ -172,24 +679,24 @@ func NetworkSecurityAuthorizationPolicySpec_FromProto(mapCtx *direct.MapContext,
 	// MISSING: UpdateTime
 	// MISSING: Labels
 	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
-	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, AuthorizationPolicy_Rule_FromProto)
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, AuthorizationPolicy_Rule_v1beta1_FromProto)
 	return out
 }
-func NetworkSecurityAuthorizationPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityAuthorizationPolicySpec) *pb.AuthorizationPolicy {
+func NetworkSecurityAuthorizationPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityAuthorizationPolicySpec) *networksecuritypb.AuthorizationPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AuthorizationPolicy{}
+	out := &networksecuritypb.AuthorizationPolicy{}
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Labels
-	out.Action = direct.Enum_ToProto[pb.AuthorizationPolicy_Action](mapCtx, in.Action)
-	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, AuthorizationPolicy_Rule_ToProto)
+	out.Action = direct.Enum_ToProto[networksecuritypb.AuthorizationPolicy_Action](mapCtx, in.Action)
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, AuthorizationPolicy_Rule_v1beta1_ToProto)
 	return out
 }
-func NetworkSecurityAuthorizationPolicyStatus_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.NetworkSecurityAuthorizationPolicyStatus {
+func NetworkSecurityAuthorizationPolicyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.AuthorizationPolicy) *krm.NetworkSecurityAuthorizationPolicyStatus {
 	if in == nil {
 		return nil
 	}
@@ -203,11 +710,11 @@ func NetworkSecurityAuthorizationPolicyStatus_FromProto(mapCtx *direct.MapContex
 	// MISSING: Rules
 	return out
 }
-func NetworkSecurityAuthorizationPolicyStatus_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityAuthorizationPolicyStatus) *pb.AuthorizationPolicy {
+func NetworkSecurityAuthorizationPolicyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityAuthorizationPolicyStatus) *networksecuritypb.AuthorizationPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AuthorizationPolicy{}
+	out := &networksecuritypb.AuthorizationPolicy{}
 	// MISSING: Name
 	// MISSING: Description
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -217,7 +724,117 @@ func NetworkSecurityAuthorizationPolicyStatus_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Rules
 	return out
 }
-func NetworkSecurityClientTLSPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.ClientTlsPolicy) *krm.NetworkSecurityClientTLSPolicySpec {
+func NetworkSecurityAuthzPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy) *krmnetworksecurityv1alpha1.NetworkSecurityAuthzPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityAuthzPolicyObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	return out
+}
+func NetworkSecurityAuthzPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityAuthzPolicyObservedState) *pb.AuthzPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	return out
+}
+func NetworkSecurityAuthzPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzPolicy) *krmnetworksecurityv1alpha1.NetworkSecurityAuthzPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityAuthzPolicySpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Labels
+	out.Target = AuthzPolicy_Target_v1alpha1_FromProto(mapCtx, in.GetTarget())
+	out.HTTPRules = direct.Slice_FromProto(mapCtx, in.HttpRules, AuthzPolicy_AuthzRule_v1alpha1_FromProto)
+	out.NetworkRules = direct.Slice_FromProto(mapCtx, in.NetworkRules, AuthzPolicy_AuthzRule_v1alpha1_FromProto)
+	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
+	out.CustomProvider = AuthzPolicy_CustomProvider_v1alpha1_FromProto(mapCtx, in.GetCustomProvider())
+	out.PolicyProfile = direct.Enum_FromProto(mapCtx, in.GetPolicyProfile())
+	return out
+}
+func NetworkSecurityAuthzPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityAuthzPolicySpec) *pb.AuthzPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthzPolicy{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Labels
+	out.Target = AuthzPolicy_Target_v1alpha1_ToProto(mapCtx, in.Target)
+	out.HttpRules = direct.Slice_ToProto(mapCtx, in.HTTPRules, AuthzPolicy_AuthzRule_v1alpha1_ToProto)
+	out.NetworkRules = direct.Slice_ToProto(mapCtx, in.NetworkRules, AuthzPolicy_AuthzRule_v1alpha1_ToProto)
+	out.Action = direct.Enum_ToProto[pb.AuthzPolicy_AuthzAction](mapCtx, in.Action)
+	out.CustomProvider = AuthzPolicy_CustomProvider_v1alpha1_ToProto(mapCtx, in.CustomProvider)
+	out.PolicyProfile = direct.Enum_ToProto[pb.AuthzPolicy_PolicyProfile](mapCtx, in.PolicyProfile)
+	return out
+}
+func NetworkSecurityBackendAuthenticationConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackendAuthenticationConfig) *krmnetworksecurityv1alpha1.NetworkSecurityBackendAuthenticationConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityBackendAuthenticationConfigObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func NetworkSecurityBackendAuthenticationConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityBackendAuthenticationConfigObservedState) *pb.BackendAuthenticationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendAuthenticationConfig{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func NetworkSecurityBackendAuthenticationConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackendAuthenticationConfig) *krmnetworksecurityv1alpha1.NetworkSecurityBackendAuthenticationConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityBackendAuthenticationConfigSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	if in.GetClientCertificate() != "" {
+		out.ClientCertificateRef = &refsv1beta1.CertificateManagerCertificateRef{External: in.GetClientCertificate()}
+	}
+	if in.GetTrustConfig() != "" {
+		out.TrustConfigRef = &refsv1beta1.CertificateManagerTrustConfigRef{External: in.GetTrustConfig()}
+	}
+	out.WellKnownRoots = direct.Enum_FromProto(mapCtx, in.GetWellKnownRoots())
+	return out
+}
+func NetworkSecurityBackendAuthenticationConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityBackendAuthenticationConfigSpec) *pb.BackendAuthenticationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendAuthenticationConfig{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	if in.ClientCertificateRef != nil {
+		out.ClientCertificate = in.ClientCertificateRef.External
+	}
+	if in.TrustConfigRef != nil {
+		out.TrustConfig = in.TrustConfigRef.External
+	}
+	out.WellKnownRoots = direct.Enum_ToProto[pb.BackendAuthenticationConfig_WellKnownRoots](mapCtx, in.WellKnownRoots)
+	return out
+}
+func NetworkSecurityClientTLSPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.ClientTlsPolicy) *krm.NetworkSecurityClientTLSPolicySpec {
 	if in == nil {
 		return nil
 	}
@@ -228,46 +845,330 @@ func NetworkSecurityClientTLSPolicySpec_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: UpdateTime
 	// MISSING: Labels
 	out.Sni = direct.LazyPtr(in.GetSni())
-	out.ClientCertificate = CertificateProvider_FromProto(mapCtx, in.GetClientCertificate())
+	out.ClientCertificate = CertificateProvider_v1beta1_FromProto(mapCtx, in.GetClientCertificate())
 	// MISSING: ServerValidationCA
 	// (near miss): "ServerValidationCA" vs "ServerValidationCa"
 	return out
 }
-func NetworkSecurityClientTLSPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityClientTLSPolicySpec) *pb.ClientTlsPolicy {
+func NetworkSecurityClientTLSPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityClientTLSPolicySpec) *networksecuritypb.ClientTlsPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ClientTlsPolicy{}
+	out := &networksecuritypb.ClientTlsPolicy{}
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Labels
 	out.Sni = direct.ValueOf(in.Sni)
-	out.ClientCertificate = CertificateProvider_ToProto(mapCtx, in.ClientCertificate)
+	out.ClientCertificate = CertificateProvider_v1beta1_ToProto(mapCtx, in.ClientCertificate)
 	// MISSING: ServerValidationCA
 	// (near miss): "ServerValidationCA" vs "ServerValidationCa"
 	return out
 }
-func ValidationCA_FromProto(mapCtx *direct.MapContext, in *pb.ValidationCA) *krm.ValidationCA {
+func NetworkSecurityFirewallEndpointAssociationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallEndpointAssociation) *krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointAssociationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointAssociationObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	return out
+}
+func NetworkSecurityFirewallEndpointAssociationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointAssociationObservedState) *pb.FirewallEndpointAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallEndpointAssociation{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.FirewallEndpointAssociation_State](mapCtx, in.State)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	return out
+}
+func NetworkSecurityFirewallEndpointAssociationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallEndpointAssociation) *krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointAssociationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointAssociationSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmnetworksecurityv1alpha1.NetworkRef{External: in.GetNetwork()}
+	}
+	if in.GetFirewallEndpoint() != "" {
+		out.FirewallEndpointRef = &krmnetworksecurityv1alpha1.FirewallEndpointRef{External: in.GetFirewallEndpoint()}
+	}
+	if in.GetTlsInspectionPolicy() != "" {
+		out.TLSInspectionPolicyRef = &krmnetworksecurityv1alpha1.TLSInspectionPolicyRef{External: in.GetTlsInspectionPolicy()}
+	}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func NetworkSecurityFirewallEndpointAssociationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointAssociationSpec) *pb.FirewallEndpointAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallEndpointAssociation{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	if in.FirewallEndpointRef != nil {
+		out.FirewallEndpoint = in.FirewallEndpointRef.External
+	}
+	if in.TLSInspectionPolicyRef != nil {
+		out.TlsInspectionPolicy = in.TLSInspectionPolicyRef.External
+	}
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func NetworkSecurityInterceptDeploymentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptDeployment) *krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	return out
+}
+func NetworkSecurityInterceptDeploymentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentObservedState) *pb.InterceptDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptDeployment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.InterceptDeployment_State](mapCtx, in.State)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	return out
+}
+func NetworkSecurityInterceptDeploymentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptDeployment) *krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.GetForwardingRule() != "" {
+		out.ForwardingRuleRef = &krmcomputev1beta1.ForwardingRuleRef{External: in.GetForwardingRule()}
+	}
+	if in.GetInterceptDeploymentGroup() != "" {
+		out.InterceptDeploymentGroupRef = &refsv1beta1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
+	}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func NetworkSecurityInterceptDeploymentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentSpec) *pb.InterceptDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptDeployment{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.ForwardingRuleRef != nil {
+		out.ForwardingRule = in.ForwardingRuleRef.External
+	}
+	if in.InterceptDeploymentGroupRef != nil {
+		out.InterceptDeploymentGroup = in.InterceptDeploymentGroupRef.External
+	}
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func NetworkSecurityInterceptEndpointGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptEndpointGroup) *krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ConnectedDeploymentGroup = InterceptEndpointGroup_ConnectedDeploymentGroupObservedState_v1alpha1_FromProto(mapCtx, in.GetConnectedDeploymentGroup())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.Associations = direct.Slice_FromProto(mapCtx, in.Associations, InterceptEndpointGroup_AssociationDetailsObservedState_v1alpha1_FromProto)
+	return out
+}
+func NetworkSecurityInterceptEndpointGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupObservedState) *pb.InterceptEndpointGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptEndpointGroup{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ConnectedDeploymentGroup = InterceptEndpointGroup_ConnectedDeploymentGroupObservedState_v1alpha1_ToProto(mapCtx, in.ConnectedDeploymentGroup)
+	out.State = direct.Enum_ToProto[pb.InterceptEndpointGroup_State](mapCtx, in.State)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.Associations = direct.Slice_ToProto(mapCtx, in.Associations, InterceptEndpointGroup_AssociationDetailsObservedState_v1alpha1_ToProto)
+	return out
+}
+func NetworkSecurityInterceptEndpointGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptEndpointGroup) *krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.GetInterceptDeploymentGroup() != "" {
+		out.InterceptDeploymentGroupRef = &refsv1beta1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
+	}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func NetworkSecurityInterceptEndpointGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupSpec) *pb.InterceptEndpointGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptEndpointGroup{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.InterceptDeploymentGroupRef != nil {
+		out.InterceptDeploymentGroup = in.InterceptDeploymentGroupRef.External
+	}
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func NetworkSecurityMirroringDeploymentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringDeployment) *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	return out
+}
+func NetworkSecurityMirroringDeploymentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentObservedState) *pb.MirroringDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringDeployment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.MirroringDeployment_State](mapCtx, in.State)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	return out
+}
+func NetworkSecurityMirroringDeploymentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringDeployment) *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.GetForwardingRule() != "" {
+		out.ForwardingRuleRef = &krmcomputev1beta1.ForwardingRuleRef{External: in.GetForwardingRule()}
+	}
+	if in.GetMirroringDeploymentGroup() != "" {
+		out.MirroringDeploymentGroupRef = &refsv1beta1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
+	}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func NetworkSecurityMirroringDeploymentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentSpec) *pb.MirroringDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringDeployment{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.ForwardingRuleRef != nil {
+		out.ForwardingRule = in.ForwardingRuleRef.External
+	}
+	if in.MirroringDeploymentGroupRef != nil {
+		out.MirroringDeploymentGroup = in.MirroringDeploymentGroupRef.External
+	}
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func NetworkSecurityMirroringEndpointGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringEndpointGroup) *krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ConnectedDeploymentGroups = direct.Slice_FromProto(mapCtx, in.ConnectedDeploymentGroups, MirroringEndpointGroup_ConnectedDeploymentGroupObservedState_v1alpha1_FromProto)
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.Associations = direct.Slice_FromProto(mapCtx, in.Associations, MirroringEndpointGroup_AssociationDetailsObservedState_v1alpha1_FromProto)
+	return out
+}
+func NetworkSecurityMirroringEndpointGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupObservedState) *pb.MirroringEndpointGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringEndpointGroup{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ConnectedDeploymentGroups = direct.Slice_ToProto(mapCtx, in.ConnectedDeploymentGroups, MirroringEndpointGroup_ConnectedDeploymentGroupObservedState_v1alpha1_ToProto)
+	out.State = direct.Enum_ToProto[pb.MirroringEndpointGroup_State](mapCtx, in.State)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.Associations = direct.Slice_ToProto(mapCtx, in.Associations, MirroringEndpointGroup_AssociationDetailsObservedState_v1alpha1_ToProto)
+	return out
+}
+func NetworkSecurityMirroringEndpointGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringEndpointGroup) *krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.GetMirroringDeploymentGroup() != "" {
+		out.MirroringDeploymentGroupRef = &refsv1beta1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
+	}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func NetworkSecurityMirroringEndpointGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupSpec) *pb.MirroringEndpointGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringEndpointGroup{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.MirroringDeploymentGroupRef != nil {
+		out.MirroringDeploymentGroup = in.MirroringDeploymentGroupRef.External
+	}
+	out.Type = direct.Enum_ToProto[pb.MirroringEndpointGroup_Type](mapCtx, in.Type)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func ValidationCA_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.ValidationCA) *krm.ValidationCA {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ValidationCA{}
-	out.GrpcEndpoint = GrpcEndpoint_FromProto(mapCtx, in.GetGrpcEndpoint())
-	out.CertificateProviderInstance = CertificateProviderInstance_FromProto(mapCtx, in.GetCertificateProviderInstance())
+	out.GrpcEndpoint = GrpcEndpoint_v1beta1_FromProto(mapCtx, in.GetGrpcEndpoint())
+	out.CertificateProviderInstance = CertificateProviderInstance_v1beta1_FromProto(mapCtx, in.GetCertificateProviderInstance())
 	return out
 }
-func ValidationCA_ToProto(mapCtx *direct.MapContext, in *krm.ValidationCA) *pb.ValidationCA {
+func ValidationCA_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ValidationCA) *networksecuritypb.ValidationCA {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ValidationCA{}
-	if oneof := GrpcEndpoint_ToProto(mapCtx, in.GrpcEndpoint); oneof != nil {
-		out.Type = &pb.ValidationCA_GrpcEndpoint{GrpcEndpoint: oneof}
+	out := &networksecuritypb.ValidationCA{}
+	if oneof := GrpcEndpoint_v1beta1_ToProto(mapCtx, in.GrpcEndpoint); oneof != nil {
+		out.Type = &networksecuritypb.ValidationCA_GrpcEndpoint{GrpcEndpoint: oneof}
 	}
-	if oneof := CertificateProviderInstance_ToProto(mapCtx, in.CertificateProviderInstance); oneof != nil {
-		out.Type = &pb.ValidationCA_CertificateProviderInstance{CertificateProviderInstance: oneof}
+	if oneof := CertificateProviderInstance_v1beta1_ToProto(mapCtx, in.CertificateProviderInstance); oneof != nil {
+		out.Type = &networksecuritypb.ValidationCA_CertificateProviderInstance{CertificateProviderInstance: oneof}
 	}
 	return out
 }
