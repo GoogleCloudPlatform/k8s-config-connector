@@ -313,6 +313,9 @@ def parse_data(config_file_path, apis_dir, crds_dir, direct_dir="../../pkg/contr
                 res['steps']['controller'] = True
                 break
 
+        if res['state'] != 'Completed' and any(res['steps'].values()):
+            res['state'] = 'In Progress'
+
     return list(resources.values())
 
 def create_default_resource(kind, group="unknown"):
