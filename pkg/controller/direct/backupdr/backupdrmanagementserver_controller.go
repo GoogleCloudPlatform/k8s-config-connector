@@ -23,18 +23,22 @@ package backupdr
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -64,6 +68,11 @@ func (m *modelManagementServer) AdapterForObject(ctx context.Context, op *direct
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	idRaw, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -79,10 +88,17 @@ func (m *modelManagementServer) AdapterForObject(ctx context.Context, op *direct
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	desired := BackupDRManagementServerSpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	return &ManagementServerAdapter{
 		id:        id,
 		gcpClient: backupDRClient,
-		desired:   obj,
+		desired:   desired,
 		reader:    reader,
 	}, nil
 }
@@ -95,7 +111,7 @@ func (m *modelManagementServer) AdapterForURL(ctx context.Context, url string) (
 type ManagementServerAdapter struct {
 	id        *krm.ManagementServerIdentity
 	gcpClient *gcp.Client
-	desired   *krm.BackupDRManagementServer
+	desired   *pb.ManagementServer
 	actual    *pb.ManagementServer
 	reader    client.Reader
 }
@@ -128,21 +144,10 @@ func (a *ManagementServerAdapter) Create(ctx context.Context, createOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ManagementServer", "name", a.id)
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
-		return err
-	}
-
-	mapCtx := &direct.MapContext{}
-	desired := a.desired.DeepCopy()
-	resource := BackupDRManagementServerSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	req := &pb.CreateManagementServerRequest{
 		Parent:             a.id.ParentString(),
 		ManagementServerId: a.id.ManagementServer,
-		ManagementServer:   resource,
+		ManagementServer:   a.desired,
 	}
 	op, err := a.gcpClient.CreateManagementServer(ctx, req)
 	if err != nil {
@@ -154,13 +159,7 @@ func (a *ManagementServerAdapter) Create(ctx context.Context, createOp *directba
 	}
 	log.V(2).Info("successfully created ManagementServer", "name", a.id)
 
-	status := &krm.BackupDRManagementServerStatus{}
-	status.ObservedState = BackupDRManagementServerObservedState_v1alpha1_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return createOp.UpdateStatus(ctx, status, nil)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
@@ -168,49 +167,51 @@ func (a *ManagementServerAdapter) Update(ctx context.Context, updateOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ManagementServer", "name", a.id)
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
+	diffs, _, err := compareManagementServer(ctx, a.actual, a.desired)
+	if err != nil {
 		return err
 	}
 
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
+		return fmt.Errorf("update ManagementServer is not supported")
+	}
+
+	return a.updateStatus(ctx, updateOp, a.actual)
+}
+
+func (a *ManagementServerAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.ManagementServer) error {
 	mapCtx := &direct.MapContext{}
-	desired := a.desired.DeepCopy()
-	resource := BackupDRManagementServerSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-
-	paths := []string{}
-	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
-		report.AddField("description", a.actual.Description, resource.Description)
-		paths = append(paths, "description")
-	}
-	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
-		report.AddField("labels", a.actual.Labels, resource.Labels)
-		paths = append(paths, "labels")
-	}
-	if desired.Spec.Networks != nil && !reflect.DeepEqual(resource.Networks, a.actual.Networks) {
-		report.AddField("networks", a.actual.Networks, resource.Networks)
-		paths = append(paths, "networks")
-	}
-	if desired.Spec.Type != nil && !reflect.DeepEqual(resource.Type, a.actual.Type) {
-		report.AddField("type", a.actual.Type, resource.Type)
-		paths = append(paths, "type")
-	}
-
-	if len(paths) != 0 {
-		structuredreporting.ReportDiff(ctx, report)
-		return fmt.Errorf("update ManagementServer is not supported, fields: %v", paths)
-	}
-
 	status := &krm.BackupDRManagementServerStatus{}
-	status.ObservedState = BackupDRManagementServerObservedState_v1alpha1_FromProto(mapCtx, a.actual)
+	status.ObservedState = BackupDRManagementServerObservedState_v1alpha1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return updateOp.UpdateStatus(ctx, status, nil)
+	return op.UpdateStatus(ctx, status, nil)
+}
+
+func compareManagementServer(ctx context.Context, actual, desired *pb.ManagementServer) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, BackupDRManagementServerSpec_v1alpha1_FromProto, BackupDRManagementServerSpec_v1alpha1_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+	maskedActual.Name = desired.Name // Restore any non-spec identifier fields if needed
+
+	clonedDesired := proto.Clone(desired).(*pb.ManagementServer)
+
+	populateDefaults := func(obj *pb.ManagementServer) {
+		// Populate GCP/server defaults here if needed
+	}
+	populateDefaults(maskedActual)
+	populateDefaults(clonedDesired)
+
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
@@ -262,16 +263,4 @@ func (a *ManagementServerAdapter) Delete(ctx context.Context, deleteOp *directba
 		return false, fmt.Errorf("waiting delete ManagementServer %s: %w", a.id, err)
 	}
 	return true, nil
-}
-
-func (a *ManagementServerAdapter) normalizeReferenceFields(ctx context.Context) error {
-	obj := a.desired
-	for i := range obj.Spec.Networks {
-		if obj.Spec.Networks[i].NetworkRef != nil {
-			if err := obj.Spec.Networks[i].NetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
 }
