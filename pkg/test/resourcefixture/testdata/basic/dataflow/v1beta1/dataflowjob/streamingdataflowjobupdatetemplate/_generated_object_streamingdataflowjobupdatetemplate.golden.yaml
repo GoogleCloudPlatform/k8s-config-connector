@@ -3,14 +3,12 @@ kind: DataflowJob
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"ipConfiguration":"WORKER_IP_PUBLIC","parameters":{"inputTopic":"projects/${projectId}/topics/pubsubtopic-${uniqueId}","outputTableSpec":"${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}"}}}'
     cnrm.cloud.google.com/on-delete: cancel
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     label-one: value-one
@@ -28,7 +26,6 @@ spec:
   parameters:
     inputTopic: projects/${projectId}/topics/pubsubtopic-${uniqueId}
     outputTableSpec: ${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}
-  resourceID: dataflowjob-${uniqueId}
   serviceAccountRef:
     name: gsa-${uniqueId}
   subnetworkRef:
@@ -44,6 +41,6 @@ status:
     status: "True"
     type: Ready
   jobId: ${jobID}
-  observedGeneration: 3
+  observedGeneration: 2
   state: JOB_STATE_RUNNING
   type: JOB_TYPE_STREAMING

@@ -1,5 +1,4 @@
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -26,7 +25,6 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "iamConfiguration": {
@@ -89,7 +87,6 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -135,7 +132,6 @@ Vary: X-Origin
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -206,7 +202,6 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -239,7 +234,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -270,7 +264,6 @@ X-Xss-Protection: 0
 
 POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "accountId": "gsa-${uniqueId}",
@@ -299,7 +292,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -324,7 +316,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -350,7 +341,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -376,7 +366,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -402,7 +391,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -447,7 +435,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -482,7 +469,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -517,7 +503,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -552,7 +537,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -585,52 +569,30 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates?alt=json&prettyPrint=false
+POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "environment": {
     "additionalExperiments": [
       "enable_stackdriver_agent_metrics"
     ],
-    "additionalUserLabels": {
-      "cnrm-test": "true",
-      "label-one": "value-one",
-      "managed-by-cnrm": "true"
-    },
-    "ipConfiguration": "WORKER_IP_PUBLIC",
+    "ipConfiguration": 1,
     "machineType": "n1-standard-1",
     "maxWorkers": 3,
-    "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
-    "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+    "network": "projects/${projectId}/global/networks/${subnetworkID}",
     "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
     "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
     "zone": "us-central1-a"
   },
   "gcsPath": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count",
   "jobName": "dataflowjob-${uniqueId}",
+  "location": "us-central1",
   "parameters": {
     "inputFile": "gs://dataflow-samples/shakespeare/various.txt",
     "output": "gs://storagebucket-${uniqueId}/output"
-  }
+  },
+  "projectId": "${projectId}"
 }
 
 200 OK
@@ -645,7 +607,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": "JOB_STATE_RUNNING",
+  "currentState": 2,
   "currentStateTime": "2024-04-01T12:34:56.123456Z",
   "environment": {
     "dataset": "bigquery.googleapis.com/cloud_dataflow",
@@ -656,8 +618,8 @@ X-Xss-Protection: 0
           "enable_stackdriver_agent_metrics"
         ],
         "machineType": "n1-standard-1",
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
-        "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "network": "projects/${projectId}/global/networks/${subnetworkID}",
+        "serviceAccountEmail": "",
         "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
         "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
         "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
@@ -665,411 +627,17 @@ X-Xss-Protection: 0
     }
   },
   "id": "000000000000000000000",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
   "location": "us-central1",
   "name": "dataflowjob-${uniqueId}",
   "projectId": "${projectId}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "type": "JOB_TYPE_BATCH"
+  "type": 1
 }
 
 ---
 
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "jobs": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "currentState": "JOB_STATE_RUNNING",
-      "currentStateTime": "2024-04-01T12:34:56.123456Z",
-      "environment": {
-        "dataset": "bigquery.googleapis.com/cloud_dataflow",
-        "sdkPipelineOptions": {
-          "options": {
-            "enableStreamingEngine": false,
-            "experiments": [
-              "enable_stackdriver_agent_metrics"
-            ],
-            "machineType": "n1-standard-1",
-            "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
-            "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-            "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-            "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-            "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
-          }
-        }
-      },
-      "id": "${jobID}",
-      "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
-        "managed-by-cnrm": "true"
-      },
-      "location": "us-central1",
-      "name": "dataflowjob-${uniqueId}",
-      "projectId": "${projectId}",
-      "startTime": "2024-04-01T12:34:56.123456Z",
-      "type": "JOB_TYPE_BATCH"
-    }
-  ]
-}
-
----
-
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": "JOB_STATE_RUNNING",
-  "currentStateTime": "2024-04-01T12:34:56.123456Z",
-  "environment": {
-    "dataset": "bigquery.googleapis.com/cloud_dataflow",
-    "sdkPipelineOptions": {
-      "options": {
-        "enableStreamingEngine": false,
-        "experiments": [
-          "enable_stackdriver_agent_metrics"
-        ],
-        "machineType": "n1-standard-1",
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
-        "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-        "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-        "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-        "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
-      }
-    }
-  },
-  "id": "000000000000000000000",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "location": "us-central1",
-  "name": "dataflowjob-${uniqueId}",
-  "projectId": "${projectId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "type": "JOB_TYPE_BATCH"
-}
-
----
-
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "jobs": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "currentState": "JOB_STATE_RUNNING",
-      "currentStateTime": "2024-04-01T12:34:56.123456Z",
-      "environment": {
-        "dataset": "bigquery.googleapis.com/cloud_dataflow",
-        "sdkPipelineOptions": {
-          "options": {
-            "enableStreamingEngine": false,
-            "experiments": [
-              "enable_stackdriver_agent_metrics"
-            ],
-            "machineType": "n1-standard-1",
-            "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
-            "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-            "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-            "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-            "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
-          }
-        }
-      },
-      "id": "${jobID}",
-      "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
-        "managed-by-cnrm": "true"
-      },
-      "location": "us-central1",
-      "name": "dataflowjob-${uniqueId}",
-      "projectId": "${projectId}",
-      "startTime": "2024-04-01T12:34:56.123456Z",
-      "type": "JOB_TYPE_BATCH"
-    }
-  ]
-}
-
----
-
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": "JOB_STATE_RUNNING",
-  "currentStateTime": "2024-04-01T12:34:56.123456Z",
-  "environment": {
-    "dataset": "bigquery.googleapis.com/cloud_dataflow",
-    "sdkPipelineOptions": {
-      "options": {
-        "enableStreamingEngine": false,
-        "experiments": [
-          "enable_stackdriver_agent_metrics"
-        ],
-        "machineType": "n1-standard-1",
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
-        "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-        "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-        "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-        "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
-      }
-    }
-  },
-  "id": "000000000000000000000",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "location": "us-central1",
-  "name": "dataflowjob-${uniqueId}",
-  "projectId": "${projectId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "type": "JOB_TYPE_BATCH"
-}
-
----
-
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "jobs": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "currentState": "JOB_STATE_RUNNING",
-      "currentStateTime": "2024-04-01T12:34:56.123456Z",
-      "environment": {
-        "dataset": "bigquery.googleapis.com/cloud_dataflow",
-        "sdkPipelineOptions": {
-          "options": {
-            "enableStreamingEngine": false,
-            "experiments": [
-              "enable_stackdriver_agent_metrics"
-            ],
-            "machineType": "n1-standard-1",
-            "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
-            "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-            "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-            "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-            "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
-          }
-        }
-      },
-      "id": "${jobID}",
-      "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
-        "managed-by-cnrm": "true"
-      },
-      "location": "us-central1",
-      "name": "dataflowjob-${uniqueId}",
-      "projectId": "${projectId}",
-      "startTime": "2024-04-01T12:34:56.123456Z",
-      "type": "JOB_TYPE_BATCH"
-    }
-  ]
-}
-
----
-
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": "JOB_STATE_RUNNING",
-  "currentStateTime": "2024-04-01T12:34:56.123456Z",
-  "environment": {
-    "dataset": "bigquery.googleapis.com/cloud_dataflow",
-    "sdkPipelineOptions": {
-      "options": {
-        "enableStreamingEngine": false,
-        "experiments": [
-          "enable_stackdriver_agent_metrics"
-        ],
-        "machineType": "n1-standard-1",
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
-        "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-        "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-        "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-        "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
-      }
-    }
-  },
-  "id": "000000000000000000000",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "location": "us-central1",
-  "name": "dataflowjob-${uniqueId}",
-  "projectId": "${projectId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "type": "JOB_TYPE_BATCH"
-}
-
----
-
-PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "requestedState": "JOB_STATE_CANCELLED"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "currentState": "JOB_STATE_CANCELLING",
-  "id": "000000000000000000000",
-  "name": "dataflowjob-${uniqueId}",
-  "projectId": "${projectId}",
-  "requestedState": "JOB_STATE_CANCELLED",
-  "type": "JOB_TYPE_BATCH"
-}
-
----
-
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "jobs": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "currentState": "JOB_STATE_CANCELLING",
-      "currentStateTime": "2024-04-01T12:34:56.123456Z",
-      "environment": {
-        "dataset": "bigquery.googleapis.com/cloud_dataflow",
-        "sdkPipelineOptions": {
-          "options": {
-            "enableStreamingEngine": false,
-            "experiments": [
-              "enable_stackdriver_agent_metrics"
-            ],
-            "machineType": "n1-standard-1",
-            "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
-            "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-            "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-            "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-            "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
-          }
-        }
-      },
-      "id": "${jobID}",
-      "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
-        "managed-by-cnrm": "true"
-      },
-      "location": "us-central1",
-      "name": "dataflowjob-${uniqueId}",
-      "projectId": "${projectId}",
-      "requestedState": "JOB_STATE_CANCELLED",
-      "startTime": "2024-04-01T12:34:56.123456Z",
-      "type": "JOB_TYPE_BATCH"
-    }
-  ]
-}
-
----
-
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1083,7 +651,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": "JOB_STATE_CANCELLING",
+  "currentState": 2,
   "currentStateTime": "2024-04-01T12:34:56.123456Z",
   "environment": {
     "dataset": "bigquery.googleapis.com/cloud_dataflow",
@@ -1094,8 +662,8 @@ X-Xss-Protection: 0
           "enable_stackdriver_agent_metrics"
         ],
         "machineType": "n1-standard-1",
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
-        "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "network": "projects/${projectId}/global/networks/${subnetworkID}",
+        "serviceAccountEmail": "",
         "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
         "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
         "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
@@ -1103,23 +671,21 @@ X-Xss-Protection: 0
     }
   },
   "id": "000000000000000000000",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
   "location": "us-central1",
   "name": "dataflowjob-${uniqueId}",
   "projectId": "${projectId}",
-  "requestedState": "JOB_STATE_CANCELLED",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "type": "JOB_TYPE_BATCH"
+  "type": 1
 }
 
 ---
 
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+{
+  "requestedState": 5
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1131,12 +697,19 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{}
+{
+  "currentState": 10,
+  "id": "000000000000000000000",
+  "name": "dataflowjob-${uniqueId}",
+  "projectId": "${projectId}",
+  "requestedState": 5,
+  "type": 1
+}
 
 ---
 
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1150,7 +723,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": "JOB_STATE_CANCELLED",
+  "currentState": 10,
   "currentStateTime": "2024-04-01T12:34:56.123456Z",
   "environment": {
     "dataset": "bigquery.googleapis.com/cloud_dataflow",
@@ -1161,8 +734,8 @@ X-Xss-Protection: 0
           "enable_stackdriver_agent_metrics"
         ],
         "machineType": "n1-standard-1",
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
-        "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "network": "projects/${projectId}/global/networks/${subnetworkID}",
+        "serviceAccountEmail": "",
         "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
         "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
         "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
@@ -1170,23 +743,62 @@ X-Xss-Protection: 0
     }
   },
   "id": "000000000000000000000",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+  "location": "us-central1",
+  "name": "dataflowjob-${uniqueId}",
+  "projectId": "${projectId}",
+  "requestedState": 5,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "type": 1
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentState": 5,
+  "currentStateTime": "2024-04-01T12:34:56.123456Z",
+  "environment": {
+    "dataset": "bigquery.googleapis.com/cloud_dataflow",
+    "sdkPipelineOptions": {
+      "options": {
+        "enableStreamingEngine": false,
+        "experiments": [
+          "enable_stackdriver_agent_metrics"
+        ],
+        "machineType": "n1-standard-1",
+        "network": "projects/${projectId}/global/networks/${subnetworkID}",
+        "serviceAccountEmail": "",
+        "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+        "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+        "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
+      }
+    }
   },
+  "id": "000000000000000000000",
   "location": "us-central1",
   "name": "dataflowjob-${uniqueId}",
   "projectId": "${projectId}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "type": "JOB_TYPE_BATCH"
+  "type": 1
 }
 
 ---
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1221,7 +833,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1256,7 +867,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -1285,7 +895,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1312,7 +921,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1339,7 +947,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1366,7 +973,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1392,7 +998,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1416,7 +1021,6 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1433,7 +1037,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1478,7 +1081,6 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1497,7 +1099,6 @@ Vary: X-Origin
 ---
 
 DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json
