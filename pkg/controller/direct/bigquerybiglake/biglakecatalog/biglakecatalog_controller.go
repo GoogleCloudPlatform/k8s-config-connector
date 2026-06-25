@@ -95,8 +95,21 @@ func (m *modelCatalog) AdapterForObject(ctx context.Context, op *directbase.Adap
 }
 
 func (m *modelCatalog) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.BigLakeCatalogIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &CatalogAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type CatalogAdapter struct {
