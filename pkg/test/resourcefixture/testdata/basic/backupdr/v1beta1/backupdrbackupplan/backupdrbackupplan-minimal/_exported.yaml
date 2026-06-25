@@ -1,0 +1,26 @@
+apiVersion: backupdr.cnrm.cloud.google.com/v1beta1
+kind: BackupDRBackupPlan
+metadata:
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  name: backupdrbackupplan-minimal-${uniqueId}
+spec:
+  backupRules:
+  - backupRetentionDays: 5
+    ruleID: rule-1
+    standardSchedule:
+      backupWindow:
+        endHourOfDay: 23
+        startHourOfDay: 1
+      hourlyFrequency: 6
+      recurrenceType: HOURLY
+      timeZone: UTC
+  backupVaultRef:
+    external: projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}
+  description: Initial description
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceID: backupdrbackupplan-minimal-${uniqueId}
+  resourceType: compute.googleapis.com/Instance

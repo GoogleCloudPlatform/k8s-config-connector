@@ -26,10 +26,12 @@ import (
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
@@ -102,8 +104,25 @@ func (m *modelBackupPlan) AdapterForObject(ctx context.Context, op *directbase.A
 }
 
 func (m *modelBackupPlan) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.BackupPlanIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := newGCPClient(ctx, &m.config)
+	if err != nil {
+		return nil, err
+	}
+	backupDRClient, err := gcpClient.newBackupDRClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &BackupPlanAdapter{
+		id:        id,
+		gcpClient: backupDRClient,
+	}, nil
 }
 
 type BackupPlanAdapter struct {
@@ -223,15 +242,20 @@ func (a *BackupPlanAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	}
 	obj.Spec.BackupVaultRef = &krm.BackupVaultRef{External: a.actual.BackupVault}
 	obj.Spec.Location = a.id.Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.BackupPlan)
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.actual.Name)
-	u.SetGroupVersionKind(krm.BackupDRBackupPlanGVK)
-
 	u.Object = uObj
+	u.SetGroupVersionKind(krm.BackupDRBackupPlanGVK)
+	u.SetName(a.id.BackupPlan)
+
+	export.SetLabels(u, a.actual.Labels)
+
 	return u, nil
 }
 
