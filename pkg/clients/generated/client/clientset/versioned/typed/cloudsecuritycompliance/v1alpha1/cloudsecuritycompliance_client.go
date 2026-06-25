@@ -33,6 +33,7 @@ type CloudsecuritycomplianceV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	CloudSecurityComplianceCloudControlsGetter
 	CloudSecurityComplianceFrameworksGetter
+	CloudSecurityComplianceFrameworkDeploymentsGetter
 }
 
 // CloudsecuritycomplianceV1alpha1Client is used to interact with features provided by the cloudsecuritycompliance.cnrm.cloud.google.com group.
@@ -46,6 +47,10 @@ func (c *CloudsecuritycomplianceV1alpha1Client) CloudSecurityComplianceCloudCont
 
 func (c *CloudsecuritycomplianceV1alpha1Client) CloudSecurityComplianceFrameworks(namespace string) CloudSecurityComplianceFrameworkInterface {
 	return newCloudSecurityComplianceFrameworks(c, namespace)
+}
+
+func (c *CloudsecuritycomplianceV1alpha1Client) CloudSecurityComplianceFrameworkDeployments(namespace string) CloudSecurityComplianceFrameworkDeploymentInterface {
+	return newCloudSecurityComplianceFrameworkDeployments(c, namespace)
 }
 
 // NewForConfig creates a new CloudsecuritycomplianceV1alpha1Client for the given config.
