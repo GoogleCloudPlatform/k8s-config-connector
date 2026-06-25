@@ -21,6 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/commonparams"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"golang.org/x/oauth2"
 )
 
@@ -52,6 +53,10 @@ func (p *Parameters) NewControllerConfig(ctx context.Context) (*config.Controlle
 		c.GCPTokenSource = oauth2.StaticTokenSource(
 			&oauth2.Token{AccessToken: p.GCPAccessToken},
 		)
+	}
+
+	if transport_tpg.GRPCUnaryClientInterceptor != nil {
+		c.GRPCUnaryClientInterceptor = transport_tpg.GRPCUnaryClientInterceptor
 	}
 
 	if err := c.Init(ctx); err != nil {

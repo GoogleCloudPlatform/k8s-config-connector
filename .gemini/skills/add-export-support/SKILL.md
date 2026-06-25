@@ -101,6 +101,8 @@ func (a *ArtifactRegistryRepositoryAdapter) Export(ctx context.Context) (*unstru
 ```
 
 > **CRITICAL**: When constructing the `unstructured.Unstructured` object, ensure that you assign `u.Object = uObj` **before** calling `u.SetName(...)` and `u.SetGroupVersionKind(...)`. If you assign `u.Object = uObj` after calling those setters, the name, apiVersion, and kind fields will be completely wiped out from the returned unstructured object. This causes downstream export pipeline errors such as `unable to get service mapping: no mapping with name '' found`.
+
+> **CRITICAL**: If the resource's `Spec` type embeds a pointer to a nested struct (e.g. `*Parent` or `*ProjectRef`), and the `FromProto` mapper leaves it uninitialized (nil), any direct assignment like `obj.Spec.ProjectRef = ...` or `obj.Spec.Zone = ...` will cause a nil pointer dereference panic. You MUST safely initialize the embedded struct pointer first, for example: `obj.Spec.Parent = &krm.Parent{ProjectRef: &refs.ProjectRef{External: a.id.Project}, Zone: a.id.Location}`.
 ```
 
 ### Step 3: Register/Integrate with E2E Export Test Harness
