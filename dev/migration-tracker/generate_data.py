@@ -54,6 +54,16 @@ def get_implemented_types(apis_dir="../../apis"):
                         implemented_kinds[kind].append(filepath)
     return implemented_kinds
 
+def get_implemented_controllers(direct_dir="../../pkg/controller/direct"):
+    implemented_controllers = set()
+    if not os.path.exists(direct_dir):
+        return implemented_controllers
+    for root, _, files in os.walk(direct_dir):
+        for file in files:
+            if file.endswith("_controller.go"):
+                implemented_controllers.add(file)
+    return implemented_controllers
+
 def build_dependency_graph(crds_dir="../../config/crds/resources"):
     known_kinds = {}
     dependencies = defaultdict(set)
@@ -113,7 +123,7 @@ def build_dependency_graph(crds_dir="../../config/crds/resources"):
 
     return dependencies, known_kinds
 
-def parse_data(config_file_path, apis_dir, crds_dir):
+def parse_data(config_file_path, apis_dir, crds_dir, direct_dir="../../pkg/controller/direct"):
     resources = {}
     
     # Load existing data to preserve manual updates
@@ -184,6 +194,7 @@ def parse_data(config_file_path, apis_dir, crds_dir):
 
     dependencies, known_kinds = build_dependency_graph(crds_dir)
     implemented_types = get_implemented_types(apis_dir)
+    implemented_controllers = get_implemented_controllers(direct_dir)
 
     # Calculate topological sort order and downstream count
     nodes = set(known_kinds.keys())
@@ -243,31 +254,64 @@ def parse_data(config_file_path, apis_dir, crds_dir):
 
         if kind in implemented_types:
             res['steps']['gen-types'] = True
-            has_reference = False
+            has_identity_reference = False
+            has_mapper = False
             for filepath in implemented_types[kind]:
                 dirpath = os.path.dirname(filepath)
                 filename = os.path.basename(filepath)
                 prefix = filename.replace("_types.go", "")
                 
-                possible_names = [
+                possible_id_ref_names = [
                     f"{prefix}_reference.go",
+                    f"{prefix}_identity.go",
                     f"{kind.lower()}_reference.go",
+                    f"{kind.lower()}_identity.go",
                 ]
                 
-                for name in possible_names:
+                for name in possible_id_ref_names:
                     if os.path.exists(os.path.join(dirpath, name)):
-                        has_reference = True
+                        has_identity_reference = True
                         break
-                if has_reference:
+                
+                possible_mapper_names = [
+                    f"{prefix}_mapper.go",
+                    f"{prefix}_fuzzer.go",
+                    f"{kind.lower()}_mapper.go",
+                    f"{kind.lower()}_fuzzer.go",
+                ]
+                for name in possible_mapper_names:
+                    if os.path.exists(os.path.join(dirpath, name)):
+                        has_mapper = True
+                        break
+
+                if has_identity_reference and has_mapper:
                     break
             
-            if has_reference:
+            if has_identity_reference:
                 res['steps']['identity-reference'] = True
-                if res.get('notes') == 'Missing _reference.go':
+                if res.get('notes') in ('Missing _reference.go', 'Missing _reference.go or _identity.go'):
                     res['notes'] = ''
             else:
-                res['notes'] = 'Missing _reference.go'
+                res['notes'] = 'Missing _reference.go or _identity.go'
                 res['steps']['identity-reference'] = False
+            
+            if has_mapper:
+                res['steps']['mapper-fuzzer'] = True
+
+        possible_controller_names = [
+            f"{kind.lower()}_controller.go",
+            f"{res['group'].lower()}{kind.lower()}_controller.go",
+        ]
+        if kind in implemented_types:
+            for filepath in implemented_types[kind]:
+                filename = os.path.basename(filepath)
+                prefix = filename.replace("_types.go", "")
+                possible_controller_names.append(f"{prefix}_controller.go")
+        
+        for ctrl_name in possible_controller_names:
+            if ctrl_name in implemented_controllers:
+                res['steps']['controller'] = True
+                break
 
     return list(resources.values())
 
