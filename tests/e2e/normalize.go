@@ -579,7 +579,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 				case "keyHandles":
 					uuid := tokens[len(tokens)-1]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, uuid, "1a1a1a-222b-3cc3-d444-e555ee555555")
+						return strings.ReplaceAll(s, uuid, "${keyHandleID}")
 					})
 				}
 			}

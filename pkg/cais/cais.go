@@ -107,12 +107,8 @@ func GetCAISIdentities(ctx context.Context, scheme *runtime.Scheme, reader clien
 			}
 
 			hasIdentity := true
-			if _, ok := id.(identity.ServerGeneratedIdentity); ok {
-				resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
-				externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
-				if resourceID == "" && externalRef == "" {
-					hasIdentity = false
-				}
+			if sgId, ok := id.(identity.ServerGeneratedIdentity); ok {
+				hasIdentity = sgId.HasIdentitySpecified()
 			}
 
 			if hasIdentity {

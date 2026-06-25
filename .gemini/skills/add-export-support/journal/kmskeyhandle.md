@@ -13,4 +13,4 @@
 
 3. **Dynamic UUID Normalization in `_identities.yaml`:**
    - Because MockGCP assigns a dynamic random UUID to the KeyHandle on every test execution, the `caisURL` in `_identities.yaml` would change on every run.
-   - We added a normalization rule in `pkg/cais/caistesting/testing.go` within `NormalizeDynamicIDs` to replace `/keyHandles/<uuid>` with the stable placeholder `/keyHandles/1a1a1a-222b-3cc3-d444-e555ee555555`. This aligns it perfectly with `_exported.yaml` normalization.
+   - We added a normalization rule in `pkg/cais/caistesting/testing.go` within `NormalizeDynamicIDs` to replace `/keyHandles/<uuid>` with the stable placeholder `/keyHandles/${keyHandleID}`. This aligns it perfectly with `_exported.yaml` normalization.
