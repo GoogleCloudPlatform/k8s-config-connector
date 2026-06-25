@@ -386,6 +386,10 @@ type ContainerNodePoolStatus struct {
 	/* The observed state of the underlying GCP resource. */
 	ObservedState *NodepoolObservedStateStatus `json:"observedState,omitempty"`
 
+	/* A unique specifier for the ContainerNodePool resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	Operation *string `json:"operation,omitempty"`
 }
 

@@ -15,9 +15,12 @@
 package v1beta1
 
 import (
+	"context"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestContainerNodePoolIdentity_FromExternal(t *testing.T) {
@@ -159,6 +162,105 @@ func TestContainerNodePoolIdentity_ParentString(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if actual := tt.identity.ParentString(); actual != tt.expected {
 				t.Errorf("ParentString() = %v, want %v", actual, tt.expected)
+			}
+		})
+	}
+}
+
+func TestContainerNodePool_GetIdentity(t *testing.T) {
+	ctx := context.Background()
+	scheme := runtime.NewScheme()
+	_ = AddToScheme(scheme)
+	fakeClient := fake.NewClientBuilder().WithScheme(scheme).Build()
+
+	lazyPtr := func(s string) *string { return &s }
+
+	tests := []struct {
+		name    string
+		obj     *ContainerNodePool
+		wantErr bool
+		want    *ContainerNodePoolIdentity
+	}{
+		{
+			name: "GetIdentity with valid spec and matching status.externalRef",
+			obj: &ContainerNodePool{
+				Spec: ContainerNodePoolSpec{
+					ClusterRef: ContainerClusterRef{
+						External: "projects/my-project/locations/us-central1/clusters/my-cluster",
+					},
+					ResourceID: lazyPtr("my-nodepool"),
+				},
+				Status: ContainerNodePoolStatus{
+					ExternalRef: lazyPtr("projects/my-project/locations/us-central1/clusters/my-cluster/nodePools/my-nodepool"),
+				},
+			},
+			want: &ContainerNodePoolIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+				Cluster:  "my-cluster",
+				NodePool: "my-nodepool",
+			},
+		},
+		{
+			name: "GetIdentity with valid spec and missing status.externalRef",
+			obj: &ContainerNodePool{
+				Spec: ContainerNodePoolSpec{
+					ClusterRef: ContainerClusterRef{
+						External: "projects/my-project/locations/us-central1/clusters/my-cluster",
+					},
+					ResourceID: lazyPtr("my-nodepool"),
+				},
+			},
+			want: &ContainerNodePoolIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+				Cluster:  "my-cluster",
+				NodePool: "my-nodepool",
+			},
+		},
+		{
+			name: "GetIdentity with conflicting status.externalRef",
+			obj: &ContainerNodePool{
+				Spec: ContainerNodePoolSpec{
+					ClusterRef: ContainerClusterRef{
+						External: "projects/my-project/locations/us-central1/clusters/my-cluster",
+					},
+					ResourceID: lazyPtr("my-nodepool"),
+				},
+				Status: ContainerNodePoolStatus{
+					ExternalRef: lazyPtr("projects/my-project/locations/us-central1/clusters/my-cluster/nodePools/conflicting-nodepool"),
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "GetIdentity with unparseable status.externalRef",
+			obj: &ContainerNodePool{
+				Spec: ContainerNodePoolSpec{
+					ClusterRef: ContainerClusterRef{
+						External: "projects/my-project/locations/us-central1/clusters/my-cluster",
+					},
+					ResourceID: lazyPtr("my-nodepool"),
+				},
+				Status: ContainerNodePoolStatus{
+					ExternalRef: lazyPtr("invalid/external/ref"),
+				},
+			},
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotIdentity, err := tt.obj.GetIdentity(ctx, fakeClient)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("GetIdentity() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr {
+				if diff := cmp.Diff(tt.want, gotIdentity); diff != "" {
+					t.Errorf("GetIdentity() mismatch (-want +got):\n%s", diff)
+				}
 			}
 		})
 	}
