@@ -17,102 +17,125 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ identity.Identity = &ComputeTargetHTTPSProxyIdentity{}
+var (
+	_ identity.IdentityV2 = &ComputeTargetHTTPSProxyIdentity{}
+	_ identity.Resource   = &ComputeTargetHTTPSProxy{}
+)
 
+var ComputeGlobalTargetHTTPSProxyIdentityFormat = gcpurls.Template[ComputeTargetHTTPSProxyIdentity]("compute.googleapis.com", "projects/{project}/global/targetHttpsProxies/{targetHttpsProxy}")
+var ComputeRegionalTargetHTTPSProxyIdentityFormat = gcpurls.Template[ComputeTargetHTTPSProxyIdentity]("compute.googleapis.com", "projects/{project}/regions/{region}/targetHttpsProxies/{targetHttpsProxy}")
+
+// ComputeTargetHTTPSProxyIdentity is the identity of a GCP ComputeTargetHTTPSProxy resource.
+// +k8s:deepcopy-gen=false
 type ComputeTargetHTTPSProxyIdentity struct {
-	ParentID   *parent.ComputeParent
-	ResourceID string
+	Project          string
+	Region           string
+	TargetHttpsProxy string
+}
+
+func (i *ComputeTargetHTTPSProxyIdentity) IsGlobal() bool {
+	return i.Region == "" || i.Region == "global"
 }
 
 func (i *ComputeTargetHTTPSProxyIdentity) String() string {
-	return i.ParentID.String() + "/targetHttpsProxies/" + i.ResourceID
+	if !i.IsGlobal() {
+		return ComputeRegionalTargetHTTPSProxyIdentityFormat.ToString(*i)
+	}
+	return ComputeGlobalTargetHTTPSProxyIdentityFormat.ToString(*i)
 }
 
 func (i *ComputeTargetHTTPSProxyIdentity) FromExternal(ref string) error {
-	tokens := strings.Split(ref, "/")
-	if len(tokens) < 4 {
-		return fmt.Errorf("format of ComputeTargetHTTPSProxy external=%q was not known (use projects/{{projectID}}/global/targetHttpsProxies/{{targetHttpsProxyID}} or projects/{{projectID}}/regions/{{region}}/targetHttpsProxies/{{targetHttpsProxyID}})", ref)
+	ref = apirefs.TrimComputeURIPrefix(ref)
+
+	if parsed, match, _ := ComputeGlobalTargetHTTPSProxyIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		i.Region = "global"
+		return nil
 	}
-	p, err := parent.ParseComputeParent(strings.Join(tokens[:len(tokens)-2], "/"))
-	if err != nil {
-		return err
+	if parsed, match, _ := ComputeRegionalTargetHTTPSProxyIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
 	}
-	if tokens[len(tokens)-2] != "targetHttpsProxies" {
-		return fmt.Errorf("format of ComputeTargetHTTPSProxy external=%q was not known (use %s/targetHttpsProxies/{{targetHttpsProxyID}})", ref, p)
-	}
-	i.ResourceID = tokens[len(tokens)-1]
-	i.ParentID = p
-	return nil
+	return fmt.Errorf("format of ComputeTargetHTTPSProxy external=%q was not known (use %s or %s)", ref, ComputeGlobalTargetHTTPSProxyIdentityFormat.CanonicalForm(), ComputeRegionalTargetHTTPSProxyIdentityFormat.CanonicalForm())
 }
 
-var _ identity.Resource = &ComputeTargetHTTPSProxy{}
+func (i *ComputeTargetHTTPSProxyIdentity) Host() string {
+	return ComputeGlobalTargetHTTPSProxyIdentityFormat.Host()
+}
 
-func getIdentityFromComputeTargetHTTPSProxySpec(ctx context.Context, reader client.Reader, obj client.Object) (*ComputeTargetHTTPSProxyIdentity, error) {
-	resourceID, err := refsv1beta1.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+func (i *ComputeTargetHTTPSProxyIdentity) ParentString() string {
+	if !i.IsGlobal() {
+		return fmt.Sprintf("projects/%s/regions/%s", i.Project, i.Region)
 	}
+	return fmt.Sprintf("projects/%s/global", i.Project)
+}
 
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+func ParseComputeTargetHTTPSProxyExternal(external string) (*ComputeTargetHTTPSProxyIdentity, error) {
+	if external == "" {
+		return nil, fmt.Errorf("empty ComputeTargetHTTPSProxy external value")
 	}
-
-	location, err := refsv1beta1.GetLocation(obj)
-	if err != nil || location == "" {
-		location = "global"
-	}
-
-	id := &ComputeTargetHTTPSProxyIdentity{
-		ParentID:   &parent.ComputeParent{ProjectID: projectID, Location: location},
-		ResourceID: resourceID,
+	id := &ComputeTargetHTTPSProxyIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		return nil, err
 	}
 	return id, nil
 }
 
-func (obj *ComputeTargetHTTPSProxy) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	id, err := getIdentityFromComputeTargetHTTPSProxySpec(ctx, reader, obj)
+func getIdentityFromComputeTargetHTTPSProxySpec(ctx context.Context, reader client.Reader, obj *ComputeTargetHTTPSProxy) (*ComputeTargetHTTPSProxyIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		previousID := &ComputeTargetHTTPSProxyIdentity{}
-		if err := previousID.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
-		if id.String() != previousID.String() {
-			return nil, fmt.Errorf("cannot update ComputeTargetHTTPSProxy identity (old=%q, new=%q): identity is immutable", previousID.String(), id.String())
-		}
-	}
-
-	return id, nil
-}
-
-func (obj *ComputeTargetHTTPSProxy) GetParentIdentity(ctx context.Context, reader client.Reader) (*parent.ComputeParent, error) {
-	projectID, err := refsv1beta1.ResolveProjectFromAnnotation(ctx, reader, obj)
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	// Get Location
-	var location string
-	if obj.Spec.Location == nil {
-		location = "global"
-	} else {
+	location := "global"
+	if obj.Spec.Location != nil {
 		location = common.ValueOf(obj.Spec.Location)
 	}
 
-	return &parent.ComputeParent{ProjectID: projectID.ProjectID, Location: location}, nil
+	identity := &ComputeTargetHTTPSProxyIdentity{
+		Project:          projectID,
+		Region:           location,
+		TargetHttpsProxy: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *ComputeTargetHTTPSProxy) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromComputeTargetHTTPSProxySpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against status.externalRef or status.selfLink, if present.
+	// We'll check externalRef first, then fallback to selfLink.
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef == "" {
+		externalRef = common.ValueOf(obj.Status.SelfLink)
+	}
+	if externalRef != "" {
+		statusIdentity := &ComputeTargetHTTPSProxyIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change ComputeTargetHTTPSProxy identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
 }

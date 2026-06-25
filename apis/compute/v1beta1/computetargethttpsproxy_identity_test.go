@@ -18,10 +18,78 @@ import (
 	"context"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
+
+func TestComputeTargetHTTPSProxyIdentity_FromExternal(t *testing.T) {
+	tests := []struct {
+		name    string
+		ref     string
+		wantErr bool
+		want    *ComputeTargetHTTPSProxyIdentity
+	}{
+		{
+			name: "valid regional reference",
+			ref:  "projects/my-project/regions/us-central1/targetHttpsProxies/my-proxy",
+			want: &ComputeTargetHTTPSProxyIdentity{
+				Project:          "my-project",
+				Region:           "us-central1",
+				TargetHttpsProxy: "my-proxy",
+			},
+		},
+		{
+			name: "valid global reference",
+			ref:  "projects/my-project/global/targetHttpsProxies/my-proxy",
+			want: &ComputeTargetHTTPSProxyIdentity{
+				Project:          "my-project",
+				Region:           "global",
+				TargetHttpsProxy: "my-proxy",
+			},
+		},
+		{
+			name:    "invalid reference format",
+			ref:     "invalid/format",
+			wantErr: true,
+		},
+		{
+			name: "full regional url",
+			ref:  "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-central1/targetHttpsProxies/my-proxy",
+			want: &ComputeTargetHTTPSProxyIdentity{
+				Project:          "my-project",
+				Region:           "us-central1",
+				TargetHttpsProxy: "my-proxy",
+			},
+		},
+		{
+			name: "full global url",
+			ref:  "https://www.googleapis.com/compute/v1/projects/my-project/global/targetHttpsProxies/my-proxy",
+			want: &ComputeTargetHTTPSProxyIdentity{
+				Project:          "my-project",
+				Region:           "global",
+				TargetHttpsProxy: "my-proxy",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			i := &ComputeTargetHTTPSProxyIdentity{}
+			err := i.FromExternal(tt.ref)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr {
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
+				}
+			}
+		})
+	}
+}
 
 func TestComputeTargetHTTPSProxyRef_ValidateExternal(t *testing.T) {
 	tests := []struct {
