@@ -100,6 +100,20 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerDNSAuthorization"}:
 		exportURI = resolveCAISURI(h, obj)
 
+	case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSRecordSet"}:
+		dnsType, _, _ := unstructured.NestedString(obj.Object, "spec", "type")
+		dnsName, _, _ := unstructured.NestedString(obj.Object, "spec", "name")
+		managedZoneRefExternal, _, _ := unstructured.NestedString(obj.Object, "spec", "managedZoneRef", "external")
+		if managedZoneRefExternal == "" {
+			managedZoneRefExternal = resolveReference(h, obj, ".spec.managedZoneRef", schema.GroupVersionKind{Group: "dns.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DNSManagedZone"})
+		}
+		managedZone := managedZoneRefExternal
+		if strings.Contains(managedZoneRefExternal, "managedZones/") {
+			parts := strings.Split(managedZoneRefExternal, "managedZones/")
+			managedZone = parts[len(parts)-1]
+		}
+		exportURI = fmt.Sprintf("//dns.googleapis.com/projects/%s/managedZones/%s/rrsets/%s/%s", projectID, managedZone, dnsName, dnsType)
+
 	case schema.GroupKind{Group: "cloudbuild.cnrm.cloud.google.com", Kind: "CloudBuildWorkerPool"}:
 		exportURI = "//cloudbuild.googleapis.com/projects/" + projectID + "/locations/" + location + "/workerPools/" + resourceID
 
@@ -333,7 +347,12 @@ func resolveReference(h *create.Harness, obj *unstructured.Unstructured, refFiel
 
 	external, _, _ = unstructured.NestedString(u.Object, "status", "externalRef")
 	if external == "" {
-		h.Fatalf("referenced %v object %v does not have status.externalRef set", gvk.Kind, key)
+		if gvk.Kind == "DNSManagedZone" {
+			projectID := resolveProjectID(h, u)
+			external = fmt.Sprintf("projects/%s/managedZones/%s", projectID, u.GetName())
+		} else {
+			h.Fatalf("referenced %v object %v does not have status.externalRef set", gvk.Kind, key)
+		}
 	}
 	return external
 }
