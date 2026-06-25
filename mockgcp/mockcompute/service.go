@@ -275,6 +275,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	if err := pb.RegisterFirewallsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
 	if err := pb.RegisterForwardingRulesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}

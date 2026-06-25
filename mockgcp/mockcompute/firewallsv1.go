@@ -16,7 +16,6 @@ package mockcompute
 
 import (
 	"context"
-	"strconv"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -31,37 +30,6 @@ import (
 type FirewallsV1 struct {
 	*MockService
 	pb.UnimplementedFirewallsServer
-}
-
-func (s *FirewallsV1) List(ctx context.Context, req *pb.ListFirewallsRequest) (*pb.FirewallList, error) {
-	name, err := s.newFirewallName(req.GetProject(), "placeholder")
-	if err != nil {
-		return nil, err
-	}
-
-	findPrefix := strings.TrimSuffix(name.String(), "placeholder")
-
-	response := &pb.FirewallList{}
-	response.Id = PtrTo(strconv.FormatUint(s.generateID(), 10))
-	response.Kind = PtrTo("compute#firewallList")
-	response.SelfLink = PtrTo(BuildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
-
-	findKind := (&pb.Firewall{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
-		firewall := obj.(*pb.Firewall)
-		isMatch, err := matchFilter(req.GetFilter(), firewall)
-		if err != nil {
-			return err
-		}
-		if isMatch {
-			response.Items = append(response.Items, firewall)
-		}
-		return nil
-	}); err != nil {
-		return nil, err
-	}
-
-	return response, nil
 }
 
 func (s *FirewallsV1) Get(ctx context.Context, req *pb.GetFirewallRequest) (*pb.Firewall, error) {
@@ -83,6 +51,37 @@ func (s *FirewallsV1) Get(ctx context.Context, req *pb.GetFirewallRequest) (*pb.
 	return obj, nil
 }
 
+func (s *FirewallsV1) List(ctx context.Context, req *pb.ListFirewallsRequest) (*pb.FirewallList, error) {
+	name, err := s.newFirewallName(req.GetProject(), "placeholder")
+	if err != nil {
+		return nil, err
+	}
+
+	findPrefix := strings.TrimSuffix(name.String(), "placeholder")
+
+	response := &pb.FirewallList{}
+	response.Id = PtrTo("0123456789")
+	response.Kind = PtrTo("compute#firewallList")
+	response.SelfLink = PtrTo(BuildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
+
+	findKind := (&pb.Firewall{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
+		firewall := obj.(*pb.Firewall)
+		isMatch, err := matchFilter(req.GetFilter(), firewall)
+		if err != nil {
+			return err
+		}
+		if isMatch {
+			response.Items = append(response.Items, firewall)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
 func (s *FirewallsV1) Insert(ctx context.Context, req *pb.InsertFirewallRequest) (*pb.Operation, error) {
 	name, err := s.newFirewallName(req.GetProject(), req.GetFirewallResource().GetName())
 	if err != nil {
@@ -93,22 +92,11 @@ func (s *FirewallsV1) Insert(ctx context.Context, req *pb.InsertFirewallRequest)
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetFirewallResource()).(*pb.Firewall)
+	obj := proto.CloneOf(req.GetFirewallResource())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, name.String()))
 	obj.Kind = PtrTo("compute#firewall")
-
-	// Set default values if omitted
-	if obj.Priority == nil {
-		obj.Priority = PtrTo(int32(1000))
-	}
-	if obj.Direction == nil {
-		obj.Direction = PtrTo("INGRESS")
-	}
-	if obj.Disabled == nil {
-		obj.Disabled = PtrTo(false)
-	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -137,50 +125,7 @@ func (s *FirewallsV1) Patch(ctx context.Context, req *pb.PatchFirewallRequest) (
 		return nil, err
 	}
 
-	// Update mutable fields from requested resource.
-	reqObj := req.GetFirewallResource()
-	if reqObj.Allowed != nil {
-		obj.Allowed = reqObj.Allowed
-	}
-	if reqObj.Denied != nil {
-		obj.Denied = reqObj.Denied
-	}
-	if reqObj.Description != nil {
-		obj.Description = reqObj.Description
-	}
-	if reqObj.DestinationRanges != nil {
-		obj.DestinationRanges = reqObj.DestinationRanges
-	}
-	if reqObj.Direction != nil {
-		obj.Direction = reqObj.Direction
-	}
-	if reqObj.Disabled != nil {
-		obj.Disabled = reqObj.Disabled
-	}
-	if reqObj.LogConfig != nil {
-		obj.LogConfig = reqObj.LogConfig
-	}
-	if reqObj.Network != nil {
-		obj.Network = reqObj.Network
-	}
-	if reqObj.Priority != nil {
-		obj.Priority = reqObj.Priority
-	}
-	if reqObj.SourceRanges != nil {
-		obj.SourceRanges = reqObj.SourceRanges
-	}
-	if reqObj.SourceServiceAccounts != nil {
-		obj.SourceServiceAccounts = reqObj.SourceServiceAccounts
-	}
-	if reqObj.SourceTags != nil {
-		obj.SourceTags = reqObj.SourceTags
-	}
-	if reqObj.TargetServiceAccounts != nil {
-		obj.TargetServiceAccounts = reqObj.TargetServiceAccounts
-	}
-	if reqObj.TargetTags != nil {
-		obj.TargetTags = reqObj.TargetTags
-	}
+	proto.Merge(obj, req.GetFirewallResource())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -194,6 +139,39 @@ func (s *FirewallsV1) Patch(ctx context.Context, req *pb.PatchFirewallRequest) (
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return obj, nil
+	})
+}
+
+func (s *FirewallsV1) Update(ctx context.Context, req *pb.UpdateFirewallRequest) (*pb.Operation, error) {
+	name, err := s.newFirewallName(req.GetProject(), req.GetFirewall())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Firewall{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	updatedObj := proto.CloneOf(req.GetFirewallResource())
+	updatedObj.CreationTimestamp = obj.CreationTimestamp
+	updatedObj.Id = obj.Id
+	updatedObj.SelfLink = obj.SelfLink
+	updatedObj.Kind = obj.Kind
+
+	if err := s.storage.Update(ctx, fqn, updatedObj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      updatedObj.Id,
+		TargetLink:    updatedObj.SelfLink,
+		OperationType: PtrTo("compute.firewalls.update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return updatedObj, nil
 	})
 }
 
@@ -228,15 +206,6 @@ type firewallName struct {
 
 func (n *firewallName) String() string {
 	return "projects/" + n.Project.ID + "/global" + "/firewalls/" + n.Name
-}
-
-func (s *MockService) parseFirewallName(name string) (*firewallName, error) {
-	tokens := strings.Split(name, "/")
-
-	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "firewalls" {
-		return s.newFirewallName(tokens[1], tokens[4])
-	}
-	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
 
 func (s *MockService) newFirewallName(project string, name string) (*firewallName, error) {

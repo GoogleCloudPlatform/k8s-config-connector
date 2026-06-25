@@ -24,18 +24,20 @@
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewalls/${firewallID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewalls/${firewallID}
-221,223d217
+220,222d216
 <   "logConfig": {
 <     "enable": false
 <   },
-232c226
+225d218
+<   "priority": 1000,
+231c224
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewalls/${firewallID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewalls/${firewallID}
-241,242d234
+240,241d232
 <   "denied": [],
 <   "destinationRanges": [],
-244,253c236,237
+243,252c234,235
 <   "logConfig": {
 <     "enable": false
 <   },
@@ -49,24 +51,26 @@
 ---
 >   "name": "${firewallID}",
 >   "network": "projects/${projectId}/global/networks/${networkID}"
-283c267,268
+282c265,266
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-313c298
+312c296
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewalls/${firewallID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewalls/${firewallID}
-337,339d321
+349,351d332
 <   "logConfig": {
 <     "enable": false
 <   },
-348c330
+354d334
+<   "priority": 1000,
+360c340
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewalls/${firewallID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewalls/${firewallID}
-378c360,361
+390c370,371
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}

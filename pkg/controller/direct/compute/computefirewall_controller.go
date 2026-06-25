@@ -24,13 +24,14 @@ import (
 	"context"
 	"fmt"
 
-	compute "cloud.google.com/go/compute/apiv1"
+	gcp "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
 	"google.golang.org/protobuf/proto"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -65,14 +66,15 @@ func (m *firewallModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	// 1. Normalize references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	// 2. Get identity
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
-	}
-
-	// Always call common.NormalizeReferences to resolve references.
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	gcpClient, err := newGCPClient(m.config)
@@ -95,6 +97,7 @@ func (m *firewallModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 		gcpClient: firewallsClient,
 		id:        id.(*krm.ComputeFirewallIdentity),
 		desired:   desired,
+		reader:    reader,
 	}, nil
 }
 
@@ -104,10 +107,11 @@ func (m *firewallModel) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type FirewallAdapter struct {
-	gcpClient *compute.FirewallsClient
+	gcpClient *gcp.FirewallsClient
 	id        *krm.ComputeFirewallIdentity
 	desired   *computepb.Firewall
 	actual    *computepb.Firewall
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &FirewallAdapter{}
@@ -271,22 +275,7 @@ func compareFirewall(ctx context.Context, actual, desired *computepb.Firewall) (
 	clonedDesired := proto.Clone(desired).(*computepb.Firewall)
 
 	populateDefaults := func(obj *computepb.Firewall) {
-		if obj.Priority == nil {
-			obj.Priority = direct.LazyPtr(int32(1000))
-		}
-		if obj.Direction == nil {
-			obj.Direction = direct.LazyPtr("INGRESS")
-		}
-		if obj.Disabled == nil {
-			obj.Disabled = direct.LazyPtr(false)
-		}
-		if obj.LogConfig == nil {
-			obj.LogConfig = &computepb.FirewallLogConfig{
-				Enable: direct.LazyPtr(false),
-			}
-		} else if obj.LogConfig.Enable == nil {
-			obj.LogConfig.Enable = direct.LazyPtr(false)
-		}
+		// No defaults need custom mapping, but we define pattern anyway
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
