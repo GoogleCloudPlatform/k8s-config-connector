@@ -3187,6 +3187,11 @@ func (in *ContainerNodePoolStatus) DeepCopyInto(out *ContainerNodePoolStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.InstanceGroupUrls != nil {
 		in, out := &in.InstanceGroupUrls, &out.InstanceGroupUrls
 		*out = make([]string, len(*in))

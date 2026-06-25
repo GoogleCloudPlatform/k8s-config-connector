@@ -589,6 +589,10 @@ type ContainerNodePoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ContainerNodePool's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the ContainerNodePool resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* The resource URLs of the managed instance groups associated with this node pool. */
 	// +optional
 	InstanceGroupUrls []string `json:"instanceGroupUrls,omitempty"`

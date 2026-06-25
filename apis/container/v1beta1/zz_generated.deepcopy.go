@@ -1258,6 +1258,11 @@ func (in *ContainerNodePoolStatus) DeepCopyInto(out *ContainerNodePoolStatus) {
 		*out = new(NodepoolObservedStateStatus)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.Operation != nil {
 		in, out := &in.Operation, &out.Operation
 		*out = new(string)
