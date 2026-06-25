@@ -105,6 +105,15 @@ spec:
                   Specifies if endpoint independent mapping is enabled. This is enabled by default. For more information
                   see the [official documentation](https://cloud.google.com/nat/docs/overview#specs-rfcs).
                 type: boolean
+              endpointTypes:
+                description: |-
+                  Immutable. Specifies the endpoint Types supported by the NAT Gateway.
+                  Supported values include:
+                        'ENDPOINT_TYPE_VM', 'ENDPOINT_TYPE_SWG',
+                        'ENDPOINT_TYPE_MANAGED_PROXY_LB'.
+                items:
+                  type: string
+                type: array
               icmpIdleTimeoutSec:
                 description: Timeout (in seconds) for ICMP connections. Defaults to
                   30s if not set.
@@ -246,6 +255,39 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        sourceNatActiveRangesRefs:
+                          items:
+                            description: |-
+                              A list of URLs of the subnetworks used as source ranges for this NAT Rule.
+                              These subnetworks must have purpose set to PRIVATE_NAT. This field is used for private NAT.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: 'Allowed value: The `selfLink` field
+                                  of a `ComputeSubnetwork` resource.'
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
+                          type: array
                         sourceNatDrainIpsRefs:
                           items:
                             description: |-
@@ -271,6 +313,40 @@ spec:
                               external:
                                 description: 'Allowed value: The `selfLink` field
                                   of a `ComputeAddress` resource.'
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
+                          type: array
+                        sourceNatDrainRangesRefs:
+                          items:
+                            description: |-
+                              A list of URLs of subnetworks representing source ranges to be drained.
+                              This is only supported on patch/update, and these subnetworks must have previously been used as active ranges in this NAT Rule.
+                              This field is used for private NAT.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: 'Allowed value: The `selfLink` field
+                                  of a `ComputeSubnetwork` resource.'
                                 type: string
                               name:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -395,12 +471,18 @@ spec:
                   Timeout (in seconds) for TCP transitory connections.
                   Defaults to 30s if not set.
                 type: integer
+              type:
+                description: |-
+                  Immutable. Indicates whether this NAT is used for public or private IP translation.
+                  If unspecified, it defaults to PUBLIC.
+                  If 'PUBLIC' NAT used for public IP translation.
+                  If 'PRIVATE' NAT used for private IP translation. Default value: "PUBLIC" Possible values: ["PUBLIC", "PRIVATE"].
+                type: string
               udpIdleTimeoutSec:
                 description: Timeout (in seconds) for UDP connections. Defaults to
                   30s if not set.
                 type: integer
             required:
-            - natIpAllocateOption
             - region
             - routerRef
             - sourceSubnetworkIpRangesToNat

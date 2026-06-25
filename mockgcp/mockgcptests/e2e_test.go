@@ -44,6 +44,9 @@ type Placeholders struct {
 }
 
 func TestScripts(t *testing.T) {
+	os.Setenv("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "false")
+	os.Setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+
 	baseDir, err := filepath.Abs("..")
 	if err != nil {
 		t.Fatalf("cannot find base dir for mockgcp: %v", err)
@@ -120,6 +123,8 @@ func TestScripts(t *testing.T) {
 
 					// Don't check for updates to gcloud components (causes spurious requests to dl.google.com)
 					cmd.Env = append(cmd.Env, "CLOUDSDK_COMPONENT_MANAGER_DISABLE_UPDATE_CHECK=yes")
+					cmd.Env = append(cmd.Env, "CLOUDSDK_COMPUTE_ZONE=")
+					cmd.Env = append(cmd.Env, "CLOUDSDK_COMPUTE_REGION=")
 
 					if h.gcpAccessToken != "" {
 						cmd.Env = append(cmd.Env, fmt.Sprintf("CLOUDSDK_AUTH_ACCESS_TOKEN=%v", h.gcpAccessToken))

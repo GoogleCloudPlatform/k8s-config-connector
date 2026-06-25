@@ -166,11 +166,11 @@ func (o *operationBase) UpdateStatus(ctx context.Context, typedStatus any, ready
 
 	old, _, _ := unstructured.NestedMap(o.object.Object, "status")
 	if old != nil {
-		if status["conditions"] == nil {
+		if status["conditions"] == nil && old["conditions"] != nil {
 			status["conditions"] = old["conditions"]
 		}
 		// status["observedGeneration"] = old["observedGeneration"]
-		if status["externalRef"] == nil {
+		if status["externalRef"] == nil && old["externalRef"] != nil {
 			status["externalRef"] = old["externalRef"]
 		}
 	}

@@ -361,6 +361,17 @@ func compareInstance(ctx context.Context, actual, desired *memorystorepb.Instanc
 		desired.CrossInstanceReplicationConfig = maskedActual.CrossInstanceReplicationConfig
 	}
 
+	// Align connections list length to prevent false drift detection on server-generated connections
+	for i, desiredEndpoint := range desired.Endpoints {
+		if i >= len(maskedActual.Endpoints) {
+			continue
+		}
+		actualEndpoint := maskedActual.Endpoints[i]
+		if len(actualEndpoint.Connections) > len(desiredEndpoint.Connections) {
+			actualEndpoint.Connections = actualEndpoint.Connections[:len(desiredEndpoint.Connections)]
+		}
+	}
+
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, err

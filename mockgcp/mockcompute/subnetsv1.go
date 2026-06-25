@@ -176,7 +176,7 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 		obj.Purpose = PtrTo("PRIVATE")
 	}
 	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
-	if obj.StackType == nil {
+	if obj.StackType == nil && obj.GetPurpose() != "PRIVATE_NAT" {
 		obj.StackType = PtrTo("IPV4_ONLY")
 	}
 	obj.State = PtrTo("READY")

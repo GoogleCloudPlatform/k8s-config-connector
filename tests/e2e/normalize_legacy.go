@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -784,6 +785,23 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	for k := range r.OperationIDs {
 		normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
 	}
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?m)^\s*"effective[A-Za-z0-9]+TimeoutSec": \d+,?\s*\n`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?m)^\s*"enableDynamicPortAllocation": (true|false),?\s*\n`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`https://(www|compute)\.googleapis\.com/compute/(beta|v1|alpha)/`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?m)^\s*"exportPsc": false,?\s*\n`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?m)^\s*"requestedCancellation": false,?\s*\n`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?m)^\s*"etag": "[^"]+",?\s*\n`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?m)^\s*"encryptedInterconnectRouter": false,?\s*\n`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?m)^\s*"done": false,?\s*\n`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(
+		`(?s)DELETE projects/\$\{projectId\}/global/networks/\$\{networkID\}\?alt=json\n.*?RESOURCE_IN_USE_BY_ANOTHER_RESOURCE.*?\n---\n\n(GET projects/\$\{projectId\}/global/networks/\$\{networkID\}\?alt=json\n.*?\n---\n\n)?`,
+	), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?s)[ \t]*"error": \{\n[ \t]*"errors": \[\n[ \t]*\{\n[ \t]*"code": "[^"]+",\n[ \t]*"message": "[^"]+"\n[ \t]*\}\n[ \t]*\]\n[ \t]*\},?\n`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?m)^\s*"httpErrorMessage": "[^"]+",?\s*\n`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?m)^\s*"httpErrorStatusCode": \d+,?\s*\n`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?m)^\s*"allowSubnetCidrRoutesOverlap": (false|true),?\s*\n`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?m)^\s*"enableFlowLogs": (false|true),?\s*\n`), ""))
+	normalizers = append(normalizers, ReplaceRegexp(regexp.MustCompile(`(?m)^\s*"state": "(READY|CREATING|DELETING)",?\s*\n`), ""))
 
 	return got, normalizers
 
