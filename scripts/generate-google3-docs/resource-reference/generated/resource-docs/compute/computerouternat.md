@@ -76,6 +76,8 @@ drainNatIps:
   namespace: string
 enableDynamicPortAllocation: boolean
 enableEndpointIndependentMapping: boolean
+endpointTypes:
+- string
 icmpIdleTimeoutSec: integer
 logConfig:
   enable: boolean
@@ -99,7 +101,15 @@ rules:
     - external: string
       name: string
       namespace: string
+    sourceNatActiveRangesRefs:
+    - external: string
+      name: string
+      namespace: string
     sourceNatDrainIpsRefs:
+    - external: string
+      name: string
+      namespace: string
+    sourceNatDrainRangesRefs:
     - external: string
       name: string
       namespace: string
@@ -119,6 +129,7 @@ subnetwork:
 tcpEstablishedIdleTimeoutSec: integer
 tcpTimeWaitTimeoutSec: integer
 tcpTransitoryIdleTimeoutSec: integer
+type: string
 udpIdleTimeoutSec: integer
 ```
 
@@ -209,6 +220,29 @@ see the [official documentation](https://cloud.google.com/nat/docs/overview#spec
     </tr>
     <tr>
         <td>
+            <p><code>endpointTypes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Immutable. Specifies the endpoint Types supported by the NAT Gateway.
+Supported values include:
+      'ENDPOINT_TYPE_VM', 'ENDPOINT_TYPE_SWG',
+      'ENDPOINT_TYPE_MANAGED_PROXY_LB'.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>endpointTypes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>icmpIdleTimeoutSec</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -271,7 +305,7 @@ This field can only be set when enableDynamicPortAllocation is enabled.</p>
     <tr>
         <td>
             <p><code>natIpAllocateOption</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -474,6 +508,57 @@ project. This field is used for public NAT.</p>
     </tr>
     <tr>
         <td>
+            <p><code>rules[].action.sourceNatActiveRangesRefs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveRangesRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>A list of URLs of the subnetworks used as source ranges for this NAT Rule.
+These subnetworks must have purpose set to PRIVATE_NAT. This field is used for private NAT.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveRangesRefs[].external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveRangesRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveRangesRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>rules[].action.sourceNatDrainIpsRefs</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -518,6 +603,58 @@ is used for public NAT.</p>
     <tr>
         <td>
             <p><code>rules[].action.sourceNatDrainIpsRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainRangesRefs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainRangesRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>A list of URLs of subnetworks representing source ranges to be drained.
+This is only supported on patch/update, and these subnetworks must have previously been used as active ranges in this NAT Rule.
+This field is used for private NAT.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainRangesRefs[].external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainRangesRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainRangesRefs[].namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -724,6 +861,19 @@ Defaults to 120s if not set.</p>
             <p><code class="apitype">integer</code></p>
             <p>Timeout (in seconds) for TCP transitory connections.
 Defaults to 30s if not set.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>type</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. Indicates whether this NAT is used for public or private IP translation.
+If unspecified, it defaults to PUBLIC.
+If 'PUBLIC' NAT used for public IP translation.
+If 'PRIVATE' NAT used for private IP translation. Default value: "PUBLIC" Possible values: ["PUBLIC", "PRIVATE"].</p>
         </td>
     </tr>
     <tr>

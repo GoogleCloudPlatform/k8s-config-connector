@@ -43,7 +43,13 @@ type RouternatAction struct {
 	SourceNatActiveIpsRefs []v1alpha1.ResourceRef `json:"sourceNatActiveIpsRefs,omitempty"`
 
 	// +optional
+	SourceNatActiveRangesRefs []v1alpha1.ResourceRef `json:"sourceNatActiveRangesRefs,omitempty"`
+
+	// +optional
 	SourceNatDrainIpsRefs []v1alpha1.ResourceRef `json:"sourceNatDrainIpsRefs,omitempty"`
+
+	// +optional
+	SourceNatDrainRangesRefs []v1alpha1.ResourceRef `json:"sourceNatDrainRangesRefs,omitempty"`
 }
 
 type RouternatLogConfig struct {
@@ -119,6 +125,13 @@ type ComputeRouterNATSpec struct {
 	// +optional
 	EnableEndpointIndependentMapping *bool `json:"enableEndpointIndependentMapping,omitempty"`
 
+	/* Immutable. Specifies the endpoint Types supported by the NAT Gateway.
+	Supported values include:
+	'ENDPOINT_TYPE_VM', 'ENDPOINT_TYPE_SWG',
+	'ENDPOINT_TYPE_MANAGED_PROXY_LB'. */
+	// +optional
+	EndpointTypes []string `json:"endpointTypes,omitempty"`
+
 	/* Timeout (in seconds) for ICMP connections. Defaults to 30s if not set. */
 	// +optional
 	IcmpIdleTimeoutSec *int64 `json:"icmpIdleTimeoutSec,omitempty"`
@@ -139,7 +152,8 @@ type ComputeRouterNATSpec struct {
 	/* How external IPs should be allocated for this NAT. Valid values are
 	'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
 	Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]. */
-	NatIpAllocateOption string `json:"natIpAllocateOption"`
+	// +optional
+	NatIpAllocateOption *string `json:"natIpAllocateOption,omitempty"`
 
 	// +optional
 	NatIps []v1alpha1.ResourceRef `json:"natIps,omitempty"`
@@ -189,6 +203,13 @@ type ComputeRouterNATSpec struct {
 	Defaults to 30s if not set. */
 	// +optional
 	TcpTransitoryIdleTimeoutSec *int64 `json:"tcpTransitoryIdleTimeoutSec,omitempty"`
+
+	/* Immutable. Indicates whether this NAT is used for public or private IP translation.
+	If unspecified, it defaults to PUBLIC.
+	If 'PUBLIC' NAT used for public IP translation.
+	If 'PRIVATE' NAT used for private IP translation. Default value: "PUBLIC" Possible values: ["PUBLIC", "PRIVATE"]. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 
 	/* Timeout (in seconds) for UDP connections. Defaults to 30s if not set. */
 	// +optional

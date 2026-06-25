@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -435,5 +436,12 @@ func IgnoreAnnotations(annotations map[string]struct{}) func(string) string {
 		}
 
 		return sb.String()
+	}
+}
+
+// ReplaceRegexp is a normalization function that replaces matching regex with replacement.
+func ReplaceRegexp(re *regexp.Regexp, to string) func(string) string {
+	return func(s string) string {
+		return re.ReplaceAllString(s, to)
 	}
 }
