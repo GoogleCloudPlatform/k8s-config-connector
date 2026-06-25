@@ -27,6 +27,7 @@
 // proto.service: google.cloud.compute.v1.Routes
 // proto.service: google.cloud.compute.v1.Autoscalers
 // proto.service: google.cloud.compute.v1.NodeTemplates
+// proto.service: google.cloud.compute.v1.Firewalls
 
 package compute
 
@@ -367,6 +368,18 @@ func (m *gcpClient) newAutoscalersClient(ctx context.Context) (*compute.Autoscal
 	client, err := compute.NewAutoscalersRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building ComputeAutoscalers client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newFirewallsClient(ctx context.Context) (*compute.FirewallsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewFirewallsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeFirewalls client: %w", err)
 	}
 	return client, err
 }
