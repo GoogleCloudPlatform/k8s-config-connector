@@ -1635,6 +1635,16 @@
 [missing_field] crd=dataplexglossaries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexlakes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dataplexlakes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metastore.serviceRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.filters.aspectTypeRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.filters.changeTypes[]" is not set in unstructured objects
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.filters.entryTypeRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.pubsubTopicRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.scope.entryGroupRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.scope.organizationLevel" is not set in unstructured objects
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.scope.projectRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplextasks.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dataplextasks.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionSpec.args" is not set in unstructured objects
 [missing_field] crd=dataplextasks.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
