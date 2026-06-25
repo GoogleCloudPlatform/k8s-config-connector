@@ -33,6 +33,17 @@ func KMSCryptoKeyVersionFuzzer() fuzztesting.KRMFuzzer {
 		KMSCryptoKeyVersionStatus_FromProto, KMSCryptoKeyVersionStatus_ToProto,
 	)
 
+	// Field comparison:
+	// KMSCryptoKeyVersionSpec:
+	// - .cryptoKey: KRM-only reference to parent, resolved to parent name.
+	// - .resourceID: KRM-only field for acquisition.
+	// - .state: maps to .state in the proto (SpecField).
+	// KMSCryptoKeyVersionStatus:
+	// - .algorithm: maps to .algorithm (StatusField).
+	// - .attestation: maps to .attestation (StatusField) and its nested fields.
+	// - .generateTime: maps to .generate_time (StatusField).
+	// - .name: maps to .name (StatusField / Identity).
+	// - .protectionLevel: maps to .protection_level (StatusField).
 	f.SpecField(".state")
 
 	f.StatusField(".name")
