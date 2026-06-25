@@ -1,0 +1,9 @@
+apiVersion: bigquerybiglake.cnrm.cloud.google.com/v1alpha1
+kind: BigLakeCatalog
+metadata:
+  name: biglakecatalog-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    name: ${projectId}
+  resourceID: biglakecatalog-${uniqueId}

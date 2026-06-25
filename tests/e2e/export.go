@@ -76,6 +76,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 		}
 		exportURI = strings.ReplaceAll(statusSelfLink, "https://bigquery.googleapis.com/bigquery/v2/", "//bigquery.googleapis.com/")
 
+	case schema.GroupKind{Group: "bigquerybiglake.cnrm.cloud.google.com", Kind: "BigLakeCatalog"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "billing.cnrm.cloud.google.com", Kind: "BillingAccount"}:
 		exportURI = resolveCAISURI(h, obj)
 
