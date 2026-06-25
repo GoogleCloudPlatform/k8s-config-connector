@@ -300,6 +300,10 @@ spec:
                 description: Server-specified ETag for the instance resource to prevent
                   simultaneous updates from overwriting each other.
                 type: string
+              externalRef:
+                description: A unique specifier for the FilestoreInstance resource
+                  in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.

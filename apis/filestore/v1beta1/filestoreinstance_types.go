@@ -152,6 +152,10 @@ type FilestoreInstanceStatus struct {
 	/* Output only. Additional information about the instance state, if available. */
 	// +optional
 	StatusMessage *string `json:"statusMessage,omitempty"`
+
+	/* A unique specifier for the FilestoreInstance resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 }
 
 // +genclient
