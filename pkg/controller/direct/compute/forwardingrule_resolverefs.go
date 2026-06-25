@@ -439,22 +439,6 @@ func valueOf[T any](v *T) T {
 }
 
 func resolveForwardingRuleRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeForwardingRule) error {
-	// Get network
-	if obj.Spec.NetworkRef != nil {
-		err := obj.Spec.NetworkRef.Normalize(ctx, reader, obj.Namespace)
-		if err != nil {
-			return err
-		}
-	}
-
-	// Get subnetwork
-	if obj.Spec.SubnetworkRef != nil {
-		err := obj.Spec.SubnetworkRef.Normalize(ctx, reader, obj.Namespace)
-		if err != nil {
-			return err
-		}
-	}
-
 	// Get backend service
 	if obj.Spec.BackendServiceRef != nil {
 		normalizedExternal, err := obj.Spec.BackendServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
@@ -463,16 +447,6 @@ func resolveForwardingRuleRefs(ctx context.Context, reader client.Reader, obj *k
 
 		}
 		obj.Spec.BackendServiceRef.External = normalizedExternal
-	}
-
-	// Get ip address, ip address is optional
-	if obj.Spec.IpAddress != nil && obj.Spec.IpAddress.AddressRef != nil {
-		computeAddressRef, err := ResolveComputeAddress(ctx, reader, obj, obj.Spec.IpAddress.AddressRef)
-		if err != nil {
-			return err
-
-		}
-		obj.Spec.IpAddress.AddressRef.External = computeAddressRef.External
 	}
 
 	// Get target, target is optional
