@@ -91,7 +91,7 @@
       "AccessContextManagerAccessPolicy",
       "IAMServiceAccount"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -141,7 +141,7 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -194,7 +194,7 @@
       "IAMServiceAccount",
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -218,7 +218,7 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -244,7 +244,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -299,7 +299,7 @@
     "dependencies": [
       "AlloyDBCluster"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -349,7 +349,7 @@
     "dependencies": [
       "ApigeeOrganization"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -400,7 +400,7 @@
       "ComputeNetwork",
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -733,7 +733,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": false,
@@ -787,7 +787,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -923,7 +923,7 @@
     "dependencies": [
       "KMSCryptoKey"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -949,7 +949,7 @@
     "dependencies": [
       "BigtableInstance"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -975,7 +975,7 @@
     "dependencies": [
       "PubSubTopic"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -1212,7 +1212,7 @@
       "KMSCryptoKey",
       "StorageBucket"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": false,
@@ -1574,7 +1574,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 552,
+    "sortOrder": 551,
     "downstreamCount": 4
   },
   {
@@ -1602,7 +1602,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 551,
+    "sortOrder": 553,
     "downstreamCount": 0
   },
   {
@@ -1641,7 +1641,7 @@
     "dependencies": [
       "ComputeNetwork"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -1667,7 +1667,7 @@
     "dependencies": [
       "Folder"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -2289,7 +2289,7 @@
     "dependencies": [
       "ComputeNetwork"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": false,
@@ -2343,7 +2343,7 @@
       "ComputeNodeTemplate",
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -2367,7 +2367,7 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -2391,7 +2391,7 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": false,
@@ -2542,7 +2542,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -2580,7 +2580,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 553,
+    "sortOrder": 552,
     "downstreamCount": 0
   },
   {
@@ -2623,7 +2623,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": false,
@@ -2700,7 +2700,7 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -2721,19 +2721,20 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ComputeNetwork"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
@@ -2774,6 +2775,7 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
@@ -2782,14 +2784,14 @@
       "ComputeSubnetwork",
       "ComputeVPNTunnel"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
@@ -3012,7 +3014,7 @@
     "dependencies": [
       "KMSCryptoKey"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -3038,7 +3040,7 @@
     "dependencies": [
       "ComputeNetwork"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -3117,7 +3119,7 @@
       "ComputeSSLPolicy",
       "ComputeURLMap"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -3438,7 +3440,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": false,
@@ -3466,7 +3468,7 @@
       "IAMServiceAccount",
       "KMSCryptoKey"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -3495,7 +3497,7 @@
       "IAMServiceAccount",
       "KMSCryptoKey"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -3684,7 +3686,7 @@
       "DNSManagedZone",
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -3737,7 +3739,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -3763,7 +3765,7 @@
     "dependencies": [
       "DataCatalogTaxonomy"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -3789,7 +3791,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -3866,6 +3868,7 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
@@ -3873,14 +3876,14 @@
       "IAMServiceAccount",
       "KMSCryptoKey"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
@@ -3930,7 +3933,7 @@
       "Project",
       "StorageBucket"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -4527,17 +4530,17 @@
       "ComputeNetwork",
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go or _identity.go",
+    "notes": "",
     "sortOrder": 369,
     "downstreamCount": 0
   },
@@ -4778,7 +4781,7 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -5000,7 +5003,7 @@
       "IAMAuditConfig"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": false,
@@ -5076,7 +5079,7 @@
       "IAMPolicy"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": false,
@@ -5103,7 +5106,7 @@
       "IAMServiceAccount",
       "ServiceIdentity"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": false,
@@ -5127,7 +5130,7 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": false,
@@ -5153,7 +5156,7 @@
     "dependencies": [
       "IAMServiceAccount"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -5280,7 +5283,7 @@
       "DCL"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -5587,7 +5590,7 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -5636,7 +5639,7 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -5660,7 +5663,7 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -5853,7 +5856,7 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -5879,7 +5882,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -5905,7 +5908,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -5929,7 +5932,7 @@
       "DCL"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -5953,7 +5956,7 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -5979,7 +5982,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -6033,7 +6036,7 @@
       "MonitoringGroup",
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -6112,7 +6115,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -6138,7 +6141,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -6242,7 +6245,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -6481,7 +6484,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -6616,7 +6619,7 @@
       "Project",
       "StorageBucket"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": false,
@@ -6851,19 +6854,20 @@
     "controllerType": "DCL",
     "defaultController": "DCL",
     "supportedControllers": [
-      "DCL"
+      "DCL",
+      "Direct"
     ],
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
@@ -7303,7 +7307,7 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
@@ -7800,7 +7804,7 @@
       "KMSCryptoKey",
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
       "gen-types": true,
       "identity-reference": true,
