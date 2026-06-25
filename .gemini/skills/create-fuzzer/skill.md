@@ -22,7 +22,7 @@ This skill guides an automated agent through the process of implementing a round
 
 2. **Create the Fuzzer File**
    - Create a new fuzzer file inside the resource's direct controller package. Use the **full kind name** in lowercase for the file, e.g., `pkg/controller/direct/<service>/<kind_in_lowercase>_fuzzer.go` (for example, `computeurlmap_fuzzer.go` is preferable over `urlmap_fuzzer.go`, and `computeinstance_fuzzer.go` is preferred over `instance_fuzzer.go` to keep the name unambiguous and fully descriptive).
-   - **Note on Renaming:** If a fuzzer file already exists under a different name (such as a full name/convention versus an abbreviated one like `computeurlmap_fuzzer.go` vs `urlmap_fuzzer.go`), it is **not** worth renaming the file if renaming is the only change being made, as it can cause unnecessary git noise. The full type name (e.g. `computeurlmap_fuzzer.go`) is always preferable to an abbreviated type name (e.g. `urlmap_fuzzer.go`).
+   - **Note on Renaming / Naming Functions:** A function name matching the full resource kind (e.g. `monitoringGroupFuzzer` or `computeInstanceFuzzer`) is highly preferred over abbreviated names (e.g. `groupFuzzer` or `instanceFuzzer`). If a fuzzer or naming scheme already exists, it is **not** worth renaming it just to make the name shorter, as the full name is more descriptive and renaming causes unnecessary git/review noise. Furthermore, submitting PRs that only add journal notes is perfectly acceptable to help keep track of the work done, even if no other codebase changes were required.
    - Use the appropriate package name matching the surrounding controller files.
    - Annotate the file with the appropriate `+tool:fuzz-gen`, `proto.message`, and `api.group` metadata.
 
