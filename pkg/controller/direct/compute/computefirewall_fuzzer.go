@@ -34,6 +34,36 @@ func computeFirewallFuzzer() fuzztesting.KRMFuzzer {
 		ComputeFirewallStatus_v1beta1_FromProto, ComputeFirewallStatus_v1beta1_ToProto,
 	)
 
+	// Detailed Comparison of KRM Fields with Proto Fields:
+	// +-------------------------+---------------------------+----------------------------------------------+
+	// | KRM Spec Field          | Proto Field               | Fuzzer/Mapping Status                        |
+	// +-------------------------+---------------------------+----------------------------------------------+
+	// | allow                   | allowed                   | SpecField (".allowed")                       |
+	// | deny                    | denied                    | SpecField (".denied")                        |
+	// | description             | description               | SpecField (".description")                   |
+	// | destinationRanges       | destination_ranges        | SpecField (".destination_ranges")            |
+	// | direction               | direction                 | SpecField (".direction")                     |
+	// | disabled                | disabled                  | SpecField (".disabled")                      |
+	// | enableLogging           | N/A (Deprecated)          | Deprecated, not in proto schema, ignored     |
+	// | logConfig               | log_config                | SpecField (".log_config")                    |
+	// | logConfig.metadata      | log_config.metadata       | SpecField (".log_config.metadata")           |
+	// | networkRef              | network                   | SpecField (".network")                       |
+	// | priority                | priority                  | SpecField (".priority")                      |
+	// | resourceID              | name                      | Identity/name field (Unimplemented_Identity) |
+	// | sourceRanges            | source_ranges             | SpecField (".source_ranges")                 |
+	// | sourceServiceAccounts   | source_service_accounts   | SpecField (".source_service_accounts")       |
+	// | sourceTags              | source_tags               | SpecField (".source_tags")                   |
+	// | targetServiceAccounts   | target_service_accounts   | SpecField (".target_service_accounts")       |
+	// | targetTags              | target_tags               | SpecField (".target_tags")                   |
+	// +-------------------------+---------------------------+----------------------------------------------+
+	//
+	// +-------------------------+---------------------------+----------------------------------------------+
+	// | KRM Status Field        | Proto Field               | Fuzzer/Mapping Status                        |
+	// +-------------------------+---------------------------+----------------------------------------------+
+	// | creationTimestamp       | creation_timestamp        | StatusField (".creation_timestamp")          |
+	// | selfLink                | self_link                 | StatusField (".self_link")                   |
+	// +-------------------------+---------------------------+----------------------------------------------+
+
 	// Spec fields
 	f.SpecField(".allowed")
 	f.SpecField(".denied")
