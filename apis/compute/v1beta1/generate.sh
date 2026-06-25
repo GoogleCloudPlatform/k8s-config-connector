@@ -42,6 +42,7 @@ go run . generate-types \
   --resource ComputeRoute:Route \
   --resource ComputeRouter:Router \
   --resource ComputeRouterInterface:RouterInterface \
+  --resource ComputeRouterNAT:RouterNat \
   --resource ComputeResourcePolicy:ResourcePolicy \
   --resource ComputeSecurityPolicy:SecurityPolicy \
   --resource ComputeSnapshot:Snapshot \

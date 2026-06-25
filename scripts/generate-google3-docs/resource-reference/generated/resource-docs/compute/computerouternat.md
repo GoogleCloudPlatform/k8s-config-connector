@@ -136,7 +136,7 @@ udpIdleTimeoutSec: integer
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p></p>
+            <p>A list of IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT.</p>
         </td>
     </tr>
     <tr>
@@ -146,8 +146,7 @@ udpIdleTimeoutSec: integer
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A list of IP resources to be drained. These IPs must be valid
-static external IPs that have been assigned to the NAT.</p>
+            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -157,7 +156,7 @@ static external IPs that have been assigned to the NAT.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeAddress` resource.</p>
+            <p>A reference to an externally managed ComputeAddress resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}" or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".</p>
         </td>
     </tr>
     <tr>
@@ -167,7 +166,7 @@ static external IPs that have been assigned to the NAT.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -177,7 +176,7 @@ static external IPs that have been assigned to the NAT.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -203,8 +202,7 @@ Mutually exclusive with enableEndpointIndependentMapping.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Specifies if endpoint independent mapping is enabled. This is enabled by default. For more information
-see the [official documentation](https://cloud.google.com/nat/docs/overview#specs-rfcs).</p>
+            <p>Specifies if endpoint independent mapping is enabled. This is enabled by default. For more information see the [official documentation](https://cloud.google.com/nat/docs/overview#specs-rfcs).</p>
         </td>
     </tr>
     <tr>
@@ -254,8 +252,7 @@ see the [official documentation](https://cloud.google.com/nat/docs/overview#spec
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Maximum number of ports allocated to a VM from this NAT.
-This field can only be set when enableDynamicPortAllocation is enabled.</p>
+            <p>Maximum number of ports allocated to a VM from this NAT. This field can only be set when enableDynamicPortAllocation is enabled.</p>
         </td>
     </tr>
     <tr>
@@ -275,9 +272,7 @@ This field can only be set when enableDynamicPortAllocation is enabled.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>How external IPs should be allocated for this NAT. Valid values are
-'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
-Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"].</p>
+            <p>How external IPs should be allocated for this NAT. Valid values are 'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"].</p>
         </td>
     </tr>
     <tr>
@@ -287,7 +282,7 @@ Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible va
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p></p>
+            <p>NAT IPs. Only valid if natIpAllocateOption is set to MANUAL_ONLY.</p>
         </td>
     </tr>
     <tr>
@@ -297,7 +292,7 @@ Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible va
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>NAT IPs. Only valid if natIpAllocateOption is set to MANUAL_ONLY.</p>
+            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -307,7 +302,7 @@ Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible va
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeAddress` resource.</p>
+            <p>A reference to an externally managed ComputeAddress resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}" or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".</p>
         </td>
     </tr>
     <tr>
@@ -317,7 +312,7 @@ Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible va
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -327,7 +322,7 @@ Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible va
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -367,7 +362,7 @@ Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible va
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `ComputeRouter` resource.</p>
+            <p>A reference to an externally managed ComputeRouter resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/routers/{{routerID}}".</p>
         </td>
     </tr>
     <tr>
@@ -377,7 +372,7 @@ Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible va
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeRouter resource.</p>
         </td>
     </tr>
     <tr>
@@ -387,7 +382,7 @@ Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible va
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeRouter resource.</p>
         </td>
     </tr>
     <tr>
@@ -427,7 +422,7 @@ Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible va
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p></p>
+            <p>A list of URLs of the IP resources used for this NAT rule. These IP addresses must be valid static external IP addresses assigned to the project. This field is used for public NAT.</p>
         </td>
     </tr>
     <tr>
@@ -437,9 +432,7 @@ Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible va
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A list of URLs of the IP resources used for this NAT rule. These IP
-addresses must be valid static external IP addresses assigned to the
-project. This field is used for public NAT.</p>
+            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -449,7 +442,7 @@ project. This field is used for public NAT.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeAddress` resource.</p>
+            <p>A reference to an externally managed ComputeAddress resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}" or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".</p>
         </td>
     </tr>
     <tr>
@@ -459,7 +452,7 @@ project. This field is used for public NAT.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -469,7 +462,7 @@ project. This field is used for public NAT.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -479,7 +472,7 @@ project. This field is used for public NAT.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p></p>
+            <p>A list of URLs of the IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT. These IPs should be used for updating/patching a NAT rule only. This field is used for public NAT.</p>
         </td>
     </tr>
     <tr>
@@ -489,10 +482,7 @@ project. This field is used for public NAT.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A list of URLs of the IP resources to be drained. These IPs must be
-valid static external IPs that have been assigned to the NAT. These
-IPs should be used for updating/patching a NAT rule only. This field
-is used for public NAT.</p>
+            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
         </td>
     </tr>
     <tr>
@@ -502,7 +492,7 @@ is used for public NAT.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeAddress` resource.</p>
+            <p>A reference to an externally managed ComputeAddress resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}" or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".</p>
         </td>
     </tr>
     <tr>
@@ -512,7 +502,7 @@ is used for public NAT.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -522,7 +512,7 @@ is used for public NAT.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -563,8 +553,7 @@ The following example is a valid match expression for private NAT:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>An integer uniquely identifying a rule in the list.
-The rule number must be a positive value between 0 and 65000, and must be unique among rules within a NAT.</p>
+            <p>An integer uniquely identifying a rule in the list. The rule number must be a positive value between 0 and 65000, and must be unique among rules within a NAT.</p>
         </td>
     </tr>
     <tr>
@@ -574,16 +563,7 @@ The rule number must be a positive value between 0 and 65000, and must be unique
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>How NAT should be configured per Subnetwork.
-If 'ALL_SUBNETWORKS_ALL_IP_RANGES', all of the
-IP ranges in every Subnetwork are allowed to Nat.
-If 'ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES', all of the primary IP
-ranges in every Subnetwork are allowed to Nat.
-'LIST_OF_SUBNETWORKS': A list of Subnetworks are allowed to Nat
-(specified in the field subnetwork below). Note that if this field
-contains ALL_SUBNETWORKS_ALL_IP_RANGES or
-ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not be any
-other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"].</p>
+            <p>How NAT should be configured per Subnetwork. If 'ALL_SUBNETWORKS_ALL_IP_RANGES', all of the IP ranges in every Subnetwork are allowed to Nat. If 'ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES', all of the primary IP ranges in every Subnetwork are allowed to Nat. 'LIST_OF_SUBNETWORKS': A list of Subnetworks are allowed to Nat (specified in the field subnetwork below). Note that if this field contains ALL_SUBNETWORKS_ALL_IP_RANGES or ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not be any other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"].</p>
         </td>
     </tr>
     <tr>
@@ -593,8 +573,7 @@ other RouterNat section in any Router for this network in this region. Possible 
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>One or more subnetwork NAT configurations. Only used if
-'source_subnetwork_ip_ranges_to_nat' is set to 'LIST_OF_SUBNETWORKS'.</p>
+            <p>One or more subnetwork NAT configurations. Only used if 'source_subnetwork_ip_ranges_to_nat' is set to 'LIST_OF_SUBNETWORKS'.</p>
         </td>
     </tr>
     <tr>
@@ -614,10 +593,7 @@ other RouterNat section in any Router for this network in this region. Possible 
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>List of the secondary ranges of the subnetwork that are allowed
-to use NAT. This can be populated only if
-'LIST_OF_SECONDARY_IP_RANGES' is one of the values in
-sourceIpRangesToNat.</p>
+            <p>List of the secondary ranges of the subnetwork that are allowed to use NAT. This can be populated only if 'LIST_OF_SECONDARY_IP_RANGES' is one of the values in sourceIpRangesToNat.</p>
         </td>
     </tr>
     <tr>
@@ -637,10 +613,7 @@ sourceIpRangesToNat.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>List of options for which source IPs in the subnetwork
-should have NAT enabled. Supported values include:
-'ALL_IP_RANGES', 'LIST_OF_SECONDARY_IP_RANGES',
-'PRIMARY_IP_RANGE'.</p>
+            <p>List of options for which source IPs in the subnetwork should have NAT enabled. Supported values include: 'ALL_IP_RANGES', 'LIST_OF_SECONDARY_IP_RANGES', 'PRIMARY_IP_RANGE'.</p>
         </td>
     </tr>
     <tr>
@@ -670,7 +643,7 @@ should have NAT enabled. Supported values include:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -680,7 +653,7 @@ should have NAT enabled. Supported values include:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -690,7 +663,7 @@ should have NAT enabled. Supported values include:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -700,8 +673,7 @@ should have NAT enabled. Supported values include:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Timeout (in seconds) for TCP established connections.
-Defaults to 1200s if not set.</p>
+            <p>Timeout (in seconds) for TCP established connections. Defaults to 1200s if not set.</p>
         </td>
     </tr>
     <tr>
@@ -711,8 +683,7 @@ Defaults to 1200s if not set.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Timeout (in seconds) for TCP connections that are in TIME_WAIT state.
-Defaults to 120s if not set.</p>
+            <p>Timeout (in seconds) for TCP connections that are in TIME_WAIT state. Defaults to 120s if not set.</p>
         </td>
     </tr>
     <tr>
@@ -722,8 +693,7 @@ Defaults to 120s if not set.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Timeout (in seconds) for TCP transitory connections.
-Defaults to 30s if not set.</p>
+            <p>Timeout (in seconds) for TCP transitory connections. Defaults to 30s if not set.</p>
         </td>
     </tr>
     <tr>
@@ -764,7 +734,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeRouterNAT's current state.</p>
         </td>
     </tr>
     <tr>

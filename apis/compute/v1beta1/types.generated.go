@@ -34,6 +34,7 @@
 // resource: ComputeRoute:Route
 // resource: ComputeRouter:Router
 // resource: ComputeRouterInterface:RouterInterface
+// resource: ComputeRouterNAT:RouterNat
 // resource: ComputeResourcePolicy:ResourcePolicy
 // resource: ComputeSecurityPolicy:SecurityPolicy
 // resource: ComputeSnapshot:Snapshot
@@ -3936,7 +3937,8 @@ type RouterMd5AuthenticationKey struct {
 }
 */
 
-/* unreachable type RouterNAT
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.RouterNat", skipping
+
 // +kcc:proto=google.cloud.compute.v1.RouterNat
 type RouterNAT struct {
 	// The network tier to use when automatically reserving NAT IP addresses. Must be one of: PREMIUM, STANDARD. If not specified, then the current project-level default tier is used.

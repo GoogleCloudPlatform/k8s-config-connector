@@ -2775,6 +2775,90 @@ func ComputeRouterInterfaceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 }
 */
 
+/* found existing non-generated mapping function "ComputeRouterNATSpec_v1beta1_FromProto", skipping
+func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNat) *krm.ComputeRouterNATSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterNATSpec{}
+	// MISSING: AutoNetworkTier
+	// MISSING: DrainNATIps
+	// (near miss): "DrainNATIps" vs "DrainNatIps"
+	out.EnableDynamicPortAllocation = in.EnableDynamicPortAllocation
+	out.EnableEndpointIndependentMapping = in.EnableEndpointIndependentMapping
+	// MISSING: EndpointTypes
+	out.IcmpIdleTimeoutSec = in.IcmpIdleTimeoutSec
+	out.LogConfig = RouternatLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
+	// MISSING: MaxPortsPerVM
+	// (near miss): "MaxPortsPerVM" vs "MaxPortsPerVm"
+	// MISSING: MinPortsPerVM
+	// (near miss): "MinPortsPerVM" vs "MinPortsPerVm"
+	// MISSING: Name
+	// MISSING: Nat64Subnetworks
+	// MISSING: NATIPAllocateOption
+	// (near miss): "NATIPAllocateOption" vs "NatIpAllocateOption"
+	// MISSING: NATIps
+	// (near miss): "NATIps" vs "NatIps"
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, RouternatRules_v1beta1_FromProto)
+	// MISSING: SourceSubnetworkIPRangesToNAT
+	// (near miss): "SourceSubnetworkIPRangesToNAT" vs "SourceSubnetworkIpRangesToNat"
+	// MISSING: SourceSubnetworkIPRangesToNat64
+	// MISSING: Subnetworks
+	// MISSING: TCPEstablishedIdleTimeoutSec
+	// (near miss): "TCPEstablishedIdleTimeoutSec" vs "TcpEstablishedIdleTimeoutSec"
+	// MISSING: TCPTimeWaitTimeoutSec
+	// (near miss): "TCPTimeWaitTimeoutSec" vs "TcpTimeWaitTimeoutSec"
+	// MISSING: TCPTransitoryIdleTimeoutSec
+	// (near miss): "TCPTransitoryIdleTimeoutSec" vs "TcpTransitoryIdleTimeoutSec"
+	// MISSING: Type
+	// MISSING: UDPIdleTimeoutSec
+	// (near miss): "UDPIdleTimeoutSec" vs "UdpIdleTimeoutSec"
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeRouterNATSpec_v1beta1_ToProto", skipping
+func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterNATSpec) *pb.RouterNat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterNat{}
+	// MISSING: AutoNetworkTier
+	// MISSING: DrainNATIps
+	// (near miss): "DrainNATIps" vs "DrainNatIps"
+	out.EnableDynamicPortAllocation = in.EnableDynamicPortAllocation
+	out.EnableEndpointIndependentMapping = in.EnableEndpointIndependentMapping
+	// MISSING: EndpointTypes
+	out.IcmpIdleTimeoutSec = in.IcmpIdleTimeoutSec
+	out.LogConfig = RouternatLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+	// MISSING: MaxPortsPerVM
+	// (near miss): "MaxPortsPerVM" vs "MaxPortsPerVm"
+	// MISSING: MinPortsPerVM
+	// (near miss): "MinPortsPerVM" vs "MinPortsPerVm"
+	// MISSING: Name
+	// MISSING: Nat64Subnetworks
+	// MISSING: NATIPAllocateOption
+	// (near miss): "NATIPAllocateOption" vs "NatIpAllocateOption"
+	// MISSING: NATIps
+	// (near miss): "NATIps" vs "NatIps"
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, RouternatRules_v1beta1_ToProto)
+	// MISSING: SourceSubnetworkIPRangesToNAT
+	// (near miss): "SourceSubnetworkIPRangesToNAT" vs "SourceSubnetworkIpRangesToNat"
+	// MISSING: SourceSubnetworkIPRangesToNat64
+	// MISSING: Subnetworks
+	// MISSING: TCPEstablishedIdleTimeoutSec
+	// (near miss): "TCPEstablishedIdleTimeoutSec" vs "TcpEstablishedIdleTimeoutSec"
+	// MISSING: TCPTimeWaitTimeoutSec
+	// (near miss): "TCPTimeWaitTimeoutSec" vs "TcpTimeWaitTimeoutSec"
+	// MISSING: TCPTransitoryIdleTimeoutSec
+	// (near miss): "TCPTransitoryIdleTimeoutSec" vs "TcpTransitoryIdleTimeoutSec"
+	// MISSING: Type
+	// MISSING: UDPIdleTimeoutSec
+	// (near miss): "UDPIdleTimeoutSec" vs "UdpIdleTimeoutSec"
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeRouterSpec_v1beta1_FromProto", skipping
 func ComputeRouterSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Router) *krm.ComputeRouterSpec {
 	if in == nil {
