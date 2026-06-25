@@ -178,6 +178,17 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			}
 		}
 	})
+
+	// Route and Operation
+	replacements.TransformObject("", func(m map[string]any) {
+		if m["kind"] == "compute#route" {
+			delete(m, "description")
+			delete(m, "warnings")
+		}
+		if m["kind"] == "compute#operation" {
+			delete(m, "warnings")
+		}
+	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
@@ -220,10 +231,16 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 					placeholder = "${addressID}"
 				}
 
+				namePlaceholder := placeholder
+				switch kind {
+				case "routes":
+					namePlaceholder = "${routeName}"
+				}
+
 				// We _should_ differentiate between ID and number.
 				// But this causes too many diffs right now.
 
-				klog.Infof("targetLink=%q, targetId=%q, placeholder=%q", targetLink, targetId, placeholder)
+				klog.Infof("targetLink=%q, targetId=%q, placeholder=%q, kind=%q, namePlaceholder=%q", targetLink, targetId, placeholder, kind, namePlaceholder)
 
 				replacements.ReplaceStringValue(targetId, placeholder)
 
@@ -231,7 +248,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 					// Don't replace, "default" is a well-known value used for both subnetwork and network
 					// We could instead do something like this:  replacements.ReplaceStringValue(kind + "/" + v, kind + "/" + placeholder)
 				} else {
-					replacements.ReplaceStringValue(v, placeholder)
+					replacements.ReplaceStringValue(v, namePlaceholder)
 				}
 			}
 		}
