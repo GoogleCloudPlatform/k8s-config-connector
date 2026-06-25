@@ -1,0 +1,6 @@
+When implementing the round-trip KRM fuzzer for MonitoringNotificationChannel, we observed:
+1. `MonitoringNotificationChannel` had an existing fuzzer defined at `pkg/controller/direct/monitoring/monitoringnotificationchannel_fuzzer.go` using deprecated/legacy `.Insert()` calls rather than modern fuzzer helper wrappers.
+2. We refactored and relocated the fuzzer to the correct expected path `pkg/controller/direct/monitoring/notificationchannel_fuzzer.go` as requested.
+3. The fuzzer now leverages modern, type-inferred `fuzztesting.NewKRMTypedFuzzer` and helper wrapper functions (`f.SpecField()`, `f.StatusField()`, and `f.Unimplemented_Identity()`) to structure the field comparison properly.
+4. Correctly registered `.description` as a supported Spec field mapped to `Description` instead of listing it as unimplemented, as it is fully supported by KCC's mappers.
+5. All fields of the proto message `google.monitoring.v3.NotificationChannel` are cleanly accounted for as either `SpecField` (for `.type`, `.description`, `.labels`, `.enabled`), `StatusField` (for `.name`, `.verification_status`), `Unimplemented_Identity` (for the resource `.name` field), or `Unimplemented_NotYetTriaged` (for fields not yet fully implemented by KCC, such as `.display_name`, `.creation_record`, `.mutation_records`, and `.user_labels`), ensuring a clean and lossless round-trip test.
