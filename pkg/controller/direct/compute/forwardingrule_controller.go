@@ -84,12 +84,18 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, op *directba
 		obj.Spec.LoadBalancingScheme = direct.LazyPtr("EXTERNAL")
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
+	// resolveForwardingRuleRefs is required because certain spec fields on ComputeForwardingRule (like ipAddress, target, etc.)
+	// reference other GCP resources where we need to retrieve custom values (such as status.observedState.address
+	// or status.selfLink) that are not automatically mapped by standard reference normalization.
+	// This must be run before common.NormalizeReferences because it may clear or transform some references (e.g. converting
+	// MemorystoreInstanceRef into ServiceAttachmentRef).
 	if err := resolveForwardingRuleRefs(ctx, reader, obj); err != nil {
 		return nil, fmt.Errorf("resolving remaining references: %w", err)
+	}
+
+	// Normalize standard KCC references.
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	mapCtx := &direct.MapContext{}
@@ -188,8 +194,10 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	if err != nil {
 		return fmt.Errorf("creating ComputeForwardingRule %s: %w", a.id, err)
 	}
-	if err = op.Wait(ctx); err != nil {
-		return fmt.Errorf("waiting ComputeForwardingRule %s create failed: %w", a.id, err)
+	if !op.Done() {
+		if err = op.Wait(ctx); err != nil {
+			return fmt.Errorf("waiting ComputeForwardingRule %s create failed: %w", a.id, err)
+		}
 	}
 	log.V(2).Info("successfully created ComputeForwardingRule", "name", a.id)
 
@@ -210,8 +218,10 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 		if err != nil {
 			return fmt.Errorf("adding ComputeForwardingRule labels %s: %w", a.id, err)
 		}
-		if err = op.Wait(ctx); err != nil {
-			return fmt.Errorf("waiting ComputeForwardingRule %s add labels failed: %w", a.id, err)
+		if !op.Done() {
+			if err = op.Wait(ctx); err != nil {
+				return fmt.Errorf("waiting ComputeForwardingRule %s add labels failed: %w", a.id, err)
+			}
 		}
 		log.V(2).Info("successfully added ComputeForwardingRule labels", "name", a.id)
 
@@ -235,7 +245,10 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeForwardingRule", "name", a.id.ForwardingRule)
 
-	diffs := a.compareForwardingRule(ctx, updateOp.GetUnstructured())
+	diffs, err := compareForwardingRule(ctx, a.actual, a.desired, a.desiredStatusTarget, updateOp.GetUnstructured())
+	if err != nil {
+		return err
+	}
 	if !diffs.HasDiff() {
 		log.V(2).Info("no diff detected for ComputeForwardingRule", "name", a.id)
 		return a.updateStatus(ctx, updateOp, a.actual)
@@ -243,10 +256,8 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 
 	structuredreporting.ReportDiff(ctx, diffs)
 
-	desiredAllowGlobalAccess := direct.ValueOf(a.desired.AllowGlobalAccess)
-	actualAllowGlobalAccess := direct.ValueOf(a.actual.AllowGlobalAccess)
-
-	if desiredAllowGlobalAccess != actualAllowGlobalAccess {
+	if hasFieldDiff(diffs, "allow_global_access") {
+		desiredAllowGlobalAccess := direct.ValueOf(a.desired.AllowGlobalAccess)
 		if a.id.Region != "global" {
 			// To match the request body in TF-controller log
 			// https://github.com/hashicorp/terraform-provider-google/blob/main/google/services/compute/resource_compute_forwarding_rule.go#L1151
@@ -261,16 +272,17 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 			if err != nil {
 				return fmt.Errorf("updating ComputeForwardingRule %s: %w", a.id, err)
 			}
-			if err = op.Wait(ctx); err != nil {
-				return fmt.Errorf("waiting ComputeForwardingRule %s update failed: %w", a.id, err)
+			if !op.Done() {
+				if err = op.Wait(ctx); err != nil {
+					return fmt.Errorf("waiting ComputeForwardingRule %s update failed: %w", a.id, err)
+				}
 			}
 			log.V(2).Info("successfully updated ComputeForwardingRule", "name", a.id)
 		}
 	}
 
 	// Use setTarget and setLabels to update target and labels fields.
-	labelsDiff := !mapsEqual(a.desired.Labels, a.actual.Labels)
-	if labelsDiff {
+	if hasFieldDiff(diffs, "labels") {
 		labelsToSend := a.desired.Labels
 		if labelsToSend == nil {
 			labelsToSend = make(map[string]string)
@@ -279,20 +291,16 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 		if err != nil {
 			return fmt.Errorf("updating ComputeForwardingRule labels %s: %w", a.id, err)
 		}
-		if err = op.Wait(ctx); err != nil {
-			return fmt.Errorf("waiting ComputeForwardingRule %s update labels failed: %w", a.id, err)
+		if !op.Done() {
+			if err = op.Wait(ctx); err != nil {
+				return fmt.Errorf("waiting ComputeForwardingRule %s update labels failed: %w", a.id, err)
+			}
 		}
 		log.V(2).Info("successfully updated ComputeForwardingRule labels", "name", a.id)
 	}
 
 	// setTarget request is sent when there are updates to target.
-	// IsSelfLinkEqual is a special handling to avoid reconciliation discrepancies caused by resources and
-	// their dependencies being managed by different controllers.
-	// This can be removed once all Compute resources are migrated to direct controller.
-	targetMatchSpec := IsSelfLinkEqual(a.desired.Target, a.actual.Target)
-	targetMatchStatus := IsSelfLinkEqual(a.desired.Target, a.desiredStatusTarget)
-	targetDiff := !targetMatchSpec || (a.desiredStatusTarget != nil && !targetMatchStatus)
-	if targetDiff {
+	if hasFieldDiff(diffs, "target") {
 		var op *gcp.Operation
 		if a.id.IsGlobal() {
 			setTargetReq := &computepb.SetTargetGlobalForwardingRuleRequest{
@@ -313,8 +321,10 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 		if err != nil {
 			return fmt.Errorf("updating ComputeForwardingRule target %s: %w", a.id, err)
 		}
-		if err = op.Wait(ctx); err != nil {
-			return fmt.Errorf("waiting ComputeForwardingRule %s update target failed: %w", a.id, err)
+		if !op.Done() {
+			if err = op.Wait(ctx); err != nil {
+				return fmt.Errorf("waiting ComputeForwardingRule %s update target failed: %w", a.id, err)
+			}
 		}
 		log.V(2).Info("successfully updated ComputeForwardingRule target", "name", a.id)
 	}
@@ -328,39 +338,48 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	return a.updateStatus(ctx, updateOp, updated)
 }
 
-func (a *forwardingRuleAdapter) compareForwardingRule(ctx context.Context, u *unstructured.Unstructured) *structuredreporting.Diff {
+func compareForwardingRule(ctx context.Context, actual, desired *computepb.ForwardingRule, desiredStatusTarget *string, u *unstructured.Unstructured) (*structuredreporting.Diff, error) {
 	diff := &structuredreporting.Diff{Object: u}
 
 	desiredAllowGlobalAccess := false
-	if a.desired.AllowGlobalAccess != nil {
-		desiredAllowGlobalAccess = *a.desired.AllowGlobalAccess
+	if desired.AllowGlobalAccess != nil {
+		desiredAllowGlobalAccess = *desired.AllowGlobalAccess
 	}
 	actualAllowGlobalAccess := false
-	if a.actual.AllowGlobalAccess != nil {
-		actualAllowGlobalAccess = *a.actual.AllowGlobalAccess
+	if actual.AllowGlobalAccess != nil {
+		actualAllowGlobalAccess = *actual.AllowGlobalAccess
 	}
 	if desiredAllowGlobalAccess != actualAllowGlobalAccess {
-		diff.AddField("allow_global_access", a.actual.AllowGlobalAccess, a.desired.AllowGlobalAccess)
+		diff.AddField("allow_global_access", actual.AllowGlobalAccess, desired.AllowGlobalAccess)
 	}
 
-	if !mapsEqual(a.desired.Labels, a.actual.Labels) {
-		diff.AddField("labels", a.actual.Labels, a.desired.Labels)
+	if !mapsEqual(desired.Labels, actual.Labels) {
+		diff.AddField("labels", actual.Labels, desired.Labels)
 	}
 
-	targetMatchSpec := IsSelfLinkEqual(a.desired.Target, a.actual.Target)
-	targetMatchStatus := IsSelfLinkEqual(a.desired.Target, a.desiredStatusTarget)
-	if !targetMatchSpec || (a.desiredStatusTarget != nil && !targetMatchStatus) {
-		diff.AddField("target", a.actual.Target, a.desired.Target)
+	targetMatchSpec := IsSelfLinkEqual(desired.Target, actual.Target)
+	targetMatchStatus := IsSelfLinkEqual(desired.Target, desiredStatusTarget)
+	if !targetMatchSpec || (desiredStatusTarget != nil && !targetMatchStatus) {
+		diff.AddField("target", actual.Target, desired.Target)
 	}
 
-	return diff
+	return diff, nil
+}
+
+func hasFieldDiff(diff *structuredreporting.Diff, fieldID string) bool {
+	for _, f := range diff.Fields {
+		if f.ID == fieldID {
+			return true
+		}
+	}
+	return false
 }
 
 func (a *forwardingRuleAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *computepb.ForwardingRule) error {
-	status := &krm.ComputeForwardingRuleStatus{
-		LabelFingerprint:  latest.LabelFingerprint,
-		CreationTimestamp: latest.CreationTimestamp,
-		SelfLink:          latest.SelfLink,
+	mapCtx := &direct.MapContext{}
+	status := ComputeForwardingRuleStatus_v1beta1_FromProto(mapCtx, latest)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return op.UpdateStatus(ctx, status, nil)
@@ -420,8 +439,10 @@ func (a *forwardingRuleAdapter) Delete(ctx context.Context, deleteOp *directbase
 	if err != nil {
 		return false, fmt.Errorf("deleting ComputeForwardingRule %s: %w", a.id.ForwardingRule, err)
 	}
-	if err := op.Wait(ctx); err != nil {
-		return false, fmt.Errorf("waiting ComputeForwardingRule %s delete failed: %w", a.id.ForwardingRule, err)
+	if !op.Done() {
+		if err := op.Wait(ctx); err != nil {
+			return false, fmt.Errorf("waiting ComputeForwardingRule %s delete failed: %w", a.id.ForwardingRule, err)
+		}
 	}
 	log.V(2).Info("successfully deleted ComputeForwardingRule", "name", a.id.ForwardingRule)
 	return true, nil
