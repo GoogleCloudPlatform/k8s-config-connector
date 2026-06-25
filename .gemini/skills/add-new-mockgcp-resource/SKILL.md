@@ -135,9 +135,7 @@ If the resource has KRM tests, add it to `config/tests/samples/create/harness.go
 
 ### 10. Verify and Align Logs
 
-1.  Run `hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior.
-2.  Run `hack/compare-mock "fixtures/^<testname>$"` to check mock behavior.
-3.  Iteratively fix discrepancies in the mock implementation or `normalize.go`.
+Please use the skill .gemini/skills/match-mockgcp-with-realgcp/SKILL.md to align the mockgcp behavior with the real gcp behavior.
 
 ## Tips
 
