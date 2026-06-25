@@ -130,357 +130,6 @@ Vary: X-Origin
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
-Content-Type: application/json
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource not found (resource=pubsubtopic-${uniqueId}).",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
-Content-Type: application/json
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
-Content-Type: application/json
-
-{
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}"
-  },
-  "friendlyName": "bigquerydataset${uniqueId}",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "etag": "abcdef0123A=",
-  "friendlyName": "bigquerydataset${uniqueId}",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "US",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-  "type": "DEFAULT"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "etag": "abcdef0123A=",
-  "friendlyName": "bigquerydataset${uniqueId}",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "US",
-  "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-  "type": "DEFAULT"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "friendlyName": "bigquerytable${uniqueId}",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable${uniqueId}"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "etag": "abcdef0123A=",
-  "friendlyName": "bigquerytable${uniqueId}",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "schema": {},
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable${uniqueId}"
-  },
-  "type": "TABLE"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "etag": "abcdef0123A=",
-  "friendlyName": "bigquerytable${uniqueId}",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable${uniqueId}"
-  },
-  "type": "TABLE"
-}
-
----
-
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}?alt=json
 Content-Type: application/json
 
@@ -920,7 +569,23 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates?%24alt=json%3Benum-encoding%3Dint
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates?alt=json&prettyPrint=false
 Content-Type: application/json
 
 {
@@ -928,180 +593,127 @@ Content-Type: application/json
     "additionalExperiments": [
       "enable_stackdriver_agent_metrics"
     ],
-    "enableStreamingEngine": true,
-    "ipConfiguration": 1,
-    "machineType": "n1-standard-1",
-    "maxWorkers": 3,
-    "network": "projects/${projectId}/global/networks/${subnetworkID}",
-    "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-    "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-    "zone": "us-central1-a"
-  },
-  "gcsPath": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
-  "jobName": "dataflowjob-${uniqueId}",
-  "location": "us-central1",
-  "parameters": {
-    "inputTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
-    "outputTableSpec": "${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}"
-  },
-  "projectId": "${projectId}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": 2,
-  "currentStateTime": "2024-04-01T12:34:56.123456Z",
-  "environment": {
-    "dataset": "bigquery.googleapis.com/cloud_dataflow",
-    "sdkPipelineOptions": {
-      "options": {
-        "enableStreamingEngine": true,
-        "experiments": [
-          "enable_stackdriver_agent_metrics"
-        ],
-        "machineType": "n1-standard-1",
-        "network": "projects/${projectId}/global/networks/${subnetworkID}",
-        "serviceAccountEmail": "",
-        "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-        "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-        "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery"
-      }
-    }
-  },
-  "id": "000000000000000000000",
-  "location": "us-central1",
-  "name": "dataflowjob-${uniqueId}",
-  "projectId": "${projectId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "type": 2
-}
-
----
-
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": 2,
-  "currentStateTime": "2024-04-01T12:34:56.123456Z",
-  "environment": {
-    "dataset": "bigquery.googleapis.com/cloud_dataflow",
-    "sdkPipelineOptions": {
-      "options": {
-        "enableStreamingEngine": true,
-        "experiments": [
-          "enable_stackdriver_agent_metrics"
-        ],
-        "machineType": "n1-standard-1",
-        "network": "projects/${projectId}/global/networks/${subnetworkID}",
-        "serviceAccountEmail": "",
-        "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-        "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-        "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery"
-      }
-    }
-  },
-  "id": "000000000000000000000",
-  "location": "us-central1",
-  "name": "dataflowjob-${uniqueId}",
-  "projectId": "${projectId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "type": 2
-}
-
----
-
-POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates:launch?%24alt=json%3Benum-encoding%3Dint&gcsPath=gs%3A%2F%2Fdataflow-templates%2F2020-02-10-00_RC00%2FPubSub_to_BigQuery
-Content-Type: application/json
-
-{
-  "environment": {
-    "additionalExperiments": [
-      "enable_stackdriver_agent_metrics"
-    ],
-    "enableStreamingEngine": true,
-    "ipConfiguration": 1,
-    "machineType": "n1-standard-1",
-    "maxWorkers": 3,
-    "network": "projects/${projectId}/global/networks/${subnetworkID}",
-    "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-    "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-    "zone": "us-central1-a"
-  },
-  "jobName": "dataflowjob-${uniqueId}",
-  "parameters": {
-    "inputTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
-    "outputTableSpec": "${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}"
-  },
-  "update": true
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "job": {
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "currentState": 2,
-    "currentStateTime": "2024-04-01T12:34:56.123456Z",
-    "environment": {
-      "dataset": "bigquery.googleapis.com/cloud_dataflow",
-      "sdkPipelineOptions": {
-        "options": {
-          "enableStreamingEngine": true,
-          "experiments": [
-            "enable_stackdriver_agent_metrics"
-          ],
-          "machineType": "n1-standard-1",
-          "network": "projects/${projectId}/global/networks/${subnetworkID}",
-          "serviceAccountEmail": "",
-          "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-          "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-          "templateLocation": "gs://dataflow-templates/2020-02-10-00_RC00/PubSub_to_BigQuery"
-        }
-      }
+    "additionalUserLabels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
     },
-    "id": "${jobID}",
-    "location": "us-central1",
-    "name": "dataflowjob-${uniqueId}",
-    "projectId": "${projectId}",
-    "startTime": "2024-04-01T12:34:56.123456Z",
-    "type": 2
+    "ipConfiguration": "WORKER_IP_PUBLIC",
+    "machineType": "n1-standard-1",
+    "maxWorkers": 3,
+    "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+    "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+    "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+    "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+    "zone": "us-central1-a"
+  },
+  "gcsPath": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count",
+  "jobName": "dataflowjob-${uniqueId}",
+  "parameters": {
+    "inputFile": "gs://dataflow-samples/shakespeare/various.txt",
+    "output": "gs://storagebucket-${uniqueId}/output"
   }
 }
 
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentState": "JOB_STATE_RUNNING",
+  "currentStateTime": "2024-04-01T12:34:56.123456Z",
+  "environment": {
+    "dataset": "bigquery.googleapis.com/cloud_dataflow",
+    "sdkPipelineOptions": {
+      "options": {
+        "enableStreamingEngine": false,
+        "experiments": [
+          "enable_stackdriver_agent_metrics"
+        ],
+        "machineType": "n1-standard-1",
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+        "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+        "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+        "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
+      }
+    }
+  },
+  "id": "000000000000000000000",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "location": "us-central1",
+  "name": "dataflowjob-${uniqueId}",
+  "projectId": "${projectId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "type": "JOB_TYPE_BATCH"
+}
+
 ---
 
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
-Content-Type: application/json
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "jobs": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "currentState": "JOB_STATE_RUNNING",
+      "currentStateTime": "2024-04-01T12:34:56.123456Z",
+      "environment": {
+        "dataset": "bigquery.googleapis.com/cloud_dataflow",
+        "sdkPipelineOptions": {
+          "options": {
+            "enableStreamingEngine": false,
+            "experiments": [
+              "enable_stackdriver_agent_metrics"
+            ],
+            "machineType": "n1-standard-1",
+            "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+            "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+            "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+            "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
+          }
+        }
+      },
+      "id": "${jobID}",
+      "labels": {
+        "cnrm-test": "true",
+        "label-one": "value-one",
+        "managed-by-cnrm": "true"
+      },
+      "location": "us-central1",
+      "name": "dataflowjob-${uniqueId}",
+      "projectId": "${projectId}",
+      "startTime": "2024-04-01T12:34:56.123456Z",
+      "type": "JOB_TYPE_BATCH"
+    }
+  ]
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1115,41 +727,41 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": 2,
+  "currentState": "JOB_STATE_RUNNING",
   "currentStateTime": "2024-04-01T12:34:56.123456Z",
   "environment": {
     "dataset": "bigquery.googleapis.com/cloud_dataflow",
     "sdkPipelineOptions": {
       "options": {
-        "enableStreamingEngine": true,
+        "enableStreamingEngine": false,
         "experiments": [
           "enable_stackdriver_agent_metrics"
         ],
         "machineType": "n1-standard-1",
-        "network": "projects/${projectId}/global/networks/${subnetworkID}",
-        "serviceAccountEmail": "",
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+        "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
         "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
         "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-        "templateLocation": "gs://dataflow-templates/2020-02-10-00_RC00/PubSub_to_BigQuery"
+        "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
       }
     }
   },
   "id": "000000000000000000000",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "location": "us-central1",
   "name": "dataflowjob-${uniqueId}",
   "projectId": "${projectId}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "type": 2
+  "type": "JOB_TYPE_BATCH"
 }
 
 ---
 
-PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-
-{
-  "requestedState": 5
-}
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1162,63 +774,46 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "currentState": 10,
-  "id": "000000000000000000000",
-  "name": "dataflowjob-${uniqueId}",
-  "projectId": "${projectId}",
-  "requestedState": 5,
-  "type": 2
-}
-
----
-
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": 10,
-  "currentStateTime": "2024-04-01T12:34:56.123456Z",
-  "environment": {
-    "dataset": "bigquery.googleapis.com/cloud_dataflow",
-    "sdkPipelineOptions": {
-      "options": {
-        "enableStreamingEngine": true,
-        "experiments": [
-          "enable_stackdriver_agent_metrics"
-        ],
-        "machineType": "n1-standard-1",
-        "network": "projects/${projectId}/global/networks/${subnetworkID}",
-        "serviceAccountEmail": "",
-        "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-        "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-        "templateLocation": "gs://dataflow-templates/2020-02-10-00_RC00/PubSub_to_BigQuery"
-      }
+  "jobs": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "currentState": "JOB_STATE_RUNNING",
+      "currentStateTime": "2024-04-01T12:34:56.123456Z",
+      "environment": {
+        "dataset": "bigquery.googleapis.com/cloud_dataflow",
+        "sdkPipelineOptions": {
+          "options": {
+            "enableStreamingEngine": false,
+            "experiments": [
+              "enable_stackdriver_agent_metrics"
+            ],
+            "machineType": "n1-standard-1",
+            "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+            "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+            "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+            "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
+          }
+        }
+      },
+      "id": "${jobID}",
+      "labels": {
+        "cnrm-test": "true",
+        "label-one": "value-one",
+        "managed-by-cnrm": "true"
+      },
+      "location": "us-central1",
+      "name": "dataflowjob-${uniqueId}",
+      "projectId": "${projectId}",
+      "startTime": "2024-04-01T12:34:56.123456Z",
+      "type": "JOB_TYPE_BATCH"
     }
-  },
-  "id": "000000000000000000000",
-  "location": "us-central1",
-  "name": "dataflowjob-${uniqueId}",
-  "projectId": "${projectId}",
-  "requestedState": 5,
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "type": 2
+  ]
 }
 
 ---
 
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
-Content-Type: application/json
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1232,31 +827,330 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": 5,
+  "currentState": "JOB_STATE_RUNNING",
   "currentStateTime": "2024-04-01T12:34:56.123456Z",
   "environment": {
     "dataset": "bigquery.googleapis.com/cloud_dataflow",
     "sdkPipelineOptions": {
       "options": {
-        "enableStreamingEngine": true,
+        "enableStreamingEngine": false,
         "experiments": [
           "enable_stackdriver_agent_metrics"
         ],
         "machineType": "n1-standard-1",
-        "network": "projects/${projectId}/global/networks/${subnetworkID}",
-        "serviceAccountEmail": "",
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+        "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
         "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
         "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
-        "templateLocation": "gs://dataflow-templates/2020-02-10-00_RC00/PubSub_to_BigQuery"
+        "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
       }
     }
   },
   "id": "000000000000000000000",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "location": "us-central1",
   "name": "dataflowjob-${uniqueId}",
   "projectId": "${projectId}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "type": 2
+  "type": "JOB_TYPE_BATCH"
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "jobs": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "currentState": "JOB_STATE_RUNNING",
+      "currentStateTime": "2024-04-01T12:34:56.123456Z",
+      "environment": {
+        "dataset": "bigquery.googleapis.com/cloud_dataflow",
+        "sdkPipelineOptions": {
+          "options": {
+            "enableStreamingEngine": false,
+            "experiments": [
+              "enable_stackdriver_agent_metrics"
+            ],
+            "machineType": "n1-standard-1",
+            "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+            "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+            "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+            "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
+          }
+        }
+      },
+      "id": "${jobID}",
+      "labels": {
+        "cnrm-test": "true",
+        "label-one": "value-one",
+        "managed-by-cnrm": "true"
+      },
+      "location": "us-central1",
+      "name": "dataflowjob-${uniqueId}",
+      "projectId": "${projectId}",
+      "startTime": "2024-04-01T12:34:56.123456Z",
+      "type": "JOB_TYPE_BATCH"
+    }
+  ]
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentState": "JOB_STATE_RUNNING",
+  "currentStateTime": "2024-04-01T12:34:56.123456Z",
+  "environment": {
+    "dataset": "bigquery.googleapis.com/cloud_dataflow",
+    "sdkPipelineOptions": {
+      "options": {
+        "enableStreamingEngine": false,
+        "experiments": [
+          "enable_stackdriver_agent_metrics"
+        ],
+        "machineType": "n1-standard-1",
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+        "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+        "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+        "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
+      }
+    }
+  },
+  "id": "000000000000000000000",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "location": "us-central1",
+  "name": "dataflowjob-${uniqueId}",
+  "projectId": "${projectId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "type": "JOB_TYPE_BATCH"
+}
+
+---
+
+PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "requestedState": "JOB_STATE_CANCELLED"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "currentState": "JOB_STATE_CANCELLING",
+  "id": "000000000000000000000",
+  "name": "dataflowjob-${uniqueId}",
+  "projectId": "${projectId}",
+  "requestedState": "JOB_STATE_CANCELLED",
+  "type": "JOB_TYPE_BATCH"
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "jobs": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "currentState": "JOB_STATE_CANCELLING",
+      "currentStateTime": "2024-04-01T12:34:56.123456Z",
+      "environment": {
+        "dataset": "bigquery.googleapis.com/cloud_dataflow",
+        "sdkPipelineOptions": {
+          "options": {
+            "enableStreamingEngine": false,
+            "experiments": [
+              "enable_stackdriver_agent_metrics"
+            ],
+            "machineType": "n1-standard-1",
+            "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+            "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+            "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+            "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
+          }
+        }
+      },
+      "id": "${jobID}",
+      "labels": {
+        "cnrm-test": "true",
+        "label-one": "value-one",
+        "managed-by-cnrm": "true"
+      },
+      "location": "us-central1",
+      "name": "dataflowjob-${uniqueId}",
+      "projectId": "${projectId}",
+      "requestedState": "JOB_STATE_CANCELLED",
+      "startTime": "2024-04-01T12:34:56.123456Z",
+      "type": "JOB_TYPE_BATCH"
+    }
+  ]
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentState": "JOB_STATE_CANCELLING",
+  "currentStateTime": "2024-04-01T12:34:56.123456Z",
+  "environment": {
+    "dataset": "bigquery.googleapis.com/cloud_dataflow",
+    "sdkPipelineOptions": {
+      "options": {
+        "enableStreamingEngine": false,
+        "experiments": [
+          "enable_stackdriver_agent_metrics"
+        ],
+        "machineType": "n1-standard-1",
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+        "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+        "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+        "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
+      }
+    }
+  },
+  "id": "000000000000000000000",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "location": "us-central1",
+  "name": "dataflowjob-${uniqueId}",
+  "projectId": "${projectId}",
+  "requestedState": "JOB_STATE_CANCELLED",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "type": "JOB_TYPE_BATCH"
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentState": "JOB_STATE_CANCELLED",
+  "currentStateTime": "2024-04-01T12:34:56.123456Z",
+  "environment": {
+    "dataset": "bigquery.googleapis.com/cloud_dataflow",
+    "sdkPipelineOptions": {
+      "options": {
+        "enableStreamingEngine": false,
+        "experiments": [
+          "enable_stackdriver_agent_metrics"
+        ],
+        "machineType": "n1-standard-1",
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+        "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+        "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+        "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/Word_Count"
+      }
+    }
+  },
+  "id": "000000000000000000000",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "location": "us-central1",
+  "name": "dataflowjob-${uniqueId}",
+  "projectId": "${projectId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "type": "JOB_TYPE_BATCH"
 }
 
 ---
@@ -1485,172 +1379,6 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "etag": "abcdef0123A=",
-  "friendlyName": "bigquerytable${uniqueId}",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable${uniqueId}"
-  },
-  "type": "TABLE"
-}
-
----
-
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
-
-204 No Content
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "etag": "abcdef0123A=",
-  "friendlyName": "bigquerydataset${uniqueId}",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "US",
-  "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-  "type": "DEFAULT"
-}
-
----
-
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
-Content-Type: application/json
-
-204 No Content
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
-}
-
----
-
-DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
-Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8

@@ -1,0 +1,14 @@
+6d5
+<     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"ipConfiguration":"WORKER_IP_PUBLIC","parameters":{"inputTopic":"projects/${projectId}/topics/pubsubtopic-${uniqueId}","outputTableSpec":"${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}"}}}'
+9d7
+<     cnrm.cloud.google.com/state-into-spec: absent
+13c11
+<   generation: 3
+---
+>   generation: 2
+31d28
+<   resourceID: dataflowjob-${uniqueId}
+47c44
+<   observedGeneration: 3
+---
+>   observedGeneration: 2
