@@ -1955,6 +1955,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-geminidataanalytics:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-geminidataanalytics"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-geminidataanalytics
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-geminidataanalytics
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-gkebackup:
     runs-on: ubuntu-latest
     needs: unit-tests
