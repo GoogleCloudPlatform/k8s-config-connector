@@ -67,6 +67,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/edgecontainer"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/essentialcontacts"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/eventarc"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/filestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkebackup"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
