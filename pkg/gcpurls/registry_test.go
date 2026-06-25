@@ -180,6 +180,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// DLP
 		"//dlp.googleapis.com/projects/{}/locations/{}/connections/{}": true,
 
+		// Cloud Security Compliance
+		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/frameworkDeployments/{}": true,
+
 		// DNS
 		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}":    true,
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}":          true,

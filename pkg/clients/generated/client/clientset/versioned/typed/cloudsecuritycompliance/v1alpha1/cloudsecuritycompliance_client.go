@@ -33,6 +33,7 @@ type CloudsecuritycomplianceV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	CloudSecurityComplianceCloudControlsGetter
 	CloudSecurityComplianceFrameworksGetter
+	CloudSecurityComplianceFrameworkDeploymentsGetter
 	CloudSecurityFrameworksGetter
 }
 
@@ -47,6 +48,10 @@ func (c *CloudsecuritycomplianceV1alpha1Client) CloudSecurityComplianceCloudCont
 
 func (c *CloudsecuritycomplianceV1alpha1Client) CloudSecurityComplianceFrameworks(namespace string) CloudSecurityComplianceFrameworkInterface {
 	return newCloudSecurityComplianceFrameworks(c, namespace)
+}
+
+func (c *CloudsecuritycomplianceV1alpha1Client) CloudSecurityComplianceFrameworkDeployments(namespace string) CloudSecurityComplianceFrameworkDeploymentInterface {
+	return newCloudSecurityComplianceFrameworkDeployments(c, namespace)
 }
 
 func (c *CloudsecuritycomplianceV1alpha1Client) CloudSecurityFrameworks(namespace string) CloudSecurityFrameworkInterface {

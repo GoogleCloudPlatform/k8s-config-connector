@@ -29,7 +29,8 @@ go run . generate-types \
   --include-skipped-output \
   --resource CloudSecurityComplianceCloudControl:CloudControl \
   --resource CloudSecurityComplianceFramework:Framework \
-  --resource CloudSecurityFramework:Framework
+  --resource CloudSecurityFramework:Framework \
+  --resource CloudSecurityComplianceFrameworkDeployment:FrameworkDeployment
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
