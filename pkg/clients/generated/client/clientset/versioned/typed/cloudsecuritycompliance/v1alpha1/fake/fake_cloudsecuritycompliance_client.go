@@ -39,6 +39,10 @@ func (c *FakeCloudsecuritycomplianceV1alpha1) CloudSecurityComplianceFrameworks(
 	return newFakeCloudSecurityComplianceFrameworks(c, namespace)
 }
 
+func (c *FakeCloudsecuritycomplianceV1alpha1) CloudSecurityComplianceFrameworkDeployments(namespace string) v1alpha1.CloudSecurityComplianceFrameworkDeploymentInterface {
+	return newFakeCloudSecurityComplianceFrameworkDeployments(c, namespace)
+}
+
 func (c *FakeCloudsecuritycomplianceV1alpha1) CloudSecurityFrameworks(namespace string) v1alpha1.CloudSecurityFrameworkInterface {
 	return newFakeCloudSecurityFrameworks(c, namespace)
 }
