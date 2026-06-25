@@ -33,6 +33,26 @@ func computeNodeTemplateFuzzer() fuzztesting.KRMFuzzer {
 		ComputeNodeTemplateStatus_v1beta1_FromProto, ComputeNodeTemplateStatus_v1beta1_ToProto,
 	)
 
+	// Detailed Comparison of KRM Fields with Proto Fields:
+	// +-------------------------+---------------------------+----------------------------------------------+
+	// | KRM Spec Field          | Proto Field               | Fuzzer/Mapping Status                        |
+	// +-------------------------+---------------------------+----------------------------------------------+
+	// | cpuOvercommitType       | cpu_overcommit_type       | SpecField (".cpu_overcommit_type")           |
+	// | description             | description               | SpecField (".description")                   |
+	// | nodeType                | node_type                 | SpecField (".node_type")                     |
+	// | nodeTypeFlexibility     | node_type_flexibility     | SpecField (".node_type_flexibility")         |
+	// | region                  | region                    | SpecField (".region")                        |
+	// | resourceID              | name                      | Identity/name field (Unimplemented_Identity) |
+	// | serverBinding           | server_binding            | SpecField (".server_binding")                |
+	// +-------------------------+---------------------------+----------------------------------------------+
+	//
+	// +-------------------------+---------------------------+----------------------------------------------+
+	// | KRM Status Field        | Proto Field               | Fuzzer/Mapping Status                        |
+	// +-------------------------+---------------------------+----------------------------------------------+
+	// | creationTimestamp       | creation_timestamp        | StatusField (".creation_timestamp")          |
+	// | selfLink                | self_link                 | StatusField (".self_link")                   |
+	// +-------------------------+---------------------------+----------------------------------------------+
+
 	// Spec fields
 	f.SpecField(".cpu_overcommit_type")
 	f.SpecField(".description")
