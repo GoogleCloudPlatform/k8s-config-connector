@@ -70,6 +70,9 @@ func (s *autoscalingPolicyServiceServer) GetAutoscalingPolicy(ctx context.Contex
 
 	obj := &pb.AutoscalingPolicy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: Autoscaling Policy %s", fqn)
+		}
 		return nil, err
 	}
 
@@ -86,6 +89,9 @@ func (s *autoscalingPolicyServiceServer) DeleteAutoscalingPolicy(ctx context.Con
 
 	obj := &pb.AutoscalingPolicy{}
 	if err := s.storage.Delete(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: Autoscaling Policy %s", fqn)
+		}
 		return nil, err
 	}
 
@@ -177,11 +183,7 @@ type autoscalingPolicyName struct {
 }
 
 func (n *autoscalingPolicyName) String() string {
-	locationType := n.LocationType
-	if locationType == "" {
-		locationType = "regions"
-	}
-	return fmt.Sprintf("projects/%s/%s/%s/autoscalingPolicies/%s", n.Project.ID, locationType, n.Region, n.AutoscalingPolicy)
+	return fmt.Sprintf("projects/%s/regions/%s/autoscalingPolicies/%s", n.Project.ID, n.Region, n.AutoscalingPolicy)
 }
 
 // parseAutoscalingPolicyName parses a string into an AutoscalingPolicyName.
