@@ -48,7 +48,9 @@ fi
 FAILED=0
 
 echo "Running equivalence check..."
-CMD="dev/tasks/diff-crds --base ${COMPARISON_REF}"
+# We explicitly allow the addition of status.externalRef because it is a
+# required structural change when migrating resources to the Direct controller.
+CMD="dev/tasks/diff-crds --base ${COMPARISON_REF} --allow-status-external-ref-addition"
 echo "Running: ${CMD}"
 
 # We capture output to check for differences

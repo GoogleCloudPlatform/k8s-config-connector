@@ -26,6 +26,11 @@ def main():
         default=None,
         help="The base revision to compare against (default: upstream/master, resolved to merge-base with HEAD)",
     )
+    parser.add_argument(
+        "--allow-status-external-ref-addition",
+        action="store_true",
+        help="Ignore additions of status.externalRef=string",
+    )
     args = parser.parse_args()
 
     # Get repo root
@@ -94,6 +99,9 @@ def main():
             "--flatten",
             "--ignore-integer-type-differences",
         ]
+
+        if args.allow_status_external_ref_addition:
+            go_run_cmd.append("--allow-status-external-ref-addition")
 
         try:
             # Create the git show process
