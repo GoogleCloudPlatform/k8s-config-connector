@@ -472,7 +472,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "zoneUri": "us-central1-a"
     },
     "masterConfig": {
-      "machineTypeUri": "n1-standard-1",
+      "machineTypeUri": "n2-standard-2",
       "numInstances": 1
     },
     "securityConfig": {
@@ -483,13 +483,13 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       }
     },
     "softwareConfig": {
-      "imageVersion": "2.2-debian12",
+      "imageVersion": "2.2.81-debian12",
       "properties": {
         "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
       }
     },
     "workerConfig": {
-      "machineTypeUri": "n1-standard-1",
+      "machineTypeUri": "n2-standard-2",
       "numInstances": 2
     }
   },
@@ -602,7 +602,7 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -615,7 +615,7 @@ X-Xss-Protection: 0
         }
       },
       "softwareConfig": {
-        "imageVersion": "2.2-debian12",
+        "imageVersion": "2.2.81-debian12",
         "properties": {
           "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
         }
@@ -627,7 +627,7 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 2,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -690,7 +690,7 @@ X-Xss-Protection: 0
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": "NON_PREEMPTIBLE"
@@ -703,7 +703,7 @@ X-Xss-Protection: 0
       }
     },
     "softwareConfig": {
-      "imageVersion": "2.2-debian12",
+      "imageVersion": "2.2.81-debian12",
       "properties": {
         "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
       }
@@ -719,7 +719,7 @@ X-Xss-Protection: 0
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
       "preemptibility": "NON_PREEMPTIBLE"
@@ -774,7 +774,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "bootDiskType": "pd-standard"
       },
       "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "machineTypeUri": "n1-standard-1",
+      "machineTypeUri": "n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": "NON_PREEMPTIBLE"
@@ -788,7 +788,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       }
     },
     "softwareConfig": {
-      "imageVersion": "2.2-debian12",
+      "imageVersion": "2.2.81-debian12",
       "optionalComponents": [],
       "properties": {
         "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
@@ -802,7 +802,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "bootDiskType": "pd-standard"
       },
       "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "machineTypeUri": "n1-standard-1",
+      "machineTypeUri": "n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
       "preemptibility": "NON_PREEMPTIBLE"
@@ -905,7 +905,7 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -919,7 +919,7 @@ X-Xss-Protection: 0
         }
       },
       "softwareConfig": {
-        "imageVersion": "2.2-debian12",
+        "imageVersion": "2.2.81-debian12",
         "properties": {
           "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
         }
@@ -931,7 +931,7 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 2,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -994,7 +994,7 @@ X-Xss-Protection: 0
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": "NON_PREEMPTIBLE"
@@ -1008,7 +1008,7 @@ X-Xss-Protection: 0
       }
     },
     "softwareConfig": {
-      "imageVersion": "2.2-debian12",
+      "imageVersion": "2.2.81-debian12",
       "properties": {
         "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
       }
@@ -1024,7 +1024,7 @@ X-Xss-Protection: 0
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
       "preemptibility": "NON_PREEMPTIBLE"

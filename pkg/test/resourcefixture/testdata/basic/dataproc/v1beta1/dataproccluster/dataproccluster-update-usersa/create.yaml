@@ -26,14 +26,14 @@ spec:
         userServiceAccountMapping:
           user1@example.com: usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com
     softwareConfig:
-      imageVersion: "2.2-debian12"
+      imageVersion: "2.2.81-debian12"
       properties:
         "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
     gceClusterConfig:
       zone: us-central1-a
     masterConfig:
       numInstances: 1
-      machineType: n1-standard-1
+      machineType: n2-standard-2
     workerConfig:
       numInstances: 2
-      machineType: n1-standard-1
+      machineType: n2-standard-2

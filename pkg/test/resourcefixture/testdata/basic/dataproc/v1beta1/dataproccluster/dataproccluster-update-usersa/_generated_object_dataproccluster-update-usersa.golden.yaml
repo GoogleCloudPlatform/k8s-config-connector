@@ -18,7 +18,7 @@ spec:
     gceClusterConfig:
       zone: us-central1-a
     masterConfig:
-      machineType: n1-standard-1
+      machineType: n2-standard-2
       numInstances: 1
     securityConfig:
       identityConfig:
@@ -26,11 +26,11 @@ spec:
           user1@example.com: usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com
           user2@example.com: usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com
     softwareConfig:
-      imageVersion: 2.2-debian12
+      imageVersion: 2.2.81-debian12
       properties:
         dataproc:dataproc.dynamic.multi.tenancy.enabled: "true"
     workerConfig:
-      machineType: n1-standard-1
+      machineType: n2-standard-2
       numInstances: 2
   location: us-central1
   projectRef:
