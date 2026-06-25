@@ -33,6 +33,8 @@ export ONLY_TEST_APIGROUPS="gkehub.cnrm.cloud.google.com"
 export USE_FULL_TEST_NAMES=true
 export TEST_TIMEOUT=15m
 
+. ${REPO_ROOT}/dev/tasks/setup-envtest
+
 echo "Prebuilding e2e tests..."
 export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
 mkdir -p ${REPO_ROOT}/.build

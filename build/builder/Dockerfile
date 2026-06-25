@@ -33,13 +33,27 @@ COPY go.mod go.mod
 COPY go.sum go.sum
 # Build the binaries from source. Note: the "-s -w" flags strip the tables
 # needed for debuggers, but not the line numbers for panics
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender && \
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o webhook github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook && \
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder && \
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector && \
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager && \
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o linux_amd64/deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o linux_amd64/webhook github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o linux_amd64/recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o linux_amd64/unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o linux_amd64/manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o linux_amd64/config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
+
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "-s -w" -o linux_arm64/deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "-s -w" -o linux_arm64/webhook github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "-s -w" -o linux_arm64/recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "-s -w" -o linux_arm64/unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "-s -w" -o linux_arm64/manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "-s -w" -o linux_arm64/config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
 
 RUN go mod vendor -o temp-vendor && \
     go run scripts/generate-third-party-licenses/main.go && \
     rm -rf temp-vendor
+
+FROM scratch AS artifacts
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/linux_amd64 /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/linux_amd64
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/linux_arm64 /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/linux_arm64
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/THIRD_PARTY_NOTICES /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/THIRD_PARTY_NOTICES
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/MIRRORED_LIBRARY_SOURCE /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/MIRRORED_LIBRARY_SOURCE
+
