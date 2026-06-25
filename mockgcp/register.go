@@ -55,6 +55,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmemorystore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmigrationcenter"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmonitoring"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkconnectivity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworksecurity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"

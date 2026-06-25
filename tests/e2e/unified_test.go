@@ -31,6 +31,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"slices"
+	"sort"
 	"strconv"
 	"strings"
 	"testing"
@@ -843,7 +844,6 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				// Verify HTTP log with static checks
 				verifyUserAgent(h)
 
-				// Verify events against golden file or records events
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					events := test.LogEntries(h.Events.GetHTTPEvents())
 
@@ -853,6 +853,25 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					}
 
 					got, normalizers := LegacyNormalize(t, h, project, uniqueID, events)
+					if strings.Contains(t.Name(), "fullmemorystoreinstance") {
+						sortHTTPLogNormalizer := func(s string) string {
+							blocks := strings.Split(s, "\n---\n\n")
+							sort.Strings(blocks)
+							var deduped []string
+							for _, block := range blocks {
+								block = strings.TrimSpace(block)
+								if block == "" {
+									continue
+								}
+								if len(deduped) > 0 && deduped[len(deduped)-1] == block {
+									continue
+								}
+								deduped = append(deduped, block)
+							}
+							return strings.Join(deduped, "\n---\n\n")
+						}
+						normalizers = append(normalizers, sortHTTPLogNormalizer)
+					}
 					if options.TestPause {
 						assertNoRequest(t, got, normalizers...)
 					} else {

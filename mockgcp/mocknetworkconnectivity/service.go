@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-service
+// http.host: networkconnectivity.googleapis.com
+// proto.service: google.cloud.networkconnectivity.v1.HubService
+
 package mocknetworkconnectivity
 
 import (
@@ -24,8 +28,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked networkconnectivity service.
 type MockService struct {
@@ -35,7 +44,7 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -52,6 +61,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterProjectsLocationsServiceConnectionPoliciesServerServer(grpcServer, &serviceConnectionPolicies{MockService: s})
 	pb.RegisterProjectsLocationsInternalRangesServerServer(grpcServer, &internalRanges{MockService: s})
 	pb.RegisterProjectsLocationsRegionalEndpointsServerServer(grpcServer, &regionalEndpoints{MockService: s})
+	pb.RegisterProjectsLocationsGlobalHubsServerServer(grpcServer, &hubsServer{MockService: s})
+	pb.RegisterProjectsLocationsSpokesServerServer(grpcServer, &spokesServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -59,6 +70,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterProjectsLocationsServiceConnectionPoliciesServerHandler,
 		pb.RegisterProjectsLocationsInternalRangesServerHandler,
 		pb.RegisterProjectsLocationsRegionalEndpointsServerHandler,
+		pb.RegisterProjectsLocationsGlobalHubsServerHandler,
+		pb.RegisterProjectsLocationsSpokesServerHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
 	)
 	if err != nil {

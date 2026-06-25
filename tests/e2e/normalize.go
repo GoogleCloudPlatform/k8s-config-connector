@@ -81,6 +81,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.removePaths.Insert(".metadata.managedFields")
 	visitor.removePaths.Insert(".metadata.resourceVersion")
 	visitor.removePaths.Insert(".metadata.uid")
+	visitor.removePaths.Insert(".metadata.selfLink")
 
 	visitor.replacePaths[".metadata.deletionTimestamp"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.lastModifiedCookie"] = "normalized-cookie"
