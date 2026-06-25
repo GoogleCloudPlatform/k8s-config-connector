@@ -140,3 +140,20 @@ func ComputeTargetHTTPSProxyObservedState_v1beta1_ToProto(mapCtx *direct.MapCont
 	out.Fingerprint = in.Fingerprint
 	return out
 }
+
+func ComputeTargetHTTPSProxyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetHTTPSProxyStatus) *pb.TargetHttpsProxy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetHttpsProxy{}
+	out.CreationTimestamp = in.CreationTimestamp
+	if in.ProxyId != nil {
+		id := uint64(*in.ProxyId)
+		out.Id = &id
+	}
+	out.SelfLink = in.SelfLink
+	if in.ObservedState != nil {
+		out.Fingerprint = in.ObservedState.Fingerprint
+	}
+	return out
+}
