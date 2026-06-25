@@ -1058,7 +1058,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	// Find recaptchaenterprise key IDs in URL or Body and add to PathIDs
 	keyIDRegex := regexp.MustCompile(`/keys/([a-zA-Z0-9_-]+)`)
 	for _, event := range events {
-		if !strings.Contains(event.Request.URL, "recaptchaenterprise.googleapis.com") {
+		if !strings.Contains(event.Request.URL, "recaptchaenterprise") {
 			continue
 		}
 		if matches := keyIDRegex.FindStringSubmatch(event.Request.URL); len(matches) > 1 {

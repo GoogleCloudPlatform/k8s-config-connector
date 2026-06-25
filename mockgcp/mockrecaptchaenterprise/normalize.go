@@ -27,7 +27,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	if !strings.Contains(event.URL(), "recaptchaenterprise.googleapis.com") {
+	if !strings.Contains(event.URL(), "recaptchaenterprise") {
 		return
 	}
 	event.VisitResponseStringValues(func(path string, value string) {
