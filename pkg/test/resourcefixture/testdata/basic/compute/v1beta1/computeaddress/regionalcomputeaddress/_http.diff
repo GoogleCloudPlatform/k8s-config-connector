@@ -6,19 +6,14 @@
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses
-96,99d95
-<   "labels": {
-<     "cnrm-test": "true",
-<     "managed-by-cnrm": "true"
-<   },
-101d96
+101d100
 <   "region": "projects/${projectId}/global/regions/us-central1",
-133c128,129
+133c132,133
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-164,234c160
+164,234c164
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 < Content-Type: application/json
 < 
@@ -92,12 +87,7 @@
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
-255,258d180
-<   "labels": {
-<     "cnrm-test": "true",
-<     "managed-by-cnrm": "true"
-<   },
-270,342c192
+270,342c200
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
 < Content-Type: application/json
 < 
@@ -173,7 +163,7 @@
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
-373c223,224
+373c231,232
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}

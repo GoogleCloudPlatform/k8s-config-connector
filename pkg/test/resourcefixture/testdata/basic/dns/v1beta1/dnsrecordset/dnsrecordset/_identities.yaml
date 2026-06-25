@@ -10,13 +10,13 @@
   name: network-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/addresses/computeaddress-1-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: computeaddress-1-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/addresses/computeaddress-2-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: computeaddress-2-${uniqueId}

@@ -10,7 +10,7 @@
   name: computesubnetwork-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/addresses/computeaddress-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: computeaddress-${uniqueId}
@@ -34,7 +34,7 @@
   name: computesubnetwork2-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/addresses/computeaddress2-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: computeaddress2-${uniqueId}

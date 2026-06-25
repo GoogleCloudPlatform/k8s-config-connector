@@ -61,6 +61,10 @@ Content-Type: application/json
   "addressType": "INTERNAL",
   "description": "a test global address",
   "ipVersion": "IPV4",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "${addressID}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
@@ -147,6 +151,10 @@ X-Xss-Protection: 0
   "ipVersion": "IPV4",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "${addressID}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,

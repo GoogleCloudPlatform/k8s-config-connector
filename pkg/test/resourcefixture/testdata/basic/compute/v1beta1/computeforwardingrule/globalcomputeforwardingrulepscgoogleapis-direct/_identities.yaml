@@ -4,7 +4,7 @@
   name: default
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/addresses/default
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: default
