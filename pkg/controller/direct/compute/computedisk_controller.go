@@ -46,6 +46,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -130,7 +131,30 @@ func (m *computeDiskModel) AdapterForObject(ctx context.Context, op *directbase.
 }
 
 func (m *computeDiskModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krm.ComputeDiskIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
+	}
+	disksClient, err := gcpClient.newDisksClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	regionDisksClient, err := gcpClient.newRegionDisksClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ComputeDiskAdapter{
+		disksClient:       disksClient,
+		regionDisksClient: regionDisksClient,
+		id:                id,
+	}, nil
 }
 
 type ComputeDiskAdapter struct {
@@ -479,6 +503,16 @@ func (a *ComputeDiskAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	} else {
 		return nil, fmt.Errorf("ComputeDisk %s is neither zonal nor regional", a.id)
 	}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Disk)
+
+	if obj.Spec.Type != nil {
+		val := *obj.Spec.Type
+		if strings.Contains(val, "/") {
+			parts := strings.Split(val, "/")
+			shortName := parts[len(parts)-1]
+			obj.Spec.Type = &shortName
+		}
+	}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -486,8 +520,11 @@ func (a *ComputeDiskAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.GetName())
+	u.SetName(a.id.Disk)
 	u.SetGroupVersionKind(krm.ComputeDiskGVK)
+
+	export.SetLabels(u, a.actual.Labels)
+
 	return u, nil
 }
 
