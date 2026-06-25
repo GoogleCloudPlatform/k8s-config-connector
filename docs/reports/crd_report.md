@@ -432,6 +432,7 @@
 | networkmanagement.cnrm.cloud.google.com       | NetworkManagementConnectivityTest               | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityAddressGroup                     | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityAuthorizationPolicy              | False        | True        | False  | DCL        | True        |
+| networksecurity.cnrm.cloud.google.com         | NetworkSecurityAuthzPolicy                      | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityBackendAuthenticationConfig      | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityClientTLSPolicy                  | False        | True        | False  | DCL        | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityFirewallEndpointAssociation      | True         | False       | False  | Direct     | True        |

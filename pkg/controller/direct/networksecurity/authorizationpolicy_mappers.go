@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_RegexMatch_ToProto(mapCtx *direct.MapContext, in *string) *pb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch_RegexMatch {
+func AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_RegexMatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *string) *pb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch_RegexMatch {
 	if in == nil {
 		return nil
 	}

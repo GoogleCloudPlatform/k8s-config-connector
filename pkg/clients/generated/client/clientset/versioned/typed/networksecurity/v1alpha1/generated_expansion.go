@@ -23,6 +23,8 @@ package v1alpha1
 
 type NetworkSecurityAddressGroupExpansion interface{}
 
+type NetworkSecurityAuthzPolicyExpansion interface{}
+
 type NetworkSecurityBackendAuthenticationConfigExpansion interface{}
 
 type NetworkSecurityFirewallEndpointAssociationExpansion interface{}

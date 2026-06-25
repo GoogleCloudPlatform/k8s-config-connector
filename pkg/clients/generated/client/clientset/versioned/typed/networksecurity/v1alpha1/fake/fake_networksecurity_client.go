@@ -35,6 +35,10 @@ func (c *FakeNetworksecurityV1alpha1) NetworkSecurityAddressGroups(namespace str
 	return newFakeNetworkSecurityAddressGroups(c, namespace)
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityAuthzPolicies(namespace string) v1alpha1.NetworkSecurityAuthzPolicyInterface {
+	return newFakeNetworkSecurityAuthzPolicies(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityBackendAuthenticationConfigs(namespace string) v1alpha1.NetworkSecurityBackendAuthenticationConfigInterface {
 	return newFakeNetworkSecurityBackendAuthenticationConfigs(c, namespace)
 }
