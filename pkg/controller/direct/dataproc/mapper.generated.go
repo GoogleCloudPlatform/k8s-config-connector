@@ -1272,6 +1272,8 @@ func ClusterShieldedInstanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	out.EnableIntegrityMonitoring = in.EnableIntegrityMonitoring
 	return out
 }
+
+/* found existing non-generated mapping function "ClusterSoftwareConfig_v1beta1_FromProto", skipping
 func ClusterSoftwareConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SoftwareConfig) *krm.ClusterSoftwareConfig {
 	if in == nil {
 		return nil
@@ -1282,16 +1284,22 @@ func ClusterSoftwareConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.S
 	out.OptionalComponents = direct.EnumSlice_FromProto(mapCtx, in.OptionalComponents)
 	return out
 }
-func ClusterSoftwareConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterSoftwareConfig) *pb.SoftwareConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ClusterSoftwareConfig_v1beta1_ToProto", skipping
+
+	func ClusterSoftwareConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterSoftwareConfig) *pb.SoftwareConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.SoftwareConfig{}
+		out.ImageVersion = direct.ValueOf(in.ImageVersion)
+		out.Properties = in.Properties
+		out.OptionalComponents = direct.EnumSlice_ToProto[pb.Component](mapCtx, in.OptionalComponents)
+		return out
 	}
-	out := &pb.SoftwareConfig{}
-	out.ImageVersion = direct.ValueOf(in.ImageVersion)
-	out.Properties = in.Properties
-	out.OptionalComponents = direct.EnumSlice_ToProto[pb.Component](mapCtx, in.OptionalComponents)
-	return out
-}
+*/
 func ClusterSparkHistoryServerConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SparkHistoryServerConfig) *krm.ClusterSparkHistoryServerConfig {
 	if in == nil {
 		return nil

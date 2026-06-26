@@ -215,18 +215,46 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 	// Copy immutable/server-assigned top-level config fields from a.actual to cluster to avoid false diffs
 	cluster.Config.ConfigBucket = a.actual.Config.ConfigBucket
 	cluster.Config.TempBucket = a.actual.Config.TempBucket
-	cluster.Config.GceClusterConfig = a.actual.Config.GceClusterConfig
-	cluster.Config.InitializationActions = a.actual.Config.InitializationActions
 	cluster.Config.EncryptionConfig = a.actual.Config.EncryptionConfig
-	cluster.Config.EndpointConfig = a.actual.Config.EndpointConfig
 	cluster.Config.MetastoreConfig = a.actual.Config.MetastoreConfig
 	cluster.Config.DataprocMetricConfig = a.actual.Config.DataprocMetricConfig
-	cluster.Config.SoftwareConfig = a.actual.Config.SoftwareConfig
 	cluster.Config.LifecycleConfig = a.actual.Config.LifecycleConfig
 	cluster.Config.AutoscalingConfig = a.actual.Config.AutoscalingConfig
 
+	// Only copy EndpointConfig if it is specified in KRM spec. Otherwise, leave it nil.
+	if a.desired.Spec.Config != nil && a.desired.Spec.Config.EndpointConfig != nil {
+		cluster.Config.EndpointConfig = a.actual.Config.EndpointConfig
+	} else {
+		cluster.Config.EndpointConfig = nil
+	}
+
+	cluster.Config.GceClusterConfig = a.actual.Config.GceClusterConfig
+	// If serviceAccountScopes was not specified in the KRM spec, set it to nil to omit from payload.
+	if cluster.Config.GceClusterConfig != nil {
+		if a.desired.Spec.Config == nil || a.desired.Spec.Config.GceClusterConfig == nil || len(a.desired.Spec.Config.GceClusterConfig.ServiceAccountScopes) == 0 {
+			cluster.Config.GceClusterConfig.ServiceAccountScopes = nil
+		}
+	}
+
+	cluster.Config.InitializationActions = a.actual.Config.InitializationActions
+	if cluster.Config.InitializationActions == nil {
+		cluster.Config.InitializationActions = []*pb.NodeInitializationAction{}
+	}
+
+	cluster.Config.SoftwareConfig = a.actual.Config.SoftwareConfig
+	if cluster.Config.SoftwareConfig != nil {
+		if cluster.Config.SoftwareConfig.OptionalComponents == nil {
+			cluster.Config.SoftwareConfig.OptionalComponents = []pb.Component{}
+		}
+	}
+
 	// For MasterConfig, it is also immutable:
 	cluster.Config.MasterConfig = a.actual.Config.MasterConfig
+	if cluster.Config.MasterConfig != nil {
+		if cluster.Config.MasterConfig.Accelerators == nil {
+			cluster.Config.MasterConfig.Accelerators = []*pb.AcceleratorConfig{}
+		}
+	}
 
 	// For WorkerConfig: only NumInstances is mutable, so copy other fields (like MachineTypeUri, DiskConfig, etc.)
 	if cluster.Config.WorkerConfig == nil {
@@ -240,6 +268,11 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 		cluster.Config.WorkerConfig.Accelerators = a.actual.Config.WorkerConfig.Accelerators
 		cluster.Config.WorkerConfig.InstanceNames = a.actual.Config.WorkerConfig.InstanceNames
 	}
+	if cluster.Config.WorkerConfig != nil {
+		if cluster.Config.WorkerConfig.Accelerators == nil {
+			cluster.Config.WorkerConfig.Accelerators = []*pb.AcceleratorConfig{}
+		}
+	}
 
 	// For SecondaryWorkerConfig: only NumInstances is mutable
 	if cluster.Config.SecondaryWorkerConfig == nil {
@@ -252,6 +285,11 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 		cluster.Config.SecondaryWorkerConfig.MinCpuPlatform = a.actual.Config.SecondaryWorkerConfig.MinCpuPlatform
 		cluster.Config.SecondaryWorkerConfig.Accelerators = a.actual.Config.SecondaryWorkerConfig.Accelerators
 		cluster.Config.SecondaryWorkerConfig.InstanceNames = a.actual.Config.SecondaryWorkerConfig.InstanceNames
+	}
+	if cluster.Config.SecondaryWorkerConfig != nil {
+		if cluster.Config.SecondaryWorkerConfig.Accelerators == nil {
+			cluster.Config.SecondaryWorkerConfig.Accelerators = []*pb.AcceleratorConfig{}
+		}
 	}
 
 	// For SecurityConfig: only UserServiceAccountMapping is mutable
@@ -273,6 +311,25 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 	paths, diffs, err := common.CompareProtoMessageStructuredDiff(cluster, a.actual, common.BasicDiff)
 	if err != nil {
 		return fmt.Errorf("comparing cluster spec: %w", err)
+	}
+
+	// Filter out any paths that are not mutable on update.
+	// Only allow the following paths in the updateMask:
+	allowedPaths := map[string]bool{
+		"labels":                             true,
+		"config.worker_config.num_instances": true,
+		"config.secondary_worker_config.num_instances":                        true,
+		"config.autoscaling_config.policy_uri":                                true,
+		"config.lifecycle_config.auto_delete_ttl":                             true,
+		"config.lifecycle_config.auto_delete_time":                            true,
+		"config.lifecycle_config.idle_delete_ttl":                             true,
+		"config.security_config.identity_config.user_service_account_mapping": true,
+	}
+
+	for path := range paths {
+		if !allowedPaths[path] {
+			paths.Delete(path)
+		}
 	}
 
 	if len(paths) == 0 {

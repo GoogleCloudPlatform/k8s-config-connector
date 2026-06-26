@@ -752,6 +752,9 @@ func ClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterCon
 	out.SecondaryWorkerConfig = ClusterSecondaryWorkerConfig_v1beta1_ToProto(mapCtx, in.SecondaryWorkerConfig)
 	out.SoftwareConfig = ClusterSoftwareConfig_v1beta1_ToProto(mapCtx, in.SoftwareConfig)
 	out.InitializationActions = direct.Slice_ToProto(mapCtx, in.InitializationActions, ClusterInitializationActions_v1beta1_ToProto)
+	if out.InitializationActions == nil {
+		out.InitializationActions = []*pb.NodeInitializationAction{}
+	}
 	out.EncryptionConfig = ClusterEncryptionConfig_v1beta1_ToProto(mapCtx, in.EncryptionConfig)
 	out.AutoscalingConfig = ClusterAutoscalingConfig_v1beta1_ToProto(mapCtx, in.AutoscalingConfig)
 	out.SecurityConfig = ClusterSecurityConfig_v1beta1_ToProto(mapCtx, in.SecurityConfig)
@@ -759,5 +762,30 @@ func ClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterCon
 	out.EndpointConfig = ClusterEndpointConfig_v1beta1_ToProto(mapCtx, in.EndpointConfig)
 	out.MetastoreConfig = ClusterMetastoreConfig_v1beta1_ToProto(mapCtx, in.MetastoreConfig)
 	out.DataprocMetricConfig = ClusterDataprocMetricConfig_v1beta1_ToProto(mapCtx, in.DataprocMetricConfig)
+	return out
+}
+
+func ClusterSoftwareConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterSoftwareConfig) *pb.SoftwareConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SoftwareConfig{}
+	out.ImageVersion = direct.ValueOf(in.ImageVersion)
+	out.Properties = in.Properties
+	out.OptionalComponents = direct.EnumSlice_ToProto[pb.Component](mapCtx, in.OptionalComponents)
+	if out.OptionalComponents == nil {
+		out.OptionalComponents = []pb.Component{}
+	}
+	return out
+}
+
+func ClusterSoftwareConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SoftwareConfig) *krm.ClusterSoftwareConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterSoftwareConfig{}
+	out.ImageVersion = direct.LazyPtr(in.GetImageVersion())
+	out.Properties = in.Properties
+	out.OptionalComponents = direct.EnumSlice_FromProto(mapCtx, in.OptionalComponents)
 	return out
 }

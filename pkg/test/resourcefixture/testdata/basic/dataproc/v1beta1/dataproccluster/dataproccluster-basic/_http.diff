@@ -62,41 +62,35 @@
 <       "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
 ---
 >       "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
-786a790
->     "endpointConfig": {},
-789a794,796
->       "serviceAccountScopes": [
->         "https://www.googleapis.com/auth/cloud-platform"
->       ],
-797d803
+797d799
 <     "initializationActions": [],
-799d804
+799d800
 <       "accelerators": [],
-805c810,813
+805c806,809
 <       "machineTypeUri": "n2-standard-2",
 ---
 >       "instanceNames": [
 >         "dataproccluster-${uniqueId}-m"
 >       ],
 >       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
-808c816
+808c812
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-812d819
+812d815
 <       "optionalComponents": [],
-878d884
+878d880
 <       "accelerators": [],
-883a890,893
+883a886,889
 >       "instanceNames": [
 >         "dataproccluster-${uniqueId}-w-0",
 >         "dataproccluster-${uniqueId}-w-1"
 >       ],
-887c897
+887c893
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-894c904,915
+894c900,911
 <   }
 ---
 >   },
@@ -111,63 +105,63 @@
 >       "stateStartTime": "2024-04-01T12:34:56.123456Z"
 >     }
 >   ]
-915c936
+915c932
 <       "state": "PENDING",
 ---
 >       "state": 1,
-924c945
+924c941
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-967c988
+967c984
 <         "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
 ---
 >         "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
-1089c1110
+1089c1106
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1107c1128
+1107c1124
 <       "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
 ---
 >       "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
-1136c1157
+1136c1153
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-1217c1238
+1217c1234
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-1278c1299
+1278c1295
 <     "state": "RUNNING",
 ---
 >     "state": 2,
-1283c1304
+1283c1300
 <       "state": "CREATING",
 ---
 >       "state": 1,
-1287c1308
+1287c1304
 <       "state": "RUNNING",
 ---
 >       "state": 2,
-1291c1312
+1291c1308
 <       "state": "UPDATING",
 ---
 >       "state": 5,
-1299c1320
+1299c1316
 < DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
 > DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1321c1342
+1321c1338
 <       "state": "PENDING",
 ---
 >       "state": 1,
-1330c1351
+1330c1347
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-1370,1392d1390
+1370,1392d1386
 <   }
 < }
 < 
