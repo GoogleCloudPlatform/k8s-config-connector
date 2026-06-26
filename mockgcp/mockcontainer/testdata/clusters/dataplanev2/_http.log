@@ -390,6 +390,9 @@ X-Xss-Protection: 0
       "instanceGroupUrls": [
         "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
       ],
+      "locations": [
+        "us-central1-a"
+      ],
       "management": {
         "autoRepair": true,
         "autoUpgrade": true
@@ -400,7 +403,6 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
