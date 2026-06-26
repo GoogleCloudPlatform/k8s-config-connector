@@ -16,6 +16,7 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -41,6 +42,9 @@ func (s *RegionalSSLCertificatesV1) Get(ctx context.Context, req *pb.GetRegionSs
 
 	obj := &pb.SslCertificate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -63,6 +67,23 @@ func (s *RegionalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertRe
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#sslCertificate")
+	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
+	obj.PrivateKey = nil
+
+	if obj.Type == nil {
+		obj.Type = PtrTo("SELF_MANAGED")
+	}
+	if obj.GetType() == "SELF_MANAGED" {
+		if obj.SelfManaged == nil {
+			obj.SelfManaged = &pb.SslCertificateSelfManagedSslCertificate{}
+		}
+		if obj.SelfManaged.Certificate == nil {
+			obj.SelfManaged.Certificate = obj.Certificate
+		}
+	}
+	if obj.ExpireTime == nil {
+		obj.ExpireTime = obj.CreationTimestamp
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -90,6 +111,9 @@ func (s *RegionalSSLCertificatesV1) Delete(ctx context.Context, req *pb.DeleteRe
 
 	deleted := &pb.SslCertificate{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

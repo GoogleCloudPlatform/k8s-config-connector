@@ -21,7 +21,7 @@ spec:
   quicOverride: ENABLE
   resourceID: ${targetHttpsProxyID}
   urlMapRef:
-    name: ${urlMapID}
+    name: computeurlmap-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

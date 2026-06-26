@@ -42,7 +42,7 @@ func (s *MockService) populateBackendServiceDefaults(ctx context.Context, obj *p
 	}
 
 	switch obj.GetProtocol() {
-	case "HTTP", "HTTP2":
+	case "HTTP", "HTTP2", "HTTPS":
 		if obj.Port == nil {
 			obj.Port = PtrTo[int32](80)
 		}

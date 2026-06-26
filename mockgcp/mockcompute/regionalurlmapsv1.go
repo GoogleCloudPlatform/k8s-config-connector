@@ -181,6 +181,9 @@ func (s *RegionalURLMapsV1) Delete(ctx context.Context, req *pb.DeleteRegionUrlM
 
 	deleted := &pb.UrlMap{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

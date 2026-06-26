@@ -536,7 +536,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
 Content-Type: application/json
 
 404 Not Found
@@ -645,7 +645,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
 Content-Type: application/json
 
 200 OK
@@ -718,7 +718,7 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
+PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
 Content-Type: application/json
 
 {
@@ -788,7 +788,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
 Content-Type: application/json
 
 200 OK
@@ -847,7 +847,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
 Content-Type: application/json
 
 200 OK
