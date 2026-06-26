@@ -1,10 +1,10 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//	http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,25 +33,31 @@ func monitoringNotificationChannelFuzzer() fuzztesting.KRMFuzzer {
 		MonitoringNotificationChannelStatus_FromProto, MonitoringNotificationChannelStatus_ToProto,
 	)
 
-	f.SpecFields.Insert(".type")
-	f.SpecFields.Insert(".labels")
-	f.SpecFields.Insert(".enabled")
-	f.SpecFields.Insert(".force_delete")
+	// Spec fields
+	// .type is mapped to Spec.Type
+	f.SpecField(".type")
+	// .description is mapped to Spec.Description
+	f.SpecField(".description")
+	// .labels is mapped to Spec.Labels
+	f.SpecField(".labels")
+	// .enabled is mapped to Spec.Enabled
+	f.SpecField(".enabled")
 
-	f.StatusFields.Insert(".name")
-	f.StatusFields.Insert(".verification_status")
+	// Status fields
+	// .name is mapped to Status.Name
+	f.StatusField(".name")
+	// .verification_status is mapped to Status.VerificationStatus
+	f.StatusField(".verification_status")
 
 	// Identity fields
-	f.UnimplementedFields.Insert(".name")
+	// .name is used as the resource name/identifier
+	f.Unimplemented_Identity(".name")
 
-	// Fields that are not in the terraform so we don't want to implement
-	{
-		f.UnimplementedFields.Insert(".display_name")
-		f.UnimplementedFields.Insert(".creation_record")
-		f.UnimplementedFields.Insert(".mutation_records")
-		f.UnimplementedFields.Insert(".description")
-		f.UnimplementedFields.Insert(".user_labels")
-	}
+	// Unimplemented / Not Yet Triaged fields
+	f.Unimplemented_NotYetTriaged(".display_name")
+	f.Unimplemented_NotYetTriaged(".creation_record")
+	f.Unimplemented_NotYetTriaged(".mutation_records")
+	f.Unimplemented_NotYetTriaged(".user_labels")
 
 	return f
 }
