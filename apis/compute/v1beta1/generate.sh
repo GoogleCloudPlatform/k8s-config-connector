@@ -35,6 +35,7 @@ go run . generate-types \
   --resource ComputeInstance:Instance \
   --resource ComputeInstanceGroup:InstanceGroup \
   --resource ComputeNetwork:Network \
+  --resource ComputeNetworkFirewallPolicy:FirewallPolicy \
   --resource ComputeNetworkPeering:NetworkPeering \
   --resource ComputeNodeGroup:NodeGroup \
   --resource ComputeNodeTemplate:NodeTemplate \
@@ -51,7 +52,6 @@ go run . generate-types \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --resource ComputeURLMap:UrlMap \
-  --api-version compute.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 
 go run . generate-mapper \

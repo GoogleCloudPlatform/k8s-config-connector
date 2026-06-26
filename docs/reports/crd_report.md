@@ -172,7 +172,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeNetworkEdgeSecurityService               | True         | False       | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkEndpointGroup                     | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkEndpoint                          | True         | False       | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeNetworkFirewallPolicy                    | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeNetworkFirewallPolicy                    | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkFirewallPolicyAssociation         | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkFirewallPolicyRule                | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkPeeringRoutesConfig               | True         | False       | False  | Terraform  | False       |
