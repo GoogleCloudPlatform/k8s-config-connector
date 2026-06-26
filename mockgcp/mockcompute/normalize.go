@@ -221,6 +221,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			n := len(tokens)
 			if n >= 2 {
 				kind := tokens[n-2]
+				resourceName := tokens[n-1]
 
 				placeholder := "${" + strings.TrimSuffix(kind, "s") + "ID}"
 				if strings.HasSuffix(kind, "ies") {
@@ -229,6 +230,12 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				switch kind {
 				case "addresses":
 					placeholder = "${addressID}"
+				case "healthChecks":
+					if strings.HasPrefix(resourceName, "computehttphealthcheck") {
+						placeholder = "${httpHealthCheckID}"
+					} else if strings.HasPrefix(resourceName, "computehttpshealthcheck") {
+						placeholder = "${httpsHealthCheckID}"
+					}
 				}
 
 				namePlaceholder := placeholder

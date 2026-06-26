@@ -22,7 +22,7 @@ spec:
         name: ${instanceGroupID}
   healthChecks:
   - httpHealthCheckRef:
-      name: ${healthCheckID}
+      name: ${httpHealthCheckID}
   location: global
   resourceID: ${backendServiceID}
   timeoutSec: 5

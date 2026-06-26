@@ -10,7 +10,7 @@ metadata:
   generation: 1
   labels:
     cnrm-test: "true"
-  name: computeurlmap-kompanion-${uniqueId}
+  name: ${urlMapID}
   namespace: ${uniqueId}
 spec:
   defaultService:
@@ -70,6 +70,7 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
+  fingerprint: abcdef0123A=
   mapId: 1111111111111111
   observedGeneration: 1
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}

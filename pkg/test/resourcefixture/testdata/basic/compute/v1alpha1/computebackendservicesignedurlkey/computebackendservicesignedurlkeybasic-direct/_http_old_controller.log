@@ -162,7 +162,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -181,11 +181,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found",
+        "message": "The resource 'projects/${projectId}/global/healthChecks/${httpHealthCheckID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found"
+    "message": "The resource 'projects/${projectId}/global/healthChecks/${httpHealthCheckID}' was not found"
   }
 }
 
@@ -197,7 +197,7 @@ Content-Type: application/json
 {
   "checkIntervalSec": 5,
   "healthyThreshold": 2,
-  "name": "${healthCheckID}",
+  "name": "${httpHealthCheckID}",
   "port": 80,
   "requestPath": "/",
   "timeoutSec": 5,
@@ -224,8 +224,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+  "targetId": "${httpHealthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}",
   "user": "user@example.com"
 }
 
@@ -254,14 +254,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "targetId": "${httpHealthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpHealthCheckID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -280,10 +280,10 @@ X-Xss-Protection: 0
   "healthyThreshold": 2,
   "id": "000000000000000000000",
   "kind": "compute#httpHealthCheck",
-  "name": "${healthCheckID}",
+  "name": "${httpHealthCheckID}",
   "port": 80,
   "requestPath": "/",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}",
   "timeoutSec": 5,
   "unhealthyThreshold": 2
 }
@@ -327,7 +327,7 @@ Content-Type: application/json
     "drainingTimeoutSec": 300
   },
   "healthChecks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}"
   ],
   "iap": {
     "enabled": false,
@@ -418,7 +418,7 @@ X-Xss-Protection: 0
   "description": "",
   "fingerprint": "abcdef0123A=",
   "healthChecks": [
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/global/httpHealthChecks/${healthCheckID}"
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}"
   ],
   "iap": {
     "enabled": false,
@@ -429,6 +429,9 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
+  "protocol": "HTTP",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
   "timeoutSec": 10
@@ -458,7 +461,7 @@ X-Xss-Protection: 0
   "description": "",
   "fingerprint": "abcdef0123A=",
   "healthChecks": [
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/global/httpHealthChecks/${healthCheckID}"
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}"
   ],
   "iap": {
     "enabled": false,
@@ -469,6 +472,9 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
+  "protocol": "HTTP",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
   "timeoutSec": 10
@@ -569,7 +575,7 @@ X-Xss-Protection: 0
   "description": "",
   "fingerprint": "abcdef0123A=",
   "healthChecks": [
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/global/httpHealthChecks/${healthCheckID}"
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}"
   ],
   "iap": {
     "enabled": false,
@@ -580,6 +586,9 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
+  "protocol": "HTTP",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
   "timeoutSec": 10
@@ -671,7 +680,7 @@ X-Xss-Protection: 0
   "description": "",
   "fingerprint": "abcdef0123A=",
   "healthChecks": [
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/global/httpHealthChecks/${healthCheckID}"
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}"
   ],
   "iap": {
     "enabled": false,
@@ -682,6 +691,9 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
+  "protocol": "HTTP",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
   "timeoutSec": 10
@@ -749,7 +761,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -768,17 +780,17 @@ X-Xss-Protection: 0
   "healthyThreshold": 2,
   "id": "000000000000000000000",
   "kind": "compute#httpHealthCheck",
-  "name": "${healthCheckID}",
+  "name": "${httpHealthCheckID}",
   "port": 80,
   "requestPath": "/",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}",
   "timeoutSec": 5,
   "unhealthyThreshold": 2
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -801,8 +813,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+  "targetId": "${httpHealthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}",
   "user": "user@example.com"
 }
 
@@ -831,8 +843,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "targetId": "${httpHealthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpHealthCheckID}",
   "user": "user@example.com"
 }
 

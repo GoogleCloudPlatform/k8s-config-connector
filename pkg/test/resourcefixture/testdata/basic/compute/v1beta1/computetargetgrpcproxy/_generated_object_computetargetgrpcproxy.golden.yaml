@@ -19,7 +19,7 @@ spec:
     to gRPC backend services.
   resourceID: ${targetGrpcProxyID}
   urlMapRef:
-    name: computeurlmap-${uniqueId}
+    name: ${urlMapID}
   validateForProxyless: true
 status:
   conditions:

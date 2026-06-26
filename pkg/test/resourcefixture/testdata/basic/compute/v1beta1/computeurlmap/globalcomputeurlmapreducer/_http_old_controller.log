@@ -409,6 +409,9 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
+  "protocol": "HTTP",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
   "timeoutSec": 30
@@ -536,7 +539,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -555,11 +558,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/urlMaps/${urlMapID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/urlMaps/${urlMapID}' was not found"
   }
 }
 
@@ -598,7 +601,7 @@ Content-Type: application/json
       "pathMatcher": "allpaths"
     }
   ],
-  "name": "computeurlmap-${uniqueId}",
+  "name": "${urlMapID}",
   "pathMatchers": [
     {
       "defaultCustomErrorResponsePolicy": {
@@ -641,15 +644,19 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "insert",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "DONE",
+  "targetId": "${urlMapID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -685,6 +692,7 @@ X-Xss-Protection: 0
   },
   "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
   "description": "test global URLMap",
+  "fingerprint": "abcdef0123A=",
   "hostRules": [
     {
       "hosts": [
@@ -695,7 +703,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
-  "name": "computeurlmap-${uniqueId}",
+  "name": "${urlMapID}",
   "pathMatchers": [
     {
       "defaultCustomErrorResponsePolicy": {
@@ -721,12 +729,12 @@ X-Xss-Protection: 0
       "name": "allpaths"
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}"
 }
 
 ---
 
-PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 
 {
@@ -744,6 +752,7 @@ Content-Type: application/json
   },
   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "description": "updated test URLMap",
+  "fingerprint": "abcdef0123A=",
   "hostRules": [
     {
       "hosts": [
@@ -752,7 +761,7 @@ Content-Type: application/json
       "pathMatcher": "allpaths"
     }
   ],
-  "name": "computeurlmap-${uniqueId}",
+  "name": "${urlMapID}",
   "pathMatchers": [
     {
       "defaultCustomErrorResponsePolicy": {
@@ -788,15 +797,19 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "update",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "DONE",
+  "targetId": "${urlMapID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -825,6 +838,7 @@ X-Xss-Protection: 0
   },
   "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
   "description": "updated test URLMap",
+  "fingerprint": "abcdef0123A=",
   "hostRules": [
     {
       "hosts": [
@@ -835,7 +849,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
-  "name": "computeurlmap-${uniqueId}",
+  "name": "${urlMapID}",
   "pathMatchers": [
     {
       "defaultCustomErrorResponsePolicy": {
@@ -854,12 +868,12 @@ X-Xss-Protection: 0
       "name": "allpaths"
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -877,10 +891,14 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "delete",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "DONE",
+  "targetId": "${urlMapID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}",
+  "user": "user@example.com"
 }
 
 ---
@@ -1003,6 +1021,9 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
+  "protocol": "HTTP",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
   "timeoutSec": 30

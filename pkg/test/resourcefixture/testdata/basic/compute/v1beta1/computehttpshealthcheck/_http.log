@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${httpsHealthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found",
+        "message": "The resource 'projects/${projectId}/global/healthChecks/${httpsHealthCheckID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found"
+    "message": "The resource 'projects/${projectId}/global/healthChecks/${httpsHealthCheckID}' was not found"
   }
 }
 
@@ -36,7 +36,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "checkIntervalSec": 10,
   "description": "example HTTPS health check",
   "healthyThreshold": 2,
-  "name": "${healthCheckID}",
+  "name": "${httpsHealthCheckID}",
   "port": 80,
   "requestPath": "/",
   "timeoutSec": 5,
@@ -63,8 +63,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}",
+  "targetId": "${httpsHealthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${httpsHealthCheckID}",
   "user": "user@example.com"
 }
 
@@ -94,14 +94,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "targetId": "${httpsHealthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpsHealthCheckID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${httpsHealthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -122,17 +122,17 @@ X-Xss-Protection: 0
   "healthyThreshold": 2,
   "id": "000000000000000000000",
   "kind": "compute#httpsHealthCheck",
-  "name": "${healthCheckID}",
+  "name": "${httpsHealthCheckID}",
   "port": 80,
   "requestPath": "/",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${httpsHealthCheckID}",
   "timeoutSec": 5,
   "unhealthyThreshold": 2
 }
 
 ---
 
-PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}?alt=json
+PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${httpsHealthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -140,7 +140,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "checkIntervalSec": 11,
   "description": "example HTTPS health check",
   "healthyThreshold": 2,
-  "name": "${healthCheckID}",
+  "name": "${httpsHealthCheckID}",
   "port": 80,
   "requestPath": "/",
   "timeoutSec": 5,
@@ -167,8 +167,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}",
+  "targetId": "${httpsHealthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${httpsHealthCheckID}",
   "user": "user@example.com"
 }
 
@@ -198,14 +198,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "targetId": "${httpsHealthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpsHealthCheckID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${httpsHealthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -226,17 +226,17 @@ X-Xss-Protection: 0
   "healthyThreshold": 2,
   "id": "000000000000000000000",
   "kind": "compute#httpsHealthCheck",
-  "name": "${healthCheckID}",
+  "name": "${httpsHealthCheckID}",
   "port": 80,
   "requestPath": "/",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${httpsHealthCheckID}",
   "timeoutSec": 5,
   "unhealthyThreshold": 2
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${httpsHealthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -260,8 +260,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}",
+  "targetId": "${httpsHealthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${httpsHealthCheckID}",
   "user": "user@example.com"
 }
 
@@ -291,7 +291,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${healthCheckID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "targetId": "${httpsHealthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpsHealthCheckID}",
   "user": "user@example.com"
 }

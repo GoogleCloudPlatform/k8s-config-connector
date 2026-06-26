@@ -5,7 +5,7 @@
 ---
 >   generation: 2
 22d20
-<   resourceID: ${healthCheckID}
+<   resourceID: ${httpHealthCheckID}
 33c31
 <   observedGeneration: 3
 ---

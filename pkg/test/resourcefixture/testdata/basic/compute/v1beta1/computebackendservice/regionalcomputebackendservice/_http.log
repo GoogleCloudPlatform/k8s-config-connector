@@ -983,6 +983,9 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
+  "protocol": "HTTP",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
@@ -1019,6 +1022,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   },
   "loadBalancingScheme": "INTERNAL",
   "name": "${backendServiceID}",
+  "portName": "http",
+  "protocol": "HTTP",
   "region": "projects/${projectId}/global/regions/us-central1",
   "sessionAffinity": "NONE",
   "subsetting": {
@@ -1121,18 +1126,20 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "healthChecks": [
     "https://www.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/${healthCheckID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}"
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/${healthCheckID}"
   ],
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
-    "oauth2ClientSecret": "",
     "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   },
   "id": "000000000000000000000",
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
+  "protocol": "HTTP",
   "region": "projects/${projectId}/global/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",

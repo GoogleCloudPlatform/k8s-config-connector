@@ -1,7 +1,7 @@
 1c1
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}?alt=json
 ---
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpHealthCheckID}
 30c30
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks?alt=json
 ---
@@ -17,18 +17,18 @@
 40a43
 >   "type": "HTTP",
 65c68
-<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}",
 ---
->   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpHealthCheckID}",
 71c74,75
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
 101c105
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}?alt=json
 ---
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpHealthCheckID}
 118a123,126
 >   "httpHealthCheck": {
 >     "port": 80,
@@ -41,15 +41,15 @@
 122,124c130
 <   "port": 80,
 <   "requestPath": "/",
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}",
 ---
->   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpHealthCheckID}",
 125a132
 >   "type": "HTTP",
 131c138
-< PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+< PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}?alt=json
 ---
-> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpHealthCheckID}
 137a145,148
 >   "httpHealthCheck": {
 >     "port": 80,
@@ -65,9 +65,9 @@
 ---
 >   "operationType": "patch",
 166c176
-<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}",
 ---
->   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpHealthCheckID}",
 172c182,183
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
@@ -78,9 +78,9 @@
 ---
 >   "operationType": "patch",
 202c213
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}?alt=json
 ---
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpHealthCheckID}
 219a231,234
 >   "httpHealthCheck": {
 >     "port": 80,
@@ -93,19 +93,19 @@
 223,225c238
 <   "port": 80,
 <   "requestPath": "/",
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}",
 ---
->   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpHealthCheckID}",
 226a240
 >   "type": "HTTP",
 232c246
-< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}?alt=json
 ---
-> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpHealthCheckID}
 256c270
-<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${httpHealthCheckID}",
 ---
->   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${httpHealthCheckID}",
 262c276,277
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---

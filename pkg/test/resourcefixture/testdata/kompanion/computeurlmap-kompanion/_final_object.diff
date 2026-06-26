@@ -5,8 +5,8 @@
 ---
 >   generation: 1
 66d64
-<   resourceID: computeurlmap-kompanion-${uniqueId}
-76c74
+<   resourceID: ${urlMapID}
+77c75
 <   observedGeneration: 2
 ---
 >   observedGeneration: 1

@@ -11,7 +11,7 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-  name: ${healthCheckID}
+  name: ${httpsHealthCheckID}
   namespace: ${uniqueId}
 spec:
   checkIntervalSec: 11
@@ -19,7 +19,7 @@ spec:
   healthyThreshold: 2
   port: 80
   requestPath: /
-  resourceID: ${healthCheckID}
+  resourceID: ${httpsHealthCheckID}
   timeoutSec: 5
   unhealthyThreshold: 2
 status:
@@ -31,4 +31,4 @@ status:
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
   observedGeneration: 3
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${httpsHealthCheckID}

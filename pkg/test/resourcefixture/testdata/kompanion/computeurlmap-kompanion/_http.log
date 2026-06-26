@@ -134,6 +134,8 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
   "protocol": "HTTPS",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
@@ -278,6 +280,8 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
   "protocol": "HTTPS",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
@@ -422,6 +426,8 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
   "protocol": "HTTPS",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
@@ -430,7 +436,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
 Content-Type: application/json
 
 404 Not Found
@@ -449,11 +455,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/urlMaps/${urlMapID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/urlMaps/${urlMapID}' was not found"
   }
 }
 
@@ -487,7 +493,7 @@ Content-Type: application/json
       "pathMatcher": "computeurlmap-kompanion-default"
     }
   ],
-  "name": "computeurlmap-kompanion-${uniqueId}",
+  "name": "${urlMapID}",
   "pathMatchers": [
     {
       "name": "chaosmonkey-cloudnetworks-x-gcpnp-anz",
@@ -550,15 +556,19 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "insert",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "DONE",
+  "targetId": "${urlMapID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
 Content-Type: application/json
 
 200 OK
@@ -573,6 +583,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
   "hostRules": [
     {
       "description": "Host rule for chaosmonkey.cloudnetworks.x.gcpnp.anz",
@@ -599,7 +610,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
-  "name": "computeurlmap-kompanion-${uniqueId}",
+  "name": "${urlMapID}",
   "pathMatchers": [
     {
       "name": "chaosmonkey-cloudnetworks-x-gcpnp-anz",
@@ -645,12 +656,12 @@ X-Xss-Protection: 0
       "name": "computeurlmap-kompanion-default"
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
 Content-Type: application/json
 
 200 OK
@@ -668,10 +679,14 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "delete",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "DONE",
+  "targetId": "${urlMapID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}",
+  "user": "user@example.com"
 }
 
 ---
@@ -706,6 +721,8 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
   "protocol": "HTTPS",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
@@ -804,6 +821,8 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
   "protocol": "HTTPS",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",
@@ -902,6 +921,8 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "${backendServiceID}",
+  "port": 80,
+  "portName": "http",
   "protocol": "HTTPS",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
   "sessionAffinity": "NONE",

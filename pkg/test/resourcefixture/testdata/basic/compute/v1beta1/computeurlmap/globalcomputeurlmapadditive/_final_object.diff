@@ -5,8 +5,8 @@
 ---
 >   generation: 2
 55d53
-<   resourceID: computeurlmap-${uniqueId}
-65c63
+<   resourceID: ${urlMapID}
+66c64
 <   observedGeneration: 3
 ---
 >   observedGeneration: 2
