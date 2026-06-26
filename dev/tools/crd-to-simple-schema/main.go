@@ -41,6 +41,7 @@ func main() {
 	flag.StringVar(&opt.DiffCRDFile, "diff-crd-file", "", "CRD file to compare against; if empty, no comparison is done")
 	flag.BoolVar(&opt.Flatten, "flatten", false, "Flatten output to path=type lines (easier for diffing)")
 	flag.BoolVar(&opt.IgnoreIntegerTypeDifferences, "ignore-integer-type-differences", opt.IgnoreIntegerTypeDifferences, "Treat int32 and int64 as equivalent to integer when diffing.")
+	flag.BoolVar(&opt.AllowStatusExternalRefAddition, "allow-status-external-ref-addition", opt.AllowStatusExternalRefAddition, "Ignore additions of status.externalRef=string.")
 
 	flag.Parse()
 
@@ -65,6 +66,9 @@ type ConvertOptions struct {
 
 	// IgnoreIntegerTypeDifferences treats int32 and int64 as equivalent to integer when diffing.
 	IgnoreIntegerTypeDifferences bool
+
+	// AllowStatusExternalRefAddition ignores additions of status.externalRef=string.
+	AllowStatusExternalRefAddition bool
 }
 
 func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
@@ -248,16 +252,16 @@ func printMapDiff(out io.Writer, prefix string, m1, m2 map[string]string) {
 }
 
 func diffSchema(out io.Writer, schema1, schema2 any, opt ConvertOptions) {
-	lines1 := make(map[string]string)
-	flatten("", schema1, lines1)
+	basePaths := make(map[string]string)
+	flatten("", schema1, basePaths)
 
-	lines2 := make(map[string]string)
-	flatten("", schema2, lines2)
+	newPaths := make(map[string]string)
+	flatten("", schema2, newPaths)
 
 	var diff []string
 
-	for k, v1 := range lines1 {
-		v2, ok := lines2[k]
+	for k, v1 := range basePaths {
+		v2, ok := newPaths[k]
 		if !ok {
 			diff = append(diff, fmt.Sprintf("- %s=%s", k, v1))
 			continue
@@ -279,9 +283,12 @@ func diffSchema(out io.Writer, schema1, schema2 any, opt ConvertOptions) {
 			diff = append(diff, fmt.Sprintf("+ %s=%s", k, v2))
 		}
 	}
-	for k, v2 := range lines2 {
-		_, ok := lines1[k]
+	for k, v2 := range newPaths {
+		_, ok := basePaths[k]
 		if !ok {
+			if opt.AllowStatusExternalRefAddition && k == "status.externalRef" && v2 == "string" {
+				continue
+			}
 			diff = append(diff, fmt.Sprintf("+ %s=%s", k, v2))
 		}
 	}
