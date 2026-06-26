@@ -194,16 +194,15 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "updateFirewallPolicy",
-  "progress": 100,
+  "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
+  "status": "RUNNING",
   "targetId": "${firewallPolicyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
   "user": "user@example.com"

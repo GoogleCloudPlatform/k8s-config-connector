@@ -320,8 +320,8 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			if len(tokens) > 2 && tokens[len(tokens)-2] == "operations" {
 				id = tokens[len(tokens)-1]
 			}
-			// operation name format: operation-{operationId}
-			if len(tokens) == 1 && strings.HasPrefix(tokens[0], "operation") {
+			// operation name format: operation-{operationId} or org-{organizationId}-{operationId}
+			if len(tokens) == 1 && (strings.HasPrefix(tokens[0], "operation") || strings.HasPrefix(tokens[0], "org-")) {
 				id = s
 			}
 		}
