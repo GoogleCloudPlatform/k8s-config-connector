@@ -14,7 +14,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "certificateMap \"projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}\" not found",
+    "message": "The resource 'projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
