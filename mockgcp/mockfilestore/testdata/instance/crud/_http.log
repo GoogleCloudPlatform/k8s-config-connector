@@ -73,6 +73,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.filestore.v1.Instance",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
     "fileShares": [
       {
         "capacityGb": "1024",
@@ -115,6 +116,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
   "fileShares": [
     {
       "capacityGb": "1024",

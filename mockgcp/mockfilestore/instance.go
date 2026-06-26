@@ -31,6 +31,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	commonpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/common"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/filestore/v1"
@@ -49,7 +50,7 @@ func (s *FilestoreV1) GetInstance(ctx context.Context, req *pb.GetInstanceReques
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Instance %q not found.", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -96,6 +97,7 @@ func (s *FilestoreV1) CreateInstance(ctx context.Context, req *pb.CreateInstance
 				network.ReservedIpRange = "10.1.2.0/29"
 				network.IpAddresses = []string{"10.1.2.1"}
 			}
+			obj.Etag = fields.ComputeWeakEtag(obj)
 			return nil
 		})
 	})
@@ -126,6 +128,9 @@ func (s *FilestoreV1) populateDefaultsForInstance(obj *pb.Instance) {
 	if obj.Tier == pb.Instance_TIER_UNSPECIFIED {
 		obj.Tier = pb.Instance_STANDARD
 	}
+	if obj.Etag == "" {
+		obj.Etag = fields.ComputeWeakEtag(obj)
+	}
 }
 
 func (s *FilestoreV1) UpdateInstance(ctx context.Context, req *pb.UpdateInstanceRequest) (*longrunningpb.Operation, error) {
@@ -135,27 +140,41 @@ func (s *FilestoreV1) UpdateInstance(ctx context.Context, req *pb.UpdateInstance
 	}
 	fqn := name.String()
 
-	obj := &pb.Instance{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	existing := &pb.Instance{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
 		return nil, err
 	}
+
+	updated := proto.Clone(existing).(*pb.Instance)
 
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
 
-	proto.Merge(obj, req.GetInstance())
+	for _, path := range paths {
+		switch path {
+		case "file_shares", "fileShares":
+			updated.FileShares = req.GetInstance().GetFileShares()
+		case "description":
+			updated.Description = req.GetInstance().GetDescription()
+		case "labels":
+			updated.Labels = req.GetInstance().GetLabels()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported/implemented in mockgcp", path)
+		}
+	}
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	updated.Etag = fields.ComputeWeakEtag(updated)
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
-	updatedObj := proto.CloneOf(obj)
-	updatedObj.CreateTime = nil
+	updatedObj := proto.Clone(updated)
+	updatedObj.(*pb.Instance).CreateTime = nil
 	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 
 	return s.operations.DoneLRO(ctx, prefix, nil, updatedObj)
-
 }
 
 func (s *FilestoreV1) DeleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest) (*longrunningpb.Operation, error) {

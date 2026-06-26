@@ -20,6 +20,7 @@ package mockfilestore
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 
@@ -77,5 +78,16 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
-	return mux, nil
+	// FilestoreInstance client uses /v1beta1/ endpoints, but our protobuf is for /v1/.
+	// We can do a simple URL rewrite from /v1beta1/ to /v1/.
+	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
+		u := r.URL
+		if strings.HasPrefix(u.Path, "/v1beta1/") {
+			u.Path = "/v1/" + strings.TrimPrefix(u.Path, "/v1beta1/")
+			r.URL = u
+		}
+		mux.ServeHTTP(w, r)
+	}
+
+	return http.HandlerFunc(rewriteBetaToV1), nil
 }

@@ -1159,6 +1159,22 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		})
 	}
 
+	if !testHasField(t, "subnetworks") {
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			if m["kind"] == "compute#network" {
+				delete(m, "subnetworks")
+			}
+		})
+	}
+
+	if !testHasField(t, "peerings") {
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			if m["kind"] == "compute#network" {
+				delete(m, "peerings")
+			}
+		})
+	}
+
 	// Common variables
 	visitor.replacePaths[".uid"] = "111111111111111111111"
 	visitor.replacePaths[".etag"] = "abcdef0123A="

@@ -43,6 +43,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
     "message": "Resource 'projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
@@ -89,10 +96,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
     "verb": "create"
@@ -120,7 +126,7 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
@@ -128,11 +134,10 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1-c/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.filestore.v1beta1.Instance",
-    "capacityGb": "2560",
-    "capacityStepSizeGb": "1",
+    "@type": "type.googleapis.com/google.cloud.filestore.v1.Instance",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Test instance",
+    "etag": "abcdef0123A=",
     "fileShares": [
       {
         "capacityGb": "2560",
@@ -143,8 +148,6 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "maxCapacityGb": "65434",
-    "maxShareCount": "1",
     "name": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
     "networks": [
       {
@@ -154,19 +157,10 @@ X-Xss-Protection: 0
         "modes": [
           "MODE_IPV4"
         ],
-        "network": "${networkID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
         "reservedIpRange": "10.20.30.0/24"
       }
     ],
-    "performanceLimits": {
-      "maxIops": "60000",
-      "maxReadIops": "60000",
-      "maxReadThroughputBps": "1258291200",
-      "maxWriteIops": "25000",
-      "maxWriteThroughputBps": "367001600"
-    },
-    "satisfiesPzi": true,
-    "satisfiesPzs": false,
     "state": "READY",
     "tier": "PREMIUM"
   }
@@ -189,10 +183,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "capacityGb": "2560",
-  "capacityStepSizeGb": "1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Test instance",
+  "etag": "abcdef0123A=",
   "fileShares": [
     {
       "capacityGb": "2560",
@@ -203,8 +196,6 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "maxCapacityGb": "65434",
-  "maxShareCount": "1",
   "name": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
   "networks": [
     {
@@ -214,19 +205,10 @@ X-Xss-Protection: 0
       "modes": [
         "MODE_IPV4"
       ],
-      "network": "${networkID}",
+      "network": "projects/${projectId}/global/networks/${networkID}",
       "reservedIpRange": "10.20.30.0/24"
     }
   ],
-  "performanceLimits": {
-    "maxIops": "60000",
-    "maxReadIops": "60000",
-    "maxReadThroughputBps": "1258291200",
-    "maxWriteIops": "25000",
-    "maxWriteThroughputBps": "367001600"
-  },
-  "satisfiesPzi": true,
-  "satisfiesPzs": false,
   "state": "READY",
   "tier": "PREMIUM"
 }
@@ -239,6 +221,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "Test instance",
+  "etag": "abcdef0123A=",
   "fileShares": [
     {
       "capacityGb": 2560,
@@ -262,50 +245,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/us-central1-c/operations/${operationID}"
-}
-
----
-
-GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-c/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
   "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/us-central1-c/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1-c/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.filestore.v1beta1.Instance",
-    "capacityGb": "2560",
-    "capacityStepSizeGb": "1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
+    "@type": "type.googleapis.com/google.cloud.filestore.v1.Instance",
     "description": "Test instance",
+    "etag": "abcdef0123A=",
     "fileShares": [
       {
         "capacityGb": "2560",
@@ -316,8 +261,6 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "maxCapacityGb": "65434",
-    "maxShareCount": "1",
     "name": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
     "networks": [
       {
@@ -327,19 +270,10 @@ X-Xss-Protection: 0
         "modes": [
           "MODE_IPV4"
         ],
-        "network": "${networkID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
         "reservedIpRange": "10.20.30.0/24"
       }
     ],
-    "performanceLimits": {
-      "maxIops": "60000",
-      "maxReadIops": "60000",
-      "maxReadThroughputBps": "1258291200",
-      "maxWriteIops": "25000",
-      "maxWriteThroughputBps": "367001600"
-    },
-    "satisfiesPzi": true,
-    "satisfiesPzs": false,
     "state": "READY",
     "tier": "PREMIUM"
   }
@@ -362,10 +296,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "capacityGb": "2560",
-  "capacityStepSizeGb": "1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Test instance",
+  "etag": "abcdef0123A=",
   "fileShares": [
     {
       "capacityGb": "2560",
@@ -376,8 +309,6 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "maxCapacityGb": "65434",
-  "maxShareCount": "1",
   "name": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
   "networks": [
     {
@@ -387,19 +318,10 @@ X-Xss-Protection: 0
       "modes": [
         "MODE_IPV4"
       ],
-      "network": "${networkID}",
+      "network": "projects/${projectId}/global/networks/${networkID}",
       "reservedIpRange": "10.20.30.0/24"
     }
   ],
-  "performanceLimits": {
-    "maxIops": "60000",
-    "maxReadIops": "60000",
-    "maxReadThroughputBps": "1258291200",
-    "maxWriteIops": "25000",
-    "maxWriteThroughputBps": "367001600"
-  },
-  "satisfiesPzi": true,
-  "satisfiesPzs": false,
   "state": "READY",
   "tier": "PREMIUM"
 }
@@ -412,6 +334,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "Updated test instance",
+  "etag": "abcdef0123A=",
   "fileShares": [
     {
       "capacityGb": 4800,
@@ -447,50 +370,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/us-central1-c/operations/${operationID}"
-}
-
----
-
-GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-c/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
   "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/us-central1-c/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1-c/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.filestore.v1beta1.Instance",
-    "capacityGb": "4800",
-    "capacityStepSizeGb": "1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
+    "@type": "type.googleapis.com/google.cloud.filestore.v1.Instance",
     "description": "Updated test instance",
+    "etag": "abcdef0123A=",
     "fileShares": [
       {
         "capacityGb": "4800",
@@ -503,9 +388,6 @@ X-Xss-Protection: 0
             "ipRanges": [
               "172.217.14.238"
             ],
-            "securityFlavors": [
-              "AUTH_SYS"
-            ],
             "squashMode": "ROOT_SQUASH"
           }
         ]
@@ -516,8 +398,6 @@ X-Xss-Protection: 0
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
-    "maxCapacityGb": "65434",
-    "maxShareCount": "1",
     "name": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
     "networks": [
       {
@@ -527,19 +407,10 @@ X-Xss-Protection: 0
         "modes": [
           "MODE_IPV4"
         ],
-        "network": "${networkID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
         "reservedIpRange": "10.20.30.0/24"
       }
     ],
-    "performanceLimits": {
-      "maxIops": "60000",
-      "maxReadIops": "60000",
-      "maxReadThroughputBps": "1258291200",
-      "maxWriteIops": "25000",
-      "maxWriteThroughputBps": "367001600"
-    },
-    "satisfiesPzi": true,
-    "satisfiesPzs": false,
     "state": "READY",
     "tier": "PREMIUM"
   }
@@ -562,10 +433,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "capacityGb": "4800",
-  "capacityStepSizeGb": "1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated test instance",
+  "etag": "abcdef0123A=",
   "fileShares": [
     {
       "capacityGb": "4800",
@@ -578,9 +448,6 @@ X-Xss-Protection: 0
           "ipRanges": [
             "172.217.14.238"
           ],
-          "securityFlavors": [
-            "AUTH_SYS"
-          ],
           "squashMode": "ROOT_SQUASH"
         }
       ]
@@ -591,8 +458,6 @@ X-Xss-Protection: 0
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "maxCapacityGb": "65434",
-  "maxShareCount": "1",
   "name": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
   "networks": [
     {
@@ -602,19 +467,10 @@ X-Xss-Protection: 0
       "modes": [
         "MODE_IPV4"
       ],
-      "network": "${networkID}",
+      "network": "projects/${projectId}/global/networks/${networkID}",
       "reservedIpRange": "10.20.30.0/24"
     }
   ],
-  "performanceLimits": {
-    "maxIops": "60000",
-    "maxReadIops": "60000",
-    "maxReadThroughputBps": "1258291200",
-    "maxWriteIops": "25000",
-    "maxWriteThroughputBps": "367001600"
-  },
-  "satisfiesPzi": true,
-  "satisfiesPzs": false,
   "state": "READY",
   "tier": "PREMIUM"
 }
@@ -636,10 +492,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
     "verb": "delete"
@@ -667,7 +522,7 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}",
@@ -698,6 +553,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
     "message": "Resource 'projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }

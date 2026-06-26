@@ -24,8 +24,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// Instance
 	replacements.ReplacePath(".networks[].reservedIpRange", "10.20.30.0/24")
 	replacements.ReplacePath(".networks[].ipAddresses", []string{"10.20.30.1"})
+	replacements.ReplacePath(".etag", "abcdef0123A=")
 	replacements.ReplacePath(".response.networks[].reservedIpRange", "10.20.30.0/24")
 	replacements.ReplacePath(".response.networks[].ipAddresses", []string{"10.20.30.1"})
+	replacements.ReplacePath(".response.etag", "abcdef0123A=")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
