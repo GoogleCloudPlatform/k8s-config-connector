@@ -41,33 +41,22 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
       }
       gcpClient, err := gcp.NewConfigRESTClient(ctx, opts...)
       ```
-    - **Diff Comparison (`compare<Resource>` pattern)**: Implement a dedicated `compare<Resource>` helper function to compare the spec fields of actual/desired proto structures by round-tripping actual via its KRM Spec using `mappers.OnlySpecFields` and calling `tags.DiffForTopLevelFields`. Define a `populateDefaults := func(obj *pb.MyResource)` function inside `compare<Resource>` and call it for both `maskedActual` and `desired` clone before comparison to populate any defaults (e.g., fields that default to specific values when nil / omitted):
+    - **Diff Comparison & Structured Diff (`CompareProtoMessageStructuredDiff` or `CompareProtoMessage` pattern)**: Always prefer using the standard recursive comparison functions `common.CompareProtoMessageStructuredDiff` or `common.CompareProtoMessage` over custom comparison logic (like `compareResource` with `tags.DiffForTopLevelFields`). This standardizes how field differences are calculated and avoids manual diffing bugs.
+      Ensure you sort the resulting fieldmask paths for determinism:
       ```go
-      func compareResource(ctx context.Context, actual, desired *pb.MyResource) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-          maskedActual, err := mappers.OnlySpecFields(actual, MyResourceSpec_FromProto, MyResourceSpec_ToProto)
-          if err != nil {
-              return nil, nil, err
-          }
-          maskedActual.Name = desired.Name // Restore any non-spec identifier fields if needed
-
-          clonedDesired := proto.Clone(desired).(*pb.MyResource)
-
-          populateDefaults := func(obj *pb.MyResource) {
-              // Even if empty, it's a good pattern to define and populate GCP/server defaults here
-              if obj.SomeDefaultedField == nil {
-                  obj.SomeDefaultedField = ...
-              }
-          }
-          populateDefaults(maskedActual)
-          populateDefaults(clonedDesired)
-
-          diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
-          if err != nil {
-              return nil, nil, err
-          }
-          return diffs, updateMask, nil
+      paths, diffs, err := common.CompareProtoMessageStructuredDiff(desired, actual, common.BasicDiff)
+      if err != nil {
+          return fmt.Errorf("comparing spec: %w", err)
+      }
+      pathsList := paths.UnsortedList()
+      sort.Strings(pathsList)
+      updateMask := &fieldmaskpb.FieldMask{
+          Paths: pathsList,
       }
       ```
+    - **Reconciling Empty or Incomplete LRO Responses**: Many GCP APIs (such as Dataproc's `UpdateCluster` LRO) return an empty response (`google.protobuf.Empty`), or do not fully populate read-only status fields (such as state, metrics, or instance names) during resource creation. If you map status directly from such incomplete/empty LRO responses, you will inadvertently clear status fields in Kubernetes.
+      * **Rule**: Always perform a GET operation (`Get<Resource>`) immediately after a Create or Update LRO successfully completes to fetch the fully-populated resource before calling `updateStatus`.
+    - **Propagating KRM Metadata Labels**: Metadata labels (such as `managed-by-cnrm: true` or custom user-supplied labels) must be explicitly mapped and propagated on both `Create` and `Update` operations so they are correctly synchronized to GCP.
     - **Structured Reporting & updateStatus**: In the `Update` method, use `diffs.HasDiff()` to report exact diffs back to the user via `structuredreporting.ReportDiff`. Always call a helper `updateStatus` function to update the Kube status at the end of both `Create` and `Update` reconciliation paths:
       ```go
       func (a *MyResourceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.MyResource) error {
@@ -79,7 +68,16 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
           return op.UpdateStatus(ctx, status, nil)
       }
       ```
-    - **Immutable Resources**: If a direct resource is completely immutable in GCP (meaning no fields can be updated once created), the `Update` method must STILL perform the `compare<Resource>` comparison check on spec fields. If a diff is detected, return a descriptive error (e.g. `fmt.Errorf("<Kind> is immutable and cannot be updated")`) so that the error/diff is surfaced on the resource status rather than silently doing nothing. Also, register the model using `registry.CannotBeDeleted()` if deletion is not supported.
+    - **Delete Idempotency Check**: In the `Delete` method, check if the resource has already been deleted using `direct.IsNotFound(err)` to ensure idempotency, returning `true, nil` to gracefully exit:
+      ```go
+      if err != nil {
+          if direct.IsNotFound(err) {
+              return true, nil
+          }
+          return false, err
+      }
+      ```
+    - **Immutable Resources**: If a direct resource is completely immutable in GCP (meaning no fields can be updated once created), the `Update` method must STILL perform the comparison check on spec fields. If a diff is detected, return a descriptive error (e.g. `fmt.Errorf("<Kind> is immutable and cannot be updated")`) so that the error/diff is surfaced on the resource status rather than silently doing nothing. Also, register the model using `registry.CannotBeDeleted()` if deletion is not supported.
     - **Mutable-but-Unreadable Fields**: If certain spec fields (such as keys, passwords, or specific metadata/launchStage fields) are mutable but cannot be read back from the GCP API (meaning they are write-only or missing from the GET response), never check `desired` inside `populateDefaults`. Instead:
       1. Check the resource's `updateTime` or change cookie to see if the GCP side is fully reconciled and unchanged (meaning `generation == observedGeneration` and GCP `updateTime` matches status `updateTime` on a successful/Ready status).
       2. If the update time matches and there are no external modifications, copy those mutable-but-unreadable fields from `desired` to `maskedActual` in the comparison function to avoid false diffs.
