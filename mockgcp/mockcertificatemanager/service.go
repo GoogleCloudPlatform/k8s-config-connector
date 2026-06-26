@@ -19,6 +19,9 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -30,6 +33,38 @@ import (
 
 func init() {
 	mockgcpregistry.Register(New)
+}
+
+type cmStorage struct {
+	storage.Storage
+}
+
+func (s *cmStorage) Get(ctx context.Context, fqn string, dest proto.Message) error {
+	err := s.Storage.Get(ctx, fqn, dest)
+	if err != nil && status.Code(err) == codes.NotFound {
+		typeName := string(dest.ProtoReflect().Descriptor().Name())
+		if typeName == "Certificate" {
+			return status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		if typeName == "CertificateMap" || typeName == "CertificateMapEntry" {
+			return status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
+	}
+	return err
+}
+
+func (s *cmStorage) Delete(ctx context.Context, fqn string, dest proto.Message) error {
+	err := s.Storage.Delete(ctx, fqn, dest)
+	if err != nil && status.Code(err) == codes.NotFound {
+		typeName := string(dest.ProtoReflect().Descriptor().Name())
+		if typeName == "Certificate" {
+			return status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		if typeName == "CertificateMap" || typeName == "CertificateMapEntry" {
+			return status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
+	}
+	return err
 }
 
 // MockService represents a mocked certificatemanager service.
@@ -44,10 +79,11 @@ type MockService struct {
 
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
+	wrappedStorage := &cmStorage{Storage: storage}
 	s := &MockService{
 		MockEnvironment: env,
-		storage:         storage,
-		operations:      operations.NewOperationsService(storage),
+		storage:         wrappedStorage,
+		operations:      operations.NewOperationsService(wrappedStorage),
 	}
 	s.v1 = &CertificateManagerV1{MockService: s}
 	return s

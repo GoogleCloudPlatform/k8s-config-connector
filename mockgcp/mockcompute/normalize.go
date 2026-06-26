@@ -203,7 +203,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		}
 	})
 
-	if isGetOperation(event) {
+	if isGetOperation(event) || kind == "compute#operation" {
 		targetLink := ""
 		targetId := ""
 

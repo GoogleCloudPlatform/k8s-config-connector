@@ -164,7 +164,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "certificate \"projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -276,7 +276,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -296,11 +296,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/urlMaps/${urlMapID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/urlMaps/${urlMapID}' was not found"
   }
 }
 
@@ -321,7 +321,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "pathMatcher": "allpaths"
     }
   ],
-  "name": "computeurlmap-${uniqueId}",
+  "name": "${urlMapID}",
   "pathMatchers": [
     {
       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
@@ -353,15 +353,19 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "insert",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "DONE",
+  "targetId": "${urlMapID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -379,6 +383,7 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
   "description": "test global URLMap",
+  "fingerprint": "abcdef0123A=",
   "hostRules": [
     {
       "hosts": [
@@ -389,7 +394,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
-  "name": "computeurlmap-${uniqueId}",
+  "name": "${urlMapID}",
   "pathMatchers": [
     {
       "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
@@ -404,7 +409,7 @@ X-Xss-Protection: 0
       ]
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}"
 }
 
 ---
@@ -429,11 +434,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetHttpsProxy \"projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}\" not found",
+        "message": "The resource 'projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetHttpsProxy \"projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}\" not found"
+    "message": "The resource 'projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}' was not found"
   }
 }
 
@@ -450,7 +455,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "sslCertificates": [
     "https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
   ],
-  "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "urlMap": "projects/${projectId}/global/urlMaps/${urlMapID}"
 }
 
 200 OK
@@ -537,7 +542,8 @@ X-Xss-Protection: 0
   "sslCertificates": [
     "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
   ],
-  "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "tlsEarlyData": "DISABLED",
+  "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/${urlMapID}"
 }
 
 ---
@@ -634,7 +640,8 @@ X-Xss-Protection: 0
   "sslCertificates": [
     "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
   ],
-  "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "tlsEarlyData": "DISABLED",
+  "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/${urlMapID}"
 }
 
 ---
@@ -701,7 +708,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -719,6 +726,7 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
   "description": "test global URLMap",
+  "fingerprint": "abcdef0123A=",
   "hostRules": [
     {
       "hosts": [
@@ -729,7 +737,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
-  "name": "computeurlmap-${uniqueId}",
+  "name": "${urlMapID}",
   "pathMatchers": [
     {
       "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
@@ -744,12 +752,12 @@ X-Xss-Protection: 0
       ]
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -768,10 +776,14 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "delete",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "DONE",
+  "targetId": "${urlMapID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}",
+  "user": "user@example.com"
 }
 
 ---

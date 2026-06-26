@@ -42,10 +42,19 @@ func (s *GlobalTargetHTTPSProxiesV1) Get(ctx context.Context, req *pb.GetTargetH
 
 	obj := &pb.TargetHttpsProxy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
 	return obj, nil
+}
+
+func (s *GlobalTargetHTTPSProxiesV1) populateTargetHttpsProxyDefaults(obj *pb.TargetHttpsProxy) {
+	if obj.TlsEarlyData == nil {
+		obj.TlsEarlyData = PtrTo("DISABLED")
+	}
 }
 
 func (s *GlobalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.InsertTargetHttpsProxyRequest) (*pb.Operation, error) {
@@ -67,6 +76,8 @@ func (s *GlobalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.InsertT
 	if obj.Fingerprint == nil {
 		obj.Fingerprint = PtrTo(computeFingerprint(obj))
 	}
+
+	s.populateTargetHttpsProxyDefaults(obj)
 
 	if obj.SslCertificates != nil {
 		var certs []string
@@ -134,6 +145,8 @@ func (s *GlobalTargetHTTPSProxiesV1) Patch(ctx context.Context, req *pb.PatchTar
 
 	// TODO: Implement helper to implement the full rules here
 	proto.Merge(obj, req.GetTargetHttpsProxyResource())
+
+	s.populateTargetHttpsProxyDefaults(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -227,6 +240,9 @@ func (s *GlobalTargetHTTPSProxiesV1) Delete(ctx context.Context, req *pb.DeleteT
 
 	deleted := &pb.TargetHttpsProxy{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

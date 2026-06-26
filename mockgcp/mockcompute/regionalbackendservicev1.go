@@ -100,6 +100,8 @@ func (s *RegionalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateRe
 	// TODO: Implement helper to implement the full rules here
 	proto.Merge(obj, req.GetBackendServiceResource())
 
+	s.populateBackendServiceDefaults(ctx, obj)
+
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {

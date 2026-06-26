@@ -100,6 +100,8 @@ func (s *GlobalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateBack
 	// TODO: Implement helper to implement the full rules here
 	proto.Merge(obj, req.GetBackendServiceResource())
 
+	s.populateBackendServiceDefaults(ctx, obj)
+
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -132,6 +134,8 @@ func (s *GlobalBackendServicesV1) Patch(ctx context.Context, req *pb.PatchBacken
 
 	// TODO: Implement helper to implement the full rules here
 	proto.Merge(obj, req.GetBackendServiceResource())
+
+	s.populateBackendServiceDefaults(ctx, obj)
 
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 

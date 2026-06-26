@@ -21,6 +21,10 @@ import (
 )
 
 func (s *MockService) populateBackendServiceDefaults(ctx context.Context, obj *pb.BackendService) {
+	if obj.Protocol == nil {
+		obj.Protocol = PtrTo("HTTP")
+	}
+
 	if obj.AffinityCookieTtlSec == nil {
 		obj.AffinityCookieTtlSec = PtrTo(int32(0))
 	}
@@ -42,7 +46,7 @@ func (s *MockService) populateBackendServiceDefaults(ctx context.Context, obj *p
 	}
 
 	switch obj.GetProtocol() {
-	case "HTTP", "HTTP2":
+	case "HTTP", "HTTPS", "HTTP2":
 		if obj.Port == nil {
 			obj.Port = PtrTo[int32](80)
 		}

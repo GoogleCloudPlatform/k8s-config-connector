@@ -42,10 +42,19 @@ func (s *RegionalTargetHTTPSProxiesV1) Get(ctx context.Context, req *pb.GetRegio
 
 	obj := &pb.TargetHttpsProxy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
 	return obj, nil
+}
+
+func (s *RegionalTargetHTTPSProxiesV1) populateTargetHttpsProxyDefaults(obj *pb.TargetHttpsProxy) {
+	if obj.TlsEarlyData == nil {
+		obj.TlsEarlyData = PtrTo("DISABLED")
+	}
 }
 
 func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.InsertRegionTargetHttpsProxyRequest) (*pb.Operation, error) {
@@ -68,6 +77,8 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 	if obj.Fingerprint == nil {
 		obj.Fingerprint = PtrTo(computeFingerprint(obj))
 	}
+
+	s.populateTargetHttpsProxyDefaults(obj)
 
 	if obj.SslCertificates != nil {
 		var certs []string
@@ -170,6 +181,9 @@ func (s *RegionalTargetHTTPSProxiesV1) Delete(ctx context.Context, req *pb.Delet
 
 	deleted := &pb.TargetHttpsProxy{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

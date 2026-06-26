@@ -66,11 +66,22 @@ func (s *GlobalURLMapsV1) Insert(ctx context.Context, req *pb.InsertUrlMapReques
 
 	s.populateURLMapDefaults(ctx, obj)
 
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		Status:        PtrTo(pb.Operation_DONE),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a UrlMap resource in the specified project using the data included in the request.
@@ -105,11 +116,22 @@ func (s *GlobalURLMapsV1) Patch(ctx context.Context, req *pb.PatchUrlMapRequest)
 
 	s.populateURLMapDefaults(ctx, obj)
 
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
+		Status:        PtrTo(pb.Operation_DONE),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a UrlMap resource in the specified project using the data included in the request.
@@ -135,11 +157,22 @@ func (s *GlobalURLMapsV1) Update(ctx context.Context, req *pb.UpdateUrlMapReques
 
 	s.populateURLMapDefaults(ctx, obj)
 
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("update"),
+		Status:        PtrTo(pb.Operation_DONE),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *GlobalURLMapsV1) Delete(ctx context.Context, req *pb.DeleteUrlMapRequest) (*pb.Operation, error) {
@@ -156,7 +189,16 @@ func (s *GlobalURLMapsV1) Delete(ctx context.Context, req *pb.DeleteUrlMapReques
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		Status:        PtrTo(pb.Operation_DONE),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type globalUrlMapName struct {
