@@ -6,107 +6,72 @@
 < POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?alt=json
 ---
 > POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint
-285,287d284
-<     "gceClusterConfig": {
-<       "internalIpOnly": false
-<     },
-296,300c293
-<   "labels": {
-<     "cnrm-test": "true",
-<     "label-one": "value-one",
-<     "managed-by-cnrm": "true"
+300c300,301
 <   }
 ---
+>   },
 >   "projectId": "${projectId}"
-322c315
+322c323
 <       "state": "PENDING",
 ---
 >       "state": 1,
-336c329
+336c337
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-387c380
-<         "internalIpOnly": false,
----
->         "internalIpOnly": true,
-489d481
-<       "cnrm-test": "true",
-494,496c486
-<       "goog-dataproc-location": "us-central1",
-<       "label-one": "value-one",
-<       "managed-by-cnrm": "true"
----
->       "goog-dataproc-location": "us-central1"
-504c494
+504c505
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-524c514
-<       "internalIpOnly": false,
----
->       "internalIpOnly": true,
-548c538
+548c549
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-629c619
+629c630
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-633d622
-<     "cnrm-test": "true",
-638,640c627
-<     "goog-dataproc-location": "us-central1",
-<     "label-one": "value-one",
-<     "managed-by-cnrm": "true"
----
->     "goog-dataproc-location": "us-central1"
-644c631
+644c645
 <     "state": "RUNNING",
 ---
 >     "state": 2,
-649c636
+649c650
 <       "state": "CREATING",
 ---
 >       "state": 1,
-657c644
+657c658
 < PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=labels
 ---
 > PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
-660a648,649
+660a662,663
 >   "clusterName": "dataproccluster-${uniqueId}",
 >   "clusterUuid": "${dataStoreClusterUUID}",
-662a652
+662a666
 >     "endpointConfig": {},
-664c654
-<       "internalIpOnly": false,
----
->       "internalIpOnly": true,
-665a656,658
+665a670,672
 >       "serviceAccountScopes": [
 >         "https://www.googleapis.com/auth/cloud-platform"
 >       ],
-673d665
+673d679
 <     "initializationActions": [],
-675d666
+675d680
 <       "accelerators": [],
-681c672,675
+681c686,689
 <       "machineTypeUri": "n2-standard-2",
 ---
 >       "instanceNames": [
 >         "dataproccluster-${uniqueId}-m"
 >       ],
 >       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
-684c678
+684c692
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-688d681
+688d695
 <       "optionalComponents": [],
-754d746
+754d760
 <       "accelerators": [],
-760c752,756
+760c766,770
 <       "machineTypeUri": "n2-standard-4",
 ---
 >       "instanceNames": [
@@ -114,17 +79,14 @@
 >         "dataproccluster-${uniqueId}-w-1"
 >       ],
 >       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
-763c759
+763c773
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-766,770c762,772
-<   "labels": {
-<     "cnrm-test": "true",
-<     "label-one": "new-value",
-<     "managed-by-cnrm": "true"
+770c780,791
 <   }
 ---
+>   },
 >   "projectId": "${projectId}",
 >   "status": {
 >     "state": 2,
@@ -136,79 +98,55 @@
 >       "stateStartTime": "2024-04-01T12:34:56.123456Z"
 >     }
 >   ]
-791c793
+791c812
 <       "state": "PENDING",
 ---
 >       "state": 1,
-800c802
+800c821
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-845c847
-<         "internalIpOnly": false,
----
->         "internalIpOnly": true,
-947d948
-<       "cnrm-test": "true",
-952,954c953
-<       "goog-dataproc-location": "us-central1",
-<       "label-one": "new-value",
-<       "managed-by-cnrm": "true"
----
->       "goog-dataproc-location": "us-central1"
-962c961
+962c983
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-982c981
-<       "internalIpOnly": false,
----
->       "internalIpOnly": true,
-1006c1005
+1006c1027
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-1087c1086
+1087c1108
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-1091d1089
-<     "cnrm-test": "true",
-1096,1098c1094
-<     "goog-dataproc-location": "us-central1",
-<     "label-one": "new-value",
-<     "managed-by-cnrm": "true"
----
->     "goog-dataproc-location": "us-central1"
-1148c1144
+1148c1169
 <     "state": "RUNNING",
 ---
 >     "state": 2,
-1153c1149
+1153c1174
 <       "state": "CREATING",
 ---
 >       "state": 1,
-1157c1153
+1157c1178
 <       "state": "RUNNING",
 ---
 >       "state": 2,
-1161c1157
+1161c1182
 <       "state": "UPDATING",
 ---
 >       "state": 5,
-1169c1165
+1169c1190
 < DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
 > DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1191c1187
+1191c1212
 <       "state": "PENDING",
 ---
 >       "state": 1,
-1200c1196
+1200c1221
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-1240,1262d1235
+1240,1262d1260
 <   }
 < }
 < 

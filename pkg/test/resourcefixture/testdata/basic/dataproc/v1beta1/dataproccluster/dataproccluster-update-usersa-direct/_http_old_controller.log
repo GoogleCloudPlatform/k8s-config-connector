@@ -452,6 +452,9 @@ Content-Type: application/json
 {
   "clusterName": "dataproccluster-${uniqueId}",
   "config": {
+    "gceClusterConfig": {
+      "zoneUri": "us-central1-a"
+    },
     "masterConfig": {
       "machineTypeUri": "n2-standard-2",
       "numInstances": 1
@@ -473,6 +476,10 @@ Content-Type: application/json
       "machineTypeUri": "n2-standard-2",
       "numInstances": 2
     }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}"
 }
@@ -571,7 +578,7 @@ X-Xss-Protection: 0
           "enableSecureBoot": true,
           "enableVtpm": true
         },
-        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
       },
       "masterConfig": {
         "diskConfig": {
@@ -579,7 +586,7 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -604,18 +611,20 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 2,
         "preemptibility": "NON_PREEMPTIBLE"
       }
     },
     "labels": {
+      "cnrm-test": "true",
       "goog-dataproc-autozone": "enabled",
       "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-      "goog-dataproc-location": "us-central1"
+      "goog-dataproc-location": "us-central1",
+      "managed-by-cnrm": "true"
     },
     "projectId": "${projectId}"
   }
@@ -653,7 +662,7 @@ X-Xss-Protection: 0
         "enableSecureBoot": true,
         "enableVtpm": true
       },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
     },
     "masterConfig": {
       "diskConfig": {
@@ -664,7 +673,7 @@ X-Xss-Protection: 0
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": 1
@@ -693,18 +702,20 @@ X-Xss-Protection: 0
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
       "preemptibility": 1
     }
   },
   "labels": {
+    "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-    "goog-dataproc-location": "us-central1"
+    "goog-dataproc-location": "us-central1",
+    "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}",
   "status": {
@@ -741,7 +752,7 @@ Content-Type: application/json
         "enableSecureBoot": true,
         "enableVtpm": true
       },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
     },
     "masterConfig": {
       "diskConfig": {
@@ -752,7 +763,7 @@ Content-Type: application/json
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": 1
@@ -782,11 +793,15 @@ Content-Type: application/json
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
       "preemptibility": 1
     }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}",
   "status": {
@@ -883,7 +898,7 @@ X-Xss-Protection: 0
           "enableSecureBoot": true,
           "enableVtpm": true
         },
-        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
       },
       "masterConfig": {
         "diskConfig": {
@@ -891,7 +906,7 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -917,18 +932,20 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 2,
         "preemptibility": "NON_PREEMPTIBLE"
       }
     },
     "labels": {
+      "cnrm-test": "true",
       "goog-dataproc-autozone": "enabled",
       "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-      "goog-dataproc-location": "us-central1"
+      "goog-dataproc-location": "us-central1",
+      "managed-by-cnrm": "true"
     },
     "projectId": "${projectId}"
   }
@@ -966,7 +983,7 @@ X-Xss-Protection: 0
         "enableSecureBoot": true,
         "enableVtpm": true
       },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
     },
     "masterConfig": {
       "diskConfig": {
@@ -977,7 +994,7 @@ X-Xss-Protection: 0
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": 1
@@ -1007,18 +1024,20 @@ X-Xss-Protection: 0
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
       "preemptibility": 1
     }
   },
   "labels": {
+    "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-    "goog-dataproc-location": "us-central1"
+    "goog-dataproc-location": "us-central1",
+    "managed-by-cnrm": "true"
   },
   "metrics": {
     "hdfsMetrics": {

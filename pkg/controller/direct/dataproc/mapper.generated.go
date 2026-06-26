@@ -27,8 +27,6 @@ import (
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	krmdataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -207,19 +205,19 @@ func ClusterAutoscaling_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GkeN
 }
 */
 
-/*
-found existing non-generated mapping function "ClusterAutoscaling_v1beta1_ToProto", skipping
-
-	func ClusterAutoscaling_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterAutoscaling) *pb.GkeNodePoolConfig_GkeNodePoolAutoscalingConfig {
-		if in == nil {
-			return nil
-		}
-		out := &pb.GkeNodePoolConfig_GkeNodePoolAutoscalingConfig{}
-		out.MinNodeCount = direct.ValueOf(in.MinNodeCount)
-		out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
-		return out
+/* found existing non-generated mapping function "ClusterAutoscaling_v1beta1_ToProto", skipping
+func ClusterAutoscaling_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterAutoscaling) *pb.GkeNodePoolConfig_GkeNodePoolAutoscalingConfig {
+	if in == nil {
+		return nil
 	}
+	out := &pb.GkeNodePoolConfig_GkeNodePoolAutoscalingConfig{}
+	out.MinNodeCount = direct.ValueOf(in.MinNodeCount)
+	out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
+	return out
+}
 */
+
+/* found existing non-generated mapping function "ClusterAutoscalingConfig_v1beta1_FromProto", skipping
 func ClusterAutoscalingConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingConfig) *krm.ClusterAutoscalingConfig {
 	if in == nil {
 		return nil
@@ -228,14 +226,20 @@ func ClusterAutoscalingConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: PolicyURI
 	return out
 }
-func ClusterAutoscalingConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterAutoscalingConfig) *pb.AutoscalingConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ClusterAutoscalingConfig_v1beta1_ToProto", skipping
+
+	func ClusterAutoscalingConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterAutoscalingConfig) *pb.AutoscalingConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AutoscalingConfig{}
+		// MISSING: PolicyURI
+		return out
 	}
-	out := &pb.AutoscalingConfig{}
-	// MISSING: PolicyURI
-	return out
-}
+*/
 func ClusterAuxiliaryServicesConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AuxiliaryServicesConfig) *krm.ClusterAuxiliaryServicesConfig {
 	if in == nil {
 		return nil
@@ -270,6 +274,8 @@ func ClusterConfidentialInstanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext
 	out.EnableConfidentialCompute = direct.ValueOf(in.EnableConfidentialCompute)
 	return out
 }
+
+/* found existing non-generated mapping function "ClusterConfig_v1beta1_FromProto", skipping
 func ClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ClusterConfig) *krm.ClusterConfig {
 	if in == nil {
 		return nil
@@ -297,33 +303,39 @@ func ClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ClusterCo
 	// MISSING: AuxiliaryNodeGroups
 	return out
 }
-func ClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterConfig) *pb.ClusterConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ClusterConfig_v1beta1_ToProto", skipping
+
+	func ClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterConfig) *pb.ClusterConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ClusterConfig{}
+		// MISSING: ClusterTier
+		// MISSING: ConfigBucket
+		if in.TempBucketRef != nil {
+			out.TempBucket = in.TempBucketRef.External
+		}
+		// MISSING: GCEClusterConfig
+		// (near miss): "GCEClusterConfig" vs "GceClusterConfig"
+		out.MasterConfig = ClusterMasterConfig_v1beta1_ToProto(mapCtx, in.MasterConfig)
+		out.WorkerConfig = ClusterWorkerConfig_v1beta1_ToProto(mapCtx, in.WorkerConfig)
+		out.SecondaryWorkerConfig = ClusterSecondaryWorkerConfig_v1beta1_ToProto(mapCtx, in.SecondaryWorkerConfig)
+		out.SoftwareConfig = ClusterSoftwareConfig_v1beta1_ToProto(mapCtx, in.SoftwareConfig)
+		out.InitializationActions = direct.Slice_ToProto(mapCtx, in.InitializationActions, ClusterInitializationActions_v1beta1_ToProto)
+		out.EncryptionConfig = ClusterEncryptionConfig_v1beta1_ToProto(mapCtx, in.EncryptionConfig)
+		out.AutoscalingConfig = ClusterAutoscalingConfig_v1beta1_ToProto(mapCtx, in.AutoscalingConfig)
+		out.SecurityConfig = ClusterSecurityConfig_v1beta1_ToProto(mapCtx, in.SecurityConfig)
+		out.LifecycleConfig = ClusterLifecycleConfig_v1beta1_ToProto(mapCtx, in.LifecycleConfig)
+		out.EndpointConfig = ClusterEndpointConfig_v1beta1_ToProto(mapCtx, in.EndpointConfig)
+		out.MetastoreConfig = ClusterMetastoreConfig_v1beta1_ToProto(mapCtx, in.MetastoreConfig)
+		out.DataprocMetricConfig = ClusterDataprocMetricConfig_v1beta1_ToProto(mapCtx, in.DataprocMetricConfig)
+		// MISSING: AuxiliaryNodeGroups
+		return out
 	}
-	out := &pb.ClusterConfig{}
-	// MISSING: ClusterTier
-	// MISSING: ConfigBucket
-	if in.TempBucketRef != nil {
-		out.TempBucket = in.TempBucketRef.External
-	}
-	// MISSING: GCEClusterConfig
-	// (near miss): "GCEClusterConfig" vs "GceClusterConfig"
-	out.MasterConfig = ClusterMasterConfig_v1beta1_ToProto(mapCtx, in.MasterConfig)
-	out.WorkerConfig = ClusterWorkerConfig_v1beta1_ToProto(mapCtx, in.WorkerConfig)
-	out.SecondaryWorkerConfig = ClusterSecondaryWorkerConfig_v1beta1_ToProto(mapCtx, in.SecondaryWorkerConfig)
-	out.SoftwareConfig = ClusterSoftwareConfig_v1beta1_ToProto(mapCtx, in.SoftwareConfig)
-	out.InitializationActions = direct.Slice_ToProto(mapCtx, in.InitializationActions, ClusterInitializationActions_v1beta1_ToProto)
-	out.EncryptionConfig = ClusterEncryptionConfig_v1beta1_ToProto(mapCtx, in.EncryptionConfig)
-	out.AutoscalingConfig = ClusterAutoscalingConfig_v1beta1_ToProto(mapCtx, in.AutoscalingConfig)
-	out.SecurityConfig = ClusterSecurityConfig_v1beta1_ToProto(mapCtx, in.SecurityConfig)
-	out.LifecycleConfig = ClusterLifecycleConfig_v1beta1_ToProto(mapCtx, in.LifecycleConfig)
-	out.EndpointConfig = ClusterEndpointConfig_v1beta1_ToProto(mapCtx, in.EndpointConfig)
-	out.MetastoreConfig = ClusterMetastoreConfig_v1beta1_ToProto(mapCtx, in.MetastoreConfig)
-	out.DataprocMetricConfig = ClusterDataprocMetricConfig_v1beta1_ToProto(mapCtx, in.DataprocMetricConfig)
-	// MISSING: AuxiliaryNodeGroups
-	return out
-}
+*/
 func ClusterConfigStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ClusterConfig) *krm.ClusterConfigStatus {
 	if in == nil {
 		return nil
@@ -482,6 +494,8 @@ func ClusterEndpointConfigStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: EnableHTTPPortAccess
 	return out
 }
+
+/* found existing non-generated mapping function "ClusterGceClusterConfig_v1beta1_FromProto", skipping
 func ClusterGceClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GceClusterConfig) *krm.ClusterGceClusterConfig {
 	if in == nil {
 		return nil
@@ -505,6 +519,9 @@ func ClusterGceClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb
 	out.ConfidentialInstanceConfig = ClusterConfidentialInstanceConfig_v1beta1_FromProto(mapCtx, in.GetConfidentialInstanceConfig())
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ClusterGceClusterConfig_v1beta1_ToProto", skipping
 func ClusterGceClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterGceClusterConfig) *pb.GceClusterConfig {
 	if in == nil {
 		return nil
@@ -528,6 +545,7 @@ func ClusterGceClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.ConfidentialInstanceConfig = ClusterConfidentialInstanceConfig_v1beta1_ToProto(mapCtx, in.ConfidentialInstanceConfig)
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "ClusterGkeClusterConfig_v1beta1_FromProto", skipping
 func ClusterGkeClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GkeClusterConfig) *krm.ClusterGkeClusterConfig {

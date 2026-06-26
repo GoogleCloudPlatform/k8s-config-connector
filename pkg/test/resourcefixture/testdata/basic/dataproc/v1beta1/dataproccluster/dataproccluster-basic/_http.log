@@ -394,7 +394,12 @@ Content-Type: application/json
 {
   "clusterName": "dataproccluster-${uniqueId}",
   "config": {
-    "autoscalingConfig": {},
+    "autoscalingConfig": {
+      "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+    },
+    "gceClusterConfig": {
+      "internalIpOnly": false
+    },
     "masterConfig": {
       "diskConfig": {
         "bootDiskType": "pd-standard"
@@ -402,6 +407,11 @@ Content-Type: application/json
       "machineTypeUri": "n2-standard-2",
       "numInstances": 1
     }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}"
 }
@@ -487,11 +497,13 @@ X-Xss-Protection: 0
     "clusterName": "dataproccluster-${uniqueId}",
     "clusterUuid": "${dataStoreClusterUUID}",
     "config": {
-      "autoscalingConfig": {},
+      "autoscalingConfig": {
+        "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+      },
       "configBucket": "${dataStoreConfigBucketPath}",
       "endpointConfig": {},
       "gceClusterConfig": {
-        "internalIpOnly": true,
+        "internalIpOnly": false,
         "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
         "serviceAccountScopes": [
           "https://www.googleapis.com/auth/cloud-platform"
@@ -593,11 +605,14 @@ X-Xss-Protection: 0
       }
     },
     "labels": {
+      "cnrm-test": "true",
       "goog-dataproc-autozone": "enabled",
       "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-      "goog-dataproc-location": "us-central1"
+      "goog-dataproc-location": "us-central1",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
     },
     "projectId": "${projectId}"
   }
@@ -622,11 +637,13 @@ X-Xss-Protection: 0
   "clusterName": "dataproccluster-${uniqueId}",
   "clusterUuid": "${dataStoreClusterUUID}",
   "config": {
-    "autoscalingConfig": {},
+    "autoscalingConfig": {
+      "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+    },
     "configBucket": "${dataStoreConfigBucketPath}",
     "endpointConfig": {},
     "gceClusterConfig": {
-      "internalIpOnly": true,
+      "internalIpOnly": false,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
       "serviceAccountScopes": [
         "https://www.googleapis.com/auth/cloud-platform"
@@ -735,11 +752,14 @@ X-Xss-Protection: 0
     }
   },
   "labels": {
+    "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-    "goog-dataproc-location": "us-central1"
+    "goog-dataproc-location": "us-central1",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}",
   "status": {
@@ -763,11 +783,13 @@ Content-Type: application/json
   "clusterName": "dataproccluster-${uniqueId}",
   "clusterUuid": "${dataStoreClusterUUID}",
   "config": {
-    "autoscalingConfig": {},
+    "autoscalingConfig": {
+      "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+    },
     "configBucket": "${dataStoreConfigBucketPath}",
     "endpointConfig": {},
     "gceClusterConfig": {
-      "internalIpOnly": true,
+      "internalIpOnly": false,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
       "serviceAccountScopes": [
         "https://www.googleapis.com/auth/cloud-platform"
@@ -874,6 +896,11 @@ Content-Type: application/json
       "numInstances": 2,
       "preemptibility": 1
     }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "new-value",
+    "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}",
   "status": {
@@ -957,11 +984,13 @@ X-Xss-Protection: 0
     "clusterName": "dataproccluster-${uniqueId}",
     "clusterUuid": "${dataStoreClusterUUID}",
     "config": {
-      "autoscalingConfig": {},
+      "autoscalingConfig": {
+        "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+      },
       "configBucket": "${dataStoreConfigBucketPath}",
       "endpointConfig": {},
       "gceClusterConfig": {
-        "internalIpOnly": true,
+        "internalIpOnly": false,
         "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
         "serviceAccountScopes": [
           "https://www.googleapis.com/auth/cloud-platform"
@@ -1063,11 +1092,14 @@ X-Xss-Protection: 0
       }
     },
     "labels": {
+      "cnrm-test": "true",
       "goog-dataproc-autozone": "enabled",
       "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-      "goog-dataproc-location": "us-central1"
+      "goog-dataproc-location": "us-central1",
+      "label-one": "new-value",
+      "managed-by-cnrm": "true"
     },
     "projectId": "${projectId}"
   }
@@ -1092,11 +1124,13 @@ X-Xss-Protection: 0
   "clusterName": "dataproccluster-${uniqueId}",
   "clusterUuid": "${dataStoreClusterUUID}",
   "config": {
-    "autoscalingConfig": {},
+    "autoscalingConfig": {
+      "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+    },
     "configBucket": "${dataStoreConfigBucketPath}",
     "endpointConfig": {},
     "gceClusterConfig": {
-      "internalIpOnly": true,
+      "internalIpOnly": false,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
       "serviceAccountScopes": [
         "https://www.googleapis.com/auth/cloud-platform"
@@ -1205,11 +1239,14 @@ X-Xss-Protection: 0
     }
   },
   "labels": {
+    "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-    "goog-dataproc-location": "us-central1"
+    "goog-dataproc-location": "us-central1",
+    "label-one": "new-value",
+    "managed-by-cnrm": "true"
   },
   "metrics": {
     "hdfsMetrics": {

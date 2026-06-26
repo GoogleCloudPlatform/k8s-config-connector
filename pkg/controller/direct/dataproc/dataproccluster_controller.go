@@ -148,6 +148,12 @@ func (a *dataprocClusterAdapter) Create(ctx context.Context, createOp *directbas
 	cluster.ClusterName = a.id.Cluster
 	cluster.ProjectId = a.id.Project
 
+	cluster.Labels = make(map[string]string)
+	for k, v := range a.desired.GetObjectMeta().GetLabels() {
+		cluster.Labels[k] = v
+	}
+	cluster.Labels["managed-by-cnrm"] = "true"
+
 	req := &pb.CreateClusterRequest{
 		ProjectId: a.id.Project,
 		Region:    a.id.Region,
@@ -190,6 +196,12 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 
 	cluster.ClusterName = a.id.Cluster
 	cluster.ProjectId = a.id.Project
+
+	cluster.Labels = make(map[string]string)
+	for k, v := range a.desired.GetObjectMeta().GetLabels() {
+		cluster.Labels[k] = v
+	}
+	cluster.Labels["managed-by-cnrm"] = "true"
 
 	// Since GCP might have added default values or read-only/immutable fields in a.actual,
 	// we copy/preserve them in our desired 'cluster' before comparison so that they don't produce false diffs.
@@ -319,6 +331,9 @@ func (a *dataprocClusterAdapter) Delete(ctx context.Context, deleteOp *directbas
 	}
 	op, err := a.gcpClient.DeleteCluster(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			return true, nil
+		}
 		return false, fmt.Errorf("deleting dataproc cluster %s: %w", a.id.String(), err)
 	}
 
