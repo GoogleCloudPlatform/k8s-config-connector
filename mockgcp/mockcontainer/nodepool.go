@@ -44,6 +44,16 @@ func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolR
 		return nil, err
 	}
 
+	clusterName := name.ClusterName()
+	cluster := &pb.Cluster{}
+	if err := s.storage.Get(ctx, clusterName.String(), cluster); err != nil {
+		return nil, err
+	}
+
+	if err := s.populateNodePoolDefaults(name.Project, cluster, obj); err != nil {
+		return nil, err
+	}
+
 	return obj, nil
 }
 
@@ -92,6 +102,16 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 	obj.Status = pb.NodePool_RUNNING
 	if obj.Version == "" {
 		obj.Version = cluster.CurrentNodeVersion
+	}
+
+	if len(obj.Locations) == 0 {
+		obj.Locations = cluster.Locations
+	}
+
+	if obj.Autoscaling != nil {
+		if obj.Autoscaling.LocationPolicy == pb.NodePoolAutoscaling_LOCATION_POLICY_UNSPECIFIED {
+			obj.Autoscaling.LocationPolicy = pb.NodePoolAutoscaling_BALANCED
+		}
 	}
 
 	if obj.Config == nil {

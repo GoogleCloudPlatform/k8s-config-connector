@@ -17,6 +17,7 @@ package mockcontainer
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 	"time"
 
@@ -28,6 +29,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type ClusterManagerV1 struct {
@@ -49,6 +51,35 @@ func (s *ClusterManagerV1) GetCluster(ctx context.Context, req *pb.GetClusterReq
 			return nil, status.Errorf(codes.NotFound, "Not found: %s.", AsZonalLink(fqn))
 		}
 		return nil, err
+	}
+
+	var nodePools []*pb.NodePool
+	kind := (*pb.NodePool)(nil).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: fqn + "/nodePools/"}, func(npObj proto.Message) error {
+		nodePools = append(nodePools, npObj.(*pb.NodePool))
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	if len(nodePools) > 0 {
+		sort.Slice(nodePools, func(i, j int) bool {
+			return nodePools[i].Name < nodePools[j].Name
+		})
+		for _, np := range nodePools {
+			if err := s.populateNodePoolDefaults(name.Project, obj, np); err != nil {
+				return nil, err
+			}
+		}
+		obj.NodePools = nodePools
+	} else {
+		for i, np := range obj.NodePools {
+			nodePoolObj := proto.CloneOf(np)
+			if err := s.populateNodePoolDefaults(name.Project, obj, nodePoolObj); err != nil {
+				return nil, err
+			}
+			obj.NodePools[i] = nodePoolObj
+		}
 	}
 
 	return obj, nil
@@ -266,6 +297,10 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 
 		nodePool.Autoscaling = update.DesiredNodePoolAutoscaling
 		update.DesiredNodePoolAutoscaling = nil
+
+		if err := s.populateNodePoolDefaults(name.Project, obj, nodePool); err != nil {
+			return nil, err
+		}
 
 		if err := s.storage.Update(ctx, nodePoolName.String(), nodePool); err != nil {
 			return nil, err
@@ -514,6 +549,7 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	// Populate new fields based on deprecated fields
 	if privateClusterConfig := obj.PrivateClusterConfig; privateClusterConfig != nil {
 		if privateClusterConfig.GetEnablePrivateNodes() {
+			obj.PrivateCluster = true
 			if obj.NetworkConfig == nil {
 				obj.NetworkConfig = &pb.NetworkConfig{}
 			}
@@ -561,13 +597,18 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 			Disabled: true,
 		}
 	}
+	if obj.AddonsConfig.DnsCacheConfig == nil {
+		obj.AddonsConfig.DnsCacheConfig = &pb.DnsCacheConfig{
+			Enabled: true,
+		}
+	}
 
 	// AnonymousAuthenticationConfig
 	if obj.AnonymousAuthenticationConfig == nil {
 		obj.AnonymousAuthenticationConfig = &pb.AnonymousAuthenticationConfig{}
 	}
 	if obj.AnonymousAuthenticationConfig.Mode == pb.AnonymousAuthenticationConfig_MODE_UNSPECIFIED {
-		obj.AnonymousAuthenticationConfig.Mode = pb.AnonymousAuthenticationConfig_ENABLED
+		obj.AnonymousAuthenticationConfig.Mode = pb.AnonymousAuthenticationConfig_LIMITED
 	}
 
 	// Autopilot
