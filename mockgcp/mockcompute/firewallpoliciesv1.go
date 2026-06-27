@@ -123,10 +123,6 @@ func (s *FirewallPoliciesV1) Patch(ctx context.Context, req *pb.PatchFirewallPol
 		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("updateFirewallPolicy"),
 		User:          PtrTo("user@example.com"),
-		// patch operation finished super fast
-		Progress: PtrTo(int32(100)),
-		Status:   PtrTo(pb.Operation_DONE),
-		EndTime:  PtrTo(s.nowString()),
 	}
 	return s.startGlobalOrganizationLRO(ctx, op, func() (proto.Message, error) {
 		return obj, nil
