@@ -327,7 +327,7 @@ func (a *computeFirewallPolicyAdapter) Delete(ctx context.Context, deleteOp *dir
 	if !op.Done() {
 		err = op.Wait(ctx)
 		if err != nil {
-			return false, fmt.Errorf("waiting ComputeFirewallPolicy delete failed: %w", a.id, err)
+			return false, fmt.Errorf("waiting ComputeFirewallPolicy %s delete failed: %w", a.id, err)
 		}
 	}
 	log.V(2).Info("successfully deleted ComputeFirewallPolicy", "name", a.id)
