@@ -37,7 +37,7 @@ func RouternatLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Route
 		return nil
 	}
 	out := &pb.RouterNatLogConfig{}
-	out.Enable = direct.LazyPtr(in.Enable)
+	out.Enable = &in.Enable
 	if in.Filter != "" {
 		out.Filter = direct.LazyPtr(in.Filter)
 	}
