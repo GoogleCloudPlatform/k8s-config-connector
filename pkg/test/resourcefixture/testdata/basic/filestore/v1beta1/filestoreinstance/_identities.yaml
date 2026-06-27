@@ -4,7 +4,7 @@
   name: default
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //file.googleapis.com/projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}
+- caisURL: //file.googleapis.com/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}
   group: filestore.cnrm.cloud.google.com
   kind: FilestoreInstance
   name: filestoreinstance-${uniqueId}
