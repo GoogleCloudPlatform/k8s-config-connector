@@ -16,6 +16,8 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeFirewallPolicy
 metadata:
   name: firewallpolicy-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
   organizationRef:
     # The organization ID is hard-coded to the ID of the "deployment-manager.net" org
