@@ -35,6 +35,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		return
 	}
 
+	replacements.RemovePath(".peerings")
+	replacements.RemovePath(".items[].peerings")
+
 	replacements.TransformObject("", func(m map[string]any) {
 		isComputeResource := func(obj map[string]any) bool {
 			kind, _ := obj["kind"].(string)
@@ -90,6 +93,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			delete(obj, "satisfiesPzi")
 			delete(obj, "sizeGb")
 			delete(obj, "recommendedSize")
+			delete(obj, "peerings")
 
 			if obj["creationTimestamp"] != nil {
 				obj["creationTimestamp"] = mockgcpregistry.PlaceholderTimestamp

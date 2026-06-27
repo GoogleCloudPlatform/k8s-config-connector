@@ -31,6 +31,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	commonpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/common"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/filestore/v1"
@@ -49,12 +50,44 @@ func (s *FilestoreV1) GetInstance(ctx context.Context, req *pb.GetInstanceReques
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Instance %q not found.", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
 
 	return obj, nil
+}
+
+func (s *FilestoreV1) ListInstances(ctx context.Context, req *pb.ListInstancesRequest) (*pb.ListInstancesResponse, error) {
+	parent, err := s.parseInstanceName(req.Parent)
+	if err != nil {
+		// ListInstances parent is projects/*/locations/*
+		// Let's try parsing it as a partial name
+		tokens := strings.Split(req.Parent, "/")
+		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
+			project, err := s.Projects.GetProjectByID(tokens[1])
+			if err != nil {
+				return nil, err
+			}
+			parent = &instanceName{
+				Project:  project,
+				Location: tokens[3],
+			}
+		} else {
+			return nil, err
+		}
+	}
+
+	res := &pb.ListInstancesResponse{}
+	prefix := fmt.Sprintf("projects/%s/locations/%s/instances", parent.Project.ID, parent.Location)
+	if err := s.storage.List(ctx, (&pb.Instance{}).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		res.Instances = append(res.Instances, obj.(*pb.Instance))
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
 
 func (s *FilestoreV1) CreateInstance(ctx context.Context, req *pb.CreateInstanceRequest) (*longrunningpb.Operation, error) {
@@ -73,14 +106,21 @@ func (s *FilestoreV1) CreateInstance(ctx context.Context, req *pb.CreateInstance
 
 	obj.CreateTime = timestamppb.New(now)
 	obj.State = pb.Instance_CREATING
+	obj.Etag = fmt.Sprintf("%d", now.UnixNano())
 
 	s.populateDefaultsForInstance(obj)
+
+	for _, network := range obj.Networks {
+		if !strings.Contains(network.Network, "/") {
+			network.Network = fmt.Sprintf("projects/%s/global/networks/%s", name.Project.ID, network.Network)
+		}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroPrefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 	lroMetadata := &commonpb.OperationMetadata{
 		ApiVersion: "v1",
 		CreateTime: timestamppb.New(now),
@@ -145,17 +185,28 @@ func (s *FilestoreV1) UpdateInstance(ctx context.Context, req *pb.UpdateInstance
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
 
-	proto.Merge(obj, req.GetInstance())
+	if err := fields.UpdateByFieldMask(obj, req.GetInstance(), paths); err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating by field mask: %v", err)
+	}
+
+	for _, network := range obj.Networks {
+		if !strings.Contains(network.Network, "/") {
+			network.Network = fmt.Sprintf("projects/%s/global/networks/%s", name.Project.ID, network.Network)
+		}
+	}
+
+	obj.Etag = fmt.Sprintf("%d", time.Now().UnixNano())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	updatedObj := proto.CloneOf(obj)
+	updatedObj := proto.Clone(obj).(*pb.Instance)
 	updatedObj.CreateTime = nil
 	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 
-	return s.operations.DoneLRO(ctx, prefix, nil, updatedObj)
-
+	return s.operations.StartLRO(ctx, prefix, nil, func() (proto.Message, error) {
+		return updatedObj, nil
+	})
 }
 
 func (s *FilestoreV1) DeleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest) (*longrunningpb.Operation, error) {
@@ -170,10 +221,10 @@ func (s *FilestoreV1) DeleteInstance(ctx context.Context, req *pb.DeleteInstance
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroPrefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 	lroMetadata := &commonpb.OperationMetadata{
 		ApiVersion: "v1",
-		CreateTime: timestamppb.Now(),
+		CreateTime: timestamppb.New(time.Now()),
 		Target:     fqn,
 		Verb:       "delete",
 	}

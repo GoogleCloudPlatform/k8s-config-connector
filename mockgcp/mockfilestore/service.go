@@ -20,6 +20,7 @@ package mockfilestore
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 
@@ -72,10 +73,16 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterCloudFilestoreManagerHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
+		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
 	}
 
-	return mux, nil
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasPrefix(r.URL.Path, "/v1beta1") {
+			r.URL.Path = strings.Replace(r.URL.Path, "/v1beta1", "/v1", 1)
+		}
+		mux.ServeHTTP(w, r)
+	}), nil
 }
