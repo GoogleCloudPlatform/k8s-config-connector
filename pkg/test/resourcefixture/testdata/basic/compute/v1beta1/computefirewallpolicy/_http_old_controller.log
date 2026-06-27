@@ -1,8 +1,9 @@
-POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies?parentId=organizations%2F${organizationID}
+POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies?alt=json&parentId=organizations%2F${organizationID}
 Content-Type: application/json
 
 {
   "description": "A basic organization firewall policy",
+  "parent": "organizations/${organizationID}",
   "shortName": "firewallpolicy-${uniqueId}"
 }
 
@@ -31,7 +32,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}
 Content-Type: application/json
 
 200 OK
@@ -62,7 +63,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -170,12 +171,12 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}
+PATCH https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
 Content-Type: application/json
 
 {
   "description": "An updated basic organization firewall policy",
-  "shortName": "firewallpolicy-${uniqueId}"
+  "fingerprint": "abcdef0123A="
 }
 
 200 OK
@@ -205,7 +206,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -236,7 +237,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -344,7 +345,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}
+DELETE https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -374,7 +375,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -401,4 +402,33 @@ X-Xss-Protection: 0
   "targetId": "${firewallPolicyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
   "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'locations/global/firewallPolicies/${firewallPolicyID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'locations/global/firewallPolicies/${firewallPolicyID}' was not found"
+  }
 }
