@@ -30,7 +30,7 @@ metadata:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
     cnrm.cloud.google.com/deletion-policy: "abandon"
-  name: default
+  name: computenetwork-${uniqueId}
 spec:
   description: Default network for the project
 ---
@@ -48,4 +48,4 @@ spec:
     boot: true
   networkInterface:
   - networkRef:
-      name: default
+      name: computenetwork-${uniqueId}

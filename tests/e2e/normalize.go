@@ -196,6 +196,8 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.nodes[].zone"] = "us-central1-a"
 
 	// Specific to Compute
+	visitor.removePaths.Insert(".status.currentActions")
+	visitor.replacePaths[".status.status.isStable"] = true
 	visitor.replacePaths[".status.observedState.certificateID"] = 1111111111111111
 	visitor.replacePaths[".status.instanceId"] = "1111111111111111"
 	visitor.replacePaths[".status.gatewayId"] = 1111111111111111
