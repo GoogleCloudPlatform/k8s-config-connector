@@ -7,18 +7,33 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
   name: computerouternat-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  icmpIdleTimeoutSec: 40
-  natIpAllocateOption: AUTO_ONLY
-  region: us-west1
+  enableEndpointIndependentMapping: false
+  natIpAllocateOption: MANUAL_ONLY
+  natIps:
+  - name: ${addressID}
+  region: us-central1
   routerRef:
     name: ${routerID}
-  sourceSubnetworkIpRangesToNat: ALL_SUBNETWORKS_ALL_IP_RANGES
+  rules:
+  - action:
+      sourceNatActiveIpsRefs:
+      - name: ${addressID}
+      - name: ${addressID}
+    description: nat rule examples
+    match: inIpRange(destination.ip, '1.1.0.0/16') || inIpRange(destination.ip, '2.2.0.0/16')
+    ruleNumber: 100
+  sourceSubnetworkIpRangesToNat: LIST_OF_SUBNETWORKS
+  subnetwork:
+  - sourceIpRangesToNat:
+    - ALL_IP_RANGES
+    subnetworkRef:
+      name: ${subnetworkID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -26,4 +41,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 2
+  observedGeneration: 1
