@@ -22,6 +22,7 @@
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
 // resource: ComputeForwardingRule:ForwardingRule
 // resource: ComputeHTTPHealthCheck:HTTPHealthCheck
+// resource: ComputeHTTPSHealthCheck:HTTPSHealthCheck
 // resource: ComputeImage:Image
 // resource: ComputeHealthCheck:HealthCheck
 // resource: ComputeInstance:Instance
